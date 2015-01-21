@@ -7,8 +7,12 @@
  * Revision history
  *  07.03.2014 initial version released in FMU SDK 2.0.0
  *
- * Author: Adrian Tirea
+ * Based on sim_support.c by Adrian Tirea
  * Copyright QTronic GmbH. All rights reserved.
+
+ * File: ptolemy/actor/lib/fmi/ma2/shared/sim_support.c
+ * Ptolemy version Authors: Fabian Stahnke, Fabio Cremona, Christopher Brooks
+ * $Id$
  * -------------------------------------------------------------------------*/
 
 /* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
@@ -18,6 +22,13 @@
 #ifdef __linux__
 /* Needed for strdup and mkdtemp under RHEL 6.1 */
 #define __USE_BSD
+
+/* Needed for strdup and mkdtemp under Gentoo.
+ * see http://polarhome.com/service/man/?qf=STRDUP&af=0&tf=2&of=Gentoo
+ * If you change this file, then please change
+ * ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
+ */
+#define _BSD_SOURCE
 #endif
 
 #include <stdlib.h>

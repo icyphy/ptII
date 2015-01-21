@@ -44,9 +44,7 @@ EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) fmi/shared/sim_support.h fmi/shared/s
 
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
-#PTCG_CFILES = @PTCG_CFILES@
 PTCG_CFILES = @modelName@.c fmi/shared/sim_support.c
-PTCG_OFILES = @PTCG_OFILES@
 
 # Flags for the C compiler, but not the C++ compiler.
 C_ONLY_FLAGS=-std=c99
@@ -142,10 +140,7 @@ coverage:
 
 # Other Targets
 clean:
-	rm -rf $(PTCG_OFILES) @modelName@ *.dSYM *.o
-	-@echo ' '
+	rm -rf $(PTCG_OFILES) @modelName@ *.dSYM *.o */*.o */*/*.o fmuTmp* result.csv
 
 .PHONY: all clean dependents
 .SECONDARY:
-
-
