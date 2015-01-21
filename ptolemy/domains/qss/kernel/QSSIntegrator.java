@@ -302,9 +302,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         }
 
         // Determine the maximum order of the input variables.
-        // Since inputs are provided from the outside, we don't actually know this,
-        // so we specify the maximum supported by {@link SmoothToken}.
-        int maximumInputOrder = SmoothToken.getOrderLimit();
+        // This is the maximum order of the state model.
+        _maximumInputOrder = _qssSolver.getStateModelOrder();
         
         // Set up the solver to use this actor to specify the number of states (1)
         // and input variables (1), and to use this actor to calculate the derivative
@@ -315,7 +314,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         	_director.getModelStopTime(), 	// The maximum time to an event.
         	absoluteToleranceValue, 	// The absolute quantum tolerance.
         	relativeToleranceValue, 	// The relative quantum tolerance.
-        	maximumInputOrder);		// The order of the input variables.
+        	_maximumInputOrder);		// The order of the input variables.
 
         // Initialize the state variable to match the {@link #xInit} parameter.
         double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
@@ -355,24 +354,22 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         if (u.hasToken(0)) {
             DoubleToken inputToken = (DoubleToken)u.get(0);
             inputValue = inputToken.doubleValue();
-            newInput = true;
-            
+            newInput = true; 
             ModelPolynomial inputModel = _qssSolver.getInputVariableModel(0);
             inputModel.coeffs[0] = inputValue;
             // Get derivative information from the input, if present.
             if (inputToken instanceof SmoothToken) {
-        	double[] derivatives = ((SmoothToken)inputToken).derivativeValues();
-        	if (derivatives != null) {
-        	    int factorial = 1;
-        	    for (int i = 0; i < derivatives.length; i++) {
-        		// The model coefficients are the coefficients of the
-        		// Taylor series expansion, which is equal to the derivatives
-        		// divided by the factorial of the order of the derivatives.
-        		inputModel.coeffs[i+1] = derivatives[i]/factorial;
-        		factorial = factorial * (i+1);
+        	double[] derivatives = ((SmoothToken)inputToken).derivativeValues();     	
+        	int factorial = 1;
+        	for (int i = 1; i < _maximumInputOrder + 1; i++) {
+        	    if (derivatives == null || derivatives.length < i) {
+        	    	inputModel.coeffs[i] = 0.0;
+        	    } else {
+        	    	inputModel.coeffs[i] = derivatives[i-1]/factorial;
+        	    	factorial = factorial * i;
         	    }
-        	}
-            }
+        	}      	
+            }     
             inputModel.tMdl = currentTime;
         }
 
@@ -408,7 +405,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 && possibleDiffersFromLast // Last request is no longer valid.
         ) {
             if (_debugging) {
-                _debug("Cancelling previous fireAt request at " + _lastFireAtTime);
+                _debug("Canceling previous fireAt request at " + _lastFireAtTime);
             }
             _director.cancelFireAt(this, _lastFireAtTime);
         }
@@ -441,4 +438,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  <i>QSSSolver</i> parameter of the director.
      */
     private QSSBase _qssSolver = null;
+    
+    /** Maximum input order. */
+    private Integer _maximumInputOrder;
 }
