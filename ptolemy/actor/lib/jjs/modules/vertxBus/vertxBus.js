@@ -31,25 +31,23 @@ util.inherits(exports.VertxBusServer, EventEmitter);
 ////////////////////
 // Send text or binary data to the server. 
 exports.VertxBus.prototype.publish = function(address, data) {
-    //if (!this.eventbus.isOpen()) {
-      //  throw new Error('not opened');
-    //}
-    //if (typeof data == 'string') {
-        this.eventbus.publish(address, data);
-    //}
-}
-
-exports.VertxBus.prototype.registerHandler = function(data) {
-    //if (!this.eventbus.isOpen()) {
-      //  throw new Error('not opened');
-    //}
-    //if (typeof data == 'string') {
-        this.eventbus.registerHandler(data);
-    //}
+    if (!this.eventbus.isOpen()) {
+        throw new Error('not opened');
+    }
+    this.eventbus.publish(address, data);
 }
 
 ////////////////////
-// Close the current connection with the server.
+// Register handler at an address. 
+exports.VertxBus.prototype.registerHandler = function(data) {
+    if (!this.eventbus.isOpen()) {
+        throw new Error('not opened');
+    }
+    this.eventbus.registerHandler(data);
+}
+
+////////////////////
+// Close the eventbus connection.
 exports.VertxBus.prototype.close = function() {
     if (!this.eventbus.isOpen()) {
         throw new Error('not opened');
@@ -57,6 +55,8 @@ exports.VertxBus.prototype.close = function() {
     this.eventbus.close();
 }
 
+////////////////////
+// Close the server.
 exports.VertxBusServer.prototype.closeServer = function() {
     if (this.server != null) {
         this.server.closeServer();
