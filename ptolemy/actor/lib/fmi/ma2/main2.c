@@ -289,8 +289,8 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
 
     // TODO: Should be done by an FMU
     // output solution for time t0
-    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, TRUE);  // output column names
-    outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values
+    outputRow(&fmus[NUMBER_OF_FMUS-2], NUMBER_OF_FMUS, fmus[NUMBER_OF_FMUS-2].component, time, file, separator, TRUE);  // output column names
+    outputRow(&fmus[NUMBER_OF_FMUS-2], NUMBER_OF_FMUS, fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values
 
     // enter the simulation loop
 
@@ -368,7 +368,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
         }
 
         // TODO: Should be done by FMU
-        outputRow(&fmus[NUMBER_OF_FMUS-2], fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values for this step
+        outputRow(&fmus[NUMBER_OF_FMUS-2], NUMBER_OF_FMUS, fmus[NUMBER_OF_FMUS-2].component, time, file, separator, FALSE); // output values for this step
 
         nSteps++;
     }
@@ -438,7 +438,7 @@ int main(int argc, char *argv[]) {
     portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
 
     printf("Parsing arguments!\n");
-    parseArguments(argc, argv, fmuFileNames, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
+    parseArguments(argc, argv, /*fmuFileNames,*/ &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
     // Load and initialize FMUs
     for (i = 0; i < NUMBER_OF_FMUS; i++) {
