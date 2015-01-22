@@ -98,6 +98,7 @@ public class DoubleTokenQuantizer extends TypedAtomicActor {
 	 * @throws IllegalActionException If sending an output fails.
 	 */
 	public void fire() throws IllegalActionException {
+		super.fire();
 		if (input.hasToken(0)) {
 			Token curInput = input.get(0);
 			final double newInput = ((DoubleToken) curInput).doubleValue();
@@ -112,6 +113,7 @@ public class DoubleTokenQuantizer extends TypedAtomicActor {
 	 * Initialize this actor.
 	 */
 	public void initialize() throws IllegalActionException {
+		super.initialize();
 		// Initialize the lastInput with 0.0.
 		_lastInput = 0.0;
 		// Get the quantum.
