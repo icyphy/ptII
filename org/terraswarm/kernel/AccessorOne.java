@@ -27,6 +27,8 @@
  */
 package org.terraswarm.kernel;
 
+import org.terraswarm.accessor.jjs.JSAccessor;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.js.JavaScript;
 import ptolemy.data.expr.SingletonParameter;
@@ -53,6 +55,7 @@ import ptolemy.kernel.util.StringAttribute;
  the replacement. This will be tricky because any parameters
  and connections previously set should be preserved.
 
+ @deprecated Use {@link JSAccessor} instead.
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0

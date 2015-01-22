@@ -89,6 +89,9 @@ public class JSAccessor extends JavaScript {
 
         // Set the script parameter to Visibility EXPERT.
         script.setVisibility(Settable.EXPERT);
+        
+        // Hide the port for the script.
+        (new SingletonParameter(script.getPort(), "_hide")).setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////

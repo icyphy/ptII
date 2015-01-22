@@ -5,9 +5,9 @@
   version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:template match="/class">
-	<entity name="{@name}" class="org.terraswarm.kernel.AccessorOne">
+	<entity name="{@name}" class="org.terraswarm.accessor.jjs.JSAccessor">
 		<!-- Convert the script into a value for the script parameter. -->    
-        <property name="script" class="ptolemy.kernel.util.StringAttribute">
+        <property name="script">
         	<!-- Convert the body of the <script>...</script> element into the value of the "value" attribute. -->
 			<xsl:attribute name="value">
 				<xsl:value-of select="script"/>
@@ -31,6 +31,8 @@
 		    	<property name="{@name} (port)" class="ptolemy.kernel.util.StringAttribute" value="{@description}">
             	</property>
             </xsl:for-each>
+            <!-- Ensure that the error output port has documentation. -->
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead."/>
             <!-- Get author information. -->
             <property name="author" class="ptolemy.kernel.util.StringAttribute">
         		<xsl:attribute name="value">
