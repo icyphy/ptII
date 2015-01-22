@@ -4,6 +4,9 @@
 // Author: Edward A. Lee
 // Copyright: http://terraswarm.org/accessors/copyright.txt
 //
+// Flag that will cause debug output to the console if set to true.
+var _debug = false
+
 ////////////////////
 // Pop up a dialog with the specified message.
 function alert(message) {
@@ -31,7 +34,8 @@ function error(message) {
 }
 
 ////////////////////
-// Method for performing a synchronous HTTP request.
+// Method for performing a blocking HTTP request.
+// DEPRECATED: Use the http module instead.
 function httpRequest(url, method, properties, body, timeout) {
 	if (_debug) {
 	    console.log("httpRequest("
@@ -44,21 +48,36 @@ function httpRequest(url, method, properties, body, timeout) {
 	        })(arguments)
 	        + ")");
 	}
-    var request = new XMLHttpRequest();
-    // The third argument specifies a synchronous read.
-    request.open(method, url, false);
-    // Null argument says there is no body.
-    request.send(body);
-    // readyState === 4 is the same as readyState === request.DONE.
-    if (request.readyState === request.DONE) {
-        if (request.status <= 400) {
-            return request.responseText;
-        } else {
-            throw "httpRequest failed with code " + request.status + " at URL: " + url;
-        }
-    } else {
-        throw "httpRequest did not complete: " + url;
+	var theURL = new (Java.type('java.net.URL'))(url);
+	if (actor.isRestricted && !theURL.getProtocol().toLowerCase().equals("http")) {
+        throw "Actor is restricted. Only HTTP requests will be honored by httpRequest().";
     }
+    var connection = theURL.openConnection();
+    
+    for (key in properties) {
+        connection.setRequestProperty(key, properties[key]);
+    }
+    
+    connection.setRequestMethod(method);
+    
+    // If a timeout has been specified, set it.
+    if (timeout && timeout >= 0) {
+        connection.setConnectTimeout(timeout);
+        connection.setReadTimeout(timeout);
+    }
+
+    // Send body if applicable.
+    if (body && !body.equals('')) {
+        connection.setDoOutput(true);
+        var writer = new (Java.type('java.io.OutputStreamWriter'))(connection.getOutputStream());
+        writer.write(body);
+        writer.flush();
+        writer.close();
+    }
+
+    // Wait for response.
+    return Java.type('ptolemy.actor.lib.jjs.JavaScript').readFromInputStream(
+            connection.getInputStream());
 }
 
 ////////////////////
@@ -67,23 +86,23 @@ function httpRequest(url, method, properties, body, timeout) {
 
 ////////////////////
 // Method for synchronously reading a URL.
+// DEPRECATED: Use the http module instead.
 function readURL(url) {
-	if (_debug) console.log("readURL(" + url + ")");
-    var request = new XMLHttpRequest();
-    // The third argument specifies a synchronous read.
-    request.open("GET", url, false);
-    // Null argument says there is no body.
-    request.send(null);
-    // readyState === 4 is the same as readyState === request.DONE.
-    if (request.readyState === request.DONE) {
-        if (request.status <= 400) {
-            return request.responseText;
-        } else {
-            throw "readURL failed with code " + request.status + " at URL: " + url;
-        }
-    } else {
-        throw "readURL did not complete: " + url;
+	if (_debug) console.log("readURL('" + url + "')");
+	var theURL = new (Java.type('java.net.URL'))(url);
+	if (actor.isRestricted && !theURL.getProtocol().toLowerCase().equals("http")) {
+        throw "Actor is restricted. Only HTTP requests will be honored by readURL().";
     }
+	var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
+	request.setUrl(theURL);
+	var response = request.execute();
+	if (!response.isSuccessful()) {
+        throw "Failed to read URL: " + url
+                + "\nResponse code: " + response.getResponseCode()
+                + "\nResponse message: "
+                + response.getResponseMessage();
+    }
+    return response.getBody();
 }
 
 ////////////////////

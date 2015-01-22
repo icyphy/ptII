@@ -53,6 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
  the replacement. This will be tricky because any parameters
  and connections previously set should be preserved.
 
+ @deprecated Use {@link org.terraswarm.accessor.jjs.JSAccessor} instead.
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0

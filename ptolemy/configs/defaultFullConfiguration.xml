@@ -113,7 +113,7 @@
       <configure>
         <?moml
           <group>
-	  <input source="ptolemy/actor/lib/js/js.xml"/>
+	  <input source="ptolemy/actor/lib/jjs/js.xml"/>
           <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
 	  <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
           <input source="ptolemy/configs/utilityPteraModalModel.xml"/>
@@ -194,8 +194,8 @@
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
 	    <!-- Joystick actors depend on the Joystick interface being present  -->
             <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
-	    <!-- JavaScript uses $PTII/lib/js.jar -->
-            <input source="ptolemy/actor/lib/js/js.xml"/>
+	    <!-- JavaScript uses $PTII/lib/jjs.jar -->
+            <input source="ptolemy/actor/lib/jjs/js.xml"/>
             <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
 	    <!-- Machine Learning library still under development  -->
 	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
