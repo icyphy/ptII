@@ -115,7 +115,7 @@ public class ImportAccessorAction extends AbstractAction {
         }
         _frame = (BasicGraphFrame) frame;
         _lastLocation = "http://www.terraswarm.org/accessors";
-        putValue("tooltip", "Instantiate an accessor");
+        putValue("tooltip", "Import an accessor");
         // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
     }
 
@@ -144,7 +144,7 @@ public class ImportAccessorAction extends AbstractAction {
             }
         });
         ComponentDialog dialog = new ComponentDialog(_frame,
-                "Instantiate Accessor", query);
+                "Import Accessor", query);
 
         if (dialog.buttonPressed().equals("OK")) {
             // Get the associated Ptolemy model.
