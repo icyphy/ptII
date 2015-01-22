@@ -168,29 +168,42 @@ public class ImportAccessorAction extends AbstractAction {
             try {
                 url = FileUtilities.nameToURL(urlSpec, null, null);
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        url.openStream()));
-                StringBuffer contents = new StringBuffer();
-                while ((input = in.readLine()) != null) {
-                    contents.append(input);
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(new InputStreamReader(
+                                    url.openStream()));
+                    StringBuffer contents = new StringBuffer();
+                    while ((input = in.readLine()) != null) {
+                        contents.append(input);
+                    }
+
+                    TransformerFactory factory = TransformerFactory.newInstance();
+                    String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
+                    Source xslt = new StreamSource(FileUtilities.nameToFile(
+                                    xsltLocation, null));
+                    Transformer transformer = factory.newTransformer(xslt);
+                    StreamSource source = new StreamSource(new InputStreamReader(
+                                    url.openStream()));
+                    StringWriter outWriter = new StringWriter();
+                    StreamResult result = new StreamResult(outWriter);
+                    try {
+                        transformer.transform(source, result);
+                        contents = outWriter.getBuffer();
+                        buffer.append(contents);
+                    } catch (Throwable throwable) {
+                        throw new Throwable("Failed to parse \""
+                                + url
+                                + "\", perhaps there is no index.json file?",
+                                throwable);
+                    }
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
                 }
-
-                TransformerFactory factory = TransformerFactory.newInstance();
-                String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
-                Source xslt = new StreamSource(FileUtilities.nameToFile(
-                        xsltLocation, null));
-                Transformer transformer = factory.newTransformer(xslt);
-                StreamSource source = new StreamSource(new InputStreamReader(
-                        url.openStream()));
-                StringWriter outWriter = new StringWriter();
-                StreamResult result = new StreamResult(outWriter);
-                transformer.transform(source, result);
-                contents = outWriter.getBuffer();
-
-                buffer.append(contents);
-                in.close();
-            } catch (Exception e1) {
-                MessageHandler.error("Failed to import accessor.", e1);
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to import accessor \""
+                        + urlSpec + "\".", throwable);
                 return;
             }
             buffer.append("</group>\n");
@@ -283,9 +296,8 @@ public class ImportAccessorAction extends AbstractAction {
             }
         } catch (Exception e) {
             // Don't provide a list of options, but issue a message.
-            System.err
-                    .println("Cannot suggest accessors, because there is no index.json file at "
-                            + _lastLocation);
+            MessageHandler.error("Cannot suggest accessors, because there is no index.json file at "
+                    + _lastLocation, e);
         }
     }
 
