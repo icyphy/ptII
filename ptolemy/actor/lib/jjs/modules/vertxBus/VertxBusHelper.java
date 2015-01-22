@@ -27,9 +27,7 @@
  */
 package ptolemy.actor.lib.jjs.modules.vertxBus;
 
-import javax.script.Invocable;
 import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
