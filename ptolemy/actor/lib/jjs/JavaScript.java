@@ -29,7 +29,10 @@ package ptolemy.actor.lib.jjs;
 
 import io.socket.SocketIO;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -452,6 +455,13 @@ public class JavaScript extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         
+        if (_debugging) {
+            // Set a global variable for debugging.
+            _engine.put("_debug", true);
+        } else {
+            _engine.put("_debug", false);
+        }
+
         // If there is an input script, evaluate that script.
         // Note that if this redefines the initialize() method, it will
         // have no effect until the next run unless the script actually invokes it.
@@ -580,7 +590,9 @@ public class JavaScript extends TypedAtomicActor {
             if (_debugging) {
                 _debug("** Instantiated engine. Loading local and basic functions.");
                 // Set a global variable for debugging.
-                _engine.eval("var _debug = true;");
+                _engine.put("_debug", true);
+            } else {
+                _engine.put("_debug", false);
             }
             _engine.eval(FileUtilities.openForReading(
         	    "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js",
@@ -598,6 +610,8 @@ public class JavaScript extends TypedAtomicActor {
         // Define the actor variable if not in restricted mode.
         if (!_restricted) {
             _engine.put("actor", this);
+        } else {
+            _engine.put("actor", new RestrictedJavaScriptInterface(this));
         }
 
         // Expose the ports as JavaScript variables.
@@ -667,6 +681,24 @@ public class JavaScript extends TypedAtomicActor {
         }
     }
 
+    /** Return true if the specified string is a JavaScript keyword.
+     *  @param identifier The identifier name.
+     *  @return True if it is a JavaScript keyword.
+     */
+    public static boolean isJavaScriptKeyword(String identifier) {
+        return _KEYWORDS.contains(identifier);
+    }
+    
+    /** Return true if this actor is restricted.
+     *  A restricted instance of this actor limits the capabilities available
+     *  to the script it executes so that it can execute untrusted code. 
+     *  This base class is not restricted, but subclasses may be.
+     *  @return True if this actor is restricted.
+     */
+    public boolean isRestricted() {
+        return _restricted;
+    }
+    
     /** Return true if the specified string is not a JavaScript keyword
      *  and is a valid JavaScript identifier.
      *  @param identifier The proposed name.
@@ -688,14 +720,6 @@ public class JavaScript extends TypedAtomicActor {
         return true;
     }
 
-    /** Return true if the specified string is a JavaScript keyword.
-     *  @param identifier The identifier name.
-     *  @return True if it is a JavaScript keyword.
-     */
-    public static boolean isJavaScriptKeyword(String identifier) {
-        return _KEYWORDS.contains(identifier);
-    }
-    
     /** Return the local host IP address as a string.
      *  @return A string representation of the local host address.
      *  @exception UnknownHostException If the local host is not known.
@@ -745,6 +769,28 @@ public class JavaScript extends TypedAtomicActor {
 		}
 	    }
 	};
+    }
+    
+    /** Utility method to read a string from an input stream.
+     *  @param stream The stream.
+     *  @return The string.
+     * @throws IOException If the stream cannot be read.
+     */
+    public static String readFromInputStream(InputStream stream) throws IOException {
+        StringBuffer response = new StringBuffer();
+        BufferedReader reader = null;
+        String line = "";
+        reader = new BufferedReader(new InputStreamReader(stream));
+
+        String lineBreak = System.getProperty("line.separator");
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            if (!line.endsWith(lineBreak)) {
+                response.append(lineBreak);
+            }
+        }
+        reader.close();
+        return response.toString();
     }
 
     /** Execute the wrapup function, if it is defined, and exit the context for this thread.

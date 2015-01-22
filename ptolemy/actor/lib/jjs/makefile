@@ -48,7 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JavaScript.java
+	JavaScript.java \
+	RestrictedJavaScriptInterface.java
 	
 OTHER_FILES_TO_BE_JARED = \
 	basicFunctions.js \
