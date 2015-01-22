@@ -1043,6 +1043,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 // Open a dialog box for the user to choose the directory to save the files
+
+                // FIXME: This should use ptolemy.gui.PtFileChooser so that
+                // a native-looking GUI is used under Mac OS X.
+
                 JFileChooser dirDialog = new JFileChooser();
                 dirDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 dirDialog.setDialogTitle("Choose Directory to store files...");

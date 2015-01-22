@@ -94,6 +94,9 @@ public class ModelMigrationFrame extends JFrame {
      */
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
 
+        // FIXME: This should use ptolemy.gui.PtFileChooser so that
+        // a native-looking GUI is used under Mac OS X.
+
         JFileChooser fileChooser = new JFileChooser();
 
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
