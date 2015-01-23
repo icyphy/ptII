@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DoubleTokenQuantizer" class="ptolemy.actor.TypedCompositeActor">
+<entity name="QuantizedSampler" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={142, 73, 824, 544}, maximized=false}">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 55.0}">
         </property>
     </property>
-    <entity name="DoubleTokenQuantizer" class="org.ptolemy.qss.DoubleTokenQuantizer">
+    <entity name="QuantizedSampler" class="org.ptolemy.qss.QuantizedSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 130.0}">
         </property>
     </entity>
@@ -71,7 +71,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="DoubleTokenQuantizer, Quantizer, 2xRamp">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="QuantizedSampler, Quantizer, 2xRamp">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 344}, maximized=false}">
         </property>
@@ -105,7 +105,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{235.0, 250.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;DoubleTokenQuantizer.input&quot;,x=285.0,y=130.0}, points={235.0,130.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;Quantizer.input&quot;,x=315.0,y=195.0}, points={235.0,195.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;AddSubtract.plus&quot;,x=310.0,y=265.0,index=2}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=235.5,y=205.0}, tail={id=&quot;.Previous.input&quot;,x=435.5,y=330.0}, points={235.5,330.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.5,y=205.0}, tail={id=&quot;.Const.trigger&quot;,x=325.5,y=415.0}, points={235.5,415.0} },{ head={id=&quot;NonStrictTest2.input&quot;,x=285.0,y=330.0}, tail={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, points={235.0,330.0} },{ head={id=&quot;Ramp.output&quot;,x=175.0,y=250.0}, tail={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;QuantizedSampler.input&quot;,x=285.0,y=130.0}, points={235.0,130.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;Quantizer.input&quot;,x=315.0,y=195.0}, points={235.0,195.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;AddSubtract.plus&quot;,x=310.0,y=265.0,index=2}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=235.5,y=205.0}, tail={id=&quot;.Previous.input&quot;,x=435.5,y=330.0}, points={235.5,330.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.5,y=205.0}, tail={id=&quot;.Const.trigger&quot;,x=325.5,y=415.0}, points={235.5,415.0} },{ head={id=&quot;NonStrictTest2.input&quot;,x=285.0,y=330.0}, tail={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, points={235.0,330.0} },{ head={id=&quot;Ramp.output&quot;,x=175.0,y=250.0}, tail={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -113,7 +113,7 @@
         </property>
         <vertex name="vertex1" value="{425.0, 130.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, tail={id=&quot;TimedPlotter.input&quot;,x=475.0,y=265.0,index=3}, points={425.0,255.0} },{ head={id=&quot;DoubleTokenQuantizer.output&quot;,x=285.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, points={} },{ head={id=&quot;NonStrictTest.input&quot;,x=475.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, tail={id=&quot;TimedPlotter.input&quot;,x=475.0,y=265.0,index=3}, points={425.0,255.0} },{ head={id=&quot;QuantizedSampler.output&quot;,x=285.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, points={} },{ head={id=&quot;NonStrictTest.input&quot;,x=475.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -128,8 +128,8 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=310.0,y=265.0}, tail={id=&quot;TimedPlotter.input&quot;,x=475.0,y=265.0,index=3}, points={} } }">
         </property>
     </relation>
-    <link port="DoubleTokenQuantizer.input" relation="relation2"/>
-    <link port="DoubleTokenQuantizer.output" relation="relation5"/>
+    <link port="QuantizedSampler.input" relation="relation2"/>
+    <link port="QuantizedSampler.output" relation="relation5"/>
     <link port="Clock.output" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation"/>
