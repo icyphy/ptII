@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The top signal has&#10;constant value 1, and all derivatives are implicitly zero.&#10;The bottom signal has value 1 and slope 1 at time zero.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Continuous Director realizes a Runga-Kutta 2-3 ODE solver with variable step size.&#10;Here, the maximum step size is 1.0, and the solver quickly settles on this step size&#10;and achieves excellent accuracy.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
         </property>
@@ -98,26 +98,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 25.0]">
         </property>
     </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Experiment with the error tolerance and solver techniques.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
-        </property>
-    </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 385.0]">
         </property>
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
@@ -125,7 +121,7 @@
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare with the QSS version (click here).&#10;Note that in the Continuous domain, both&#10;signals are forced to be sampled at the same&#10;points.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 355.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorld.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -162,7 +158,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
-<yRange min="0.0" max="11.999999999999998"/>
+<yRange min="0.0" max="12.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
