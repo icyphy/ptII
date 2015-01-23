@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 55.0}">
         </property>
     </property>
-    <entity name="QuantizedSampler" class="org.ptolemy.qss.QuantizedSampler">
+    <entity name="QuantizedSampler" class="ptolemy.domains.de.lib.QuantizedSampler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 130.0}">
         </property>
     </entity>

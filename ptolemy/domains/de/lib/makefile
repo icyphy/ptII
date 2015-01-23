@@ -70,6 +70,7 @@ JSRCS = \
 	NonInterruptibleTimer.java \
 	PID.java \
 	Previous.java \
+	QuantizedSampler.java \
 	Queue.java \
 	Register.java \
 	Server.java \
