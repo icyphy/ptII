@@ -51,7 +51,7 @@ PTPACKAGE = qss
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	DoubleTokenQuantizer.java \
+	QuantizedSampler.java \
 	QSSIntegrator.java \
 	QSSVectorIntegrator.java
 

@@ -1,4 +1,4 @@
-/* A DoubleToken quantizer.
+/* A Quanitzed Sampler
    Below is the copyright agreement for the Ptolemy II system.
 
    Copyright (c) 2014-2015 The Regents of the University of California.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// DoubleTokenQuantizer
+//// QuantizedSampler
 
 /**
  *  Output the input if the signal has changed more than a quantum
@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class DoubleTokenQuantizer extends Transformer {
+public class QuantizedSampler extends Transformer {
 
     /** Construct a new instance of the quantizer.
      *  @param container The container.
@@ -70,7 +70,7 @@ public class DoubleTokenQuantizer extends Transformer {
      *  @exception NameDuplicationException If the container already
      *  contains an object with this name.
      */
-    public DoubleTokenQuantizer(CompositeEntity container, String name)
+    public QuantizedSampler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
