@@ -1,0 +1,147 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DoubleTokenQuantizer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={142, 73, 824, 544}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 434]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.0, 217.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 55.0}">
+        </property>
+    </property>
+    <entity name="DoubleTokenQuantizer" class="org.ptolemy.qss.DoubleTokenQuantizer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 240.0}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="-1.5">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 250.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.5, 0.0, 1.5, 3.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 330.0}">
+        </property>
+    </entity>
+    <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 195.0}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 330.0}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="DoubleTokenQuantizer, Quantizer, 2xRamp">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 265.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="-3.0" max="7.0"/>
+<default connected="no" marks="bigdots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 265.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{90.0, 240.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.trigger&quot;,x=175.0,y=250.0}, tail={id=&quot;relation.vertex1&quot;,x=90.0,y=240.0}, points={} },{ head={id=&quot;Clock.output&quot;,x=60.0,y=240.0}, tail={id=&quot;relation.vertex1&quot;,x=90.0,y=240.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{235.0, 250.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;DoubleTokenQuantizer.input&quot;,x=285.0,y=130.0}, points={235.0,130.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;Quantizer.input&quot;,x=315.0,y=195.0}, points={235.0,195.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, tail={id=&quot;AddSubtract.plus&quot;,x=310.0,y=265.0,index=2}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=235.5,y=205.0}, tail={id=&quot;.Previous.input&quot;,x=435.5,y=330.0}, points={235.5,330.0} },{ head={id=&quot;relation2.vertex1&quot;,x=235.5,y=205.0}, tail={id=&quot;.Const.trigger&quot;,x=325.5,y=415.0}, points={235.5,415.0} },{ head={id=&quot;NonStrictTest2.input&quot;,x=285.0,y=330.0}, tail={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, points={235.0,330.0} },{ head={id=&quot;Ramp.output&quot;,x=175.0,y=250.0}, tail={id=&quot;relation2.vertex1&quot;,x=235.0,y=250.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{425.0, 130.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, tail={id=&quot;TimedPlotter.input&quot;,x=475.0,y=265.0,index=3}, points={425.0,255.0} },{ head={id=&quot;DoubleTokenQuantizer.output&quot;,x=285.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, points={} },{ head={id=&quot;NonStrictTest.input&quot;,x=475.0,y=130.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{410.0, 195.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=410.0,y=195.0}, tail={id=&quot;TimedPlotter.input&quot;,x=475.0,y=265.0,index=3}, points={410.0,260.0} },{ head={id=&quot;NonStrictTest3.input&quot;,x=475.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=410.0,y=195.0}, points={410.0,330.0} },{ head={id=&quot;Quantizer.output&quot;,x=315.0,y=195.0}, tail={id=&quot;relation3.vertex1&quot;,x=410.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=310.0,y=265.0}, tail={id=&quot;TimedPlotter.input&quot;,x=475.0,y=265.0,index=3}, points={} } }">
+        </property>
+    </relation>
+    <link port="DoubleTokenQuantizer.input" relation="relation2"/>
+    <link port="DoubleTokenQuantizer.output" relation="relation5"/>
+    <link port="Clock.output" relation="relation"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
+    <link port="Quantizer.input" relation="relation2"/>
+    <link port="Quantizer.output" relation="relation3"/>
+    <link port="NonStrictTest3.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation4"/>
+</entity>
