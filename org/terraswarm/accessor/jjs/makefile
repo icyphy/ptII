@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS =
+DIRS = test
 
 # $(ME) is used in ptdir.mk
 ME = org/terraswarm/accessor/jjs
