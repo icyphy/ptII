@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld_QSS1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
@@ -11,23 +11,23 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 32, 928, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={464, 22, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 604]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0443229682254498">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 302.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.35757184028625, 435.52604581653213}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The top signal has&#10;constant value 1, and all derivatives are implicitly zero.&#10;The bottom signal has value 1 and slope 1 at time zero.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The Const produces&#10;a single event that specifies a signal starting at time 0 with constant&#10;value 1. The first integrator produces a signal with constant slope.&#10;The second integrator produces a quadratic signal.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 415.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,11 +35,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Constant signal with value 1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 260.0]">
         </property>
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 330.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -55,11 +55,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal starting with value 1&#10;and with constant slope 1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 370.0]">
         </property>
     </property>
     <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 330.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -75,11 +75,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 12.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 375.0]">
         </property>
     </property>
     <property name="Arrow3" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 320.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -91,7 +91,7 @@
         </property>
     </property>
     <property name="Arrow4" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 270.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -105,17 +105,17 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 4.0.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 5.0.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 195.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Experiment with the error tolerance and solver techniques. Here, a second order QSS&#10;solver is used. This solver uses derivative information on the inputs to the integrator,&#10;if it is available. Here, derivative information is made available by constructing a SmoothToken.&#10;If you change to a QSS3 solver (third order), then the final answer is computed in one step.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the simplest QSS solver is used. This solver results in the integrators&#10;producing output whenever their state changes by the specified quantum.&#10;Here, the quantum is 0.1, given by the absoluteTolerance parameter,&#10;and is independent of the signal magnitude (the relativeTolerance is 0.0).&#10;Experimenting with these parameters will lend some insight into the QSS technique.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 530.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -123,40 +123,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 630.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare with the Continuous version (click here).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare with a version using a higher-order QSS solver&#10;(click here).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 630.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorldContinuous.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 445}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare also with a QSS1 solver (click here).">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 505.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorld_QSS1.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorld.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -179,7 +154,7 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 325.0}">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -187,7 +162,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 830]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 325.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -197,30 +172,29 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
-<yRange min="0.0" max="12.000003528319127"/>
+<yRange min="0.0" max="11.799999999999988"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 110.0]">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="smoothToken(1.0, {1.0})">
+        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
+        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 325.0}">
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 175.0]">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 325.0}">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -233,32 +207,36 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 325.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=325.0}, tail={id=&quot;Const2.trigger&quot;,x=135.0,y=325.0}, points={} } }">
         </property>
-        <vertex name="vertex1" value="{120.0, 110.0}">
-        </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const2.output&quot;,x=135.0,y=325.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=210.0,y=325.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{280.0, 325.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;QSSIntegrator2.q&quot;,x=330.0,y=325.0}, points={} } }">
+        </property>
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
     <link port="TimedPlotter.input" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="QSSIntegrator.u" relation="relation5"/>
-    <link port="QSSIntegrator.q" relation="relation"/>
-    <link port="Const.output" relation="relation3"/>
-    <link port="Const.trigger" relation="relation2"/>
-    <link port="QSSIntegrator2.u" relation="relation3"/>
-    <link port="QSSIntegrator2.q" relation="relation4"/>
-    <link port="Const2.output" relation="relation5"/>
+    <link port="QSSIntegrator.u" relation="relation3"/>
+    <link port="QSSIntegrator.q" relation="relation6"/>
+    <link port="QSSIntegrator2.u" relation="relation6"/>
+    <link port="QSSIntegrator2.q" relation="relation"/>
+    <link port="Const2.output" relation="relation3"/>
     <link port="Const2.trigger" relation="relation2"/>
 </entity>
