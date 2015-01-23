@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  input values, so it should not be used with domains like SDF.</p>
  *
  *  @author Thierry S. Nouidui, contributor: Christopher Brooks
- *  @version $Id: DoubleTokenQuantizer.java 71415 2015-01-19 01:14:58Z eal $
+ *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Red (cxh)
