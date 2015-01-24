@@ -1,0 +1,129 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelBuilder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 262, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This script actor creates&#10;a Ptolemy model that counts&#10;from 0 a number of times given&#10;by its &quot;iterations&quot; parameter.&#10;It sends that model to the output port.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScript3">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a Ptolemy model by executing a script,&#10;run the model, and observe its final output.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 0.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The constructed model sends&#10;the entire count to standard out.&#10;The second script actor displays&#10;the final count.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 75.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 345.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Execute the model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-140.0, -65.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ExecuteActor">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <entity name="ExecuteActor" class="ptolemy.actor.lib.hoc.ExecuteActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 125.0]">
+        </property>
+        <port name="actor" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScript3" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare Java types that we will use.&#10;var TypedCompositeActor = Java.type('ptolemy.actor.TypedCompositeActor');&#10;var Ramp = Java.type('ptolemy.actor.lib.Ramp');&#10;var FileWriter = Java.type('ptolemy.actor.lib.FileWriter');&#10;var SetVariable = Java.type('ptolemy.actor.lib.SetVariable');&#10;var SDFDirector = Java.type('ptolemy.domains.sdf.kernel.SDFDirector');&#10;var Parameter = Java.type('ptolemy.data.expr.Parameter');&#10;&#10;function fire() {&#10;    // Create a model consisting of a Ramp (counter) feeding a FileWriter&#10;    // (which sends to standard out by default).&#10;    var toplevel = new TypedCompositeActor();&#10;    var ramp = new Ramp(toplevel, &quot;ramp&quot;);&#10;    var writer = new FileWriter(toplevel, &quot;writer&quot;);&#10;&#10;    // Create a top-level parameter named &quot;count&quot; that&#10;    // cause the ExecuteActor to produce on its &quot;count&quot;&#10;    // output the final count.&#10;    var setVariable = new SetVariable(toplevel, &quot;setVariable&quot;);&#10;    setVariable.variableName.setExpression(&quot;count&quot;);&#10;    new Parameter(toplevel, &quot;count&quot;);&#10;&#10;    // Connect the model.&#10;    var relation = toplevel.connect(ramp.output, writer.input);&#10;    setVariable.input.link(relation);&#10;&#10;    // Create a director and set its iterations parameter.&#10;    var director = new SDFDirector(toplevel, &quot;SDFDirector&quot;);&#10;&#10;    // Note that this actor has a parameter &quot;iterations&quot; which&#10;    // shadows that of the director, so we use getAttribute()&#10;    // to get the director parameter rather than just&#10;    // director.iterations, which would otherwise work.&#10;    director.getAttribute('iterations').setExpression(get(iterations));&#10;&#10;    // Send the constructed model to the output.&#10;    send(toplevel, model);&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 190.0]">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <port name="model" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="actor">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;  alert(&quot;Counted to &quot; + get(count));&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+        </property>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ExecuteActor.actor" relation="relation3"/>
+    <link port="ExecuteActor.count" relation="relation2"/>
+    <link port="JavaScript3.model" relation="relation3"/>
+    <link port="JavaScript.count" relation="relation2"/>
+</entity>
