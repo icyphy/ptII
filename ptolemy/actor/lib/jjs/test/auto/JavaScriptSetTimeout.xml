@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.1">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -38,8 +38,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This tests that a send() inside a JS timeout produces a time stamped&#10;output where the time stamp roughly corresponds to the timeout.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 240.0]">
+        </property>
+    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;    console.log('Sending output');&#10;}, 2000);&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;}, 1000);&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -75,9 +81,9 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-2">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
