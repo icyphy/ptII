@@ -373,7 +373,7 @@ public class JavaScript extends TypedAtomicActor {
         script.setExpression("// Put your JavaScript program here.\n"
                 + "// Add ports and parameters.\n"
                 + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
-                + "// Refer to parameters in scope using $${parameterName}.\n"
+                + "// Refer to parameters in scope using ${parameterName}.\n"
                 + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
                 + "// Send to output ports using send(value, portName, channel).\n");
     }
