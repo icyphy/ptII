@@ -420,7 +420,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             double[] prior, int nCategories) throws IllegalActionException
 
     {
-        boolean multinomial = (nCategories > 0) ? true : false;
+        boolean multinomial = nCategories > 0;
         int nStates = _nStates;
         int nObservations = y.length;
         int obsDimension = _obsDimension;
