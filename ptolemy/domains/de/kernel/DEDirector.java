@@ -685,7 +685,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     }
     
     /** Fire the actor actor at the current model time or, if synchronizeToRealTime
-     *  is enabled, fire the actor at the model time that corresponds to the current
+     *  is enabled and we are past the initialization phase of execution,
+     *  then fire the actor at the model time that corresponds to the current
      *  real time. This model time is computed by subtracting the model start time
      *  recorded by this director at the beginning of the simulation from the 
      *  system time and dividing by 1000, as the default unit of time is seconds.
@@ -696,7 +697,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     @Override
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
-        if (_synchronizeToRealTime) {
+        if (_synchronizeToRealTime && !_isInitializing) {
             long elapsedTime = System.currentTimeMillis()
                     - _realStartTime;
             // NOTE: The cast to double below is essential because the Time
@@ -914,7 +915,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             _disabledActors = null;
             _exceedStopTime = false;
             _noMoreActorsToFire = false;
-            _realStartTime = System.currentTimeMillis();
             _stopFireRequested = false;
 
             // Initialize the microstep to zero, even though
@@ -976,6 +976,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             } else {
                 _delegateFireAt = false;
             }
+            _realStartTime = System.currentTimeMillis();
 
             _isInitializing = false;
         }
@@ -1297,6 +1298,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     @Override
     public void preinitialize() throws IllegalActionException {
+	_isInitializing = true;
         // Initialize an event queue.
         _eventQueue = new DECQEventQueue(
                 ((IntToken) minBinCount.getToken()).intValue(),
