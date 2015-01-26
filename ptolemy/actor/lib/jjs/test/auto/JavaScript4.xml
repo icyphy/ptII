@@ -42,7 +42,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;No fire method provided&quot;, &quot;1&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

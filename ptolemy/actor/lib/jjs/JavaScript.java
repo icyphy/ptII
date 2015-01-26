@@ -42,7 +42,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimerTask;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -55,6 +54,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.SingletonParameter;
@@ -69,7 +69,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript
@@ -398,6 +397,19 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear the timeout or interval
+     *  with the specified handle, if it has not already executed.
+     *  @param handle The timeout handle.
+     *  @see #setTimeout(Runnable, int)
+     *  @see #setInterval(Runnable, int)
+     */
+    public void clearTimeout(Integer handle) {
+        // NOTE: The handle for this timeout remains in the
+        // _pendingTimeoutIDs map, but it is more efficient to remove
+        // it from that map when the firing occurs.
+        _pendingTimeoutFunctions.remove(handle);
+    }
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -409,6 +421,8 @@ public class JavaScript extends TypedAtomicActor {
         JavaScript newObject = (JavaScript) super.clone(workspace);
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
         newObject._outputTokens = null;
+        newObject._pendingTimeoutFunctions = null;
+        newObject._pendingTimeoutIDs = null;
         return newObject;
     }
 
@@ -424,11 +438,19 @@ public class JavaScript extends TypedAtomicActor {
 	}
     }
 
-    /** Execute the script, handling inputs and producing outputs as described.
+    /** Produce any pending outputs specified by send() since the last firing,
+     *  invoke any timer tasks that match the current time, and invoke the
+     *  fire function. If there are no new inputs and either a timer task
+     *  is triggered or a pending output is produced, then do not invoke
+     *  the fire() procedure. In this case, we assume that the only reason
+     *  for the firing is to produce the pending outputs and/or to handle
+     *  the timer task.
      *  <ol>
      *  <li>
      *  First, send any outputs that have been queued to be sent by calling send()
      *  from outside any firing of this JavaScript actor.
+     *  <li>
+     *  Next, invoke any pending timer tasks whose timing matches the current time.
      *  <li>
      *  Next, read all inputs, making a record of which ones have new tokens.
      *  <li>
@@ -437,16 +459,17 @@ public class JavaScript extends TypedAtomicActor {
      *  such as fire() will be replaced or deleted (if the new script does not have one).
      *  If the new script has an initialize() method, then invoke that method.
      *  <li>
-     *  Next, if the current script has a fire() method, invoke that method.
-     *  <li>
      *  Next, if any input has a new token and there is a method bound to that port
      *  via the setInputHandler() method, then invoke that method.
-     *  Such methods will be invoked in the order in which handleInput() was invoked.
+     *  Such methods will be invoked in the order in which setInputHandler() was invoked.
      *  <li>
-     *  Next, if setTimeout() has been called, and the current time of the director
-     *  matches the time specified in setTimeout(), then invoke the function specified
-     *  in setTimeout().
+     *  Next, if the current script has a fire() function, and if there either new
+     *  input events that were not handled by an input handler,
+     *  or there were no timer tasks or pending outputs, then invoke the fire()
+     *  function.
      *  </ol>
+     *  FIXME: Timeout, setInputHandler, and handleInput() are not implemented.
+     *  FIXME: Top-level docs don't explain fire().
      *  <p>
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
@@ -535,6 +558,25 @@ public class JavaScript extends TypedAtomicActor {
             // sent immediately.
             _inFire = true;
             try {
+                // Handle timeout requests that match the current time.
+                if (_pendingTimeoutIDs != null) {
+                    // If current time matches pending timeout requests, invoke them.
+                    Time currentTime = getDirector().getModelTime();
+                    List<Integer> ids = _pendingTimeoutIDs.get(currentTime);
+                    if (ids != null) {
+                        for (Integer id : ids) {
+                            Runnable function = _pendingTimeoutFunctions.get(id);
+                            if (function != null) {
+                        	// Remove the id before firing the function because it may
+                        	// reschedule itself using the same id.
+                                _pendingTimeoutFunctions.remove(id);
+                                function.run();
+                            }
+                        }
+                        _pendingTimeoutIDs.remove(currentTime);
+                    }
+                }
+
         	// Invoke the fire function.
         	try {
         	    ((Invocable)_engine).invokeFunction("fire");
@@ -569,6 +611,10 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
+        _pendingTimeoutFunctions = null;
+        _pendingTimeoutIDs = null;
+        _timeoutCount = 0;
         
         // Create a script engine.
         // This is private to this class, so each instance of JavaScript
@@ -745,32 +791,7 @@ public class JavaScript extends TypedAtomicActor {
 	    System.out.println(message);
 	}
     }
-    
-    /** Create a new TimerTask whose run() function invokes the run()
-     *  function of the argument in a block that is synchronized on this actor.
-     *  This is a utility function for setTimeout() and clearTimeout() in basicFunctions.js.
-     *  @param func The function to invoke (Nashorn will automatically wrap a
-     *   a function argument in a Runnable).
-     *  @return A new TimerTask.
-     */
-    public TimerTask newTimerTask(final Runnable func) {
-	return new TimerTask() {
-	    public void run() {
-		synchronized(JavaScript.this) {
-		    try {
-			func.run();
-		    } catch (Throwable e) {
-			String info = "";
-			MessageHandler.error("Timer task failed" + info, e);
-			// Cancel this timer task to avoid getting into
-			// repeated failures.
-			cancel();
-		    }
-		}
-	    }
-	};
-    }
-    
+        
     /** Utility method to read a string from an input stream.
      *  @param stream The stream.
      *  @return The string.
@@ -791,6 +812,48 @@ public class JavaScript extends TypedAtomicActor {
         }
         reader.close();
         return response.toString();
+    }
+    
+    /** Invoke the specified function after the specified amount of time and again
+     *  at multiples of that time.
+     *  The time will be added to the current time of the director, and fireAt()
+     *  request will be made of the director. If the director cannot fulfill the
+     *  request, this method will throw an exception. Note that if you want
+     *  real-time behavior, then the director's synchronizeToRealTime parameter
+     *  needs to be set to true.
+     *  @param function The function to invoke.
+     *  @param milliseconds The number of milliseconds in the future to invoke it.
+     *  @return A unique ID for this callback.
+     *  @throws IllegalActionException If the director cannot respect the request.
+     */
+    public int setInterval(final Runnable function, final int milliseconds) throws IllegalActionException {
+        final Integer id = Integer.valueOf(_timeoutCount++);
+        // Create a new function that invokes the specified function and then reschedules
+        // itself.
+        final Runnable reschedulingFunction = new Runnable() {
+            public void run() {
+        	_runThenReschedule(function, milliseconds, id);
+            }
+        };
+	_setTimeout(reschedulingFunction, milliseconds, id);
+        return id;
+    }
+    
+    /** Invoke the specified function after the specified amount of time.
+     *  The time will be added to the current time of the director, and fireAt()
+     *  request will be made of the director. If the director cannot fulfill the
+     *  request, this method will throw an exception. Note that if you want
+     *  real-time behavior, then the director's synchronizeToRealTime parameter
+     *  needs to be set to true.
+     *  @param function The function to invoke.
+     *  @param milliseconds The number of milliseconds in the future to invoke it.
+     *  @return A unique ID for this callback.
+     *  @throws IllegalActionException If the director cannot respect the request.
+     */
+    public int setTimeout(final Runnable function, int milliseconds) throws IllegalActionException {
+        final Integer id = Integer.valueOf(_timeoutCount++);
+	_setTimeout(function, milliseconds, id);
+        return id;
     }
 
     /** Execute the wrapup function, if it is defined, and exit the context for this thread.
@@ -886,6 +949,79 @@ public class JavaScript extends TypedAtomicActor {
     protected boolean _restricted = false;
 
     ///////////////////////////////////////////////////////////////////
+    ////                        Private Methodsmm                  ////
+
+    /** Invoke the specified function, then schedule another call to this
+     *  same method after the specified number of milliseconds, using the specified
+     *  id for the timeout function.
+     *  @param function The function to repeatedly invoke.
+     *  @param milliseconds The number of milliseconds in a period.
+     *  @param id The id to use for the timeout function.
+     */
+    private void _runThenReschedule(final Runnable function, int milliseconds, Integer id) {
+	function.run();
+        final Runnable reschedulingFunction = new Runnable() {
+            public void run() {
+        	_runThenReschedule(function, milliseconds, id);
+            }
+        };
+	try {
+	    _setTimeout(reschedulingFunction, milliseconds, id);
+	} catch (IllegalActionException e) {
+	    // This should not have happened here. Should have been caught
+	    // the first time. But just in case...
+	    throw new InternalErrorException(this, e,
+		    "Failed to reschedule function scheduled with setInterval().");
+	}
+    }
+    
+    /** Invoke the specified function after the specified amount of time.
+     *  Unlike the public method, this method uses the specified id.
+     *  The time will be added to the current time of the director, and fireAt()
+     *  request will be made of the director. If the director cannot fulfill the
+     *  request, this method will throw an exception. Note that if you want
+     *  real-time behavior, then the director's synchronizeToRealTime parameter
+     *  needs to be set to true.
+     *  @param function The function to invoke.
+     *  @param milliseconds The number of milliseconds in the future to invoke it.
+     *  @param id The id for the callback function.
+     *  @return A unique ID for this callback.
+     *  @throws IllegalActionException If the director cannot respect the request.
+     */
+    private void _setTimeout(final Runnable function, int milliseconds, Integer id)
+	    throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        final Time callbackTime = currentTime.add(milliseconds * 0.001);
+
+        Time responseTime = getDirector().fireAt(this, callbackTime);
+        if (!responseTime.equals(callbackTime)) {
+            throw new IllegalActionException(
+                    this,
+                    "Director is unable to fire this actor at the requested time "
+                            + callbackTime
+                            + ". It replies that it will fire the actor at "
+                            + responseTime + ".");
+        }
+
+        // Record the callback function indexed by ID.
+        if (_pendingTimeoutFunctions == null) {
+            _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
+        }
+        _pendingTimeoutFunctions.put(id, function);
+
+        // Record the ID of the timeout indexed by time.
+        if (_pendingTimeoutIDs == null) {
+            _pendingTimeoutIDs = new HashMap<Time, List<Integer>>();
+        }
+        List<Integer> ids = _pendingTimeoutIDs.get(callbackTime);
+        if (ids == null) {
+            ids = new LinkedList<Integer>();
+            _pendingTimeoutIDs.put(callbackTime, ids);
+        }
+        ids.add(id);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
 
     /** True while the actor is firing, false otherwise. */
@@ -907,6 +1043,15 @@ public class JavaScript extends TypedAtomicActor {
      *  spontaneously produce outputs.
      */
     private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
+
+    /** Map from timeout ID to pending timeout functions. */
+    private Map<Integer, Runnable> _pendingTimeoutFunctions;
+
+    /** Map from timeout time to pending timeout IDs. */
+    private Map<Time, List<Integer>> _pendingTimeoutIDs;
+
+    /** Count to give a unique handle to pending timeouts. */
+    private int _timeoutCount = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////

@@ -16,14 +16,14 @@ function alert(message) {
 
 ////////////////////
 // Clear an interval timer with the specified handle. See setInterval().
-function clearInterval(timeout) {
-    timeout.cancel();
+function clearInterval(handle) {
+    actor.clearTimeout(handle);
 }
 
 ////////////////////
 // Clear a timeout with the specified handle. See setTimeout().
-function clearTimeout(timeout) {
-    timeout.cancel();
+function clearTimeout(handle) {
+    actor.clearTimeout(handle);
 }
 
 ////////////////////
@@ -164,13 +164,24 @@ var console = require('console');
 var _timer;
 
 ////////////////////
-// Set a timer to call the specified function after the specified time and repeatedly
-// after multiples of that time.
+// Set a timeout to call the specified function after the specified time and
+// repeatedly at multiples of that time.
 // Return a handle to use in clearInterval(). If there are additional arguments
 // beyond the first two, then those arguments will be passed to the function
-// when it is invoked. Note that the function will continue to be invoked after the model
-// containing this JavaScript actor has stopped executing, so you will want to
-// call clearInterval() in your wrapup() function.
+// when it is invoked. This implementation uses fireAt() of the director
+// in charge of the host JavaScript actor in Ptolemy II. Hence, actors
+// that use this should be used with a director that respects fireAt(), such as DE.
+// If the director has synchronizeToRealTime set to true, then it will approximate
+// real-time behavior reasonably closely. Otherwise, the timeout will only be
+// simulated. Either way, the timing is much more precise and well-defined than
+// usual for JavaScript environments. If two actors specify the same timeout
+// time in, say, their initialize() function, then they will be invoked at the
+// same model time, and their outputs will be simultaneous. Any downstream actor
+// will see them simultaneously.
+// Note with this implementation, it is not necessary to
+// call clearInterval() in the actor's wrapup() function.
+// Nevertheless, it is a good idea to do that in an accessor
+// since other accessor hosts may not work the same way.
 function setInterval(func, milliseconds) {
     var callback = func;
     // If there are arguments to the callback, create a new function.
@@ -181,27 +192,28 @@ function setInterval(func, milliseconds) {
             func.apply(this, tail);
         };
     }
-    // Share a single timer object among all timeouts.
-    if (!_timer) {
-        var Timer = Java.type('java.util.Timer');
-        // It is important that the argument be true. This ensures that the
-        // timer task is a "daemon," which means that having such a task
-        // pending will not prevent the application from exiting.
-        _timer = new Timer(true);
-    }
-    var timerTask = actor.newTimerTask(callback);
-    // The third arguments makes this repeat periodically.
-    _timer.schedule(timerTask, milliseconds, milliseconds);
-    return timerTask;
+    var id = actor.setInterval(callback, milliseconds);
+    return id;
 }
 
 ////////////////////
 // Set a timeout to call the specified function after the specified time.
 // Return a handle to use in clearTimeout(). If there are additional arguments
 // beyond the first two, then those arguments will be passed to the function
-// when it is invoked. Note that the function may be invoked after the model
-// containing this JavaScript actor has stopped executing, so you may want to
-// call clearTimeout() in your wrapup() function.
+// when it is invoked. This implementation uses fireAt() of the director
+// in charge of the host JavaScript actor in Ptolemy II. Hence, actors
+// that use this should be used with a director that respects fireAt(), such as DE.
+// If the director has synchronizeToRealTime set to true, then it will approximate
+// real-time behavior reasonably closely. Otherwise, the timeout will only be
+// simulated. Either way, the timing is much more precise and well-defined than
+// usual for JavaScript environments. If two actors specify the same timeout
+// time in, say, their initialize() function, then they will be invoked at the
+// same model time, and their outputs will be simultaneous. Any downstream actor
+// will see them simultaneously.
+// Note with this implementation, it is not necessary to
+// call clearTimeout() in the actor's wrapup() function.
+// Nevertheless, it is a good idea to do that in an accessor
+// since other accessor hosts may not work the same way.
 function setTimeout(func, milliseconds) {
     var callback = func;
     // If there are arguments to the callback, create a new function.
@@ -212,15 +224,6 @@ function setTimeout(func, milliseconds) {
             func.apply(this, tail);
         };
     }
-    // Share a single timer object among all timeouts.
-    if (!_timer) {
-        var Timer = Java.type('java.util.Timer');
-        // It is important that the argument be true. This ensures that the
-        // timer task is a "daemon," which means that having such a task
-        // pending will not prevent the application from exiting.
-        _timer = new Timer(true);
-    }
-    var timerTask = actor.newTimerTask(callback);
-    _timer.schedule(timerTask, milliseconds);
-    return timerTask;
+    var id = actor.setTimeout(callback, milliseconds);
+    return id;
 }
