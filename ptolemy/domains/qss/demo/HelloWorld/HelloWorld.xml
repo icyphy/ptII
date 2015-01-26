@@ -183,9 +183,9 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 22, 571, 874}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 22, 430, 293}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 830]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 249]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 115.0]">
         </property>
@@ -193,7 +193,7 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Integrals</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
