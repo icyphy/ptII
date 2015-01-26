@@ -20,10 +20,10 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 15.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
     </property>
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/continuous/lib/integral.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/qss/kernel/integral.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -17.0]">
         </property>
