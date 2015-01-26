@@ -29,17 +29,17 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.6">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var interval = setInterval(function() {&#10;    send('hello', output);&#10;    console.log('Sending output');&#10;}, 2000);&#10;exports.wrapup = function() {&#10;    clearInterval(interval);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var interval;&#10;exports.initialize = function() {&#10;    interval = setInterval(function() {&#10;        send('hello', output);&#10;    }, 200);&#10;}&#10;exports.wrapup = function() {&#10;    clearInterval(interval);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -47,7 +47,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -56,43 +56,27 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
-        </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 185.0}">
-        </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 140.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0, 4.0, 6.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.2, 0.4, 0.6}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-2">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 140.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="JavaScript.output" relation="relation3"/>
-    <link port="JavaScript.input" relation="relation"/>
-    <link port="DiscreteClock.output" relation="relation"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation3"/>
     <link port="Test.input" relation="relation2"/>

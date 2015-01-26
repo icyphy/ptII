@@ -29,13 +29,13 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 50.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +45,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;}, 1000);&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;}, 100);&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -69,7 +69,7 @@
         </port>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.2">
         </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 185.0}">
@@ -81,13 +81,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 185.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

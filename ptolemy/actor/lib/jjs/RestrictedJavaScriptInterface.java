@@ -27,6 +27,10 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import org.mozilla.javascript.Function;
+
+import ptolemy.kernel.util.IllegalActionException;
+
 
 ///////////////////////////////////////////////////////////////////
 //// RestrictedJavaScriptInterface
@@ -55,6 +59,14 @@ public class RestrictedJavaScriptInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear the timeout with the specified handle, if it has not already executed.
+     *  @param handle The timeout handle.
+     *  @see #setTimeout(Function, Integer)
+     */
+    public void clearTimeout(Integer handle) {
+        _actor.clearTimeout(handle);
+    }
+
     /** Delegate to the associated JavaScript actor to report an error.
      *  @param message The message
      */
@@ -80,6 +92,21 @@ public class RestrictedJavaScriptInterface {
 	_actor.log(message);
     }
 
+    /** Invoke the specified function after the specified amount of time.
+     *  The time will be added to the current time of the director, and fireAt()
+     *  request will be made of the director. If the director cannot fulfill the
+     *  request, this method will throw an exception. Note that if you want
+     *  real-time behavior, then the director's synchronizeToRealTime parameter
+     *  needs to be set to true.
+     *  @param function The function to invoke.
+     *  @param millisecond The number of milliseconds in the future to invoke it.
+     *  @return A unique ID for this callback
+     *  @throws IllegalActionException If the director cannot respect the request.
+     */
+    public int setTimeout(final Runnable function, int millisecond) throws IllegalActionException {
+	return _actor.setTimeout(function, millisecond);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
 
