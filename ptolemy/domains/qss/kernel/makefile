@@ -57,6 +57,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	CyPhyCompositeClass.xml \
 	CyPhyComposite.xml \
+	QSSIntegratorIcon.xml
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)	$(JSRCS)
 
