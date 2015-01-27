@@ -6,11 +6,16 @@
 
 /* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
 
+#if WINDOWS
 // Used 7z options, version 4.57:
 // -x   Extracts files from an archive with their full paths in the current dir, or in an output dir if specified
 // -aoa Overwrite All existing files without prompt
 // -o   Specifies a destination directory where files are to be extracted
 #define UNZIP_CMD "7z x -aoa -o"
+#else
+#define UNZIP_CMD "unzip -o -d "
+#endif
+
 #define XML_FILE  "modelDescription.xml"
 #define RESULT_FILE "result.csv"
 #define BUFSIZE 4096
