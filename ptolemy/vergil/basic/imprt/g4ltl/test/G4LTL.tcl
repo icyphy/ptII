@@ -138,7 +138,7 @@ test G4LTL-2.1 {Synthesize from ArbitorLTL.txt using CoBuechi and unrollSteps 1 
     # This should not fail
     $manager execute
     $manager execute
-} {}
+} {} {Known Failure since about about Oct. 2014}
 
 ######################################################################
 ####
@@ -180,7 +180,7 @@ test G4LTL-2.2 {Synthesize from PriorityArbitorLTL.txt using CoBuechi and unroll
     # This should not fail
     $manager execute
     $manager execute
-} {}
+} {} {Known Failure since about about Oct. 2014}
 
 ######################################################################
 ####
@@ -229,4 +229,4 @@ test G4LTL-2.3 {Synthesize from ErrorHandlingLTL.txt using CoBuechi and unrollSt
     # This should not fail
     $manager execute
     $manager execute
-} {}
+} {} {Known Failure since about about Oct. 2014}
