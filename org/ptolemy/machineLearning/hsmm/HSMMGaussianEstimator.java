@@ -168,42 +168,44 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                     "Parameter guess vectors must have equal lengths.");
         }
 
-        _EMParameterEstimation();
-        //System.out.println("Final Likelihood: " +likelihood);
-        int _nObservations = _observations.length;
-        Token[] mTokens = new Token[_nStates];
-        Token[] sTokens = new Token[_nStates];
-        Token[] pTokens = new Token[_nStates];
-        Token[] cTokens = new Token[_nObservations];
-        Token[] dTokens = new Token[_maxDuration];
-        Token[] lTokens = new Token[_likelihoodHistory.size()];
-
-        for (int i = 0; i < _nStates; i++) {
-            mTokens[i] = new DoubleToken(m_new[i]);
-            sTokens[i] = new DoubleToken(s_new[i]);
-            pTokens[i] = new DoubleToken(prior_new[i]);
+        if (_EMParameterEstimation() == true) {
+            //System.out.println("Final Likelihood: " +likelihood);
+            int _nObservations = _observations.length;
+            Token[] mTokens = new Token[_nStates];
+            Token[] sTokens = new Token[_nStates];
+            Token[] pTokens = new Token[_nStates];
+            Token[] cTokens = new Token[_nObservations];
+            Token[] dTokens = new Token[_maxDuration];
+            Token[] lTokens = new Token[_likelihoodHistory.size()];
+    
+            for (int i = 0; i < _nStates; i++) {
+                mTokens[i] = new DoubleToken(m_new[i]);
+                sTokens[i] = new DoubleToken(s_new[i]);
+                pTokens[i] = new DoubleToken(prior_new[i]);
+            }
+            for (int i = 0; i < _maxDuration; i++) {
+                dTokens[i] = new DoubleToken(dPrior_new[i]);
+            }
+    
+            for (int i = 0; i < _nObservations; i++) {
+                cTokens[i] = new IntToken(clusters[i]);
+            }
+    
+            for (int i = 0; i < lTokens.length; i++) {
+                lTokens[i] = new DoubleToken(_likelihoodHistory.get(i));
+            }
+            _likelihoodHistory.clear(); 
+            mean.send(0, new ArrayToken(mTokens));
+            standardDeviation.send(0, new ArrayToken(sTokens));
+            transitionMatrix.send(0, new DoubleMatrixToken(A_new));
+            priorEstimates.send(0, new ArrayToken(pTokens));
+            durationEstimates.send(0, new DoubleMatrixToken(D_new));
+            clusterAssignments.send(0, new ArrayToken(cTokens));
+            durationPriorEstimates.send(0, new ArrayToken(dTokens));
+            modelLikelihood.send(0, new ArrayToken(lTokens));
+        } else {
+            System.err.println("EM Algorithm failed to converge.");
         }
-        for (int i = 0; i < _maxDuration; i++) {
-            dTokens[i] = new DoubleToken(dPrior_new[i]);
-        }
-
-        for (int i = 0; i < _nObservations; i++) {
-            cTokens[i] = new IntToken(clusters[i]);
-        }
-
-        for (int i = 0; i < lTokens.length; i++) {
-            lTokens[i] = new DoubleToken(_likelihoodHistory.get(i));
-        }
-        _likelihoodHistory.clear();
-
-        mean.send(0, new ArrayToken(mTokens));
-        standardDeviation.send(0, new ArrayToken(sTokens));
-        transitionMatrix.send(0, new DoubleMatrixToken(A_new));
-        priorEstimates.send(0, new ArrayToken(pTokens));
-        durationEstimates.send(0, new DoubleMatrixToken(D_new));
-        clusterAssignments.send(0, new ArrayToken(cTokens));
-        durationPriorEstimates.send(0, new ArrayToken(dTokens));
-        modelLikelihood.send(0, new ArrayToken(lTokens));
         // broadcast best-effort parameter estimates
 
     }
@@ -297,7 +299,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     protected void _iterateEM() {
 
         newEstimates = HSMMAlphaBetaRecursion(_observations, _transitionMatrix,
-                _priorIn, 0);
+                _priorIn, null);
         m_new = (double[]) newEstimates.get("mu_hat");
         s_new = (double[]) newEstimates.get("s_hat");
         A_new = (double[][]) newEstimates.get("A_hat");
