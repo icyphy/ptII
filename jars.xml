@@ -236,6 +236,7 @@
     <include name="ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar" />
     <include name="ptolemy/vergil/basic/layout/layout.jar" />
     <include name="ptolemy/vergil/gt/gt.jar" />
+    <include name="ptolemy/vergil/kernel/attributes/attributes.jar" />
     <include name="ptolemy/vergil/kernel/attributes/demo/demo.jar" />
     <include name="ptolemy/vergil/modal/fmv/fmv.jar" />
     <include name="ptolemy/vergil/modal/modal/modal.jar" />
@@ -4938,6 +4939,17 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/moml/demo/Networked/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/vergil/kernel/attributes/attributes.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/vergil/kernel/attributes/attributes.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/vergil/kernel/attributes/*.class"/>
+	<include name="ptolemy/vergil/kernel/attributes/*.gif"/>
+	<include name="ptolemy/vergil/kernel/attributes/*.xml"/>
       </fileset>
     </jar>
 
