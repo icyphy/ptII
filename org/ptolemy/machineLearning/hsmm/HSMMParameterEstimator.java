@@ -132,7 +132,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         if (attribute == maxStateDuration) {
             _maxDuration = ((IntToken) maxStateDuration.getToken()).intValue();
             DoubleMatrixToken m =((DoubleMatrixToken) durationProbabilities
-                    .getToken());
+                    .getToken()); 
             if (m==null) {
                 _D0 = new double[_nStates][_maxDuration];
                 for ( int i = 0 ; i < _maxDuration; i++) {
@@ -249,7 +249,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     protected boolean _EMParameterEstimation() {
 
         boolean success = false;
-        _likelihood = -Double.MAX_VALUE / 10.0;
+        _likelihood = -Double.MAX_VALUE;
         _initializeEMParameters();
 
         for (int iterations = 0; iterations < _nIterations; iterations++) {
@@ -289,10 +289,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     protected abstract double durationProbability(int y, int hiddenState);
 
     @Override
-    protected void _initializeArrays() throws IllegalActionException {
-
-        //_observations = new double[_observationLength];
-        // infer the number of states from the mean array
+    protected void _initializeArrays() throws IllegalActionException { 
         _likelihood = -Double.MAX_VALUE / 10.0;
         _nStates = ((IntToken) nStates.getToken()).intValue();
         _transitionMatrix = new double[_nStates][_nStates];
@@ -318,7 +315,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
      * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
      * continuous distribution types */
     protected HashMap HSMMAlphaBetaRecursion(double[][] y, double[][] A,
-            double[] prior, int nCategories) {
+            double[] prior, int[] nCategories) {
+
+        boolean multinomial = nCategories != null;
 
         int nStates = _nStates;
         int nObservations = y.length; 
@@ -345,11 +344,18 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         double[][] smoothedGamma = new double[nObservations][nStates];
         double[][] D_hat = new double[nStates][_maxDuration];
 
+        // for categorical distributions. will have nStates entries. Each entry j will be 
+        // a vector of length nCategories[j], j>0, j\in Z.
+        double[][] eta_hat = new double[nStates][_etaDimension];
+
         double r = 0;
         double logLikelihood = 0.0;
 
         double[] alphaNormalizers = new double[nObservations];
         // INITIALIZATION
+
+
+
         // initialize alphas
         for (int m = 0; m < nStates; m++) {
             for (int d = 0; d < _maxDuration; d++) {
@@ -357,6 +363,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                 alphaNormalizers[0] += alphas[0][m][d];
             }
         }
+
         for (int m = 0; m < nStates; m++) {
             for (int d = 0; d < _maxDuration; d++) {
                 alphas[0][m][d] /= alphaNormalizers[0];
@@ -367,7 +374,8 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
             for (int d = 0; d < _maxDuration; d++) {
                 gamma[0][m] += alphas[0][m][d];
             }
-        }
+        }  
+
         // initialize r
         for (int ii = 0; ii < nStates; ii++) {
             r += gamma[0][ii] * emissionProbability(y[0], ii);
@@ -410,7 +418,8 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                 for (int d = 0; d < _maxDuration; d++) {
                     gamma[t][m] += alphas[t][m][d];
                 }
-            }
+            }  
+
             r = 0;
             for (int ii = 0; ii < nStates; ii++) {
                 r += gamma[t][ii] * emissionProbability(y[t], ii);
@@ -429,7 +438,8 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                 }
             }
             logLikelihood += Math.log(r);
-        }
+        } 
+
 
         // Backward INITIALIZATION
         // initialize beta
@@ -577,6 +587,30 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
                         s_hat[j][a][b] = s_hat[j][a][b];
                     }
                 }
+            } 
+
+        }
+
+
+        if (multinomial) {
+            for (int t= 0; t< y.length; t++) {
+                for (int m = 0; m < nStates; m++) {
+                    int count = 0; 
+                    for ( int j = 0; j < obsDimension; j++) {
+                        for (int k = 0; k < nCategories[j]; k++ ) {
+                            eta_hat[m][count++] += smoothedGamma[t][m] * ( y[t][j] == k ? 1:0);
+                        }
+                    }
+                }
+            } 
+            
+            for (int m = 0; m < nStates; m++) {
+                int count = 0;
+                for (int z = 0; z < obsDimension; z++) {
+                    for (int d = 0 ; d < nCategories[z]; d++) {
+                        eta_hat[m][count++] /= gammasum[m]; //normalize for gammas
+                    } 
+                }
             }
         }
         // labels for the multinomial setting
@@ -617,6 +651,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         estimates.put("D_hat", D_hat);
         estimates.put("pi_d_hat", durationPriorEstimates);
         estimates.put("clusterAssignments", clusterAssignments);
+        if (multinomial) { 
+            estimates.put("eta_hat",eta_hat);
+        }
         return estimates;
     }
 
@@ -633,6 +670,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     protected double[] _dPriors0 = null;
     /* maximum duration ( in time steps)c  */
     protected int _maxDuration; 
+
+    /* Total number of categories among all observation dimensions */
+    protected int _etaDimension;
 
     protected List<Double> _likelihoodHistory;
 }
