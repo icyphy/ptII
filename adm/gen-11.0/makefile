@@ -682,7 +682,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
 		lib/chic.jar \
 		lib/colt.jar \
-		lib/jasminclasses.jar \
 		lib/java_cup.jar \
 		lib/mapss.jar \
 		lib/ptCal.jar \

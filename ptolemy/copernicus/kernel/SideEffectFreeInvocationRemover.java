@@ -136,8 +136,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         // Construct the graph of all method invocations, so we know what
         // method contains each invocation and what method(s) can be
         // targeted by that invocation.
-        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v(),
-                true);
+        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v() /*, true*/);
         cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         Scene.v().setCallGraph(callGraph);

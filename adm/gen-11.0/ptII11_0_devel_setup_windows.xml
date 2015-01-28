@@ -323,8 +323,6 @@ The Ptiny pack is required.
 
 		 Then add missing jars
 	      -->
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/jasminclasses.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/sootclasses.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/copernicus/copernicus.jar"
