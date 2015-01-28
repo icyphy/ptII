@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 10.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 23, 909, 345}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 23, 909, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[675, 235]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[675, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.75, 90.99999999999903}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.74999999999983, 235.49999999999895}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -379,10 +379,14 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
+        <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
         </property>
     </entity>
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.72">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 90.0]">
         </property>
     </entity>
@@ -391,7 +395,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 225.0]">
         </property>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
@@ -401,18 +405,12 @@
         </property>
         <port name="timestamp" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="microstep" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="payload" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
@@ -422,25 +420,21 @@
         </property>
         <port name="timestamp" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="microstep" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="payload" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
+    </entity>
+    <entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 225.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -456,6 +450,10 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="VertxBusHandler.publish" relation="relation"/>
     <link port="PtidesPlatform.port" relation="relation4"/>
     <link port="PtidesPlatform.port2" relation="relation5"/>
@@ -465,7 +463,7 @@
     <link port="TimeDelay.input" relation="relation2"/>
     <link port="TimeDelay.output" relation="relation"/>
     <link port="TimeDelay.delay" relation="relation6"/>
-    <link port="PoissonClock2.output" relation="relation6"/>
+    <link port="PoissonClock2.output" relation="relation10"/>
     <link port="RecordDisassembler.input" relation="relation5"/>
     <link port="RecordDisassembler.timestamp" relation="relation8"/>
     <link port="RecordDisassembler.microstep" relation="relation7"/>
@@ -473,4 +471,6 @@
     <link port="RecordAssembler.timestamp" relation="relation8"/>
     <link port="RecordAssembler.microstep" relation="relation7"/>
     <link port="RecordAssembler.payload" relation="relation8"/>
+    <link port="TimeGap.input" relation="relation10"/>
+    <link port="TimeGap.output" relation="relation6"/>
 </entity>
