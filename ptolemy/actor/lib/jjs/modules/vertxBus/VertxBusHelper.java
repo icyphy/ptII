@@ -38,6 +38,7 @@ import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.HttpServer;
+import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
@@ -73,9 +74,8 @@ public class VertxBusHelper {
      */
     public static VertxBusHelper getEventBus(ScriptEngine engine,
             ScriptObjectMirror currentObj, String host, int port) {
-        return new VertxBusHelper(engine, currentObj, host, port);
+        return new VertxBusHelper(engine, currentObj, host, port, true);
     }
-    
     
     /**
      * Create a VertxBusHelper instance as a server-side vertx bus
@@ -88,7 +88,17 @@ public class VertxBusHelper {
      */
     public static VertxBusHelper getEventBusServer(ScriptEngine engine, 
             ScriptObjectMirror currentObj, int port) {
-        return new VertxBusHelper(engine, currentObj, port);
+        return new VertxBusHelper(engine, currentObj, port, true);
+    }
+    
+    public static VertxBusHelper getHttpServer(ScriptEngine engine, 
+            ScriptObjectMirror currentObj, int port) {
+        return new VertxBusHelper(engine, currentObj, port, false);
+    }
+    
+    public static VertxBusHelper getHttpClient(ScriptEngine engine,
+            ScriptObjectMirror currentObj, String host, int port) {
+        return new VertxBusHelper(engine, currentObj, host, port, false);
     }
 
     /**
@@ -104,7 +114,18 @@ public class VertxBusHelper {
     /** Close server.
      */
     public void closeServer() {
-        _server.close();
+        _httpServer.close();
+    }
+    
+    /** Send http response string.
+     * @param request The request that receives the response.
+     * @param response The response as a string.
+     */
+    public void sendHttpResponse(HttpServerRequest request, String response) {
+        request.response().putHeader("content-type", "text/plain");
+        request.response().putHeader("content-length", "" + response.length());
+        request.response().write(response);
+        request.response().end();
     }
     
     
@@ -156,41 +177,43 @@ public class VertxBusHelper {
      * @param port The port on the host that provides access to the Vert.x bus.
      */
     private VertxBusHelper(ScriptEngine engine,
-            ScriptObjectMirror currentObj, String host, int port) {
+            ScriptObjectMirror currentObj, String host, int port, boolean withEventBus) {
         _engine = engine;
         _currentObj = currentObj;
 
-        HttpClient client = _vertx.createHttpClient().setHost(host).setPort(port);
+        _httpClient = _vertx.createHttpClient().setHost(host).setPort(port);
         
-        client.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
-            @Override
-            public void handle(WebSocket websocket) {
-                _wsIsOpen = true;
-                _webSocket = websocket;
-                Object[] args = new Object[2];
-                args[0] = _currentObj;
-                args[1] = "open";
-                _currentObj.callMember("emit", "connect");
-                _currentObj.callMember("emit", "open");
-                
-                _webSocket.dataHandler(new DataHandler());
-                _webSocket.endHandler(new EndHandler());
-                _webSocket.exceptionHandler(new ExceptionHandler());
-            }
-        });
-        
-        _periodicPing = _vertx.setPeriodic(5000, new Handler<Long>() {
-            @Override
-            public void handle(Long timerID) {
-                JsonObject json = new JsonObject().putString("type", "ping");
-                try {
-                    _sendTextFrame(json);
-                } catch (IllegalActionException e) {
-                    e.printStackTrace();
-                    //_exception = e;
+        if (withEventBus) {
+            _httpClient.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
+                @Override
+                public void handle(WebSocket websocket) {
+                    _wsIsOpen = true;
+                    _webSocket = websocket;
+                    Object[] args = new Object[2];
+                    args[0] = _currentObj;
+                    args[1] = "open";
+                    _currentObj.callMember("emit", "connect");
+                    _currentObj.callMember("emit", "open");
+                    
+                    _webSocket.dataHandler(new DataHandler());
+                    _webSocket.endHandler(new EndHandler());
+                    _webSocket.exceptionHandler(new ExceptionHandler());
                 }
-            }
-          });
+            });
+            
+            _periodicPing = _vertx.setPeriodic(5000, new Handler<Long>() {
+                @Override
+                public void handle(Long timerID) {
+                    JsonObject json = new JsonObject().putString("type", "ping");
+                    try {
+                        _sendTextFrame(json);
+                    } catch (IllegalActionException e) {
+                        e.printStackTrace();
+                        //_exception = e;
+                    }
+                }
+              });
+        }
     }
     
     /**
@@ -204,23 +227,30 @@ public class VertxBusHelper {
      * @param port The port on the host that provides access to the Vert.x bus.
      */
     private VertxBusHelper(ScriptEngine engine,
-            ScriptObjectMirror currentObj, int port) {
+            ScriptObjectMirror currentObj, int port, boolean withEventBus) {
         _engine = engine;
         _currentObj = currentObj;
 
-        _server = _vertx.createHttpServer();
+        _httpServer = _vertx.createHttpServer();
+        
+        _httpServer.requestHandler(new Handler<HttpServerRequest>() {
+            public void handle(HttpServerRequest request) {
+                _currentObj.callMember("emit", "httpRequest", request);
+            }
+        });
 
-        /* Set security permission to let everything go through */
-        JsonArray permitted = new JsonArray();
-        permitted.add(new JsonObject());
-
-        /* Create SockJS and bridge it to the Event Bus */
-        SockJSServer sockJSServer = _vertx.createSockJSServer(_server);
-        sockJSServer.bridge(new JsonObject().putString("prefix", "/eventbus"),
-                permitted, permitted);
-
+        if (withEventBus) {
+            /* Set security permission to let everything go through */
+            JsonArray permitted = new JsonArray();
+            permitted.add(new JsonObject());
+    
+            /* Create SockJS and bridge it to the Event Bus */
+            SockJSServer sockJSServer = _vertx.createSockJSServer(_httpServer);
+            sockJSServer.bridge(new JsonObject().putString("prefix", "/eventbus"),
+                    permitted, permitted);
+        }
         /* Start the server */
-        _server.listen(port);
+        _httpServer.listen(port);
     }
     
     private void _sendTextFrame(JsonObject message) throws IllegalActionException {
@@ -250,7 +280,8 @@ public class VertxBusHelper {
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
     
-    private HttpServer _server = null;
+    private HttpClient _httpClient = null;
+    private HttpServer _httpServer = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
