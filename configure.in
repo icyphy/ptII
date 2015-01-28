@@ -1432,7 +1432,6 @@ fi
 if test -z "$PTCALTROP_DIR"; then
    updateExcludes "ptolemy/caltrop/"
 else
-   # Note that jasminclasses.jar in soot also includes java_cup
    updateClasspath "$CALTROP_DIR/ptCal.jar"
    updateClasspath "$CALTROP_DIR/java_cup.jar"
    updateClasspath "$CALTROP_DIR/saxon8.jar"
@@ -5352,7 +5351,7 @@ JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
@@ -5371,14 +5370,6 @@ else
         AC_MSG_CHECKING([for \$SOOT_DIR/sootclasses.jar])
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
 	    PT_MSG_RESULT([ok])
-	    AC_MSG_CHECKING([for \$SOOT_DIR/jasminclasses.jar])
-  	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
-                PT_MSG_RESULT([ok])
-            fi
-	    AC_MSG_CHECKING([for \$SOOT_DIR/polyglotclasses-1.3.2.jar])
-  	    if test -f "$SOOT_DIR/polyglotclasses-1.3.2.jar"; then
-                PT_MSG_RESULT([ok])
-            fi
 	    PT_MSG_STATUS([$SOOT_CLASSES])
         else
 	    SOOT_CLASSES_FOUND=no
@@ -5430,8 +5421,6 @@ if test -z "$PTCOPERNICUS_DIR"; then
    updateExcludes "ptolemy/copernicus/"
 else
    updateClasspath "$SOOT_DIR/sootclasses.jar"
-   updateClasspath "$SOOT_DIR/polyglotclasses-1.3.2.jar"
-   updateClasspath "$SOOT_DIR/jasminclasses.jar"
     # What about JAVA_SYSTEM_JAR?
 fi 
 
