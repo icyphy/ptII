@@ -154,8 +154,8 @@ public class SharedQueue extends Queue {
      *  @exception IllegalActionException If thrown by the superclass.
      */
     @Override
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _outputReady = new boolean[output.getWidth()];
         Arrays.fill(_outputReady, true);
     }
