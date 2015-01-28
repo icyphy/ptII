@@ -1,0 +1,724 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Ptolemy II 11.0.devel Release Notes</title>
+    <link href="default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body bgcolor="#faf0e6">
+    <h1>Ptolemy II 11.0.devel Release Notes</h1>
+
+    Ptolemy II is a set of Java packages supporting heterogeneous,
+    concurrent modeling and design.  Its <code>kernel</code> package
+    supports clustered hierarchical graphs, which are collections of
+    <I>entities</I> and <I>relations</I> between those entities.  Its
+    <code>actor</code> package extends the kernel so that entities have
+    functionality and can communicate via the relations.  Its
+    <I>domains</I> extend the actor package by imposing <I>models of computation</I>
+    on the interaction between entities.  Examples of
+    models of computation include discrete-event systems, dataflow,
+    process networks, synchronous/reactive systems, and communicating
+    sequential processes.
+
+    <p>Ptolemy II includes a number of support packages, such as 
+
+      <br><code>data</code>, providing a type system, data encapsulation and an
+      expression parser,
+
+      <br><code>plot</code>, providing visual display of data,
+
+      <br><code>math</code>, providing matrix and vector math and signal
+      processing functions, and
+
+      <br><code>graph</code>, providing graph-theoretic manipulations.
+
+    <p>The Ptolemy Book describes the Ptolemy II design and
+      the implementation of the Java classes.</p>
+    <ul>
+      <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
+      <li> Ptolemy Book: Claudius Ptolemaeus, Editor, System Design, Modeling, and Simulation Using Ptolemy II, Ptolemy.org, 2014. (<a href="http://ptolemy.org/systems#in_browser" target="_top">Website</a>, 
+	<!--/ptinyKeplerDocs-->
+	<a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top">PDF</a><i>(available via the installer, not via svn)</i>)
+    </ul>
+
+
+    <p><a href="design/usingVergil/BuildingGraphicalModels.pdf" target="_top">Building Graphical Models</a> describes how to use Vergil.</p>
+
+
+
+    <h2>Complete List of Domains in Ptolemy II</h2>
+    <!-- We include this list here since we will be posting the release notes
+	 to the newsgroups etc.  See also main.htm
+      -->
+    <p>Ptolemy II includes a growing suite of <i>domains</i>, each of which
+      realizes a model of computation.  It also includes a component library,
+      in which most components are <i>domain polymorphic</i>, in that they
+      can operate in several of the domains.  Most are also <i>data polymorphic</i>,
+      in that they operate on several data types.
+      The domains that have been implemented are listed below.</p>
+
+    <p>Domains that are reasonably mature:</p>
+    <ul>
+      <li> <a href="../ptolemy/domains/continuous/doc/index.htm" target="_top">Continuous</a>:
+	continuous-time modeling (redesign of the CT domain)
+      <li> <a href="../ptolemy/domains/ddf/doc/index.htm" target="_top">DDF</a>:
+	dynamic dataflow
+      <li> <a href="../ptolemy/domains/de/doc/index.htm" target="_top">DE</a>:
+	discrete-event modeling
+      <li> <a href="../ptolemy/domains/modal/doc/index.htm" target="_top">Modal</a>:
+	finite state machines and modal model (redesign of the FSM domain)
+      <li> <a href="../ptolemy/domains/pn/doc/index.htm" target="_top">PN</a>:
+	process networks with asynchronous message passing
+      <li> <a href="../ptolemy/domains/rendezvous/doc/index.htm" target="_top">Rendezvous</a>:
+	process networks with synchronous message passing
+      <li> <a href="../ptolemy/domains/sdf/doc/index.htm" target="_top">SDF</a>:
+	synchronous dataflow
+      <li> <a href="../ptolemy/domains/sr/doc/index.htm" target="_top">SR</a>:
+	synchronous reactive
+      <li> <a href="../ptolemy/domains/wireless/doc/index.htm" target="_top">Wireless</a>:
+	wireless
+    </ul>
+
+    Domains that are still experimental:
+    <ul>
+      <!--/vergilDocs-->
+      <li> <a href="../ptolemy/domains/algebraic/doc/index.htm" target="_top">Algebraic</a>:
+        algebraic loops (New in 10.0)
+      <li> <a href="../ptolemy/domains/ca/doc/index.htm" target="_top">CA</a>:
+        cellular automata (New in 10.0)
+      <li> <a href="../ptolemy/domains/ci/doc/index.htm" target="_top">CI</a>:
+	component interaction (push/pull)
+      <li> <a href="../ptolemy/domains/csp/doc/index.htm" target="_top">CSP</a>:
+	communicating sequential processes
+      <li> <a href="../ptolemy/domains/dde/doc/index.htm" target="_top">DDE</a>:
+	distributed discrete events
+      <li> <a href="../ptolemy/domains/dt/doc/index.htm" target="_top">DT</a>:
+	discrete time
+      <li> <a href="../ptolemy/domains/giotto/doc/index.htm" target="_top">Giotto</a>:
+	periodic time-driven
+      <li> <a href="../ptolemy/domains/gr/doc/index.htm" target="_top">GR</a>:
+	3-D graphics
+      <li> <a href="../ptolemy/domains/hdf/doc/index.htm" target="_top">HDF</a>:
+	heterochronous dataflow
+      <li> <a href="../ptolemy/domains/petrinet/doc/index.htm" target="_top">Petri Net</a>:
+        concurrent processes (New in 10.0)
+      <li> <a href="../ptolemy/domains/psdf/doc/index.htm" target="_top">PSDF</a>:
+	parameterized synchronous dataflow
+      <li> <a href="../ptolemy/domains/ptera/doc/index.htm" target="_top">Ptera</a>:
+        ptolemy event relation actor (New in 10.0)
+      <li> <a href="../ptolemy/domains/pthales/doc/index.htm" target="_top">Pthales</a>:
+        multidimensional dataflow (New in 10.0)
+      <li> <a href="../ptolemy/domains/ptides/doc/index.htm" target="_top">Ptides</a>:
+        programming temporally integrated distributed embedded systems (New in 10.0)
+      <li> <a href="../ptolemy/domains/ptinyos/doc/index.htm" target="_top">Ptinyos</a>:
+        interface to TinyOS
+	<!-- Not shippingi SCR Right now -->
+      <li> <a href="../ptolemy/domains/tm/doc/index.htm" target="_top">TM</a>:
+	timed multitasking
+    </ul>
+
+    <h2>Platforms</h2>
+
+    <p>The core of Ptolemy II 11.0.devel is 100% Java, so it should work on any
+      platform that has JDK 1.6 or later.</p>
+
+    <p>We developed Ptolemy II 11.0.devel under Mac OS X, Windows and Linux with JDK1.7.0_25 and JDK1.8.0_11
+      Under MacOS 10.7.5, we were also able to use Java 1.6.0_26.</p>
+
+    <p>Ptolemy II 10.0 will not compile under Java 1.3 because we use the
+      java.lang.URI class, which is present only in Java 1.4 and later.
+      JDK 1.5 or later is required so that these packages can use generics:
+      backtrack, ptalon and others.  JDK 1.6 is required because
+      ptdb uses javax.swing.GroupLayout and because of other changes.</p>
+
+    <p>In the past, Ptolemy II has been compiled and run
+      under IBM JDK 1.6.0.  However, the IBM JDK has not be tried recently. There are the following limitations
+      under IBM JDK 1.6.0
+      <ul>
+	<li> The Copernicus code generator does not work.
+	<li> Caltrop does not work.
+	<li> The IBM JDK seems to return directory contents in a different
+	  order than the Sun JDK.  Thus actor.lib.io.DirectoryListing
+	  might return elements in a different order.
+      </ul>
+
+      <!-- 
+	   sed 's@ptdoc:@codeDoc/@' ptII10.0.release.htm  > /tmp/a
+	   awk '{ if ($0 ~ /href="codeDoc/) {gsub(.html"\\.", "/", $0); print $0} else {print $0} }' /tmp/a > /tmp/b
+	   awk '{ if ($0 ~ /.xml"/) {sub("href=\"../..", "href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy", $0); print $0} else {print $0} }' ptII10.0.release.htm > /tmp/b
+	-->
+
+      <!--whatsnew-->
+      <h2><a name="highlights">Ptolemy II 11.0.devel Highlights</a></h2>
+
+    <p>Contents:</p>
+    <ul>
+      <li><a href="#highlights">Highlights</a>
+	<ul>
+	  <li>TBD</li>
+	</ul>
+      </li>
+      <li><a href="#demos">New demonstrations</a>
+	<ul>
+	  <li>TBD</li>
+	</ul>
+      </li>
+      <li><a href="#other">Other Key New Capabilities</a></li>
+      <li><a href="#libraries">New and Enhanced Actor Libraries</a></li>
+      <li><a href="#features">Additional features</a></li>
+      <li><a href="#worksinprogress">Works in Progress</a></li>
+      <li><a href="#bugs">Bug fixes</a></li>
+    </ul>
+
+    <h2><a name="highlights" id="highlights">Highlights</a></h2>
+    <p>Below are the highlights of this release.</p>
+
+    <h3><a name="Highlight1" id="Highlight1">Highlight1</a></h3>
+    <p><i>Description</i></p>
+    <h4>References</h4>
+    <ul>
+      <li><i>Reference</i></li>
+    </ul>
+    <h4><a name="Highlight1Demonstrations">Highlight1 Demonstrations</a></h4>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Link to the demo on the website</i></li>
+    </ul>
+
+    <h2><a name="demos" id="demos">New demonstrations</a></h2>
+    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.devel | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.devel/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
+
+         OR
+         $PTII/adm/bin/updateNewDemos
+
+      -->
+    <h4><a name="demo1">Demo1</a></h4>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Link to the demo on the website</i></li>
+    </ul>
+
+    <h3>Models of Computation</h3>
+
+    <h3>New Model of Computation or New Demos</h3>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Link to the demo on the website</i></li>
+    </ul>
+
+    <h2>Actor Demonstrations</h2>
+
+    <h4>New Actor Package</h4>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Link to the demo on the website</i></li>
+    </ul>
+
+    <h4>New Demonstrations for other facilities</h4>
+
+
+    <h3>New Facility</h3>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Link to the demo on the website</i></li>
+    </ul>
+    <h2><a name="other" id="other">Other Key New Capabilities</a></h2>
+    <ul>
+      <li class="c1">
+	<h3>Features</h3>
+	<!--
+            grep "Only in .*ptII11.0.devel" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+          -->
+	<ul>
+	  <li><i>Link to the demo on the website</i></li>
+	</ul>
+      </li>
+    </ul>
+
+    <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
+    <!--
+        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.devel" |  sort | sed 's@Only in .*ptII11.0.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
+      -->
+    <ul>
+      <li><em>New Domain Polymorphic actors</em>:
+	<ul>
+	  <li><a href="codeDoc/ptolemy/actor/xxx">New Actor</a>
+	    <blockquote>
+	      <p>Authors and one line description.</p>
+	      <p>More text</p>
+	    </blockquote>
+	  </li>
+	  <li> <i>Link to codeDoc for actors</i></li>
+	</ul>
+      </li>
+      <i>List actors by domain</i>
+    </ul>
+
+    <h2><a name="features" id="features">Additional Features</a></h2>
+
+    <h3>Additional Feature</h3>
+    <ul>
+      <!-- Use in_browser because vergil has problems with the html generated by javadoc -->
+      <li><i>Link to codeDoc</i></li>
+    </ul>
+
+    <h3>Other new classes</h3>
+    <ul>
+      <li>package
+	<ul>
+	  <li><i>Link to codeDoc</i></li>
+	</ul>
+      </li>
+    </ul>
+
+    <h2><a name="worksinprogress" id="worksinprogress">Works in Progress</a></h2>
+    <ul>
+      <li>package
+	<ul>
+	  <li><i>Link to codeDoc</i></li>
+	</ul>
+      </li>
+    </ul>
+
+
+    <h2><a name="bugs" id="bugs">Bug fixes</a></h2>
+    <p>For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser" target="_top">Ptolemy II Bugs</a><br>
+      and <a href="https://kepler-project.org/users/faq#section-UserFAQ-HowCanIReportBugs">Kepler Bugs</a>.</p>
+    <p>A few features and classes were removed outright.</p>
+    <dl>
+      <dt><code><i>director</i></code></dt>
+      <dd><i>Why and what to use instead.</i></dd>
+    </dl>
+
+    <h2>Backward Compatibility</h2>
+
+
+    <p>Most models developed under Ptolemy II 1.0.1,
+      2.0.1, 3.0.2, 4.0.1, 5.0.2  or HyVisual 2.2-beta, 3.0, 4.0.1, 5.0.1,
+      6.0.2, 7.0.1, 8.0.1 and 10.0.1
+      should run under Ptolemy II 11.0.devel</p>
+
+    <p>The MoMLParser includes a list of backward
+      compatibility filters that make certain changes on models
+      when read, handling such issues as actors being moved or renamed
+      and parameter names being changed.
+      The filters themselves are defined in
+      <a href="codeDoc/ptolemy/moml/filter/package-summary.html">ptolemy.moml.filter</a>.
+      If you have developed your own actors under earlier versions of Ptolemy II by
+      writing your own Java files, you should recompile all your java code with
+      the new release.  In theory, copying the .class files should work, but
+      recompiling is safer.
+    </p>
+
+    <!--/whatsnew-->
+
+    <h2>Features that were new in previous Ptolemy II releases </h2>
+
+    <p><a href="oldFeatures.htm">Features that were new in previous Ptolemy II releases</a></p>
+
+
+    <!--vergilDocs-->
+    <h2><a name="limitations">Limitations</a></h2>
+    <ul>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 11.0.devel Limitations Page</a> - Limitations found after release.</li>
+      <li><a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html">Ptolemy II Bugzilla</a></li>
+    </ul>
+
+
+    <p>Version 11.0.devel has the following limitations:</p>
+
+    <h3>Release Limitations</h3>
+    <ul>
+      <li> The gzipped tar file of Ptolemy II  source files with Unix line endings
+	(<code>ptII11.0.devel.src.tar.gz</code>)
+	<B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
+	untar this file with a checksum error because the pathnames are longer
+	than 100 characters.
+	<p>Note further that some of the .class names are longer than
+	  31 characters, which may cause problems when downloading zip files
+	  on the Macintosh and using Stuffit.</li>
+
+      <li> The documentation for custom actors used in demonstrations is not
+	included in the release.  The source code for the custom actors can be found
+	in the source download.</li>
+
+      <li> If a URL ends with <CODE>#in_browser</CODE>, then
+	Ptolemy II will invoke the User's web browser.  Unfortunately, this
+	does not always work, especially under Windows.
+	The workaround is to exit Netscape and let Ptolemy II
+	start up your browser for you.</li>
+
+      <li> Web Start does not work very well if the pathname to the 
+	<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
+	to place your Ptolemy II tree in a directory that does not have spaces
+	in the path name if you plan on using Web Start.</li>
+
+      <li> If your user library contains actors that are not present in
+	vergil, then you may see a dialog or dialogs asking if you want
+	to skip these elements.  This could happen if you had developed custom
+	actors and put them into your user library and these custom actors
+	are not present in the release.  The work around is to click 'Skip Element'
+	and continue with the start up.</li>
+
+      <li> Web Start issues:
+	<ul>
+	  <li> The Matlab Wireless demo fails under Web Start.
+	    The problem is that the Matlab .m file cannot be found.
+
+          <li> The JAI Adaptive Median model does not work under
+	    Web Start - the repaired image might be corrupt.
+	    The reason is that it uses the JAI acceleration libraries,
+	    which Web Start does not load.  
+
+	  <li> Viewing a pdf file may bring up a blank window along with
+	    the pdf file.  Running the code generator may bring up
+	    a blank window while the java or javac processes are running.
+
+	  <li> Some of the links on the GR domain instructions page
+	    might not work under Web Start because the files they refer
+	    to are not present. </li>
+	  
+	  <li>Under WebStart, in the HOC
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution/">ParallelExecution</a>
+	    and
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources/">SpontanousSources</a>
+	    models, it is  not possible to look inside the ThreadedComposites.</li>
+
+	  <li>In the ExportToWeb version of the HOC
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/Case/Case/">Case</a>,
+	    the Documentation icon is not active.</li>
+
+	  <li>The ReadStdIn demo fails under Webstart.  (This model now has an annotation about this).  The error is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: The file 'System.in' does not have any data.
+	      in .ReadStdIn.LineReader
+	      at ptolemy.actor.lib.io.LineReader._openAndReadFirstTwoLines(LineReader.java:344)
+	      at ptolemy.actor.lib.io.LineReader.fire(LineReader.java:225)
+	    </pre>
+	  <li>Running <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">Ptango SmartRoom under WebStart</a> brings up a partial page?
+	    <ol>
+	      <li>Go to <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.devel/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/</a></li>
+	      <li>Click on "Launch" to download the Web Start files.</li>
+	      <li>Run the model</li>
+	      <li>Click on the annotation to open <a href="http://localhost:8078/room">http://localhost:8078/room</a></li>
+	      <li>Note that the page is only partially rendered.  The problem is that the style sheets common.css and berkeley.css are not present.</li>
+	    </ol>
+	    Generating WebStart on a laptop works.  Probably the issue is with the css files.
+	</ul>
+      </li>
+
+      <li> Limitations in demonstrations
+	<ul>
+          <li> <!-- sdf/demo/HTVQ/HTVQ.xml -->
+	    The SDF Image Compression HTVQ demo does not display any images. 
+	  </li>
+	  <li>The Pthales FFT demo fails to generate an image.</li>
+	  <li>The Ptango Exception demo does not restart if there is a JavaScript error.
+	    <ol>
+	      <li><code>$PTII/bin/vergil org/ptolemy/ptango/demo/Exception/Exception.xml</code></li>
+	      <li>Hit run</li>
+	      <li>Type in nonsense text, hit return</li>
+	      <li>The model finishes.  It should restart.</li>
+	    </ol>
+	  </li>	  
+	</ul>
+      </li>
+      <li> Limitations in demonstrations that are documented using annotations in the model.
+	<ul>
+	  <li> Continuous CarTracking should be run using View-&gt;Run
+	    so that the user can change the fault parameter.</li>
+
+	  <li> <!-- actor/parameters/demo/Bouncer/Bouncer.xml -->
+	    The DE Bouncer demo: If the user drags the bouncing icon, it no
+	    longer bounces.
+	  </li>
+
+	  <li> Some of the Ptango demos such as EPlus70 and TemperatureSensor require
+	    EnergyPlus and are not likely to run under WebStart bcause the
+	    BCVTB_HOME environment variable need to be set.
+	  </li>
+
+	  <li>The Ptango OccupancyAlert and SensorAndrew demos requires a password, but even with the password it fails to run, the message is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: Unable to login to XMPP server.
+              in .OccupancyAlert.XMPPGateway
+	      Because:
+	      SASL authentication DIGEST-MD5 failed: not-authorized
+	    </pre>
+	    with the server up, the message is:
+	    <pre>
+	      ptolemy.kernel.util.IllegalActionException: Error evaluating expression: "http://localhost:" + port + "/simulator#in_browser"
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: WebServer.getAttribute("deployedPort").getToken().intValue()
+	      in .OccupancyAlert.port
+	      Because:
+	      The object on which method "getToken" is invoked on is null, but the method is not found or is not static.
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: "http://localhost:" + port + "/simulator#in_browser"
+	      in .OccupancyAlert.link
+	      Because:
+	      Error evaluating expression: WebServer.getAttribute("deployedPort").getToken().intValue()
+	      in .OccupancyAlert.port
+	      Because:
+	      The object on which method "getToken" is invoked on is null, but the method is not found or is not static.
+	      at ptolemy.data.expr.Variable.validate(Variable.java:1532)
+	    </pre>
+	  </li>
+
+	  <li> The Ptango UCBPower and UCBPowerAnalyzerServer demos does
+	    not work under WebStart because the Ptolemy configuration used
+	    to display models under WebStart does not support exporting to
+	    the Web.
+	  </li>
+	</ul>
+      </li>
+    </ul>
+    <h3>Limitations in the Class Mechanism</h3>
+    <p>There are several known problems:</p>
+
+    <ul>
+
+      <li> Several higher-order-components will not work inside class definitions.
+	(ModalModel, several Continuous actors, etc.).</li>
+
+
+      <li> Name collisions can occur when adding objects to base classes
+	whose names collide with objects in derived classes.
+	Auto naming should look through the derivedList for name conflicts.</li>
+
+
+      <li> Propagation of changes to a base class is very slow in Vergil.
+	If there are more than just a very few instances or derived
+	classes, interactive editing is not practical.  As a workaround,
+	put the class definitions in a separate file and edit them
+	without opening the model that creates instances. The probable
+	reason is that MoMLParser handles propagation by issuing large
+	numbers of change requests.</li>
+
+
+      <li> Certain actors, such as MathFunction, change the number of ports
+	when parameters change.  This violates the derivation invariance
+	for classes.  To demonstrate the bug, put a MathFunction actor
+	in a base class that has a subclass.  Change the function parameter
+	in the subclass to anything but "modulo".  Then change the function
+	in the base class to "modulo" (which adds a port).  Now attempt
+	to insert a parameter into the port.  You will get an
+	InternalErrorException when it tries to propagate the change.</li>
+    </ul>
+
+    <h3>Limitations in the Actor Libraries</h3>
+    <ul>
+      <li>The actor library is far from complete.
+
+      <li>The Expression actor does not properly propagate type constraints in
+	an expression-dependent fashion. It works correctly for double-valued
+	expressions of double-valued inputs.</li>
+
+      <li> The Ptolemy parameter parser uses comma "," to separate elements
+	in an array.  This causes problems when Ptolemy is run on
+	European machines that use a comma "1,0" instead of a period "1.1"
+	in floating point numbers.</li>
+
+      <li> The Display actor uses the Swing JTextArea component which is 
+	known to have memory leaks.</li>
+
+      <li> The readFile() parameter function does not work with applets.
+	Instead, use readResource().</li>
+
+      <li> IterateOverArray has the following problems
+	<ul>
+
+	  <li> IterateOverArray: When you drop in an actor, and then
+	    another actor, and then select "undo," the second actor is
+	    deleted without the first one being re-created. Thus, undo is
+            only a partial undo. The fix to this is extremely
+            complicated. Probably the only viable
+            mechanism is to use UndoStackAttribute.getUndoInfo() to get the undo
+            stack and then to manipulate the contents of that stack directly.</li>
+	  
+	  <li> IterateOverArray: There should be an option to reset
+	    between firings of the inside actor.</li>
+
+
+	  <li> IterateOverArray: If you drop a new actor onto an IterateOverArray
+            in a subclass, it will simply acquire the new contents, but not
+            actually do anything with them. It should somehow refuse to accept
+            the new object in the subclass, since to do so, it would have to
+            delete the original object defined in the base class, and this would
+            violate the derived invariant.</li>
+
+	  
+	  <li> IterateOverArray: If an instance of IterateOverArray in a derived
+            class has overridden values of parameters, those are lost if
+            contained entity of the instance in the base class is replaced and
+            then an undo is requested.</li>
+
+	  
+	  <li> IterateOverArray: When an actor with a display icon like
+            Const, Expression, or MathFunction is put into
+            IterateOverArray, the CopyCatIcon doesn't reflect the text display.</li>
+
+	</ul>
+      </li>
+
+    </ul>
+
+    <h3>Limitations in the PN Domain</h3>
+    <p>The PN domain documents that it locally handles mutations.  However, this
+      is currently not true in the implementation.  For the basic PN model, this
+      doesn't really matter, since mutations happen pretty much the same as they
+      would otherwise.  (i.e. they are non-deterministic in when they execute) 
+      However, for timed PN models, there is actually some expressiveness
+      lost, since timed PN models can locally execute mutations deterministically.</p>
+
+    <p>Embedding a PN typed composite actor inside a non-process top level
+      such as DE does not work.  In fact embedding a process domain inside
+      a non-process domain is likely to have problems.  Profess Lee wrote:</p>
+    <blockquote>
+      Yes, it looks as if the code is designed so that process domains
+      (PN, CSP) can only be used within process domains.  I'm not sure
+      to what extent this is a limitation of the process domains vs. a
+      semantic problem.  What would PN mean within DE?  Since PN has
+      no well-defined notion of a "firing", how would you assign time
+      stamps to the outputs of a PN actor?  By default in DE, the time
+      stamps of the outputs of an actor match those of the inputs that
+      triggered the firing. There is no such notion in PN.
+    </blockquote>
+
+    <h3>Limitations in the User Interface</h3>
+
+    <p>Below are some of the limitations of Vergil, the Ptolemy II Graphical
+      User Interface.</p>
+    <ul>
+
+      <li> The labeling of ports gets messed up if you change cardinality.</li>
+
+      <li> Cancelling a style change doesn't restore original
+	state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.</li>
+
+      <li> If there are multiple windows open for a model, say, the top
+	level vergil window and the tree view, or the top level window
+	and the inside look of a composite component, when the top
+	level window is closed, all other windows are closed, but the
+	user is not prompted to save any change to the model.</li>
+
+      <li> When setting the type of a port, we should provide a combo
+	box that lists the common ports</li>
+
+      <li> When creating a Modal Model, use Control-Right-Button to
+	drawn arcs between nodes.  One potential workaround would
+	be to have an information message in the status bar about this.</li>
+
+      <li> You should not change the names of built in ports - The port
+	mechanism should disallow port name changes on ports that are
+	named in Java.  The UI could recognize this.  The UI should
+	not allow the user to remove built in Java defined ports.</li>
+
+      <li> Manually setting of the types of actors like ArrayToSequence that
+	have constraints on their element types can cause problems.</li>
+      <li> HTVQ demo is badly laid out when run under vergil.</li>
+      <li>Weak support for multiports in the graph editor.</li>
+      <li>It is difficult to control wire routing.</li>
+      <li>Cannot have more than one vertex in a connection.</li>
+      <li>No mechanism to set the width of a relation.</li>
+      <li>The integrated web browser is not a full-featured browser.</li>
+      <li>Debugger not yet integrated.</li>
+      <li>It is difficult to add actors to the libraries.</li>
+      <li>No dynamic class reloading.</li>
+
+
+      <li> Plot windows don't resize when control panel is resized
+	<br>If a model with plotters
+	is executed using the run button on the toolbar, and
+	then re-executed using the run control panel accessed through
+	the View menu, then resizing the run control panel does not
+	cause the plots to resize to fit.
+	<br>Workaround:
+	Close the model and re-open it, and then run first using the
+	run control panel.
+      </li>
+
+      <li>There is no mechanism in the UI to save a model as a class,
+	nor to save a submodel as a class.</li>
+
+      <li>There is no mechanism in the UI to create a custom icon for
+	a library element and store it in the right place.</li>
+
+      <li>If an actor uses a slider, then the actor tree navigator pane
+	incorrectly shows the slider as a subitem of the actor.</li>
+
+      <li> It seems that if you close a model that has been modified,
+	get prompted to save it, and select save, then the model
+	is saved but not closed.  It should be closed too...</li>
+
+      <li> When I select a large number of items from one model, and
+	copy and paste them into a new one, they sometimes all get
+	placed at the origin.  Strangely, if I then auto-place,
+	and then undo, they get their original (correct) placement!</li>
+
+
+      <li> Printing a model that contains transparent objects can result
+	in problems when printing to Encapsulated Postscript (EPS).
+
+	<br>If a model has transparent objects, then when it is printed to
+	EPS, the resulting file is a bitmap instead of a Postscript
+	description of the graphics.  You can tell by the file size (several
+	Meg vs. several K) and by opening it in Illustrator, where in theory
+	you should be able to ungroup and select and edit individual
+	components.
+
+	<br>The way Java prints EPS is that there is an implementation of
+	Graphics2D that literally translates each graphics2D call into a
+	Postscript snippet.  If Java detects any transparent colors or images,
+	then the literal translation of each element independently doesn't
+	work, so the printing code reverts to writing everything to an image
+	and then sending the image, encapsulated in Postscript to the printer.
+
+	<br>Solution1: Use one of these pdf writing programs to generate
+	pdf-1.4 compliant pdf files, which have extensions to support
+	transparency that Postscript lacks, and then print them to eps, which
+	would use the distill implementation of the above algorithm.
+	Or alternatively, we could switch to using pdftex instead of 
+	latex-&gt;dvips-&gt;distill which should
+	embed pdf for figures directly at the expense of less robust latex support.
+	<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
+
+	<br>Solution 2: Use the undocumented flag
+	-Dsun.java2d.print.pipeline=pdl on the command line to force the
+	printing to use the postscript path, ignoring transparency.
+	Under Cygwin:
+	<pre>
+	  export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
+	  vergil
+	</pre>
+	Then edit the file by hand in Illustrator to add the transparency back in.
+      </li>
+    </ul>
+
+
+    <h3>Limitations in JNI</h3>
+    <ul>
+      <li> The Interface to C actors using the Java Native Interface
+	is not available via the Windows Installer (or Web Start).
+	To use the JNI/Ptolemy II interface, you must download 
+	Ptolemy II as source files and compile.</li>
+
+      <li> The JNI user interface was removed between Ptolemy II 4.0
+	and Ptolemy II 7.0 because the UI stopped working.</li>
+
+    </ul>
+
+    <h3>Code Generation Limitations</h3>
+    Code Generation limitations are covered on the
+    <a href="../ptolemy/cg/README.html">Code Generation</a> page. 
+
+    <h3>Missing Domains</h3>
+    <ul>
+      <li>Boolean and integer dataflow.</li>
+    </ul>
+    <p>For limitations discovered after the release, see the
+      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 11.0.devel website</a>
+
+      <!--/vergilDocs-->
+    <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+      <!-- Leave a trailing p here so that there is a little space at the bottom -->
+    <p>
+  </body>
+</html>
