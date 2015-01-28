@@ -8,24 +8,42 @@
   <body>
     <h1>Mac OS X: Installing Java</h1>
 
-    For Mac OS X, Java is already installed, but Ptolemy II requires Java 1.6, so we must
-    check the Java version.
+    <p><b>Ptolemy II 10.0</b> requires Java 1.6 (also known as Java 6)
+      or later because ptdb uses javax.swing.GroupLayout.  Also, Java
+      1.5 is past its end of life.  Java 1.7 (also known as Java 7)
+      and Java 1.8 will work.</p>
 
-    <h2>Mac OS X 10.7 (Lion)</h2>
-    <p>Mac OS X 10.7 (Lion) has only Java 1.6 and later, so there is nothing further to be done.</p>
-    <p>To determine which version of the operating system is running, click on the apple icon in
-      the upper left and select "About this Mac".</p>
+    <p><b>The development version available via svn</b> is best built
+    with Java 1.8.  See below for details.</p>
 
-    <p>If you are running "Mac OS X 10.7" or later, then <a href="eclipse.htm">go to the next step</a>.</p>
+    <blockquote>
+      <p>In January, 2015, the core of development version can be
+	build with Java 1.6 by running configure, but this is not
+	supported or tested.  Over time, Java 1.6 is less likely to
+	work.
+      </p>
 
-    <h2>Mac OS X 10.6 (Snow Leopard) and earlier</h2>
-    <p>If you are running Mac OS 10.6 or earlier, then read on and verify that Java 1.6
-      is the default version.
+      <p>The full development version of Ptolemy II requires Java 1.7
+	because particleFiltering uses type inference for generic instance
+	creation and catches multiple exceptions.  Over time, more and
+	more code will require Java 1.7 and Java 1.8.</p>
+      
+      <p>Note that the core of Ptolemy that is used by Kepler can be
+	built with Java 1.7.  To use Java 1.7 would require excluding
+	ptolemy/actor/lib/jjs and org/ptolemy/machineLearning.  The core
+	of Ptolemy II is built using Java 1.7 on a nightly basis as part
+	of the Kepler build.</p>
 
-    <p>See <a href="../../install.htm">Ptolemy II Installation</a> for details, but
-      briefly:</p>
-    <p>Ptolemy II requires Java 1.6 because ptdb uses javax.swing.GroupLayout.
-      Also, Java 1.5 is past its end of life.</p>
+      <p>The development version of Ptolemy II requires Java 1.8 to use
+	Nashorn in ptolemy/actor/lib/jjs and IntStream in
+	org/ptolemy/machineLearning.  Over time, more and more code will
+	require Java 1.8.  The <code>$PTII/build.default.xml</code> works
+	best with Java 1.8</p>
+
+      <p>The Oracle (formerly Sun) Java Development Kit (JDK) is preferred.</p>  
+      <p>The IBM JDK will work under Linux.</p>
+      <p>OpenJDK may work with Ptolemy II, but could have problems with Kepler.</p>
+    </blockquote>
 
     <p>To determine which version of Java is being run, start up a Terminal window
       by going to Application -> Utilities and clicking on the Terminal icon.</p>
@@ -34,11 +52,17 @@
     <pre>
       java -version
     </pre>
-    <p>If you are running Java 1.6 or later, then <a href="eclipse.htm">go to the next step</a>.</p>
 
-    <p>If you are running Java 1.5, then you are probably using Mac OS 10.5.  We recommend
-      using the 32-bit version of Java, which is handled in the
-      <a href="eclipse.htm">next step</a>.</p>
+    <p>If you are building Ptolemy II 10.0 and running Java 1.6 or later,
+      then <a href="eclipse.htm">go to the next step</a>.</p>
+
+    <p>If you are building the development version of Ptolemy II and
+      you are running Java 1.8 or later, then <a href="eclipse.htm">go to the next step</a>.</p>
+
+    <p>If you are building the development version of Ptolemy II and
+      running Java 1.7 or earlier, then go to
+      <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html#in_browser" target="_top">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a>
+      and install Java 1.8, then <a href="eclipse.htm">go to the next step</a>.</p>
 
   </body>
 </html>
