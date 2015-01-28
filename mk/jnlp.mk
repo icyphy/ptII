@@ -168,7 +168,6 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
 			lib/guava.jar \
 			lib/kieler.jar \
-			lib/jasminclasses.jar \
 			lib/jython.jar \
 			lib/ptCal.jar \
 			lib/sootclasses.jar
@@ -483,7 +482,6 @@ PTINY_SANDBOX_JNLP_JARS = \
 #
 
 COPERNICUS_JARS = \
-	lib/jasminclasses.jar \
 	lib/sootclasses.jar \
 	ptolemy/copernicus/copernicus.jar
 
