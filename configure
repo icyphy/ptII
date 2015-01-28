@@ -5027,7 +5027,6 @@ fi
 if test -z "$PTCALTROP_DIR"; then
    updateExcludes "ptolemy/caltrop/"
 else
-   # Note that jasminclasses.jar in soot also includes java_cup
    updateClasspath "$CALTROP_DIR/ptCal.jar"
    updateClasspath "$CALTROP_DIR/java_cup.jar"
    updateClasspath "$CALTROP_DIR/saxon8.jar"
@@ -12355,7 +12354,7 @@ JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
@@ -12386,20 +12385,6 @@ $as_echo_n "checking for \$SOOT_DIR/sootclasses.jar... " >&6; }
 	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; fi
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for \$SOOT_DIR/jasminclasses.jar" >&5
-$as_echo_n "checking for \$SOOT_DIR/jasminclasses.jar... " >&6; }
-  	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
-                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; fi
-            fi
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar" >&5
-$as_echo_n "checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar... " >&6; }
-  	    if test -f "$SOOT_DIR/polyglotclasses-1.3.2.jar"; then
-                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; fi
-            fi
 	    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SOOT_CLASSES" >&5
 $as_echo "$SOOT_CLASSES" >&6; }; fi
         else
@@ -12470,8 +12455,6 @@ if test -z "$PTCOPERNICUS_DIR"; then
    updateExcludes "ptolemy/copernicus/"
 else
    updateClasspath "$SOOT_DIR/sootclasses.jar"
-   updateClasspath "$SOOT_DIR/polyglotclasses-1.3.2.jar"
-   updateClasspath "$SOOT_DIR/jasminclasses.jar"
     # What about JAVA_SYSTEM_JAR?
 fi
 
