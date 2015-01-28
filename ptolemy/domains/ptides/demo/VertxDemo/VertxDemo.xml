@@ -7,7 +7,7 @@
     <property name="Publisher" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Publisher Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 140.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/Publisher.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,7 +38,7 @@
     <property name="Sender2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Subscriber Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 155.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/Subscriber.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -67,12 +67,14 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open publisher and subscriber model with the two links below.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 70.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open publisher and subscriber models with the two links below.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2472, 349, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 266, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -86,6 +88,53 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 175.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/Publisher2.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The publisher models send Ptides NetworkTokens onto the &#10;Vert.x event bus. The Subscriber reads these NetworkTokens&#10;and merges them inside a PtidesPlatform.&#10;The safe-to-process analysis in Ptides makes sure that events&#10;are merged in timestamp order.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 215.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note: In order to run this demo, a Vertx eventbus server is&#10;needed. You can use the model below to run a simple&#10;Vertx eventbus server.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 315.0]">
+        </property>
+    </property>
+    <property name="Publisher3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="VertxBus Server">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 385.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertx/demo/VertxBus/VertxBusServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
