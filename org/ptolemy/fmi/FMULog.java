@@ -349,7 +349,9 @@ public class FMULog {
      *  We use reflect so that there is not a compile-time dependency
      *  on the variadic extensions.
      */
-    private static void _initialize() throws ReflectiveOperationException {
+    private static void _initialize() throws Exception {
+        // FIXME: ReflectiveOperationException is new in Java 1.7 and could be used here.
+
         // Use reflection so that we can compile without
         // the JNA Varargs extensions and check for them at run time.
         try {
