@@ -8,7 +8,7 @@
 </head>
 <body bgcolor="#ffffff">
 <h1>Ptolemy II Installation</h1>
-See the <a href="ptII10.0.release.htm">Ptolemy II 10.0 release notes</a>
+See the <a href="ptII11.0.release.htm">Ptolemy II 11.0 release notes</a>
 for details about this release.
 
 The instructions on this page concern installing rebuilding Ptolemy II
@@ -27,7 +27,7 @@ from sources.
 
 <ol>
 
-<li> Install JDK1.6 or later, add the jdk bin directory to your path
+<li> Install JDK 1.8 or later, add the jdk bin directory to your path
 so that <code>javac</code> and <code>java</code> are available,
 and have the <code>make</code> command available.
 
@@ -84,11 +84,11 @@ sections below.
 
 <h3><a name="java">Java</a></h3>
 
-Ptolemy II has been developed under Java 1.6.0 under Mac OS X and Java
-1.7 under Mac OS X and other operating systems.  Oracle calls calls
-Java 1.7 Java SE 7, which is available from
-<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/javase/downloads/index.html</code></a>.
-Locally, we use Java 1.7.0_51.
+<p><b>The development version available via svn</b> is best built
+    with Java 1.8</p>
+<p>Oracle calls calls
+Java 1.8 "Java SE Development Kit 8". To download the JDK, see
+<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/javase/downloads/index.html</code></a>.</p>
 
 
 <p>The Java download is available in several formats.
@@ -107,17 +107,13 @@ the <code>javac</code> and <code>java</code> commands are available.
 
 
 <h3><a name="Plugin">Java Plug-in</a></h3>
- <!-- Note: the plug-in is called "The Java Plug-in", not "The JDK Plugin"-->
-The applet tags have been configured to require JDK1.6, so to run the applets
-in Mozilla 1.x, Netscape 4.7 or Internet Explorer 6.0 under Windows, you will need to use
-the Java Plug-in from
-<a href="http://www.oracle.com/technetwork/java/index-jsp-141438.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/index-jsp-141438.html</code></a>
+ <p>Currently, the Java Plug-in 1.8 is included in the JRE and JDK downloads
+   for Windows.
+ <p>If your platform is not supported by the plug-in, you can run
+   the applets with the JDK <code>appletviewer</code> command and view JNLP files with <code>javaws</code>.</p>
 
- <p>Currently, the Java Plug-in 1.6 is included in the JRE and JDK downloads
-for Windows.
-<p>If your platform is not supported by the plug-in, you can run
-the applets with the JDK <code>appletviewer</code> command.
- <p>See the <a href="troubleshooting.htm#plugin">Plug-in section of the Ptolemy II Troubleshooting guide</a> for details.
+ <p>See the <a href="troubleshooting.htm#plugin">Plug-in section of
+ the Ptolemy II Troubleshooting guide</a> for details.
 
 <h2><a name="shippedPackages">Optional packages that are shipped with Ptolemy</a></h2>
 
