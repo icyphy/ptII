@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={349, 23, 727, 634}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={709, 139, 731, 761}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[493, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[497, 651]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.91846838662795, 303.4971838662791}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{242.91846838662795, 366.9971838662791}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -393,7 +393,7 @@
                 </port>
             </entity>
             <entity name="sorted" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={746, 23, 499, 861}, maximized=true}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={746, 23, 499, 861}, maximized=false}">
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 817]">
                 </property>
@@ -520,7 +520,7 @@
                 </port>
             </entity>
             <entity name="unsorted" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 23, 499, 861}, maximized=true}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 23, 499, 861}, maximized=false}">
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 817]">
                 </property>
