@@ -20,14 +20,20 @@
 	and enter ptolemy.vergil.VergilApplication as Main class.
       </li>
 
-      <li> Press the Run button
+      <li> Press the Run button and make sure Vergil starts up.</li>
+      <li> To debug, quit Vergil, and set a breakpoint:
+        <ol>
+          <li>Use the Package Explorer to browse to tolemy.domains.continuous.kernel.ContinuousDirector</li>
+          <li>Find the fire() method.</li>
+          <li>Right click in the left margin next to the first line of the fire() method and select Toggle Breakpoint.</li>
+        </ol>
       </li>
-      <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
-	of ptolemy.domains.ct.kernel.CTBaseIntegrator. 
-	</li>
+
       <li>Then <code>Run</code> | <code>Debug</code>, and
-	as above. Open the Lorenz CT demo from the Quick Tour and run it.
+	as above. In Vergil, open the Lorenz Continuo demo from the Quick Tour: Tour | complete list of all demos | Continuous | Lorenze and then run the demo.
       </li>
+
+      <li>The model will run until the fire() method and the the Java debugger view will appear.</li>
     </ol>
 
     <p>See also <a href="../eclipseNotes.htm" target="main">Eclipse Notes</a></p>
