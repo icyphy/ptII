@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={616, 280, 727, 442}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={349, 23, 727, 634}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[493, 332]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[493, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.91846838662795, 207.4971838662791}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.91846838662795, 303.4971838662791}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -67,7 +67,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A time difference of less than 128ms between server and client is required to maintain &#10;NTP synchronization. (http://www.ntp.org/) &#10;&#10;The clock synchronization error can be assumbed to be 128ms*2 = 256ms (this is &#10;set as a property of the PtidesDirector inside the PtidesPlatform).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 320.0]">
         </property>
     </property>
     <entity name="VertxBusHandler" class="ptolemy.actor.lib.vertx.VertxBusHandler">
@@ -295,10 +295,10 @@
             <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
                 <property name="clockSynchronizationErrorBound" class="ptolemy.actor.parameters.SharedParameter" value="0.256">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 319, 901, 485}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 358, 1160, 765}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -309,7 +309,7 @@
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Initialize register with &#10;current date at the beginning &#10;of the simulation.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 280.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[73.75, 525.0]">
                 </property>
             </property>
             <port name="port" class="ptolemy.domains.ptides.lib.PtidesPort">
@@ -392,39 +392,12 @@
                     </property>
                 </port>
             </entity>
-            <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-                <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <doc>Output the current time.</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 90.0]">
-                </property>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
-                    </property>
-                </port>
-            </entity>
-            <entity name="sorted2" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1659, 279, 499, 861}, maximized=false}">
-                </property>
-                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 817]">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 90.0]">
-                </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
-                    </property>
-                </port>
-            </entity>
             <entity name="sorted" class="ptolemy.actor.lib.gui.Display">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2181, 275, 499, 861}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={746, 23, 499, 861}, maximized=true}">
                 </property>
                 <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 817]">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 35.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 85.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -436,7 +409,7 @@
             <entity name="Register" class="ptolemy.domains.de.lib.Register">
                 <property name="initialValue" class="ptolemy.data.expr.Parameter" value="">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[358.75, 495.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -454,7 +427,7 @@
             <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError">
                 <property name="message" class="ptolemy.kernel.util.StringAttribute" value="The previous timestamp was larger than the current one.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 260.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[623.75, 505.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -474,7 +447,7 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 260.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[528.75, 505.0]">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -494,7 +467,7 @@
                 </port>
             </entity>
             <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[258.75, 495.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -504,12 +477,12 @@
                 </port>
             </entity>
             <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[108.75, 495.0]">
                 </property>
             </entity>
             <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
                 <doc>Output the current date.</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[193.75, 495.0]">
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -529,7 +502,7 @@
                     <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 330.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[353.75, 575.0]">
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -538,10 +511,24 @@
                 </port>
             </entity>
             <entity name="StringToDate" class="ptolemy.actor.lib.conversions.StringToDate">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 330.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[428.75, 575.0]">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    </property>
+                </port>
+            </entity>
+            <entity name="unsorted" class="ptolemy.actor.lib.gui.Display">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 23, 499, 861}, maximized=true}">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 817]">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 75.0]">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
                 </port>
@@ -559,8 +546,6 @@
                 </property>
                 <vertex name="vertex1" value="[115.0, 170.0]">
                 </vertex>
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -590,9 +575,6 @@
             <link port="Merge.input" relation="relation8"/>
             <link port="Merge.input" relation="relation"/>
             <link port="Merge.output" relation="relation5"/>
-            <link port="CurrentTime.output" relation="relation4"/>
-            <link port="CurrentTime.trigger" relation="relation5"/>
-            <link port="sorted2.input" relation="relation4"/>
             <link port="sorted.input" relation="relation5"/>
             <link port="Register.input" relation="relation3"/>
             <link port="Register.output" relation="relation10"/>
@@ -610,6 +592,8 @@
             <link port="Expression2.in" relation="relation5"/>
             <link port="StringToDate.input" relation="relation11"/>
             <link port="StringToDate.output" relation="relation12"/>
+            <link port="unsorted.input" relation="relation"/>
+            <link port="unsorted.input" relation="relation8"/>
         </entity>
     </entity>
     <entity name="ConverStringToDate" class="ptolemy.actor.TypedCompositeActor">

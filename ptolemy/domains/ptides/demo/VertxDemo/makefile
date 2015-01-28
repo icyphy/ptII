@@ -49,6 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Publisher.xml \
+	Publisher2.xml \
 	Subscriber.xml \
 	VertxDemo.xml 
 
