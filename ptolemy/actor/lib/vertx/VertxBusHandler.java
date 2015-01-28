@@ -203,7 +203,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         _client = _vertx.createHttpClient().setHost(_host).setPort(_port);
         _openWebSocket();
         
-        _periodicPing = _vertx.setPeriodic(5000, new Handler<Long>() {
+        _periodicPing = _vertx.setPeriodic(3000, new Handler<Long>() {
             @Override
             public void handle(Long timerID) {
                 JsonObject json = new JsonObject().putString("type", "ping");
