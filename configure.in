@@ -6032,7 +6032,7 @@ else
     if test "${PTCC:-none}" != "none"; then
        AC_MSG_CHECKING([for libexpat])
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libexpat /usr/local/lib /usr/lib64 /usr/lib"
+       dirs="$PTII/vendors/libexpat /usr/local/lib /usr/lib64 /usr/lib /lib"
        for dir in $dirs
        do
 	   # Mac OS X could have jnilib or dylib,
