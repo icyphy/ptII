@@ -29,6 +29,7 @@ package ptolemy.copernicus.kernel;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -39,6 +40,7 @@ import java.util.Set;
 import soot.EntryPoints;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
+import soot.MethodOrMethodContext;
 import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
@@ -107,12 +109,11 @@ HasPhaseOptions {
                 + phaseName + ", " + options + ")");
         Scene.v().releaseCallGraph();
 
-        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v(),
-                true);
+        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v() /*,true*/);
         cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachableMethods = new ReachableMethods(callGraph,
-                EntryPoints.v().application());
+                new ArrayList<MethodOrMethodContext>(EntryPoints.v().application()));
 
         reachableMethods.update();
 
@@ -150,7 +151,7 @@ HasPhaseOptions {
         });
         Set necessaryClasses = new HashSet();
         ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph,
-                EntryPoints.v().application().iterator(), filter);
+                new ArrayList<MethodOrMethodContext>(EntryPoints.v().application()).iterator(), filter);
         RTAReachableMethods.update();
 
         List list = new LinkedList();

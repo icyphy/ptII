@@ -26,6 +26,7 @@
  */
 package ptolemy.copernicus.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,6 +37,7 @@ import soot.Body;
 import soot.EntryPoints;
 import soot.Hierarchy;
 import soot.RefType;
+import soot.MethodOrMethodContext;
 import soot.Scene;
 import soot.SootField;
 import soot.SootMethod;
@@ -72,8 +74,8 @@ public class SideEffectAnalysis {
         Iterator methods = _unprocessedMethods.reader();
 
         CallGraph callGraph = Scene.v().getCallGraph();
-        _reachables = new ReachableMethods(callGraph, EntryPoints.v()
-                .application());
+        _reachables = new ReachableMethods(callGraph, new ArrayList<MethodOrMethodContext>(EntryPoints.v()
+                        .application()));
         _reachables.update();
 
         // Process all the reachableMethods.

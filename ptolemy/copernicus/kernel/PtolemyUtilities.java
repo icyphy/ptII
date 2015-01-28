@@ -749,7 +749,7 @@ public class PtolemyUtilities {
      */
     public static void callAttributeChanged(Local base, Local attributeLocal,
             SootClass theClass, SootMethod method, JimpleBody body,
-            Object insertPoint) {
+            Stmt insertPoint) {
         // Make sure we have a local of type attribute to pass
         // to attributeChanged
         if (attributeLocal.getType() != attributeType) {

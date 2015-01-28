@@ -82,7 +82,7 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis {
         }
 
         // ENDCHANGE
-        customizeInitialFlowGraph();
+        //customizeInitialFlowGraph();
         // Feng Qian: March 07, 2002
         // Set initial values for entry points
         {

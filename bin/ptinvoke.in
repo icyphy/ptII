@@ -550,8 +550,8 @@ if [ "$PTANGO_DIR" = "ptango" ]; then
 fi
 
 
-#### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
-# The soot and jasmin jar files.
+#### Soot..  Java compiler and optimizer package.
+# The sootclasses.jar.
 SOOT_DIR="@SOOT_DIR@"
 JAVA_SYSTEM_JAR="@JAVA_SYSTEM_JAR@"
 # Java 1.5 has javax.crypto.Cipher in jce.jar, Soot needs this
