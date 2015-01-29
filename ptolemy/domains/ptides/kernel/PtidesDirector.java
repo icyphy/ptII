@@ -994,7 +994,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         // Initialize input port groups.
         _inputPortGroups.put(inputPort, new HashSet<TypedIOPort>());
-        ;
 
         // Set dependency with self.
         _putSuperdenseDependencyPair(inputPort, inputPort,
@@ -1035,7 +1034,6 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         // Calculate delayOffset to each input port.
         for (TypedIOPort port : _inputPorts) {
-
             // Disallow SensorPort and NetworkReceiverPort.
             if (port instanceof PtidesPort
                     && (((PtidesPort) port).isSensorPort() || ((PtidesPort) port)
@@ -1047,7 +1045,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
             // input ports to the input port group of this port.
             double delayOffset = Double.POSITIVE_INFINITY;
             for (TypedIOPort inputPort : _inputPorts) {
-                // Only allow SensorPort and NetworkReceiverPort.
+                // Not needed for SensorPort and NetworkReceiverPort.
                 if (!(inputPort instanceof PtidesPort && (((PtidesPort) inputPort)
                         .isSensorPort() || ((PtidesPort) inputPort)
                         .isNetworkReceiverPort()))) {
@@ -1337,7 +1335,17 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
 
                 _addInputPort(inputPort);
+                
+                // If the actor does not have any outputs all its inputs
+                // are in a port group
+                if (actor.outputPortList().size() == 0) {
+                    for (TypedIOPort inPort : (List<TypedIOPort>) actor
+                            .inputPortList()) {
+                        _inputPortGroups.get(inputPort).add(inPort);
+                    }
+                }
 
+                // If the actor does have outputs check the dependency.
                 for (TypedIOPort outputPort : (List<TypedIOPort>) actor
                         .outputPortList()) {
                     // Get superdense dependency between input port and output
@@ -1827,6 +1835,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
      */
     private void _setDelayOffset(NamedObj namedObj, Double delayOffset)
             throws IllegalActionException {
+        // If the flag to ignore safe to process analysis is set on this port, do not set
+        // the delay offset.
+        Attribute setDelayOffsetManually = namedObj.getAttribute("NoSafeToProcessAnalysis");
+        if (setDelayOffsetManually != null) {
+            if( ((Parameter)setDelayOffsetManually).getValueAsString().equals("true")) {
+                return;
+            }
+        }
+        
         DoubleToken token = new DoubleToken(delayOffset);
         Parameter parameter = (Parameter) namedObj.getAttribute("delayOffset");
         if (parameter == null) {
