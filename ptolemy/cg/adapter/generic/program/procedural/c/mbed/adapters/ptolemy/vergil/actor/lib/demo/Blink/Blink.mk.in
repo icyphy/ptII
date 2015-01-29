@@ -1,0 +1,155 @@
+# Template makefile from ptolemy/cg/adapter/generic/program/procedural/c/mbed/makefile.in
+# $Id$
+# The CodeGenerator class subsitutes strings like "@modelName@" with
+# the value of parameters and writes the results in the directory
+# where the source code is created.
+#
+# To use your _own_ makefile, create a makefile named "ModelName.mk.in".
+# For example, if the model is called Foo, then the code generator
+# looks for a makefile template file called "Foo.mk.in" and then
+# looks for $PTII/ptolemy/codegen/c/makefile.in.
+#
+# To compile using this makefile after substitution, run:
+#    make -f @modelName@.mk
+
+PTCGLIBRARIES = @PTCGLibraries@
+PTCGINCLUDES = @PTCGIncludes@
+PTCG_CFILES = @PTCG_CFILES@
+PTCG_OFILES = @PTCG_OFILES@
+
+# Under Windows, to create a binary that does not pop up a console window,
+# compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
+CC_FLAGS=
+
+# If the user would like to add compile time options, run with
+# make -f @modelName@.mk USER_CC_FLAGS=xxx
+USER_CC_FLAGS = -std=c99
+
+# We use -ggdb because -g fails with very large .c files
+DEBUG = -ggdb
+
+# Flags for warnings
+# Use -Wall so we have better code.
+WARNING_CC_FLAGS = -Wall
+
+# To compile very large C files, try:
+# make -f @modelName@.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0 --verbose -Q"
+# Each of the options above:
+#   No -Wall:  avoid any optimization
+#   -pipe: avoid temporary files
+#   -O0: avoid optimization
+#   --verbose: print out steps
+#   -Q: print out what functions are being compiled and timing stats.
+
+
+# ARDUINO_INCLUDES is set in ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+# One alternative is to define the ARDUINO_INCLUDES_DIRECTORY environment variable and rerun the code generator.
+#
+# export ARDUINO_INCLUDES_DIRECTORY=/Applications/Arduino.app/Contents/Resources/Java/hardware/mbed/avr/cores/arduino
+# $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.mbed $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
+
+ARDUINO_INCLUDES=@ARDUINO_INCLUDES@ -I/Applications/Arduino.app/Contents/Resources/Java/hardware/mbed/avr/variants/yun
+
+# FIXME: we need a way to define the target platform.  Workaround: Use
+# a local makefile.in in the directory where the model is located.
+# See
+# ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+ARDUINO_DEFINES=-D__AVR__ -D__AVR_ATmega32U4__ -DPT_DOES_NOT_HAVE_MEMORY_H -DPT_DOES_NOT_HAVE_TIME_H
+
+AVR_BASE=/Applications/Arduino.app/Contents/Resources/Java/hardware
+AVR_CORES=$(AVR_BASE)/mbed/avr/cores/arduino
+AVR_VARIANT=yun
+
+AVR_BIN=$(AVR_BASE)/tools/avr/bin
+AVR_AR=$(AVR_BIN)/avr-ar
+AVR_GCC=$(AVR_BIN)/avr-gcc
+AVR_GPP=$(AVR_BIN)/avr-g++
+AVR_OBJCOPY=$(AVR_BIN)/avr-objcopy
+AVR_SIZE=$(AVR_BIN)/avr-size
+
+
+ARDUINO_INCLUDES=-I$(AVR_CORES) -I$(AVR_BASE)/mbed/avr/variants/$(AVR_VARIANT)
+
+ARDUINO_DEFINES=-D__AVR__ -D__AVR_ATmega32U4__ -DPT_DOES_NOT_HAVE_MEMORY_H -DPT_DOES_NOT_HAVE_TIME_H -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD -mmcu=atmega32u4 -DF_CPU=16000000L -DARDUINO=156 -DARDUINO_AVR_YUN -DARDUINO_ARCH_AVR -DUSB_VID=0x2341 -DUSB_PID=0x8041 -DUSB_MANUFACTURER= -DUSB_PRODUCT="\"Arduino Yun\""
+
+AVR_CORES_C_FILES= \
+	$(AVR_CORES)/WInterrupts.c \
+	$(AVR_CORES)/hooks.c \
+	$(AVR_CORES)/avr-libc/malloc.c \
+	$(AVR_CORES)/avr-libc/realloc.c \
+	$(AVR_CORES)/wiring.c \
+	$(AVR_CORES)/wiring_analog.c \
+	$(AVR_CORES)/wiring_digital.c \
+	$(AVR_CORES)/wiring_pulse.c \
+	$(AVR_CORES)/wiring_shift.c
+
+AVR_CORES_CPP_FILES= \
+	$(AVR_CORES)/CDC.cpp \
+	$(AVR_CORES)/HID.cpp \
+	$(AVR_CORES)/HardwareSerial.cpp \
+	$(AVR_CORES)/HardwareSerial0.cpp \
+	$(AVR_CORES)/HardwareSerial1.cpp \
+	$(AVR_CORES)/HardwareSerial2.cpp \
+	$(AVR_CORES)/HardwareSerial3.cpp \
+	$(AVR_CORES)/IPAddress.cpp \
+	$(AVR_CORES)/Print.cpp \
+	$(AVR_CORES)/Stream.cpp \
+	$(AVR_CORES)/Tone.cpp \
+	$(AVR_CORES)/USBCore.cpp \
+	$(AVR_CORES)/WMath.cpp \
+	$(AVR_CORES)/WString.cpp \
+	$(AVR_CORES)/main.cpp \
+	$(AVR_CORES)/new.cpp
+
+MODELNAME=@modelName@
+
+$(MODELNAME).hex: $(MODELNAME).elf
+	$(AVR_OBJCOPY) -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0 $(MODELNAME).elf $(MODELNAME).eep 
+	$(AVR_OBJCOPY) -O ihex -R .eeprom $(MODELNAME).elf $(MODELNAME).hex 
+	$(AVR_SIZE) $(MODELNAME).hex
+
+$(MODELNAME).elf: foo.o $(MODELNAME).o core.a
+	#	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf $(MODELNAME).o core.a
+	@echo "FIXME: We need to link against the file that has setup() in it, which is foo.o"
+	$(AVR_GCC) -Os -Wl,--gc-sections -mmcu=atmega32u4 -o $(MODELNAME).elf foo.o core.a
+
+foo.o: foo.cpp
+	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) foo.cpp
+
+foo.cpp: _Blink/_EmbeddedCodeActor/Blink_EmbeddedCodeActor_EmbeddedActor.c
+	echo "FIXME: HACK! HACK! HACK!"
+	echo "The file that has the Arduino code needs to be compiled as a .cpp file"
+	mv _Blink/_EmbeddedCodeActor/Blink_EmbeddedCodeActor_EmbeddedActor.c foo.cpp
+
+core.a: $(AVR_CORES_C_FILES) $(AVR_CORES_CPP_FILES) $(MODELNAME).o
+	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(AVR_CORES_CPP_FILES)
+	$(AVR_GCC) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(AVR_CORES_C_FILES)
+	$(AVR_GCC) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $(PTCG_CFILES)
+	rm $(MODELNAME)_Main.*
+	$(AVR_AR) rcs core.a *.o
+
+# We need -D__int64="long long" when invoking jni interface under cygwin
+$(MODELNAME).o: $(MODELNAME).cpp 
+	$(AVR_GPP) -c $(ARDUINO_DEFINES) $(ARDUINO_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o $(MODELNAME).o -lm $(PTCGLIBRARIES)
+
+# Copy the .c file to a .cpp file so that we can run g++
+$(MODELNAME).cpp: $(MODELNAME)_Main.c
+	cp $(MODELNAME)_Main.c $@
+
+SERIAL_PORT=/dev/tty.usbmodem1421
+AVRDUDE = $(AVR_BIN)/avrdude
+AVRCONF = $(AVR_BASE)/tools/avr/etc/avrdude.conf
+run:
+	stty -f $(SERIAL_PORT)
+	sleep 1
+	# Then run the avrdude command
+	$(AVRDUDE) -C $(AVRCONF) -v -v -v -v -p m32u4 -c avr109 -P $(SERIAL_PORT) -b 57600 -D -U flash:w:$(MODELNAME).hex:i
+
+# Other Targets
+clean:
+	rm -rf $(PTCG_OFILES) @modelName@
+	rm -f *.eep *.hex *.elf core.a *.o
+	-@echo ' '
+
+.PHONY: all clean dependents
+.SECONDARY:

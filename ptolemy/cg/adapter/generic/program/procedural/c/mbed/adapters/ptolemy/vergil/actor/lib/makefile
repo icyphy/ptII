@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2014 The Regents of the University of California
+# @Copyright (c) 2014 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/vergil/actor/lib
 
-DIRS =		adapters arduino mbed luminary #renesas xmos
+DIRS =		demo
 
 # Root of the Java directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,37 +45,33 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	c
-PTCLASSJAR =
+PTPACKAGE = 	lib
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	arduino/arduino.jar \
-	luminary/luminary.jar \
-	mbed/mbed.jar
-
-#	renesas/renesas.jar
-#	xmos/xmos.jar
+#PTCLASSALLJARS = \
+#	lib/lib.jar
 
 # Keep this list alphabetized.
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	LEDMatrix.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	adapters luminary renesas xmos
+MISC_FILES = 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	$(DIRS)
 
 JCLASS = $(JSRCS:%.java=%.class)

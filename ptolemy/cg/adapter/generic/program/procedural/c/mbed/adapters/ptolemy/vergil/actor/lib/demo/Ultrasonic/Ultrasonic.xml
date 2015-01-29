@@ -1,0 +1,107 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Ultrasonic" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={296, 189, 1309, 752}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 642]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{527.5, 311.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prototype of a model that someday might generate code for an Arduino Ultrasound kit.&#10;&#10;The model only works in code generation, not in simulation.&#10;&#10;The Ultrasound.c file contains the C code we would like to generate.&#10;&#10;The C code has a loop where it sends 1s and 0s to a pin with microsecond delays.&#10;The C code then reads the values and sends it to the Serial port if it is in range.&#10;&#10;We would like to have a model that can run in regular Ptolemy, then generate regular C code, &#10;then generate AVR C code.&#10;&#10;To generate the code:&#10;$PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.arduino $PTII/ptolemy/cg/adapter/generi\&#10;c/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.xml&#10;&#10;Notes are at http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 330.0]">
+        </property>
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.arduino">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{695.0, 65.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The SDF Director has period set to 0.05, which is 50ms.&#10;and synchronizeToRealTime set to true.&#10;&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 95.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the code, look inside this actor.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedCodeActor">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+        </property>
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __AVR__&#10;#include &lt;Arduino.h&gt;&#10;#include &lt;HardwareSerial.h&gt; /*  For Serial.println() */&#10;/*                                                                                                                  &#10;  HC-SR04 Ping distance sensor:                                                                                     &#10;  VCC to arduino 5v                                                                                                 &#10;  GND to arduino GND                                                                                                &#10;  Echo to Arduino pin 7                                                                                             &#10;  Trig to Arduino pin 8                                                                                             &#10;                                                                                                                    &#10;  This sketch originates from Virtualmix: http://goo.gl/kJ8Gl                                                       &#10;  Has been modified by Winkle ink here: http://winkleink.blogspot.com.au/2012/05/arduino-hc-sr04-ultrasonic-distanc\&#10;e.html                                                                                                              &#10;  And modified further by ScottC here: http://arduinobasics.blogspot.com.au/2012/11/arduinobasics-hc-sr04-ultrasoni\&#10;c-sensor.html                                                                                                       &#10;  on 10 Nov 2012.                                                                                                   &#10;*/&#10;&#10;#define echoPin 7 // Echo Pin                                                                                       &#10;#define trigPin 8 // Trigger Pin                                                                                    &#10;#define LEDPin 13 // Onboard LED                                                                                    &#10;&#10;int maximumRange = 200; // Maximum range needed                                                                     &#10;int minimumRange = 0; // Minimum range needed                                                                       &#10;long duration, distance; // Duration used to calculate distance                                                     &#10;&#10;void setup() {&#10;    Serial.begin (9600);&#10;    pinMode(trigPin, OUTPUT);&#10;    pinMode(echoPin, INPUT);&#10;    pinMode(LEDPin, OUTPUT); // Use LED indicator (if required)                                                     &#10;}&#10;#endif /* __AVR__ */&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;&#10;#ifdef __AVR__&#10;    /* The following trigPin/echoPin cycle is used to determine the                                                 &#10;       distance of the nearest object by bouncing soundwaves off of it. */&#10;    digitalWrite(trigPin, LOW);&#10;    delayMicroseconds(2);&#10;&#10;    digitalWrite(trigPin, HIGH);&#10;    delayMicroseconds(10);&#10;&#10;    digitalWrite(trigPin, LOW);&#10;    duration = pulseIn(echoPin, HIGH);&#10;&#10;    //Calculate the distance (in cm) based on the speed of sound.                                                   &#10;    distance = duration/58.2;&#10;&#10;    if (distance &gt;= maximumRange || distance &lt;= minimumRange){&#10;        /* Send a negative number to computer and Turn LED ON                                                       &#10;           to indicate &quot;out of range&quot; */&#10;        Serial.println(&quot;-1&quot;);&#10;        digitalWrite(LEDPin, HIGH);&#10;    }&#10;    else {&#10;        /* Send the distance to the computer using Serial protocol, and                                             &#10;           turn LED OFF to indicate successful reading. */&#10;        Serial.println(distance);&#10;        digitalWrite(LEDPin, LOW);&#10;    }&#10;&#10;    //Delay 50ms before next reading.                                                                               &#10;    delay(50);&#10;#endif /* __AVR__ */&#10;&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 200.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="localClock" class="ptolemy.actor.LocalClock">
+                <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                </property>
+                <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+                </property>
+            </property>
+        </property>
+    </entity>
+</entity>

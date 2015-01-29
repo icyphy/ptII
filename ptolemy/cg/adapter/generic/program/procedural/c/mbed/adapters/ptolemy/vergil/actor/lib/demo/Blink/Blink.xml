@@ -1,0 +1,109 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Blink" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 55.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 61, 1309, 752}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 642]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{527.5, 311.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prototype of a model that someday might generate code for an Arduino Ultrasound kit.&#10;&#10;The model only works in code generation, not in simulation.&#10;&#10;The Ultrasound.c file contains the C code we would like to generate.&#10;&#10;The C code has a loop where it sends 1s and 0s to a pin with microsecond delays.&#10;The C code then reads the values and sends it to the Serial port if it is in range.&#10;&#10;We would like to have a model that can run in regular Ptolemy, then generate regular C code, &#10;then generate AVR C code.&#10;&#10;To generate the code:&#10;$PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.mbed $PTII/ptolemy/cg/adapter/generi\&#10;c/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.xml&#10;&#10;Notes are at http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 330.0]">
+        </property>
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.mbed">
+        </property>
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="make -f Blink.mk run">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{695.0, 65.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The SDF Director has period set to 0.05, which is 50ms.&#10;and synchronizeToRealTime set to true.&#10;&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 95.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To see the code, look inside this actor.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedCodeActor">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+        </property>
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;&#10;#ifdef __AVR__&#10;#include &lt;Arduino.h&gt;&#10;#include &lt;HardwareSerial.h&gt; /*  For Serial.println() */&#10;/*&#10;  Blink&#10;  Turns on an LED on for one second, then off for one second, repeatedly.&#10;&#10;  This example code is in the public domain.&#10; */      &#10;&#10;&#10;// Pin 13 has an LED connected on most Arduino boards.&#10;// give it a name:&#10;int led = 13;                                           &#10;&#10;void setup() {&#10;    pinMode(led, OUTPUT);                                             &#10;}&#10;&#10;&#10;#ifdef __cplusplus&#10;extern &quot;C&quot; {&#10;void Blink_EmbeddedCodeActor_EmbeddedActor_fire(struct AtomicActor*);&#10;}&#10;#endif&#10;&#10;void loop() {&#10;Blink_EmbeddedCodeActor_EmbeddedActor_fire(NULL);&#10;}&#10;&#10;#endif /* __AVR__ */&#10;/**/&#10;&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;&#10;/***fireBlock***/&#10;&#10;#ifdef __AVR__&#10;&#10;&#10;// the loop routine runs over and over again forever:&#10;  digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)&#10;  delay(1000);               // wait for a second&#10;  digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW&#10;  delay(1000);               // wait for a second&#10;&#10;#endif /* __AVR__ */&#10;&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 200.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="localClock" class="ptolemy.actor.LocalClock">
+                <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                </property>
+                <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+                </property>
+            </property>
+        </property>
+    </entity>
+</entity>
