@@ -27,6 +27,9 @@
  */
 package ptolemy.copernicus.kernel;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -203,8 +206,15 @@ public abstract class KernelMain {
         if (!soot.options.Options.v().parse(args)) {
             throw new KernelRuntimeException("Option parse error");
         }
+        String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+        String systemJar = "";
+        try {
+            systemJar = KernelMain._getSystemJar().getCanonicalPath();
+        } catch (Throwable throwable) {
+            throw new KernelRuntimeException(throwable, "Could not find rt.jar or classes.jar");
+        }
         if (!soot.options.Options.v().parse(new String [] {
-                            "-cp", "/home/cxh/src/ptII:/usr/java/jdk1.8.0_31/jre/lib/rt.jar",
+                            "-cp", ptII + ":" + systemJar,
                             "-w",
                             "-allow-phantom-refs"})) {
             throw new KernelRuntimeException("Option parse error");
@@ -326,6 +336,56 @@ public abstract class KernelMain {
     /** The CompositeEntity we are generating code for.
      */
     protected CompositeEntity _toplevel;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Return the path name to the system jar file, usually rt.jar.
+    private static File _getSystemJar()
+        throws IOException, FileNotFoundException {
+        String systemJarPathName = System.getProperty("java.home")
+                + File.separator + "lib" + File.separator + "rt.jar";
+
+        File systemJar = new File(systemJarPathName);
+
+        // This would be a good place to search in other places, perhaps
+        // by reading a property like ptolemy.system.jar
+        // However, we should wait until this is a problem.
+        // The code works with Sun JDK1.2 and 1.3 and IBM JDK1.3.
+        if (!systemJar.isFile()) {
+            // Try this for IBM JDK 1.4.1
+            String systemJarPathName2 = System.getProperty(
+                        "java.home") + File.separator + "lib" + File.separator
+                    + "core.jar";
+            systemJar = new File(systemJarPathName2);
+
+
+            if (!systemJar.isFile()) {
+                // Search for Classes.jar on the mac
+                String systemJarPathName3 = System.getProperty("java.home")
+                    + File.separator + "../Classes"
+                    + File.separator + "classes.jar";
+                systemJar = new File(systemJarPathName3);
+
+                if (!systemJar.isFile()) {
+                    throw new FileNotFoundException(systemJarPathName + " and "
+                            + systemJarPathName2 + " and "
+                            + systemJarPathName3
+                            + " either do not exist or are not readable");
+                } else {
+                    systemJarPathName = systemJarPathName3;
+                }
+            } else {
+                systemJarPathName = systemJarPathName2;
+            }
+        }
+
+        if (!systemJar.canRead()) {
+            throw new IOException("Can't read '" + systemJarPathName + "'");
+        }
+
+        return systemJar;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
