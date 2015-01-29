@@ -199,7 +199,14 @@ public abstract class KernelMain {
         //         args[0] = "java.lang.Object";
         //         // As of soot 2.0.1, this is all that is required.
         //         //        soot.Main.main(args);
+        System.out.println("Copernicus.kernel.KernelMain.generateCode(" + java.util.Arrays.toString(args));
         if (!soot.options.Options.v().parse(args)) {
+            throw new KernelRuntimeException("Option parse error");
+        }
+        if (!soot.options.Options.v().parse(new String [] {
+                            "-cp", "/home/cxh/src/ptII:/usr/java/jdk1.8.0_31/jre/lib/rt.jar",
+                            "-w",
+                            "-allow-phantom-refs"})) {
             throw new KernelRuntimeException("Option parse error");
         }
         PackManager.v().getPack("wjtp").apply();
