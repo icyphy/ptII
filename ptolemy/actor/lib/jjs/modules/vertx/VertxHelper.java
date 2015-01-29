@@ -49,11 +49,10 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// VertxHelper
 
-/**
-   A helper class for the Vert.x event bus API.
+/** A helper class for the Vert.x event bus API.
    
    @author Patricia Derler
-   @version $Id: VertxBusHelper.java 71355 2015-01-13 05:40:56Z cxh $
+   @version $Id: VertxHelper.java 71355 2015-01-13 05:40:56Z cxh $
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (pd)
    @Pt.AcceptedRating Red (pd)
@@ -62,47 +61,60 @@ public class VertxHelper {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    /**
-     * Create a VertxBusHelper instance as a client-side web socket for
+    /** Create a VertxHelper instance as a client-side web socket for
      * each JavaScript instance.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
-     * @return A new VertxBusHelper.
+     * @return A new VertxHelper.
      */
     public static VertxHelper getEventBus(ScriptEngine engine,
             ScriptObjectMirror currentObj, String host, int port) {
         return new VertxHelper(engine, currentObj, host, port, true);
     }
     
-    /**
-     * Create a VertxHelper instance as a server-side vertx bus
-     * host.
+    /** Create a VertxHelper instance as a server-side vertx bus host.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port on the host that provides access to the Vert.x bus.
-     * @return A new VertxBusHelper.
+     * @return A new VertxHelper.
      */
     public static VertxHelper getEventBusServer(ScriptEngine engine, 
             ScriptObjectMirror currentObj, int port) {
         return new VertxHelper(engine, currentObj, port, true);
     }
     
-    public static VertxHelper getHttpServer(ScriptEngine engine, 
-            ScriptObjectMirror currentObj, int port) {
-        return new VertxHelper(engine, currentObj, port, false);
-    }
-    
+    /**
+     * Create a VertxHelper instance as an http client.
+     * 
+     * @param engine The JavaScript engine of the JavaScript actor.
+     * @param currentObj The JavaScript instance of the WebSocket.
+     * @param host The host of the Vert.x bus.
+     * @param port The port on the host that provides access to the Vert.x bus.
+     * @return A new VertxHelper.
+     */
     public static VertxHelper getHttpClient(ScriptEngine engine,
             ScriptObjectMirror currentObj, String host, int port) {
         return new VertxHelper(engine, currentObj, host, port, false);
     }
 
     /**
-     * Close the internal web socket, cancel periodic ping.
+     * Create a VertxHelper instance as an http server.
+     * 
+     * @param engine The JavaScript engine of the JavaScript actor.
+     * @param currentObj The JavaScript instance of the WebSocket.
+     * @param port The port on the host that provides access to the Vert.x bus.
+     * @return A new VertxHelper.
+     */
+    public static VertxHelper getHttpServer(ScriptEngine engine, 
+            ScriptObjectMirror currentObj, int port) {
+        return new VertxHelper(engine, currentObj, port, false);
+    }
+    
+    /** Close the internal web socket, cancel periodic ping.
      */
     public void close() {
         _vertx.cancelTimer(_periodicPing);
@@ -117,18 +129,6 @@ public class VertxHelper {
         _httpServer.close();
     }
     
-    /** Send http response string.
-     * @param request The request that receives the response.
-     * @param response The response as a string.
-     */
-    public void sendHttpResponse(HttpServerRequest request, String response) {
-        request.response().putHeader("content-type", "text/plain");
-        request.response().putHeader("content-length", "" + response.length());
-        request.response().write(response);
-        request.response().end();
-    }
-    
-    
     /** Return whether the web socket is opened successfully. 
      * @return True if the socket was opened successfully.
      */
@@ -138,7 +138,7 @@ public class VertxHelper {
     	}
     	return _wsIsOpen;
     }
-    
+
     /** Publish text data onto vertx bus. 
      * @param address The address.
      * @param message A text message to be sent.
@@ -150,8 +150,7 @@ public class VertxHelper {
         try {
             _sendTextFrame(json);
         } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            _currentObj.callMember("emit", "error");
         }
     }
 
@@ -164,10 +163,22 @@ public class VertxHelper {
         _webSocket.writeTextFrame(message.encode());
     }
 
+    /** Send http response string.
+     * @param request The request that receives the response.
+     * @param response The response as a string.
+     */
+    public void sendHttpResponse(HttpServerRequest request, String response) {
+        request.response().putHeader("content-type", "text/plain");
+        request.response().putHeader("content-length", "" + response.length());
+        request.response().write(response);
+        request.response().end();
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                        ////
     /**
-     * Private constructor for VertxBusHelper to open a 
+     * Private constructor for VertxHelper to open a 
      * client-side web socket and add a ping to keep the websocket open.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
@@ -189,10 +200,6 @@ public class VertxHelper {
                 public void handle(WebSocket websocket) {
                     _wsIsOpen = true;
                     _webSocket = websocket;
-                    Object[] args = new Object[2];
-                    args[0] = _currentObj;
-                    args[1] = "open";
-                    _currentObj.callMember("emit", "connect");
                     _currentObj.callMember("emit", "open");
                     
                     _webSocket.dataHandler(new DataHandler());
@@ -201,6 +208,7 @@ public class VertxHelper {
                 }
             });
             
+            // the periodic ping is needed to keep the websocket open.
             _periodicPing = _vertx.setPeriodic(5000, new Handler<Long>() {
                 @Override
                 public void handle(Long timerID) {
@@ -208,8 +216,7 @@ public class VertxHelper {
                     try {
                         _sendTextFrame(json);
                     } catch (IllegalActionException e) {
-                        e.printStackTrace();
-                        //_exception = e;
+                        _currentObj.callMember("emit", "error");
                     }
                 }
               });
@@ -217,7 +224,7 @@ public class VertxHelper {
     }
     
     /**
-     * Private constructor for VertxBusHelper to open a 
+     * Private constructor for VertxHelper to open a 
      * client-side web socket and add a ping to keep the websocket open.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
@@ -268,6 +275,10 @@ public class VertxHelper {
     /** Instance of the current JavaScript engine. */
     private static ScriptEngine _engine;
 
+    private HttpClient _httpClient = null;
+
+    private HttpServer _httpServer = null;
+
     /** Periodic ping to keep websocket alive when using the eventbus. */
     private long _periodicPing;
     
@@ -280,8 +291,7 @@ public class VertxHelper {
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
     
-    private HttpClient _httpClient = null;
-    private HttpServer _httpServer = null;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
