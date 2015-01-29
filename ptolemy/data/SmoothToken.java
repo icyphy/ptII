@@ -188,7 +188,7 @@ public class SmoothToken extends DoubleToken {
 
     /** Return a clone of the token with the value and the derivatives
      *  updated as if time progressed by timeDifference
-     *  
+     *  @param timeDifference The timeDifference used to extrapolate the token.
      */
     public SmoothToken cloneAt(Time timeDifference){
     	// If _derivatives == null, simply return the current value.
