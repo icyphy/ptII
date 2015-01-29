@@ -126,9 +126,14 @@ core.a: $(MBED_CORES_C_FILES) $(MBED_CORES_CPP_FILES) $(MODELNAME).o #foo.cpp
 	#	$(MBED_GPP) -c $(MBED_DEFINES) $(MBED_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) foo.cpp
 	$(MBED_AR) rcs core.a *.o
 
+LIBFOO=-lfoo
+# Install this from foohub. url:xxx
+LIBFOO_DIRECTORY=/usr/lib/foo
+LIBFOO_DIRECTIVE=-L$(LIBFOO_DIRECTORY) $(LIBFOO)
+
 # We need -D__int64="long long" when invoking jni interface under cygwin
 $(MODELNAME).o: $(MODELNAME).cpp 
-	$(MBED_GPP) -c $(MBED_DEFINES) $(MBED_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o $(MODELNAME).o -lm $(PTCGLIBRARIES)
+	$(MBED_GPP) -c $(MBED_DEFINES) $(MBED_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o $(MODELNAME).o -lm $(PTCGLIBRARIES) $(LIBFOO_DIRECTIVE)
 
 # Copy the .c file to a .cpp file so that we can run g++
 $(MODELNAME).cpp: $(MODELNAME)_Main.c

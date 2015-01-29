@@ -16,5 +16,19 @@
           <pre>
             $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.mbed $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
           </pre>
+          or
+          <pre>
+            java -classpath $PTII ptolemy.cg.kernel.generic.GenericCodeGenerator -generatorPackageList generic.program.procedural.c.mbed $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
+          </pre>
+      </ul>
+      <h2>Notes about how this all works</h2>
+      <dl>
+        <dt>ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java</dt>
+        <dd>This is where MBED_INCLUDES and MBED_BASE are set.</dd>
+        <dt>ptolemy/cg/adapter/generic/program/procedural/c/mbed</dt>
+        <dd>This is where the actor templates are located.</dd>
+        <dt>ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/gui/Display.c</dt>
+        <dd>This file contains the template c code that you will modify.</dd>
+      </dl>
   </body>
 </html>
