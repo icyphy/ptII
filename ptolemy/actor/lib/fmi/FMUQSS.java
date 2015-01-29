@@ -1452,8 +1452,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (input.port.hasToken(0)) {
                 final Token token = input.port.get(0);
                 if (token instanceof SmoothToken) {
-                    final SmoothToken qssTok = (SmoothToken) token;
-                    initialValue = qssTok.doubleValue();
+                    initialValue = ((SmoothToken) token).doubleValue();
                 } else if (token instanceof DoubleToken) {
                     initialValue = ((DoubleToken) token).doubleValue();
                 } else {
@@ -1546,7 +1545,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             } else if (scalarVariable.type instanceof FMIRealType) {
                 double result = scalarVariable.getDouble(_fmiComponent);
                 final double[] ooArr = { result, 0.0, 0.0 };
-                _sendModelToPort(order, ooArr, port);
+                _sendModelToPort(ooArr, port);
                 // token = new DoubleToken(result);
             } else if (scalarVariable.type instanceof FMIStringType) {
                 throw new IllegalActionException("Type " + scalarVariable.type
@@ -1612,7 +1611,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     double result = scalarVariable.getDouble(_fmiComponent);
                     // token = new DoubleToken(result);
                     final double[] ooArr = { result, 0.0, 0.0 };
-                    _sendModelToPort(order, ooArr, port);
+                    _sendModelToPort(ooArr, port);
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     throw new IllegalActionException("Type "
                             + scalarVariable.type + " not supported.");
@@ -1639,33 +1638,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /**
      * Send state and output models to port.
      *
-     * @param ord The state model order.
      * @param val The values to be sent.
      * @param prt The port where values will be sent.
      */
-    private void _sendModelToPort(final int ord, final double[] val,
+    private void _sendModelToPort(final double[] val,
             final TypedIOPort prt) throws NoRoomException,
             IllegalActionException {
-        // Send values (Qss1)
-        if (ord == 0) {
-            prt.send(0, new SmoothToken(val[0]));
-        }
-        // Send values and higher order derivatives (Qss2)
-        else if (ord == 1) {
-            final double[] der = { val[1] };
-            prt.send(0, new SmoothToken(val[0], der));
-        }
-        // Send values and higher order derivatives (Qss3)
-        else if (ord == 2) {
-            final double[] der = { val[1], val[2] };
-            prt.send(0, new SmoothToken(val[0], der));
-        } else {
-            throw new IllegalActionException(
-                    "The order of the Qss integration method used: "
-                            + ord
-                            + " is  not supported. Current implementation supports "
-                            + "Qss1, Qss2, and Qss3");
-        }
+    	prt.send(0, new SmoothToken(val));
     }
 
     /** Populate the specified model with data from the specified token.
@@ -1756,7 +1735,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             // Added a check to produce outputs to port which are connected.
             if (outPort.getWidth() > 0) {
-                _sendModelToPort(order, _qssSolver.getStateModel(qIdx).coeffs,
+                _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
                         outPort);
             }
             // Only produce outputs that depend on the states.
