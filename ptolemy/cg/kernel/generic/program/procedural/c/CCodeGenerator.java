@@ -2978,6 +2978,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/arduino/makefile.in
             _substituteMap.put("@ARDUINO_INCLUDES@", _arduinoIncludes());
             _substituteMap.put("@AVR_BASE@", _avrBase());
+        } else if (generatorPackageList.stringValue().contains("mbed")) {
+            // FIXME: Temporary hack to set up platform dependent -I
+            // directive for the mbed, see
+            // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed/makefile.in
+            _substituteMap.put("@MBED_INCLUDES@", _mbedIncludes());
+            _substituteMap.put("@MBED_BASE@", _mbedBase());
+            // FIXME: We need a way to include target specific functions.
+            _mbedCopy();
         }
 
         // Adds the .c and .o needed files
@@ -3281,6 +3289,85 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         }
         return result;
+    }
+
+    private String _mbedBase() {
+        return "/usr/local/mbed/gcc-arm-none-eabi";
+    }
+
+    /** Copy object files from
+     *  $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed/lib.
+     */
+    private void _mbedCopy() throws IllegalActionException {
+        // FIXME: We need a way to include target specific functions.
+
+        File directory = codeDirectory.asFile();
+        String mbedLibraryDirectory = "ptolemy/cg/adapter/generic/program/procedural/c/mbed/lib/";
+        try {
+            File cgLibDirectory = new File(codeDirectory.asFile(), "/lib/");
+            if (!cgLibDirectory.mkdirs()) {
+                throw new java.io.FileNotFoundException("Could not create \"" + cgLibDirectory + "\"");
+            }
+            // Copy the .o files for mbed.
+            String [] objectFiles = new String [] {
+                "MKL25Z4.ld",
+                "board.o",
+                "cmsis_nvic.o",
+                "libmbed.a",
+                "mbed_overrides.o",
+                "retarget.o",
+                "startup_MKL25Z4.o",
+                "system_MKL25Z4.o"
+            };
+
+            for (String objectFile : objectFiles) {
+                _copyCFileTosrc(
+                        mbedLibraryDirectory,
+                        cgLibDirectory.getCanonicalPath() + "/", objectFile);
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(getComponent(), throwable,
+                    "Failed to copy mbed .o files from \""
+                    + mbedLibraryDirectory + "\".");
+        }
+    }
+
+    /** Return the platform dependent -I directive for the Mbed.
+     *  See $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed/makefile.in
+     *  @return the -I directive for the Mbed.
+     */
+    private String _mbedIncludes() {
+        // FIXME: Temporary hack to set up platform dependent -I directive.
+        // The real fix would be to execute "avr-gcc -print-libgcc-file-name"
+        // and then search up the path.
+        String environmentVariableName = "MBED_INCLUDES_DIRECTORY";
+        String mbedIncludeDirectoryEnvironmentVariable = System
+                .getenv(environmentVariableName);
+        String[] includeSearchPath = new String[] {
+                mbedIncludeDirectoryEnvironmentVariable,
+                "/usr/local/mbed/hardware/mbed/sam/cores/mbed",
+                "/usr/local/mbed-1.5.8/hardware/mbed/sam/cores/mbed",
+                "/Applications/Mbed.app/Contents/Resources/Java/hardware/mbed/avr/cores/mbed" };
+        // If the env is not set, then we don't want to print a null.
+        StringBuffer directories = new StringBuffer();
+        for (int i = 0; i < includeSearchPath.length; i++) {
+            if (includeSearchPath != null
+                    && new File(includeSearchPath[i], "Mbed.h").isFile()) {
+                if (includeSearchPath[i]
+                        .equals(mbedIncludeDirectoryEnvironmentVariable)) {
+                    System.out.println("Using the value defined by "
+                            + environmentVariableName + ": "
+                            + mbedIncludeDirectoryEnvironmentVariable);
+                }
+                return "-I" + includeSearchPath[i];
+            }
+            directories.append(includeSearchPath[i] + ", ");
+        }
+        System.err.println("Could not find Mbed.h. Checked "
+                + directories.toString().substring(0, directories.length() - 2)
+                + ". Try setting the " + environmentVariableName
+                + " environment variable and re-running Ptolemy.");
+        return "-I/SetThe" + environmentVariableName + "EnvironmentVariable";
     }
 
     /** Process the specified code for the adapter associated with the
