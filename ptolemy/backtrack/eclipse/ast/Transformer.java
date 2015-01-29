@@ -617,6 +617,10 @@ public class Transformer {
                 topFile.getName().length() - 6);
         File[] files = path.listFiles(new InnerClassFilter(className));
 
+        if (files == null) {
+            throw new NullPointerException("Failed to get the inner class files for \""
+                    + className + "\", listFiles() returned null?");
+        }
         for (int i = 0; i < files.length; i++) {
             File file = files[i];
             className = file.getName()
