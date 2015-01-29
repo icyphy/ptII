@@ -801,7 +801,8 @@ public class JavaScript extends TypedAtomicActor {
         StringBuffer response = new StringBuffer();
         BufferedReader reader = null;
         String line = "";
-        reader = new BufferedReader(new InputStreamReader(stream));
+        // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
+        reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
 
         String lineBreak = System.getProperty("line.separator");
         while ((line = reader.readLine()) != null) {
