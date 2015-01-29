@@ -95,6 +95,23 @@ public class FMIModelDescription {
     public boolean canProvideMaxStepSize = false;
 
     /**
+     * For the IBM/UCB proposed extension to FMI 2.0, there is a capability flag
+     * handleIntegerTime that indicates that the time inside the FMU is
+     * represented with an integer m (precision) and an integer p (a counter)
+     * representing time as multiples of m.
+     */
+    public boolean handleIntegerTime = false;
+    
+    /**
+     * For the IBM/UCB proposed extension to FMI 2.0, there is a capability flag
+     * handleIntegerTime that indicates that the time inside the FMU is
+     * represented with an integer m (precision) and an integer p (a counter)
+     * representing time as multiples of m. This field represent the precision
+     * m used to represent Time from the FMU.
+     */
+    public Integer precision = 0;
+    
+    /**
      * For FMI 2.0 and greater, the XML file may specify that the FMU supports
      * providing directional derivatives state. This defaults to false if not
      * present in the XML file.

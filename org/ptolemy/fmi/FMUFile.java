@@ -431,6 +431,28 @@ public class FMUFile {
                             .parseBoolean(cosimulation
                                     .getAttribute("canProvideMaxStepSize"));
                 }
+                
+                // handleIntegerTime, extension for FMI-HCS
+                // FIXME: (FABIO) These informations are temporarily here, but a new HibridCoSimulation mode
+                // must be created
+                if (cosimulation.hasAttribute("handleIntegerTime")) {
+                    fmiModelDescription.handleIntegerTime = Boolean
+                            .parseBoolean(cosimulation
+                                    .getAttribute("handleIntegerTime"));
+                }
+                
+                // precision, extension for FMI-HCS
+                if (fmiModelDescription.handleIntegerTime == true) {
+                	if (cosimulation.hasAttribute("precision")) {
+                        fmiModelDescription.precision = Integer
+                                .parseInt(cosimulation
+                                        .getAttribute("precision"));
+                    } else {
+                    	System.out
+                        .println("Warning: FMU modelDescription provides Integer representation of time, but precision is not specified");
+                    }
+                }
+                
             }
 
             // Handle ModelExchange.
