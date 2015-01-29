@@ -696,6 +696,9 @@ public class RealTimeComposite extends MirrorComposite {
         @Override
         public Time fireAtCurrentTime(Actor actor)
                 throws IllegalActionException {
+            // Coverity Scan reports that this method does not call
+            // super.fireAtCurrentTime(), which is ok because we call
+            // it on the executive director.
             Time environmentTime = RealTimeComposite.this
                     .getExecutiveDirector().getModelTime();
             _inputFrames.put(new InputFrame(environmentTime,
