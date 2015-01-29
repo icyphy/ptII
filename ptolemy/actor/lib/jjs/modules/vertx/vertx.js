@@ -58,11 +58,12 @@ exports.VertxBus.prototype.publish = function(address, data) {
 
 ////////////////////
 // Register handler at an address. 
-exports.VertxBus.prototype.registerHandler = function(data) {
+exports.VertxBus.prototype.registerAddressListener = function(data, onReceivedFunction) {
     if (!this.eventbus.isOpen()) {
         throw new Error('not opened');
     }
     this.eventbus.registerHandler(data);
+    this.on('received', onReceivedFunction);
 }
 
 ////////////////////
