@@ -37,7 +37,8 @@ ROOT =		../../../..
 
 # We include diva.jar so that tests like fsm/test/auto/modalModel
 # would work, but that might require having a display
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+#SMALI_JAR = $(ROOT)/$(ME)/smali-2.0.5.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SMALI_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
