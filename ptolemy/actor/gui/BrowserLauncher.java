@@ -903,7 +903,14 @@ public class BrowserLauncher {
                 return browser;
             }
 
+            if (systemFolder == null) {
+                throw new IllegalArgumentException("Failed to get the system folder.");
+            }
             String[] systemFolderFiles = systemFolder.list();
+
+            if (systemFolderFiles == null) {
+                throw new IllegalArgumentException("Failed to get the list of files from the system folder.");
+            }
 
             // Avoid a FilenameFilter because
             // that can't be stopped mid-list

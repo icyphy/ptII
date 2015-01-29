@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -247,7 +248,14 @@ public final class PtolemyServer implements IServerManager {
         ArrayList<String> urls = new ArrayList<String>();
         File modelDirectory = new File(_modelsDirectory);
 
-        for (File filterResult : modelDirectory.listFiles(layoutFilter)) {
+        File  files [] =  modelDirectory.listFiles(layoutFilter);
+        if (files == null) {
+            String message = "Failed to list files in \""
+                + _modelsDirectory + "\", listFiles() returned null";
+                _handleException(message,
+                        new NullPointerException(message));
+        }
+        for (File filterResult : files) {
             if (!filterResult.isDirectory()) {
                 try {
                     urls.add(filterResult.toURI().toURL().toExternalForm());
@@ -282,7 +290,14 @@ public final class PtolemyServer implements IServerManager {
         ArrayList<String> urls = new ArrayList<String>();
         File modelDirectory = new File(_modelsDirectory);
 
-        for (File filterResult : modelDirectory.listFiles(modelFilter)) {
+        File [] files =  modelDirectory.listFiles(modelFilter);
+        if (files == null) {
+            String message = "Failed to list files in \""
+                + _modelsDirectory + "\", listFiles() returned null";
+                _handleException(message,
+                        new NullPointerException(message));
+        }
+        for (File filterResult : files) {
             if (!filterResult.isDirectory()) {
                 try {
                     urls.add(filterResult.toURI().toURL().toExternalForm());
