@@ -30,6 +30,7 @@ package ptolemy.data;
 import java.util.Arrays;
 
 import ptolemy.data.type.BaseType;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -129,6 +130,22 @@ public class SmoothToken extends DoubleToken {
     	}
     }
 
+    /** Construct a SmoothToken with the specified value and derivatives.
+     *  This constructor does not copy the derivatives argument, so it is up
+     *  to the caller to ensure that the array passed in does not later get
+     *  modified (tokens are required to be immutable).
+     *  @param x An array where the first element is the value, and optionally any
+     *           other elements can be present which are the first, second, etc. derivatives.
+     */
+    public SmoothToken(double[] x) {
+    	super(x[0]);
+    	if (x.length > 1){
+    		final int nDer = (x.length > _maxOrder) ? _maxOrder : (x.length-1);
+    		_derivatives = new double[nDer];
+        	System.arraycopy(x, 1, _derivatives, 0, nDer);
+    	}
+    }
+    
     /** Construct a SmoothToken from the specified string.
      *  @param init The initialization string, which is in a format
      *  suitable for java.lang.Double.parseDouble(String).
@@ -169,6 +186,52 @@ public class SmoothToken extends DoubleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a clone of the token with the value and the derivatives
+     *  updated as if time progressed by timeDifference
+     *  
+     */
+    public SmoothToken cloneAt(Time timeDifference){
+    	// If _derivatives == null, simply return the current value.
+    	if (_derivatives == null){
+    		return new SmoothToken(_value);
+    	}
+    	else if(_derivatives.length == 1){
+    		// A common case is QSS2, which has a value and a derivative.
+    		// We handle this case special to stay computationally efficient.
+    		final double dt = timeDifference.getDoubleValue();
+    		final double x = _value + dt * _derivatives[0];
+    		return new SmoothToken(x, _derivatives);
+    	}
+    	else{
+    		// This is the case for tokens with second or higher order derivatives.
+    		// Build an array with value and derivatives
+    		double[] coef = new double[_derivatives.length+1];
+        	coef[0] = _value;
+        	System.arraycopy(_derivatives, 0, coef, 1, _derivatives.length);
+        	
+        	// Create vector with factorial coefficients times dt 
+        	// raised to the corresponding power.
+        	double[] fact = new double[coef.length];
+        	fact[0] = 1;
+    		final double dt = timeDifference.getDoubleValue();
+        	for(int i = 1; i < coef.length; i++){
+        		fact[i] = dt*fact[i-1]/i;
+        	}
+        	
+        	// Advance time for all values in coef and store in new array res
+        	double[] res = new double[coef.length];
+        	for(int i = 0; i < coef.length; i++){
+        		for(int j = 0; j < coef.length-i; j++){
+        			res[i] += coef[j+i] * fact[j];
+        		}
+        	}
+        	double[] der = new double[_derivatives.length];
+        	System.arraycopy(res, 1, der, 0, _derivatives.length);
+        	
+        	return new SmoothToken(res[0], der);
+    	}
+    }
+    
     /** Return the derivatives in the token as a double[], or null if there are
      *  no derivatives. Since tokens are immutable, the caller of this method must
      *  copy the returned array if it intends to modify the array.

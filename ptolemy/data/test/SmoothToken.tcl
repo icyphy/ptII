@@ -833,6 +833,69 @@ test SmoothToken-19.0 {Set limitOrder} {
     list $r0a $r0b $r1a $r1b $r2a $r2b $r3a $r3b $errMsg
 } {{smoothToken(2.0, {})} {smoothToken(2.0, {})} {smoothToken(2.0, {2.0})} {smoothToken(2.0, {2.0})} {smoothToken(2.0, {2.0,3.0})} {smoothToken(2.0, {2.0,3.0})} {smoothToken(2.0, {2.0,3.0})} {smoothToken(2.0, {2.0,3.0,4.0})} {java.lang.IllegalArgumentException: maxOrder must be non-negative, not -1.}}
 
+######################################################################
+####
+# 
+test SmoothToken-20.0 {call cloneAt} {
+    set s [java::new ptolemy.data.SmoothToken 2.0]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set result [$s cloneAt $t]
+    $result toString
+} {2.0}
+
+test SmoothToken-20.1 {call cloneAt} {
+    set v [java::new {double[]} {1} {3.0}]
+    set s [java::new ptolemy.data.SmoothToken 2.0 $v]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set result [$s cloneAt $t]
+    $result toString
+} {smoothToken(14.0, {3.0})}
+
+test SmoothToken-20.2 {call cloneAt} {
+    java::call ptolemy.data.SmoothToken setOrderLimit 5
+    set v [java::new {double[]} {2} {2.0 3.0}]
+    set s [java::new ptolemy.data.SmoothToken $v]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set result [$s cloneAt $t]
+    $result toString
+} {smoothToken(14.0, {3.0})}
+
+
+test SmoothToken-20.3 {call cloneAt} {
+    java::call ptolemy.data.SmoothToken setOrderLimit 5
+    set v [java::new {double[]} {3} {2.0 3.0 6.0}]
+    set s [java::new ptolemy.data.SmoothToken $v]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set result [$s cloneAt $t]
+    $result toString
+} {smoothToken(62.0, {27.0,6.0})}
+
+
+test SmoothToken-20.4 {call cloneAt} {
+    java::call ptolemy.data.SmoothToken setOrderLimit 5
+    set v [java::new {double[]} {4} {2.0 3.0 6.0 8.0}]
+    set s [java::new ptolemy.data.SmoothToken $v]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set result [$s cloneAt $t]
+    $result toString
+} {smoothToken(147.3333333333333, {91.0,38.0,8.0})}
+
+
+test SmoothToken-20.5 {call cloneAt} {
+    java::call ptolemy.data.SmoothToken setOrderLimit 5
+    set v [java::new {double[]} {5} {2.0 3.0 6.0 8.0 1.0}]
+    set s [java::new ptolemy.data.SmoothToken $v]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set result [$s cloneAt $t]
+    $result toString
+} {smoothToken(158.0, {101.66666666666667,46.0,12.0,1.0})}
+
 
 
 
