@@ -8594,7 +8594,7 @@ $as_echo "$PTSOCKETIO_JAR" >&6; }; fi
 	          updateClasspath "$PTSOCKETIO_JAR"
 	          PTJAVASCRIPT_DIR=js
 	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.js org.terraswarm.accessor.jjs"
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.js org.terraswarm.accessor.jjs ptolemy.actor.lib.jjs.modules.vertx"
               fi
 	   fi
        fi
