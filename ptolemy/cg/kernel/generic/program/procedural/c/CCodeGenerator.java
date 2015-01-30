@@ -3301,10 +3301,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     private void _mbedCopy() throws IllegalActionException {
         // FIXME: We need a way to include target specific functions.
 
-        File directory = codeDirectory.asFile();
+        File cgLibDirectory = new File(codeDirectory.asFile(), "/lib/");
         String mbedLibraryDirectory = "ptolemy/cg/adapter/generic/program/procedural/c/mbed/lib/";
         try {
-            File cgLibDirectory = new File(codeDirectory.asFile(), "/lib/");
+
             if (!cgLibDirectory.mkdirs()) {
                 throw new java.io.FileNotFoundException("Could not create \"" + cgLibDirectory + "\"");
             }
@@ -3328,7 +3328,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } catch (Throwable throwable) {
             throw new IllegalActionException(getComponent(), throwable,
                     "Failed to copy mbed .o files from \""
-                    + mbedLibraryDirectory + "\".");
+                    + mbedLibraryDirectory + "\" to \"" + cgLibDirectory + "\".");
         }
     }
 
