@@ -54,8 +54,9 @@ FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
 		values20RC1 \
 		vanDerPol20RC1 floor20pt\
 		inc20pt out20pt fmuA20pt scale20pt fmuB20pt fmuC20pt \
-		fmuD20pt fmuA20ptInt scale20ptInt fmuB20ptInt\
-		fmuC20ptInt fmuD20ptInt\
+		fmuD20pt
+
+# fmuA20ptInt scale20ptInt fmuB20ptInt fmuC20ptInt fmuD20ptInt
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
@@ -144,6 +145,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	diffFmuSdk \
 	fmus.mk \
 	README.txt
 
@@ -151,7 +153,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) jmodelica
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
