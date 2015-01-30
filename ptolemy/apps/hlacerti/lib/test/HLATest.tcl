@@ -94,6 +94,9 @@ initializing
 resolving types
 initializing
 executing number 1
+wrapping up
+idle
+Completed execution with 5 iterations
 }}
 
 }
