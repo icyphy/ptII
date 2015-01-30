@@ -38,9 +38,14 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# We keep a list of listeners so that they don't get garbaged collected and then the logging messages do not appear.
+# This is because Manager keeps a list that is a WeakReference to the listeners.
+set listeners [java::new java.util.LinkedList]
+
 # Run an .xml file return the toplevel.
 proc runModel {modelFileName outputStream} {
-    set workspace [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
+    global listeners
+    set workspace [java::new ptolemy.kernel.util.Workspace "myWorkspace$modelFileName"]
     set parser [java::new ptolemy.moml.MoMLParser $workspace]
     $parser setMoMLFilters [java::null]
     $parser addMoMLFilters \
@@ -56,6 +61,7 @@ proc runModel {modelFileName outputStream} {
 
     set manager [java::new ptolemy.actor.Manager $workspace "myManager"]
     set listener [java::new ptolemy.actor.StreamExecutionListener $outputStream]
+    $listeners add $listener
     $manager addExecutionListener $listener
     $model setManager $manager 
 
@@ -79,27 +85,48 @@ if {[java::call System getenv CERTI_HOME] == ""} {
 
         # Success is when the Test actor in the consumer gets all of its values.
         set consumerListenerOutput [java::new java.io.ByteArrayOutputStream]
+        $consumerListenerOutput write [[java::new String "consumer start\n"] getBytes]
         set consumer [runModel MultiDataTypesConsumer.xml $consumerListenerOutput]
-        sleep 1 false
+        sleep 2 false
+
         set producerListenerOutput [java::new java.io.ByteArrayOutputStream]
+        $producerListenerOutput write [[java::new String "producer start\n"] getBytes]
         set producer [runModel MultiDataTypesProducer.xml $producerListenerOutput]
-        # Return something useful as another check
         sleep 5 false
+
+        # Return something useful as another check
+        $consumerListenerOutput write [[java::new String "consumer end\n"] getBytes]
+        $producerListenerOutput write [[java::new String "producer end\n"] getBytes]
+
+        $consumerListenerOutput flush
+        $producerListenerOutput flush
+
         list [$consumer getFullName] [$producer getFullName] \
             [$consumerListenerOutput toString] [$producerListenerOutput toString]
-    } {.MultiDataTypesConsumer .MultiDataTypesProducer {preinitializing
-resolving types
-initializing
-} {preinitializing
+    } {.MultiDataTypesConsumer .MultiDataTypesProducer {consumer start
+preinitializing
 resolving types
 initializing
 executing number 1
 wrapping up
 idle
 Completed execution with 5 iterations
+consumer end
+} {producer start
+preinitializing
+resolving types
+initializing
+executing number 1
+wrapping up
+idle
+Completed execution with 5 iterations
+producer end
 }}
 
 }
+
+# Let the listeners be gc'd.
+set listeners [java::null]
 
 ######################################################################
 #### Run two HLA models
