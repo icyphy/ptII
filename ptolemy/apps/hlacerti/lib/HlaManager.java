@@ -572,7 +572,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
         try {
             _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
         } catch (RTIinternalError e) {
-            throw new IllegalActionException(this, e, "RTIinternalError ");
+            throw new IllegalActionException(this, e, "RTIinternalError. "
+                    + "If the error is \"Connection to RTIA failed\", "
+                    + "then the problem is likely that the rtig "
+                    + "binary could not be started by CertRtig. "
+                    + "One way to debug this is to set the various "
+                    + "environment variables by sourcing certi/share/scripts/myCERTI_env.sh, "
+                    + "then invoking rtig on the .fed file "
+                    + "then rerunning the model.");
         }
 
         // Create the Federation or raise a warning it the Federation already exits.
