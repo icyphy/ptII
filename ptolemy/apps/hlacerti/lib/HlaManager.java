@@ -759,7 +759,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         _certiRtig.exec();
         if (_debugging) {
-            _debug(this.getDisplayName() + " preinitiliaze() - "
+            _debug(this.getDisplayName() + " preinitialize() - "
                     + "Launch RTIG process");
         }
 
@@ -768,7 +768,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _certiRtig = null;
 
             if (_debugging) {
-                _debug(this.getDisplayName() + " preinitiliaze() - "
+                _debug(this.getDisplayName() + " preinitialize() - "
                         + "Destroy RTIG process as another one is already "
                         + "launched");
             }
