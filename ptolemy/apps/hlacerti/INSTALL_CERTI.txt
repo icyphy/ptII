@@ -28,6 +28,8 @@ Requirements: we assume that you have a
 		   cd build_certi
    	4.	Run cmake:
 	           cmake -DCMAKE_INSTALL_PREFIX=<path_for_scripts_and_binaries> -DCERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL=ON ../
+                For example:
+                   cmake -DCMAKE_INSTALL_PREFIX=/usr/local/certi-3.4.2 -DCERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL=ON ../
 		All  files required to build CERTI are stored in the 'build_certi' folder.
 	5.	Run make
 	6.	Run make install
