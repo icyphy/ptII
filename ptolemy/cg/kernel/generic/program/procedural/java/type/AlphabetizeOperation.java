@@ -62,8 +62,14 @@ public class AlphabetizeOperation {
             File directory = new File(FileUtilities.nameToURL(args[0], null,
                     null).getFile());
 
+            File [] files = directory.listFiles();
+            if (files == null) {
+                throw new NullPointerException("Getting the files of \"" + directory
+                        + "\" returned null?");
+            }
+
             // Iterate through every file in type/polymorphic/
-            for (File file : directory.listFiles()) {
+            for (File file : files) {
                 String filename = file.getPath();
                 CodeStream stream = new CodeStream(filename, null);
 

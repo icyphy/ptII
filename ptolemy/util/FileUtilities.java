@@ -214,12 +214,14 @@ public class FileUtilities {
         boolean deletedAllFiles = true;
         if (directory.exists()) {
             File[] files = directory.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    deleteDirectory(files[i]);
-                } else {
-                    if (!files[i].delete()) {
-                        deletedAllFiles = false;
+            if (files != null) {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        deleteDirectory(files[i]);
+                    } else {
+                        if (!files[i].delete()) {
+                            deletedAllFiles = false;
+                        }
                     }
                 }
             }

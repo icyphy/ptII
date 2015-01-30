@@ -273,12 +273,14 @@ public class URLDirectoryReader extends URLReader {
                     File[] files = file.listFiles();
                     List resultsList = new LinkedList();
 
-                    for (File file2 : files) {
-                        String filename = file2.getName();
+                    if (files != null) {
+                        for (File file2 : files) {
+                            String filename = file2.getName();
 
-                        if (endsWith == null || endsWith.length() == 0
-                                || filename.endsWith(endsWith)) {
-                            resultsList.add(source + filename);
+                            if (endsWith == null || endsWith.length() == 0
+                                    || filename.endsWith(endsWith)) {
+                                resultsList.add(source + filename);
+                            }
                         }
                     }
 
