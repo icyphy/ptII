@@ -339,29 +339,31 @@ public class GTIngredientsEditor extends PtolemyDialog {
                     File directory = new File(URLDecoder.decode(url.getPath(),
                             "UTF-8"));
                     File[] files = directory.listFiles();
-                    for (File file : files) {
-                        if (!file.exists() || !file.isFile()) {
-                            continue;
-                        }
-
-                        String filePath = file.getName();
-                        if (!filePath.endsWith(".class")) {
-                            continue;
-                        }
-
-                        String className = filePath.substring(0,
-                                filePath.length() - 6);
-                        className = className.replace('$', '.');
-                        String fullClassName = pkg + "." + className;
-                        try {
-                            Class<?> cls = loader.loadClass(fullClassName);
-                            if (!Modifier.isAbstract(cls.getModifiers())
-                                    && GTIngredient.class.isAssignableFrom(cls)) {
-                                ingredientClasses
-                                .add((Class<? extends GTIngredient>) cls);
+                    if (files != null) {
+                        for (File file : files) {
+                            if (!file.exists() || !file.isFile()) {
+                                continue;
                             }
-                        } catch (ClassNotFoundException e) {
-                        } catch (NoClassDefFoundError e) {
+
+                            String filePath = file.getName();
+                            if (!filePath.endsWith(".class")) {
+                                continue;
+                            }
+
+                            String className = filePath.substring(0,
+                                    filePath.length() - 6);
+                            className = className.replace('$', '.');
+                            String fullClassName = pkg + "." + className;
+                            try {
+                                Class<?> cls = loader.loadClass(fullClassName);
+                                if (!Modifier.isAbstract(cls.getModifiers())
+                                        && GTIngredient.class.isAssignableFrom(cls)) {
+                                    ingredientClasses
+                                        .add((Class<? extends GTIngredient>) cls);
+                                }
+                            } catch (ClassNotFoundException e) {
+                            } catch (NoClassDefFoundError e) {
+                            }
                         }
                     }
                 }

@@ -158,28 +158,33 @@ public class ChangeFixedWidth1ToAuto extends MoMLFilterSimple {
     private static void _updateXMLFiles(File folder, String filter) {
         File[] files = folder.listFiles();
 
-        for (File file : files) {
-            if (file.isFile()) {
-                String filename = file.getName();
-                int length = filename.length();
-                if (length > 3
-                        && filename.substring(length - 4, length)
-                        .toLowerCase(Locale.getDefault())
-                        .equals(".xml")) {
-                    try {
-                        if (filter == null
-                                || file.toURI().toString()
-                                .toLowerCase(Locale.getDefault())
-                                .contains("/" + filter + "/")) {
-                            _updateFile(file.toString());
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    String filename = file.getName();
+                    int length = filename.length();
+                    if (length > 3
+                            && filename.substring(length - 4, length)
+                            .toLowerCase(Locale.getDefault())
+                            .equals(".xml")) {
+                        try {
+                            if (filter == null
+                                    || file.toURI().toString()
+                                    .toLowerCase(Locale.getDefault())
+                                    .contains("/" + filter + "/")) {
+                                _updateFile(file.toString());
+                            }
+                        } catch (Exception e) {
+                            continue;
                         }
-                    } catch (Exception e) {
-                        continue;
                     }
+                } else if (file.isDirectory()) {
+                    _updateXMLFiles(file, filter);
                 }
-            } else if (file.isDirectory()) {
-                _updateXMLFiles(file, filter);
             }
+        } else {
+            throw new NullPointerException("Getting the files of \"" + folder
+                    + "\" returned null?");
         }
     }
 

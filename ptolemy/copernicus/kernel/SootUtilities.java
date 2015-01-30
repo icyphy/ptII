@@ -1844,11 +1844,11 @@ public class SootUtilities {
                 }
             }
 
-            theClass = theClass.getSuperclass();
             if (theClass != null) {
+                theClass = theClass.getSuperclass();
                 previousClass = theClass;
+                theClass.setLibraryClass();
             }
-            theClass.setLibraryClass();
         }
 
         throw new RuntimeException("Method " + name + " not found in class "
