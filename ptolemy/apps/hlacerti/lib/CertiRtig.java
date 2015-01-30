@@ -96,7 +96,6 @@ public class CertiRtig extends NamedObj {
      */
     public CertiRtig(HlaManager hm, Boolean addDebugListener) {
         _hlaManager = hm;
-
         if (addDebugListener) {
             addDebugListener(new ptolemy.kernel.util.StreamListener());
         }
@@ -111,6 +110,10 @@ public class CertiRtig extends NamedObj {
      *  failed or if the RTIG subprocess it not running.
      */
     public void exec() throws IllegalActionException {
+        System.out.println("CertiRtig: " + _hlaManager.getFullName() +  ": About to invoke rtig: "
+                + "\ncommand: " + java.util.Arrays.toString(_commandArray)
+                + "\nenvironment: " + java.util.Arrays.toString(_environmentArray)
+                + "\ndirectory: " + _directoryAsFile);
         try {
             _process = _runtime.exec(_commandArray, _environmentArray,
                     _directoryAsFile);
@@ -222,6 +225,7 @@ public class CertiRtig extends NamedObj {
      */
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
+            System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();
