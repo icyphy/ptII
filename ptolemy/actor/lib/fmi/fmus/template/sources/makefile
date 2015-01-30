@@ -59,6 +59,8 @@ OTHER_FILES_TO_BE_JARED = \
 	build_fmu.bat \
 	fmu.mk \
 	fmuTemplate.c \
+	fmuTemplate_fmiv10.c \
+	fmuTemplate_fmiv10.h \
 	fmuTemplate_fmiv20.c \
 	fmuTemplate_fmiv20.h
 
