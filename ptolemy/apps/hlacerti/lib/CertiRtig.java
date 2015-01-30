@@ -1,6 +1,6 @@
 /* Execute the HLA/CERTI RTIG in a subprocess.
 
-Copyright (c) 2013 The Regents of the University of California.
+Copyright (c) 2013-2015 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// CertiRtig
@@ -80,7 +81,7 @@ import ptolemy.kernel.util.NamedObj;
  * Then an exception is throwed.
  * </br>
  *
- * @author Gilles Lasnier, based on Exec.java by Christopher Hylands Brooks
+ * @author Gilles Lasnier, Christopher Brooks
  * @version $Id$
  *
  * @since Ptolemy II 10.0
@@ -186,11 +187,40 @@ public class CertiRtig extends NamedObj {
 
         _commandArray = commandList.toArray(new String[commandList.size()]);
 
-        // Set the environment variables.
-        _environmentArray = new String[3];
-        _environmentArray[0] = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
-        _environmentArray[1] = "LD_LIBRARY_PATH=" + certiHome + "/lib";
-        _environmentArray[2] = "PATH=" + certiHome + "/bin";
+        // Set the environment variables by prepending the
+        // CERTI-specific values to the values from the environment.
+        // Under RHEL, rtig is possibly linked with libraries in
+        // Matlab, so we need to be sure to include DYLD_LIBRARY_PATH,
+        // LD_LIBRARY_PATH or PATH from the environment.  
+        String pathSeparator = System.getProperty("path.separator");
+        _environmentArray = new String[1];
+        String osName = StringUtilities.getProperty("os.name");
+
+        // Only set the environment variable that is appropriate for
+        // the platform.
+        if (osName.startsWith("Mac OS X")) { 
+            String dyldLibraryPath = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
+            String dyldVariable = System.getenv("DYLD_LIBRARY_PATH");
+            if (dyldVariable != null) {
+                dyldLibraryPath += pathSeparator + dyldVariable;
+            }
+            _environmentArray[0] = dyldVariable;
+        } else if (osName.startsWith("Windows")) { 
+            String path = "PATH=" + certiHome + "/bin";
+            String pathVariable = System.getenv("PATH");
+            if (pathVariable != null) {
+                path += pathSeparator + pathVariable;
+            }
+            _environmentArray[0] = path;
+        } else {
+            // Linux or anything else.
+            String ldLibraryPath = "LD_LIBRARY_PATH=" + certiHome + "/lib";
+            String ldVariable = System.getenv("LD_LIBRARY_PATH");
+            if (ldVariable != null) {
+                ldLibraryPath += pathSeparator + ldVariable;
+            }
+            _environmentArray[0] = ldLibraryPath;
+        }
 
         _directoryAsFile = new File(fedFileName.getParent());
         if (!_directoryAsFile.isDirectory()) {
