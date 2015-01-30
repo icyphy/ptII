@@ -32,9 +32,9 @@
 ME =		ptolemy/actor/lib/jjs/modules
 
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
-# PTVERTXBUS_DIR is set to vertxBus if the Vertx jars are found by configure.
+# PTVERTX_DIR is set to vertxBus if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		$(PTPAHO_MQTT_DIRS) $(PTVERTXBUS_DIR) $(PTWEBSOCKET_DIR)
+DIRS = 		$(PTPAHO_MQTT_DIRS) $(PTVERTX_DIR) $(PTWEBSOCKET_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..

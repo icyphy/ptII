@@ -48,11 +48,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	VertxBusHelper.java
+	VertxHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
-	vertxBus.js
+	vertx.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
