@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/demo
 
-DIRS =		JavaScriptShell
+DIRS =		Factorial JavaScriptShell ModelBuilder
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -45,12 +45,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	demo
 PTCLASSJAR =
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	JavaScriptShell/JavaScriptShell.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+	Factorial/Factorial.jar \
+	JavaScriptShell/JavaScriptShell.jar \
+	ModelBuilder/ModelBuilder.jar
 
 # Keep this list alphabetized.
 JSRCS =

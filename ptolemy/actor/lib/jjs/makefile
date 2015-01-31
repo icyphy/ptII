@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	JavaScript.java \
 	RestrictedJavaScriptInterface.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	basicFunctions.js \
 	console.js \
@@ -69,7 +69,9 @@ MISC_FILES =	external modules node test
 OPTIONAL_FILES = \
 	demo \
 	'JavaScript$$1.class' \
+	'JavaScript$$2.class' \
 	'JavaScript$$ParameterProxy.class' \
+	'JavaScript$$PortOrParameterProxy.class' \
 	'JavaScript$$PortProxy.class' \
 	'JavaScript$$PtolemyJavaScript.class' \
 	$(PTCLASSJAR) 
