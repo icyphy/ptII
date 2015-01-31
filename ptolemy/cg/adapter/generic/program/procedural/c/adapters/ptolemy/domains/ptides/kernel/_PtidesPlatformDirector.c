@@ -1,3 +1,7 @@
+/* $Id$
+ * Source: $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesPlatformDirector.c
+ */
+
 #include "_PtidesPlatformDirector.h"
 
 struct PtidesPlatformDirector* PtidesPlatformDirector_New() {
