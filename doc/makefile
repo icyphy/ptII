@@ -267,6 +267,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.c.mbed.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel \
