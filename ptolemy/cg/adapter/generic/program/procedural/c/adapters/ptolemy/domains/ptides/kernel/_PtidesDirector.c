@@ -1,3 +1,6 @@
+/* $Id$
+ * Source: $PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesDirector.c
+ */
 #include "_PtidesDirector.h"
 
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
@@ -466,8 +469,9 @@ struct SuperdenseDependency* PtidesDirector__GetSuperdenseDependencyPair(struct 
                 if (pblMapContainsKey(map, &destination, sizeof(struct IOPort*))) {
                        result = (struct SuperdenseDependency*)pblMapGet(map, &destination, sizeof(struct IOPort*), NULL);
                 }
-        } else {
-            struct SuperdenseDependency* result = calloc(1, sizeof(struct SuperdenseDependency));
+        }
+        if (result == NULL) {
+            result = calloc(1, sizeof(struct SuperdenseDependency));
             result->time = DBL_MAX;
             result->microstep = 0;
         }
