@@ -43,9 +43,9 @@
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={809, 84, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={955, 82, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 220.0]">
         </property>
@@ -79,7 +79,7 @@
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 220.0]">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
