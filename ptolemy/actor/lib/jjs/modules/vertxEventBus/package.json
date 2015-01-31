@@ -1,0 +1,11 @@
+{
+  "name": "vertxEventBus",
+  "version": "0.1.0",
+  "main": "vertxEventBus.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Patricia Derler"
+    , "email" : "pd@eecs.berkeley.edu"}
+  ],
+  "description": "An implementation of the Vert.x event bus API."
+}

@@ -1,8 +1,8 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Java Ptolemy II JavaScript demos
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70841 2014-12-02 23:15:50Z pd $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,57 +29,52 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules
+ME =		ptolemy/actor/lib/jjs/modules/vertxEventBus/demo
 
-# PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
-# PTVERTX_DIR is set to vertxBus if the Vertx jars are found by configure.
-# PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		$(PTPAHO_MQTT_DIRS) $(PTVERTX_DIR) $(PTWEBSOCKET_DIR)
+DIRS =		VertxBus VertxDateServer
 
-# Root of the Java directory
-ROOT =		../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	modules
-#PTCLASSJAR = 	$(PTPACKAGE).jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	localStorage/localStorage.jar \
-	mqtt/mqtt.jar \
-	vertxEventBus/vertxEventBus.jar \
-	webSocket/webSocket.jar \
+	VertxBus/VertxBus.jar \
+	VertxDateServer/VertxDateServer.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	localStorage mqtt vertx webSocket #test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) 
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+all: jclass
+	@echo "To run the demos, run 'make demo'"
 
-all: suball #jclass
-install: subjars #jclass jars
+install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
