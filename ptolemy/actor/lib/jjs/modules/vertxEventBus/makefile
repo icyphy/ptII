@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70763 2014-11-25 16:53:51Z cxh $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,57 +29,56 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules
+ME =		ptolemy/actor/lib/jjs/modules/vertxEventBus
 
-# PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
-# PTVERTX_DIR is set to vertxBus if the Vertx jars are found by configure.
-# PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		$(PTPAHO_MQTT_DIRS) $(PTVERTX_DIR) $(PTWEBSOCKET_DIR)
+DIRS = 		demo
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	modules
-#PTCLASSJAR = 	$(PTPACKAGE).jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	localStorage/localStorage.jar \
-	mqtt/mqtt.jar \
-	vertxEventBus/vertxEventBus.jar \
-	webSocket/webSocket.jar \
+PTPACKAGE = 	vertxEventBus
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	VertxHelper.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	package.json \
+	vertxEventBus.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	localStorage mqtt vertx webSocket #test
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	$(PTCLASSJAR) 
+	doc \
+	$(PTCLASSJAR) \
+	'VertxHelper$$1.class' \
+	'VertxHelper$$2.class' \
+	'VertxHelper$$3.class' \
+	'VertxHelper$$DataHandler.class' \
+	'VertxHelper$$EndHandler.class' \
+	'VertxHelper$$ExceptionHandler.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 
-all: suball #jclass
-install: subjars #jclass jars
+all: jclass
+install: jclass jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
