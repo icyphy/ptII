@@ -55,7 +55,7 @@
         </property>
     </entity>
     <entity name="writeToAddressX" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var Vertx = require('vertx');&#10;var eb = null;&#10;&#10;exports.initialize = function() &#10;{&#10;  if (eb == null) {&#10;    eb = new Vertx.VertxBus('localhost', 8080);&#10;  }&#10;}&#10;&#10;exports.fire = function()&#10;{&#10;  eb.publish('x', get(trigger, 0));&#10;}&#10;&#10;exports.wrapup = function()&#10;{&#10;  eb.close();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var Vertx = require('vertx');&#10;var eb = null;&#10;&#10;exports.initialize = function() &#10;{&#10;  if (eb == null) {&#10;    eb = new Vertx.VertxBus({host:'localhost', port:8080});&#10;  }&#10;}&#10;&#10;exports.fire = function()&#10;{&#10;  eb.publish('x', get(trigger, 0));&#10;}&#10;&#10;exports.wrapup = function()&#10;{&#10;  eb.close();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

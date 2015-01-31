@@ -70,9 +70,9 @@ public class VertxHelper {
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getEventBus(ScriptEngine engine,
-            ScriptObjectMirror currentObj, String host, int port) {
-        return new VertxHelper(engine, currentObj, host, port, true);
+    public static VertxHelper getEventBus(
+	    ScriptObjectMirror currentObj, String host, int port) {
+        return new VertxHelper(currentObj, host, port, true);
     }
     
     /** Create a VertxHelper instance as a server-side vertx bus host.
@@ -96,9 +96,9 @@ public class VertxHelper {
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getHttpClient(ScriptEngine engine,
-            ScriptObjectMirror currentObj, String host, int port) {
-        return new VertxHelper(engine, currentObj, host, port, false);
+    public static VertxHelper getHttpClient(
+	    ScriptObjectMirror currentObj, String host, int port) {
+        return new VertxHelper(currentObj, host, port, false);
     }
 
     /**
@@ -181,15 +181,12 @@ public class VertxHelper {
      * Private constructor for VertxHelper to open a 
      * client-side web socket and add a ping to keep the websocket open.
      * 
-     * @param engine The JavaScript engine of the JavaScript actor.
      * @param namespaceName The name of the JavaScript module constructor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      */
-    private VertxHelper(ScriptEngine engine,
-            ScriptObjectMirror currentObj, String host, int port, boolean withEventBus) {
-        _engine = engine;
+    private VertxHelper(ScriptObjectMirror currentObj, String host, int port, boolean withEventBus) {
         _currentObj = currentObj;
 
         _httpClient = _vertx.createHttpClient().setHost(host).setPort(port);
@@ -225,17 +222,19 @@ public class VertxHelper {
     
     /**
      * Private constructor for VertxHelper to open a 
-     * client-side web socket and add a ping to keep the websocket open.
+     * Vert.x bus server. This also opens an HTTP server.
+     * The constructed object uses the EventEmitter pattern,
+     * so HTTP requests will emit "httpRequest" events.
      * 
      * @param engine The JavaScript engine of the JavaScript actor.
-     * @param namespaceName The name of the JavaScript module constructor.
-     * @param currentObj The JavaScript instance of the WebSocket.
-     * @param host The host of the Vert.x bus.
+     * @param currentObj The JavaScript object representing this server (used
+     *  to emit events).
      * @param port The port on the host that provides access to the Vert.x bus.
+     * @param withEventBus If true, open an event-bus server and an HTTP server,
+     *  and otherwise just open an HTTP server.
      */
     private VertxHelper(ScriptEngine engine,
             ScriptObjectMirror currentObj, int port, boolean withEventBus) {
-        _engine = engine;
         _currentObj = currentObj;
 
         _httpServer = _vertx.createHttpServer();
@@ -271,9 +270,6 @@ public class VertxHelper {
     
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
-    
-    /** Instance of the current JavaScript engine. */
-    private static ScriptEngine _engine;
 
     private HttpClient _httpClient = null;
 

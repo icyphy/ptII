@@ -14,8 +14,7 @@ var EventEmitter = require('events').EventEmitter;
 exports.VertxBus = function(options) {
     this.port = options['port'] || 8080;
     this.host = options['host'] || "localhost";
-    this.eventbus = VertxHelper.getEventBus(actor.getEngine(),
-        this, this.host, this.port);
+    this.eventbus = VertxHelper.getEventBus(this, this.host, this.port);
 }
 util.inherits(exports.VertxBus, EventEmitter);
 
@@ -24,17 +23,18 @@ util.inherits(exports.VertxBus, EventEmitter);
 exports.VertxHttpClient = function(options) {
     this.port = options['port'] || 8080;
     this.host = options['host'] || "localhost";
-    this.eventbus = VertxHelper.getHttpClient(actor.getEngine(),
-        this, this.host, this.port);
+    this.eventbus = VertxHelper.getHttpClient(this, this.host, this.port);
 }
 util.inherits(exports.VertxHttpClient, EventEmitter);
 
 ////////////////////
-// Construct a VertxBusServer that hosts a VertxBus
+// Construct a VertxBusServer that hosts a VertxBus.
+// The returned object will have a 'port' field, a
+// 'server' field, and a set of functions defined by
+// the prototype below.
 exports.VertxBusServer = function(options) {
     this.port = options['port'] || 8080;
-    this.server = VertxHelper.getEventBusServer(actor.getEngine(),
-        this, this.port);
+    this.server = VertxHelper.getEventBusServer(this, this.port);
 }
 util.inherits(exports.VertxBusServer, EventEmitter);
 
@@ -42,8 +42,7 @@ util.inherits(exports.VertxBusServer, EventEmitter);
 // Construct a VertxHttpServer
 exports.VertxHttpServer = function(options) {
     this.port = options['port'] || 8080;
-    this.server = VertxHelper.getHttpServer(actor.getEngine(),
-        this, this.port);
+    this.server = VertxHelper.getHttpServer(this, this.port);
 }
 util.inherits(exports.VertxHttpServer, EventEmitter);
 
