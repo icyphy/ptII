@@ -46,13 +46,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	modules.jar
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	modules
+#PTCLASSJAR = 	$(PTPACKAGE).jar
 
-#PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	localStorage/localStorage.jar \
+	mqtt/mqtt.jar \
+	vertx/vertx.jar \
+	webSocket/webSocket.jar \
 
 # Keep this list alphabetized.
 JSRCS =
@@ -63,7 +67,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	localStorage mqtt vertxBus webSocket #test
+MISC_FILES =	localStorage mqtt vertx webSocket #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

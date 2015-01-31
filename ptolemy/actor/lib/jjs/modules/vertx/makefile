@@ -70,7 +70,13 @@ OPTIONAL_FILES = \
 	'VertxBusHelper$$2.class' \
 	'VertxBusHelper$$DataHandler.class' \
 	'VertxBusHelper$$EndHandler.class' \
-	'VertxBusHelper$$ExceptionHandler.class'
+	'VertxBusHelper$$ExceptionHandler.class' \
+	'VertxHelper$$1.class' \
+	'VertxHelper$$2.class' \
+	'VertxHelper$$3.class' \
+	'VertxHelper$$DataHandler.class' \
+	'VertxHelper$$EndHandler.class' \
+	'VertxHelper$$ExceptionHandler.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

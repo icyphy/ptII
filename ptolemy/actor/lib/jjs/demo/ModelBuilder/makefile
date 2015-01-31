@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II VertxBus demo
+# Makefile for Ptolemy II ModelBuilder demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70524 2014-11-10 23:34:39Z eal $
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/vertx/demo/VertxHttpServer
+ME =		ptolemy/actor/lib/jjs/demo/ModelBuilder
 
 # Root of the Java directory
-ROOT =		../../../../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	VertxHttpServer
+PTPACKAGE = 	ModelBuilder
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	VertxHttpServer.xml
+	ModelBuilder.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -78,10 +78,10 @@ demo: demo_ptolemy demo_vergil
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" VertxBus.xml
+	"$(PTII)/bin/ptolemy" ModelBuilder.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" VertxBus.xml
+	"$(PTII)/bin/vergil" ModelBuilder.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
