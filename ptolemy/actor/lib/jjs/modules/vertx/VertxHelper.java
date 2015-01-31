@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib.jjs.modules.vertx;
 
-import javax.script.ScriptEngine;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.Handler;
@@ -77,14 +75,13 @@ public class VertxHelper {
     
     /** Create a VertxHelper instance as a server-side vertx bus host.
      * 
-     * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getEventBusServer(ScriptEngine engine, 
+    public static VertxHelper getEventBusServer( 
             ScriptObjectMirror currentObj, int port) {
-        return new VertxHelper(engine, currentObj, port, true);
+        return new VertxHelper(currentObj, port, true);
     }
     
     /**
@@ -104,14 +101,13 @@ public class VertxHelper {
     /**
      * Create a VertxHelper instance as an http server.
      * 
-     * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getHttpServer(ScriptEngine engine, 
+    public static VertxHelper getHttpServer(
             ScriptObjectMirror currentObj, int port) {
-        return new VertxHelper(engine, currentObj, port, false);
+        return new VertxHelper(currentObj, port, false);
     }
     
     /** Close the internal web socket, cancel periodic ping.
@@ -188,13 +184,22 @@ public class VertxHelper {
      */
     private VertxHelper(ScriptObjectMirror currentObj, String host, int port, boolean withEventBus) {
         _currentObj = currentObj;
-
+        
         _httpClient = _vertx.createHttpClient().setHost(host).setPort(port);
         
         if (withEventBus) {
             _httpClient.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
                 @Override
                 public void handle(WebSocket websocket) {
+                    /* Uncomment this to test delays in opening the bus.
+                    try {
+                	Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                	// TODO Auto-generated catch block
+                	e1.printStackTrace();
+                    }
+                    */
+
                     _wsIsOpen = true;
                     _webSocket = websocket;
                     _currentObj.callMember("emit", "open");
@@ -226,15 +231,15 @@ public class VertxHelper {
      * The constructed object uses the EventEmitter pattern,
      * so HTTP requests will emit "httpRequest" events.
      * 
-     * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript object representing this server (used
      *  to emit events).
      * @param port The port on the host that provides access to the Vert.x bus.
      * @param withEventBus If true, open an event-bus server and an HTTP server,
      *  and otherwise just open an HTTP server.
      */
-    private VertxHelper(ScriptEngine engine,
+    private VertxHelper(
             ScriptObjectMirror currentObj, int port, boolean withEventBus) {
+	// FIXME: Remove engine! Not needed. Make sure to update JavaScript in demos.
         _currentObj = currentObj;
 
         _httpServer = _vertx.createHttpServer();
