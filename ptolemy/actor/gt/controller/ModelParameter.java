@@ -316,11 +316,20 @@ public class ModelParameter extends Parameter implements Initializable {
     public void setToken(Token token) throws IllegalActionException {
         // FIXME: Coverity points out that super.setToken() is not called.
         // In particular, setExpression() and validate() are not called here.
-        ActorToken actorToken = (ActorToken) ActorToken.TYPE.convert(token);
-        CompositeEntity model = (CompositeEntity) actorToken.getEntity();
-        setModel(model);
-        _token = actorToken;
-        _tokenVersion = model.workspace().getVersion();
+
+        // Coverity Scan finds that if this method is passed null,
+        // then we will get a NPE because
+        // ptolemy.cg.lib.PointerToken.PointerType.convert() returns
+        // its argument if the the token is a PointerToken and we use
+        // MonitorValue.  This is very unlikely, but we check for null
+        // anyway.
+        if (token != null) {
+            ActorToken actorToken = (ActorToken) ActorToken.TYPE.convert(token);
+            CompositeEntity model = (CompositeEntity) actorToken.getEntity();
+            setModel(model);
+            _token = actorToken;
+            _tokenVersion = model.workspace().getVersion();
+        }
     }
 
     /** Set the model in this parameter to be null.
