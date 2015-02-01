@@ -4154,7 +4154,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // so we want to be sure to not throw away ex2
                         _updateMissingClasses(className);
                         throw new IllegalActionException(null, ex2,
-                                "Cannot find class: " + className);
+                                "Cannot find class: " + className
+                                + ". In Ptolemy, classes are typically Java .class files. "
+                                + "Entities like actors may instead be defined within a .xml "
+                                + "file.  In any case, the class was not found. "
+                                + "If the class uses a third party package, "
+                                + "then the class would be present only if the third "
+                                + "party package was found at compile time.  It may be "
+                                + "necessary to upgrade Java or install the third party package, "
+                                + "reconfigure and recompile.");
                     }
                 } catch (Error error) {
                     // Java might throw a ClassFormatError, but
