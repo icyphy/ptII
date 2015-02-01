@@ -276,6 +276,9 @@ public class DateConstructor extends TypedAtomicActor {
         output.send(0, dateToken);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
     private Integer _getIntValue(PortParameter portParameter) throws IllegalActionException {
         Integer value = null;
         if (portParameter.getToken() != null) {
@@ -284,6 +287,10 @@ public class DateConstructor extends TypedAtomicActor {
         if (portParameter.getPort().connectedPortList().size() > 0 &&
                 portParameter.getPort().hasToken(0)) {
             value = ((IntToken)portParameter.getPort().get(0)).intValue();
+        }
+        // Coverity Scan reports that value could be null.
+        if (value == null) {
+            return Integer.valueOf(0);
         }
         return value;
     }
@@ -296,6 +303,10 @@ public class DateConstructor extends TypedAtomicActor {
         if (portParameter.getPort().connectedPortList().size() > 0 &&
                 portParameter.getPort().hasToken(0)) {
             value = ((LongToken)portParameter.getPort().get(0)).longValue();
+        }
+        // Coverity Scan reports that value could be null.
+        if (value == null) {
+            return Long.valueOf(0);
         }
         return value;
     }
