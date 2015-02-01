@@ -626,7 +626,7 @@ PTWEBSOCKET_DIR
 WABA_DIR
 WABA_CLASSES
 PTVERTX_PACKAGES
-PTVERTXBUS_DIR
+PTVERTXEVENTBUS_DIR
 PTVERTX_DIR
 PTVERTX_JARS
 GIOTTO_DIR
@@ -8594,7 +8594,7 @@ $as_echo "$PTSOCKETIO_JAR" >&6; }; fi
 	          updateClasspath "$PTSOCKETIO_JAR"
 	          PTJAVASCRIPT_DIR=js
 	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.js org.terraswarm.accessor.jjs ptolemy.actor.lib.jjs.modules.vertx"
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor.js org.terraswarm.accessor.jjs"
               fi
 	   fi
        fi
@@ -13009,8 +13009,8 @@ PTVERTX_JARS=
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR=
 
-# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-PTVERTXBUS_DIR=
+# Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTVERTXEVENTBUS_DIR=
 
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTWEBSOCKET_DIR=
@@ -13051,7 +13051,7 @@ fi
 
             if test -d "$PTVERTX_JAR_DIR"; then
     	    PTVERTX_DIR=vertx
-	    PTVERTXBUS_DIR=vertxBus
+	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
             jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
@@ -13077,14 +13077,14 @@ $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >
 	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTVERTX_JARS" >&5
 $as_echo "$PTVERTX_JARS" >&6; }; fi
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.vertxBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
 
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/vertxBus/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
@@ -14324,7 +14324,7 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 # Set to vertx if the Vertx jars are found
 
 
-# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+# Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
