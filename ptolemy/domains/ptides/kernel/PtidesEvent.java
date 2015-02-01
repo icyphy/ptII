@@ -245,8 +245,8 @@ public class PtidesEvent extends DEEvent {
         if (event == this) {
             return true;
         }
-        Actor actor = event.actor();
         // Coverity Scan marks this as a Dead Local Store?
+        //Actor actor = event.actor();
         //if (actor == null) {
         //    actor = (Actor) event.ioPort().getContainer();
         // }
