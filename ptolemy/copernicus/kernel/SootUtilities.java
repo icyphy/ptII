@@ -1844,8 +1844,9 @@ public class SootUtilities {
                 }
             }
 
+            theClass = theClass.getSuperclass();
+
             if (theClass != null) {
-                theClass = theClass.getSuperclass();
                 previousClass = theClass;
                 theClass.setLibraryClass();
             }
