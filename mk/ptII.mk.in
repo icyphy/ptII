@@ -125,10 +125,11 @@ PTVERTX_JARS = 	@PTVERTX_JARS@
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR = 	@PTVERTX_DIR@
 
-# Set to vertxBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-PTVERTXBUS_DIR = @PTVERTXBUS_DIR@
+# Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTVERTXEVENTBUS_DIR = @PTVERTXEVENTBUS_DIR@
 
-# Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
+# Set to ptolemy.actor.lib.vertx and other packages that use vertex,
+# then used in $PTII/doc/makefile if the Vertx jars are found
 PTVERTX_PACKAGES = @PTVERTX_PACKAGES@
 
 # Waba is another JDK for PalmOS, see
