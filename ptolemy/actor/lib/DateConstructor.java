@@ -288,10 +288,10 @@ public class DateConstructor extends TypedAtomicActor {
                 portParameter.getPort().hasToken(0)) {
             value = ((IntToken)portParameter.getPort().get(0)).intValue();
         }
-        // Coverity Scan reports that value could be null.
-        if (value == null) {
-            return Integer.valueOf(0);
-        }
+        // // Coverity Scan reports that value could be null.
+        // if (value == null) {
+        //     return Integer.valueOf(0);
+        // }
         return value;
     }
     
@@ -304,10 +304,10 @@ public class DateConstructor extends TypedAtomicActor {
                 portParameter.getPort().hasToken(0)) {
             value = ((LongToken)portParameter.getPort().get(0)).longValue();
         }
-        // Coverity Scan reports that value could be null.
-        if (value == null) {
-            return Long.valueOf(0);
-        }
+        // // Coverity Scan reports that value could be null.
+        // if (value == null) {
+        //    return Long.valueOf(0);
+        // }
         return value;
     }
     
