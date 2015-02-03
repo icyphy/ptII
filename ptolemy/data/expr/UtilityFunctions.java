@@ -31,6 +31,7 @@ package ptolemy.data.expr;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1491,23 +1492,28 @@ public class UtilityFunctions {
         int columnPosition = 0;
         double[][] mtr = null;
 
-        FileReader fin = null;
+        // At one point MatrixParser.ReInit() took a Reader.  With
+        // JavaCC-5.0, it takes an InputStream.
+        // FileReader fin = null;
+        FileInputStream fin = null;
         try {
             try {
-                // Open the matrix file
-                fin = new FileReader(file);
+                // Open the matrix file.
+                // fin = new FileReader(file);
+                fin = new FileInputStream(file);
             } catch (FileNotFoundException e) {
                 throw new IllegalActionException("readMatrix: file \""
                         + file.getName() + "\" not found");
             }
 
-            // Read the file and convert it into a matrix
+            // Read the file and convert it into a matrix.
             if (_matrixParser == null) {
                 _matrixParser = new MatrixParser(System.in);
             }
 
             //MatrixParser.ReInit(fin);
-            MatrixParser.ReInit(fin);
+            _matrixParser.ReInit(fin);
+
             k = _matrixParser.readMatrix();
 
             if (column == -1) {
