@@ -4294,20 +4294,27 @@ XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNa
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: }
 
-    if { $result != $result1 && $result != $result2 && $result != $result3 && $result != $result4 && $result != $result5 && $result != $result6
+    set result7 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExceptionTestFile. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then the class would be present only if the}
+
+    if { $result != $result1 && $result != $result2 && $result != $result3 && $result != $result4 && $result != $result5 && $result != $result6 && $result != $result7
 	 && [string first $result $result1] == -1
 	 && [string first $result $result2] == -1
 	 && [string first $result $result3] == -1
 	 && [string first $result $result4] == -1
 	 && [string first $result $result5] == -1
 	 && [string first $result $result6] == -1
+         && [string first $result $result7] == -1
 	 && [string first $result1 $result] == -1
 	 && [string first $result2 $result] == -1
 	 && [string first $result3 $result] == -1
 	 && [string first $result4 $result] == -1
 	 && [string first $result5 $result] == -1
-	 && [string first $result6 $result] == -1 } {
-	error "--start--\n$result\n--end--\n\nwas not equal to\n\n--start#1--\n$result1\n--end--\n\nnor\n--start#2---\n$result2\n--end--\n\nor\n\n--start#3---\n$result3\n--end--\n\n or \n\n--start#4--\n$result4\n--end--\n\n or \n\n--start#4--\n$result5\n--end--\n or \n\n--start#6--\n$result6\n--end--\n\n"
+	 && [string first $result6 $result] == -1
+         && [string first $result7 $result] == -1
+     } {
+	error "--start--\n$result\n--end--\n\nwas not equal to\n\n--start#1--\n$result1\n--end--\n\nnor\n--start#2---\n$result2\n--end--\n\nor\n\n--start#3---\n$result3\n--end--\n\n or \n\n--start#4--\n$result4\n--end--\n\n or \n\n--start#4--\n$result5\n--end--\n or \n\n--start#6--\n$result6\n--end--\n\n or \n\n--start#7--\n$result7\n--end--\n\n"
     }
 } {}
 
