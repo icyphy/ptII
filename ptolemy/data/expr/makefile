@@ -200,47 +200,75 @@ $(OPTIONAL_JSRCS): PtParser.java MatrixParser.java
 
 # Uncomment this to work on the parser.
 PtParser.java: PtParser.jj
+	@echo "===="
+	@echo ""
+	@echo "Creating PtParser.java from PtParser.jj"
+	@echo ""
 	@echo "This command runs JavaCC, which can be downloaded from"
 	@echo "http://java.net/projects/javacc"
-	@echo "See \$$PTII/doc/install.htm for details."
+	@echo 'See $PTII/doc/install.htm for details.'
 	@echo "You only need install JavaCC if you modify PtParser.jjt"
 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
-	@echo "derived from PtParser.jjt"
+	@echo "derived from PtParser.jjt."
+	@echo "If you modify PtParser.jjt, you should run"
+	@echo '   rm `make echo_OPTIONAL_JSRCS`; make'
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) $(JAVACC_OPTIONS) PtParser.jj
 
 PtParser.jj: PtParser.jjt
+	@echo "===="
+	@echo ""
+	@echo "Creating PtParser.jj from PtParser.jjt"
+	@echo ""
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from"
 	@echo "http://java.net/projects/javacc"
-	@echo "See \$$PTII/doc/install.htm for details."
+	@echo 'See $PTII/doc/install.htm for details.'
 	@echo "You only need install JavaCC if you modify PtParser.jjt"
 	@echo "PtParser.java is derived from PtParser.jj, which is in turn"
-	@echo "derived from PtParser.jjt"
+	@echo "derived from PtParser.jjt."
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch PtParser.jj PtParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) $(JJTREE_OPTIONS) PtParser.jjt
 
 MatrixParser.java: MatrixParser.jj
+	@echo "===="
+	@echo ""
+	@echo "Creating MatrixParser.java from MatrixParser.jj"
+	@echo ""
 	@echo "This command runs JavaCC, which can be downloaded from"
 	@echo "http://java.net/projects/javacc"
-	@echo "See \$$PTII/doc/install.htm for details."
+	@echo 'See $PTII/doc/install.htm for details.'
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
 	@echo "derived from MatrixParser.jjt"
+	@echo "If you modify MatrixParser.jjt, you should run"
+	@echo '   rm `make echo_OPTIONAL_JSRCS`; make'
+	@echo "If, during compilation, you get "
+	@echo "   error: incompatible types: MatrixParser cannot be converted to PtParser"
+	@echo "then run: "
+	@echo '   rm `make echo_OPTIONAL_JSRCS`'
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch MatrixParser.jj MatrixParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JAVACC) $(JAVACC_OPTIONS) MatrixParser.jj
 
 MatrixParser.jj: MatrixParser.jjt
+	@echo "===="
+	@echo ""
+	@echo "Creating MatrixParser.jj from MatrixParser.jjt"
+	@echo ""
 	@echo "This command runs JJTree, which is part of JavaCC"
 	@echo "JavaCC can be downloaded from"
 	@echo "http://java.net/projects/javacc"
-	@echo "See \$PTII/doc/install.htm for details."
+	@echo 'See $PTII/doc/install.htm for details.'
 	@echo "You only need install JavaCC if you modify MatrixParser.jjt"
 	@echo "MatrixParser.java is derived from MatrixParser.jj, which is in turn"
 	@echo "derived from MatrixParser.jjt"
+	@echo "If, during compilation, you get "
+	@echo "   error: incompatible types: MatrixParser cannot be converted to PtParser"
+	@echo "then run: "
+	@echo '   rm `make echo_OPTIONAL_JSRCS`'
 	@echo "If you don't have JavaCC, you can workaround this with"
 	@echo "   touch MatrixParser.jj MatrixParser.java"
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) $(JJTREE_OPTIONS) MatrixParser.jjt

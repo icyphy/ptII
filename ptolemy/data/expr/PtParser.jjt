@@ -12,7 +12,7 @@ NODE_USES_PARSER = false;
 
 PARSER_BEGIN(PtParser)
 /* 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -149,6 +149,10 @@ invalid.</p>
 @SuppressWarnings("unused")
 public class PtParser {
     
+    // IMPORTANT: If this file is named PtParser.jj or PtParser.java,
+    // then *DO NOT* edit this file.  Instead, install JavaCC-5.0 (see
+    // $PTII/doc/install.htm) and edit PtParser.jjt
+
     boolean debug = false;
 
     public PtParser() {
@@ -469,6 +473,10 @@ public class PtParser {
     private void _initialize() {
         if (!_alreadyInitialized) {
             _alreadyInitialized = true;
+            // IMPORTANT: If this file is named PtParser.jj or
+            // PtParser.java, then *DO NOT* edit this file.
+            // Instead, install JavaCC-5.0 (see $PTII/doc/install.htm)
+            // and edit PtParser.jjt
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("java.lang.Double");
             registerFunctionClass("java.lang.Integer");
@@ -476,6 +484,7 @@ public class PtParser {
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.MatrixToken");
             registerFunctionClass("ptolemy.data.RecordToken");
+            registerFunctionClass("ptolemy.data.SmoothToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
             registerFunctionClass("ptolemy.math.Complex");
@@ -491,6 +500,7 @@ public class PtParser {
             registerFunctionClass("ptolemy.math.SignalProcessing");
             registerFunctionClass("ptolemy.math.FixPoint");
             registerFunctionClass("ptolemy.data.ObjectToken");
+            registerFunctionClass("ptolemy.data.DateToken");
         }
     }
     
