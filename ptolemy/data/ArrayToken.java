@@ -202,64 +202,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add this array token to the specified argument.
-     *  If the argument is an array token and it has
-     *  the same length as this array token then addition is elementwise.
-     *  If the argument is an array of length one, then each element
-     *  of this array is added to the argument. If this array has length
-     *  one, then its value is added to each element of the argument,
-     *  if it is an array.
-     *  Otherwise, each element is multiplied by the argument.
-     *  This overrides the base class to allow multiplication by scalars.
-     *  @param rightArgument The token to multiply by this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token is
-     *   an array token but does not have the same length as this
-     *   token, or if multiplication is not supported between the elements
-     *   of this array and the argument.
-     */
-    @Override
-    public Token add(Token rightArgument) throws IllegalActionException {
-        try {
-            return _add(rightArgument);
-        } catch (IllegalActionException ex) {
-            // If the type-specific operation fails, then create a
-            // better error message that has the types of the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "add", this, rightArgument));
-        }
-    }
-
-    /** Add this array token to the specified argument.
-     *  If the argument is an array token and it has
-     *  the same length as this array token then addition is elementwise.
-     *  If the argument is an array of length one, then each element
-     *  of this array is added to the argument. If this array has length
-     *  one, then its value is added to each element of the argument,
-     *  if it is an array.
-     *  This overrides the base class to allow multiplication by scalars.
-     *  @param leftArgument The token to multiply by this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the argument token is
-     *   an array token but does not have the same length as this
-     *   token, or if multiplication is not supported between the elements
-     *   of this array and the argument.
-     */
-    @Override
-    public Token addReverse(Token leftArgument) throws IllegalActionException {
-        try {
-            return _add(leftArgument);
-        } catch (IllegalActionException ex) {
-            // If the type-specific operation fails, then create a
-            // better error message that has the types of the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex, notSupportedMessage(
-                    "addReverse", this, leftArgument));
-        }
-    }
-
-    /** Append the given array to the end of this array, and return the
+     /** Append the given array to the end of this array, and return the
      *  resulting array. For example, if this array is {1, 2, 3} and the given
      *  array is {4, 5, 6}, then the result would be {1, 2, 3, 4, 5, 6}. If both
      *  arrays are empty, then an empty array is returned.
@@ -1151,25 +1094,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     result[i] = getElement(i).add(rightArray.getElement(i));
                 }
             } else {
-                // Maybe one argument or the other is an array
-                // of length one, converted automatically from
-                // a scalar.
-                if (rightArray.length() == 1) {
-                    Token scalar = rightArray.getElement(0);
-                    for (int i = 0; i < length(); i++) {
-                        result[i] = getElement(i).add(scalar);
-                    }
-                } else if (length() == 1) {
-                    result = new Token[rightArray.length()];
-                    Token scalar = getElement(0);
-                    for (int i = 0; i < rightArray.length(); i++) {
-                        result[i] = rightArray.getElement(i).add(scalar);
-                    }
-                } else {
-                    // Use this method to get a consistent error message
-                    // defined in one place.
-                    _checkArgumentLength(rightArgument);
-                }
+                // Use this method to get a consistent error message
+                // defined in one place.
+                _checkArgumentLength(rightArgument);
             }
         } else {
             for (int i = 0; i < length(); i++) {
