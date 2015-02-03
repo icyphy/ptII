@@ -118,9 +118,6 @@ test StreamErrorHandler-1.2 {Create a stream that we can read} {
 
 } {{Error encountered in:
 <entity name="b" class="ptolemy.moml.test.notAClass">
-ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.notAClass
-Because:
--- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.xml (The system cannot find the path specified)
--- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/moml/test/} ...}
+ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.notAClass. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not found. If the class uses a third party package, then} ...}
+
 

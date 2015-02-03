@@ -667,12 +667,7 @@ test MoMLChangeRequest-6.1 {setReportErrorsToHandler true (the default) } {
         </entity>
      failed: com.microstar.xml.XmlException: XML element "entity" triggers exception. in [external stream] at line 3 and column 47
 Caused by:
- ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
-Because:
--- no protocol: ptolemy/actor/lib/XXX.xml
--- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml
-$} ... {} ...}
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not } ... {} ...}
 
 ######################################################################
 ####
@@ -686,12 +681,8 @@ test MoMLChangeRequest-6.2 {setReportErrorsToHandler true} {
      succeeded
 } ... {RecorderErrorHandler: Error encountered in:
 <entity name="const" class="ptolemy.actor.lib.XXX">
-ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
-Because:
--- no protocol: ptolemy/actor/lib/XXX.xml
--- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml
-$} ...}
+ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX. In Ptolemy, classes are typically Java .class files. Entities like actors may instead be defined within a .xml file.  In any case, the class was not } ...}
+
 
 
 # Restore the original MoMLParser Error Handler
