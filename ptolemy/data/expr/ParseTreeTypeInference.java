@@ -550,6 +550,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
+        
         Type[] childTypes = _inferAllChildren(node);
 
         // Handle indexing into a record.
@@ -561,8 +562,17 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 return;
             }
         }
-
-        _setType(node, _methodCall(node.getMethodName(), childTypes));
+        
+        // Fix to Kepler bug #6629:
+        // Depending on the order in which type constraints are satisfied,
+        // some child types may remain UNKNOWN for one or more iterations
+        // of Mogensen's algorithm. Hence, keep the type of the node
+        // to UNKNOWN until the types for the children are resolved.
+        if (childTypes.length == 1 && childTypes[0] == BaseType.UNKNOWN) {
+            _setType(node, BaseType.UNKNOWN);
+        } else {
+            _setType(node, _methodCall(node.getMethodName(), childTypes));
+        }
     }
 
     /** Set the type of the given node to be the type of the first
