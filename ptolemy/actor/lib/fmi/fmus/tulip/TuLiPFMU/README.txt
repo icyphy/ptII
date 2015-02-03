@@ -7,6 +7,7 @@ This uses ecos (https://github.com/ifa-ethz/ecos) to solve optimization problem.
 To download and install ecos:
 
 git clone https://github.com/ifa-ethz/ecos
+cd ecos
 make
 sudo cp libecos.a /usr/local/lib
 sudo mkdir /usr/local/include/ecos
@@ -20,3 +21,8 @@ sudo cp external/amd/include/* /usr/local/include/ecos/external/amd/include/
 sudo cp external/ldl/include/ldl.h /usr/local/include/ecos/external/ldl/include/
 sudo cp external/SuiteSparse_config/SuiteSparse_config.h /usr/local/include/ecos/external/SuiteSparse_config
 
+
+Then, build the FMU:
+cd $PTII/ptolemy/actor/lib/fmi/fmus/tulip/TuLiPFMU/
+make
+$PTII/bin/vergil TuLiPFMU.xml
