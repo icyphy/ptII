@@ -29,10 +29,9 @@
 */
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
+import ptolemy.data.SmoothToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -113,36 +112,99 @@ public class QuantizedSampler extends Transformer {
 
     /**
      * Produce an output equal to the input if the input has crossed
-     * the quantum; otherwise, produce no output.
+     * the quantum; otherwise, produce no output. 
      * 
      * @throws IllegalActionException If sending an output fails.
      */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        if (input.hasToken(0)) {
-            Token currentInput = input.get(0);
-            final double newInput = ((DoubleToken) currentInput).doubleValue();
-            if (Math.abs(newInput - _lastInput) > Math.abs((_quantum))) {
-                _lastInput = newInput;
-                output.send(0, new DoubleToken(newInput));
-            }
-        }
-    }
-	
+	public void fire() throws IllegalActionException {
+		super.fire();
+		if (input.hasToken(0)) {
+			DoubleToken newInputToken = DoubleToken.convert(input.get(0));
+			if (_firstFiring){
+				// Initialize last input token with first input token received.
+				_lastInputToken = newInputToken;
+				// Send first input token received to the output port. 
+				 output.send(0, newInputToken);
+				 _firstFiring = false;
+				return;
+			}
+			final double newInput = newInputToken.doubleValue();
+			final double lastInput = _lastInputToken.doubleValue();
+			if (newInputToken instanceof SmoothToken) {
+				if (!_compareSmoothTokenDerivatives(newInputToken,
+						_lastInputToken)) {
+					// If the derivatives are different, send new token to the 
+					// output port without doing any further comparison.
+					_lastInputToken = newInputToken;
+					output.send(0, newInputToken);
+				} else {
+					// If the derivatives are the same, check if the input 
+					// has crossed the quantum.
+					if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
+						_lastInputToken = newInputToken;
+						output.send(0, newInputToken);
+					}
+				}
+			} else {
+				if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
+					_lastInputToken = newInputToken;
+					output.send(0, new DoubleToken(newInput));
+				}
+			}
+		}
+	}
+    
     /**
      * Initialize this actor.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _lastInput = 0.0;
+        _lastInputToken = null;
+        _firstFiring = true;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////	
+    /**
+     * Compare the derivative values of two smooth token.
+     * @param newToken The new input token received at the port.
+     * @param newToken The last input token seen at the port.
+     * @retun True if the derivatives are identical. 
+     */
+    private boolean _compareSmoothTokenDerivatives(DoubleToken newToken, DoubleToken lastToken){
+	    // Now we just have to check the derivatives.
+        double[] derivativesNewToken = ((SmoothToken) newToken).derivativeValues();
+        double[] derivativesLastToken = ((SmoothToken) lastToken).derivativeValues();
+        if (derivativesNewToken == derivativesLastToken) {
+    	// Derivatives are identical (should be true only if null).
+    	return true;
+        }
+        if (derivativesNewToken == null && derivativesLastToken != null
+    	    || derivativesNewToken != null && derivativesLastToken == null) {
+    	return false;
+        }
+        // Both tokens have derivatives.
+        if (derivativesNewToken.length != derivativesLastToken.length) {
+            return false;
+        }
+        // Both tokens have the same number of derivatives.
+        for(int i = 0; i < derivativesLastToken.length; i++){
+            if (derivativesNewToken[i] != derivativesLastToken[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The last recent input. */
-    private double _lastInput;
+    private DoubleToken _lastInputToken;
 
     /** Quantum. */
     private double _quantum;
+    
+    /** Flag to indicate first firing. */
+    private boolean _firstFiring;
 }
