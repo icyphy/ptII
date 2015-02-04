@@ -934,6 +934,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 input.scalarVariable = scalarVariable;
                 input.port = port;
                 input.hasChanged = false;
+                input.lastInput = null;
                 if (scalarVariable.type instanceof FMIRealType) {
                     input.start = ((FMIRealType) scalarVariable.type).start;
                 } else {
@@ -1657,31 +1658,32 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @throws IllegalActionException If the specified token cannot be converted
      *   to a double.
      */
-    private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
-	    throws IllegalActionException {
-        
-        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
-        // then the convert method does nothing and just returns the token.
-        // Otherwise, it attempts to convert it to a DoubleToken, and throws
-        // an exception if such conversion is not possible.
-        DoubleToken doubleToken = DoubleToken.convert(token);
-        
-        // In all cases, the first coefficient is simply the current value of the token.
-        ivMdl.coeffs[0] = doubleToken.doubleValue();
-        
-        double[] derivatives = null;
-        if (doubleToken instanceof SmoothToken) {
-            derivatives = ((SmoothToken)doubleToken).derivativeValues();
-        }
-	final int ncoeffs = ivMdl.coeffs.length;
-	for (int i = 1; i < ncoeffs; i++) {
-	    if (derivatives == null || derivatives.length < i) {
-		ivMdl.coeffs[i] = 0.0;
-	    } else {
-		ivMdl.coeffs[i] = derivatives[i-1];
-	    }
+	private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
+			throws IllegalActionException {
+
+		// Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
+		// then the convert method does nothing and just returns the token.
+		// Otherwise, it attempts to convert it to a DoubleToken, and throws
+		// an exception if such conversion is not possible.
+		DoubleToken doubleToken = DoubleToken.convert(token);
+
+		// In all cases, the first coefficient is simply the current value of
+		// the token.
+		ivMdl.coeffs[0] = doubleToken.doubleValue();
+
+		double[] derivatives = null;
+		if (doubleToken instanceof SmoothToken) {
+			derivatives = ((SmoothToken) doubleToken).derivativeValues();
+		}
+		final int ncoeffs = ivMdl.coeffs.length;
+		for (int i = 1; i < ncoeffs; i++) {
+			if (derivatives == null || derivatives.length < i) {
+				ivMdl.coeffs[i] = 0.0;
+			} else {
+				ivMdl.coeffs[i] = derivatives[i - 1];
+			}
+		}
 	}
-    }
 
     /**
      * Trigger quantization-events if necessary.
@@ -1779,63 +1781,40 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Update the input variable models if necessary.
         int currIdx = 0;
         boolean updatedInputVarMdl = false;
-        for (Input input : _inputs) {
-            // TODO: Check whether there is a guarantee that _getInputs() here
-            // returns the same count of inputs as it did during
-            // _initializeQssIntegrator_inputVars().
-            // If not, then index {currIdx} can be wrong.
-            assert (input.port.isKnown(0)); // Checked in
-                                            // _initializeQssIntegrator_inputVars();
-                                            // assume it doesn't change.
-            if (input.port.hasToken(0)) {
-                // Here, have a new value on the input port.
-                final Token token = input.port.get(0);
-                // The check below has been disabled. The assumption is that
-                // any input is a new input. This is guaranteed if we use
-                // the QSSQuantizer since other outputs will react to
-                // quantization events.
-                // if (!token.equals(input.lastToken)) {
-                // assert (token instanceof DoubleMatrixToken);
-                // Update the model.
-                final ModelPolynomial ivMdl = _inputVariableModels[currIdx];
-
-                _setModelFromToken(ivMdl, token);
-                // TODO: Here, just assuming that if have a new input, means
-                // the
-                // model
-                // has changed. This may not be true; not sure. See field
-                // persistentInputs
-                // on class FMUImport. Consider putting in code that checks
-                // if
-                // value
-                // changed. But it might be better to put a listener on the
-                // integrator (see notes in QssBase).
-                // TODO: Line below assumes the model time is {currentTime},
-                // but
-                // not
-                // sure this is true. Need a way to inspect/get model time
-                // from
-                // the
-                // information on the port. Either do it by hand, or
-                // bootstrap
-                // Ptolemy
-                // existing timestamp conventions, if possible.
-                ivMdl.tMdl = currentTime;
-                updatedInputVarMdl = true;
-                // Save the last token seen at this port
-                // _inputs.get(currIdx).lastToken = token;
-                // Set the hasChanged flag to true.
-                _inputs.get(currIdx).hasChanged = true;
-                if (_debugging) {
-                    _debugToStdOut(String.format(
-                            "-- Id{%d} set input variable model %d to %s",
-                            System.identityHashCode(this), currIdx,
-                            ivMdl.toString()));
-                }
-                // }
-            }
-            currIdx++;
-        }
+		for (Input input : _inputs) {
+			// TODO: Check whether there is a guarantee that _getInputs() here
+			// returns the same count of inputs as it did during
+			// _initializeQssIntegrator_inputVars().
+			// If not, then index {currIdx} can be wrong.
+			assert (input.port.isKnown(0)); // Checked in
+											// _initializeQssIntegrator_inputVars();
+											// assume it doesn't change.
+			if (input.port.hasToken(0)) {
+				// Here, have a new value on the input port.
+				final Token token = input.port.get(0);
+				// Here we check whether we have an input distinct from previous one.
+				if (!token.equals(input.lastInput)) {
+					// Update the model.
+					final ModelPolynomial ivMdl = _inputVariableModels[currIdx];
+					// Set model from token.
+					_setModelFromToken(ivMdl, token);
+					// Update time.
+					ivMdl.tMdl = currentTime;
+					updatedInputVarMdl = true;
+					// Save the last token seen at this port
+					_inputs.get(currIdx).lastInput = token;
+					// Set the hasChanged flag to true.
+					_inputs.get(currIdx).hasChanged = true;
+					if (_debugging) {
+						_debugToStdOut(String.format(
+								"-- Id{%d} set input variable model %d to %s",
+								System.identityHashCode(this), currIdx,
+								ivMdl.toString()));
+					}
+				}
+			}
+			currIdx++;
+		}
         assert (_qssSolver.getInputVariableCount() == currIdx);
 
         // Trigger rate-event if necessary.
@@ -1943,6 +1922,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         /** The flag which indicates that input changed. */
         public boolean hasChanged;
+        
+        /** The last token seen at the input port. */
+        public Token lastInput;
     }
 
     /** A data structure representing an output from the FMU. */
