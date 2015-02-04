@@ -22,9 +22,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000007">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.000000000001, 251.99999999999557}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="synchronizeToRealTime is set to TRUE,&#10;1 time unit in model&#10;time corresponds to 1 second.">
@@ -51,9 +51,9 @@
         </property>
     </entity>
     <entity name="VertxSubscribe" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;// FIXME: Need the requirement declared in the XML.&#10;var Vertx = require('vertxEventBus');&#10;var eb = null;&#10;&#10;function onOpen() {&#10;  eb.registerAddressListener(get(address), &#10;        function onReceived(msg) {&#10;            send(msg, message);&#10;        });&#10;}&#10;&#10;exports.initialize = function() {&#10;    if (eb == null) {        &#10;        eb = new Vertx.VertxBus({host: get(busHost), port: get(busHostPort)});&#10;        eb.on('open', onOpen);&#10;    }&#10;}&#10;&#10;exports.wrapup = function() {&#10;    eb.close();&#10;}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var Vertx = require('vertxEventBus');&#10;var eb = null;&#10;&#10;function onOpen() {&#10;  eb.registerAddressListener(get(address), &#10;        function onReceived(msg) {&#10;            send(msg, message);&#10;        });&#10;}&#10;&#10;exports.initialize = function() {&#10;    if (eb == null) {        &#10;        eb = new Vertx.VertxBus({host: get(busHost), port: get(busHostPort)});&#10;        eb.on('open', onOpen);&#10;    }&#10;}&#10;&#10;exports.wrapup = function() {&#10;    eb.close();&#10;}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxSubscribe.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/VertxSubscribe.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;FIXME: More.&#10;	&#10;  ">
@@ -79,9 +79,7 @@
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 220.0]">
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 220.0]">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -110,8 +108,8 @@
             </property>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Display.input" relation="relation2"/>
-    <link port="VertxSubscribe.message" relation="relation2"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="VertxSubscribe.message" relation="relation"/>
 </entity>
