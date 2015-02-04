@@ -50,10 +50,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 140.00000000000003]">
         </property>
     </entity>
-    <entity name="VertxPublish" class="org.terraswarm.accessor.jjs.JSAccessor">
+    <entity name="VertxPublish2" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var Vertx = require('vertxEventBus');&#10;var eb = null;&#10;var pendingOutputs = [];&#10;var opened = false;&#10;&#10;function onOpen() {&#10;  opened = true;&#10;}&#10;&#10;exports.initialize = function() {&#10;    if (eb == null) {        &#10;        eb = new Vertx.VertxBus({host: get(busHost), port: get(busHostPort)});&#10;        eb.on('open', onOpen);&#10;    }&#10;}&#10;&#10;exports.fire = function() {&#10;  var msg = get(message);&#10;  if (!opened) {&#10;    pendingOutputs.push(msg);&#10;  } else {&#10;    for (var i = 0; i &lt; pendingOutputs.length; i++) {&#10;      eb.publish(get(address), pendingOutputs[i]);&#10;    }&#10;    pendingOutputs = [];&#10;    eb.publish(get(address), msg);&#10;  }&#10;}&#10;&#10;exports.wrapup = function() {&#10;    eb.close();&#10;}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxPublish.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/VertxPublish.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;FIXME: More.&#10;	&#10;  ">
@@ -79,9 +79,9 @@
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="&quot;51&quot;">
+        <property name="message" class="ptolemy.actor.parameters.PortParameter" value="&quot;24&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 120.0]">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -114,10 +114,10 @@
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation3"/>
     <link port="Ramp.trigger" relation="relation"/>
-    <link port="VertxPublish.message" relation="relation2"/>
+    <link port="VertxPublish2.message" relation="relation3"/>
 </entity>
