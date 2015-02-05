@@ -456,7 +456,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         newObject._isInitializing = false;
         newObject._microstep = 1;
         newObject._noMoreActorsToFire = false;
-        newObject._realStartTime = 0;
         newObject._stopFireRequested = false;
         return newObject;
     }
@@ -698,8 +697,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     @Override
     public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
         if (_synchronizeToRealTime && !_isInitializing) {
-            long elapsedTime = System.currentTimeMillis()
-                    - _realStartTime;
+            long elapsedTime = elapsedTimeSinceStart();
             // NOTE: The cast to double below is essential because the Time
             // constructor that takes a long argument interprets that long as
             // a multiple of the time resolution.
@@ -836,17 +834,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         return _eventQueue.get().timeStamp();
     }
 
-    /** Return the system time at which the model begins executing.
-     *  That is, the system time (in milliseconds) when the initialize()
-     *  method of the director is called.
-     *  The time is in the form of milliseconds counting
-     *  from 1/1/1970 (UTC).
-     *  @return The real start time of the model.
-     */
-    public long getRealStartTimeMillis() {
-        return _realStartTime;
-    }
-
     /** Return the start time parameter value.
      *  <p>
      *  When the start time is too big, the double representation loses
@@ -976,7 +963,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             } else {
                 _delegateFireAt = false;
             }
-            _realStartTime = System.currentTimeMillis();
 
             _isInitializing = false;
         }
@@ -2265,8 +2251,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
 
-                                long elapsedTime = System.currentTimeMillis()
-                                        - _realStartTime;
+                                long elapsedTime = elapsedTimeSinceStart();
 
                                 // NOTE: We assume that the elapsed time can be
                                 // safely cast to a double.  This means that
@@ -2697,9 +2682,6 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      *  has exceeded the stopTime.
      */
     private boolean _exceedStopTime = false;
-
-    /** The real time at which the model begins executing. */
-    private long _realStartTime = 0;
 
     /** Decide whether the simulation should be stopped when there's no more
      *  events in the global event queue. By default, its value is 'true',

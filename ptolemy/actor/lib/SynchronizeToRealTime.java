@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SynchronizeToRealTime extends AbstractInitializableAttribute
-implements TimeRegulator {
+	implements TimeRegulator {
 
     /** Construct an instance of the attribute.
      * @param container The container.
@@ -64,15 +64,6 @@ implements TimeRegulator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Initialize by recording the real start time.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _realStartTime = System.currentTimeMillis();
-    }
 
     /** Propose a time to advance to.
      *  @param proposedTime The proposed time.
@@ -95,8 +86,7 @@ implements TimeRegulator {
         try {
             synchronized (mutexLockObject) {
                 while (true) {
-                    long elapsedTime = System.currentTimeMillis()
-                            - _realStartTime;
+                    long elapsedTime = director.elapsedTimeSinceStart();
 
                     // NOTE: We assume that the elapsed time can be
                     // safely cast to a double.  This means that
@@ -150,10 +140,4 @@ implements TimeRegulator {
         }
         return proposedTime;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The real time at which the model begins executing. */
-    private long _realStartTime = 0L;
 }

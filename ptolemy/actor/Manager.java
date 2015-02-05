@@ -279,6 +279,16 @@ public class Manager extends NamedObj implements Runnable {
 
         _executionListeners.add(new WeakReference<ExecutionListener>(listener));
     }
+    
+    /** Return the elapsed time (in milliseconds) since the start of execution
+     *  of the model. The start of execution is defined to be the time after
+     *  initialize() has been called and before any component has been iterated.
+     *  @return The time in milliseconds since the start of execution of the model.
+     */
+    public long elapsedTimeSinceStart() {
+	long currentTime = System.currentTimeMillis();
+	return currentTime - _afterInitTime;
+    }
 
     /** Enable or disable printing time and memory usage at the end of model
      *  execution.
@@ -326,7 +336,7 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         // Make a record of the time execution starts.
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
 
         _debug("-- Manager execute() called.");
 
@@ -342,7 +352,8 @@ public class Manager extends NamedObj implements Runnable {
         try {
             try {
                 initialize();
-                if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
+                _afterInitTime = System.currentTimeMillis();
+                if (_afterInitTime - startTime > minimumStatisticsTime) {
                     setStatusMessage(timeAndMemory(startTime));
                     System.out.println("Manager.initialize() finished: "
                             + getStatusMessage());
@@ -1637,6 +1648,9 @@ public class Manager extends NamedObj implements Runnable {
     ////                         private variables                 ////
     // A list of actors with pending initialization.
     private List<Actor> _actorsToInitialize = new LinkedList<Actor>();
+
+    /** The real time at which the model begins executing. */
+    private long _afterInitTime = 0;
 
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;

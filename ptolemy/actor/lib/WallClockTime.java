@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -38,7 +39,8 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  Upon firing, this actor outputs the elapsed real time in seconds
- since the invocation of its initialize() method.  The output type is double.
+ since the start time of the model, as reported by the director.
+ The output type is double.
  The resolution of time depends on the implementation of the Java
  virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
  10 milliseconds.
@@ -53,6 +55,7 @@ import ptolemy.kernel.util.Workspace;
  output port.  This can be used to ensure that this actor
  fires before another downstream actor.
 
+ @see Director#elapsedTimeSinceStart()
  @author  Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
@@ -150,15 +153,6 @@ public class WallClockTime extends Source {
         }
     }
 
-    /** Record the start time.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _startTime = System.currentTimeMillis();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -166,18 +160,10 @@ public class WallClockTime extends Source {
      *  @return A double value representing the elapsed time.
      */
     protected double _getCurrentTime() {
-        long elapsedTime = System.currentTimeMillis() - _startTime;
-
-        // Note that we need use the actor.util.Time class
+        // Note that we need not to use the actor.util.Time class
         // here because if we do, it breaks deep codegen because
         // deep codegen removes the Actor classes, and actor.util.Time
         // needs to keep track of the Director.
-        return elapsedTime / 1000.0;
+        return getDirector().elapsedTimeSinceStart() / 1000.0;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The start time. */
-    private long _startTime;
 }

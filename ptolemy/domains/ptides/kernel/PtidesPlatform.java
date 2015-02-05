@@ -790,7 +790,7 @@ public class PtidesPlatform extends MirrorComposite {
                                             director,
                                             (double)(token.getCalendarInstance()
                                                     .getTimeInMillis() - director
-                                                    .getRealStartTimeMillis())
+                                                    .elapsedTimeSinceStart())
                                                     / 1000); // The default unit of time is seconds.
                                 } else {
                                     timestampToken = record
@@ -910,7 +910,7 @@ public class PtidesPlatform extends MirrorComposite {
 
                             if (_useRealTime) {
                                 long time = (long) (timestamp.getDoubleValue() * 1000) // The default unit of time is seconds.
-                                        + director.getRealStartTimeMillis();
+                                        + director.elapsedTimeSinceStart();
                                 timeToken = new DateToken(time);
                             } else {
                                 timeToken = new DoubleToken(
