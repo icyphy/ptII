@@ -457,10 +457,11 @@ Initializable {
      *  associated port, and if so, update the current value of
      *  parameter with that token.  If there is no associated port,
      *  do nothing.
+     *  @return True if a new input value was received.
      *  @exception IllegalActionException If reading from the associated
      *   port throws it.
      */
-    public void update() throws IllegalActionException {
+    public boolean update() throws IllegalActionException {
         ParameterPort port = _port;
 
         if (port != null && port.isOutsideConnected() && port.hasToken(0)) {
@@ -473,7 +474,9 @@ Initializable {
             if (_debugging) {
                 _debug("Updated parameter value to: " + token);
             }
+            return true;
         }
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
