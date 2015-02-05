@@ -508,7 +508,6 @@ public class TMDirector extends Director {
         }
 
         super.initialize();
-        _realStartTime = System.currentTimeMillis();
 
         if (isEmbedded() && !_interruptQueue.isEmpty()) {
             Time nextPureEventTime = _interruptQueue.get().timeStamp();
@@ -561,7 +560,7 @@ public class TMDirector extends Director {
 
         if (!isEmbedded() && _synchronizeToRealTime) {
             // Wait for real time to cache up.
-            long elapsedTime = System.currentTimeMillis() - _realStartTime;
+            long elapsedTime = elapsedTimeSinceStart();
             double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
             if (_outsideTime.getDoubleValue() - elapsedTimeInSeconds > 1e-3) {
@@ -917,7 +916,4 @@ public class TMDirector extends Director {
 
     // The next iteration time
     private Time _nextIterationTime;
-
-    // The real start time in milliseconds count.
-    private long _realStartTime;
 }

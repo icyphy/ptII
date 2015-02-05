@@ -248,7 +248,7 @@ Decorator {
             // We only do synchronization to real time here and leave time
             // update to upper level directors or the postfire() method.
             if (_synchronizeToRealTime) {
-                long elapsedTime = System.currentTimeMillis() - _realStartTime;
+                long elapsedTime = elapsedTimeSinceStart();
                 double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
                 if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
@@ -613,8 +613,6 @@ Decorator {
         // Set the initial time.
         setModelTime(_expectedNextIterationTime);
         resume();
-
-        _realStartTime = System.currentTimeMillis();
     }
 
     /** Return false to indicate that this decorator should not
@@ -1005,9 +1003,6 @@ Decorator {
 
     // Flag to indicate whether the current director is ready to fire.
     private boolean _readyToFire = true;
-
-    // The real time at which the initialize() method was invoked.
-    private long _realStartTime = 0;
 
     // List of all receivers this director has created.
     private LinkedList _receivers = new LinkedList();

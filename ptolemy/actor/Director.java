@@ -291,6 +291,19 @@ public class Director extends Attribute implements Executable {
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
     }
+    
+    /** Return the elapsed time (in milliseconds) since the start of execution
+     *  of the model. The start of execution is defined to be the time after
+     *  preinitialize() and initialize() has been called for all components,
+     *  and before any component has been iterated. This method delegates to
+     *  the manager so that the start time is consistent among all directors
+     *  in a model.
+     *  @return The time in milliseconds since the start of execution of the model.
+     */
+    public long elapsedTimeSinceStart() {
+        Manager manager = ((CompositeActor) getContainer()).getManager();
+        return manager.elapsedTimeSinceStart();
+    }
 
     /** Request that after the current iteration finishes postfire() returns
      *  false, indicating to the environment that no more iterations should

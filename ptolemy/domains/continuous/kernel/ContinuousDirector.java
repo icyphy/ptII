@@ -739,10 +739,6 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
             _breakpoints.insert(new SuperdenseTime(stopTime, 0));
         }
 
-        // Record starting point of the real time (the computer system time)
-        // in case the director is synchronized to the real time.
-        _timeBase = System.currentTimeMillis();
-
         _commitIsPending = false;
         _postfireReturns = true;
         _isInitializing = false;
@@ -1364,10 +1360,6 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
     /** The current time at the start of the current integration step.
      */
     protected Time _iterationBeginTime;
-
-    /** The real starting time in term of system millisecond counts.
-     */
-    protected long _timeBase;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

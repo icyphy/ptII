@@ -136,8 +136,8 @@ public class DateToEvent extends Transformer {
                             + token.toString()
                             + ") lies in the past.");
                 } else {
-                    long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis() - _director
-                    .getRealStartTimeMillis();
+                    long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis()
+                	    - _director.elapsedTimeSinceStart();
                     Time fireTime = new Time(
                             _director,
                             ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.

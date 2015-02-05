@@ -578,8 +578,6 @@ PeriodicDirector {
                 }
             }
         }
-
-        _realStartTime = System.currentTimeMillis();
     }
 
     /** Return a new receiver consistent with the SDF domain.
@@ -640,8 +638,7 @@ PeriodicDirector {
             try {
                 synchronized (this) {
                     while (true) {
-                        long elapsedTime = System.currentTimeMillis()
-                                - _realStartTime;
+                        long elapsedTime = elapsedTimeSinceStart();
 
                         // NOTE: We assume that the elapsed time can be
                         // safely cast to a double.  This means that
@@ -1042,9 +1039,6 @@ PeriodicDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The real time at which the model begins executing. */
-    private long _realStartTime = 0L;
 
     /** Cache of the most recent value of vectorizationFactor. */
     private int _vectorizationFactor = 1;
