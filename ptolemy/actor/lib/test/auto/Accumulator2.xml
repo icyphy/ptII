@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Accumulator2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 510]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -18,36 +18,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 827, 631}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 255.0}">
     </property>
     <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="{0, 0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 200.0">
         </property>
     </entity>
     <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false, false, false, true, false}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 260.0">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="{0, 0}">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="{0, 0}">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="{1, -1}">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 195.0">
@@ -64,12 +64,18 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="165.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Accumulator.input" relation="relation7"/>
     <link port="Accumulator.output" relation="relation8"/>
