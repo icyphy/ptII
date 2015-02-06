@@ -16,33 +16,33 @@
 #define SDFRECEIVER 2
 
 struct SDFReceiver {
-        // First we define the type of the Receiver
-        int typeReceiver;
+    // First we define the type of the Receiver
+    int typeReceiver;
 
-        // Here are the fields
-        struct IOPort * container;
+    // Here are the fields
+    struct IOPort * container;
 
-        // Here is the destructor
-        void (*free)(struct SDFReceiver*);
+    // Here is the destructor
+    void (*free)(struct SDFReceiver*);
 
-        // Here are the methods
-        Time (*getModelTime)(struct SDFReceiver*);
-        void (*clear)(struct SDFReceiver*);
-        PblList* (*elementList)(struct SDFReceiver*);
-        Token* (*get)(struct SDFReceiver*);
-        Token** (*getArray)(struct Receiver*, int);
-        bool (*hasRoom)(struct SDFReceiver*);
-        bool (*hasRoom1)(struct SDFReceiver*, int);
-        bool (*hasToken)(struct SDFReceiver*);
-        bool (*hasToken1)(struct SDFReceiver*, int);
-        void (*put)(struct SDFReceiver*, Token*);
-        void (*putArray)(struct Receiver*, Token*, int);
-        void (*putArrayToAll)(struct Receiver*, Token*, int, PblList*);
-        void (*putToAll)(struct Receiver*, Token , PblList*);
+    // Here are the methods
+    Time (*getModelTime)(struct SDFReceiver*);
+    void (*clear)(struct SDFReceiver*);
+    PblList* (*elementList)(struct SDFReceiver*);
+    Token* (*get)(struct SDFReceiver*);
+    Token** (*getArray)(struct Receiver*, int);
+    bool (*hasRoom)(struct SDFReceiver*);
+    bool (*hasRoom1)(struct SDFReceiver*, int);
+    bool (*hasToken)(struct SDFReceiver*);
+    bool (*hasToken1)(struct SDFReceiver*, int);
+    void (*put)(struct SDFReceiver*, Token*);
+    void (*putArray)(struct Receiver*, Token*, int);
+    void (*putArrayToAll)(struct Receiver*, Token*, int, PblList*);
+    void (*putToAll)(struct Receiver*, Token , PblList*);
 
-        // New Members
-        int _waitingTokens;
-        PblList* _queue;
+    // New Members
+    int _waitingTokens;
+    PblList* _queue;
 };
 
 struct SDFReceiver* SDFReceiver_New();

@@ -17,27 +17,27 @@
 #define DERECEIVER 1
 
 struct DEReceiver {
-        // Members from parent class
-        int typeReceiver;
-        struct IOPort * container;
-        void (*free)(struct DEReceiver*);
-        Time (*getModelTime)(struct Receiver*);
-        void (*clear)(struct DEReceiver*);
-        PblList* (*elementList)(struct DEReceiver*);
-        Token* (*get)(struct DEReceiver*);
-        Token** (*getArray)(struct Receiver*, int);
-        bool (*hasRoom)(struct DEReceiver*);
-        bool (*hasRoom1)(struct DEReceiver*, int);
-        bool (*hasToken)(struct DEReceiver*);
-        bool (*hasToken1)(struct DEReceiver*, int);
-        void (*put)(struct DEReceiver*, Token*);
-        void (*putArray)(struct Receiver*, Token**, int);
-        void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
-        void (*putToAll)(struct Receiver*, Token* , PblList*);
+    // Members from parent class
+    int typeReceiver;
+    struct IOPort * container;
+    void (*free)(struct DEReceiver*);
+    Time (*getModelTime)(struct Receiver*);
+    void (*clear)(struct DEReceiver*);
+    PblList* (*elementList)(struct DEReceiver*);
+    Token* (*get)(struct DEReceiver*);
+    Token** (*getArray)(struct Receiver*, int);
+    bool (*hasRoom)(struct DEReceiver*);
+    bool (*hasRoom1)(struct DEReceiver*, int);
+    bool (*hasToken)(struct DEReceiver*);
+    bool (*hasToken1)(struct DEReceiver*, int);
+    void (*put)(struct DEReceiver*, Token*);
+    void (*putArray)(struct Receiver*, Token**, int);
+    void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
+    void (*putToAll)(struct Receiver*, Token* , PblList*);
 
-        // New Members
-        PblList* _tokens;
-        struct DEDirector* _director;
+    // New Members
+    PblList* _tokens;
+    struct DEDirector* _director;
 };
 
 struct DEReceiver* DEReceiver_New();

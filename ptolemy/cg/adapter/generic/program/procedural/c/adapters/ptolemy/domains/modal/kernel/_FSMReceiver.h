@@ -16,32 +16,32 @@
 #define FSMRECEIVER 3
 
 struct FSMReceiver {
-        // First we define the type of the Receiver
-        int typeReceiver;
+    // First we define the type of the Receiver
+    int typeReceiver;
 
-        // Here are the fields
-        struct IOPort * container;
+    // Here are the fields
+    struct IOPort * container;
 
-        // Here is the destructor
-        void (*free)(struct FSMReceiver*);
+    // Here is the destructor
+    void (*free)(struct FSMReceiver*);
 
-        // Here are the methods
-        Time (*getModelTime)(struct FSMReceiver*);
-        void (*clear)(struct FSMReceiver*);
-        PblList* (*elementList)(struct FSMReceiver*);
-        Token* (*get)(struct FSMReceiver*);
-        Token** (*getArray)(struct Receiver*, int);
-        bool (*hasRoom)(struct FSMReceiver*);
-        bool (*hasRoom1)(struct FSMReceiver*, int);
-        bool (*hasToken)(struct FSMReceiver*);
-        bool (*hasToken1)(struct FSMReceiver*, int);
-        void (*put)(struct FSMReceiver*, Token*);
-        void (*putArray)(struct Receiver*, Token**, int);
-        void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
-        void (*putToAll)(struct Receiver*, Token* , PblList*);
+    // Here are the methods
+    Time (*getModelTime)(struct FSMReceiver*);
+    void (*clear)(struct FSMReceiver*);
+    PblList* (*elementList)(struct FSMReceiver*);
+    Token* (*get)(struct FSMReceiver*);
+    Token** (*getArray)(struct Receiver*, int);
+    bool (*hasRoom)(struct FSMReceiver*);
+    bool (*hasRoom1)(struct FSMReceiver*, int);
+    bool (*hasToken)(struct FSMReceiver*);
+    bool (*hasToken1)(struct FSMReceiver*, int);
+    void (*put)(struct FSMReceiver*, Token*);
+    void (*putArray)(struct Receiver*, Token**, int);
+    void (*putArrayToAll)(struct Receiver*, Token**, int, PblList*);
+    void (*putToAll)(struct Receiver*, Token* , PblList*);
 
-        // New Members
-        Token *_token;
+    // New Members
+    Token *_token;
 };
 
 struct FSMReceiver* FSMReceiver_New();

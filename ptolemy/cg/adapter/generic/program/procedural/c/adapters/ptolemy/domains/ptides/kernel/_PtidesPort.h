@@ -23,85 +23,85 @@
 #define IS_PTIDESPORT(p) ((p)->typePort%100 == 11)
 
 struct PtidesPort {
-        int typePort;
+    int typePort;
 
-        struct Actor* container;
+    struct Actor* container;
 
-        bool _isInsideConnected;
-        bool _isOutsideConnected;
-        bool _isInput;
-        bool _isOutput;
-        bool _isMultiport;
-        int _width;
-        int _insideWidth;
-        PblList* _farReceivers;
-        PblList* _localReceivers;
-        PblList* _localInsideReceivers;
-        PblList* _insideReceivers;
-        int _numberOfSinks;
-        int _numberOfSources;
+    bool _isInsideConnected;
+    bool _isOutsideConnected;
+    bool _isInput;
+    bool _isOutput;
+    bool _isMultiport;
+    int _width;
+    int _insideWidth;
+    PblList* _farReceivers;
+    PblList* _localReceivers;
+    PblList* _localInsideReceivers;
+    PblList* _insideReceivers;
+    int _numberOfSinks;
+    int _numberOfSources;
 
-        void (*free)(struct PtidesPort*);
+    void (*free)(struct PtidesPort*);
 
-        void (*broadcast)(struct PtidesPort*, Token*);
-        void (*broadcast1)(struct PtidesPort*, Token**, int, int);
-        PblList* (*deepGetReceivers)(struct PtidesPort*);
-        Token* (*get)(struct PtidesPort*, int);
-        Token** (*get1)(struct PtidesPort*, int, int);
-        int (*getChannelForReceiver)(struct PtidesPort*, struct Receiver*);
-        Token* (*getInside)(struct PtidesPort*, int);
-        PblList* (*getInsideReceivers)(struct PtidesPort*);
-        Time (*getModelTime)(struct PtidesPort*, int);
-        PblList* (*getReceivers)(struct PtidesPort*);
-        PblList* (*getRemoteReceivers)(struct PtidesPort*);
-        int (*getWidth)(struct PtidesPort*);
-        int (*getWidthInside)(struct PtidesPort*);
-        bool (*hasRoom)(struct PtidesPort*, int);
-        bool (*hasRoomInside)(struct PtidesPort*, int);
-        bool (*hasToken)(struct PtidesPort*, int);
-        bool (*hasToken1)(struct PtidesPort*, int, int);
-        bool (*hasTokenInside)(struct PtidesPort*, int);
-        bool (*isInput)(struct PtidesPort*);
-        bool (*isMultiport)(struct PtidesPort*);
-        bool (*isOutput)(struct PtidesPort*);
-        bool (*isOutsideConnected)(struct PtidesPort*);
-        int (*numberOfSinks)(struct PtidesPort*);
-        int (*numberOfSources)(struct PtidesPort*);
-        void (*send)(struct PtidesPort*, int, Token*);
-        void (*send1)(struct PtidesPort*, int, Token**, int);
-        void (*sendInside)(struct PtidesPort*, int, Token*);
+    void (*broadcast)(struct PtidesPort*, Token*);
+    void (*broadcast1)(struct PtidesPort*, Token**, int, int);
+    PblList* (*deepGetReceivers)(struct PtidesPort*);
+    Token* (*get)(struct PtidesPort*, int);
+    Token** (*get1)(struct PtidesPort*, int, int);
+    int (*getChannelForReceiver)(struct PtidesPort*, struct Receiver*);
+    Token* (*getInside)(struct PtidesPort*, int);
+    PblList* (*getInsideReceivers)(struct PtidesPort*);
+    Time (*getModelTime)(struct PtidesPort*, int);
+    PblList* (*getReceivers)(struct PtidesPort*);
+    PblList* (*getRemoteReceivers)(struct PtidesPort*);
+    int (*getWidth)(struct PtidesPort*);
+    int (*getWidthInside)(struct PtidesPort*);
+    bool (*hasRoom)(struct PtidesPort*, int);
+    bool (*hasRoomInside)(struct PtidesPort*, int);
+    bool (*hasToken)(struct PtidesPort*, int);
+    bool (*hasToken1)(struct PtidesPort*, int, int);
+    bool (*hasTokenInside)(struct PtidesPort*, int);
+    bool (*isInput)(struct PtidesPort*);
+    bool (*isMultiport)(struct PtidesPort*);
+    bool (*isOutput)(struct PtidesPort*);
+    bool (*isOutsideConnected)(struct PtidesPort*);
+    int (*numberOfSinks)(struct PtidesPort*);
+    int (*numberOfSources)(struct PtidesPort*);
+    void (*send)(struct PtidesPort*, int, Token*);
+    void (*send1)(struct PtidesPort*, int, Token**, int);
+    void (*sendInside)(struct PtidesPort*, int, Token*);
 
 #ifdef PTIDESDIRECTOR
-        double delayOffset;
+    double delayOffset;
 #endif
 
-        char (*getType)(struct TypedIOPort*);
-        char _type;
+    char (*getType)(struct TypedIOPort*);
+    char _type;
 
-        // new members
-        char* name;
+    // new members
+    char* name;
 
-        struct PtidesPort* _associatedPort;
-        bool _settingAssociatedPort;
+    struct PtidesPort* _associatedPort;
+    bool _settingAssociatedPort;
 
-        void (*setAssociatedPort)(struct PtidesPort*, struct PtidesPort*);
+    void (*setAssociatedPort)(struct PtidesPort*, struct PtidesPort*);
 
-        bool actuateAtEventTimestamp;
-        Time deviceDelay;
-        Time deviceDelayBound;
-        bool isNetworkPort;
-        Time networkDelayBound;
-        Time platformDelayBound;
-        Time sourcePlatformDelayBound;
-        PblMap* _transmittedTokenTimestamps;
-        PblMap* _transmittedTokenCnt;
+    bool actuateAtEventTimestamp;
+    Time deviceDelay;
+    Time deviceDelayBound;
+    bool isNetworkPort;
+    Time networkDelayBound;
+    Time platformDelayBound;
+    Time sourcePlatformDelayBound;
+    PblMap* _transmittedTokenTimestamps;
+    PblMap* _transmittedTokenCnt;
 
-        bool (*isActuatorPort)(struct PtidesPort*);
-        bool (*isSensorPort)(struct PtidesPort*);
-        bool (*isNetworkReceiverPort)(struct PtidesPort*);
-        bool (*isNetworkTransmitterPort)(struct PtidesPort*);
+    bool (*isActuatorPort)(struct PtidesPort*);
+    bool (*isSensorPort)(struct PtidesPort*);
+    bool (*isNetworkReceiverPort)(struct PtidesPort*);
+    bool (*isNetworkTransmitterPort)(struct PtidesPort*);
 
-        void (*_getTimeStampForToken)(struct PtidesPort*, Token*, Time*);
+    void (*_getTimeStampForToken)(struct PtidesPort*, Token*, Time*);
 };
 
 struct PtidesPort* PtidesPort_New();

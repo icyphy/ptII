@@ -21,10 +21,10 @@
 #endif
 
 struct CQCell {
-        struct DEEvent* content;
-        struct CQCell* next;
+    struct DEEvent* content;
+    struct CQCell* next;
 
-        void (*free)(struct CQCell*);
+    void (*free)(struct CQCell*);
 };
 // functions for a CQCell
 struct CQCell * CQCell_New ();
@@ -32,18 +32,18 @@ void CQCell_Init(struct CQCell* cell);
 void CQCell_New_Free (struct CQCell* cell);
 
 struct CQLinkedList {
-        struct CQCell * head;
-        struct CQCell * tail;
+    struct CQCell * head;
+    struct CQCell * tail;
 
-        void (*free)(struct CQLinkedList*);
+    void (*free)(struct CQLinkedList*);
 
-        bool (*includes)(struct CQLinkedList*, struct DEEvent*);
-        bool (*isEmpty)(struct CQLinkedList*);
-        bool (*insert)(struct CQLinkedList*, struct DEEvent*);
-        bool (*remove)(struct CQLinkedList*, struct DEEvent*);
-        struct DEEvent* (*take)(struct CQLinkedList*);
-        struct DEEvent* (*get)(struct CQLinkedList*);
-        void (*clear)(struct CQLinkedList*);
+    bool (*includes)(struct CQLinkedList*, struct DEEvent*);
+    bool (*isEmpty)(struct CQLinkedList*);
+    bool (*insert)(struct CQLinkedList*, struct DEEvent*);
+    bool (*remove)(struct CQLinkedList*, struct DEEvent*);
+    struct DEEvent* (*take)(struct CQLinkedList*);
+    struct DEEvent* (*get)(struct CQLinkedList*);
+    void (*clear)(struct CQLinkedList*);
 };
 
 // functions for a CQLinkedList
@@ -62,44 +62,44 @@ void CQLinkedList_New_Free(struct CQLinkedList * list);
 #define _SAMPLE_SIZE 8
 
 struct CalendarQueue {
-        void (*free)(struct CalendarQueue*);
+    void (*free)(struct CalendarQueue*);
 
-        int _queueSizeOverThreshold;
-        int _queueSizeUnderThreshold;
-        double _binWidth;
-        int _bottomThreshold;
-        PblList* _bucket;
-        void* _cachedMinimumBucket;
-        int _indexOfMinimumBucket;
-        bool _indexOfMinimumBucketValid;
-        bool _initialized;
-        int _logMinNumBuckets;
-        int _logNumberOfBuckets;
-        int _logQueueBinCountFactor;
-        void* _minimumEntry;
-        long _minVirtualBucket;
-        int _minBucket;
-        int _numberOfBuckets;
-        int _numberOfBucketsMask;
-        int _queueSize;
-        bool _resizeEnabled;
-        int _topThreshold;
+    int _queueSizeOverThreshold;
+    int _queueSizeUnderThreshold;
+    double _binWidth;
+    int _bottomThreshold;
+    PblList* _bucket;
+    void* _cachedMinimumBucket;
+    int _indexOfMinimumBucket;
+    bool _indexOfMinimumBucketValid;
+    bool _initialized;
+    int _logMinNumBuckets;
+    int _logNumberOfBuckets;
+    int _logQueueBinCountFactor;
+    void* _minimumEntry;
+    long _minVirtualBucket;
+    int _minBucket;
+    int _numberOfBuckets;
+    int _numberOfBucketsMask;
+    int _queueSize;
+    bool _resizeEnabled;
+    int _topThreshold;
 
-        void (*clear)(struct CalendarQueue *);
-        void* (*get)(struct CalendarQueue *);
-        bool (*includes)(struct CalendarQueue *, void*);
-        bool (*isEmpty)(struct CalendarQueue*);
-        bool (*put)(struct CalendarQueue *, void*);
-        bool (*remove)(struct CalendarQueue *, void*);
-        int (*size)(struct CalendarQueue *);
-        void* (*take)(struct CalendarQueue *);
-        void** (*toArray)(struct CalendarQueue *);
-        int (*_getBinIndex)(struct CalendarQueue *, void*);
-        void* (*_getFromBucket)(struct CalendarQueue *, int);
-        int (*_getIndexOfMinimumBucket)(struct CalendarQueue *);
-        void (*_localInit)(struct CalendarQueue *, int, void*);
-        void (*_resize)(struct CalendarQueue *, bool);
-        void* (*_takeFromBucket)(struct CalendarQueue *, int);
+    void (*clear)(struct CalendarQueue *);
+    void* (*get)(struct CalendarQueue *);
+    bool (*includes)(struct CalendarQueue *, void*);
+    bool (*isEmpty)(struct CalendarQueue*);
+    bool (*put)(struct CalendarQueue *, void*);
+    bool (*remove)(struct CalendarQueue *, void*);
+    int (*size)(struct CalendarQueue *);
+    void* (*take)(struct CalendarQueue *);
+    void** (*toArray)(struct CalendarQueue *);
+    int (*_getBinIndex)(struct CalendarQueue *, void*);
+    void* (*_getFromBucket)(struct CalendarQueue *, int);
+    int (*_getIndexOfMinimumBucket)(struct CalendarQueue *);
+    void (*_localInit)(struct CalendarQueue *, int, void*);
+    void (*_resize)(struct CalendarQueue *, bool);
+    void* (*_takeFromBucket)(struct CalendarQueue *, int);
 };
 
 struct CalendarQueue* CalendarQueue_New();

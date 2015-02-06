@@ -17,57 +17,57 @@
 #define IOPORT 0
 
 struct IOPort {
-        int typePort;
+    int typePort;
 
-        struct Actor* container;
+    struct Actor* container;
 
-        bool _isInsideConnected;
-        bool _isOutsideConnected;
-        bool _isInput;
-        bool _isOutput;
-        bool _isMultiport;
-        int _width;
-        int _insideWidth;
-        PblList* _farReceivers;
-        PblList* _localReceivers;
-        PblList* _localInsideReceivers;
-        PblList* _insideReceivers;
-        int _numberOfSinks;
-        int _numberOfSources;
+    bool _isInsideConnected;
+    bool _isOutsideConnected;
+    bool _isInput;
+    bool _isOutput;
+    bool _isMultiport;
+    int _width;
+    int _insideWidth;
+    PblList* _farReceivers;
+    PblList* _localReceivers;
+    PblList* _localInsideReceivers;
+    PblList* _insideReceivers;
+    int _numberOfSinks;
+    int _numberOfSources;
 
-        void (*free)(struct IOPort*);
+    void (*free)(struct IOPort*);
 
-        void (*broadcast)(struct IOPort*, Token*);
-        void (*broadcast1)(struct IOPort*, Token**, int, int);
-        PblList* (*deepGetReceivers)(struct IOPort*);
-        Token* (*get)(struct IOPort*, int);
-        Token** (*get1)(struct IOPort*, int, int);
-        int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
-        Token* (*getInside)(struct IOPort*, int);
-        PblList* (*getInsideReceivers)(struct IOPort*);
-        Time (*getModelTime)(struct IOPort*, int);
-        PblList* (*getReceivers)(struct IOPort*);
-        PblList* (*getRemoteReceivers)(struct IOPort*);
-        int (*getWidth)(struct IOPort*);
-        int (*getWidthInside)(struct IOPort*);
-        bool (*hasRoom)(struct IOPort*, int);
-        bool (*hasRoomInside)(struct IOPort*, int);
-        bool (*hasToken)(struct IOPort*, int);
-        bool (*hasToken1)(struct IOPort*, int, int);
-        bool (*hasTokenInside)(struct IOPort*, int);
-        bool (*isInput)(struct IOPort*);
-        bool (*isMultiport)(struct IOPort*);
-        bool (*isOutput)(struct IOPort*);
-        bool (*isOutsideConnected)(struct IOPort*);
-        int (*numberOfSinks)(struct IOPort*);
-        int (*numberOfSources)(struct IOPort*);
-        void (*send)(struct IOPort*, int, Token*);
-        void (*send1)(struct IOPort*, int, Token**, int);
-        void (*sendInside)(struct IOPort*, int, Token*);
-        void (*sendLocalInside)(struct IOPort*, int, Token*);
+    void (*broadcast)(struct IOPort*, Token*);
+    void (*broadcast1)(struct IOPort*, Token**, int, int);
+    PblList* (*deepGetReceivers)(struct IOPort*);
+    Token* (*get)(struct IOPort*, int);
+    Token** (*get1)(struct IOPort*, int, int);
+    int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
+    Token* (*getInside)(struct IOPort*, int);
+    PblList* (*getInsideReceivers)(struct IOPort*);
+    Time (*getModelTime)(struct IOPort*, int);
+    PblList* (*getReceivers)(struct IOPort*);
+    PblList* (*getRemoteReceivers)(struct IOPort*);
+    int (*getWidth)(struct IOPort*);
+    int (*getWidthInside)(struct IOPort*);
+    bool (*hasRoom)(struct IOPort*, int);
+    bool (*hasRoomInside)(struct IOPort*, int);
+    bool (*hasToken)(struct IOPort*, int);
+    bool (*hasToken1)(struct IOPort*, int, int);
+    bool (*hasTokenInside)(struct IOPort*, int);
+    bool (*isInput)(struct IOPort*);
+    bool (*isMultiport)(struct IOPort*);
+    bool (*isOutput)(struct IOPort*);
+    bool (*isOutsideConnected)(struct IOPort*);
+    int (*numberOfSinks)(struct IOPort*);
+    int (*numberOfSources)(struct IOPort*);
+    void (*send)(struct IOPort*, int, Token*);
+    void (*send1)(struct IOPort*, int, Token**, int);
+    void (*sendInside)(struct IOPort*, int, Token*);
+    void (*sendLocalInside)(struct IOPort*, int, Token*);
 
 #ifdef PTIDESDIRECTOR
-        double delayOffset;
+    double delayOffset;
 #endif
 };
 

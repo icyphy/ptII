@@ -12,31 +12,31 @@
 #define ATOMICACTOR 1
 
 struct AtomicActor {
-        int typeActor;
+    int typeActor;
 
-        struct CompositeActor* container;
+    struct CompositeActor* container;
 
-        void (*free)(struct AtomicActor*);
+    void (*free)(struct AtomicActor*);
 
-        void (*fire)(struct AtomicActor*);
-        struct Director* (*getDirector)(struct AtomicActor*);
-        struct Director* (*getExecutiveDirector)(struct AtomicActor*);
-        void (*initialize)(struct AtomicActor*);
-        int (*iterate)(struct AtomicActor*, int);
-        PblList* (*inputPortList)(struct AtomicActor*);
-        PblList* (*outputPortList)(struct AtomicActor*);
-        bool (*postfire)(struct AtomicActor*);
-        bool (*prefire)(struct AtomicActor*);
-        void (*preinitialize)(struct AtomicActor*);
-        void (*wrapup)(struct AtomicActor*);
+    void (*fire)(struct AtomicActor*);
+    struct Director* (*getDirector)(struct AtomicActor*);
+    struct Director* (*getExecutiveDirector)(struct AtomicActor*);
+    void (*initialize)(struct AtomicActor*);
+    int (*iterate)(struct AtomicActor*, int);
+    PblList* (*inputPortList)(struct AtomicActor*);
+    PblList* (*outputPortList)(struct AtomicActor*);
+    bool (*postfire)(struct AtomicActor*);
+    bool (*prefire)(struct AtomicActor*);
+    void (*preinitialize)(struct AtomicActor*);
+    void (*wrapup)(struct AtomicActor*);
 
-        // FIXME : temp solution for the decorators of Ptides domain
-        double delayOffset;
-        double _clockSynchronizationBound;
+    // FIXME : temp solution for the decorators of Ptides domain
+    double delayOffset;
+    double _clockSynchronizationBound;
 
-        // new members
-        PblList* _inputPorts;
-        PblList* _outputPorts;
+    // new members
+    PblList* _inputPorts;
+    PblList* _outputPorts;
 
 };
 

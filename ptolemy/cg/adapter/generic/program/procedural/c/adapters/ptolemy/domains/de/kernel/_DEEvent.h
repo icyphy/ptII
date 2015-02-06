@@ -16,27 +16,27 @@
 #define IS_DEEVENT(e) ((e)->typeEvent%10 == 1)
 
 struct DEEvent {
-        int typeEvent;
+    int typeEvent;
 
-        struct Actor* _actor;
-        int _depth;
-        struct IOPort* _ioPort;
-        int _microstep;
-        int _priority;
-        Time _timestamp;
+    struct Actor* _actor;
+    int _depth;
+    struct IOPort* _ioPort;
+    int _microstep;
+    int _priority;
+    Time _timestamp;
 
-        void (*free)(struct DEEvent*);
+    void (*free)(struct DEEvent*);
 
-        struct Actor* (*actor)(struct DEEvent*);
-        int (*compareTo)(struct DEEvent*, struct DEEvent*);
-        int (*depth)(struct DEEvent*);
-        bool (*equals)(struct DEEvent*, struct DEEvent*);
-        long (*getVirtualBinNumber)(struct DEEvent*, double);
-        bool (*hasTheSameTagAndDepthAs)(struct DEEvent*, struct DEEvent*);
-        bool (*hasTheSameTagAs)(struct DEEvent*, struct DEEvent*);
-        struct IOPort* (*ioPort)(struct DEEvent*);
-        int (*microstep)(struct DEEvent*);
-        Time (*timeStamp)(struct DEEvent*);
+    struct Actor* (*actor)(struct DEEvent*);
+    int (*compareTo)(struct DEEvent*, struct DEEvent*);
+    int (*depth)(struct DEEvent*);
+    bool (*equals)(struct DEEvent*, struct DEEvent*);
+    long (*getVirtualBinNumber)(struct DEEvent*, double);
+    bool (*hasTheSameTagAndDepthAs)(struct DEEvent*, struct DEEvent*);
+    bool (*hasTheSameTagAs)(struct DEEvent*, struct DEEvent*);
+    struct IOPort* (*ioPort)(struct DEEvent*);
+    int (*microstep)(struct DEEvent*);
+    Time (*timeStamp)(struct DEEvent*);
 };
 
 struct DEEvent* DEEvent_New();

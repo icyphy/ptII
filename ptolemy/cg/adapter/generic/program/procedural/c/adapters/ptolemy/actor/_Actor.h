@@ -12,27 +12,27 @@
 #define ACTOR 0
 
 struct Actor {
-        int typeActor;
+    int typeActor;
 
-        struct CompositeActor* container;
+    struct CompositeActor* container;
 
-        void (*free)(struct Actor*);
+    void (*free)(struct Actor*);
 
-        void (*fire)(struct Actor*);
-        struct Director* (*getDirector)(struct Actor*);
-        struct Director* (*getExecutiveDirector)(struct Actor*);
-        void (*initialize)(struct Actor*);
-        int (*iterate)(struct Actor*, int);
-        PblList* (*inputPortList)(struct Actor*);
-        PblList* (*outputPortList)(struct Actor*);
-        bool (*postfire)(struct Actor*);
-        bool (*prefire)(struct Actor*);
-        void (*preinitialize)(struct Actor*);
-        void (*wrapup)(struct Actor*);
+    void (*fire)(struct Actor*);
+    struct Director* (*getDirector)(struct Actor*);
+    struct Director* (*getExecutiveDirector)(struct Actor*);
+    void (*initialize)(struct Actor*);
+    int (*iterate)(struct Actor*, int);
+    PblList* (*inputPortList)(struct Actor*);
+    PblList* (*outputPortList)(struct Actor*);
+    bool (*postfire)(struct Actor*);
+    bool (*prefire)(struct Actor*);
+    void (*preinitialize)(struct Actor*);
+    void (*wrapup)(struct Actor*);
 
-        // FIXME : temp solution for the decorators of Ptides domain
-        double delayOffset;
-        double _clockSynchronizationBound;
+    // FIXME : temp solution for the decorators of Ptides domain
+    double delayOffset;
+    double _clockSynchronizationBound;
 };
 
 struct Actor* Actor_New();
