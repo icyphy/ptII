@@ -28,7 +28,7 @@ CC_FLAGS= -std=c99
 USER_CC_FLAGS = 
 
 # We use -ggdb because -g fails with very large .c files
-DEBUG = -ggdb
+DEBUG = -ggdb -D_debugging
 
 # Flags for warnings
 # Use -Wall so we have better code.
