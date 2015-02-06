@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.lib;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -416,16 +417,16 @@ ModularCodeGenLazyTypedCompositeActor {
                 _generateCode();
                 classInstance = classLoader.loadClass(className);
                 // java.net.URLClassLoader is not present in Java 1.6.
-                //             } finally {
-                //                 if (classLoader != null) {
-                //                     try {
-                //                         classLoader.close();
-                //                     } catch (IOException ex) {
-                //                         throw new IllegalActionException(this, ex,
-                //                                 "Failed to close \""
-                //                                         + (url == null ? "null" : url) + "\".");
-                //                     }
-                //                 }
+            } finally {
+                if (classLoader != null) {
+                    try {
+                        classLoader.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to close \""
+                                        + (url == null ? "null" : url) + "\".");
+                    }
+                }
             }
 
             _objectWrapper = classInstance.newInstance();
@@ -530,7 +531,7 @@ ModularCodeGenLazyTypedCompositeActor {
                         _subscriberPorts.put(name, stubPort);
 
                         IORelation relation = new TypedIORelation(this,
-                                this.uniqueName("subscriberRelation"));
+                                uniqueName("subscriberRelation"));
 
                         // Prevent the relation and its links from being exported.
                         relation.setPersistent(false);
@@ -925,16 +926,16 @@ ModularCodeGenLazyTypedCompositeActor {
                 throw new InternalErrorException(this, throwable,
                         "Failed to get the profile.");
                 // java.net.URLClassLoader is not present in Java 1.6.
-                //             } finally {
-                //                 if (classLoader != null) {
-                //                     try {
-                //                         classLoader.close();
-                //                     } catch (IOException ex) {
-                //                         throw new InternalErrorException(this, ex,
-                //                                 "Failed to close \""
-                //                                         + (url == null ? "null" : url) + "\".");
-                //                     }
-                //                 }
+            } finally {
+                if (classLoader != null) {
+                    try {
+                        classLoader.close();
+                    } catch (IOException ex) {
+                        throw new InternalErrorException(this, ex,
+                                "Failed to close \""
+                                        + (url == null ? "null" : url) + "\".");
+                    }
+                }
             }
         }
 

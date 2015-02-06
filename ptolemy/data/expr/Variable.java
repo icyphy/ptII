@@ -231,7 +231,7 @@ import ptolemy.util.MessageHandler;
  @see #setPersistent(boolean)
  */
 public class Variable extends AbstractSettableAttribute implements Typeable,
-ValueListener {
+        ValueListener {
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -879,7 +879,7 @@ ValueListener {
      */
     @Override
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         Nameable previousContainer = getContainer();
 
         // Warn if there are variables that depend on this one.
@@ -1036,7 +1036,7 @@ ValueListener {
      */
     @Override
     public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         String previousName = getName();
         // If the name is changing from a previous name, then
         // make sure to update the variables that depend on this.
@@ -1072,8 +1072,8 @@ ValueListener {
                             writer.setStringMode(((Variable) listener)
                                     .isStringMode());
                             ((Variable) listener)
-                            .setExpression(writer
-                                    .parseTreeToExpression(((Variable) listener)._parseTree));
+                                    .setExpression(writer
+                                            .parseTreeToExpression(((Variable) listener)._parseTree));
                             changed.add(listener);
                         }
                     }
@@ -1217,7 +1217,7 @@ ValueListener {
             _debug("setTypeAtLeast: " + name);
         }
 
-        Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
+        Inequality ineq = new Inequality(typeTerm, getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -1240,8 +1240,7 @@ ValueListener {
             _debug("setTypeAtLeast: " + name);
         }
 
-        Inequality ineq = new Inequality(lesser.getTypeTerm(),
-                this.getTypeTerm());
+        Inequality ineq = new Inequality(lesser.getTypeTerm(), getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -1362,10 +1361,9 @@ ValueListener {
             _debug("setTypeSameAs: " + name);
         }
 
-        Inequality ineq = new Inequality(this.getTypeTerm(),
-                equal.getTypeTerm());
+        Inequality ineq = new Inequality(getTypeTerm(), equal.getTypeTerm());
         _constraints.add(ineq);
-        ineq = new Inequality(equal.getTypeTerm(), this.getTypeTerm());
+        ineq = new Inequality(equal.getTypeTerm(), getTypeTerm());
         _constraints.add(ineq);
     }
 
@@ -1638,7 +1636,7 @@ ValueListener {
      */
     protected Variable(NamedObj container, String name,
             ptolemy.data.Token token, boolean incrementWorkspaceVersion)
-                    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, incrementWorkspaceVersion);
         if (token != null) {
             // Notification is important here so that the attributeChanged()
@@ -2101,7 +2099,7 @@ ValueListener {
             if (_declaredType instanceof StructuredType
                     && !_declaredType.isConstant()) {
                 ((StructuredType) _varType)
-                .updateType((StructuredType) newToken.getType());
+                        .updateType((StructuredType) newToken.getType());
             } else if (_declaredType.equals(BaseType.UNKNOWN)) {
                 // this could be either a structured or basic type
                 _varType = newToken.getType();
@@ -2199,7 +2197,7 @@ ValueListener {
             if (_varType instanceof StructuredType
                     && oldVarType instanceof StructuredType) {
                 ((StructuredType) _varType)
-                .updateType((StructuredType) oldVarType);
+                        .updateType((StructuredType) oldVarType);
             } else {
                 _varType = oldVarType;
             }
@@ -2274,7 +2272,7 @@ ValueListener {
             } else {
                 NamedObj reference;
                 if (_reference == null) {
-                    reference = Variable.this.getContainer();
+                    reference = getContainer();
                 } else {
                     reference = _reference;
                 }
@@ -2301,7 +2299,7 @@ ValueListener {
         public Type getType(String name) throws IllegalActionException {
             NamedObj reference;
             if (_reference == null) {
-                reference = Variable.this.getContainer();
+                reference = getContainer();
             } else {
                 reference = _reference;
             }
@@ -2330,7 +2328,7 @@ ValueListener {
             NamedObj reference = _reference;
 
             if (_reference == null) {
-                reference = Variable.this.getContainer();
+                reference = getContainer();
             }
 
             Variable result = getScopedVariable(Variable.this, reference, name);
@@ -2355,7 +2353,7 @@ ValueListener {
             try {
                 NamedObj reference = _reference;
                 if (_reference == null) {
-                    reference = Variable.this.getContainer();
+                    reference = getContainer();
                 }
                 Variable result = getScopedVariable(Variable.this, reference,
                         name);
@@ -2386,7 +2384,7 @@ ValueListener {
             NamedObj reference = _reference;
 
             if (_reference == null) {
-                reference = Variable.this.getContainer();
+                reference = getContainer();
             }
 
             Set<String> identifiers = new HashSet<String>(
@@ -2651,10 +2649,9 @@ ValueListener {
                 throw new IllegalActionException("Variable$TypeTerm"
                         + ".setValue: "
                         + "Cannot update the type of this variable to the "
-                        + "new type." + " Variable: "
-                        + Variable.this.getFullName() + ", Variable type: "
-                        + _declaredType.toString() + ", New type: "
-                        + e.toString());
+                        + "new type." + " Variable: " + getFullName()
+                        + ", Variable type: " + _declaredType.toString()
+                        + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -2671,8 +2668,7 @@ ValueListener {
          */
         @Override
         public String toString() {
-            return "(variable " + Variable.this.getFullName() + ": "
-                    + getType() + ")";
+            return "(variable " + getFullName() + ": " + getType() + ")";
         }
     }
 }

@@ -1,5 +1,5 @@
 /* A State space particle filter implementation
- 
+
  Copyright (c) 2009-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -24,11 +24,10 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- */ 
+ */
 package org.ptolemy.ssm;
 
 import java.util.HashMap;
-import java.util.Set;
 
 import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter;
 
@@ -47,16 +46,16 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 A particle filter implementation that expects a state-space model
-and several measurements to be tied with itself via decorators.  
+and several measurements to be tied with itself via decorators.
 
-@author Ilge Akkaya 
+@author Ilge Akkaya
 @version $Id$
 @since Ptolemy II 10.1
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
-*/
-public class ParticleFilterSSM extends AbstractParticleFilter 
-implements InferenceActor {
+ */
+public class ParticleFilterSSM extends AbstractParticleFilter implements
+        InferenceActor {
 
     public ParticleFilterSSM(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -64,29 +63,27 @@ implements InferenceActor {
         _decorator = null;
         _measurementDecorators = new HashMap<>();
         // TODO Auto-generated constructor stub
-    } 
+    }
 
     public ParticleFilterSSM(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
-        super(workspace); 
+        super(workspace);
         _decorator = null;
         _measurementDecorators = new HashMap<>();
-    } 
-
-
+    }
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
     @Override
     protected void _checkParameters() throws IllegalActionException {
-        // Check state variable names. 
+        // Check state variable names.
 
-        if (validUniqueDecoratorAssociationExists()) { 
-            Parameter stateVariableNames = 
-                    (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
+        if (validUniqueDecoratorAssociationExists()) {
+            Parameter stateVariableNames = (Parameter) getDecoratorAttribute(
+                    _decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
-            int n = _stateNames.length(); 
+            int n = _stateNames.length();
             if (n < 1) {
                 throw new IllegalActionException(this, "There must be at "
                         + "least one state variable for the state space model.");
@@ -98,10 +95,10 @@ implements InferenceActor {
                 if (name.equals("")) {
                     throw new IllegalActionException(this, "A state variable "
                             + "name should not be an empty string.");
-                } 
+                }
                 // Check state equations.
-                String equation = name + "_update"; 
-                if (this.getUserDefinedParameter(equation) == null) {
+                String equation = name + "_update";
+                if (getUserDefinedParameter(equation) == null) {
                     throw new IllegalActionException(
                             this,
                             "Please add a "
@@ -112,7 +109,8 @@ implements InferenceActor {
                 }
             }
         } else {
-            throw new IllegalActionException(this, "No valid State Space Model association found!");
+            throw new IllegalActionException(this,
+                    "No valid State Space Model association found!");
         }
     }
 
@@ -120,29 +118,35 @@ implements InferenceActor {
      * Check if the Actor is associated with a unique enabled StateSpaceModel. Ideally,
      * here, we would also be checking whether the enabled decorator provides the parameters
      * expected by the actor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     @Override
-    public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
+    public boolean validUniqueDecoratorAssociationExists()
+            throws IllegalActionException {
         boolean found = false;
-        /*Set test =*/ this.decorators();
-        for (Decorator d : this.decorators()) {
+        /*Set test =*/decorators();
+        for (Decorator d : decorators()) {
             if (d instanceof StateSpaceModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                Parameter isEnabled = (Parameter) getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
                     if (!found) {
                         found = true;
                         _decorator = (StateSpaceModel) d;
                     } else {
-                        throw new IllegalActionException(this, "A StateSpaceActor "
-                                + "can be associated with exactly one StateSpaceModel "
-                                + "at a time.");
+                        throw new IllegalActionException(
+                                this,
+                                "A StateSpaceActor "
+                                        + "can be associated with exactly one StateSpaceModel "
+                                        + "at a time.");
                     }
                 }
             } else if (d instanceof GaussianMeasurementModel) {
-                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
-                    _measurementDecorators.put(d.getName(),(GaussianMeasurementModel)d);
+                Parameter isEnabled = (Parameter) getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
+                    _measurementDecorators.put(d.getName(),
+                            (GaussianMeasurementModel) d);
                 }
             }
         }
@@ -150,16 +154,16 @@ implements InferenceActor {
     }
 
     @Override
-    protected Parameter getUserDefinedParameter(String eqnName) 
+    protected Parameter getUserDefinedParameter(String eqnName)
             throws IllegalActionException {
 
         if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName); 
-            return ((Parameter)attr); 
+            Attribute attr = getDecoratorAttribute(_decorator, eqnName);
+            return ((Parameter) attr);
         } else {
             throw new IllegalActionException("No decorator found!");
         }
-    } 
+    }
 
     /**
      * Return the first encountered value for now.
@@ -169,10 +173,10 @@ implements InferenceActor {
      * getting the parameter.
      */
     @Override
-    protected Parameter getMeasurementParameter(String fullName) 
+    protected Parameter getMeasurementParameter(String fullName)
             throws IllegalActionException {
 
-        String[] completeName = fullName.split("_");  
+        String[] completeName = fullName.split("_");
         String decoratorName = completeName[0];
         StringBuffer portName = new StringBuffer();
         for (int i = 1; i < completeName.length; i++) {
@@ -181,21 +185,24 @@ implements InferenceActor {
         GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
         if (m != null) {
             String postfix = m.getMeasurementParameterPostfix();
-            Attribute attr = this.getDecoratorAttribute(m, portName + postfix); 
+            Attribute attr = getDecoratorAttribute(m, portName + postfix);
 
-            if ( attr != null) {
-                return ((Parameter)attr); 
+            if (attr != null) {
+                return ((Parameter) attr);
             } else {
-                throw new IllegalActionException("Specified parameter for: " +
-                        portName + " not found in referred decorator " + decoratorName);
+                throw new IllegalActionException("Specified parameter for: "
+                        + portName + " not found in referred decorator "
+                        + decoratorName);
             }
         } else {
-            throw new IllegalActionException("Decorator not found: " + decoratorName);
+            throw new IllegalActionException("Decorator not found: "
+                    + decoratorName);
         }
-    } 
+    }
 
     private StateSpaceModel _decorator;
-    private HashMap<String,GaussianMeasurementModel> _measurementDecorators;
+    private HashMap<String, GaussianMeasurementModel> _measurementDecorators;
+
     @Override
     protected InputType getInputType(String inputName) {
         String[] nameStruct = inputName.split("_");
@@ -207,21 +214,25 @@ implements InferenceActor {
     }
 
     @Override
-    protected Parameter getNoiseParameter(String fullName) throws IllegalActionException {
-        String[] completeName = fullName.split("_");  
-        String decoratorName = completeName[0]; 
+    protected Parameter getNoiseParameter(String fullName)
+            throws IllegalActionException {
+        String[] completeName = fullName.split("_");
+        String decoratorName = completeName[0];
         GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
-        if (m != null) { 
-            Attribute attr = this.getDecoratorAttribute(m,"noiseCovariance"); 
+        if (m != null) {
+            Attribute attr = getDecoratorAttribute(m, "noiseCovariance");
 
-            if ( attr != null) {
-                return ((Parameter)attr); 
+            if (attr != null) {
+                return ((Parameter) attr);
             } else {
-                throw new IllegalActionException("Specified parameter for noise"
-                        + " not found in referred decorator " + decoratorName);
+                throw new IllegalActionException(
+                        "Specified parameter for noise"
+                                + " not found in referred decorator "
+                                + decoratorName);
             }
         } else {
-            throw new IllegalActionException("Decorator not found: " + decoratorName);
+            throw new IllegalActionException("Decorator not found: "
+                    + decoratorName);
         }
     }
 

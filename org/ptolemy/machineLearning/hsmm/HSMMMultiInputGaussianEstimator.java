@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
  */
 package org.ptolemy.machineLearning.hsmm;
 
-import java.util.Arrays;
-
 import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.TypedIOPort;
@@ -92,26 +90,27 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public HSMMMultiInputGaussianEstimator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public HSMMMultiInputGaussianEstimator(CompositeEntity container,
+            String name) throws NameDuplicationException,
+            IllegalActionException {
         super(container, name);
 
-
         standardDeviation = new TypedIOPort(this, "standardDeviation", false,
-                true); 
+                true);
 
         mean = new TypedIOPort(this, "mean", false, true);
 
         meanVectorGuess = new Parameter(this, "meanVectorGuess");
-        meanVectorGuess.setExpression("{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}"); 
+        meanVectorGuess
+                .setExpression("{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}");
 
         standardDeviationGuess = new Parameter(this, "standardDeviationGuess");
-        standardDeviationGuess.setExpression("{[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0]}");
-        standardDeviationGuess.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+        standardDeviationGuess
+                .setExpression("{[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0],[5.0,0.0;0.0,5.0]}");
+        standardDeviationGuess.setTypeEquals(new ArrayType(
+                BaseType.DOUBLE_MATRIX));
 
         _mu0 = new double[4][2];
-
-
 
     }
 
@@ -119,42 +118,44 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == observationDimension) {
-            _obsDimension = ((IntToken)observationDimension.getToken()).intValue();
-        } else  if (attribute == meanVectorGuess) {
+            _obsDimension = ((IntToken) observationDimension.getToken())
+                    .intValue();
+        } else if (attribute == meanVectorGuess) {
             int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
             if (nS > 0) {
-                _obsDimension =  ((ArrayToken)((ArrayToken) 
-                        meanVectorGuess.getToken()).getElement(0)).length();
+                _obsDimension = ((ArrayToken) ((ArrayToken) meanVectorGuess
+                        .getToken()).getElement(0)).length();
                 _mu0 = new double[nS][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     ArrayToken arr1 = ((ArrayToken) ((ArrayToken) meanVectorGuess
                             .getToken()).getElement(i));
-                    for (int j =0; j < _obsDimension; j++ ) {
-                        _mu0[i][j] = ((DoubleToken)arr1.getElement(j)).doubleValue();
+                    for (int j = 0; j < _obsDimension; j++) {
+                        _mu0[i][j] = ((DoubleToken) arr1.getElement(j))
+                                .doubleValue();
                     }
                 }
             } else {
                 throw new IllegalActionException("Mean guess cannot be empty");
             }
-            
+
         } else if (attribute == standardDeviationGuess) {
             int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
             if (nS > 0) {
-                 int _obsDimension = (((DoubleMatrixToken)((ArrayToken)
-                         standardDeviationGuess.getToken())
-                         .getElement(0)).doubleMatrix()).length;
-                 _sigma0 = new double[nS][_obsDimension][_obsDimension];
-                 for (int i = 0; i < nS; i++) {
-                     double[][] dm = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
-                             .getToken()).getElement(i)).doubleMatrix();
-                     for (int j =0; j < _obsDimension; j++ ) {
-                         for (int k =0; k < _obsDimension; k++ ) {
-                             _sigma0[i][j][k] = dm[j][k];
-                         }
-                     } 
-                 }
+                int _obsDimension = (((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
+                        .getToken()).getElement(0)).doubleMatrix()).length;
+                _sigma0 = new double[nS][_obsDimension][_obsDimension];
+                for (int i = 0; i < nS; i++) {
+                    double[][] dm = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
+                            .getToken()).getElement(i)).doubleMatrix();
+                    for (int j = 0; j < _obsDimension; j++) {
+                        for (int k = 0; k < _obsDimension; k++) {
+                            _sigma0[i][j][k] = dm[j][k];
+                        }
+                    }
+                }
             } else {
-                throw new IllegalActionException("Covariance guess cannot be empty");
+                throw new IllegalActionException(
+                        "Covariance guess cannot be empty");
             }
         } else {
             super.attributeChanged(attribute);
@@ -171,7 +172,6 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     public Parameter meanVectorGuess;
 
     public Parameter standardDeviationGuess;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -196,8 +196,8 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
         //                    "Parameter guess vectors must have equal lengths.");
         //        }
 
-        if ( _EMParameterEstimation() == true) {
-          //System.out.println("Final Likelihood: " +likelihood);
+        if (_EMParameterEstimation() == true) {
+            //System.out.println("Final Likelihood: " +likelihood);
             int _nObservations = _observations.length;
             Token[] mTokens = new Token[_nStates];
             Token[] sTokens = new Token[_nStates];
@@ -239,7 +239,7 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
         } else {
             System.err.println("EM Algorithm did not converge!");
         }
-        
+
         // broadcast best-effort parameter estimates
 
     }
@@ -247,7 +247,7 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     protected double emissionProbability(double[] y, int hiddenState) {
 
         double[][] s = _sigma[hiddenState];
-        double[] m = _mu[hiddenState]; 
+        double[] m = _mu[hiddenState];
 
         return Algorithms.mvnpdf(y, m, s);
     }
@@ -263,7 +263,7 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
                 break;
             }
         }
-        if (nanDetected) { 
+        if (nanDetected) {
             if (Double.isNaN(D_new[0][0])) {
                 D_new = _D0;
             }
@@ -278,7 +278,7 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
                 _D = _D0;
                 _durationPriors = _dPriors0;
                 System.out
-                .println("Expectation Maximization failed to converge");
+                        .println("Expectation Maximization failed to converge");
                 return false;
             } else if (_randomize) {
                 //                // randomize means
@@ -333,9 +333,9 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     }
 
     @Override
-    protected void _iterateEM() { 
+    protected void _iterateEM() {
         newEstimates = HSMMAlphaBetaRecursion(_observations, _transitionMatrix,
-                _priorIn, null); 
+                _priorIn, null);
         m_new = (double[][]) newEstimates.get("mu_hat");
         s_new = (double[][][]) newEstimates.get("s_hat");
         A_new = (double[][]) newEstimates.get("A_hat");
@@ -350,7 +350,7 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
     @Override
     protected void _updateEstimates() {
         _transitionMatrix = A_new;
-        //_sigma = s_new; 
+        //_sigma = s_new;
         _mu = (m_new);
         _priorIn = prior_new; // set to the original priors
         _D = D_new;
@@ -364,29 +364,29 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
         System.out.println();
     }
 
-    private double[][] _sortMeans(double[][] A) {
-        // sort the means lexicographically. 
-        double[] sortArray= new double[A.length]; 
-        double[] orig= new double[A.length]; 
-        for (int i = 0; i < A.length; i++) {
-            for(int  j=0; j <A[0].length; j++) {
-                sortArray[i] += A[i][j];
-                orig[i] = sortArray[i];
-            }
-        }
-        Arrays.sort(sortArray);
-        double[][] newArray = new double[A.length][A[0].length];
-        for (int i = 0; i < sortArray.length; i++) { 
-            double s = sortArray[i];
-            for (int j= 0; j < sortArray.length; j++) { 
-                if (Math.abs(s-orig[j]) < 1E-6) {
-                    newArray[i] = A[j];
-                    continue;
-                }
-            }
-        }
-        return newArray;
-    }
+    //    private double[][] _sortMeans(double[][] A) {
+    //        // sort the means lexicographically. 
+    //        double[] sortArray= new double[A.length]; 
+    //        double[] orig= new double[A.length]; 
+    //        for (int i = 0; i < A.length; i++) {
+    //            for(int  j=0; j <A[0].length; j++) {
+    //                sortArray[i] += A[i][j];
+    //                orig[i] = sortArray[i];
+    //            }
+    //        }
+    //        Arrays.sort(sortArray);
+    //        double[][] newArray = new double[A.length][A[0].length];
+    //        for (int i = 0; i < sortArray.length; i++) { 
+    //            double s = sortArray[i];
+    //            for (int j= 0; j < sortArray.length; j++) { 
+    //                if (Math.abs(s-orig[j]) < 1E-6) {
+    //                    newArray[i] = A[j];
+    //                    continue;
+    //                }
+    //            }
+    //        }
+    //        return newArray;
+    //    }
 
     private double[][] _mu;
     private double[][] _mu0;
@@ -410,6 +410,5 @@ public class HSMMMultiInputGaussianEstimator extends HSMMParameterEstimator {
             return _D[hiddenState][y];
         }
     }
-
 
 }

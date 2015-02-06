@@ -206,8 +206,8 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                 && !((Entity) target).isClassDefinition()
                 && (transparents || !(target instanceof CompositeEntity) || ((CompositeEntity) target)
                         .isOpaque())
-                        && _deepContains((CompositeEntity) container, (Entity) target,
-                                opaques)) {
+                && _deepContains((CompositeEntity) container, (Entity) target,
+                        opaques)) {
             try {
                 return new ConstraintMonitorAttributes(target, this);
             } catch (NameDuplicationException e) {
@@ -295,7 +295,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
                             + aggregateValue
                             + ((aggregateValue == thresholdValue) ? " hits "
                                     : " exceeds ") + "threshold of "
-                                    + threshold + ".";
+                            + threshold + ".";
                     MessageHandler.message(message);
                 } else {
                     // No warning.
@@ -460,7 +460,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
      *  In this case, there is exactly one decorator attribute called <i>value</i>.
      */
     static public class ConstraintMonitorAttributes extends DecoratorAttributes
-    implements HierarchyListener {
+            implements HierarchyListener {
 
         public ConstraintMonitorAttributes(NamedObj container,
                 ConstraintMonitor decorator) throws IllegalActionException,
@@ -522,7 +522,7 @@ public class ConstraintMonitor extends Parameter implements Decorator {
         private ConstraintMonitor _previousDecorator = null;
 
         private void _init() throws IllegalActionException,
-        NameDuplicationException {
+                NameDuplicationException {
             value = new Parameter(this, "value");
             value.setTypeEquals(BaseType.DOUBLE);
             value.setExpression("0.0");

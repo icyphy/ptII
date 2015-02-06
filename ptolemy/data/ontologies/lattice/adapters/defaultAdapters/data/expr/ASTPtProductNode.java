@@ -102,7 +102,8 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
         List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(
                 childNodeTerms.length);
-        for (InequalityTerm childNodeTerm : childNodeTerms) {
+        //for (InequalityTerm childNodeTerm : childNodeTerms) {
+        for (int i = 0; i < childNodeTerms.length; i++) {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
 

@@ -550,7 +550,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     @Override
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
-        
+
         Type[] childTypes = _inferAllChildren(node);
 
         // Handle indexing into a record.
@@ -562,7 +562,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 return;
             }
         }
-        
+
         // Fix to Kepler bug #6629:
         // Depending on the order in which type constraints are satisfied,
         // some child types may remain UNKNOWN for one or more iterations

@@ -28,12 +28,8 @@
  */
 package ptolemy.actor.lib.gui;
 
-import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.SequenceActor;
-import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -52,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class TimedDisplay extends Display implements SequenceActor {
 
     /** Construct an actor with an input multiport of type GENERAL that
-     *  displays the model time and the value of the input.   
+     *  displays the model time and the value of the input.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -65,7 +61,7 @@ public class TimedDisplay extends Display implements SequenceActor {
         super(container, name);
     }
 
-    /** Return a string describing the model time of the containing director 
+    /** Return a string describing the model time of the containing director
      *  a colon and the input on channel i.
      *  @param i The channel
      *  @return A string representation of the input, or null if there

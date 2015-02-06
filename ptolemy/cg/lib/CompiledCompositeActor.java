@@ -324,7 +324,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     URL url = null;
                     URLClassLoader classLoader = null;
                     Class<?> classInstance = null;
-                    //try {
+
                     try {
                         url = codeDirectory.asFile().toURI().toURL();
                         URL[] urls = new URL[] { url };
@@ -374,7 +374,19 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     } catch (Throwable ex) {
                         throw new IllegalActionException(this, ex,
                                 "Cannot load the class \"" + className
-                                        + "\" from \"" + url + "\"");
+                                + "\" from \"" + url + "\"");
+                        // java.net.URLClassLoader is not present in Java 1.6.
+                    } finally {
+                        if (classLoader != null) {
+                            try {
+                                classLoader.close();
+                            } catch (IOException ex) {
+                                throw new IllegalActionException(this, ex,
+                                        "Failed to close \""
+                                                + (url == null ? "null" : url)
+                                                + "\".");
+                            }
+                        }
                     }
 
                     try {
@@ -411,18 +423,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                         + "method in the wrapper class.");
                     }
                     _loadedCodeVersion = _workspace.getVersion();
-                    // java.net.URLClassLoader is not present in Java 1.6.
-                    //                     } finally {
-                    //                         if (classLoader != null) {
-                    //                             try {
-                    //                                 classLoader.close();
-                    //                             } catch (IOException ex) {
-                    //                                 throw new IllegalActionException(this, ex,
-                    //                                         "Failed to close \""
-                    //                                                 + (url == null ? "null" : url)
-                    //                                                 + "\".");
-                    //                             }
-                    //                         }
                 }
 
             }
@@ -595,9 +595,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
                 System.out
-                .println("CompiledCompositeActor wrote "
-                        + codeDirectory.getBaseDirectory() + " "
-                        + codeFileName);
+                        .println("CompiledCompositeActor wrote "
+                                + codeDirectory.getBaseDirectory() + " "
+                                + codeFileName);
                 writer.write(code.toString());
             } finally {
                 if (writer != null) {
@@ -638,21 +638,21 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
 
-        Effigy effigy = Configuration.findEffigy(this.toplevel());
+        Effigy effigy = Configuration.findEffigy(toplevel());
 
         // FIXME
         // effigy.isModified() is not the optimal way to deal with changes.
         // It might be the case that we already compiled after the change.
         if (effigy != null && effigy.isModified()) {
             System.out
-            .println(message
-                    + "The effigy "
-                    + effigy
-                    + "(model : "
-                    + ((PtolemyEffigy) effigy).getModel()
-                    + ") says the model was modified and thus it does not matter "
-                    + "if the shared object file is newer than the model file "
-                    + "because the model file is out of date.");
+                    .println(message
+                            + "The effigy "
+                            + effigy
+                            + "(model : "
+                            + ((PtolemyEffigy) effigy).getModel()
+                            + ") says the model was modified and thus it does not matter "
+                            + "if the shared object file is newer than the model file "
+                            + "because the model file is out of date.");
             return true;
         }
 
@@ -880,96 +880,96 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
                 .getWidth() : port.getWidthInside();
 
-                if (type == BaseType.INT) {
-                    tokenHolder = new int[numberOfChannels][];
-                } else if (type == BaseType.DOUBLE) {
-                    tokenHolder = new double[numberOfChannels][];
-                    /*} else if (type == PointerToken.POINTER) {
+        if (type == BaseType.INT) {
+            tokenHolder = new int[numberOfChannels][];
+        } else if (type == BaseType.DOUBLE) {
+            tokenHolder = new double[numberOfChannels][];
+            /*} else if (type == PointerToken.POINTER) {
             tokenHolder = new int[numberOfChannels][];*/
-                } else if (type == BaseType.BOOLEAN) {
-                    tokenHolder = new boolean[numberOfChannels][];
-                } else {
-                    // FIXME: need to deal with other types
-                }
+        } else if (type == BaseType.BOOLEAN) {
+            tokenHolder = new boolean[numberOfChannels][];
+        } else {
+            // FIXME: need to deal with other types
+        }
 
-                for (int i = 0; i < port.getWidth(); i++) {
-                    try {
-                        if (i < port.getWidthInside()) {
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                if (i < port.getWidthInside()) {
 
-                            if (port.hasToken(i, rate)) {
-                                Token[] tokens = port.get(i, rate);
+                    if (port.hasToken(i, rate)) {
+                        Token[] tokens = port.get(i, rate);
 
-                                if (_debugging) {
-                                    _debug(getName(),
-                                            "transferring input from " + port.getName());
-                                }
+                        if (_debugging) {
+                            _debug(getName(),
+                                    "transferring input from " + port.getName());
+                        }
 
-                                if (type == BaseType.INT) {
+                        if (type == BaseType.INT) {
 
-                                    int[] intTokens = new int[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        intTokens[k] = ((IntToken) tokens[k])
-                                                .intValue();
-                                    }
-                                    ((int[][]) tokenHolder)[i] = intTokens;
+                            int[] intTokens = new int[rate];
+                            for (int k = 0; k < rate; k++) {
+                                intTokens[k] = ((IntToken) tokens[k])
+                                        .intValue();
+                            }
+                            ((int[][]) tokenHolder)[i] = intTokens;
 
-                                } else if (type == BaseType.DOUBLE) {
+                        } else if (type == BaseType.DOUBLE) {
 
-                                    double[] doubleTokens = new double[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        doubleTokens[k] = ((DoubleToken) tokens[k])
-                                                .doubleValue();
-                                    }
-                                    ((double[][]) tokenHolder)[i] = doubleTokens;
+                            double[] doubleTokens = new double[rate];
+                            for (int k = 0; k < rate; k++) {
+                                doubleTokens[k] = ((DoubleToken) tokens[k])
+                                        .doubleValue();
+                            }
+                            ((double[][]) tokenHolder)[i] = doubleTokens;
 
-                                    /*} else if (type == PointerToken.POINTER) {
+                            /*} else if (type == PointerToken.POINTER) {
 
                             int[] intTokens = new int[rate];
                             for (int k = 0; k < rate; k++) {
                             intTokens[k] = ((PointerToken) tokens[k])
-                                    .getValue();
+                            .getValue();
                             }
                             ((int[][]) tokenHolder)[i] = intTokens;
-                                     */
-                                } else if (type == BaseType.BOOLEAN) {
+                             */
+                        } else if (type == BaseType.BOOLEAN) {
 
-                                    boolean[] booleanTokens = new boolean[rate];
-                                    for (int k = 0; k < rate; k++) {
-                                        booleanTokens[k] = ((BooleanToken) tokens[k])
-                                                .booleanValue();
-                                    }
-                                    ((boolean[][]) tokenHolder)[i] = booleanTokens;
-
-                                } else {
-                                    // FIXME: need to deal with other types
-                                }
-
-                            } else {
-                                throw new IllegalActionException(this, port,
-                                        "Port should consume " + rate
-                                        + " tokens, but there were not "
-                                        + " enough tokens available.");
+                            boolean[] booleanTokens = new boolean[rate];
+                            for (int k = 0; k < rate; k++) {
+                                booleanTokens[k] = ((BooleanToken) tokens[k])
+                                        .booleanValue();
                             }
+                            ((boolean[][]) tokenHolder)[i] = booleanTokens;
 
                         } else {
-                            // No inside connection to transfer tokens to.
-                            // In this case, consume one input token if there is one.
-                            if (_debugging) {
-                                _debug(getName(),
-                                        "Dropping single input from " + port.getName());
-                            }
-
-                            if (port.hasToken(i)) {
-                                port.get(i);
-                            }
+                            // FIXME: need to deal with other types
                         }
-                    } catch (NoTokenException ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
+
+                    } else {
+                        throw new IllegalActionException(this, port,
+                                "Port should consume " + rate
+                                        + " tokens, but there were not "
+                                        + " enough tokens available.");
                     }
 
+                } else {
+                    // No inside connection to transfer tokens to.
+                    // In this case, consume one input token if there is one.
+                    if (_debugging) {
+                        _debug(getName(),
+                                "Dropping single input from " + port.getName());
+                    }
+
+                    if (port.hasToken(i)) {
+                        port.get(i);
+                    }
                 }
-                return tokenHolder;
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+
+        }
+        return tokenHolder;
     }
 
     /** Update the _sanitizedActorName variable.

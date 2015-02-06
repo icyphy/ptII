@@ -122,14 +122,14 @@ public class JNLPUtilities {
             URL jarURL = new URL(possibleJarURLPath);
             //System.out.println("JNLPUtilities: 2 jarURL: " + jarURL);
             // FIXME: should we check to see if the jarURL exists here?
-            if (jarURL == null) {
-                try {
-                    return ClassUtilities
-                            .jarURLEntryResource(possibleJarURLPath);
-                } catch (IOException ex) {
-                    throw new java.net.MalformedURLException(ex.toString());
-                }
-            }
+//            if (jarURL == null) {
+//                try {
+//                    return ClassUtilities
+//                            .jarURLEntryResource(possibleJarURLPath);
+//                } catch (IOException ex) {
+//                    throw new java.net.MalformedURLException(ex.toString());
+//                }
+//            }
             return jarURL;
         }
 

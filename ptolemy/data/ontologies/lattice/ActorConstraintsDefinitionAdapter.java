@@ -258,7 +258,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         Ontology functionOntology = getSolver().getOntology();
         List<Ontology> domainOntologies = new ArrayList<Ontology>(
                 argumentTerms.length);
-        for (InequalityTerm argumentTerm : argumentTerms) {
+        //for (InequalityTerm argumentTerm : argumentTerms) {
+        for (int i=0; i < argumentTerms.length; i++) {
             domainOntologies.add(functionOntology);
         }
 

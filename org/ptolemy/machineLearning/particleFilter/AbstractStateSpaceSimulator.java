@@ -392,7 +392,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
         t.setExpression("0.0");
 
 
-        _parser = new PtParser(); 
+        //_parser = new PtParser(); 
         _updateEquations = new HashMap<>();
         _updateTrees = new HashMap<>();  
 
@@ -571,7 +571,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     private HashMap _tokenMap;
 
     private boolean _resetOnEachRun;
-    private PtParser _parser;
+    //private PtParser _parser;
     private ASTPtRootNode _parseTree;
     private HashMap<String, ASTPtRootNode> _updateTrees;
     private ParseTreeEvaluator _parseTreeEvaluator;
