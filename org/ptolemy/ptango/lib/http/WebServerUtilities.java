@@ -509,7 +509,8 @@ public class WebServerUtilities {
                                 FileResource tempResource = new FileResource(
                                         appInfo.getTemporaryFileLocation()
                                         .asURL());
-                                if (!tempResource.isContainedIn(resources)) {
+                                if (resources != null
+                                        && !tempResource.isContainedIn(resources)) {
                                     ArrayList<Resource> newResources = new ArrayList<Resource>(
                                             Arrays.asList(resources
                                                     .getResources()));

@@ -240,12 +240,14 @@ public class DDF extends DataflowWithRates {
                 List freeVars = (List) guard
                         .getAttribute(AttributeKeys.KEYFREEVAR);
 
-                for (Iterator iterator = freeVars.iterator(); iterator
-                        .hasNext();) {
-                    String name = (String) iterator.next();
+                if (freeVars != null) {
+                    for (Iterator iterator = freeVars.iterator(); iterator
+                             .hasNext();) {
+                        String name = (String) iterator.next();
 
-                    if (_isBoundByPortVar(name, action)) {
-                        return true;
+                        if (_isBoundByPortVar(name, action)) {
+                            return true;
+                        }
                     }
                 }
             }
