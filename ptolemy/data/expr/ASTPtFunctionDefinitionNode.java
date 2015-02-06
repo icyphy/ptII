@@ -104,7 +104,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
     }
 
     /** Return the list of argument names.
-     *  @return The list of argument names.	
+     *  @return The list of argument names.
      */
     public List getArgumentNameList() {
         return _argList;

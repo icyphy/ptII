@@ -317,7 +317,7 @@ public class ASTPtRootNode implements Node, Cloneable {
         _ptType = type;
     }
 
-    /** Return the string value of this node. 
+    /** Return the string value of this node.
      * You can override these two methods in subclasses of RootNode
      * to customize the way the node appears when the tree is dumped.
      * If your output uses more than one line you should override

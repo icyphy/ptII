@@ -62,7 +62,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
      */
     public void renameVariables(ASTPtRootNode node, Variable dependentVariable,
             Variable variableToRename, String name)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         _scope = dependentVariable.getParserScope();
         _dependentVariable = dependentVariable;
         _variableToRename = variableToRename;

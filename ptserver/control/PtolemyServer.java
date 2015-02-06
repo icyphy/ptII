@@ -35,7 +35,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -248,12 +247,11 @@ public final class PtolemyServer implements IServerManager {
         ArrayList<String> urls = new ArrayList<String>();
         File modelDirectory = new File(_modelsDirectory);
 
-        File  files [] =  modelDirectory.listFiles(layoutFilter);
+        File files[] = modelDirectory.listFiles(layoutFilter);
         if (files == null) {
-            String message = "Failed to list files in \""
-                + _modelsDirectory + "\", listFiles() returned null";
-                _handleException(message,
-                        new NullPointerException(message));
+            String message = "Failed to list files in \"" + _modelsDirectory
+                    + "\", listFiles() returned null";
+            _handleException(message, new NullPointerException(message));
         }
         for (File filterResult : files) {
             if (!filterResult.isDirectory()) {
@@ -290,12 +288,11 @@ public final class PtolemyServer implements IServerManager {
         ArrayList<String> urls = new ArrayList<String>();
         File modelDirectory = new File(_modelsDirectory);
 
-        File [] files =  modelDirectory.listFiles(modelFilter);
+        File[] files = modelDirectory.listFiles(modelFilter);
         if (files == null) {
-            String message = "Failed to list files in \""
-                + _modelsDirectory + "\", listFiles() returned null";
-                _handleException(message,
-                        new NullPointerException(message));
+            String message = "Failed to list files in \"" + _modelsDirectory
+                    + "\", listFiles() returned null";
+            _handleException(message, new NullPointerException(message));
         }
         for (File filterResult : files) {
             if (!filterResult.isDirectory()) {
@@ -560,10 +557,10 @@ public final class PtolemyServer implements IServerManager {
             try {
                 // Notify the client that the server is shutting down.
                 task.getProxyModelInfrastructure()
-                .getTokenPublisher()
-                .sendToken(
-                        new RemoteEventToken(EventType.SERVER_SHUTDOWN,
-                                "The Ptolemy server you are currently connected is shutting down."),
+                        .getTokenPublisher()
+                        .sendToken(
+                                new RemoteEventToken(EventType.SERVER_SHUTDOWN,
+                                        "The Ptolemy server you are currently connected is shutting down."),
                                 null);
 
                 // Shut down the locally running simulation.
@@ -572,7 +569,7 @@ public final class PtolemyServer implements IServerManager {
                 PtolemyServer.LOGGER.log(Level.SEVERE,
                         "Failed to close the simulation"
                                 + task.getProxyModelInfrastructure()
-                                .getTicket(), error);
+                                        .getTicket(), error);
             }
         }
 
@@ -731,81 +728,81 @@ public final class PtolemyServer implements IServerManager {
      */
     private PtolemyServer(int servletPort, String brokerPath,
             String brokerAddress, int brokerPort, String modelDirectory)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             // If not passed, attempt to pull from configuration.
             brokerPath = brokerPath != null ? brokerPath : CONFIG
                     .getString("BROKER_PATH");
             brokerAddress = brokerAddress != null ? brokerAddress : CONFIG
                     .getString("BROKER_ADDRESS") != null ? CONFIG
-                            .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
-                            .getHostAddress();
-                            brokerPort = brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
-                                    .getString("BROKER_PORT"));
-                            servletPort = servletPort > 0 ? servletPort : Integer
-                                    .parseInt(CONFIG.getString("SERVLET_PORT"));
-                            modelDirectory = modelDirectory != null ? modelDirectory : CONFIG
-                                    .getString("MODELS_DIRECTORY");
+                    .getString("BROKER_ADDRESS") : InetAddress.getLocalHost()
+                    .getHostAddress();
+            brokerPort = brokerPort > 0 ? brokerPort : Integer.parseInt(CONFIG
+                    .getString("BROKER_PORT"));
+            servletPort = servletPort > 0 ? servletPort : Integer
+                    .parseInt(CONFIG.getString("SERVLET_PORT"));
+            modelDirectory = modelDirectory != null ? modelDirectory : CONFIG
+                    .getString("MODELS_DIRECTORY");
 
-                            // If path is specified, attempt to launch the broker process.
-                            if (_configureBroker(brokerPath, brokerPort)) {
-                                brokerAddress = InetAddress.getLocalHost().getHostAddress();
-                            }
+            // If path is specified, attempt to launch the broker process.
+            if (_configureBroker(brokerPath, brokerPort)) {
+                brokerAddress = InetAddress.getLocalHost().getHostAddress();
+            }
 
-                            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-                            //            _configuration = ConfigurationApplication
-                            //                    .readConfiguration(ConfigurationApplication
-                            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
-                            _brokerUrl = String
-                                    .format("tcp://%s@%s", brokerAddress, brokerPort);
-                            _servletUrl = String
-                                    .format("http://%s:%s/%s", InetAddress.getLocalHost()
-                                            .getHostAddress(), servletPort, SERVLET_NAME);
-                            if (modelDirectory.length() == 0) {
-                                modelDirectory = StringUtilities.getProperty("user.dir");
-                            }
-                            _modelsDirectory = modelDirectory;
-                            _servletHost = new Server(servletPort);
-                            _servletHost.setHandler(_configureServlet());
-                            _servletHost.start();
-                            _executor = Executors.newCachedThreadPool();
-                            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
+            //MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            //            _configuration = ConfigurationApplication
+            //                    .readConfiguration(ConfigurationApplication
+            //                            .specToURL("ptolemy/configs/full/configuration.xml"));
+            _brokerUrl = String
+                    .format("tcp://%s@%s", brokerAddress, brokerPort);
+            _servletUrl = String
+                    .format("http://%s:%s/%s", InetAddress.getLocalHost()
+                            .getHostAddress(), servletPort, SERVLET_NAME);
+            if (modelDirectory.length() == 0) {
+                modelDirectory = StringUtilities.getProperty("user.dir");
+            }
+            _modelsDirectory = modelDirectory;
+            _servletHost = new Server(servletPort);
+            _servletHost.setHandler(_configureServlet());
+            _servletHost.start();
+            _executor = Executors.newCachedThreadPool();
+            _requests = new ConcurrentHashMap<Ticket, SimulationTask>();
 
-                            Timer timer = new Timer("PtolemyServer timer");
-                            timer.scheduleAtFixedRate(new TimerTask() {
+            Timer timer = new Timer("PtolemyServer timer");
+            timer.scheduleAtFixedRate(new TimerTask() {
 
-                                @Override
-                                public void run() {
-                                    for (SimulationTask task : _requests.values()) {
-                                        LOGGER.info(task.getProxyModelInfrastructure()
-                                                .getTicket()
-                                                + " latency "
-                                                + task.getProxyModelInfrastructure()
-                                                .getPingPongLatency());
-                                    }
-                                }
-                            }, 1000, 1000);
-                            File file = new File(_modelsDirectory);
-                            if (!file.isDirectory()) {
-                                String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
-                                file = new File(ptII, _modelsDirectory);
-                                if (!file.isDirectory()) {
-                                    File oldFile = file;
-                                    file = new File(ptII, "ptserver" + File.separator + "demo");
-                                    if (!file.isDirectory()) {
-                                        throw new IllegalArgumentException(
-                                                "Models directory \"" + _modelsDirectory
-                                                + "\" is invalid directory/path."
-                                                + " (Also tried \"" + oldFile
-                                                + "\" and \"" + file + "\".");
-                                    } else {
-                                        _modelsDirectory = file.getCanonicalPath();
-                                    }
-                                } else {
-                                    _modelsDirectory = file.getCanonicalPath();
-                                }
-                                System.out.println("models directory is " + _modelsDirectory);
-                            }
+                @Override
+                public void run() {
+                    for (SimulationTask task : _requests.values()) {
+                        LOGGER.info(task.getProxyModelInfrastructure()
+                                .getTicket()
+                                + " latency "
+                                + task.getProxyModelInfrastructure()
+                                        .getPingPongLatency());
+                    }
+                }
+            }, 1000, 1000);
+            File file = new File(_modelsDirectory);
+            if (!file.isDirectory()) {
+                String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+                file = new File(ptII, _modelsDirectory);
+                if (!file.isDirectory()) {
+                    File oldFile = file;
+                    file = new File(ptII, "ptserver" + File.separator + "demo");
+                    if (!file.isDirectory()) {
+                        throw new IllegalArgumentException(
+                                "Models directory \"" + _modelsDirectory
+                                        + "\" is invalid directory/path."
+                                        + " (Also tried \"" + oldFile
+                                        + "\" and \"" + file + "\".");
+                    } else {
+                        _modelsDirectory = file.getCanonicalPath();
+                    }
+                } else {
+                    _modelsDirectory = file.getCanonicalPath();
+                }
+                System.out.println("models directory is " + _modelsDirectory);
+            }
         } catch (Throwable e) {
             _handleException("Unable to initialize Ptolemy server.", e);
         }
@@ -851,8 +848,8 @@ public final class PtolemyServer implements IServerManager {
             } catch (IOException e) {
                 _handleException(
                         "Unable to spawn MQTT broker process at '" + brokerPath
-                        + "' on port " + String.valueOf(brokerPort)
-                        + ".", e);
+                                + "' on port " + String.valueOf(brokerPort)
+                                + ".", e);
             }
         }
 
@@ -1024,9 +1021,9 @@ public final class PtolemyServer implements IServerManager {
             PtolemyServer.LOGGER.log(Level.SEVERE,
                     "Unhandled exception in model "
                             + proxyModelInfrastructure.getTicket()
-                            .getTicketID()
+                                    .getTicketID()
                             + " that is being propagated to the client",
-                            exception);
+                    exception);
             try {
                 proxyModelInfrastructure.getTokenPublisher().sendToken(
                         new RemoteEventToken(message, exception), null);
@@ -1036,7 +1033,7 @@ public final class PtolemyServer implements IServerManager {
                 PtolemyServer.LOGGER.log(Level.SEVERE,
                         "Problem sending exception event for "
                                 + proxyModelInfrastructure.getTicket()
-                                .getTicketID(), exception);
+                                        .getTicketID(), exception);
             } finally {
                 try {
                     PtolemyServer.getInstance().close(
@@ -1045,7 +1042,7 @@ public final class PtolemyServer implements IServerManager {
                     PtolemyServer.LOGGER.log(Level.SEVERE,
                             "Problem sending exception event for "
                                     + proxyModelInfrastructure.getTicket()
-                                    .getTicketID(), exception);
+                                            .getTicketID(), exception);
                 }
             }
         }

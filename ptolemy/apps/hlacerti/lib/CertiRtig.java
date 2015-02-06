@@ -204,7 +204,7 @@ public class CertiRtig extends NamedObj {
             if (dyldVariable != null) {
                 dyldLibraryPath += pathSeparator + dyldVariable;
             }
-            _environmentArray[0] = dyldVariable;
+            _environmentArray[0] = dyldLibraryPath;
         } else if (osName.startsWith("Windows")) { 
             String path = "PATH=" + certiHome + "/bin";
             String pathVariable = System.getenv("PATH");

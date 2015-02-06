@@ -24,9 +24,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-*/
+ */
 package ptolemy.data.expr;
-
 
 /**
  * Token literal values and constants.
@@ -34,47 +33,32 @@ package ptolemy.data.expr;
  */
 public interface MatrixParserConstants {
 
-  /** End of File. */
-  int EOF = 0;
-  /** RegularExpression Id. */
-  int CONSTANT = 5;
-  /** RegularExpression Id. */
-  int FLOAT = 6;
-  /** RegularExpression Id. */
-  int INTEGER = 7;
-  /** RegularExpression Id. */
-  int DIGIT = 8;
-  /** RegularExpression Id. */
-  int NAME = 9;
-  /** RegularExpression Id. */
-  int NATURAL = 10;
-  /** RegularExpression Id. */
-  int SIGN = 11;
-  /** RegularExpression Id. */
-  int COMMENT = 12;
+    /** End of File. */
+    int EOF = 0;
+    /** RegularExpression Id. */
+    int CONSTANT = 5;
+    /** RegularExpression Id. */
+    int FLOAT = 6;
+    /** RegularExpression Id. */
+    int INTEGER = 7;
+    /** RegularExpression Id. */
+    int DIGIT = 8;
+    /** RegularExpression Id. */
+    int NAME = 9;
+    /** RegularExpression Id. */
+    int NATURAL = 10;
+    /** RegularExpression Id. */
+    int SIGN = 11;
+    /** RegularExpression Id. */
+    int COMMENT = 12;
 
-  /** Lexical state. */
-  int DEFAULT = 0;
+    /** Lexical state. */
+    int DEFAULT = 0;
 
-  /** Literal token values. */
-  String[] tokenImage = {
-    "<EOF>",
-    "\" \"",
-    "\"\\t\"",
-    "\"\\n\"",
-    "\"\\r\"",
-    "<CONSTANT>",
-    "<FLOAT>",
-    "<INTEGER>",
-    "<DIGIT>",
-    "<NAME>",
-    "<NATURAL>",
-    "<SIGN>",
-    "<COMMENT>",
-    "\"[\"",
-    "\";\"",
-    "\"]\"",
-    "\",\"",
-  };
+    /** Literal token values. */
+    String[] tokenImage = { "<EOF>", "\" \"", "\"\\t\"", "\"\\n\"", "\"\\r\"",
+            "<CONSTANT>", "<FLOAT>", "<INTEGER>", "<DIGIT>", "<NAME>",
+            "<NATURAL>", "<SIGN>", "<COMMENT>", "\"[\"", "\";\"", "\"]\"",
+            "\",\"", };
 
 }

@@ -211,11 +211,12 @@ public class RTMaudeUtility {
             throws IllegalActionException {
         if (inline) {
             ClassLoader loader = RTMaudeUtility.class.getClassLoader();
-            InputStream stream = loader.getResourceAsStream(SEMANTIC_FILE_PATH
-                    + "/ptolemy-modelcheck.maude");
+            InputStream stream = null;
             BufferedReader reader = null;
             Stack<BufferedReader> readerStack = null;
             try {
+                stream = loader.getResourceAsStream(SEMANTIC_FILE_PATH
+                        + "/ptolemy-modelcheck.maude");
                 reader = new BufferedReader(new InputStreamReader(stream, java.nio.charset.Charset.defaultCharset()));
                 readerStack = new Stack<BufferedReader>();
                 readerStack.push(null);
@@ -280,6 +281,14 @@ public class RTMaudeUtility {
                                         "Failed to close " + reader);
                             }
                         }
+                    }
+                }
+                if (stream != null) {
+                    try {
+                        stream.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException("Failed to close "
+                                + stream);
                     }
                 }
             }

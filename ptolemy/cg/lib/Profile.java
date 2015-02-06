@@ -27,12 +27,14 @@
  */
 package ptolemy.cg.lib;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// Profile
@@ -196,11 +198,24 @@ abstract public class Profile {
                     String home = System.getenv("HOME");
                     URL url = new URL("file:" + home + "/cg/");
 
-                    ClassLoader classLoader = new URLClassLoader(
-                            new URL[] { url });
+                    URLClassLoader classLoader = null;
+                    try {
+                        classLoader = new URLClassLoader(new URL[] { url });
 
-                    classInstance = classLoader.loadClass(className);
-                    _profile = (Profile) classInstance.newInstance();
+                        classInstance = classLoader.loadClass(className);
+                        _profile = (Profile) classInstance.newInstance();
+                    } finally {
+                        if (classLoader != null) {
+                            try {
+                                classLoader.close();
+                            } catch (IOException ex) {
+                                throw new InternalErrorException(null, ex,
+                                        "Failed to close \""
+                                                + (url == null ? "null" : url)
+                                                + "\".");
+                            }
+                        }
+                    }
                 }
             } catch (Throwable throwable) {
                 _profile = null;

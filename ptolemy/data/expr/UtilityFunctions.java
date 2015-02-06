@@ -30,9 +30,8 @@ package ptolemy.data.expr;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -275,7 +274,7 @@ public class UtilityFunctions {
             return new ArrayType(
                     ((ArrayType) TypeLattice.lattice().leastUpperBound(
                             firstArrayType, secondArrayType)).getElementType(),
-                            ((ArrayType) firstArrayType).length()
+                    ((ArrayType) firstArrayType).length()
                             + ((ArrayType) secondArrayType).length());
         }
     }
@@ -312,12 +311,12 @@ public class UtilityFunctions {
             if (nElements > 0) {
                 return new ArrayType(
                         ((ArrayType) arrayType.getElementType())
-                        .getElementType(),
+                                .getElementType(),
                         nElements);
             } else {
                 return new ArrayType(
                         ((ArrayType) arrayType.getElementType())
-                        .getElementType());
+                                .getElementType());
             }
         }
     }
@@ -347,7 +346,7 @@ public class UtilityFunctions {
     public static ArrayToken emptyArray(Token prototype) {
         return new ArrayToken(prototype.getType());
     }
-    
+
     /** Return the type of an empty array of unspecified length.
      *  @param prototype A token specifying the element type.
      *  @return An empty array.
@@ -473,7 +472,7 @@ public class UtilityFunctions {
      */
     public static Type filterReturnType(Type predicateType,
             Type arrayTokenType, Type sizeLimitType)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         // Note that this method is deliberately not listed in the Expression
         // chapter because it is very specialized.
         if (predicateType instanceof FunctionType) {
@@ -1229,35 +1228,34 @@ public class UtilityFunctions {
             throw new IllegalActionException(
                     "Mean vector must consist of scalar type elements");
         }
-        double [] meanArray = new double[N];
-        for (int i = 0 ; i < N ; i ++) {
-            meanArray[i] = ((DoubleToken)mean.getElement(i)).doubleValue();
+        double[] meanArray = new double[N];
+        for (int i = 0; i < N; i++) {
+            meanArray[i] = ((DoubleToken) mean.getElement(i)).doubleValue();
         }
-        
+
         double[][] sigma = covariance.doubleMatrix();
-        
-        return multivariateGaussian(meanArray,sigma);
+
+        return multivariateGaussian(meanArray, sigma);
     }
-    
+
     /** Generate a sample from a multivariate Gaussian distribution.
      *  @param mean The mean array.
      *  @param S The covariance matrix, whose length must match
      *  that of the mean array and be square.
      *  @return a sample from a multivariate Gaussian distribution
      */
-    public static ArrayToken multivariateGaussian(double[] mean,
-            double[][] S) throws IllegalActionException {
+    public static ArrayToken multivariateGaussian(double[] mean, double[][] S)
+            throws IllegalActionException {
 
         // Cholesky factorization
 
         // Check dimensions.
-        int N = mean.length; // size of array 
-        if ((S.length != N)
-                || (S[0].length != N)) {
+        int N = mean.length; // size of array
+        if ((S.length != N) || (S[0].length != N)) {
             throw new IllegalActionException(
                     "Covariance must be a square matrix and its dimension must "
                             + "match the mean array length");
-        }  
+        }
         // Check if the covariance matrix is symmetric.
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < i; j++) {
@@ -1286,14 +1284,15 @@ public class UtilityFunctions {
         ArrayToken uncorrelated = gaussian(0, 1, N);
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();
         Token[] correlatedTokens = new Token[N];
-        double[] correlatedSamples = new double[N]; 
+        double[] correlatedSamples = new double[N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 double uncorr = ((DoubleToken) uncorrelatedTokens[j])
                         .doubleValue();
                 correlatedSamples[i] += L[i][j] * uncorr;
-            } 
-            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]+mean[i]);
+            }
+            correlatedTokens[i] = new DoubleToken(correlatedSamples[i]
+                    + mean[i]);
         }
         return new ArrayToken(BaseType.DOUBLE, correlatedTokens);
     }
@@ -1429,7 +1428,9 @@ public class UtilityFunctions {
         String newline = System.getProperty("line.separator");
 
         try {
-            fin = new BufferedReader(new java.io.InputStreamReader(new java.io.FileInputStream(file), java.nio.charset.Charset.defaultCharset()));
+            fin = new BufferedReader(new java.io.InputStreamReader(
+                    new java.io.FileInputStream(file),
+                    java.nio.charset.Charset.defaultCharset()));
 
             while (true) {
                 try {
@@ -2148,12 +2149,13 @@ public class UtilityFunctions {
                         // Ignore.
                     }
 
-		    String javaLibraryPath = "<<java.library.path unknown>>";
-		    try {
-			javaLibraryPath = System.getProperty("java.library.path");
-		    } catch (Throwable throwable3) {
-			// Ignore.
-		    }
+                    String javaLibraryPath = "<<java.library.path unknown>>";
+                    try {
+                        javaLibraryPath = System
+                                .getProperty("java.library.path");
+                    } catch (Throwable throwable3) {
+                        // Ignore.
+                    }
 
                     String classpath = "<<classpath unknown>>";
                     try {
@@ -2173,8 +2175,8 @@ public class UtilityFunctions {
                                     + ") and the classpath for '"
                                     + libraryPath
                                     + "', but that was not found either.\n"
-			            + "The java.library.path property was: "
-			            + javaLibraryPath
+                                    + "The java.library.path property was: "
+                                    + javaLibraryPath
                                     + "\nThe Java classpath was: "
                                     + classpath
                                     + "\nIn addition, loadLibrary(\""
@@ -2184,7 +2186,7 @@ public class UtilityFunctions {
                                     + ex2
                                     + (shortLibraryName
                                             .equals(shortLibraryName2) ? ""
-                                                    : "\nAlso, loadlibrary(\""
+                                            : "\nAlso, loadlibrary(\""
                                                     + shortLibraryName2
                                                     + "\") was called, "
                                                     + "the exception  for the loadLibrary call was: "

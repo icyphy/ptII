@@ -106,9 +106,9 @@ public class NameParameter extends StringParameter {
         NamedObj container = getContainer();
         if (container != null) {
             try {
-                String newName = this.stringValue();
+                String newName = stringValue();
                 if (newName != null && !newName.equals("")) {
-                    container.setName(this.stringValue());
+                    container.setName(stringValue());
                 }
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(this, ex,

@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.lib;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -304,73 +305,73 @@ public class ModularCodeGenTypedCompositeActor extends
             URL[] urls = new URL[] { url };
             URLClassLoader classLoader = null;
             Class<?> classInstance = null;
-            // try {
             try {
-                classLoader = new URLClassLoader(urls);
-                classInstance = classLoader.loadClass(className);
-            } catch (ClassNotFoundException ex) {
-                // We couldn't load the class, maybe the code is not
-                // generated (for example the user might have given
-                // this model to somebody else. Regenerate it again.
-                _generateCode();
                 try {
+                    classLoader = new URLClassLoader(urls);
                     classInstance = classLoader.loadClass(className);
-                } catch (ClassNotFoundException ex2) {
-                    ex2.printStackTrace();
-                    throw new ClassNotFoundException("Failed to load "
-                            + className
-                            + " using URLClassLoader based on "
-                            + url
-                            + ", urls were: "
-                            + java.util.Arrays.deepToString(classLoader
-                                    .getURLs()) + "\n" + ex2);
-                }
-            }
-
-            _objectWrapper = classInstance.newInstance();
-
-            Method[] methods = classInstance.getMethods();
-            Method initializeMethod = null;
-
-            for (Method method : methods) {
-                String name = method.getName();
-                if (name.equals("fire")) {
-                    _fireMethod = method;
+                } catch (ClassNotFoundException ex) {
+                    // We couldn't load the class, maybe the code is not
+                    // generated (for example the user might have given
+                    // this model to somebody else. Regenerate it again.
+                    _generateCode();
+                    try {
+                        classInstance = classLoader.loadClass(className);
+                    } catch (ClassNotFoundException ex2) {
+                        ex2.printStackTrace();
+                        throw new ClassNotFoundException("Failed to load "
+                                + className
+                                + " using URLClassLoader based on "
+                                + url
+                                + ", urls were: "
+                                + java.util.Arrays.deepToString(classLoader
+                                        .getURLs()) + "\n" + ex2);
+                    }
                 }
 
-                if (name.equals("initialize")) {
-                    initializeMethod = method;
+                _objectWrapper = classInstance.newInstance();
+
+                Method[] methods = classInstance.getMethods();
+                Method initializeMethod = null;
+
+                for (Method method : methods) {
+                    String name = method.getName();
+                    if (name.equals("fire")) {
+                        _fireMethod = method;
+                    }
+
+                    if (name.equals("initialize")) {
+                        initializeMethod = method;
+                    }
+                }
+                if (_fireMethod == null) {
+                    throw new IllegalActionException(this, "Cannot find fire "
+                            + "method in the wrapper class.");
+                }
+
+                if (initializeMethod == null) {
+                    throw new IllegalActionException(this,
+                            "Cannot find initialize "
+                                    + "method in the wrapper class.");
+                }
+
+                //initialize the generated object
+                initializeMethod.invoke(_objectWrapper, (Object[]) null);
+                if (_debugging) {
+                    _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
+                }
+
+                //java.net.URLClassLoader is not present in Java 1.6.
+            } finally {
+                if (classLoader != null) {
+                    try {
+                        classLoader.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to close \""
+                                        + (url == null ? "null" : url) + "\".");
+                    }
                 }
             }
-            if (_fireMethod == null) {
-                throw new IllegalActionException(this, "Cannot find fire "
-                        + "method in the wrapper class.");
-            }
-
-            if (initializeMethod == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find initialize "
-                                + "method in the wrapper class.");
-            }
-
-            //initialize the generated object
-            initializeMethod.invoke(_objectWrapper, (Object[]) null);
-            if (_debugging) {
-                _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
-            }
-
-            // java.net.URLClassLoader is not present in Java 1.6.
-            //             } finally {
-            //                 if (classLoader != null) {
-            //                     try {
-            //                         classLoader.close();
-            //                     } catch (IOException ex) {
-            //                         throw new IllegalActionException(this, ex,
-            //                                 "Failed to close \""
-            //                                         + (url == null ? "null" : url) + "\".");
-            //                     }
-            //                 }
-            //             }
             recompileThisLevel.setToken(new BooleanToken(false));
             recompileHierarchy.setToken(new BooleanToken(false));
 
@@ -665,24 +666,24 @@ public class ModularCodeGenTypedCompositeActor extends
                 URL[] urls = new URL[] { url };
 
                 URLClassLoader classLoader = null;
-                //try {
-                classLoader = new URLClassLoader(urls);
-                classInstance = classLoader.loadClass(className);
-                _profile = (Profile) classInstance.newInstance();
-                portList();
-                // java.net.URLClassLoader is not present in Java 1.6.
-                //                 } finally {
-                //                     if (classLoader != null) {
-                //                         try {
-                //                             classLoader.close();
-                //                         } catch (IOException ex) {
-                //                             throw new IllegalActionException(this, ex,
-                //                                     "Failed to close \""
-                //                                             + (url == null ? "null" : url)
-                //                                             + "\".");
-                //                         }
-                //                     }
-                //                }
+                try {
+                    classLoader = new URLClassLoader(urls);
+                    classInstance = classLoader.loadClass(className);
+                    _profile = (Profile) classInstance.newInstance();
+                    portList();
+                    // java.net.URLClassLoader is not present in Java 1.6.
+                } finally {
+                    if (classLoader != null) {
+                        try {
+                            classLoader.close();
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(this, ex,
+                                    "Failed to close \""
+                                            + (url == null ? "null" : url)
+                                            + "\".");
+                        }
+                    }
+                }
             }
         } catch (Throwable throwable) {
             try {
