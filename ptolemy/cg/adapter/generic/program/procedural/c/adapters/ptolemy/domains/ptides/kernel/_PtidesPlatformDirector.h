@@ -47,8 +47,9 @@ struct PtidesPlatformDirector {
     // to minimize changes in the struct when debugging.
 #ifdef _debugging
     char * _name;
-    char *(*getName)(struct Director *);
-    void (*setName)(struct Director *, char *);
+    char *(*getFullName)(struct PtidesPlatformDirector *);
+    char *(*getName)(struct PtidesPlatformDirector *);
+    void (*setName)(struct PtidesPlatformDirector *, char *);
 #endif
     
     // _PtidesPlatformDirector-specific field.

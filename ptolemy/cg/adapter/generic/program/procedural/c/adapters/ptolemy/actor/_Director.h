@@ -52,6 +52,7 @@ struct Director {
     // to minimize changes in the struct when debugging.
 #ifdef _debugging
     char * _name;
+    char *(*getFullName)(struct Director *);
     char *(*getName)(struct Director *);
     void (*setName)(struct Director *, char *);
 #endif
@@ -60,11 +61,6 @@ struct Director {
 
 struct Director* Director_New();
 void Director_Init(struct Director* director);
-
-#ifdef _debugging
-char *Director_GetName(struct Director *director);
-void Director_SetName(struct Director *director, char * name);
-#endif
 
 void Director_New_Free(struct Director* director);
 
@@ -89,5 +85,11 @@ bool Director_TransferOutputs(struct Director* director);
 bool Director_TransferOutputs1(struct Director* director, struct IOPort* port);
 void Director_Wrapup(struct Director* director);
 bool Director_IsTopLevel(struct Director* director);
+
+#ifdef _debugging
+char *Director_GetFullName(struct Director *director);
+char *Director_GetName(struct Director *director);
+void Director_SetName(struct Director *director, char * name);
+#endif
 
 #endif /* DIRECTOR_H_ */

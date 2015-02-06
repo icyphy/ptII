@@ -1,7 +1,8 @@
 /* In this file we have defined a struct PtidesDirector which represent a Ptides director.
  *
- * @author : William Lucas
- * @version: $Id$
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesDirector.h
  */
 
 #ifndef PTIDESDIRECTOR_H_
@@ -15,7 +16,8 @@
 #define IS_PTIDESDIRECTOR(d) ((d)->typeDirector%100 == 11)
 
 // Note that the order of fields in this struct should closely match
-// the order in other files such as _DEDirector.h and _Director.h.
+// the order in other files such as _DEDirector.h, _Director.h,
+// _FSMDirector.h, _SDFDirector.h
 struct PtidesDirector {
     int typeDirector;
 
@@ -53,6 +55,7 @@ struct PtidesDirector {
     // to minimize changes in the struct when debugging.
 #ifdef _debugging
     char * _name;
+    char *(*getFullName)(struct PtidesDirector *);
     char *(*getName)(struct PtidesDirector *);
     void (*setName)(struct PtidesDirector *, char *);
 #endif    

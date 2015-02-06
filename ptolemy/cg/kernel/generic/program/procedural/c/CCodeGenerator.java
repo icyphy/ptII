@@ -1738,8 +1738,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             throws IllegalActionException {
         StringBuffer result = new StringBuffer(_eol);
         String sanitizedActorName = CodeGeneratorAdapter.generateName(actor);
-        result.append(_eol + sanitizedActorName + " = CompositeActor_New();"
-                + _eol);
+        result.append(_eol + sanitizedActorName + " = CompositeActor_New();" + _eol);
+
+        result.append("#ifdef _debugging" + _eol
+                + "((struct CompositeActor*)" + sanitizedActorName + ")->setName((struct CompositeActor *)"
+                + sanitizedActorName + ", \"" + actor.getName() + "\");" + _eol
+                + "#endif" + _eol);
+
         // Only set the container if the container of the actor is non null
         // and we are not generating embedded code.
 

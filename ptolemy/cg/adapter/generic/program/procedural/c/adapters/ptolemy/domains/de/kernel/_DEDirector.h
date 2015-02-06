@@ -52,6 +52,7 @@ struct DEDirector {
     // to minimize changes in the struct when debugging.
 #ifdef _debugging
     char * _name;
+    char *(*getFullName)(struct DEDirector *);
     char *(*getName)(struct DEDirector *);
     void (*setName)(struct DEDirector *, char *);
 #endif

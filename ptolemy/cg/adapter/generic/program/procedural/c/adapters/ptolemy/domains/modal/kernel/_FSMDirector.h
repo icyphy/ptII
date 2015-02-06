@@ -1,6 +1,8 @@
 /* In this file we have defined a struct FSMDirector which represent a FSM director
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel/_FSMDirector.h
  */
 
 #ifndef FSMDIRECTOR_H_
@@ -12,6 +14,9 @@
 
 #define IS_FSMDIRECTOR(director) ((director)->typeDirector%10 == 4)
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _DEDirector.h, _Director.h,
+// _FSMDirector.h, SDFDirector.h
 struct FSMDirector {
     int typeDirector;
 
@@ -45,7 +50,17 @@ struct FSMDirector {
     void (*wrapup)(struct FSMDirector*);
     bool (*isTopLevel)(struct FSMDirector*);
 
-    // new members
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct FSMDirector *);
+    char *(*getName)(struct FSMDirector *);
+    void (*setName)(struct FSMDirector *, char *);
+#endif    
+
+    // _FSMDirector-specific fields.
+    
     //PblMap* _currentLocalReceiverMap;
     //int _indexOffset;
     //PblMap* _localReceiverMaps;

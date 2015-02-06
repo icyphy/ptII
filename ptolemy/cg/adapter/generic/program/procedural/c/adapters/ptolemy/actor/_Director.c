@@ -18,11 +18,6 @@ void Director_Init(struct Director* director) {
     director->_startTime = -DBL_MAX;
     director->_stopTime = -DBL_MAX;
 
-#ifdef _debugging
-    director->setName = Director_SetName;
-    director->getName = Director_GetName;
-#endif
-
     director->fire = Director_Fire;
     director->fireAt = Director_FireAt;
     director->fireContainerAt = Director_FireContainerAt;
@@ -44,12 +39,30 @@ void Director_Init(struct Director* director) {
     director->transferOutputs1 = Director_TransferOutputs1;
     director->wrapup = Director_Wrapup;
     director->isTopLevel = Director_IsTopLevel;
+
+#ifdef _debugging
+    director->getFullName = Director_GetFullName;
+    director->getName = Director_GetName;
+    director->setName = Director_SetName;
+#endif
 }
 
 #ifdef _debugging
 // To enable debugging, recompile the code with:
 //    make -f *.mk "USER_CC_FLAGS=-D _debugging" run
 
+/* Return the full name of the director.
+ * The caller should free the results returned by this method.
+ */
+char *Director_GetFullName(struct Director *director) {
+    char *containerFullName = director->container->getFullName(director->container);
+    char *results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen(director->_name) + 1 /* for the null */);
+    strcpy(results, containerFullName);
+    free(containerFullName);
+    strcat(results, ".");
+    strcat(results, director->_name);
+    return results;
+}
 char *Director_GetName(struct Director *director) {
     return strdup(director->_name);
 }
