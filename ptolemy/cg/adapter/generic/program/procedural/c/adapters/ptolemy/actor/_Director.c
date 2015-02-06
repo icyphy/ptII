@@ -18,6 +18,11 @@ void Director_Init(struct Director* director) {
         director->_startTime = -DBL_MAX;
         director->_stopTime = -DBL_MAX;
 
+#ifdef _debugging
+        director->setName = Director_SetName;
+        director->getName = Director_GetName;
+#endif
+
         director->fire = Director_Fire;
         director->fireAt = Director_FireAt;
         director->fireContainerAt = Director_FireContainerAt;
@@ -40,6 +45,19 @@ void Director_Init(struct Director* director) {
         director->wrapup = Director_Wrapup;
         director->isTopLevel = Director_IsTopLevel;
 }
+
+#ifdef _debugging
+// To enable debugging, recompile the code with:
+//    make -f *.mk "USER_CC_FLAGS=-D _debugging" run
+
+char *Director_GetName(struct Director *director) {
+    return strdup(director->_name);
+}
+void Director_SetName(struct Director *director, char * name) {
+    director->_name = strdup(name);
+}
+#endif
+
 void Director_New_Free(struct Director* director) {
         if (director) {
                 LocalClock_New_Free(director->localClock);
@@ -98,6 +116,9 @@ Time Director_GetEnvironmentTime(struct Director* director) {
 }
 Time Director_GetGlobalTime(struct Director* director) {
         struct CompositeActor* container = director->container;
+        if (container == NULL) {
+            return -DBL_MAX;
+        }
         while (container->container != NULL) {
                 container = container->container;
         }

@@ -1773,8 +1773,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directorName = CodeGeneratorAdapter.generateName(actor
                 .getDirector());
         result.append("struct " + typeDirector + "* " + directorName + " = "
-                + typeDirector + "_New();" + _eol);
-        result.append(sanitizedActorName + "->_director = (struct Director*)"
+                + typeDirector + "_New();" + _eol
+                + "#ifdef _debugging" + _eol
+                + "((struct Director*)" + directorName + ")->setName((struct Director *)" + directorName + ", \"" + actor.getDirector().getName() + "\");" + _eol
+                + "#endif" + _eol
+                + sanitizedActorName + "->_director = (struct Director*)"
                 + directorName + ";" + _eol);
 
         result.append(_eol + comment("Actor Initializations") + _eol);

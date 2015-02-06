@@ -79,6 +79,10 @@ void PtidesDirector_Fire(struct PtidesDirector* director) {
         // Transfer all inputs that are ready.
         Time currentTime = director->getModelTime(director);
         PblList** list = (PblList**)pblMapGet(director->_inputEventQueue, &currentTime, sizeof(Time), NULL);
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
+
         if (list != NULL) {
                 PblIterator* eventIterator = pblIteratorNew(*list);
                 while (pblIteratorHasNext(eventIterator)) {
@@ -160,6 +164,9 @@ void PtidesDirector_Fire(struct PtidesDirector* director) {
                         }
                 }
         }
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
 }
 
 Time PtidesDirector_FireAt(struct PtidesDirector* director, struct Actor* actor, Time time, int index) {

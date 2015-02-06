@@ -39,6 +39,9 @@ void PtidesPlatformDirector_Fire(struct PtidesPlatformDirector* director) {
 }
 Time PtidesPlatformDirector_FireContainerAt(struct PtidesPlatformDirector* director, Time time, int microstep) {
         struct Actor* container = (struct Actor*) director->container;
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesPlatformDirector_FireContainerAt(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
         if (container != NULL && container->container != NULL) {
                 container = (struct Actor*) container->container;
                 struct Director* pDirector = container->getDirector(container);
@@ -72,6 +75,9 @@ bool PtidesPlatformDirector_TransferInputs(struct PtidesPlatformDirector* direct
         bool result = false;
         struct PtidesDirector* ptidesDirector = (struct PtidesDirector*) director->_getEmbeddedPtidesDirector(director);
 
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferInputs(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
         for (int channelIndex = 0; channelIndex < port->getWidth(port); channelIndex++) {
                 if (port->hasToken(port, channelIndex)) {
                         Token* t = port->get(port, channelIndex);
@@ -125,10 +131,16 @@ bool PtidesPlatformDirector_TransferInputs(struct PtidesPlatformDirector* direct
                 }
         }
 
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferInputs(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
         return result;
 }
 bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* director, struct PtidesPort* port) {
         bool result = false;
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferOutputs(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
         for (int i = 0; i < port->getWidthInside(port); i++) {
                 while (port->hasTokenInside(port, i)) {
                         Token* t = port->getInside(port, i);
@@ -150,6 +162,9 @@ bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* dire
                 }
                 result = true;
         }
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferOutputs(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+#endif        
         return result;
 }
 struct Director* PtidesPlatformDirector__GetEmbeddedPtidesDirector(struct PtidesPlatformDirector* director) {

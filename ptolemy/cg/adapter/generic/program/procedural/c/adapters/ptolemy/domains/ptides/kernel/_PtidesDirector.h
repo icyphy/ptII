@@ -22,6 +22,11 @@ struct PtidesDirector {
         Time _startTime;
         Time _stopTime;
 
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct PtidesDirector *);
+    void (*setName)(struct PtidesDirector *, char *);
+#endif    
         void (*free)(struct PtidesDirector*);
 
         void (*fire)(struct PtidesDirector*);

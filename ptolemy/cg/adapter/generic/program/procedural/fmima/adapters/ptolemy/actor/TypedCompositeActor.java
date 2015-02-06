@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.act
 import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
@@ -94,7 +93,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             directorAdapter = (Director) director;
         } catch (ClassCastException ex) {
             throw new IllegalActionException(
-            // Extending ProceduralCodeGenerator start.
+                    // Extending ProceduralCodeGenerator start.
                     adapter.getComponent(),
                     // Extending ProceduralCodeGenerator end.
 
@@ -130,49 +129,54 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         codeStream.clear();
 
         ptolemy.actor.CompositeActor topActor = (ptolemy.actor.CompositeActor) getComponent();
-        
+
         List actorList = topActor.deepEntityList();
-        
-        codeStream.appendCodeBlock("variableDeclareBlock");        
-                
+
+        codeStream.appendCodeBlock("variableDeclareBlock");
+
         int fmuCount = 0;
         int connectionsCount = 0;
-        
+
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
-        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();
-        	
-        	codeStream.append("#define " + actor.getName() + " "+ fmuCount++ + "\n");
+            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
+                    .next();
+
+            codeStream.append("#define " + actor.getName() + " " + fmuCount++
+                    + "\n");
         }
-        
+
         actors = actorList.iterator();
         while (actors.hasNext()) {
-        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();        	
-        	
-        	for (TypedIOPort input : actor.inputPortList()) {
-        		connectionsCount++;
-        	}
+            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
+                    .next();
 
-        	for (TypedIOPort output : actor.outputPortList()) {
-        	}
+            //for (TypedIOPort input : actor.inputPortList()) {
+            //	connectionsCount++;
+            //}
+            connectionsCount += actor.inputPortList().size();
+
+            //for (TypedIOPort output : actor.outputPortList()) {
+            //}
         }
 
         codeStream.append("#define NUMBER_OF_FMUS " + actorList.size() + "\n");
         codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
-        codeStream.append("#define MODEL_NAME \"" + topActor.getName() + "\"\n");
-        
+        codeStream
+                .append("#define MODEL_NAME \"" + topActor.getName() + "\"\n");
+
         actors = actorList.iterator();
         codeStream.append("const char* NAMES_OF_FMUS[] = {");
         while (actors.hasNext()) {
-        	ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors.next();  
-        	codeStream.append("\"" + actor.getName() + "\"");
-        	if (actors.hasNext()) codeStream.append(",");
+            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
+                    .next();
+            codeStream.append("\"" + actor.getName() + "\"");
+            if (actors.hasNext())
+                codeStream.append(",");
         }
         codeStream.append("};\n");
-        
-        
-        codeStream.appendCodeBlock("staticDeclareBlock");
 
+        codeStream.appendCodeBlock("staticDeclareBlock");
 
         return processCode(codeStream.toString());
     }

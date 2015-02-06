@@ -24,6 +24,12 @@ struct DEDirector {
         Time _startTime;
         Time _stopTime;
 
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct DEDirector *);
+    void (*setName)(struct DEDirector *, char *);
+#endif    
+
         void (*free)(struct DEDirector*);
 
         void (*fire)(struct DEDirector*);
