@@ -1,6 +1,8 @@
 /* In this file we have defined a struct IOPort which represent a generic I/O port
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_IOPort.h
  */
 
 #ifndef IOPORT_H_
@@ -16,6 +18,9 @@
 
 #define IOPORT 0
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _TypedIOPort.h,
+// _PtidesMirrorPort.h, _PtidesPort.h
 struct IOPort {
     int typePort;
 
@@ -66,6 +71,15 @@ struct IOPort {
     void (*sendInside)(struct IOPort*, int, Token*);
     void (*sendLocalInside)(struct IOPort*, int, Token*);
 
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct IOPort *);
+    char *(*getName)(struct IOPort *);
+    void (*setName)(struct IOPort *, char *);
+#endif    
+
 #ifdef PTIDESDIRECTOR
     double delayOffset;
 #endif
@@ -103,5 +117,11 @@ void IOPort_Send(struct IOPort* port, int channelIndex, Token* token);
 void IOPort_Send1(struct IOPort* port, int channelIndex, Token** tokenArray, int vectorLength);
 void IOPort_SendInside(struct IOPort* port, int channelIndex, Token* token);
 void IOPort_SendLocalInside(struct IOPort* port, int channelIndex, Token* token);
+
+#ifdef _debugging
+char *IOPort_GetFullName(struct IOPort *port);
+char *IOPort_GetName(struct IOPort *port);
+void IOPort_SetName(struct IOPort *port, char * name);
+#endif
 
 #endif

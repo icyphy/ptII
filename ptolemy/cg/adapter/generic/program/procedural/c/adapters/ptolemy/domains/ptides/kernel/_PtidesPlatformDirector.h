@@ -1,6 +1,8 @@
-/* In this file we have defined the struct PtidesPlatformDirector
+/* In this file we have defined the struct PtidesPlatformDirector.
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesPlatformDirector.h
  */
 
 #ifndef PTIDESPLATFORMDIRECTOR_H_
@@ -11,6 +13,9 @@
 
 #define IS_PTIDESPLATFORMDIRECTOR(d) ((d)->typeDirector%10 == 3)
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _DEDirector.h, _Director.h,
+// _FSMDirector.h, _SDFDirector.h
 struct PtidesPlatformDirector {
     int typeDirector;
 

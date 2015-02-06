@@ -162,24 +162,38 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
 
         // Common part to all types of ports
         result.append(portName + " = (struct TypedIOPort*)" + typePort
-                + "_New();" + _eol);
-        result.append(portName + "->container = (struct Actor*)"
-                + sanitizedActorName + ";" + _eol);
-        result.append(portName + "->_isInsideConnected = "
-                + port.isInsideConnected() + ";" + _eol);
-        result.append(portName + "->_isOutsideConnected = "
-                + port.isOutsideConnected() + ";" + _eol);
-        result.append(portName + "->_isInput = " + port.isInput() + ";" + _eol);
-        result.append(portName + "->_isOutput = " + port.isOutput() + ";"
-                + _eol);
-        result.append(portName + "->_isMultiport = " + port.isMultiport() + ";"
-                + _eol);
-        result.append(portName + "->_width = " + port.getWidth() + ";" + _eol);
-        result.append(portName + "->_insideWidth = " + port.getWidthInside()
-                + ";" + _eol);
-        result.append(portName + "->_numberOfSinks = " + port.numberOfSinks()
-                + ";" + _eol);
-        result.append(portName + "->_numberOfSources = "
+                + "_New();" + _eol
+
+                + "#ifdef _debugging" + _eol
+                + portName + "->setName((struct IOPort*)"
+                + portName + ", \"" + port.getName() + "\");" + _eol
+                + "#endif" + _eol
+
+                + portName + "->container = (struct Actor*)"
+                + sanitizedActorName + ";" + _eol
+
+                + portName + "->_isInsideConnected = "
+                + port.isInsideConnected() + ";" + _eol
+
+                + portName + "->_isOutsideConnected = "
+                + port.isOutsideConnected() + ";" + _eol
+
+                + portName + "->_isInput = " + port.isInput() + ";" + _eol
+
+                + portName + "->_isOutput = " + port.isOutput() + ";"
+                + _eol
+
+                + portName + "->_isMultiport = " + port.isMultiport() + ";"
+                + _eol
+
+                + portName + "->_width = " + port.getWidth() + ";" + _eol
+                + portName + "->_insideWidth = " + port.getWidthInside()
+                + ";" + _eol
+
+                + portName + "->_numberOfSinks = " + port.numberOfSinks()
+                + ";" + _eol
+
+                + portName + "->_numberOfSources = "
                 + port.numberOfSources() + ";" + _eol);
 
         Parameter parameter = (Parameter) ((NamedObj) port)

@@ -67,6 +67,9 @@ void PtidesPort_Send(struct PtidesPort* port, int channelIndex, Token* token) {
     struct PtidesDirector* director = (struct PtidesDirector*) container->getDirector(container);
     Time timestamp = director->getModelTime(director);
     Time sourceTimestamp = director->_currentSourceTimestamp;
+#ifdef _debugging
+    fprintf(stderr, "%s:%d: PtidesPort_Send(%p, %d, %p) %s %f\n", __FILE__, __LINE__, port, channelIndex, token, ((struct IOPort *) port)->getFullName((struct IOPort *)port), convert(token, TYPE_Double)->payload.Double);
+#endif
     if (sourceTimestamp == -DBL_MAX) {
         sourceTimestamp = timestamp;
     }
