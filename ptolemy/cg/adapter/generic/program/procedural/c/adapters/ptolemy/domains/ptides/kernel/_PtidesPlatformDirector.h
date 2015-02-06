@@ -20,6 +20,12 @@ struct PtidesPlatformDirector {
         Time _startTime;
         Time _stopTime;
 
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct PtidesPlatformDirector *);
+    void (*setName)(struct PtidesPlatformDirector *, char *);
+#endif
+    
         void (*free)(struct PtidesPlatformDirector*);
 
         void (*fire)(struct PtidesPlatformDirector*);

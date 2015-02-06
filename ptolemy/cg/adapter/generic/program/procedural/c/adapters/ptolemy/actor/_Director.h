@@ -22,6 +22,11 @@ struct Director {
         Time _startTime;
         Time _stopTime;
 
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct Director *);
+    void (*setName)(struct Director *, char *);
+#endif    
         void (*free)(struct Director*);
 
         void (*fire)(struct Director*);
@@ -49,6 +54,12 @@ struct Director {
 
 struct Director* Director_New();
 void Director_Init(struct Director* director);
+
+#ifdef _debugging
+char *Director_GetName(struct Director *director);
+void Director_SetName(struct Director *director, char * name);
+#endif
+
 void Director_New_Free(struct Director* director);
 
 void Director_Fire(struct Director* director);
