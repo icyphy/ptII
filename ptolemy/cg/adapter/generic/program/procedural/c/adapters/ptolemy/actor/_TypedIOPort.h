@@ -1,7 +1,8 @@
-/* In this file we have defined a struct TypedIOPort which represent a generic I/O port
- * with a type
+/* A struct which represent a generic I/O port with a type.
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_TypedIOPort.c
  */
 
 #ifndef TYPEDIOPORT_H_
@@ -17,6 +18,9 @@
 
 #define TYPEDIOPORT 1
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _IOPort.h,
+// _PtidesMirrorPort.h, _PtidesPort.h
 struct TypedIOPort {
     int typePort;
 
@@ -67,6 +71,15 @@ struct TypedIOPort {
     void (*sendInside)(struct IOPort*, int, Token*);
     void (*sendLocalInside)(struct IOPort*, int, Token*);
 
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct IOPort *);
+    char *(*getName)(struct IOPort *);
+    void (*setName)(struct IOPort *, char *);
+#endif
+    
 #ifdef PTIDESDIRECTOR
     double delayOffset;
 #endif

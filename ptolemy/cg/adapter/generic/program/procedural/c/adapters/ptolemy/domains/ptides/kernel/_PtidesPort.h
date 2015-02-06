@@ -22,6 +22,9 @@
 #define PTIDESPORT 11
 #define IS_PTIDESPORT(p) ((p)->typePort%100 == 11)
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _IOPort.h, _TypedIOPort.h,
+// _PtidesMirrorPort.h.
 struct PtidesPort {
     int typePort;
 
@@ -71,6 +74,15 @@ struct PtidesPort {
     void (*send1)(struct PtidesPort*, int, Token**, int);
     void (*sendInside)(struct PtidesPort*, int, Token*);
 
+   // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct PtidesPort *);
+    char *(*getName)(struct PtidesPort *);
+    void (*setName)(struct PtidesPort *, char *);
+#endif
+    
 #ifdef PTIDESDIRECTOR
     double delayOffset;
 #endif

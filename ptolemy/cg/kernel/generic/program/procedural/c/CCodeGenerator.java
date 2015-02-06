@@ -1810,7 +1810,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + CodeGeneratorAdapter.generateName(act) + ");" + _eol);
         }
 
-        result.append(_eol + comment("Creation of the ports of the container")
+        result.append(_eol + comment("Creation of the ports of the container.")
                 + _eol);
         Iterator<?> inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()) {

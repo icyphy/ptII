@@ -17,7 +17,7 @@
 #define COMPOSITEACTOR 2
 
 // Note that the order of fields in this struct should closely match
-// the order in other files such as _AtomicActor.h
+// the order in other files such as _Actor.h, _AtomicActor.h
 struct CompositeActor {
     int typeActor;
 
@@ -61,11 +61,10 @@ struct CompositeActor {
 };
 
 #ifdef _debugging
-char *CompositeActor_GetFullName(struct CompositeActor *director);
-char *CompositeActor_GetName(struct CompositeActor *director);
-void CompositeActor_SetName(struct CompositeActor *director, char * name);
+char *CompositeActor_GetFullName(struct CompositeActor *actor);
+char *CompositeActor_GetName(struct CompositeActor *actor);
+void CompositeActor_SetName(struct CompositeActor *actor, char * name);
 #endif
-
 
 struct CompositeActor* CompositeActor_New();
 void CompositeActor_Init(struct CompositeActor* actor);

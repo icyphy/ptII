@@ -1,3 +1,9 @@
+/* C implementation of IOPort
+ *
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_IOPort.c
+ */
 #include "_IOPort.h"
 
 struct IOPort* IOPort_New() {
@@ -11,6 +17,7 @@ struct IOPort* IOPort_New() {
 
     return newIOPort;
 }
+
 
 void IOPort_Init(struct IOPort* port) {
     port->typePort = IOPORT;
@@ -57,7 +64,15 @@ void IOPort_Init(struct IOPort* port) {
     port->send1 = IOPort_Send1;
     port->sendInside = IOPort_SendInside;
     port->sendLocalInside = IOPort_SendLocalInside;
+
+#ifdef _debugging
+    port->_name = NULL;
+    port->getFullName = IOPort_GetFullName;
+    port->getName = IOPort_GetName;
+    port->setName = IOPort_SetName;
+#endif
 }
+
 void IOPort_New_Free(struct IOPort* port) {
     if (port) {
         pblListFree(port->_farReceivers);
@@ -503,3 +518,31 @@ void IOPort_SendLocalInside(struct IOPort* port, int channelIndex, Token* token)
         (*(receiver->putToAll))(receiver, token, pblListGet(farReceivers, channelIndex));
     }
 }
+
+#ifdef _debugging
+// To enable debugging, recompile the code with:
+//    make -f *.mk "USER_CC_FLAGS=-D _debugging" run
+
+/* Return the full name of the IOPort.
+ * The caller should free the results returned by this method.
+ */
+char *IOPort_GetFullName(struct IOPort *ioPort) {
+    char *containerFullName = ioPort->container->getFullName(ioPort->container);
+    char *results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen(ioPort->_name) + 1 /* for the null */);
+    strcpy(results, containerFullName);
+    free(containerFullName);
+    strcat(results, ".");
+    strcat(results, ioPort->_name);
+    return results;
+}
+
+/* Return the name of this composite.
+ * The caller should free the results returned by this method.
+ */
+char *IOPort_GetName(struct IOPort *ioPort) {
+    return strdup(ioPort->_name);
+}
+void IOPort_SetName(struct IOPort *ioPort, char * name) {
+    ioPort->_name = strdup(name);
+}
+#endif // _debugging

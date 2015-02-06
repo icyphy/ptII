@@ -17,7 +17,7 @@
 
 // Note that the order of fields in this struct should closely match
 // the order in other files such as _DEDirector.h, _Director.h,
-// _FSMDirector.h, _SDFDirector.h
+// _FSMDirector.h, _SDFDirector.h, _PtidesPlatformDirector.h
 struct PtidesDirector {
     int typeDirector;
 

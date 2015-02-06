@@ -1,3 +1,10 @@
+/* A C struct Actor which represent a generic actor.
+ *
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_Actor.c
+ */
+
 #include "_Actor.h"
 
 struct Actor* Actor_New() {
@@ -25,8 +32,39 @@ void Actor_Init(struct Actor* actor) {
     actor->prefire = NULL;
     actor->preinitialize = NULL;
     actor->wrapup = NULL;
+
+#ifdef _debugging
+    actor->getFullName = Actor_GetFullName;
+    actor->getName = Actor_GetName;
+    actor->setName = Actor_SetName;
+#endif    
+
 }
 void Actor_New_Free(struct Actor* actor) {
     if (actor)
         free(actor);
 }
+
+#ifdef _debugging
+// To enable debugging, recompile the code with:
+//    make -f *.mk "USER_CC_FLAGS=-D _debugging" run
+
+/* Return the full name of the actor
+ * The caller should free the results returned by this method.
+ */
+char *Actor_GetFullName(struct Actor *actor) {
+    char *containerFullName = actor->container->getFullName(actor->container);
+    char *results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen(actor->_name) + 1 /* for the null */);
+    strcpy(results, containerFullName);
+    free(containerFullName);
+    strcat(results, ".");
+    strcat(results, actor->_name);
+    return results;
+}
+char *Actor_GetName(struct Actor *actor) {
+    return strdup(actor->_name);
+}
+void Actor_SetName(struct Actor *actor, char * name) {
+    actor->_name = strdup(name);
+}
+#endif
