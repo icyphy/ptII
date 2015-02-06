@@ -24,12 +24,6 @@ struct DEDirector {
     Time _startTime;
     Time _stopTime;
 
-#ifdef _debugging
-    char * _name;
-    char *(*getName)(struct DEDirector *);
-    void (*setName)(struct DEDirector *, char *);
-#endif
-
     void (*free)(struct DEDirector*);
 
     void (*fire)(struct DEDirector*);
@@ -54,7 +48,15 @@ struct DEDirector {
     void (*wrapup)(struct DEDirector*);
     bool (*isTopLevel)(struct Director*);
 
-    // new members
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct DEDirector *);
+    void (*setName)(struct DEDirector *, char *);
+#endif
+
+    // _DEDirector-specific fields.
     int binCountFactor;
     bool isCQAdaptive;
     int minBinCount;

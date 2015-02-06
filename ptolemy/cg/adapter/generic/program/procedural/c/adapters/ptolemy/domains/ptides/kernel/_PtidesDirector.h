@@ -1,6 +1,7 @@
-/* In this file we have defined a struct PtidesDirector which represent a Ptides director
+/* In this file we have defined a struct PtidesDirector which represent a Ptides director.
  *
  * @author : William Lucas
+ * @version: $Id$
  */
 
 #ifndef PTIDESDIRECTOR_H_
@@ -13,6 +14,8 @@
 
 #define IS_PTIDESDIRECTOR(d) ((d)->typeDirector%100 == 11)
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _DEDirector.h and _Director.h.
 struct PtidesDirector {
     int typeDirector;
 
@@ -22,11 +25,6 @@ struct PtidesDirector {
     Time _startTime;
     Time _stopTime;
 
-#ifdef _debugging
-    char * _name;
-    char *(*getName)(struct PtidesDirector *);
-    void (*setName)(struct PtidesDirector *, char *);
-#endif
     void (*free)(struct PtidesDirector*);
 
     void (*fire)(struct PtidesDirector*);
@@ -50,6 +48,16 @@ struct PtidesDirector {
     bool (*transferOutputs1)(struct PtidesDirector*, struct IOPort*);
     void (*wrapup)(struct PtidesDirector*);
     bool (*isTopLevel)(struct PtidesDirector*);
+
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct PtidesDirector *);
+    void (*setName)(struct PtidesDirector *, char *);
+#endif    
+
+    // _PtidesDirector-specific fields
 
     int binCountFactor;
     bool isCQAdaptive;

@@ -20,14 +20,7 @@ struct PtidesPlatformDirector {
     Time _startTime;
     Time _stopTime;
 
-#ifdef _debugging
-    char * _name;
-    char *(*getName)(struct PtidesPlatformDirector *);
-    void (*setName)(struct PtidesPlatformDirector *, char *);
-#endif
-
     void (*free)(struct PtidesPlatformDirector*);
-
     void (*fire)(struct PtidesPlatformDirector*);
     Time (*fireAt)(struct PtidesPlatformDirector*, struct Actor*, Time, int);
     Time (*fireContainerAt)(struct PtidesPlatformDirector*, Time, int);
@@ -50,7 +43,18 @@ struct PtidesPlatformDirector {
     void (*wrapup)(struct PtidesPlatformDirector*);
     bool (*isTopLevel)(struct PtidesPlatformDirector*);
 
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct Director *);
+    void (*setName)(struct Director *, char *);
+#endif
+    
+    // _PtidesPlatformDirector-specific field.
     struct Director* (*_getEmbeddedPtidesDirector)(struct PtidesPlatformDirector*);
+
+
 };
 
 struct PtidesPlatformDirector* PtidesPlatformDirector_New();

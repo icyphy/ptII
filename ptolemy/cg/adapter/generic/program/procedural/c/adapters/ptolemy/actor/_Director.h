@@ -13,6 +13,8 @@
 
 #define DIRECTOR 0
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _Director.h and _PtidesDirector.h.
 struct Director {
     int typeDirector;
 
@@ -22,11 +24,6 @@ struct Director {
     Time _startTime;
     Time _stopTime;
 
-#ifdef _debugging
-    char * _name;
-    char *(*getName)(struct Director *);
-    void (*setName)(struct Director *, char *);
-#endif
     void (*free)(struct Director*);
 
     void (*fire)(struct Director*);
@@ -50,6 +47,15 @@ struct Director {
     bool (*transferOutputs1)(struct Director*, struct IOPort*);
     void (*wrapup)(struct Director*);
     bool (*isTopLevel)(struct Director*);
+
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getName)(struct Director *);
+    void (*setName)(struct Director *, char *);
+#endif
+
 };
 
 struct Director* Director_New();
