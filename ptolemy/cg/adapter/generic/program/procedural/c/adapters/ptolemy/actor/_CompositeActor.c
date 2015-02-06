@@ -1,3 +1,10 @@
+/* C implementation of CompositeActor.
+ *
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_CompositeActor.c
+ */
+
 #include "_CompositeActor.h"
 
 void CompositeActor_Fire(struct CompositeActor* actor);
@@ -40,6 +47,14 @@ void CompositeActor_Init(struct CompositeActor* actor) {
     actor->prefire = CompositeActor_Prefire;
     actor->preinitialize = CompositeActor_Preinitialize;
     actor->wrapup = CompositeActor_Wrapup;
+
+#ifdef _debugging
+    actor->_name = NULL;
+    actor->getFullName = CompositeActor_GetFullName;
+    actor->getName = CompositeActor_GetName;
+    actor->setName = CompositeActor_SetName;
+#endif
+
 }
 void CompositeActor_New_Free(struct CompositeActor* actor) {
     if (actor) {
@@ -152,3 +167,53 @@ void CompositeActor_Wrapup(struct CompositeActor* actor) {
     struct Director* director = (*(actor->getDirector))(actor);
     (*(director->wrapup))(director);
 }
+
+#ifdef _debugging
+// To enable debugging, recompile the code with:
+//    make -f *.mk "USER_CC_FLAGS=-D _debugging" run
+
+/* Return the full name of the composite.
+ * The caller should free the results returned by this method.
+ */
+char *CompositeActor_GetFullName(struct CompositeActor *compositeActor) {
+    char *containerFullName;
+    if (compositeActor->container != NULL) {
+        containerFullName = compositeActor->container->getFullName(compositeActor->container);
+    } else {
+        containerFullName = strdup(".");
+    }
+
+    char *results = NULL;
+    if (compositeActor->_name != NULL) {
+        results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen(compositeActor->_name) + 1);
+    } else {
+        if (compositeActor->container != NULL) {
+            results = malloc(strlen(containerFullName) + 1 + strlen("Unnamed") + 1);
+        } else {
+            results = malloc(2);
+        }
+    }
+
+    strcpy(results, containerFullName);
+    free(containerFullName);
+    if (compositeActor->container != NULL) {
+        strcat(results, ".");
+    }
+    if (compositeActor->_name != NULL) {
+        strcat(results, compositeActor->_name);
+    } else {
+        strcat(results, "Unnamed");
+    }
+    return results;
+}
+
+/* Return the name of this composite.
+ * The caller should free the results returned by this method.
+ */
+char *CompositeActor_GetName(struct CompositeActor *compositeActor) {
+    return strdup(compositeActor->_name);
+}
+void CompositeActor_SetName(struct CompositeActor *compositeActor, char * name) {
+    compositeActor->_name = strdup(name);
+}
+#endif

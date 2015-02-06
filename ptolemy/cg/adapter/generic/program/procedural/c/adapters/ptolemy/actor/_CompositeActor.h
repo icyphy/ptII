@@ -2,7 +2,9 @@
  * represent a composite actor, it is an actor plus a director
  * and a list of the contained actors
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_CompositeActor.h
  */
 
 #ifndef COMPOSITE_ACTOR_H_
@@ -14,6 +16,8 @@
 #define IS_COMPOSITEACTOR(a) ((a)->typeActor%10 == 2)
 #define COMPOSITEACTOR 2
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _AtomicActor.h
 struct CompositeActor {
     int typeActor;
 
@@ -37,7 +41,16 @@ struct CompositeActor {
     double delayOffset;
     double _clockSynchronizationBound;
 
-    // new members
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct CompositeActor *);
+    char *(*getName)(struct CompositeActor *);
+    void (*setName)(struct CompositeActor *, char *);
+#endif    
+
+    // _CompositeActor-specific fields.
     bool (*isOpaque)(struct CompositeActor*);
     void (*_transferPortParameterInputs)(struct CompositeActor*);
 
@@ -46,6 +59,13 @@ struct CompositeActor {
     PblList* _outputPorts;
     PblList* _containedEntities;
 };
+
+#ifdef _debugging
+char *CompositeActor_GetFullName(struct CompositeActor *director);
+char *CompositeActor_GetName(struct CompositeActor *director);
+void CompositeActor_SetName(struct CompositeActor *director, char * name);
+#endif
+
 
 struct CompositeActor* CompositeActor_New();
 void CompositeActor_Init(struct CompositeActor* actor);

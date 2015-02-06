@@ -1,6 +1,8 @@
-/* In this file we have defined a struct Actor which represent a generic actor
+/* In this file we have defined a struct Actor which represent a generic actor.
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/_AtomicActor.h
  */
 
 #ifndef ATOMICACTOR_H_
@@ -34,10 +36,19 @@ struct AtomicActor {
     double delayOffset;
     double _clockSynchronizationBound;
 
-    // new members
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct AtomicActor *);
+    char *(*getName)(struct AtomicActor *);
+    void (*setName)(struct AtomicActor *, char *);
+#endif    
+
+    // _AtomicActor-specific fields.  Note that _CompositeActor.h has
+    // similar fields, but in different slots.
     PblList* _inputPorts;
     PblList* _outputPorts;
-
 };
 
 struct AtomicActor* AtomicActor_New();

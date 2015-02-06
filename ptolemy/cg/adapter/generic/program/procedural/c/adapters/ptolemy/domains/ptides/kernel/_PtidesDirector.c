@@ -80,7 +80,7 @@ void PtidesDirector_Fire(struct PtidesDirector* director) {
     Time currentTime = director->getModelTime(director);
     PblList** list = (PblList**)pblMapGet(director->_inputEventQueue, &currentTime, sizeof(Time), NULL);
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+    fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->getFullName((struct Director *)director));
 #endif
 
     if (list != NULL) {
@@ -165,7 +165,7 @@ void PtidesDirector_Fire(struct PtidesDirector* director) {
         }
     }
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+    fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->getFullName((struct Director *)director));
 #endif
 }
 

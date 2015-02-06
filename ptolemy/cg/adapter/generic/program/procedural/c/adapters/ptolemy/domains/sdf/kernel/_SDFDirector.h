@@ -1,6 +1,8 @@
-/* In this file we have defined a struct SDFDirector which represent a SDF director
+/* In this file we have defined a struct SDFDirector which represent a SDF director.
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/_SDFDirector.h
  */
 
 #ifndef SDFDIRECTOR_H_
@@ -13,6 +15,9 @@
 
 #define IS_SDFDIRECTOR(director) ((director)->typeDirector%10 == 2)
 
+// Note that the order of fields in this struct should closely match
+// the order in other files such as _DEDirector.h, _Director.h,
+// _FSMDirector.h, _PtidesDirector.h
 struct SDFDirector {
     int typeDirector;
 
@@ -46,7 +51,17 @@ struct SDFDirector {
     void (*wrapup)(struct Director*);
     bool (*isTopLevel)(struct Director*);
 
-    // new members
+    // Place the debugging code toward the end of the structure to try
+    // to minimize changes in the struct when debugging.
+#ifdef _debugging
+    char * _name;
+    char *(*getFullName)(struct SDFDirector *);
+    char *(*getName)(struct SDFDirector *);
+    void (*setName)(struct SDFDirector *, char *);
+#endif    
+
+    // _SDFDirector-specific fields.
+    
     int (*getIterations)(struct SDFDirector*);
     Time (*getModelNextIterationTime)(struct SDFDirector*);
     void (*schedule)();

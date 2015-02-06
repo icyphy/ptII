@@ -76,7 +76,7 @@ bool PtidesPlatformDirector_TransferInputs(struct PtidesPlatformDirector* direct
     struct PtidesDirector* ptidesDirector = (struct PtidesDirector*) director->_getEmbeddedPtidesDirector(director);
 
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferInputs(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferInputs(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->getFullName((struct Director *)director));
 #endif
     for (int channelIndex = 0; channelIndex < port->getWidth(port); channelIndex++) {
         if (port->hasToken(port, channelIndex)) {
@@ -132,14 +132,14 @@ bool PtidesPlatformDirector_TransferInputs(struct PtidesPlatformDirector* direct
     }
 
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferInputs(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferInputs(%p) %s end\n", __FILE__, __LINE__, director,  ((struct Director *) director)->getFullName((struct Director *)director));
 #endif
     return result;
 }
 bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* director, struct PtidesPort* port) {
     bool result = false;
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferOutputs(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferOutputs(%p) %s start\n", __FILE__, __LINE__, director,  ((struct Director *) director)->getFullName((struct Director *)director));
 #endif
     for (int i = 0; i < port->getWidthInside(port); i++) {
         while (port->hasTokenInside(port, i)) {
@@ -163,7 +163,7 @@ bool PtidesPlatformDirector_TransferOutputs1(struct PtidesPlatformDirector* dire
         result = true;
     }
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferOutputs(%p) %s end\n", __FILE__, __LINE__, director, ((struct Director *) director)->_name);
+    fprintf(stderr, "%s:%d: PtidesPlatformDirector_TransferOutputs(%p) %s end\n", __FILE__, __LINE__, director,  ((struct Director *) director)->getFullName((struct Director *)director));
 #endif
     return result;
 }
