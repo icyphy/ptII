@@ -214,16 +214,17 @@ public class DataflowWithRates extends Dataflow {
 
         List freeVars = (List) expr.getAttribute(AttributeKeys.KEYFREEVAR);
 
-        for (Iterator iterator = freeVars.iterator(); iterator.hasNext();) {
-            String name = (String) iterator.next();
-
-            if (_isBoundByPortVar(name, action)
-                    || _isIn(name, action.getDecls())
-                    || _isIn(name, _actor.getStateVars())) {
-                return false;
+        if (freeVars != null) {
+            for (Iterator iterator = freeVars.iterator(); iterator.hasNext();) {
+                String name = (String) iterator.next();
+                
+                if (_isBoundByPortVar(name, action)
+                        || _isIn(name, action.getDecls())
+                        || _isIn(name, _actor.getStateVars())) {
+                    return false;
+                }
             }
         }
-
         return true;
     }
 
