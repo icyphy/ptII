@@ -158,23 +158,40 @@ void CalendarQueue_3_3() {
 /** Initialize the test suite.
  */
 int init_CalendarQueueSuite(void) {
-    p1 = DEEvent_New(); p1->_timestamp = 0.0;
-    p2 = DEEvent_New(); p2->_timestamp = 0.1;
-    p3 = DEEvent_New(); p3->_timestamp = 0.2;
-    p4 = DEEvent_New(); p4->_timestamp = 3.0;
-    p5 = DEEvent_New(); p5->_timestamp = 4.0;
-    p6 = DEEvent_New(); p6->_timestamp = 7.6;
-    p7 = DEEvent_New(); p7->_timestamp = 8.9;
-    p8 = DEEvent_New(); p8->_timestamp = 50.0;
-    p9 = DEEvent_New(); p9->_timestamp = 999.1;
-    p10 = DEEvent_New(); p10->_timestamp = 999.3;
-    p11 = DEEvent_New(); p11->_timestamp = 999.8;
-    p12 = DEEvent_New(); p12->_timestamp = 1001.0;
-    p13 = DEEvent_New(); p13->_timestamp = 1002.1;
-    p14 = DEEvent_New(); p14->_timestamp = 1002.2;
-    p15 = DEEvent_New(); p15->_timestamp = 1002.3;
-    p16 = DEEvent_New(); p16->_timestamp = 1002.4;
-    p1again = DEEvent_New(); p1again->_timestamp = 0.0;
+    p1 = DEEvent_New();
+    p1->_timestamp = 0.0;
+    p2 = DEEvent_New();
+    p2->_timestamp = 0.1;
+    p3 = DEEvent_New();
+    p3->_timestamp = 0.2;
+    p4 = DEEvent_New();
+    p4->_timestamp = 3.0;
+    p5 = DEEvent_New();
+    p5->_timestamp = 4.0;
+    p6 = DEEvent_New();
+    p6->_timestamp = 7.6;
+    p7 = DEEvent_New();
+    p7->_timestamp = 8.9;
+    p8 = DEEvent_New();
+    p8->_timestamp = 50.0;
+    p9 = DEEvent_New();
+    p9->_timestamp = 999.1;
+    p10 = DEEvent_New();
+    p10->_timestamp = 999.3;
+    p11 = DEEvent_New();
+    p11->_timestamp = 999.8;
+    p12 = DEEvent_New();
+    p12->_timestamp = 1001.0;
+    p13 = DEEvent_New();
+    p13->_timestamp = 1002.1;
+    p14 = DEEvent_New();
+    p14->_timestamp = 1002.2;
+    p15 = DEEvent_New();
+    p15->_timestamp = 1002.3;
+    p16 = DEEvent_New();
+    p16->_timestamp = 1002.4;
+    p1again = DEEvent_New();
+    p1again->_timestamp = 0.0;
     p1again->_microstep = 1;
     return 0;
 }
@@ -225,29 +242,29 @@ void testCalendarQueue_2_1(void)
 /** Set up tests Int.c
  */
 int main() {
-   CU_pSuite pSuite = NULL;
+    CU_pSuite pSuite = NULL;
 
-   /* Initialize the CUnit test registry */
-   if (CUE_SUCCESS != CU_initialize_registry())
-      return CU_get_error();
+    /* Initialize the CUnit test registry */
+    if (CUE_SUCCESS != CU_initialize_registry())
+        return CU_get_error();
 
-   /* Add a suite to the registry */
-   pSuite = CU_add_suite("CalendarQueueSuite", init_CalendarQueueSuite, clean_CalendarQueueSuite);
-   if (NULL == pSuite) {
-      CU_cleanup_registry();
-      return CU_get_error();
-   }
+    /* Add a suite to the registry */
+    pSuite = CU_add_suite("CalendarQueueSuite", init_CalendarQueueSuite, clean_CalendarQueueSuite);
+    if (NULL == pSuite) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
-   /* Add the tests to the suite */
-   if ((NULL == CU_add_test(pSuite, "test of CalendarQueue_New()", testCalendarQueue_2_1))) {
-      CU_cleanup_registry();
-      return CU_get_error();
-   }
+    /* Add the tests to the suite */
+    if ((NULL == CU_add_test(pSuite, "test of CalendarQueue_New()", testCalendarQueue_2_1))) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
 
-   /* Run the tests*/
-   CU_basic_set_mode(CU_BRM_VERBOSE);
-   CU_basic_run_tests();
-   CU_cleanup_registry();
-   return CU_get_error();
+    /* Run the tests*/
+    CU_basic_set_mode(CU_BRM_VERBOSE);
+    CU_basic_run_tests();
+    CU_cleanup_registry();
+    return CU_get_error();
 }
 

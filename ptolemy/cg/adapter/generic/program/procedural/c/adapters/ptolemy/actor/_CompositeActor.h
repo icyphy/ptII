@@ -15,36 +15,36 @@
 #define COMPOSITEACTOR 2
 
 struct CompositeActor {
-        int typeActor;
+    int typeActor;
 
-        struct CompositeActor* container;
+    struct CompositeActor* container;
 
-        void (*free)(struct CompositeActor*);
+    void (*free)(struct CompositeActor*);
 
-        void (*fire)(struct CompositeActor*);
-        struct Director* (*getDirector)(struct CompositeActor*);
-        struct Director* (*getExecutiveDirector)(struct CompositeActor*);
-        void (*initialize)(struct CompositeActor*);
-        int (*iterate)(struct CompositeActor*, int);
-        PblList* (*inputPortList)(struct CompositeActor*);
-        PblList* (*outputPortList)(struct CompositeActor*);
-        bool (*postfire)(struct CompositeActor*);
-        bool (*prefire)(struct CompositeActor*);
-        void (*preinitialize)(struct CompositeActor*);
-        void (*wrapup)(struct CompositeActor*);
+    void (*fire)(struct CompositeActor*);
+    struct Director* (*getDirector)(struct CompositeActor*);
+    struct Director* (*getExecutiveDirector)(struct CompositeActor*);
+    void (*initialize)(struct CompositeActor*);
+    int (*iterate)(struct CompositeActor*, int);
+    PblList* (*inputPortList)(struct CompositeActor*);
+    PblList* (*outputPortList)(struct CompositeActor*);
+    bool (*postfire)(struct CompositeActor*);
+    bool (*prefire)(struct CompositeActor*);
+    void (*preinitialize)(struct CompositeActor*);
+    void (*wrapup)(struct CompositeActor*);
 
-        // FIXME : temp solution for the decorators of Ptides domain
-        double delayOffset;
-        double _clockSynchronizationBound;
+    // FIXME : temp solution for the decorators of Ptides domain
+    double delayOffset;
+    double _clockSynchronizationBound;
 
-        // new members
-        bool (*isOpaque)(struct CompositeActor*);
-        void (*_transferPortParameterInputs)(struct CompositeActor*);
+    // new members
+    bool (*isOpaque)(struct CompositeActor*);
+    void (*_transferPortParameterInputs)(struct CompositeActor*);
 
-        struct Director* _director;
-        PblList* _inputPorts;
-        PblList* _outputPorts;
-        PblList* _containedEntities;
+    struct Director* _director;
+    PblList* _inputPorts;
+    PblList* _outputPorts;
+    PblList* _containedEntities;
 };
 
 struct CompositeActor* CompositeActor_New();

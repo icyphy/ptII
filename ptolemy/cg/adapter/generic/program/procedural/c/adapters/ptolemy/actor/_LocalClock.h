@@ -14,30 +14,30 @@
 #include "_Director.h"
 
 struct LocalClock {
-        struct Director* container;
+    struct Director* container;
 
-        Time _localTime;
-        double _drift;
-        Time _lastCommitEnvironmentTime;
-        Time _lastCommitLocalTime;
-        Time _offset;
-        double _timeResolution;
+    Time _localTime;
+    double _drift;
+    Time _lastCommitEnvironmentTime;
+    Time _lastCommitLocalTime;
+    Time _offset;
+    double _timeResolution;
 
-        void (*free)(struct LocalClock*);
+    void (*free)(struct LocalClock*);
 
-        double (*getClockDrift)(struct LocalClock*);
-        Time (*getEnvironmentTimeForLocalTime)(struct LocalClock*, Time);
-        Time (*getLocalTime)(struct LocalClock*);
-        Time (*getLocalTimeForCurrentEnvironmentTime)(struct LocalClock*);
-        Time (*getLocalTimeForEnvironmentTime)(struct LocalClock*, Time);
-        double (*getTimeResolution)(struct LocalClock*);
-        void (*initialize)(struct LocalClock*);
-        void (*resetLocalTime)(struct LocalClock*, Time);
-        void (*setClockDrift)(struct LocalClock*, double);
-        void (*setLocalTime)(struct LocalClock*, Time);
-        void (*setTimeResolution)(struct LocalClock*, double);
-        void (*start)(struct LocalClock*);
-        void (*stop)(struct LocalClock*);
+    double (*getClockDrift)(struct LocalClock*);
+    Time (*getEnvironmentTimeForLocalTime)(struct LocalClock*, Time);
+    Time (*getLocalTime)(struct LocalClock*);
+    Time (*getLocalTimeForCurrentEnvironmentTime)(struct LocalClock*);
+    Time (*getLocalTimeForEnvironmentTime)(struct LocalClock*, Time);
+    double (*getTimeResolution)(struct LocalClock*);
+    void (*initialize)(struct LocalClock*);
+    void (*resetLocalTime)(struct LocalClock*, Time);
+    void (*setClockDrift)(struct LocalClock*, double);
+    void (*setLocalTime)(struct LocalClock*, Time);
+    void (*setTimeResolution)(struct LocalClock*, double);
+    void (*start)(struct LocalClock*);
+    void (*stop)(struct LocalClock*);
 };
 
 struct LocalClock* LocalClock_New();
