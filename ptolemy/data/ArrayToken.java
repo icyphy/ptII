@@ -37,6 +37,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -202,10 +203,72 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Addition can occur between arrays, or between an array and a token 
+     *  of some base type (i.e., anything less than or equal to String). 
+     *  
+     *  Addition is undefined between arrays and tokens of other incomparable 
+     *  data types such as Record and Union. 
+     *  @param rightArgument The array to be added to this array.
+     *  @return The result of the addition.
+     *  @exception IllegalActionException If addition between this array 
+     *  and the provided argument is not supported. 
+     */
+    @Override
+    public Token add(Token rightArgument) throws IllegalActionException {
+
+        int typeInfo = TypeLattice.compare(rightArgument, BaseType.STRING);
+
+        // Disallow addition between arrays and anything greater than or
+        // incomparable with String (e.g., Record, Union, etc). 
+        if ((typeInfo == CPO.INCOMPARABLE || typeInfo == CPO.HIGHER)
+                && getClass() != rightArgument.getClass()) {
+            throw new IllegalActionException(
+                    notSupportedDifferentClassesMessage("add", this,
+                            rightArgument));
+        }
+        try {
+            return _add(rightArgument);
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "add", this, rightArgument));
+        }
+    }
+    
+    /** Convert the left-hand argument to an array of size one. Then
+     *  do an element-wise addition with each element of the right-hand
+     *  argument.
+     *   
+     *  This method is only invoked when addition is attempted using a 
+     *  base type left-hand argument (e.g., 1 + {1, 2, 3} which will 
+     *  yield {2, 3, 4}.
+     *  @param leftArgument The array to add this array to.
+     *  @return The result of the addition.
+     *  @exception IllegalActionException If addition between this array 
+     *  and the provided argument is not supported.
+     */
+    @Override
+    public Token addReverse(Token leftArgument) throws IllegalActionException {
+        try {
+            // Wrap argument in array in order to do expansion.
+                Token[] arr = {leftArgument};
+                return new ArrayToken(arr).add(this);
+            
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex, notSupportedMessage(
+                    "addReverse", this, leftArgument));
+        }
+    }
+    
      /** Append the given array to the end of this array, and return the
-     *  resulting array. For example, if this array is {1, 2, 3} and the given
-     *  array is {4, 5, 6}, then the result would be {1, 2, 3, 4, 5, 6}. If both
-     *  arrays are empty, then an empty array is returned.
+     *   resulting array. For example, if this array is {1, 2, 3} and the 
+     *   given array is {4, 5, 6}, then the result would be {1, 2, 3, 4, 5, 6}. 
+     *   If both arrays are empty, then an empty array is returned.
      *
      *  @param token The array to be appended to the end of this array.
      *  @return The result array.
@@ -1086,19 +1149,43 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
-        Token[] result = new Token[length()];
+        Token[] result = null;
+
         if (rightArgument instanceof ArrayToken) {
+            // Right argument is an array.
             ArrayToken rightArray = (ArrayToken) rightArgument;
+            // If array's lengths match, then do element-wise addition.
             if (rightArray.length() == length()) {
+                result = new Token[length()];
                 for (int i = 0; i < length(); i++) {
                     result[i] = getElement(i).add(rightArray.getElement(i));
                 }
             } else {
-                // Use this method to get a consistent error message
-                // defined in one place.
-                _checkArgumentLength(rightArgument);
+                if (rightArray.length() == 1) {
+                    // If the left array has only one element, then expand it 
+                    // and do element-wise addition.
+                    result = new Token[length()];
+                    for (int i = 0; i < length(); i++) {
+                        result[i] = getElement(i).add(rightArray.getElement(0));
+                    }
+                } else if (length() == 1) {
+                    // If the right array has only one element, then expand it 
+                    // and do element-wise addition.
+                    result = new Token[rightArray.length()];
+                    for (int i = 0; i < rightArray.length(); i++) {
+                        result[i] = getElement(0).add(rightArray.getElement(i));
+                    }
+                } else {
+                    // Use this method to get a consistent error message
+                    // defined in one place.
+                    _checkArgumentLength(rightArgument);
+                }
+
             }
         } else {
+            // Right argument is not an array.
+            // Add right argument to each element in the array.
+            result = new Token[length()];
             for (int i = 0; i < length(); i++) {
                 result[i] = getElement(i).add(rightArgument);
             }

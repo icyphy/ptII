@@ -88,15 +88,13 @@ public abstract class AbstractConvertibleToken extends Token {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
 
         if (typeInfo == CPO.SAME) {
-            Token result = _add(rightArgument);
-            return result;
+            return _add(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             AbstractConvertibleToken convertedArgument = (AbstractConvertibleToken) getType()
                     .convert(rightArgument);
 
             try {
-                Token result = _add(convertedArgument);
-                return result;
+                return _add(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -105,12 +103,18 @@ public abstract class AbstractConvertibleToken extends Token {
                         "add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            Token result = rightArgument.addReverse(this);
-            return result;
+            return rightArgument.addReverse(this);            
         } else {
-            // FIXME: do conversion here?
-            throw new IllegalActionException(notSupportedIncomparableMessage(
+            // The types are incomparable.
+            // However, if the rightArgument is a composite type, then
+            // addition can still happen between the this token and
+            // the elements of the composite type.
+            if (rightArgument instanceof AbstractNotConvertibleToken) {
+                return rightArgument.addReverse(this);
+            } else {
+                throw new IllegalActionException(notSupportedIncomparableMessage(
                     "add", this, rightArgument));
+            }
         }
     }
 
