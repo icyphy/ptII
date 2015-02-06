@@ -2093,7 +2093,7 @@ public class PtolemyUtilities {
                 .getMethod(
                         "<ptolemy.actor.parameters.PortParameter: ptolemy.actor.parameters.ParameterPort getPort()>");
         portParameterUpdateMethod = Scene.v().getMethod(
-                "<ptolemy.actor.parameters.PortParameter: void update()>");
+                "<ptolemy.actor.parameters.PortParameter: boolean update()>");
 
         portSetTypeMethod = Scene
                 .v()
