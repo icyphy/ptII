@@ -237,9 +237,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
     }
     
-    /** Convert the left-hand argument to an array of size one. Then
-     *  do an element-wise addition with each element of the right-hand
-     *  argument.
+    /** If the left-hand argument is a base type token, then convert it 
+     *  to an array of size one. Then do an element-wise addition with 
+     *  each element of the right-hand argument.
      *   
      *  This method is only invoked when addition is attempted using a 
      *  base type left-hand argument (e.g., 1 + {1, 2, 3} which will 
@@ -252,10 +252,19 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     @Override
     public Token addReverse(Token leftArgument) throws IllegalActionException {
         try {
-            // Wrap argument in array in order to do expansion.
+            int typeInfo = TypeLattice.compare(leftArgument, BaseType.STRING);
+            
+            // Wrap base type argument in array in order to do expansion.
+            if ((typeInfo == CPO.LOWER || typeInfo == CPO.SAME)) {
                 Token[] arr = {leftArgument};
                 return new ArrayToken(arr).add(this);
-            
+            } 
+            else if (getClass() == leftArgument.getClass()) {
+                return ((ArrayToken)leftArgument).add(this);
+            } else {
+                throw new IllegalActionException(null, notSupportedMessage(
+                        "addReverse", this, leftArgument));    
+            }
         } catch (IllegalActionException ex) {
             // If the type-specific operation fails, then create a
             // better error message that has the types of the
