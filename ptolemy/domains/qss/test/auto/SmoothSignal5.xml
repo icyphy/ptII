@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SmoothSignal5" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
+    </property>
+    <entity name="SmoothSignal" class="ptolemy.domains.qss.lib.SmoothSignal">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="smoothToken(1.0, {1.0, 2.0})">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="smoothToken(2.0, {3.0})">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {3.0, 5.0})}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 170.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SmoothSignal.input&quot;,x=140.0,y=170.0,index=2}, tail={id=&quot;SingleEvent.output&quot;,x=55.0,y=105.0}, points={105.0,165.0,105.0,105.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SmoothSignal.input&quot;,x=140.0,y=170.0,index=2}, tail={id=&quot;SingleEvent2.output&quot;,x=50.0,y=170.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SmoothSignal.input" relation="relation"/>
+    <link port="SmoothSignal.input" relation="relation2"/>
+    <link port="SmoothSignal.output" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="SingleEvent2.output" relation="relation2"/>
+    <link port="Test.input" relation="relation4"/>
+</entity>

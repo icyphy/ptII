@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="QuantizedState" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Quantized-state systems actors</doc>
+
+<!-- Do not include the director here... Not visible in cyphysim.
+<entity name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector"/>
+-->
+<entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator"/>
+<entity name="Align" class="ptolemy.domains.qss.lib.Align"/>
+<entity name="SmoothSignal" class="ptolemy.domains.qss.lib.SmoothSignal"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+

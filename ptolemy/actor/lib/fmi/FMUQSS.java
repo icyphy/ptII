@@ -1546,7 +1546,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             } else if (scalarVariable.type instanceof FMIRealType) {
                 double result = scalarVariable.getDouble(_fmiComponent);
                 final double[] ooArr = { result, 0.0, 0.0 };
-                _sendModelToPort(ooArr, port);
+                _sendModelToPort(ooArr, port, currentTime);
                 // token = new DoubleToken(result);
             } else if (scalarVariable.type instanceof FMIStringType) {
                 throw new IllegalActionException("Type " + scalarVariable.type
@@ -1612,7 +1612,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     double result = scalarVariable.getDouble(_fmiComponent);
                     // token = new DoubleToken(result);
                     final double[] ooArr = { result, 0.0, 0.0 };
-                    _sendModelToPort(ooArr, port);
+                    _sendModelToPort(ooArr, port, currentTime);
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     throw new IllegalActionException("Type "
                             + scalarVariable.type + " not supported.");
@@ -1642,10 +1642,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param val The values to be sent.
      * @param prt The port where values will be sent.
      */
-    private void _sendModelToPort(final double[] val,
-            final TypedIOPort prt) throws NoRoomException,
-            IllegalActionException {
-    	prt.send(0, new SmoothToken(val));
+    private void _sendModelToPort(
+	    final double[] val,
+            final TypedIOPort prt,
+            Time time)
+        	    throws NoRoomException, IllegalActionException {
+    	prt.send(0, new SmoothToken(val, time));
     }
 
     /** Populate the specified model with data from the specified token.
@@ -1738,7 +1740,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Added a check to produce outputs to port which are connected.
             if (outPort.getWidth() > 0) {
                 _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
-                        outPort);
+                        outPort, currentTime);
             }
             // Only produce outputs that depend on the states.
             _produceOutputs(currentTime, outPort, order);

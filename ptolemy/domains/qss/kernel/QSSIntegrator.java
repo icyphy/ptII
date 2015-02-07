@@ -204,7 +204,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                         // then we could read it now and send out a SmoothToken with
                         // the value and its derivative. How to do that?
                         // Also, we should be sending the whole model.
-                        Token token = new SmoothToken(model);
+                        Token token = new SmoothToken(model, currentTime);
                         q.send(0, token);
                         if (_debugging) {
                             _debug("Send to output: " + token);
@@ -222,7 +222,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             // then we could read it now and send out a SmoothToken with
             // the value and its derivative. How to do that?
             // Also, we should be sending the whole model.
-            Token token = new SmoothToken(model);
+            Token token = new SmoothToken(model, currentTime);
             q.send(0, token);
             if (_debugging) {
                 _debug("Send to output: " + token);

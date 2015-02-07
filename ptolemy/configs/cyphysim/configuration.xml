@@ -107,10 +107,10 @@
       <configure>
         <?moml
           <group>
-	  <input source="ptolemy/actor/lib/js/js.xml"/>
-          <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
+	  <input source="ptolemy/actor/lib/jjs/js.xml"/>
+      <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
 	  <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
-          <input source="ptolemy/data/unit/unitSystems.xml"/>
+      <input source="ptolemy/data/unit/unitSystems.xml"/>
           </group>
         ?>
       </configure>
@@ -124,6 +124,7 @@
           <!-- Libraries are mostly customized to make them spartan. -->
           <input source="ptolemy/configs/cyphysim/sources.xml"/>
           <input source="ptolemy/configs/cyphysim/sinks.xml"/>
+          <input source="ptolemy/domains/qss/lib/qssentities.xml"/>
           <input source="ptolemy/configs/cyphysim/de.xml"/>
           <input source="ptolemy/actor/lib/array.xml"/>
           <input source="ptolemy/actor/lib/conversions/conversions.xml"/>

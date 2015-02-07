@@ -1,9 +1,10 @@
-# Makefile for Java Ptolemy Quantized State System (QSS) domains
+# Makefile for the QSS domain actor library
 #
-# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Version: $Id$
+#
+# @Copyright (c) 1998-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,14 +28,13 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/qss
+ME =		ptolemy/domains/qss/lib
 
-DIRS =		kernel test demo lib
+DIRS = 		#test #demo
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,28 +42,37 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	qss
+PTPACKAGE = 	lib
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar 
-
-#		lib/lib.jar
+    
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel test #lib #doc
+JSRCS = \
+	Align.java \
+	SmoothSignal.java
+
+OTHER_FILES_TO_BE_JARED = \
+	qssentities.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	 $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc
+	doc \
+
+JCLASS = $(JSRCS:%.java=%.class)
+
 
 all: jclass
 install: jclass jars
