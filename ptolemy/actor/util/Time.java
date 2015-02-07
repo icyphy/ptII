@@ -52,7 +52,10 @@ import ptolemy.util.DoubleUtilities;
  * can only be distinguished if their difference can be detected by some
  * measuring instrument, which always has a smallest unit for measurement. This
  * smallest unit measurement gives the physical meaning of the time resolution
- * used for quantization.
+ * used for quantization. There are three exceptions that do not really need a
+ * notion of time resolution, ZERO, POSITIVE_INFINITY, and NEGATIVE_INFINITY.
+ * These are provided as static fields, and normally these should be the only
+ * instances of Time constructed without a director.
  * <p>
  * This implementation of Time does not lose resolution as the magnitude of
  * the time increases (unlike floating point numbers). This is because
@@ -188,29 +191,36 @@ public class Time implements Comparable {
         } else if (value == _NEGATIVE_INFINITY) {
             _timeValue = null;
             _isNegativeInfinite = true;
+        } else {
+            _timeValue = BigInteger.ZERO;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          static  fields                   ////
+    
     // Indicator to create negative infinite value.
-    private static int _NEGATIVE_INFINITY = 0;
+    private static int _ZERO = 0;
 
     // Indicator to create positve infinite value.
     private static int _POSITIVE_INFINITY = 1;
+
+    // Indicator to create negative infinite value.
+    private static int _NEGATIVE_INFINITY = 2;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     // NOTE: For the following constants, the director argument is null
     // because these constants are invariant to any time resolution.
 
-    /** A static and final time constant holding a negative infinity.
-     */
+    /** A static and final time constant holding a negative infinity. */
     public static final Time NEGATIVE_INFINITY = new Time(_NEGATIVE_INFINITY);
 
-    /** A static and final time constant holding a positive infinity.
-     */
+    /** A static and final time constant holding a positive infinity. */
     public static final Time POSITIVE_INFINITY = new Time(_POSITIVE_INFINITY);
+
+    /** A static and final time constant holding a zero. */
+    public static final Time ZERO = new Time(_ZERO);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -309,6 +319,11 @@ public class Time implements Comparable {
             return this;
         }
 
+        // If I don't reference a director, then use the other guy's director.
+        Director director = _director;
+        if (director == null) {
+            director = time._director;
+        }
         // Ensure the resolutions are the same.
         try {
             double resolution = _timeResolution();
@@ -316,7 +331,7 @@ public class Time implements Comparable {
             if (resolution != time._timeResolution()) {
                 double thisValue = getDoubleValue();
                 double thatValue = time.getDoubleValue();
-                return new Time(_director, thisValue + thatValue);
+                return new Time(director, thisValue + thatValue);
             }
         } catch (IllegalActionException e) {
             // If the time resolution values are malformed this
@@ -324,7 +339,7 @@ public class Time implements Comparable {
             throw new InternalErrorException(e);
         }
 
-        return new Time(_director, _timeValue.add(time._timeValue));
+        return new Time(director, _timeValue.add(time._timeValue));
     }
 
     /** Add the specified double to this time without checking whether the
@@ -390,6 +405,7 @@ public class Time implements Comparable {
         final BigInteger quantizedValue = BigInteger.valueOf(multiple);
         return new Time(_director, _timeValue.add(quantizedValue));
     }
+    
     /** Return -1, 0, or 1 if this time object is less than, equal to, or
      *  greater than the given argument. Note that a ClassCastException
      *  will be thrown if the argument is not an instance of Time.
@@ -734,13 +750,17 @@ public class Time implements Comparable {
 
     /** Return the time resolution for this Time object, which in this
      *  class is the time resolution of the director given in the
-     *  constructor.
+     *  constructor. If no director was given, then return a default
+     *  time resolution of 10E-10.
      *  This is a protected method to allow subclasses to use their
      *  own time resolution.
      *  @return The time resolution of the director.
      */
     protected double _timeResolution() {
-        return _director.getTimeResolution();
+	if (_director != null) {
+	    return _director.getTimeResolution();
+	}
+	return 10E-10;
     }
 
     ///////////////////////////////////////////////////////////////////
