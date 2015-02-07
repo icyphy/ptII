@@ -80,7 +80,9 @@ void PtidesDirector_Fire(struct PtidesDirector* director) {
     Time currentTime = director->getModelTime(director);
     PblList** list = (PblList**)pblMapGet(director->_inputEventQueue, &currentTime, sizeof(Time), NULL);
 #ifdef _debugging
-    fprintf(stderr, "%s:%d: PtidesDirector_Fire(%p) %s start\n", __FILE__, __LINE__, director, ((struct Director *) director)->getFullName((struct Director *)director));
+    // Formatting matches DEDirector.java
+    fprintf(stderr, "========= %s director fires at %f with microstep as %d\n", ((struct Director *) director)->getName((struct Director *)director),
+            currentTime, director->_microstep);
 #endif
 
     if (list != NULL) {
@@ -94,6 +96,10 @@ void PtidesDirector_Fire(struct PtidesDirector* director) {
                 struct Receiver* r = event->receiver(event);
                 r->put(r, event->token(event));
                 director->_currentLogicalTime = -DBL_MAX;
+#ifdef _debugging
+                fprintf(stderr, "iiiiiiii - transfer inputs from ");
+                event->print(event);
+#endif
             }
         }
         pblIteratorFree(eventIterator);
@@ -486,6 +492,8 @@ struct SuperdenseDependency* PtidesDirector__GetSuperdenseDependencyPair(struct 
 }
 
 bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct PtidesEvent* event) {
+    // Check if there are any events upstream that have to be
+    // processed before this one.
     struct PtidesEvent** eventArray = (struct PtidesEvent**)director->_eventQueue->toArray(director->_eventQueue);
     for (int foo = 0 ; foo < director->_eventQueue->size(director->_eventQueue) ; foo++) {
         struct PtidesEvent* ptidesEvent = eventArray[foo];
@@ -499,11 +507,16 @@ bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct Pti
                     ptidesEvent->ioPort(ptidesEvent),
                     event->ioPort(event));
             if (event->timeStamp(event) - ptidesEvent->timeStamp(ptidesEvent) >= minDelay->time) {
+#ifdef _debugging
+                fprintf(stderr, "*** upstream !safe event->timeStamp:%f\n", event->timeStamp(event));
+#endif
                 return false;
             }
         }
     }
 
+    // FIXME: Missing: Throttling actors with maximum future events parameter.
+    
     double delayOffset = -DBL_MAX;
     Time eventTimestamp = event->timeStamp(event);
     struct IOPort* port = event->ioPort(event);
@@ -527,6 +540,10 @@ bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct Pti
     if (delayOffset == -DBL_MAX
             || director->localClock->getLocalTime(director->localClock) >=
             eventTimestamp - delayOffset) {
+#ifdef _debugging
+        fprintf(stderr, "*** safe");
+        event->print(event);
+#endif
         return true;
     }
 

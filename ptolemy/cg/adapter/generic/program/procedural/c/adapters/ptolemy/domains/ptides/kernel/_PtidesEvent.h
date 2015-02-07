@@ -1,6 +1,8 @@
-/* In this file we have defined the structure of a Ptides Event
+/* The structure of a Ptides Event.
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/_PtidesEvent.h
  */
 
 #ifndef PTIDESEVENT_H_
@@ -34,6 +36,7 @@ struct PtidesEvent {
     struct IOPort* (*ioPort)(struct PtidesEvent*);
     int (*microstep)(struct PtidesEvent*);
     Time (*timeStamp)(struct PtidesEvent*);
+    void (*print)(struct PtidesEvent*);
 
     // new members
     int _channel;
@@ -54,6 +57,8 @@ struct PtidesEvent {
 struct PtidesEvent* PtidesEvent_New();
 void PtidesEvent_Init(struct PtidesEvent* event);
 void PtidesEvent_New_Free(struct PtidesEvent* event);
+
+void PtidesEvent_Print(struct PtidesEvent* event);
 
 Time PtidesEvent_AbsoluteDeadline(struct PtidesEvent* event);
 int PtidesEvent_Channel(struct PtidesEvent* event);

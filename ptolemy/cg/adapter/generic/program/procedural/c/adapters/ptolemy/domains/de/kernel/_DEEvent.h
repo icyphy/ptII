@@ -2,7 +2,9 @@
  * It contains a pointer to its actor, its destination port
  * and a few fields (timestamp, microstep, priority, depth)
  *
- * @author : William Lucas
+ * @author William Lucas, Christopher Brooks
+ * @version $Id$
+ * source: ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/_DEEvent.h
  */
 
 #ifndef DE_EVENT_H_
@@ -37,6 +39,7 @@ struct DEEvent {
     struct IOPort* (*ioPort)(struct DEEvent*);
     int (*microstep)(struct DEEvent*);
     Time (*timeStamp)(struct DEEvent*);
+    void (*print)(struct DEEvent *);
 };
 
 struct DEEvent* DEEvent_New();
@@ -53,6 +56,6 @@ bool DEEvent_HasTheSameTagAs(struct DEEvent* event, struct DEEvent* event2);
 struct IOPort* DEEvent_IOPort(struct DEEvent* event);
 int DEEvent_Microstep(struct DEEvent* event);
 Time DEEvent_TimeStamp(struct DEEvent* event);
-
+void DEEvent_Print(struct DEEvent* event);
 
 #endif

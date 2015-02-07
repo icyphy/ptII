@@ -15,6 +15,8 @@ void PtidesEvent_Init(struct PtidesEvent* e) {
 
     e->typeEvent = PTIDESEVENT;
 
+    e->print = PtidesEvent_Print;
+    
     e->absoluteDeadline = PtidesEvent_AbsoluteDeadline;
     e->channel = PtidesEvent_Channel;
     e->equals = PtidesEvent_Equals;
@@ -26,6 +28,14 @@ void PtidesEvent_Init(struct PtidesEvent* e) {
 }
 void PtidesEvent_New_Free(struct PtidesEvent* event) {
     DEEvent_New_Free((struct DEEvent*) event);
+}
+
+void PtidesEvent_Print(struct PtidesEvent* event) {
+    double tokenValue = 666.0;
+    if (event->_token != NULL) {
+        tokenValue = event->_token->payload.Double;
+    }
+    fprintf(stderr, "%s{time = %f, microstep = %d, depth = %d, token = %g, \n", (IS_PTIDESEVENT(event) ? "PtidesEvent" : "?Event"), event->_timestamp, event->_microstep, event->_depth, tokenValue);
 }
 
 Time PtidesEvent_AbsoluteDeadline(struct PtidesEvent* event) {
