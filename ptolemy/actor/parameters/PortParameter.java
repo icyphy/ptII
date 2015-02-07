@@ -457,7 +457,7 @@ Initializable {
      *  associated port, and if so, update the current value of
      *  parameter with that token.  If there is no associated port,
      *  do nothing.
-     *  @return True if a new input value was received.
+     *  @return True if an input token has been consumed, false if not.
      *  @exception IllegalActionException If reading from the associated
      *   port throws it.
      */
