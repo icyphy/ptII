@@ -180,7 +180,7 @@ test ArrayToken-2.0 {test add, addReverse, elementAdd} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{4, 5, 6}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set t4 [java::new {ptolemy.data.StringToken String} "foo"]
-    set t5 [java::new {ptolemy.data.IntMatrixToken String} {[1, 2, 3]}]
+    set t5 [java::new {ptolemy.data.IntMatrixToken String} "\[1, 2, 3]\"]
     set tadd [$t1 add $t2]
     set tadd1 [$t1 addReverse $t2]
     set tadd2 [$t1 elementAdd $t3]
