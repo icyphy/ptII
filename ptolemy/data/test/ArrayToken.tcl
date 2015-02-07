@@ -180,7 +180,7 @@ test ArrayToken-2.0 {test add, addReverse, elementAdd} {
     set t2 [java::new {ptolemy.data.ArrayToken String} "{4, 5, 6}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set t4 [java::new {ptolemy.data.StringToken String} "foo"]
-    set t5 [java::new {ptolemy.data.IntMatrixToken String} "[1, 2, 3]"]
+    set t5 [java::new {ptolemy.data.IntMatrixToken String} {[1, 2, 3]}]
     set tadd [$t1 add $t2]
     set tadd1 [$t1 addReverse $t2]
     set tadd2 [$t1 elementAdd $t3]
@@ -189,7 +189,7 @@ test ArrayToken-2.0 {test add, addReverse, elementAdd} {
     set tadd5 [$t5 add $t1]
     set tadd6 [$t1 add $t5]
     list [$tadd toString] [$tadd1 toString] [$tadd2 toString] [$tadd3 toString] [$tadd4 toString] [$tadd5 toString] [$tadd6 toString]
-} {{{5, 7, 9}} {{5, 7, 9}} {{6, 7, 8}} {{"foo1", "foo7", "foo8"}} {{"6foo", "7foo", "8foo"}} {{[2, 3, 4], [3, 4, 5], [4, 5, 6]}} {{[2, 3, 4], [3, 4, 5], [4, 5, 6]}}}
+} {{{5, 7, 9}} {{5, 7, 9}} {{6, 7, 8}} {{"foo1", "foo2", "foo3"}} {{"1foo", "2foo", "3foo"}} {{[2, 3, 4], [3, 4, 5], [4, 5, 6]}} {{[2, 3, 4], [3, 4, 5], [4, 5, 6]}}}
 
 ######################################################################
 ####
@@ -202,12 +202,10 @@ test ArrayToken-2.0.1 {test add typ errors} {
     catch {$t1 addReverse $t} errMsg2
     catch {$t1 elementAdd $t} errMsg3
     list "$errMsg1\n $errMsg2\n $errMsg3"
-} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
-Because:
-addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present' because the tokens have different classes.
  ptolemy.kernel.util.IllegalActionException: addReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
-addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'
+addReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
  ptolemy.kernel.util.IllegalActionException: elementAdd operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.Token 'present'
 Because:
 addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.IntToken '1'}}
@@ -228,7 +226,9 @@ Because:
 The length of the argument (2) is not the same as the length of this token (3).
     ptolemy.kernel.util.IllegalActionException: addReverse operation not supported between ptolemy.data.ArrayToken '{1, 2, 3}' and ptolemy.data.ArrayToken '{3, 4}'
 Because:
-The length of the argument (2) is not the same as the length of this token (3).
+add operation not supported between ptolemy.data.ArrayToken '{3, 4}' and ptolemy.data.ArrayToken '{1, 2, 3}'
+Because:
+The length of the argument (3) is not the same as the length of this token (2).
     {{4, 5}, {5, 6}, {6, 7}}}}
     
 ######################################################################
