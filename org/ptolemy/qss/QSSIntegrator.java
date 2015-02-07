@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 A quantized-state integrator.
 
+@deprecated Use {@link ptolemy.domains.qss.kernel.QSSIntegrator} instead.
 @author David Broman, Edward A. Lee, Thierry Nouidui, Michael Wetter
 @version $Id$
 @since Ptolemy II 10.0

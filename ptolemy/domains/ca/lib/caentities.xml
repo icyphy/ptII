@@ -6,7 +6,7 @@
     <?moml
       <group>
 <doc>cellular automata actors</doc>
-
+<property name="CA Director" class="ptolemy.domains.ca.kernel.CADirector"/>
 <entity name="2D Convolution" class="ptolemy.domains.ca.lib.CA2DConvolution"/>
 <entity name="CA Viewer" class="ptolemy.domains.ca.lib.gui.CAViewer"/>
       </group>

@@ -56,7 +56,7 @@ test SmoothToken-1.0 {Create an empty instance} {
 # 
 test SmoothToken-1.1 {Create a single derivative} {
     set d [java::new {double[]} {1} {1.0}]
-    set s1 [java::new ptolemy.data.SmoothToken 1.0 $d]
+    set s1 [java::new ptolemy.data.SmoothToken 1.0 [java::null] $d]
     $s1 toString
 } {smoothToken(1.0, {1.0})}
 
@@ -65,7 +65,7 @@ test SmoothToken-1.1 {Create a single derivative} {
 # 
 test SmoothToken-1.1b {Create a derivative that is higher than maxOrder} {
     set d1b [java::new {double[]} {4} {1.0 2.0 3.0 4.0}]
-    set s1b [java::new ptolemy.data.SmoothToken 1.0 $d1b]
+    set s1b [java::new ptolemy.data.SmoothToken 1.0 [java::null] $d1b]
     $s1b toString
 } {smoothToken(1.0, {1.0,2.0,3.0})}
 
@@ -107,7 +107,7 @@ test SmoothToken-1.5 {Test subtracting in reverse} {
 # 
 test SmoothToken-1.6 {Test adding two SmoothTokens of different lengths} {
     set derivatives [java::new {double[]} {2} {2.0 3.0}]
-    set s2 [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set s2 [java::new ptolemy.data.SmoothToken 2.0 [java::null] $derivatives]
     set result [$s1 add $s2]
     $result toString
 } {smoothToken(3.0, {3.0,3.0})}
@@ -178,9 +178,9 @@ test SmoothToken-1.13 {Test 1.12 with reversed arguments} {
 ####
 # 
 test SmoothToken-1.14 {Test multiplying two SmoothTokens where one has no derivative} {
-    set s3 [java::new ptolemy.data.SmoothToken 10.0]
+    set s3 [java::new ptolemy.data.SmoothToken 10.0 [java::null] [java::null]]
     set d2 [java::new {double[]} {2} {3.0 4.0}]
-    set s4 [java::new ptolemy.data.SmoothToken 2.0 $d2]   
+    set s4 [java::new ptolemy.data.SmoothToken 2.0 [java::null] $d2]   
     set result [$s3 multiply $s4]
     $result toString
 } {smoothToken(20.0, {30.0,40.0})}
@@ -198,8 +198,8 @@ test SmoothToken-1.15 {Test 1.14 with reversed arguments} {
 ####
 # 
 test SmoothToken-1.16 {Test multiplying two SmoothTokens where none has a derivative} {
-    set s3 [java::new ptolemy.data.SmoothToken 10.0]
-    set s5 [java::new ptolemy.data.SmoothToken 2.0]    
+    set s3 [java::new ptolemy.data.SmoothToken 10.0 [java::null] [java::null]]
+    set s5 [java::new ptolemy.data.SmoothToken 2.0 [java::null] [java::null]]    
     set result [$s3 multiply $s5]
     $result toString
 } {20.0}
@@ -807,7 +807,7 @@ test SmoothToken-19.0 {Set limitOrder} {
 
     # Create a SmoothToken like s2 each time we change the order limit
     set derivatives [java::new {double[]} {4} {2.0 3.0 4.0 5.0}]
-    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 [java::null] $derivatives]
 
     set orderLimit [java::call ptolemy.data.SmoothToken getOrderLimit]
     java::call ptolemy.data.SmoothToken setOrderLimit 0
@@ -815,17 +815,17 @@ test SmoothToken-19.0 {Set limitOrder} {
     set r0b [$s2b toString]
 
     java::call ptolemy.data.SmoothToken setOrderLimit 1
-    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 [java::null] $derivatives]
     set r1a [$s2 toString]
     set r1b [$s2b toString]
 
     java::call ptolemy.data.SmoothToken setOrderLimit 2
-    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 [java::null] $derivatives]
     set r2a [$s2 toString]
     set r2b [$s2b toString]
 
     java::call ptolemy.data.SmoothToken setOrderLimit $orderLimit
-    set s2b [java::new ptolemy.data.SmoothToken 2.0 $derivatives]
+    set s2b [java::new ptolemy.data.SmoothToken 2.0 [java::null] $derivatives]
     set r3a [$s2 toString]
     set r3b [$s2b toString]
 
@@ -836,66 +836,75 @@ test SmoothToken-19.0 {Set limitOrder} {
 ######################################################################
 ####
 # 
-test SmoothToken-20.0 {call cloneAt} {
+test SmoothToken-20.0 {call extrapolate} {
     set s [java::new ptolemy.data.SmoothToken 2.0]
     set d [java::new ptolemy.actor.Director]
     set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
-    set result [$s cloneAt $t]
+    set result [$s extrapolate $t]
     $result toString
 } {2.0}
 
-test SmoothToken-20.1 {call cloneAt} {
+test SmoothToken-20.1 {call extrapolate} {
     set v [java::new {double[]} {1} {3.0}]
-    set s [java::new ptolemy.data.SmoothToken 2.0 $v]
+    set s [java::new ptolemy.data.SmoothToken 2.0 [java::null] $v]
     set d [java::new ptolemy.actor.Director]
     set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
-    set result [$s cloneAt $t]
+    set result [$s extrapolate $t]
     $result toString
 } {smoothToken(14.0, {3.0})}
 
-test SmoothToken-20.2 {call cloneAt} {
+test SmoothToken-20.2 {call extrapolate} {
     java::call ptolemy.data.SmoothToken setOrderLimit 5
-    set v [java::new {double[]} {2} {2.0 3.0}]
-    set s [java::new ptolemy.data.SmoothToken $v]
+    set v [java::new {double[]} {1} {3.0}]
+    set s [java::new ptolemy.data.SmoothToken 2.0 [java::null] $v]
     set d [java::new ptolemy.actor.Director]
     set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
-    set result [$s cloneAt $t]
+    set result [$s extrapolate $t]
     $result toString
 } {smoothToken(14.0, {3.0})}
 
 
-test SmoothToken-20.3 {call cloneAt} {
+test SmoothToken-20.3 {call extrapolate} {
     java::call ptolemy.data.SmoothToken setOrderLimit 5
-    set v [java::new {double[]} {3} {2.0 3.0 6.0}]
-    set s [java::new ptolemy.data.SmoothToken $v]
+    set v [java::new {double[]} {2} {3.0 6.0}]
+    set s [java::new ptolemy.data.SmoothToken 2.0 [java::null] $v]
     set d [java::new ptolemy.actor.Director]
     set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
-    set result [$s cloneAt $t]
+    set result [$s extrapolate $t]
     $result toString
 } {smoothToken(62.0, {27.0,6.0})}
 
 
-test SmoothToken-20.4 {call cloneAt} {
+test SmoothToken-20.4 {call extrapolate} {
     java::call ptolemy.data.SmoothToken setOrderLimit 5
-    set v [java::new {double[]} {4} {2.0 3.0 6.0 8.0}]
-    set s [java::new ptolemy.data.SmoothToken $v]
+    set v [java::new {double[]} {3} {3.0 6.0 8.0}]
+    set s [java::new ptolemy.data.SmoothToken 2.0 [java::null] $v]
     set d [java::new ptolemy.actor.Director]
     set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
-    set result [$s cloneAt $t]
+    set result [$s extrapolate $t]
     $result toString
 } {smoothToken(147.3333333333333, {91.0,38.0,8.0})}
 
 
-test SmoothToken-20.5 {call cloneAt} {
+test SmoothToken-20.5 {call extrapolate} {
     java::call ptolemy.data.SmoothToken setOrderLimit 5
-    set v [java::new {double[]} {5} {2.0 3.0 6.0 8.0 1.0}]
-    set s [java::new ptolemy.data.SmoothToken $v]
+    set v [java::new {double[]} {4} {3.0 6.0 8.0 1.0}]
+    set s [java::new ptolemy.data.SmoothToken 2.0 [java::null] $v]
     set d [java::new ptolemy.actor.Director]
     set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
-    set result [$s cloneAt $t]
+    set result [$s extrapolate $t]
     $result toString
 } {smoothToken(158.0, {101.66666666666667,46.0,12.0,1.0})}
 
+test SmoothToken-20.6 {call extrapolate} {
+    java::call ptolemy.data.SmoothToken setOrderLimit 5
+    set v [java::new {double[]} {5} {2.0 3.0 6.0 8.0 1.0}]
+    set d [java::new ptolemy.actor.Director]
+    set t [java::new {ptolemy.actor.util.Time ptolemy.actor.Director double} $d 4]
+    set s [java::new ptolemy.data.SmoothToken $v $t]
+    set result [$s extrapolate $t]
+    $result toString
+} {smoothToken(2.0, {3.0,6.0,8.0,1.0})}
 
 
 
