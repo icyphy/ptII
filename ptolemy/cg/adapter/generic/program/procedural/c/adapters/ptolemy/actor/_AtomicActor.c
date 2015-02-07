@@ -45,6 +45,9 @@ PblList* AtomicActor_InputPortList(struct AtomicActor* actor) {
 int AtomicActor_Iterate(struct AtomicActor* actor, int count) {
     int n = 0;
 
+#ifdef _debugging
+    fprintf(stderr, "The actor %s will be iterated\n", ((struct Actor *) actor)->getFullName((struct Actor *)actor));
+#endif
     while (n++ < count) {
         if ((*(actor->prefire))(actor)) {
             (*(actor->fire))(actor);

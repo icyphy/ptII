@@ -92,6 +92,8 @@ void Director_Fire(struct Director* director) {
     pblIteratorFree(actors);
 }
 Time Director_FireAt(struct Director* director, struct Actor* actor, Time time, int microstep) {
+
+
     return director->fireContainerAt(director, time, microstep);
 }
 Time Director_FireContainerAt(struct Director* director, Time time, int microstep) {

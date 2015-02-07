@@ -1685,7 +1685,13 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String sanitizedActorName = CodeGeneratorAdapter
                 .generateName((NamedObj) actor);
         result.append("struct AtomicActor* " + sanitizedActorName
-                + " = AtomicActor_New();" + _eol);
+                + " = AtomicActor_New();" + _eol
+
+                + "#ifdef _debugging" + _eol
+                + "((struct AtomicActor*)" + sanitizedActorName + ")->setName((struct AtomicActor *)"
+                + sanitizedActorName + ", \"" + actor.getName() + "\");" + _eol
+                + "#endif" + _eol);
+
         CompositeActor container = (CompositeActor) actor.getContainer();
         while (!container.isOpaque()) {
             container = (CompositeActor) container.getContainer();

@@ -54,11 +54,20 @@ void Actor_New_Free(struct Actor* actor) {
  */
 char *Actor_GetFullName(struct Actor *actor) {
     char *containerFullName = actor->container->getFullName(actor->container);
-    char *results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen(actor->_name) + 1 /* for the null */);
+    char *results = NULL;
+    if (actor->_name != NULL) {
+        results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen(actor->_name) + 1 /* for the null */);
+    } else {
+        results = malloc(strlen(containerFullName) + 1 /* For the dot */ + strlen("UnnamedActor") + 1 /* for the null */);
+    }
     strcpy(results, containerFullName);
     free(containerFullName);
     strcat(results, ".");
-    strcat(results, actor->_name);
+    if (actor->_name != NULL) {
+        strcat(results, actor->_name);
+    } else {
+        strcat(results, "UnnamedActor");
+    }
     return results;
 }
 char *Actor_GetName(struct Actor *actor) {

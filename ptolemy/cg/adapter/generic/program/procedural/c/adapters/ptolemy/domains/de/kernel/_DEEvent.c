@@ -86,3 +86,6 @@ int DEEvent_Microstep(struct DEEvent* event) {
 Time DEEvent_TimeStamp(struct DEEvent* event) {
     return event->_timestamp;
 }
+void DEEvent_Print(struct DEEvent* event) {
+    fprintf(stderr, "time = %f, microstep = %d, depth = %d\n", event->_timestamp, event->_microstep, event->_depth);
+}
