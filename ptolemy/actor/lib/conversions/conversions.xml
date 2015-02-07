@@ -96,11 +96,6 @@
     </property>
   </entity>
 
-  <!--  Don't include JSONToRecord here because ptiny does not include json.jar.
-    entity name="JSONToRecord"
-	  class="ptolemy.actor.lib.conversions.json.JSONToRecord"
-   -->
-
   <entity name="LongToDouble"
           class="ptolemy.actor.lib.conversions.LongToDouble">
   </entity>
