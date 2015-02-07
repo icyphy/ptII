@@ -80,8 +80,8 @@
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/vertxBus/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/vertxBus/vertxBus.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
@@ -1788,23 +1788,23 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jjs/modules/vertxBus/demo/demo.jar -->
+    <!-- ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/vertxBus/demo/demo.jar"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/vertxBus/demo/*.xml"/>
+	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/*/*.xml"/>
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jjs/modules/vertxBus/vertxBus.jar -->
+    <!-- ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/vertxBus/vertxBus.jar"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/vertxBus/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/vertxBus/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/vertxBus/*.json"/>
+	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/*.json"/>
       </fileset>
     </jar>
 
