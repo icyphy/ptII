@@ -547,7 +547,13 @@ public class CachedMethod {
                         "Error invoking method " + method + " on object "
                                 + argValues[0] + "\n");
             }
-
+            // Provide better error feedback when attempting to get
+            // a value for a nonexistent key.
+            if (result == null && method.getName().equals("get")) {
+                throw new IllegalActionException(null,
+                        "No such key: " + argValues[1]);
+            }
+            
             return ConversionUtilities.convertJavaTypeToToken(result);
         } else if (isFunction()) {
             int num = argValues.length;
