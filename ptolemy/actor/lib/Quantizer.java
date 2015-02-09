@@ -44,8 +44,20 @@ import ptolemy.kernel.util.Workspace;
 /**
  <p>Produce an output token on each firing with a value that is
  a quantized version of the input.  The input and output types
- are both double.</p>
- <p>
+ are both double.
+ </p><p>
+ There are two ways to specify the quantization. If the <i>levels</i>
+ parameter is given, then the output will be the element of the array specified
+ by <i>levels</i> that is closest to the input. Otherwise, if <i>levels</i> is
+ empty, then the output will be quantized according to the <i>delta</i> parameter,
+ which specifies the spacing between quantization levels. Specifically, the
+ output will be
+ </p><p>
+ <i>delta</i> * Math.floor( <i>input</i>/<i>delta</i>) .
+ </p><p>
+ With the default value of <i>delta</i>, which is 1.0, the output is simply
+ the integer part of the input.
+ </p><p>
  The <i>levels</i> parameter contains an array of doubles
  specifying the quantization levels. The elements must be in
  an increasing order, or an exception will be thrown.
@@ -57,8 +69,7 @@ import ptolemy.kernel.util.Workspace;
  </p>
  <p>
  <i>y</i> = <i>a</i>, for <i>u</i> &lt;= (<i>b</i>+<i>a</i>)/2;
- <br><i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;<br>
- <br><i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;<br>
+ <br><i>y</i> = <i>b</i>, for (<i>b</i>+<i>a</i>)/2 &lt;<i>u</i> &lt;= (<i>c</i>+<i>b</i>)/2;<br>
  <br><i>y</i> = <i>c</i>, for <i>u</i> &gt; (<i>c</i>+<i>b</i>)/2;<br>
  </p><p>
  Thus, for the default <i>levels</i>, the output is (almost)
@@ -90,6 +101,10 @@ public class Quantizer extends Transformer {
         levels = new Parameter(this, "levels");
         levels.setExpression("{-1.0, 1.0}");
         levels.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        
+        delta = new Parameter(this, "delta");
+        delta.setExpression("1.0");
+        delta.setTypeEquals(BaseType.DOUBLE);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(levels);
@@ -101,6 +116,11 @@ public class Quantizer extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The spacing between quantization levels to use if the <i>levels</i>
+     *  parameter is not given. This is a double that defaults to 1.0.
+     */
+    public Parameter delta;
 
     /** The quantization levels.
      *  This parameter contains an array of doubles with default value
@@ -140,6 +160,10 @@ public class Quantizer extends Transformer {
             throws IllegalActionException {
         if (attribute == levels) {
             ArrayToken levelsValue = (ArrayToken) levels.getToken();
+            if (levelsValue == null || levelsValue.length() == 0) {
+        	_thresholds = null;
+        	return;
+            }
             double[] _levels = new double[levelsValue.length()];
             double previous = Double.NEGATIVE_INFINITY;
 
@@ -176,8 +200,15 @@ public class Quantizer extends Transformer {
         super.fire();
         if (input.hasToken(0)) {
             double in = ((DoubleToken) input.get(0)).doubleValue();
-            int index = _getQuantizationIndex(in);
-            output.send(0, ((ArrayToken) levels.getToken()).getElement(index));
+            if (_thresholds != null) {
+        	int index = _getQuantizationIndex(in);
+        	output.send(0, ((ArrayToken) levels.getToken()).getElement(index));
+            } else {
+        	// Using delta parameter.
+        	double deltaValue = ((DoubleToken)delta.getToken()).doubleValue();
+        	double result = deltaValue * Math.floor(in / deltaValue);
+        	output.send(0, new DoubleToken(result));
+            }
         }
     }
 
