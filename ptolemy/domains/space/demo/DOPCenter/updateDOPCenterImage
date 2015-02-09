@@ -20,6 +20,11 @@
 # Use a png because there is already a .gif that is the background.
 # Note that png does not reliably display under Windows XP or Windows Server 2003.
 
+# Do a svn update on DOPCenter.png so as to avoid a conflict if a
+# second build is running somewhere.
+rm DOPCenter.png
+svn update DOPCenter.png
+
 cp DOPCenter.png DOPCenter.png.orig
 
 # FIXME: we should not need to run ExportImage twice
