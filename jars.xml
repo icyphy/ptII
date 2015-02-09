@@ -5100,6 +5100,7 @@
 	<include name="ptolemy/domains/qss/kernel/*.class"/>
         <include name="ptolemy/domains/qss/kernel/*.xml"/>
 	<include name="ptolemy/domains/qss/lib/*.class"/>
+	<include name="ptolemy/domains/qss/lib/*.xml"/>
       </fileset>
     </jar>
 
