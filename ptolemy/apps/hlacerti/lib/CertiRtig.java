@@ -196,6 +196,8 @@ public class CertiRtig extends NamedObj {
         _environmentArray = new String[1];
         String osName = StringUtilities.getProperty("os.name");
 
+        System.out.println("CertRtig: the os.name property is: " + osName);
+        
         // Only set the environment variable that is appropriate for
         // the platform.
         if (osName.startsWith("Mac OS X")) { 
