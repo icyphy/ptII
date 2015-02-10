@@ -199,6 +199,18 @@ release_joul_setup:
 release_joule_remote4_test:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=/tmp/cxh/ptII11.0.devel/adm/gen-7.0/test/ptII$(VERSION)
 
+####
+release_terra:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc clean all src.jar
+
+release_terra_setup:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc setup
+
+release_terra_remote4_test:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc remote4_Test
+
+release_terra_update_ftp:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc update_ftp
 
 ####
 release_sisyphus:
