@@ -467,6 +467,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptides"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/ptides/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptides/demo"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/qss/qss.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/qss"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/qss/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/qss/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/sdf/lib/vq/vq.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib/vq"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/sdf/lib/vq/data/data.jar"
@@ -568,6 +572,12 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
             <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/ptango/demo/demo.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/ptango/demo"/>
+
+            <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/qss/qss.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/qss"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/qss/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/qss/demo"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"

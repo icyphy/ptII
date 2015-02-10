@@ -569,7 +569,7 @@ FULL_11_0_JARS = \
 	ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar \
 	ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar \
 	ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxBus.jar \
+	ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar \
 	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar \
 	ptolemy/domains/qss/qss.jar \
 	$(PTPAHO_MQTT_JAR) \
