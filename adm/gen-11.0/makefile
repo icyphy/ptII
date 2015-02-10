@@ -497,21 +497,28 @@ $(PTIIDIST):
 	# Remove the html generated files, the filenames are too long
 	(cd $(PTIIDIST); rm -rf `(cd $(PTIIHOME); svn status | egrep '\?' | grep /demo/ | awk '{print $$2}')` )
 	# Rebuild jar files after removing unwanted code.
-	# Rebuild jar_dist so that the Windows installer gets the new jars)
+	@echo "Rebuild jar_dist so that the Windows installer gets the new jars"
 	rm -rf $(PTIIDIST)/jar_dist
 	$(MAKE) $(PTIIDIST)/jar_dist
-	@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
-	(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) all_packages)
+	#@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
+	#(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) all_packages)
 
 
 dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
+	@echo "#"
+	@echo "# Now creating PTIIDIST/jar_dist: $@"
+	@echo "#"
+	@echo "$@ `date`"
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
 	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
 		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) all_packages install); \
 		echo "About to run ant jars"; \
 		ant jars; \
+		echo "Rebuild ptiny.exe so that vergil_l4j.jar gets built so that $(PTIIDIST)/jar_dist can use vergil_l4j.jar"; \
+		rm -rf $(PTIIDIST)/ptiny.exe; \
+		$(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes; \
 		echo "About to make jar_dist, PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`"; \
 		$(MAKE) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` -k jar_dist); \
 	fi

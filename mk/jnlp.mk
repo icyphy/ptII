@@ -572,6 +572,7 @@ FULL_11_0_JARS = \
 	ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar \
 	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar \
 	ptolemy/domains/qss/qss.jar \
+	ptolemy/domains/qss/demo/demo.jar \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTVERTX_JARS)
 
