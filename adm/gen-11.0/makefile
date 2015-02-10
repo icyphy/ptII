@@ -46,9 +46,9 @@ WINDOWS_VERSION =	11_0_devel
 # Location of utilities
 # Don't use /usr/sww/bin/gtar sun4 binaries if you are building on a sol2
 TAR = 		/usr/local/bin/tar
-ZIP =		/usr/sww/bin/zip
-COMPRESS =	/usr/sww/bin/gzip
-GUNZIP =	/usr/sww/bin/gunzip
+ZIP =		zip
+COMPRESS =	gzip
+GUNZIP =	gunzip
 NON_GNUTAR =	/bin/tar
 SUFFIX =
 
@@ -177,16 +177,28 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 
 ##############################################################################
 # Targets
-all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
+all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
-release_newton_all:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII/adm/gen-9.1/test/ptII$(VERSION)
+####
+release_ampere_all:
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII11.0.devel/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII11.0.devel COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar clean all src.jar setup
 
-release_newton_setup:
+
+release_ampere_foo:
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII11.0.devel/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII11.0.devel COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar foo
+
+release_ampere_setup:
+	$(MAKE) PTII=c:/Users/Administrator/src/ptII11.0.devel/adm/gen-10.0 USER=Administraotor PTIIHOME=/cygdrive/c/Users/Administrator/src/ptII11.0.devel COMPRESS=gzip JAR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_25/bin/jar TAR=tar setup
+
+release_joule_all:
+	$(MAKE) PTII=/cygdrive/c/Users/cxh.EECS/ptII11.0.devel/adm/gen-10.0 USER=cxh PTIIHOME=/cygdrive/c/Users/cxh.EECS/ptII11.0.devel COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=/cygdrive/c/Users/cxh.EECS/ptII/adm/gen-10.0/test/ptII$(VERSION)
+
+release_joul_setup:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar setup
 
-release_newton_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII11.0.devel/adm/gen-7.0/test/ptII$(VERSION)
+release_joule_remote4_test:
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=/tmp/cxh/ptII11.0.devel/adm/gen-7.0/test/ptII$(VERSION)
+
 
 ####
 release_sisyphus:
@@ -254,6 +266,7 @@ clean:	full_clean_setup
 	rm -rf $(PTIIDIST) src installshield/*
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
+	rm -rf $(PTZIPRELEASE)
 	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
 	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
 
@@ -298,8 +311,29 @@ $(PTIIDIST):
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	#
 	# Set up vendors directory for making docs and jar_dist
+	#
+	# Java3D
+	mkdir -p $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
+	-cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/
+	cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
+	#
+	# Jogl (for the Mac)
+	if [ ! -f $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar ]; then \
+		echo "Downloading Jogl for the mac because it is too damn big to check in."; \
+		mkdir $(PTIIHOME)/vendors/jogl; \
+		cd $(PTIIHOME)/vendors/jogl; \
+		wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z; \
+		7z x jogamp-all-platforms.7z; \
+	fi
+	mkdir -p $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
+	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
+	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
+	#
+	# Serial
 	mkdir -p $(PTIIDIST)/vendors/misc/rxtx/
 	cp $(PTIIHOME)/vendors/misc/rxtx/RXTXcomm.jar $(PTIIDIST)/vendors/misc/rxtx/
+	#
+	# Joystick
 	mkdir -p $(PTIIDIST)/vendors/misc/joystick/
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
 	# Tools used to build installers.
@@ -319,6 +353,10 @@ $(PTIIDIST):
 	# Copy libjvm.dll.a because it was removed by src.ex
 	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
 	#ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
+	#
+	# Copy libptmatlab.so because src.ex removes it
+	cp $(PTIIHOME)/lib/libptmatlab.so $(PTIIDIST)/lib
+	ls -l $(PTIIDIST)/lib/libptmatlab.so
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	#(cd $(PTIIHOME)/bin; make)
@@ -458,16 +496,19 @@ dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
-	    (cd $(PTIIDIST); PTII=`pwd` JAVADOC=$(JAVADOC) ./configure; PTII=`pwd`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`pwd` make JAVADOC=$(JAVADOC) all_packages); \
-		ant jars; PTII=`pwd` $(MAKE) -k exes jar_dist); \
+	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
+		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) all_packages install); \
+		echo "About to run ant jars"; \
+		ant jars; \
+		echo "About to make jar_dist, PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`"; \
+		$(MAKE) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` -k jar_dist); \
 	fi
 
 
 clean_src:
 	rm -f $(PTII_FULL)
-src: $(PTII_FULL) #$(PTII_FULL_ZIP)
-PTII_FULL: $(PTII_FULL) #$(PTII_FULL_ZIP)
+src: $(PTII_FULL) $(PTII_FULL_ZIP)
+PTII_FULL: $(PTII_FULL) $(PTII_FULL_ZIP)
 $(PTII_FULL): $(PTIIDIST)
 	@echo "#"
 	@echo "# Now creating PTII_FULL: $@"
@@ -497,16 +538,25 @@ $(PTII_FULL): $(PTIIDIST)
 $(PTII_FULL_SPLIT):: $(PTII_FULL)
 	$(SPLITTAR) $^
 
+PTZIPRELEASE = $(GENDIR)/ptzip
+$(PTZIPRELEASE):
+	@echo "#"
+	@echo "# Creating the $(PTZIPRELEASE) directory so that we can create a zip"
+	@echo "#"
+	@echo "$@ `date`"
+	if [ ! -d $@ ]; then mkdir -p $@; fi
+	(cd $@; tar -xf ../ptII$(VERSION).src.tar);
+
 src.zip: $(PTII_FULL_ZIP)
 ptii.src.zip: $(PTII_FULL_ZIP)
-$(PTII_FULL_ZIP): $(PTIIDIST)
+$(PTII_FULL_ZIP): $(PTIIDIST) $(PTZIPRELEASE)
 	@echo "Creating $@"
-	(cd $(PTIIDIST)/..; \
-	$(ZIP) -r -q $@ \
+	(cd $(PTZIPRELEASE); \
+	$(ZIP) -r -q `$(GENDIR)/ptcygpath $(PTII_FULL_ZIP)` \
 	ptII$(VERSION) \
 	)
 	chmod g+w $@
-	chgrp ptolemy $@
+	-chgrp ptolemy $@
 	ls -l $@
 
 VERSION_FILES = \
@@ -529,7 +579,8 @@ $(PTII_SRC): $(PTII_FULL)
 		$(TAR) -xvf $(PTII_FULL); \
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
-		PTII=`$(GENDIR)/ptcygpwd`  ./configure; make -k clean; \
+		echo "PATH: ${PATH}"; \
+		PTII=`$(GENDIR)/ptcygpwd`  ./configure --enable-verbose; make -k clean; \
 		touch mk/ptII.mk.in; \
 		echo "(0)About to remove class files in `pwd`"; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
@@ -770,7 +821,7 @@ JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	(cd src_jar/ptII$(VERSION); $(JAR) -cf ../../ptII$(VERSION).src.jar .)
+	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
@@ -794,7 +845,7 @@ HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 # The Jar file that we create.
 hyvisual.jar: $(HYVISUAL_SRC_JAR)
 $(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
-	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
+	(cd src_jar/hyvisual$(VERSION); "$(JAR)" -cf ../../hyvisual$(VERSION).src.jar .)
 
 HYVISUAL_SRC_TAR = hyvisual$(VERSION).src.tar.gz
 # The Jar file that we create.
@@ -815,7 +866,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
@@ -888,7 +939,7 @@ VIPTOS_SRC_JAR = viptos$(VIPTOS_VERSION).src.jar
 # The Jar file that we create.
 viptos.jar: $(VIPTOS_SRC_JAR)
 $(VIPTOS_SRC_JAR): src_jar/viptos$(VIPTOS_VERSION)
-	(cd src_jar/viptos$(VIPTOS_VERSION); $(JAR) -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
+	(cd src_jar/viptos$(VIPTOS_VERSION); "$(JAR)" -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
 
 VIPTOS_SRC_TAR = viptos$(VIPTOS_VERSION).src.tar.gz
 # The Jar file that we create.
@@ -911,7 +962,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/viptos$(VIPTOS_VERSION); \
 	fi
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
@@ -1025,17 +1076,20 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 
 ##########
 
+PTSETUP_MAC = ptII$(VERSION).setup.mac
 
 update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
+		$(PTSETUP_MAC).dmg \
 		moog:$(PTII_FTP)
 untar:
 	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh moog "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 	ssh moog "cd $(PTII_FTP)/ptII$(VERSION); ln -s ../jnlp-$(VERSION)/signed ."
+	ssh moog gzip -9 $(PTII_FTP)/ptII$(VERSION).tar
 
 update_ftp_book: PtolemyII_DigitalV1_02.pdf
 	scp PtolemyII_DigitalV1_02.pdf moog:$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/
@@ -1049,10 +1103,6 @@ update_ftp_index:
 # Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip moog:$(PTII_FTP)
-
-PTSETUP_MAC=ptII$(VERSION).setup.mac
-update_mac: $(PTSETUP_MAC).dmg
-	scp -p $(PTSETUP_MAC).dmg moog:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -2626,19 +2676,25 @@ indent_all:
 # Download from http://www.izforge.com/izpack/downloads
 
 #IZPACKDIR=c:/Program Files/IzPack
-IZPACKDIR=$(PTII)/vendors/izpack
+IZPACKDIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
-IZPACK_TAR=IzPack.src.3.10.2.tar.gz
+IZPACK_TAR=IzPack.src.4.3.5.tar.gz
 
-# Under Solaris: gmake make_izpack TAR=gtar
+# If you get "makefile:2660: *** target pattern contains no `%'.
+# Stop.", then the problem is that $PTII has a semicolon in it and you
+# are sadly on a Windows box.  The workaround is 
+#   bash-4.1$ echo $PTII
+#   c:/Users/cxh.EECS/ptII10.0.1
+#   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.1 foo
+# :-|
 make_izpack: $(IZPACK_COMPILE)
-$(IZPACK_COMPILE): $(PTII)/vendors/izpack
-	 cd $(PTII)/vendors/izpack/src; ant dist
+$(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
+	 cd $(PTIIHOME)/vendors/izpack/src; ant dist
 
 # Download IzPack
-$(PTII)/vendors/izpack:
-	mkdir $(PTII)/vendors/izpack
-	cd $(PTII)/vendors/izpack; \
+$(PTIIHOME)/vendors/izpack:
+	mkdir $(PTIIHOME)/vendors/izpack
+	cd $(PTIIHOME)/vendors/izpack; \
 		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
@@ -2658,12 +2714,15 @@ BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar
-$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32
 	@echo "#"
 	@echo "# Building $(PTSETUP).jar"
 	@echo "# `date`"
 	-ls -l $(PTIIDIST)/bin/vergil
+	rm -rf jre; mkdir jre
+	(cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
 	sh "$(IZPACK_COMPILE)" $<
+	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2672,15 +2731,19 @@ $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanS
 
 # Build a 64 bit installer.  See http://jira.codehaus.org/browse/IZPACK-506
 $(PTSETUP)_64.xml: $(PTSETUP).xml
-	sed 's/ShellLink.dll/ShellLink_x64.dll/' $^ > $@
+	sed 's/ShellLink.dll/ShellLink_x64.dll/' \
+	     $^ > $@
 
 setup64_jar: $(PTSETUP)_64.jar
-$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc
+$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64
 	@echo "#"
 	@echo "# Building $(PTSETUP)_64.jar"
 	@echo "# `date`"
 	ls -l $(PTIIDIST)/bin/vergil
+	rm -rf jre; mkdir jre
+	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
 	sh "$(IZPACK_COMPILE)" $<
+	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2691,7 +2754,7 @@ $(PTIIDIST)/bin/vergil:
 	@echo "#"
 	@echo "# Creating $@"
 	@echo "# `date`"
-	cp $(PTII)/bin/vergil $@
+	cp $(PTIIHOME)/bin/vergil $@
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
 
@@ -2715,16 +2778,16 @@ PTCYGPATH=./ptcygpath
 izpack:	
 	cd ~/src/izpack/trunk/src/; ant build.standalone-compiler; cp C:/cxh/src/izpack/trunk/lib/standalone-compiler.jar c:/cxh/src/izpack/izpack3.9.0/lib/standalone-compiler.jar 
 	c:/cxh/src/izpack/izpack3.9.0/bin/compile test.xml
-	"$(L4JC)" `$(PTCYGPATH) test_l4j.xml`
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/test_l4j.xml"
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
 #L4J_DIR=c:/Program Files/Launch4j
 
-L4J_DIR=$(PTII)/vendors/launch4j
+L4J_DIR=$(PTIIHOME)/vendors/launch4j
 
 L4J_TAR=launch4j-3.0.0-pre2-solaris-sparc.tgz
-$(PTII)/vendors/launch4j:
-	cd $(PTII)/vendors; \
+$(PTIIHOME)/vendors/launch4j:
+	cd $(PTIIHOME)/vendors; \
 		wget http://easynews.dl.sourceforge.net/sourceforge/launch4j/$(L4J_TAR); \
 		$(TAR) -zxf $(L4J_TAR)
 
@@ -2739,10 +2802,8 @@ PTSETUP_DEPENDENCIES = \
 	$(PTIIDIST)/jar_dist \
 	$(PTIIDIST)/ptolemy/matlab/ptmatlab.dll
 
-
 # Launch4J
 $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
-			jre \
 			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_l4j.xml \
 			$(PTSETUP).jar #ExtractJarFile.class
@@ -2750,7 +2811,9 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 	@echo "#"
 	@echo "# Building $(PTSETUP).exe"
 	@echo "# `date`"
-	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_l4j.xml`
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_l4j.xml"
+	sleep 5
+	ls -l $@;
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2762,7 +2825,6 @@ $(PTSETUP)_64_l4j.xml: $(PTSETUP)_l4j.xml
 
 setup_64: $(PTSETUP)_64.exe
 $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
-			jre \
 			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_64_l4j.xml \
 			$(PTSETUP)_64.jar #ExtractJarFile.class
@@ -2770,7 +2832,9 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 	@echo "#"
 	@echo "# Building $(PTSETUP).exe"
 	@echo "# `date`"
-	"$(L4JC)" `$(PTCYGPATH) $(PTSETUP)_64_l4j.xml`
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_64_l4j.xml"
+	sleep 5
+	ls -l $@
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -2779,10 +2843,10 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 
 ptiny.exe: $(PTIIDIST)/ptiny.exe
 $(PTIIDIST)/ptiny.exe:
-	 $(MAKE) -C $(PTIIDIST) PTII=$(PTIIDIST) exes
+	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 $(PTIIDIST)/ptbook.exe:
-	 $(MAKE) -C $(PTIIDIST) PTII=$(PTIIDIST) exes
+	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 
@@ -2796,8 +2860,8 @@ $(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 	fi
 
 $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll: $(PTIIDIST)/lib/matlabWindows.jar
-	(cd $(PTIIDIST)/ptolemy/matlab; jar -xf $(PTIIDIST)/lib/matlabWindows.jar)
-
+	# Use a relative path and avoid problems with /cygdrive/c under Windows.
+	(cd $(PTIIDIST)/ptolemy/matlab; jar -xf ../../lib/matlabWindows.jar)
 
 jre:
 	if [ ! -d jre ] ; then \
@@ -2805,7 +2869,19 @@ jre:
 		echo "JRE Directory" > jre/README.txt; \
 	fi
 
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).app.tar.gz
+jre32:
+	if [ ! -d jre32 ] ; then \
+		mkdir jre32; \
+		echo "32-bit JRE Directory" > jre32/README.txt; \
+	fi
+
+jre64:
+	if [ ! -d jre64 ] ; then \
+		mkdir jre64; \
+		echo "64-bit JRE Directory" > jre64/README.txt; \
+	fi
+
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg #$(PTSETUP_MAC).app.tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -2883,14 +2959,15 @@ updateDOPCenterImage:
 
 # Echo the jars needed for the full package in izpack
 full_jars:
-	@(cd $(PTII); make -s echo_jars JARS=HYBRID_SYSTEMS_ONLY0_JNLP_JARS)
-	@(cd $(PTII); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
-	@(cd $(PTII); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
-	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=HYBRID_SYSTEMS_ONLY0_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
+	@(cd $(PTIIHOME); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
 
 ########################################################################
 # Mac installer
 ptsetup_mac: $(PTSETUP_MAC).xml
+# jspawnhelper needs to be executable or else cg will fail to run make.  http://mail.openjdk.java.net/pipermail/macosx-port-dev/2014-July/006662.html
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
@@ -2927,8 +3004,41 @@ setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
-	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
+# https://stackoverflow.com/questions/286419/how-to-build-a-dmg-mac-os-x-file-on-a-non-mac-platform 
+#"mkdir -p dmgdir/progname.app/Contents/{MacOS,Resources}"
+#...copy your PkgInfo, Info.plist to Contents...
+#...copy your .icns to Resources...
+#...copy your other things to where you expect them to go...
+# genisoimage -V progname -D -R -apple -no-pad -o progname.dmg dmgdir 
+
+# "If you want to be really fancy, you can steal the .DS_Store file
+# from a DMG made on a Mac with a volume name progna me and app bundle
+# called progname.app (i.e., matching what you want to create off the
+# Mac) where you've put a backgro und in .background/background.png and
+# a symbolic link to /Applications in the root dir, and put that in
+# dmgdir along with your own a symbolic link to /Applications."
+
+dmg: $(PTSETUP_MAC).dmg
+$(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
+	if [ -d dmg ]; then \
+	    echo "$0: dmg/ exists?  Error!"; \
+	    error; \
+	fi
+	mkdir dmg
+	mv $(PTSETUP_MAC).app dmg
+	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
+	genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg
+	mv dmg/$(PTSETUP_MAC).app .
+	rm -rf dmg
+
+
+update_mac: $(PTSETUP_MAC).dmg
+	scp -p $(PTSETUP_MAC).dmg moog:$(PTII_FTP)
+
+
+# Use dmg above instead. 
 setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
 $(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
 	tar -zcf $@ $<
@@ -2947,7 +3057,7 @@ $(JNLPDIST)/vendors/misc/rxtx/RXTXcomm.jar: $(JNLPDIST)
 	# Build joystick, rxtx
 	if [ ! -f $@ ]; then \
 		echo "Reconfiguring with all optional packages"; \
-		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTII)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
+		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTIIHOME)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
 	fi
 
 $(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/rxtx/RXTXcomm.jar
@@ -3165,7 +3275,7 @@ update_moog:
 
 # Invoke the coverity scan.
 coverity:
-	(cd $(PTII); adm/bin/coverity)
+	(cd $(PTIIHOME); adm/bin/coverity)
 
 
 # Build from the website
@@ -3247,6 +3357,10 @@ $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out:
 clean_ptrelease_scpDemos.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/copernicus/applet/scpDemos.out
 
+# Location of the ptolemy/ptplot directory in the ptII tree on the website
+PTII_FTP_PTPLOT = $(PTII_FTP)/ptII$(VERSION)/ptolemy/plot
+PTII_FTP_PTPLOT_MASTER = /home/www/ptweb/java/ptplot5.10.$(MINOR_VERSION)/ptolemy/plot
+
 dists.out: $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 $(PTBUILDRELEASE)/ptolemy/plot/dists.out:
 	@echo "#"
@@ -3255,6 +3369,11 @@ $(PTBUILDRELEASE)/ptolemy/plot/dists.out:
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; cd ptolemy/plot; rm -rf adm tmp; make dists >& dists.out && make update_ftp)
+	#ssh moog rm -rf $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)/doc/download
+	#ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/ptplot5.10.$(MINOR_VERSION).tar.gz $(PTII_FTP_PTPLOT)
+	#ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/ptplot5.10.$(MINOR_VERSION).zip $(PTII_FTP_PTPLOT)
+	#ssh moog ln -s $(PTII_FTP_PTPLOT_MASTER)/doc/download $(PTII_FTP_PTPLOT)/doc
+
 clean_ptrelease_dists.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
