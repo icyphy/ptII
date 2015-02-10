@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Nameable;
  For rendezvous, the receiver is the key synchronization point. The
  receiver with which this branch will try to rendezvous is set upon
  instantiation. It is determined from the port and channel which is
- passed in in the constructor.
+ passed in in the constructor.</p>
  <p>
  The algorithm by which a branch determines whether or not it has
  succeeded with its rendezvous is executed in the run method. There are
@@ -104,15 +104,15 @@ import ptolemy.kernel.util.Nameable;
  which is responsible for checking that the rendezvous can proceed. Thus,
  in the case where two conditional branches are trying to rendezvous at
  a receiver, it is the responsibility of the branch arriving
- second to check that the rendezvous can proceed(see case 2).
- <p>
+ second to check that the rendezvous can proceed(see case 2).</p>
+
+ @see ptolemy.domains.csp.kernel.ConditionalBranch
+
  @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Red (eal)
- <p>
- @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalSend extends ConditionalBranch implements Runnable {
 

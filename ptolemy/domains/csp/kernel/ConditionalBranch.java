@@ -46,26 +46,27 @@ import ptolemy.kernel.util.Nameable;
  Base class for classes representing guarded communication that occurs
  either conditionally (one statement from a group is executed) or as a multiway
  rendezvous (all statements from a group are executed).
- Concrete subclasses are expected to implement the Runnable interface,
+
+ <p>Concrete subclasses are expected to implement the Runnable interface,
  and the "execution" of the communication is in the run() method.
- A guarded communication statement is of the form
- <P>
+ A guarded communication statement is of the form</p>
+
  <center>guard; communication =&gt; statements </center>
- <P>
+ <p>
  If the guard is true, or absent which implies true, then the branch
  is enabled. If a branch is not enabled, then this it does not participate
  in the group (equivalently, it could not be created or put in the group).
  A group is formed and executed by calling chooseBranch() in a ConditionalBranchController
- or MultiwayBranchController.
+ or MultiwayBranchController.</p>
  <p>
  Guarded communication statements of the conditional sort are used to perform
  two forms of conditional communication constructs from classical
  CSP: "conditional if" (CIF) and
  "conditional do" (CDO). These constructs are analogous to,
  but different from, the common <i>if</i> and <i>do</i> statements.
- Each guarded communication statement is one branch of a CIF or CDO.
+ Each guarded communication statement is one branch of a CIF or CDO.</p>
  <p>
- A CDO has the form
+ A CDO has the form</p>
  <pre>
  CDO {
   G1; C1 =&gt; S1;
@@ -81,7 +82,7 @@ import ptolemy.kernel.util.Nameable;
  or a get(). The S1, S2 etc. represent the blocks of statements
  associated with that branch. They are executed if that branch is
  successful. The "[]" hints at the fact that the guards are all evaluated
- in parallel (as opposed to sequentially in a common <i>if</i> statement).
+ in parallel (as opposed to sequentially in a common <i>if</i> statement).</p>
  <p>
  While at least one of the branches is enabled, the construct continues
  to evaluate and execute one of the enabled branches. If more than one
@@ -89,24 +90,24 @@ import ptolemy.kernel.util.Nameable;
  and its statements are executed. Note that this construct is
  nondeterministic as it may be  a race condition that determines
  which branch is successful. The CIF is similar to the CDO except that
- it is only evaluated once.
+ it is only evaluated once.</p>
  <p>
  The communication part of a guarded communication statement can be
  either a send() or a get(). There are thus two subclasses of this
  class, each representing a guarded communication statement for one of
  the communication primitives. The subclasses are ConditionalSend and
- ConditionalReceive.
+ ConditionalReceive.</p>
  <p>
  If more than one branch is enabled, each enabled branch is executed
- in a separate thread.
+ in a separate thread.</p>
  <p>
  Conditional branches are designed to be used once. Upon instantiation,
  they are given the guard, the port and channel over which to communicate,
  and the identification number of the branch according to the controller.
  The port and the channel together define the CSPReceiver with which to
  rendezvous. The ConditionalBranchController, that controls this branch,
- is assumed to be contained by the container of the port.
- <p>
+ is assumed to be contained by the container of the port.</p>
+
  @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2

@@ -259,7 +259,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the boundary
+     *  detector.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
@@ -274,8 +275,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @exception IllegalActionException
-     * @exception InvalidStateException
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
+     *  @exception InvalidStateException If thrown by the boundary
+     *   detector.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
@@ -291,7 +294,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     @Override
@@ -306,7 +310,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  outside to an input port higher in the hierarchy.
      *  @see #isConnectedToBoundary()
      *  @return True if this is connected to the boundary.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
      */
     @Override
     public boolean isConsumerReceiver() throws IllegalActionException {
