@@ -6,7 +6,7 @@ Installation and deployment of CERTI
 Requirements: we assume that you have a
 - recent C++ compiler 
 - the CMake tool
-
+- Bison, the GNU version of yacc.
 ###################################
 1) Installation process (summary):
 
