@@ -49,10 +49,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  If any of the inputs is a SmoothToken, then in addition to
  their values specifying the value and derivatives of the output,
- their derivatives will be added to the derivatives of the output.
+ their derivatives will be used as the derivatives of the output.
  For example, if channel zero has a smoothToken(1.0, {1.0, 2.0})
  and channel one has a smoothToken(2.0, {3.0}), then the output
- will be a smoothToken(1.0, {3.0, 5.0}).
+ will be a smoothToken(1.0, {2.0, 3.0}).
  </p><p>
  The inputs need not arrive all at once. Each time an input arrives,
  the value of the input is interpreted as an <i>update</i> to the
