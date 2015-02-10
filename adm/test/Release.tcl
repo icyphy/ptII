@@ -122,7 +122,9 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     exec mv PtolemyII_DigitalV1_02.pdf doc/books/systems/
     puts "Removing \$PTII/index.html and \$PTII/toc.htm, which can be created while exporting HTML for the book."
     exec rm -f index.html toc.htm
-
+    puts "Removing \$PTII/vergil_l4j.jar."
+    exec rm -f vergil_l4j.jar vergil_l4j.mf
+   
     # Remove hs_err_pid* files created by ScaleC crashing
     if {[glob -nocomplain {ptolemy/cg/lib/test/hs_err_pid*}] != {}} {
 	puts "Removing hs_err_pid* files created by ScaleC crashing"
@@ -187,6 +189,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
+?       vendors/jogl} {
 ?       vendors/misc/javamail/javax.mail.jar} {
 M       lib/diva.jar}}
         if { $result == $result2 } {
