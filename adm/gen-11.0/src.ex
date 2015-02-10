@@ -281,6 +281,7 @@ ptolemy/verification/SystemGeneratedTempFolder*
 ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
 ptserver/test/junit/PtolemyServer.log
 updateMoMLFiles.xml
+vendors/jogl
 socket.cfg
 devel
 htmlchek*
