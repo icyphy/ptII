@@ -630,6 +630,7 @@ ALLPACKAGES = \
 	ptolemy.domains.pthales.kernel \
 	ptolemy.domains.pthales.lib \
 	ptolemy.domains.qss.kernel \
+	ptolemy.domains.qss.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
 	ptolemy.domains.scr \
