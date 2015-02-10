@@ -296,8 +296,8 @@ public class DateToken extends AbstractConvertibleToken implements
      *  to java.text.DateFormat.
      *  @return a DateToken.
      */
-    public static DateToken date(String string) throws IllegalActionException {
-        return new DateToken(string);
+    public static DateToken date(String value) throws IllegalActionException {
+        return new DateToken(value);
     }
 
     /** Get the date of the month part of this date.

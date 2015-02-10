@@ -1,6 +1,6 @@
 /* A token for QSS integration that contains a double and a derivative.
 
-   Copyright (c) 2014 The Regents of the University of California.
+   Copyright (c) 2014-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.IllegalActionException;
    be of type double, but when they receive an input token, they should
    check (using instanceof) whether the token is a SmoothToken, and if so,
    access these derivatives using the {@link #derivativeValues()} method,
-   or extrapolate the value to a specified time using the {@link #extrapolateTo(Time)}
+   or extrapolate the value to a specified time using the {@link #extrapolate(Time)}
    method.
    <p>
    Note that if two SmoothTokens are added or subtracted, then the derivatives also
@@ -141,6 +141,7 @@ public class SmoothToken extends DoubleToken {
      *  to the caller to ensure that the array passed in does not later get
      *  modified (tokens are required to be immutable).
      *  @param value The specified value.
+     *  @param time The specified time.
      *  @param derivatives The specified derivatives.
      */
     public SmoothToken(double value, Time time, double[] derivatives) {
@@ -225,6 +226,9 @@ public class SmoothToken extends DoubleToken {
      *  in the result.
      *  The returned array will have the same size as the argument array, and
      *  all the tokens will have the same maximum time.
+     *  @param args The tokens to be aligned.
+     *  @param time The Time to which the tokens will be aligned.
+     *  @return An array of aligned tokens.
      */
     static public Token[] align(Token[] args, Time time) {
 	Token[] result = new Token[args.length];
@@ -247,6 +251,8 @@ public class SmoothToken extends DoubleToken {
      *  in the result.
      *  The returned array will have the same size as the argument array, and
      *  all the tokens will have the same maximum time.
+     *  @param args The tokens to be aligned.
+     *  @return An array of aligned tokens.
      */
     static public Token[] align(Token[] args) {
 	// First, find the maximum time.
@@ -269,6 +275,10 @@ public class SmoothToken extends DoubleToken {
      *  an array of tokens with the extrapolated values and derivatives.
      *  The returned array will have size 2, and
      *  all the tokens will have the same maximum time.
+     *  @param arg1 The first SmoothToken to be aligned.
+     *  @param arg2 The second SmoothToken to be aligned.
+     *  @return An array of tokens with the extrapolated values and
+     *  derivatives.
      */
     SmoothToken[] align(SmoothToken arg1, SmoothToken arg2) {
 	// First, find the maximum time.
@@ -342,6 +352,7 @@ public class SmoothToken extends DoubleToken {
     /** Return a SmoothToken at the specified time whose value and derivatives
      *  are the result of extrapolating this token to the specified time.
      *  @param time The time to which to extrapolate this token.
+     *  @return A SmoothToken at the specified time.
      */
     public SmoothToken extrapolate(Time time){
 	// If the time matches, return this token.
@@ -392,7 +403,7 @@ public class SmoothToken extends DoubleToken {
      *  E.g., if maxOrder = 2, the token will have one value, the first
      *  and the 2nd derivative.
      *  By default, tokens will have maxOrder = 3.
-     *  @param maxOrder The maximum order of the token.
+     *  @return the maximum order.
      *  @see #setOrderLimit(int)
      */
     public static int getOrderLimit(){
@@ -466,6 +477,8 @@ public class SmoothToken extends DoubleToken {
      *  SmoothToken with a time other than zero. This makes sense because usually
      *  expressions are evaluated only once when a model is opened.
      *  @param value The value.
+     *  @return The SmoothToken with the specified value at time zero
+     *  and no derivatives.
      */
     public static SmoothToken smoothToken(double value) {
 	return new SmoothToken(value, Time.ZERO, null);
@@ -480,6 +493,8 @@ public class SmoothToken extends DoubleToken {
      *  @param value The value.
      *  @param derivatives An array containing the first derivative,
      *   the second derivative, etc.
+     *  @return The SmoothToken with the specified value at time zero
+     *  and derivatives.
      */
     public static SmoothToken smoothToken(double value, double[] derivatives) {
 	return new SmoothToken(value, Time.ZERO, derivatives);
@@ -539,7 +554,8 @@ public class SmoothToken extends DoubleToken {
      *  then its value is simply added to the value of this token, and
      *  a new SmoothToken is returned with the sum value, time, and the derivatives
      *  of this token. If the argument is a SmoothToken, then this token and
-     *  the argument are first aligned using {@link SmoothToken#align(SmoothToken[])},
+     *  the argument are first aligned using 
+     *  {@link ptolemy.data.SmoothToken#align(SmoothToken, SmoothToken)},
      *  and then added.  The returned SmoothToken
      *  will have the maximum of the number of derivatives of this token and
      *  the derivatives of the argument, and for derivatives given by both
