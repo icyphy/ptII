@@ -29,6 +29,7 @@ package ptolemy.domains.qss.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.util.Time;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
@@ -126,7 +127,8 @@ public class Align extends Transformer {
             }
         }
         if (!triggerConnected || hasTrigger) {
-            Token[] result = SmoothToken.align(_received);
+        	Time time = getDirector().getModelTime();
+            Token[] result = SmoothToken.align(_received, time);
             for (int i = 0; i < width; i++) {
         	if (result[i] != null) {
         	    output.send(i, result[i]);
