@@ -216,7 +216,29 @@ public class SmoothToken extends DoubleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+   
+    /** Given an array of Tokens and a time, align them by
+     *  extrapolating all tokens that are instances of
+     *  SmoothToken to that time, and returning
+     *  an array of tokens with the extrapolated values and derivatives.
+     *  If any of the tokens is not a SmoothToken, it is returned unmodified
+     *  in the result.
+     *  The returned array will have the same size as the argument array, and
+     *  all the tokens will have the same maximum time.
+     */
+    static public Token[] align(Token[] args, Time time) {
+	Token[] result = new Token[args.length];
+	for (int i = 0; i < args.length; i++) {
+	    if (args[i] instanceof SmoothToken) {
+		result[i] = ((SmoothToken)args[i]).extrapolate(time);
+	    } else {
+		result[i] = args[i];
+	    }
+	}
+	return result;
+    }
+
+
     /** Given an array of Tokens, align them by finding the maximum time
      *  of all the tokens, extrapolating all tokens that are instances of
      *  SmoothToken to that time, and returning
@@ -237,14 +259,8 @@ public class SmoothToken extends DoubleToken {
 		}
 	    }
 	}
-	Token[] result = new Token[args.length];
-	for (int i = 0; i < args.length; i++) {
-	    if (args[i] instanceof SmoothToken) {
-		result[i] = ((SmoothToken)args[i]).extrapolate(latestTime);
-	    } else {
-		result[i] = args[i];
-	    }
-	}
+	// Align the tokens
+	Token[] result = align(args, latestTime);
 	return result;
     }
     
