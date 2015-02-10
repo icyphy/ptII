@@ -156,13 +156,15 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Represent an Entity and its ports for use in a SyntacticGraph.
      *  @param entity The Entity to be represented with the SyntacticNode
      *  @return if the representation is total.
-     *  @exception IllegalActionException
-     *  @exception NameDuplicationException
+     *  @exception IllegalActionException If the entity is already represented,
+     *  if there is a problem getting the width or creating a port or attribute.
+     *  @exception NameDuplicationException If there is a problem
+     *  creating a port or attribute.
      */
-    public boolean representEntity(Entity entity)
+    public boolean representEntity(Entity entity) 
             throws IllegalActionException, NameDuplicationException {
 
-        // Check to make sure node is blank
+        // Check to make sure node is blank.
         if (_isRepresented) {
             throw new IllegalActionException(this, "Already is being used.");
         }
