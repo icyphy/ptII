@@ -3041,6 +3041,7 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 
 dmg: $(PTSETUP_MAC).dmg
 $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
+	rm -rf dmg
 	if [ -d dmg ]; then \
 	    echo "$0: dmg/ exists?  Error!"; \
 	    error; \
