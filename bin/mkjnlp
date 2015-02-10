@@ -87,6 +87,8 @@ fi
 
 for file in $otherjars
 do
+    # Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
+    file=`echo $file | sed "s@$PTII/@@"`
     if [ ! -f $basedirectory/$file ]; then
 	echo "$0: WARNING: '$basedirectory/$file' could not be found,"
 	echo "     which means that the sizes in the .jnlp file will be wrong"
