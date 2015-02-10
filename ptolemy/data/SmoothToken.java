@@ -79,11 +79,11 @@ import ptolemy.kernel.util.IllegalActionException;
    If a SmoothToken is multiplied by a DoubleToken, then the derivatives 
    of the DoubleToken are assumed to be zero.
    <p>
-   Division works similarly:
+   Division works similarly:</p>
    <pre>
       (x/y)' = x'/y + x(1/y)' = x'/y - xy'/y^2
    </pre>
-   where the last equality follows from the reciprocal rule of calculus.
+   <p>where the last equality follows from the reciprocal rule of calculus.
    The second derivative of a multiplication or division is obtained by
    applying the above rules to x' and y' rather than to x and y.
    Higher-order derivatives are similarly obtained.

@@ -295,6 +295,8 @@ public class DateToken extends AbstractConvertibleToken implements
      *  @param value The date specified in a format acceptable
      *  to java.text.DateFormat.
      *  @return a DateToken.
+     *  @exception IllegalActionException If thrown while creating
+     *  the DateToken.
      */
     public static DateToken date(String value) throws IllegalActionException {
         return new DateToken(value);
@@ -559,7 +561,7 @@ public class DateToken extends AbstractConvertibleToken implements
     
     /** Return the value of the token as a String.
      *  @return The string value, which is the same as
-     *  the value returned by {@link toString()}, except
+     *  the value returned by {@link #toString()}, except
      *  toString() wraps the string value in double quotes.
      */
     public String stringValue() {

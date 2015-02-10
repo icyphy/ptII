@@ -110,7 +110,8 @@ public interface ProcessReceiver extends Receiver {
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
-     * @exception IllegalActionException
+     *  @exception InvalidStateException If thrown by the boundary
+     *   detector.
      *  @see BoundaryDetector
      */
     public boolean isConnectedToBoundary() throws IllegalActionException;
@@ -126,8 +127,10 @@ public interface ProcessReceiver extends Receiver {
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
-     * @exception IllegalActionException
-     * @exception InvalidStateException
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
+     *  @exception InvalidStateException If thrown by the boundary
+     *   detector.
      *  @see BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException,
@@ -144,7 +147,8 @@ public interface ProcessReceiver extends Receiver {
      *  is not necessary.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
      *  @see BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException;
@@ -154,7 +158,8 @@ public interface ProcessReceiver extends Receiver {
      *  boundary port.
      *  @return True if this is a consumer receiver; return
      *   false otherwise.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
      */
     public boolean isConsumerReceiver() throws IllegalActionException;
 
