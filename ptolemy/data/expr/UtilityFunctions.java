@@ -190,6 +190,40 @@ public class UtilityFunctions {
             throws IllegalActionException {
         return type1;
     }
+    
+    /**
+     * Returns the lower triangular matrix L that satisfies LL*=A
+     * @param A a positive definite matrix (implies also symmetric)
+     * @return lower triangular matrix L such that A=LL*
+     * @throws IllegalActionException 
+     */
+    public static double[][] choleskyDecomposition (double[][] A) throws IllegalActionException {
+
+        if (A == null || A[0] == null || A.length != A[0].length) {
+            throw new IllegalArgumentException("The input must be a square matrix.");
+        } 
+        int N = A.length;
+               
+        //A should also be positive-definite. If found not to be so, an error will be thrown.
+        double[][] L = new double[N][N]; // the lower triangular Cholesky factor s.t. L*L^A
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j <= i; j++) {
+                double lowerSum = 0;
+                for (int k = 0; k < j; k++) {
+                    lowerSum += L[i][k] * L[j][k];
+                }
+                if (i != j) {
+                    L[i][j] = 1.0 / L[j][j] * (A[i][j] - lowerSum);
+                } else {
+                    if (A[i][i] - lowerSum < 0.0) {
+                        throw new IllegalActionException("The input matrix must be positive-definite.");
+                    }
+                    L[i][j] = Math.sqrt(A[i][i] - lowerSum);
+                }
+            }
+        }
+        return L;
+    }
 
     /** Concatenate two arrays.
      *  The arrays must have the same type.
@@ -1214,9 +1248,7 @@ public class UtilityFunctions {
      */
     public static ArrayToken multivariateGaussian(ArrayToken mean,
             DoubleMatrixToken covariance) throws IllegalActionException {
-
-        // Cholesky factorization
-
+ 
         // Check dimensions.
         int N = mean.length(); // size of array
         if ((covariance.getColumnCount() != N)
@@ -1246,9 +1278,7 @@ public class UtilityFunctions {
      */
     public static ArrayToken multivariateGaussian(double[] mean, double[][] S)
             throws IllegalActionException {
-
-        // Cholesky factorization
-
+ 
         // Check dimensions.
         int N = mean.length; // size of array
         if ((S.length != N) || (S[0].length != N)) {
@@ -1265,21 +1295,9 @@ public class UtilityFunctions {
                 }
             }
         }
-        //S should also be positive semi-definite. The function does not currently check for this.
-        double[][] L = new double[N][N]; // the lower triangular cholesky factor s.t. L*L^T = covariance
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j <= i; j++) {
-                double lowerSum = 0;
-                for (int k = 0; k < j; k++) {
-                    lowerSum += L[i][k] * L[j][k];
-                }
-                if (i != j) {
-                    L[i][j] = 1.0 / L[j][j] * (S[i][j] - lowerSum);
-                } else {
-                    L[i][j] = Math.pow(S[i][i] - lowerSum, 0.5);
-                }
-            }
-        }
+        
+        double[][] L = choleskyDecomposition(S);
+         
         // Draw uncorrelated samples from a standard Gaussian.
         ArrayToken uncorrelated = gaussian(0, 1, N);
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();
