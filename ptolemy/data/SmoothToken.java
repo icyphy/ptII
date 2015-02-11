@@ -662,8 +662,16 @@ public class SmoothToken extends DoubleToken {
     @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException("Method not implemented.");
-    }
+            if (rightArgument instanceof DoubleToken){
+                return super._isLessThan(rightArgument);
+            }
+            else{
+                SmoothToken convertedArgument = (SmoothToken) rightArgument;
+                return BooleanToken.getInstance(_value < convertedArgument
+                    .doubleValue());
+            }
+   }
+
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  The derivatives
