@@ -309,6 +309,14 @@ public class DateToken extends AbstractConvertibleToken implements
         Calendar calendar = getCalendarInstance();
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
+    
+    /** Get the day of week.
+     * @return The day of week.
+     */
+    public int getDayOfWeek() {
+        Calendar calendar = getCalendarInstance();
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
 
     /** Get the hour part of this date.
      * @return The hour.
