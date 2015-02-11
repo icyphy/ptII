@@ -281,7 +281,7 @@ clean:	full_clean_setup
 	rm -rf $(PTZIPRELEASE)
 	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
 	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
-	rm -rf ptzip dmg
+	rm -rf dmg
 
 FINDCLEAN = $(GENDIR)/findclean
 
@@ -566,6 +566,7 @@ $(PTZIPRELEASE):
 	@echo "$@ `date`"
 	if [ ! -d $@ ]; then mkdir -p $@; fi
 	(cd $@; tar -xf ../ptII$(VERSION).src.tar);
+	(cd $@/ptII$(VERSION); rm -rf vendors/izpack vendors/j3d vendors/launch4j; pwd; ls -l vendors)
 
 src.zip: $(PTII_FULL_ZIP)
 ptii.src.zip: $(PTII_FULL_ZIP)
@@ -575,9 +576,11 @@ $(PTII_FULL_ZIP): $(PTIIDIST) $(PTZIPRELEASE)
 	$(ZIP) -r -q `$(GENDIR)/ptcygpath $(PTII_FULL_ZIP)` \
 	ptII$(VERSION) \
 	)
+	rm -rf $(PTZIPRELEASE)
 	chmod g+w $@
 	-chgrp ptolemy $@
 	ls -l $@
+
 
 VERSION_FILES = \
 	src/ptII$(VERSION)/ptolemy/configs/*/* \
