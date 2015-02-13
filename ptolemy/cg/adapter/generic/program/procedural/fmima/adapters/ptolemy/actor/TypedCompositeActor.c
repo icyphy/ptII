@@ -262,7 +262,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 
 	// Check for legacy FMUs
 	if (checkForLegacyFMUs(fmus, &isLegacyFmu, &legacyFmuIndex) > fmi2Warning) {
-		terminateSimulation(fmus, 0, file, h, nSteps);
+		terminateSimulation(fmus, 0, file, stepSize, nSteps);
 		return 0;
 	}
 
@@ -286,7 +286,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 				fmi2Status currentStatus = fmus[i].getMaxStepSize(fmus[i].component, &maxStepSize);
 				if (currentStatus > fmi2Warning) {
 					printf("Could get the MaxStepSize for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[i]);
-					terminateSimulation(fmus, 0, file, h, nSteps);
+					terminateSimulation(fmus, 0, file, stepSize, nSteps);
 					return 0;
 				}
 				stepSize = min(stepSize, maxStepSize);
@@ -301,20 +301,20 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 				fmi2Status currentStatus = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
 				if (currentStatus > fmi2Warning) {
 					printf("Saving state of FMU (%s) failed. Terminating simulation. Terminating simulation.\n", NAMES_OF_FMUS[i]);
-					terminateSimulation(fmus, 0, file, h, nSteps);
+					terminateSimulation(fmus, 0, file, stepSize, nSteps);
 					return 0;
 				}
 				currentStatus = fmus[i].doStep(fmus[i].component, time, stepSize, fmi2False);
 				if (currentStatus > fmi2Discard) {
 					printf("Could not step FMU (%s) while determining the step size. Terminating simulation.\n", NAMES_OF_FMUS[i]);
-					terminateSimulation(fmus, 0, file, h, nSteps);
+					terminateSimulation(fmus, 0, file, stepSize, nSteps);
 					return 0;
 				}
 				fmi2Real lastSuccessfulTime;
 				currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
 				if (currentStatus > fmi2Warning) {
 					printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[i]);
-					terminateSimulation(fmus, 0, file, h, nSteps);
+					terminateSimulation(fmus, 0, file, stepSize, nSteps);
 					return 0;
 				}
 				maxStepSize = lastSuccessfulTime - time;
@@ -329,14 +329,14 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 			fmi2Status currentStatus = fmus[legacyFmuIndex].doStep(fmus[legacyFmuIndex].component, time, stepSize, fmi2False);
 			if (currentStatus > fmi2Discard) {
 				printf("Could not step FMU (%s) [Legacy FMU]. Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
-				terminateSimulation(fmus, 0, file, h, nSteps);
+				terminateSimulation(fmus, 0, file, stepSize, nSteps);
 				return 0;
 			}
 			fmi2Real lastSuccessfulTime;
 			currentStatus = fmus[legacyFmuIndex].getRealStatus(fmus[legacyFmuIndex].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
 			if (currentStatus > fmi2Warning) {
 				printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
-				terminateSimulation(fmus, 0, file, h, nSteps);
+				terminateSimulation(fmus, 0, file, stepSize, nSteps);
 				return 0;
 			}
 			maxStepSize = lastSuccessfulTime - time;
@@ -348,7 +348,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 			fmi2Status currentStatus = rollbackFMUs(fmus);
 			if (currentStatus > fmi2Warning) {
 				printf("Error while rolling back FMUs. Terminating simulation.");
-				terminateSimulation(fmus, 0, file, h, nSteps);
+				terminateSimulation(fmus, 0, file, stepSize, nSteps);
 				return 0;
 			}
 		}
@@ -359,7 +359,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 				fmi2Status currentStatus = fmus[i].doStep(fmus[i].component, time, stepSize, fmi2False);
 				if (currentStatus > fmi2Discard) {
 					printf("Could not step FMU (%s) after minimum step has been determined. Terminating simulation.\n", NAMES_OF_FMUS[i]);
-					terminateSimulation(fmus, 0, file, h, nSteps);
+					terminateSimulation(fmus, 0, file, stepSize, nSteps);
 					return 0;
 				}
 			}
@@ -368,9 +368,10 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 		time += stepSize;
 		outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator,FALSE);
 		nSteps++;
+		stepSize = h;
 	}
 
-	terminateSimulation(fmus, 1, file, h, nSteps);
+	terminateSimulation(fmus, 1, file, stepSize, nSteps);
 	return 1;
 }
 
