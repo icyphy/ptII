@@ -2373,6 +2373,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer CCode = new StringBuffer(generateCopyright() + _eol);
         CCode.append("#include \"" + sanitizedContainerName + ".h\"" + _eol);
 
+        CCode.append(comment("About to define ports."));
         CCode.append(portsDefinition.toString());
 
         // FindBugs says that we don't have to check the instance here
@@ -2387,6 +2388,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         //+ container.getClassName());
         //}
 
+        CCode.append(comment("CCodeGenerator:_generateAndWriteCompositeActorCode()"));
         CCode.append("struct " + actorType + "* " + sanitizedContainerName
                 + ";" + _eol);
 
