@@ -1,11 +1,7 @@
 /***preinitBlock***/
-#ifdef __AVR__
-#include <Arduino.h>
-int led = 13;
-void setup() {
-    pinMode(led,OUTPUT);
-}
-#endif
+#include "mbed.h"
+
+DigitalOut myled(LED1);
 /**/
 
 /*** IntPrintBlock($name, $channel) ***/
@@ -29,15 +25,12 @@ if ($hasToken(input#$channel)) {
 /*** BooleanPrintBlock($name, $channel) ***/
 // Arduino!
 if ($hasToken(input#$channel)) {
-#ifdef __AVR__
+    wait(0.1);
     if ($get(input#$channel)) {
-        digitalWrite(led, HIGH);
+        myled = 1;
     } else {
-        digitalWrite(led, LOW);
+        myled = 0;
     }
-#else
-        printf("%d Arduino!!!\n", $get(input#$channel));
-#endif __AVR__
 }
 /**/
 
