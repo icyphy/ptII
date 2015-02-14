@@ -171,7 +171,9 @@ public class MicrostepDelay extends Transformer {
             }
              */
             _pendingOutput = input.get(0);
-            director.fireAtCurrentTime(this);
+            // Do not use fireAtCurrentTime() because if synchronizeToRealTime is set,
+            // that will not necessarily match the current model time.
+            director.fireAt(this, director.getModelTime());
             if (_debugging) {
                 _debug("Read input with value = " + _pendingOutput);
             }
