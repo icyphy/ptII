@@ -152,7 +152,7 @@ public class Merge extends DETransformer {
                     } else {
                         // Refiring the actor to handle the other tokens
                         // that are still in channels
-                        getDirector().fireAtCurrentTime(this);
+                        getDirector().fireAt(this, getDirector().getModelTime());
                         _moreTokensOnOtherChannels = true;
                         break;
                     }

@@ -3529,7 +3529,8 @@ ExplicitChangeContext {
         // the design of actors like DiscreteClock.
         // Do not do this in preinitialize.
         if (!inPreinitialize) {
-            getDirector().fireAtCurrentTime(this);
+            Director director = getDirector();
+            director.fireAt(this, director.getModelTime());
         }
 
         // If we have not reached a final state, and the state
