@@ -473,7 +473,7 @@ public class Director extends Attribute implements Executable {
         return fireContainerAt(time, microstep);
     }
 
-    /** Request a firing of the given actor at the current model time.
+    /** Request a firing of the given actor at the current model time or later.
      *  This base class simply calls fireAt(actor, getModelTime())
      *  and returns whatever that returns. Note that fireAt() will modify
      *  the requested time if it happens to be in the past by the time
