@@ -138,7 +138,7 @@ public class TDLActor extends FSMActor {
                 if (inputIsSafeToProcess(port)) {
                     for (int i = 0; i < p.getWidth(); i++) {
                         if (i < p.getWidthInside()) {
-                            while (p.hasToken(i)) {
+                            while (p.hasNewToken(i)) {
                                 Token t = p.get(i);
                                 if (_debugging) {
                                     _debug(getName(),

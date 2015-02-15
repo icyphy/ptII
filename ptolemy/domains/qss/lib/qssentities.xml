@@ -11,7 +11,6 @@
 <entity name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector"/>
 -->
 <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator"/>
-<entity name="Align" class="ptolemy.domains.qss.lib.Align"/>
 <entity name="SmoothSignal" class="ptolemy.domains.qss.lib.SmoothSignal"/>
 
       </group>

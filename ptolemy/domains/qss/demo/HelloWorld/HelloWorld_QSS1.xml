@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={464, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 945, 688}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 578]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0443229682254498">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1473565048703243">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.35757184028625, 435.52604581653213}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.48482403872714, 415.78015756607056}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The Const produces&#10;a single event that specifies a signal starting at time 0 with constant&#10;value 1. The first integrator produces a signal with constant slope.&#10;The second integrator produces a quadratic signal.">
@@ -91,13 +91,13 @@
         </property>
     </property>
     <property name="Arrow4" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 245.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="-40.0">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-30.0">
         </property>
         <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
@@ -107,7 +107,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 5.0.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 170.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -158,7 +158,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 22, 571, 874}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={861, 22, 571, 874}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 830]">
         </property>
@@ -168,7 +168,7 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Output of the Second Integrator</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
@@ -210,6 +210,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 325.0}">
         </property>
     </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 410, 573, 468}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 424]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 255.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Output of the First Integrator</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="0.0" max="5.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=325.0}, tail={id=&quot;Const2.trigger&quot;,x=135.0,y=325.0}, points={} } }">
         </property>
@@ -227,11 +249,8 @@
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;QSSIntegrator2.q&quot;,x=330.0,y=325.0}, points={} } }">
-        </property>
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation6"/>
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="QSSIntegrator.u" relation="relation3"/>
     <link port="QSSIntegrator.q" relation="relation6"/>
@@ -239,4 +258,5 @@
     <link port="QSSIntegrator2.q" relation="relation"/>
     <link port="Const2.output" relation="relation3"/>
     <link port="Const2.trigger" relation="relation2"/>
+    <link port="TimedPlotter2.input" relation="relation6"/>
 </entity>

@@ -2599,7 +2599,7 @@ ExplicitChangeContext {
                 int numberOfTokensToRead = DFUtilities
                         .getTokenConsumptionRate(port);
                 int count = 0;
-                while (port.hasToken(channel) && count < numberOfTokensToRead) {
+                while (port.hasNewToken(channel) && count < numberOfTokensToRead) {
                     Token token = port.get(channel);
                     count++;
 

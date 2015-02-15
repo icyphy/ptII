@@ -888,7 +888,7 @@ public class PtidesPlatform extends MirrorComposite {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
 
-                    while (port.isKnownInside(i) && port.hasTokenInside(i)) {
+                    while (port.isKnownInside(i) && port.hasNewTokenInside(i)) {
                         Token t = port.getInside(i);
 
                         if (_isAssociatedWithNetworkTransmitter(port)) {

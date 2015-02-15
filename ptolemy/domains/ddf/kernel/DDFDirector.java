@@ -442,7 +442,7 @@ public class DDFDirector extends Director {
             IOPort outputPort = (IOPort) outputPorts.next();
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
-                while (outputPort.hasTokenInside(i)) {
+                while (outputPort.hasNewTokenInside(i)) {
                     Token token = outputPort.getInside(i);
 
                     if (_debugging) {
@@ -884,7 +884,7 @@ public class DDFDirector extends Director {
                     // _getTokenProductionRate(port) returns an array of int
                     // each with value -1.
                 } else {
-                    while (port.hasTokenInside(i)) {
+                    while (port.hasNewTokenInside(i)) {
                         Token token = port.getInside(i);
 
                         if (_debugging) {

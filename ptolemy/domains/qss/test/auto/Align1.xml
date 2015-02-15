@@ -52,13 +52,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, -5.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={618, 179, 809, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 151, 829, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[595, 418]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[595, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8396985227615317">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3356164383561644">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.93715533088235, 144.359375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{221.0, 181.4205128205128}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model samples a SmoothToken at&#10;a fixed sample time. The Align actor&#10;extrapolates that Token to the current&#10;model time.">
@@ -108,13 +108,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 160.0]">
         </property>
     </entity>
-    <entity name="Align" class="ptolemy.domains.qss.lib.Align">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 160.0]">
-        </property>
-    </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 160.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -129,17 +129,11 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=135.0,y=160.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=220.0,y=160.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Align.trigger&quot;,x=325.0,y=160.0}, tail={id=&quot;DiscreteClock.output&quot;,x=230.0,y=225.0}, points={325.0,225.0} } }">
-        </property>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Align.output&quot;,x=325.0,y=160.0}, tail={id=&quot;Test.input&quot;,x=400.0,y=160.0}, points={} } }">
-        </property>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Align.input&quot;,x=325.0,y=160.0}, tail={id=&quot;QSSIntegrator.q&quot;,x=220.0,y=160.0}, points={} } }">
-        </property>
     </relation>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Merge.input" relation="relation"/>
@@ -147,10 +141,10 @@
     <link port="Merge.output" relation="relation4"/>
     <link port="SingleEvent2.output" relation="relation2"/>
     <link port="QSSIntegrator.u" relation="relation4"/>
-    <link port="QSSIntegrator.q" relation="relation6"/>
-    <link port="Test.input" relation="relation5"/>
-    <link port="Align.input" relation="relation6"/>
-    <link port="Align.output" relation="relation5"/>
-    <link port="Align.trigger" relation="relation3"/>
-    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="QSSIntegrator.q" relation="relation3"/>
+    <link port="Test.input" relation="relation6"/>
+    <link port="DiscreteClock.output" relation="relation7"/>
+    <link port="Sampler.input" relation="relation3"/>
+    <link port="Sampler.output" relation="relation6"/>
+    <link port="Sampler.trigger" relation="relation7"/>
 </entity>

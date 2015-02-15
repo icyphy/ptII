@@ -84,7 +84,7 @@ public class AddSubtractAll extends AddSubtract {
         Token sum = null;
 
         for (int i = 0; i < plus.getWidth(); i++) {
-            while (plus.hasToken(i)) {
+            while (plus.hasNewToken(i)) {
                 if (sum == null) {
                     sum = plus.get(i);
                 } else {
@@ -94,7 +94,7 @@ public class AddSubtractAll extends AddSubtract {
         }
 
         for (int i = 0; i < minus.getWidth(); i++) {
-            while (minus.hasToken(i)) {
+            while (minus.hasNewToken(i)) {
                 Token in = minus.get(i);
 
                 if (sum == null) {

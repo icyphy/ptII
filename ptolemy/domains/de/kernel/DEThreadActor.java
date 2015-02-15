@@ -185,7 +185,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
             try {
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     try {
-                        while (port.hasToken(channel)) {
+                        while (port.hasNewToken(channel)) {
                             port.get(channel);
                         }
                     } catch (IllegalActionException ex) {

@@ -63,7 +63,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1867663200916851">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{637.406013250351, 319.9722524260714}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{637.406013250351, 319.9722524260715}">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -108,18 +108,18 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{805.0, 270.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 280.0]">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <port name="inputY" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <configure>
@@ -148,12 +148,12 @@
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <port name="x2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
     </entity>
@@ -170,17 +170,17 @@
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <port name="x2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <port name="x3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
     </entity>
@@ -197,17 +197,17 @@
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <port name="x2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
         <port name="x3" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
         </port>
     </entity>
@@ -227,10 +227,6 @@
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 410.0]">
-        </property>
-    </entity>
-    <entity name="Align" class="ptolemy.domains.qss.lib.Align">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{715.0, 275.0}">
         </property>
     </entity>
     <entity name="SmoothSignal" class="ptolemy.domains.qss.lib.SmoothSignal">
@@ -259,24 +255,12 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XY Plotter.inputX&quot;,x=805.0,y=270.0}, tail={id=&quot;Align.output&quot;,x=715.0,y=275.0,index=2}, points={750.0,260.0,750.0,275.0} } }">
-        </property>
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XY Plotter.inputY&quot;,x=805.0,y=270.0}, tail={id=&quot;Align.output&quot;,x=715.0,y=275.0,index=2}, points={} } }">
-        </property>
-    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{560.0, 205.0}">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation9.vertex1&quot;,x=560.0,y=205.0}, tail={id=&quot;SmoothSignal.input&quot;,x=600.0,y=270.0,index=2}, points={560.0,270.0} },{ head={id=&quot;QSSIntegrator.u&quot;,x=605.0,y=205.0}, tail={id=&quot;relation9.vertex1&quot;,x=560.0,y=205.0}, points={} },{ head={id=&quot;Expression 1.output&quot;,x=450.0,y=205.0}, tail={id=&quot;relation9.vertex1&quot;,x=560.0,y=205.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Align.input&quot;,x=715.0,y=275.0,index=2}, tail={id=&quot;SmoothSignal.output&quot;,x=600.0,y=270.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -287,12 +271,12 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation10.vertex1&quot;,x=560.0,y=475.0}, tail={id=&quot;SmoothSignal2.input&quot;,x=595.0,y=350.0,index=2}, points={560.0,350.0} },{ head={id=&quot;Expression 2.output&quot;,x=455.0,y=475.0}, tail={id=&quot;relation10.vertex1&quot;,x=560.0,y=475.0}, points={} },{ head={id=&quot;QSSIntegrator2.u&quot;,x=605.0,y=475.0}, tail={id=&quot;relation10.vertex1&quot;,x=560.0,y=475.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Align.input&quot;,x=715.0,y=275.0,index=2}, tail={id=&quot;SmoothSignal2.output&quot;,x=595.0,y=350.0}, points={680.0,275.0,680.0,350.0} } }">
-        </property>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="XY Plotter.inputX" relation="relation7"/>
-    <link port="XY Plotter.inputY" relation="relation8"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="XY Plotter.inputX" relation="relation"/>
+    <link port="XY Plotter.inputY" relation="relation3"/>
     <link port="Expression 1.output" relation="relation9"/>
     <link port="Expression 1.x1" relation="relation5"/>
     <link port="Expression 1.x2" relation="relation6"/>
@@ -310,10 +294,6 @@
     <link port="QSSIntegrator.q" relation="relation5"/>
     <link port="QSSIntegrator3.u" relation="relation2"/>
     <link port="QSSIntegrator3.q" relation="relation4"/>
-    <link port="Align.input" relation="relation"/>
-    <link port="Align.input" relation="relation3"/>
-    <link port="Align.output" relation="relation7"/>
-    <link port="Align.output" relation="relation8"/>
     <link port="SmoothSignal.input" relation="relation5"/>
     <link port="SmoothSignal.input" relation="relation9"/>
     <link port="SmoothSignal.output" relation="relation"/>

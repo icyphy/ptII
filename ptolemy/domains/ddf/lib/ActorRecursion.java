@@ -600,7 +600,7 @@ public class ActorRecursion extends TypedCompositeActor {
             IOPort outputPort = (IOPort) outputPorts.next();
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
-                while (outputPort.hasTokenInside(i)) {
+                while (outputPort.hasNewTokenInside(i)) {
                     outputPort.send(i, outputPort.getInside(i));
                 }
             }

@@ -885,7 +885,7 @@ public class MetroIIPtidesPlatform extends MetroIIMirrorComposite {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
 
-                    while (port.isKnownInside(i) && port.hasTokenInside(i)) {
+                    while (port.isKnownInside(i) && port.hasNewTokenInside(i)) {
                         Token t = port.getInside(i);
 
                         if (_isAssociatedWithNetworkTransmitter(port)) {
