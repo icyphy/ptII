@@ -448,7 +448,7 @@ public class PthalesDirector extends SDFDirector {
             for (int i = 0; i < port.getWidth(); i++) {
                 try {
                     if (i < port.getWidthInside()) {
-                        while (port.hasToken(i)) { //when to stop?
+                        while (port.hasNewToken(i)) { //when to stop?
                             Token t = port.get(i);
                             port.sendInside(i, t);
 
@@ -592,7 +592,7 @@ public class PthalesDirector extends SDFDirector {
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
-                    while (port.hasTokenInside(i)) {
+                    while (port.hasNewTokenInside(i)) {
                         Token t = port.getInside(i);
 
                         if (_debugging) {

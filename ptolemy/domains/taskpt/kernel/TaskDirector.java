@@ -115,7 +115,7 @@ public class TaskDirector extends TaskPtDirector {
             // remove present tokens on outputs
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
-                    while (port.hasTokenInside(i)) {
+                    while (port.hasNewTokenInside(i)) {
                         port.getInside(i);
                     }
                 } catch (NoTokenException ex) {
@@ -231,7 +231,7 @@ public class TaskDirector extends TaskPtDirector {
 
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
-                while (port.hasTokenInside(i)) {
+                while (port.hasNewTokenInside(i)) {
                     Token t = port.getInside(i);
 
                     if (offset < size) {

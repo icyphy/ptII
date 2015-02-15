@@ -200,7 +200,7 @@ public class ReduceWorker extends TypedAtomicActor {
         if (_readMode) {
             int numberInputs = inputKey.getWidth();
             for (int i = 0; i < numberInputs; i++) {
-                while (inputKey.hasToken(i) && inputValue.hasToken(i)) {
+                while (inputKey.hasToken(i) && inputValue.hasNewToken(i)) {
                     String key = ((StringToken) inputKey.get(i)).stringValue();
                     String value = ((StringToken) inputValue.get(i))
                             .stringValue();

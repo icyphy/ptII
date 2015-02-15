@@ -137,7 +137,7 @@ public class Merge extends DETransformer {
                     firstAvailableToken = input.get(i);
                     output.send(0, firstAvailableToken);
 
-                    while (input.hasToken(i)) {
+                    while (input.hasNewToken(i)) {
                         Token token = input.get(i);
                         output.send(0, token);
                     }
@@ -146,7 +146,7 @@ public class Merge extends DETransformer {
                         // this token is not the first available token
                         // in this firing, consume and discard all tokens
                         // from the input channel
-                        while (input.hasToken(i)) {
+                        while (input.hasNewToken(i)) {
                             input.get(i);
                         }
                     } else {

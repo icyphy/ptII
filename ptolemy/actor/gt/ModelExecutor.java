@@ -396,7 +396,7 @@ public class ModelExecutor extends TypedAtomicActor {
                     IOPort port = (IOPort) portObject;
                     if (port.isOutput()) {
                         for (int i = 0; i < port.getWidthInside(); i++) {
-                            while (port.hasTokenInside(i)) {
+                            while (port.hasNewTokenInside(i)) {
                                 Token token = port.getInside(i);
                                 port.send(i, token);
                             }

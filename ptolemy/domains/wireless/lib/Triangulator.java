@@ -198,7 +198,7 @@ public class Triangulator extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        while (input.hasToken(0)) {
+        while (input.hasNewToken(0)) {
             RecordToken recordToken = (RecordToken) input.get(0);
 
             ArrayToken locationArray = (ArrayToken) recordToken.get("location");

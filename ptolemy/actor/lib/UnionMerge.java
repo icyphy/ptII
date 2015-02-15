@@ -152,7 +152,7 @@ public class UnionMerge extends TypedAtomicActor {
         super.fire();
 
         for (IOPort port : inputPortList()) {
-            while (port.hasToken(0)) {
+            while (port.hasNewToken(0)) {
                 output.send(0, new UnionToken(port.getName(), port.get(0)));
             }
         }

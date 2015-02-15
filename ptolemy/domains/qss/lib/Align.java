@@ -58,6 +58,7 @@ import ptolemy.kernel.util.StringAttribute;
  @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
+ @deprecated No longer needed. Use Sampler.
  */
 public class Align extends Transformer {
     /** Construct an actor in the specified container with the specified
@@ -114,7 +115,7 @@ public class Align extends Transformer {
         boolean triggerConnected = false;
         for (int i = 0; i < trigger.getWidth(); i++) {
             triggerConnected = true;
-            while (trigger.hasToken(i)) {
+            while (trigger.hasNewToken(i)) {
                 trigger.get(i);
                 hasTrigger = true;
             }
@@ -122,12 +123,12 @@ public class Align extends Transformer {
 
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
-            while (input.hasToken(i)) {
+            while (input.hasNewToken(i)) {
         	_received[i] = input.get(i);
             }
         }
         if (!triggerConnected || hasTrigger) {
-        	Time time = getDirector().getModelTime();
+            Time time = getDirector().getModelTime();
             Token[] result = SmoothToken.align(_received, time);
             for (int i = 0; i < width; i++) {
         	if (result[i] != null) {

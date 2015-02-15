@@ -97,7 +97,7 @@ public class Store extends LoadStore {
 
         int width = data.getWidth();
         for (int i = 0; i < width; ++i) {
-            while (data.hasToken(i) && numWrites < size) {
+            while (data.hasNewToken(i) && numWrites < size) {
                 Token token = data.get(i);
 
                 mem.write(addr + numWrites, token);

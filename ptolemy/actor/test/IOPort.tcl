@@ -607,7 +607,7 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     $manager wrapup
     list [$p2 getWidth] $msg1 $msg2
 } {1 {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
-  in .<Unnamed Object>.E1.P1} {ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.
+  in .<Unnamed Object>.E1.P1} {ptolemy.actor.NoTokenException: No token to return.
   in .<Unnamed Object>.E2.P2}}
 
 test IOPort-9.4 {Check loopback send} {

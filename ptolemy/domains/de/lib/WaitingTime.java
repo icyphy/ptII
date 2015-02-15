@@ -130,14 +130,14 @@ public class WaitingTime extends DEActor {
         super.fire();
         Time currentTime = ((DEDirector) getDirector()).getModelTime();
 
-        while (waiter.hasToken(0)) {
+        while (waiter.hasNewToken(0)) {
             waiter.get(0);
             _waiting.addElement(currentTime);
         }
 
         boolean godot = false;
 
-        while (waitee.hasToken(0)) {
+        while (waitee.hasNewToken(0)) {
             waitee.get(0);
             godot = true;
         }

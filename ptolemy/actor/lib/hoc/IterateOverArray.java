@@ -876,7 +876,7 @@ public class IterateOverArray extends MirrorComposite {
                 try {
                     ArrayList list = new ArrayList();
 
-                    while (port.isKnownInside(i) && port.hasTokenInside(i)) {
+                    while (port.isKnownInside(i) && port.hasNewTokenInside(i)) {
                         Token t = port.getInside(i);
                         list.add(t);
                     }

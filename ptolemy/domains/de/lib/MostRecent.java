@@ -358,14 +358,14 @@ public class MostRecent extends Transformer {
             throws IllegalActionException {
         // Consume the inputs we save.
         for (int i = 0; i < commonWidth; i++) {
-            while (input.hasToken(i)) {
+            while (input.hasNewToken(i)) {
                 _lastInputs[i] = input.get(i);
             }
         }
 
         // Consume the inputs we don't save.
         for (int i = commonWidth; i < inputWidth; i++) {
-            while (input.hasToken(i)) {
+            while (input.hasNewToken(i)) {
                 input.get(i);
             }
         }

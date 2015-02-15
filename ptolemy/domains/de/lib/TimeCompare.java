@@ -133,12 +133,12 @@ public class TimeCompare extends DEActor {
         Double currentTime = ((DEDirector) getDirector()).getModelTime()
                 .getDoubleValue();
 
-        while (input1.hasToken(0)) {
+        while (input1.hasNewToken(0)) {
             input1.get(0);
             _input1TimeStamps.add(currentTime);
         }
 
-        while (input2.hasToken(0)) {
+        while (input2.hasNewToken(0)) {
             input2.get(0);
             _input2TimeStamps.add(currentTime);
         }

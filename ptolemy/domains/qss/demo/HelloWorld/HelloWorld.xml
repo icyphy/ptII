@@ -183,21 +183,21 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 22, 430, 293}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={868, 26, 430, 293}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 249]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 110.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Integrals</title>
+<title>Integral of a Constant using QSS2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
-<yRange min="0.0" max="12.000003528319127"/>
+<yRange min="0.0" max="4.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -236,6 +236,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 110.0]">
         </property>
     </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={871, 320, 430, 293}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 249]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 175.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Integral of a Ramp using QSS2</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="0.0" max="12.00010238734968"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -246,19 +266,19 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="QSSIntegrator.u" relation="relation5"/>
     <link port="QSSIntegrator.q" relation="relation"/>
     <link port="Const.output" relation="relation3"/>
     <link port="Const.trigger" relation="relation2"/>
     <link port="QSSIntegrator2.u" relation="relation3"/>
-    <link port="QSSIntegrator2.q" relation="relation4"/>
+    <link port="QSSIntegrator2.q" relation="relation6"/>
     <link port="Const2.output" relation="relation5"/>
     <link port="Const2.trigger" relation="relation2"/>
+    <link port="TimedPlotter2.input" relation="relation6"/>
 </entity>

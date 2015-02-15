@@ -205,7 +205,7 @@ public class MapFileStorage extends DEActor {
 
         if (_readMode) {
             //Read inputs.
-            while (inputKey.hasToken(0) && inputValue.hasToken(0)) {
+            while (inputKey.hasToken(0) && inputValue.hasNewToken(0)) {
                 String key = ((StringToken) inputKey.get(0)).stringValue();
                 String value = ((StringToken) inputValue.get(0)).stringValue();
                 int hashCode = key.hashCode();

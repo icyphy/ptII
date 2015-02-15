@@ -133,7 +133,9 @@ public class SmoothSignal extends Transformer {
         // Entries will be null if there is no input.
         DoubleToken[] received = new DoubleToken[width];
         for (int i = 0; i < width; i++) {
-            while (input.hasToken(i)) {
+            // Do not read this in a while loop because if input is persistent,
+            // it will go into an infinite loop. There always is a token.
+            if (input.hasToken(i)) {
         	received[i] = (DoubleToken)input.get(i);
             }
             if (received[i] instanceof SmoothToken) {
