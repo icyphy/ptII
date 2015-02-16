@@ -9,7 +9,7 @@ import ptolemy.math.DoubleMatrixMath;
  * This class solves min(BarrierFunction B = f0(x)-(1/t)sum(log(-fi(x)))) using Newton decrement.
  */
 public class BarrierMethod  {
-    private boolean flag_debug_print = true; 
+    private boolean flag_debug_print = false; 
     private static final double MIN_STEP_SIZE = 1.0E-20;
     public static final int CONVERGED = 0;
     public static final int FAILED_MAX_ITERATION_LIMIT = 1;
