@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CompositeOptimizerUsingGradient" class="org.ptolemy.optimization.CompositeOptimizerUsingGradient">
+        <doc>Optimize the objective function provided in the inside composite, subject to constraints and precision/iteration limits</doc>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory"/>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizerUsingGradient$OptimizerComposite">
+          <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">
+              Provide a model that computes f(x) from x where f(x) is the term to be minimized.
+			  Also provide a model to compute g(x) from x, where the constraints on the minimization 
+              are g(x) >= 0. 
+              </text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+          </property>
+        </entity>
+</entity>
