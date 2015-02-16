@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000009">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{50.8923994974848, -493.3071136934671}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{50.89239949748469, -493.3071136934671}">
     </property>
     <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="100">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1709,7 +1709,7 @@
             </property>
             <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="2.2">
             </property>
             <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
             </property>
@@ -1721,9 +1721,9 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{640.0, -115.0}">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="74.19836262123268">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="68.2785806700427">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="3.981549551008875">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="4.393887401382214">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x+vx">
             </property>
@@ -1731,13 +1731,13 @@
             </property>
             <property name="z1" class="ptolemy.data.expr.Parameter" value="[x-r1(0,0); y-r1(1,0)]">
             </property>
-            <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="[141.7149496207317; -0.3672183240922]">
+            <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="[109.3406858893825; 3.2261538863261]">
             </property>
-            <property name="z1_m" class="ptolemy.data.expr.Parameter" value="[69.990302396304; 5.4756119616579]">
+            <property name="z1_m" class="ptolemy.data.expr.Parameter" value="[-39.18718974865; 0.3019550923167]">
             </property>
-            <property name="vx" class="ptolemy.data.expr.Parameter" value="2.165433010302076">
+            <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.7951596937435723">
             </property>
-            <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.985254300938273">
+            <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.41850095665080705">
             </property>
             <property name="vx_update" class="ptolemy.data.expr.Parameter" value="vx">
             </property>
@@ -1780,6 +1780,8 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="69.20840256255883">
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -1790,6 +1792,8 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y+vy">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="4.549916073267563">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -1802,6 +1806,8 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.8980444309520492">
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -1812,6 +1818,8 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
+                </property>
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.24961592009674805">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2260,7 +2268,7 @@
             </property>
             <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="2.2">
             </property>
             <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
             </property>
@@ -2272,9 +2280,9 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 45.0]">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="47.93219476253101">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="50.31585035655006">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="-16.136046158866485">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="-15.573052911372535">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x+vx">
             </property>
@@ -2282,13 +2290,13 @@
             </property>
             <property name="z1" class="ptolemy.data.expr.Parameter" value="[x-r1(0,0); y-r1(1,0)]">
             </property>
-            <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="[139.7149467731258; -0.3680551986556]">
+            <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="[107.412636894913; 3.7574994377114]">
             </property>
-            <property name="z1_m" class="ptolemy.data.expr.Parameter" value="[50.362716080149; -14.8862277939609]">
+            <property name="z1_m" class="ptolemy.data.expr.Parameter" value="[-56.5193552528976; -18.0116376451936]">
             </property>
-            <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.8114404226778504">
+            <property name="vx" class="ptolemy.data.expr.Parameter" value="0.995281133567692">
             </property>
-            <property name="vy" class="ptolemy.data.expr.Parameter" value="0.21302423611308718">
+            <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.731139253511957">
             </property>
             <property name="vx_update" class="ptolemy.data.expr.Parameter" value="vx">
             </property>
@@ -2331,6 +2339,8 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="49.27859578662296">
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -2341,6 +2351,8 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y+vy">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-15.410163115257935">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2353,6 +2365,8 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="1.0955310128394007">
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -2363,6 +2377,8 @@
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
+                </property>
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.1594058427803394">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2612,7 +2628,7 @@
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </port>
-            <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizerUsingDerivative$OptimizerComposite">
+            <entity name="OptimizerComposite" class="org.ptolemy.optimization.CompositeOptimizerUsingGradient$OptimizerComposite">
                 <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -2670,14 +2686,10 @@
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1335.0, 600.0]">
                     </property>
-                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
-                    </property>
                 </port>
                 <port name="dg(x)" class="ptolemy.actor.lib.hoc.MirrorPort">
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1390.0, 490.0]">
-                    </property>
-                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType([double])">
                     </property>
                 </port>
                 <port name="location" class="ptolemy.actor.lib.hoc.MirrorPort">
