@@ -4777,6 +4777,8 @@ public class IOPort extends ComponentPort {
 			return ((SmoothToken)result).extrapolate(currentTime);
 		    }
 		}
+	    } else {
+		return _persistentTokens[channelIndex];
 	    }
 	}
 	return null;
