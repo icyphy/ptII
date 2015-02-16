@@ -51,12 +51,16 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	CompositeOptimizer.java  
+	CompositeOptimizer.java  \
+	CompositeOptimizerUsingGradient.java  \
+	BarrierMethod.java  \
+	ObjectiveFunction.java
 
 OTHER_FILES_TO_BE_JARED = \
 	CompositeOptimizerIcon.xml \
 	compositeOptimizer.xml \
 	optimization.xml \
+	compositeOptimizerUsingGradient.xml  \
 	trajectoryOptimizer.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
