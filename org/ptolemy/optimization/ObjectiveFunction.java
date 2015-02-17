@@ -58,8 +58,9 @@ abstract class ObjectiveFunction {
      * In this function, all results(f0_result, fi_results) 
      * and gradients(f0_gradient, fi_gradients) must be updated.
      * @param x : input variables
+     * @return If calculation was terminated by user input, return "false".
      */
-    abstract public void calcFunc(double[] x);
+    abstract public boolean calcFunc(double[] x);
 
     /**
      * Objective function called by a solver.
@@ -78,7 +79,7 @@ abstract class ObjectiveFunction {
             current_point[i] = x[i];
         }
 
-        calcFunc(x);
+        if(!calcFunc(x)) stop_requested = true;
         for(int i=0; i<fi_results.length; i++) {
             fi_results[i] += fi_relax_val[i];
         }
@@ -213,7 +214,8 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
         }
         current_point[current_point.length-1] = 0;
     }
-    public void calcFunc(double[] x) {
+    public boolean calcFunc(double[] x) {
+        return false;
     }
     /**
      * Objective function called in Phase I. (Searching for feasible initial point)
@@ -292,7 +294,8 @@ class ApproximatedObjectiveFunction extends ObjectiveFunction{
             clearMatrix(fi_hessians[i]); //fi_hessians are all zero.
         }
     }
-    public void calcFunc(double[] x) {
+    public boolean calcFunc(double[] x) {
+        return false;
     }
     /**
      * Objective function called in QPSolver.
