@@ -625,7 +625,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             if(need_to_initialize) {
                 calc_func = new ObjectiveFunction(_dimension, _numConstraints) {
                     @Override
-                    public void calcFunc(double[] x) {
+                    public boolean calcFunc(double[] x) {
                         try {
                             f0_result = oneStepIteration(x, fi_results, f0_gradient, fi_gradients);
                             //constraints must be minus value (g(x) < 0)
@@ -642,10 +642,11 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                                     f0_gradient[i] = -f0_gradient[i];
                                 }
                             }
-                            stop_requested = _stopRequested;
+                            if(_stopRequested) return false;
                         } catch (IllegalActionException iae) {
                             iae.printStackTrace();
                         }
+                        return true;
                     }
                 };
             }
