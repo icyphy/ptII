@@ -51,6 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	BouncingBall.mo \
 	childModel.mo \
 	dcmotor.mo \
+	dcmotor.mos \
 	OpenModelicaInherit.xml \
 	OpenModelicaInteractive.xml \
 	OpenModelicaPltPlot.xml \
