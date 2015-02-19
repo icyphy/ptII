@@ -564,8 +564,9 @@ public class OMCCommand implements IOMCCommand {
                                         .compareTo("unspecified") == 0) {
 
                                     // Return the value of a component.
-                                    getComponentModifierNames = sendCommand("getComponentModifierNames("
-                                            + modelName + "," + childKey + ")");
+                                    String command = "getComponentModifierNames("
+                                        + modelName + "," + childKey + ")";
+                                    getComponentModifierNames = sendCommand(command);
                                     if (!getComponentModifierNames.getError()
                                             .toString().isEmpty()) {
                                         _omcLogger
@@ -576,15 +577,26 @@ public class OMCCommand implements IOMCCommand {
                                     // The variable does not have any parameters.
                                     if (getComponentModifierNames
                                             .getFirstResult().trim()
-                                            .compareTo("{}") == 0) {
+                                            .compareTo("{}") == 0
+                                            || getComponentModifierNames
+                                            .getFirstResult()
+                                            .trim().length() == 0) {
+                                        String oldCommand = command;
                                         // Set the modifier value of a component.
-                                        CompilerResult unspecifiedModifier = sendCommand("setComponentModifierValue("
+                                        command = "setComponentModifierValue("
                                                 + modelName
                                                 + ", "
                                                 + childKey
                                                 + ", $Code(="
                                                 + valueList[i]
-                                                + "))");
+                                            + "))";
+
+                                        loggerInfo = "The variable has no parameters, the command was \""
+                                            + oldCommand + "\".  Now setting the modifier value of a component with \""
+                                            + command + "\".";
+                                        _omcLogger.getInfo(loggerInfo);
+
+                                        CompilerResult unspecifiedModifier = sendCommand(command);
 
                                         if (unspecifiedModifier.getError()
                                                 .toString().isEmpty()) {
@@ -602,6 +614,15 @@ public class OMCCommand implements IOMCCommand {
                                                 getComponentModifierNames
                                                         .getFirstResult()
                                                         .trim().toString());
+                                        // Stdout was getting: "INFO: [<interactive>:1:1-1:0:writable] Error: Class getComponentModifierNames not found in scope <global scope> (looking for a function or record)."
+                                        // and componentsBuffer had length 0.
+                                        if (componentsBuffer.length() == 0) {
+                                            throw new IllegalActionException("Failed to get the component modifier names, "
+                                                    + "the first results was the empty string.  Check standard out for messages.  "
+                                                    + "The command was \"" + command
+                                                    + "\".  The CompilerResult: " + getComponentModifierNames);
+                                        }
+
                                         // Delete the first and last "{".
                                         componentsBuffer.deleteCharAt(0);
                                         String variableNames = componentsBuffer
@@ -692,7 +713,7 @@ public class OMCCommand implements IOMCCommand {
                 }
             }
         } catch (Exception e) {
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(null, e, e.getMessage());
         }
     }
 
@@ -758,8 +779,8 @@ public class OMCCommand implements IOMCCommand {
         _omcLogger.getInfo(loggerInfo);
 
         // Build the Modelica model by sending buildModel() to the OMC server.
-        CompilerResult buildModelResult = sendCommand("buildModel(" + commands
-                + ")");
+        String command = "buildModel(" + commands + ")";
+        CompilerResult buildModelResult = sendCommand(command);
 
         // Check if an error exists in the result of buildModel("command").
         if (!buildModelResult.getFirstResult().isEmpty()
@@ -771,7 +792,9 @@ public class OMCCommand implements IOMCCommand {
         // Error occurred while flattening model BouncingBall
         if (!buildModelResult.getError().isEmpty()
                 && !(buildModelResult.getError().contains("Warning"))) {
-            loggerInfo = buildModelResult.getError();
+            loggerInfo = buildModelResult.getError()
+                + "The command that failed was \""
+                + command + "\"";
             _omcLogger.getInfo(loggerInfo);
             throw new ConnectException(loggerInfo);
         }
