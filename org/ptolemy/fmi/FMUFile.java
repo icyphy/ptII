@@ -131,7 +131,8 @@ public class FMUFile {
                 osName = "darwin-x86_";
                 extension = ".so";
                 library = topDirectory + File.separator + "binaries"
-                        + File.separator + osName + bitWidth + File.separator
+                        + File.separator + osName + bitWidth
+                        + File.separator
                         + fmiModelDescription.modelIdentifier + extension;
                 File canonicalFile2 = new File(library).getCanonicalFile();
                 if (canonicalFile2.exists()) {
@@ -144,9 +145,34 @@ public class FMUFile {
                                     + "This is probably OpenModelica 1.8.1, which uses dwarwin-x86_64");
                     canonicalFile = canonicalFile2;
                 } else {
-                    System.out.println(canonicalFile + " does not exist"
-                            + " also tried " + canonicalFile2
-                            + " for OpenModelica 1.8.1");
+                    // OpenModelica 1.9.2 uses x86_64-apple-darwin13.4.0
+                    // FIXME: Invoke uname -r to get the 13.4.0.  To do this, use ProcessBuilder.  See FMUBuild.java
+                    osName = "x86_";
+                    extension = ".dylib";
+                    library = topDirectory + File.separator + "binaries"
+                        + File.separator + osName + bitWidth
+                        + "-apple-darwin13.4.0"
+                        + File.separator
+                        + fmiModelDescription.modelIdentifier + extension;
+                    File canonicalFile3 = new File(library).getCanonicalFile();
+                    if (canonicalFile3.exists()) {
+                        System.out
+                            .println("Could not find "
+                                    + canonicalFile
+                                    + " or "
+                                    + canonicalFile2
+                                    + " but "
+                                    + canonicalFile3
+                                    + "exists.  "
+                                    + "This is probably OpenModelica 1.9.2, which uses x86_64-apple-darwin13.4.0");
+                        canonicalFile = canonicalFile3;
+                    } else {
+                        System.out.println(canonicalFile + " does not exist"
+                                + " also tried " + canonicalFile2
+                                + " for OpenModelica 1.8.1"
+                                + " and " + canonicalFile3
+                                + " for OpenModelica 1.9.2.");
+                    }
                 }
             }
         }
