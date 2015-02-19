@@ -37,7 +37,7 @@
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../..
+ROOT =		$(PTII)
 
 CLASSPATH =	$(ROOT)
 
