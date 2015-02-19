@@ -72,6 +72,7 @@ namespace sfmi
 	};
 
 
+	typedef std::string modelica_string;
 	typedef double modelica_real;
 	typedef bool modelica_boolean;
 	typedef int modelica_integer;
@@ -83,6 +84,8 @@ namespace sfmi
 	void GETRF(double*,long,long*);
 	void GETRS(double*,long,long*,double*);
 
+        /* From /usr/local/openmodelica/include/omc/c/util/modelica_string.h */
+        modelica_string modelica_real_to_modelica_string_format(modelica_real r, modelica_string format);
 };
 
 #endif
