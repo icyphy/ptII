@@ -70,7 +70,7 @@ export:
 	echo "FMU_NAME = $(FMU_NAME)" >> src/sources/makefile
 	echo "" >> src/sources/makefile
         # FIXME: The flags are not correct for Linux, but they don't seem to be needed (at least for this small model)
-	echo "CFLAGS = -I$(OPENMODELICAHOME)/include/omc/c -llapack -lblas -L/opt/local/lib/gcc49 -L$(OPENMODELICAHOME)/lib -lSimulationRuntimeC -lgfortran" >> src/sources/makefile
+	echo "CFLAGS = -I$(OPENMODELICAHOME)/include/omc/c -llapack -lblas -L/opt/local/lib/gcc49 -L$(OPENMODELICAHOME)/lib/omc -lSimulationRuntimeC -lgfortran" >> src/sources/makefile
 	echo "" >> src/sources/makefile
 	echo "# The rules are in a separate file so that we can easily update them." >> src/sources/makefile
 	echo "include fmu.mk" >> src/sources/makefile
