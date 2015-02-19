@@ -107,23 +107,37 @@ test nightly-1.2 {all} {
 } {{} 1}
 
 test nightly-1.3 {jnlp} {
+    set filename $PTII/adm/dists/ptII$version/vergil.jnlp
+    file delete -force $filename
+    set r0  [file exists $filename]
+
     set matches [nightlyMake jnlp]
-    list $matches [file exists $PTII/vergil.jnlp]
-} {{} 1}
+
+    puts "nightly-1.3: $filename"
+    list $r0 $matches [file exists $filename]
+} {0 {} 1}
 
 test nightly-1.4 {src.jar} {
-    set matches [nightlyMake src.jar]
     set filename $gendir/ptII$version.src.jar
+    file delete -force $filename
+    set r0  [file exists $filename]
+
+    set matches [nightlyMake src.jar]
+
     puts "nightly-1.4: $filename"
-    list $matches [file exists $filename]
-} {{} 1}
+    list $r0 $matches [file exists $filename]
+} {0 {} 1}
 
 test nightly-1.5 {setup} {
-    set matches [nightlyMake setup]
     set filename $gendir/$ptsetup.exe
+    file delete -force $filename
+    set r0  [file exists $filename]
+
+    set matches [nightlyMake setup]
+
     puts "nightly-1.5: $filename"
-    list $matches [file exists $filename]
-} {{} 1}
+    list $r0 $matches [file exists $filename]
+} {0 {} 1}
 
 set VERBOSE 0
 cd $startingDirectory
