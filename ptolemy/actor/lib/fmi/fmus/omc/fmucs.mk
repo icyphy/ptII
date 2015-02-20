@@ -34,20 +34,31 @@
 # FMU_NAME = dqME1
 # include ../fmus.mk
 
-PIC = -O0 -falign-functions -march=native -fPIC
+PIC = -fPIC -O0 -falign-functions -march=native
 INCLUDE = -I$(OPENMODELICAHOME)/include/omc/c -I$(OPENMODELICAHOME)/include/omc/c/fmi2 -I. 
 LDFLAGS = -llapack -lblas -L/opt/local/lib/gcc49 -L"$(OPENMODELICAHOME)/lib/omc"  -Wl,-rpath,'$(OPENMODELICAHOME)/lib/omc' -lSimulationRuntimeC  -L/usr/local/omniORB-4.2.0/lib -lSimulationRuntimeC -L/usr/lib64 -llapack -lblas -lm -lgc -lpthread -rdynamic -L. -llis
 
 FMU_SRCS = $(CFILES) $(FMU_NAME).xml
 
+# Don't want $(FMU_NAME)_info.c
+CFILES := \
+	$(wildcard $(FMU_NAME)_[0-9][0-9]*.c) \
+	$(wildcard $(FMU_NAME)*_functions.c) \
+	$(wildcard $(FMU_NAME)*_records.c) \
+	$(FMU_NAME)_FMU.c \
+	$(FMU_NAME).c 
+
+#	$(wildcard $(FMU_NAME)_me_FMU_[0-9][0-9]*.c)
+
+OFILES = $(CFILES:%.c=%.o)
+
+all: modelDescription.xml $(FMU_NAME).fmu
+
 # CBITSFLAGS is set to -m32 to build linux32 fmus
 %.o: %.c
 	echo `pwd`
-	$(CC) -g -c $(CBITSFLAGS) $(USER_CFLAGS) $(PIC) -Wall $(INCLUDE) $(CFLAGS) $< -o $@
+	$(CC) $(CBITSFLAGS) $(USER_CFLAGS) $(PIC) $(INCLUDE) $(CFLAGS) -c -o $@ $< 
 
-CFILES := $(wildcard $(FMU_NAME)_[0-9][0-9]*.c) $(FMU_NAME)_FMU.c $(FMU_NAME).c
-
-OFILES = $(CFILES:%.c=%.o)
 
 # Export the fmu. $(FMU_NAME).xml is a dervied file created by omc
 #export: modelDescription.xml
@@ -69,7 +80,7 @@ $(FMU_NAME).so: $(OFILES)
 	$(CXX) -shared -I. -o $(FMU_NAME).so $(OFILES) $(LDFLAGS)
 
 
-$(FMU_NAME).fmu: $(FMU_NAME).so
+$(FMU_NAME).fmu: modelDescription.xml $(FMU_NAME).so
 	mkdir -p $(FMU_NAME).fmutmp
 	mkdir -p $(FMU_NAME).fmutmp/binaries
 	mkdir -p $(FMU_NAME).fmutmp/binaries/linux64
@@ -82,6 +93,6 @@ $(FMU_NAME).fmu: $(FMU_NAME).so
 	rm -rf $(FMU_NAME).fmutmp
 
 # Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+include $(PTII)/mk/ptcommon.mk
 
 KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c modelDescription.xml binaries sources

@@ -32,5 +32,3 @@
 FMU_NAME = HeatConductorComplex
 
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmucs.mk
-
-KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu
