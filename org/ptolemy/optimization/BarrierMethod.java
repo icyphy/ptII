@@ -45,21 +45,21 @@ public class BarrierMethod  {
         int return_val = FAILED_MAX_ITERATION_LIMIT;
         ////////////////////////////////////////////////////
         //Phase I: Search for a feasible initial point.
-        objective.iteration_counter = 0;
+        objective.iterationCounter = 0;
         ObjectiveFunctionForPhaseI objective_ph1 = new ObjectiveFunctionForPhaseI(objective);
         //calculate at (X, 0)
-        objective_ph1.calcFuncInternal(objective_ph1.current_point);
+        objective_ph1.calcFuncInternal(objective_ph1.currentX);
         //set initial s
-        objective_ph1.current_point[objective_ph1.current_point.length-1] = maxValue(objective_ph1.fi_results)+_tolerance;
+        objective_ph1.currentX[objective_ph1.currentX.length-1] = maxValue(objective_ph1.fiResults)+_tolerance;
         //check X0 feasibility
-        if(objective_ph1.current_point[objective_ph1.current_point.length-1] < 0){
+        if(objective_ph1.currentX[objective_ph1.currentX.length-1] < 0){
             return_val = CONVERGED; //given starting point is already feasible
         } else {
             return_val = optimizationOfGivenPhase(objective_ph1, 1);
         }
         if(return_val != CONVERGED) relaxConstraints(objective_ph1, _tolerance); //relax the constraints of objective_ph and objective.
         if(flag_debug_print) {
-            System.out.print("Phase1: "+objective.iteration_counter);
+            System.out.print("Phase1: "+objective.iterationCounter);
             if(return_val != CONVERGED) {
                 System.out.print(" Terminated by criteria No."+return_val);
             }
@@ -69,10 +69,10 @@ public class BarrierMethod  {
 
         /////////////////////////////////////////////////////
         //Phase II: optimize objective.current_point
-        objective.iteration_counter = 0;
+        objective.iterationCounter = 0;
         return_val = optimizationOfGivenPhase(objective, 2);
         if(flag_debug_print) {
-            System.out.print("Phase2: "+objective.iteration_counter);
+            System.out.print("Phase2: "+objective.iterationCounter);
             if(return_val != CONVERGED) {
                 System.out.print(" Terminated by criteria No."+return_val);
             }
@@ -84,7 +84,7 @@ public class BarrierMethod  {
     }
     private int optimizationOfGivenPhase(ObjectiveFunction objective, int phase) throws IllegalActionException {
         //calculate at initial_point
-        objective.calcFuncInternal(objective.current_point);
+        objective.calcFuncInternal(objective.currentX);
         
         double t = 1.0; //Parameter which defines the gap of constraints. t will increase through the iteration.
         if(phase == 1) t=100.0;
@@ -118,7 +118,7 @@ public class BarrierMethod  {
      */
     private int calcInnerLoop(ObjectiveFunction objective, int phase, double t) {
         for (int iteration = 0; ; iteration++) {
-            if(objective.stop_requested) return TERMINATED_BY_USER;
+            if(objective.stopRequested) return TERMINATED_BY_USER;
             // iteration limit condition
             if (iteration == _maxIterationNum) {
                 return FAILED_MAX_ITERATION_LIMIT;
@@ -127,13 +127,13 @@ public class BarrierMethod  {
             ////////////////////////////////////////////////
             //calculate the current cost of Barrier Function.
             //B = t*f0(x)-sum(log(-fi(x))
-            double F0X = objective.f0_result;
+            double F0X = objective.f0Result;
             F0X *= t;
-            for(int i=0; i<objective.fi_results.length; i++) {
-                if(objective.fi_results[i]>=0.0) {
+            for(int i=0; i<objective.fiResults.length; i++) {
+                if(objective.fiResults[i]>=0.0) {
                     return FAILED_IMPOSSIBLE_TO_REMAIN_WITHIN_FEASIBLE;
                 }
-                F0X -= Math.log(-objective.fi_results[i]);
+                F0X -= Math.log(-objective.fiResults[i]);
             }
             
             // calculate the Hessian of Barrier Function
@@ -149,8 +149,8 @@ public class BarrierMethod  {
                 return INNER_LOOP_FINISH; //exit from inner loop
             }
             if (phase == 1) {
-                double[] X = objective.current_point; // get reference to the current X.
-                if(((maxValue(objective.fi_results)+X[X.length-1]) < -_tolerance)) {
+                double[] X = objective.currentX; // get reference to the current X.
+                if(((maxValue(objective.fiResults)+X[X.length-1]) < -_tolerance)) {
                     return CONVERGED;
                 }
             }
@@ -225,14 +225,14 @@ public class BarrierMethod  {
                 }
                 approx_objective.calcFuncInternal(X1);
                 boolean areAllNegative = true;
-                for (int j = 0; areAllNegative && j < approx_objective.fi_results.length; j++) {
-                    areAllNegative = (approx_objective.fi_results[j] < 0.0);
+                for (int j = 0; areAllNegative && j < approx_objective.fiResults.length; j++) {
+                    areAllNegative = (approx_objective.fiResults[j] < 0.0);
                 }
                 if(areAllNegative) {
                     // Calculate the total cost of the barrier function at new point X1.
-                    double condSX = approx_objective.f0_result * t;
-                    for(int i=0; i<approx_objective.fi_results.length; i++) {
-                        condSX -= Math.log(-approx_objective.fi_results[i]);
+                    double condSX = approx_objective.f0Result * t;
+                    for(int i=0; i<approx_objective.fiResults.length; i++) {
+                        condSX -= Math.log(-approx_objective.fiResults[i]);
                     }
                     if((search_it!=0)&&(!Double.isNaN(condSX_pre))&&(condSX_pre<=condSX)) {
                         s = s/back_tracking_prop; //condSX_pre is minimum so previous s is used. 
@@ -255,18 +255,18 @@ public class BarrierMethod  {
                 }
                 objective.calcFuncInternal(X1);
                 boolean areAllNegative = true;
-                for (int j = 0; areAllNegative && j < objective.fi_results.length; j++) {
-                    areAllNegative = (objective.fi_results[j] < 0.0);
+                for (int j = 0; areAllNegative && j < objective.fiResults.length; j++) {
+                    areAllNegative = (objective.fiResults[j] < 0.0);
                 }
                 if(areAllNegative) {
-                    double condSX = objective.f0_result * t;
-                    for(int i=0; i<objective.fi_results.length; i++) {
-                        condSX -= Math.log(-objective.fi_results[i]);
+                    double condSX = objective.f0Result * t;
+                    for(int i=0; i<objective.fiResults.length; i++) {
+                        condSX -= Math.log(-objective.fiResults[i]);
                     }
                     
                     double condDX = F0X + _alpha  * s * df;
-                    if((flag_debug_print)&&(objective.iteration_counter>50)) {
-                        System.out.println(objective.iteration_counter+"f0:"+objective.f0_result+"\t condSX:"+condSX);
+                    if((flag_debug_print)&&(objective.iterationCounter>50)) {
+                        System.out.println(objective.iterationCounter+"f0:"+objective.f0Result+"\t condSX:"+condSX);
                     }
                     if (condSX <= condDX) {
                         break;
@@ -294,11 +294,11 @@ public class BarrierMethod  {
      * @param tolerance : all constraints are forced to satisfy g(x) < -tolerance 
      */
     private void relaxConstraints(ObjectiveFunction objective, double tolerance) {
-        double residual = objective.current_point[objective.current_point.length-1];
+        double residual = objective.currentX[objective.currentX.length-1];
         if(flag_debug_print) System.out.print("constraint No.");
-        for(int i=objective.fi_results.length-1; i>=0; i--) {
-            if(objective.fi_results[i]+residual >= -tolerance) {
-                objective.addConstraints(i, -(objective.fi_results[i]+residual + tolerance));
+        for(int i=objective.fiResults.length-1; i>=0; i--) {
+            if(objective.fiResults[i]+residual >= -tolerance) {
+                objective.addConstraints(i, -(objective.fiResults[i]+residual + tolerance));
                 if(flag_debug_print) System.out.print(i+" ");
             }
         }
@@ -313,16 +313,16 @@ public class BarrierMethod  {
      */
     private double[][] calcHessianOfBarrierFunction(ObjectiveFunction objective, double t) {
         // get reference to results and gradients of the cost function and constraints.
-        double[] gradF0X = objective.f0_gradient;
-        double[] fiX = objective.fi_results;
-        double[][] gradFiX = objective.fi_gradients;
+        double[] gradF0X = objective.f0Gradient;
+        double[] fiX = objective.fiResults;
+        double[][] gradFiX = objective.fiGradients;
 
         //////////////////////////////////////////////////////////////////////
         // Hessians of f0-fi are estimated in objective.calcFuncInternal().
         // If the function is not convex, corresponding hessian is converged to zero-matrix.
-        double[][] HessSum = DoubleMatrixMath.multiply(objective.f0_hessian, t);
+        double[][] HessSum = DoubleMatrixMath.multiply(objective.f0Hessian, t);
         for (int i = 0; i < fiX.length; i++) {
-            double[][] HessFiX = DoubleMatrixMath.multiply(objective.fi_hessians[i], -1.0/fiX[i]);
+            double[][] HessFiX = DoubleMatrixMath.multiply(objective.fiHessians[i], -1.0/fiX[i]);
             HessSum = DoubleMatrixMath.add(HessSum, HessFiX);
         }
         
@@ -351,9 +351,9 @@ public class BarrierMethod  {
      */
     private double[] calcGradientOfBarrierFunction(ObjectiveFunction objective, double t) {
         // get reference to results and gradients of the cost function and constraints.
-        double[] gradF0X = objective.f0_gradient;
-        double[] fiX = objective.fi_results;
-        double[][] gradFiX = objective.fi_gradients;
+        double[] gradF0X = objective.f0Gradient;
+        double[] fiX = objective.fiResults;
+        double[][] gradFiX = objective.fiGradients;
 
         double[] gradient = new double[gradF0X.length];
         for(int col=0; col<gradF0X.length; col++) {

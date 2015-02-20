@@ -625,21 +625,21 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             if(need_to_initialize) {
                 calc_func = new ObjectiveFunction(_dimension, _numConstraints) {
                     @Override
-                    public boolean calcFunc(double[] x) {
+                    public boolean calcFunction(double[] x) {
                         try {
-                            f0_result = oneStepIteration(x, fi_results, f0_gradient, fi_gradients);
+                            f0Result = oneStepIteration(x, fiResults, f0Gradient, fiGradients);
                             //constraints must be minus value (g(x) < 0)
-                            for(int i=0; i<fi_results.length; i++) {
-                                fi_results[i] = -fi_results[i];
-                                for(int j=0; j<fi_gradients[i].length; j++) {
-                                    fi_gradients[i][j] = -fi_gradients[i][j];
+                            for(int i=0; i<fiResults.length; i++) {
+                                fiResults[i] = -fiResults[i];
+                                for(int j=0; j<fiGradients[i].length; j++) {
+                                    fiGradients[i][j] = -fiGradients[i][j];
                                 }
                             }
                             if (_mode == MAXIMIZE) {
                                // minimize -f(x) = maximize f(x)
-                                f0_result = -f0_result;
-                                for(int i=0; i<f0_gradient.length; i++) {
-                                    f0_gradient[i] = -f0_gradient[i];
+                                f0Result = -f0Result;
+                                for(int i=0; i<f0Gradient.length; i++) {
+                                    f0Gradient[i] = -f0Gradient[i];
                                 }
                             }
                             if(_stopRequested) return false;
@@ -682,7 +682,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             } else {
                 int returnCode = opt.optimize(calc_func);
                 for(int i=0; i<_optInput.length; i++) {
-                    _optInput[i] = calc_func.current_point[i];
+                    _optInput[i] = calc_func.currentX[i];
                 }
                 // TODO: if returnCode!= normal, throw exception
             }

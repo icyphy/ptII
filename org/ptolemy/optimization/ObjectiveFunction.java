@@ -3,54 +3,49 @@ package org.ptolemy.optimization;
 import ptolemy.math.DoubleMatrixMath;
 
 /**
- * Definition of objective function and constraint functions.
+ * Definition of the objective function and constraint functions.
  */
 abstract class ObjectiveFunction {
-    public double f0_result;            //Results of objective function.
-    public double[] fi_results;   //Results of constraint functions. An array length is m, the number of constraints. 
-    public double[] f0_gradient;        //Gradient of result of f0. An array length is n, the number of variables of objective function.
-    public double[] f0_gradient_pre;
-    public double[][] fi_gradients;     //Gradients of constraints. The number of col is n.
-    public double[][] fi_gradients_pre;
-    public double[][] f0_hessian;       //Hessian of f0. Lengths of array is [n][n]
-    public double[][][] fi_hessians;    //Hessians of constraints. Lengths of array is [m][n][n].
-    public double[] current_point;
-    private double[] x_pre;
-    private double[] fi_relax_val; //If there is no feasible point, constraints are relaxed using this value. Default value is 0.
-    public int iteration_counter;
-    public boolean stop_requested;
-
     /**
-     * Constructor of CalcFunction.
+     * Constructor of ObjectiveFunction.
      * In the constructor, double arrays for fi_results, gradients, 
      * and hessians are allocated.
      */
     public ObjectiveFunction(int dimensionX, int numOfConstraints) {
-        fi_results = new double[numOfConstraints];
-        f0_gradient = new double[dimensionX];
-        f0_gradient_pre = new double[dimensionX];
-        fi_gradients = new double[numOfConstraints][dimensionX];
-        fi_gradients_pre = new double[numOfConstraints][dimensionX];
-        f0_hessian = new double[dimensionX][dimensionX];
-        fi_hessians = new double[numOfConstraints][dimensionX][dimensionX];
-        current_point = new double[dimensionX];
-        x_pre = new double[dimensionX];
-        fi_relax_val = new double[numOfConstraints];
-        iteration_counter = 0;
-        stop_requested = false;
+        fiResults = new double[numOfConstraints];
+        f0Gradient = new double[dimensionX];
+        _f0GradientPrevious = new double[dimensionX];
+        fiGradients = new double[numOfConstraints][dimensionX];
+        _fiGradientsPrevious = new double[numOfConstraints][dimensionX];
+        f0Hessian = new double[dimensionX][dimensionX];
+        fiHessians = new double[numOfConstraints][dimensionX][dimensionX];
+        currentX = new double[dimensionX];
+        _previousX = new double[dimensionX];
+        _fiRelax = new double[numOfConstraints];
+        iterationCounter = 0;
+        stopRequested = false;
 
         for(int i=0; i<dimensionX; i++) {
-            current_point[i] = 0.0;
+            currentX[i] = 0.0;
         }
         for(int i=0; i<dimensionX; i++) {
-            f0_hessian[i][i] = 1;
+            f0Hessian[i][i] = 1;
         }
 
         for(int i=0; i<numOfConstraints; i++) {
             for(int it=0; it<dimensionX; it++) {
-                fi_hessians[i][it][it] = 1;
+                fiHessians[i][it][it] = 1;
             }
         }
+    }
+
+    /**
+     * Add a constant value to the specified constraint function.
+     * @param id : index of a constraint function which is added the value.
+     * @param val : adding value
+     */
+    public void addConstraints(int id, double val) {
+        _fiRelax[id] += val;
     }
 
     /**
@@ -60,59 +55,97 @@ abstract class ObjectiveFunction {
      * @param x : input variables
      * @return If calculation was terminated by user input, return "false".
      */
-    abstract public boolean calcFunc(double[] x);
+    abstract public boolean calcFunction(double[] x);
 
     /**
      * Objective function called by a solver.
      * @param x : input variables
      */
     public void calcFuncInternal(double[] x) {
-        if(stop_requested) return;
-        for(int i=0; i<fi_gradients.length; i++) {
-            for(int it=0; it<fi_gradients[i].length; it++) {
-                fi_gradients_pre[i][it] = fi_gradients[i][it];
+        if(stopRequested) return;
+        for(int i=0; i<fiGradients.length; i++) {
+            for(int it=0; it<fiGradients[i].length; it++) {
+                _fiGradientsPrevious[i][it] = fiGradients[i][it];
             }
         }
-        for(int i=0; i<f0_gradient.length; i++) {
-            f0_gradient_pre[i] = f0_gradient[i];
-            x_pre[i] = current_point[i];
-            current_point[i] = x[i];
+        for(int i=0; i<f0Gradient.length; i++) {
+            _f0GradientPrevious[i] = f0Gradient[i];
+            _previousX[i] = currentX[i];
+            currentX[i] = x[i];
         }
 
-        if(!calcFunc(x)) stop_requested = true;
-        for(int i=0; i<fi_results.length; i++) {
-            fi_results[i] += fi_relax_val[i];
+        if(!calcFunction(x)) stopRequested = true;
+        for(int i=0; i<fiResults.length; i++) {
+            fiResults[i] += _fiRelax[i];
         }
         
-        if(iteration_counter==0) {
+        if(iterationCounter==0) {
             //Copy all previous values 
-            for(int i=0; i<fi_gradients.length; i++) {
-                for(int it=0; it<fi_gradients[i].length; it++) {
-                    fi_gradients_pre[i][it] = fi_gradients[i][it];
+            for(int i=0; i<fiGradients.length; i++) {
+                for(int it=0; it<fiGradients[i].length; it++) {
+                    _fiGradientsPrevious[i][it] = fiGradients[i][it];
                 }
             }
-            for(int i=0; i<f0_gradient.length; i++) {
-                f0_gradient_pre[i] = f0_gradient[i];
-                x_pre[i] = current_point[i];
+            for(int i=0; i<f0Gradient.length; i++) {
+                _f0GradientPrevious[i] = f0Gradient[i];
+                _previousX[i] = currentX[i];
             }
         }
         updateHessian();
-        iteration_counter++;
+        iterationCounter++;
     }
-    public void clearMatrix(double[][] matrix) {
+    /**
+     * get current point
+     * @return : current point X
+     */
+    public double[] getCurrentPoint() {
+        double[] ret = new double[currentX.length];
+        for(int i=0; i<ret.length; i++) {
+            ret[i] = currentX[i];
+        }
+        return ret;
+    }
+    /**
+     * Reset all constant values which are added to constraint functions.
+     */
+    public void resetConstraints() {
+        for(int i=0; i<_fiRelax.length; i++) {
+            _fiRelax[i] = 0;
+        }
+    }
+
+    /*
+     * Public Variables 
+     */
+    public double f0Result;            //Results of objective function.
+    public double[] fiResults;   //Results of constraint functions. An array length is m, the number of constraints. 
+    public double[] f0Gradient;        //Gradient of result of f0. An array length is n, the number of variables of objective function.
+    public double[][] fiGradients;     //Gradients of constraints. The number of col is n.
+    public double[][] f0Hessian;       //Hessian of f0. Lengths of array is [n][n]
+    public double[][][] fiHessians;    //Hessians of constraints. Lengths of array is [m][n][n].
+    public double[] currentX;
+    public int iterationCounter;
+    public boolean stopRequested;
+
+
+    /*
+     * Protected method
+     */
+    /**
+     * Clear Matrix
+     * @param matrix : matrix which is to be zero-matrix.
+     */
+    protected void clearMatrix(double[][] matrix) {
         for(int row=0; row<matrix.length; row++) {
             for(int col=0; col<matrix[row].length; col++) {
                 matrix[row][col] = 0;
             }
         }
     }
-    public double[] getCurrentPoint() {
-        double[] ret = new double[current_point.length];
-        for(int i=0; i<ret.length; i++) {
-            ret[i] = current_point[i];
-        }
-        return ret;
-    }
+    
+    /*
+     * Private Methods
+     */
     private void printVector(double[] array, String label) {
         System.out.print(label);
         for(int col=0; col<array.length; col++) {
@@ -120,7 +153,6 @@ abstract class ObjectiveFunction {
         }
         System.out.println();
     }
-
     /**
      * Update estimates of Hessian. 
      * This function is based on quasi-Newton method BFGS.
@@ -128,36 +160,35 @@ abstract class ObjectiveFunction {
     private boolean updateHessian() {
         // 
         //Hessian of f0 
-        double[] dg0 = new double[f0_gradient.length];
+        double[] dg0 = new double[f0Gradient.length];
         for(int it=0; it<dg0.length; it++) {
-            dg0[it] = f0_gradient[it] - f0_gradient_pre[it];
+            dg0[it] = f0Gradient[it] - _f0GradientPrevious[it];
         }
-        double[] dx = new double[x_pre.length];
+        double[] dx = new double[_previousX.length];
         for(int it=0; it<dx.length; it++) {
-            dx[it] = current_point[it] - x_pre[it];
+            dx[it] = currentX[it] - _previousX[it];
         }
-        boolean is_hessian_calculated = updateHessianByBFGS(f0_hessian, dg0, dx);
+        boolean is_hessian_calculated = updateHessianByBFGS(f0Hessian, dg0, dx);
 
         //Hessian of fi
-        for(int i=0; i<fi_hessians.length; i++) {
-            double[] dgi = new double[fi_gradients[i].length];
+        for(int i=0; i<fiHessians.length; i++) {
+            double[] dgi = new double[fiGradients[i].length];
             for(int it=0; it<dgi.length; it++) {
-                dgi[it] = fi_gradients[i][it] - fi_gradients_pre[i][it];
+                dgi[it] = fiGradients[i][it] - _fiGradientsPrevious[i][it];
             }
-            is_hessian_calculated = is_hessian_calculated & updateHessianByBFGS(fi_hessians[i], dgi, dx);
+            is_hessian_calculated = is_hessian_calculated & updateHessianByBFGS(fiHessians[i], dgi, dx);
         }
         return is_hessian_calculated; //if at least one of the hessians are not calculated, return false.
     }
-    public void addConstraints(int id, double val) {
-        fi_relax_val[id] += val;
-    }
-    public void resetConstraints() {
-        for(int i=0; i<fi_relax_val.length; i++) {
-            fi_relax_val[i] = 0;
-        }
-    }
-
-    static boolean updateHessianByBFGS(double[][] est_hessian_current, double[] dg, double[] dx) {
+    
+    /**
+     * implementation of quasi-newton method(BFGS)
+     * @param est_hessian_current : estimated hessian matrix which is updated in this function.
+     * @param dg : change of gradient
+     * @param dx : change of searching point X
+     * @return : if updating finished successfully, return ture.
+     */
+    private boolean updateHessianByBFGS(double[][] est_hessian_current, double[] dg, double[] dx) {
         // Hk+1 = Hk + y*yT/(yT*s) - Hk*s(Hk*s)T/(sT*Hk*s)
         //   y = gk+1 - gk
         //   s = xk+1 - xk
@@ -201,20 +232,38 @@ abstract class ObjectiveFunction {
         }
         return true;
     }
+
+    private double[] _f0GradientPrevious; //The previous value of f0Gradient
+    private double[][] _fiGradientsPrevious; //The previous value of fiGradients
+    private double[] _previousX;        //The previous value of currentX
+    private double[] _fiRelax; //If there is no feasible point, constraints are relaxed using this value. Default value is 0.
 }
 
+/**
+ * The objective function class which is used in Phase 1 of the interior point method.
+ * In the interior point method, a starting point X must be a feasible point that satisfies all 
+ * constraints. To find the feasible point, the interior point method calculate Phase 1 
+ * using this class.
+ * @author shuhei emoto
+ */
 class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
-    private ObjectiveFunction source;
     public ObjectiveFunctionForPhaseI(ObjectiveFunction a_source) {
-        super(a_source.current_point.length+1, a_source.fi_results.length);
-        source = a_source;
+        super(a_source.currentX.length+1, a_source.fiResults.length);
+        _source = a_source;
         
-        for(int i=0; i<source.current_point.length; i++) {
-            current_point[i] = source.current_point[i];
+        for(int i=0; i<_source.currentX.length; i++) {
+            currentX[i] = _source.currentX[i];
         }
-        current_point[current_point.length-1] = 0;
+        currentX[currentX.length-1] = 0;
     }
-    public boolean calcFunc(double[] x) {
+    
+    @Override
+    public void addConstraints(int id, double val) {
+        _source.addConstraints(id, val);
+    }
+    
+    @Override
+    public boolean calcFunction(double[] x) {
         return false;
     }
     /**
@@ -228,116 +277,140 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
         for(int i=0; i<input_x.length; i++) {
             input_x[i] = x[i];
         }
-        source.calcFuncInternal(input_x);
+        _source.calcFuncInternal(input_x);
         //objective function: f(x,s) = s
-        f0_result = x[x.length-1];
-        for(int col=0; col<f0_gradient.length-1; col++) {
-            f0_gradient[col] = 0;
+        f0Result = x[x.length-1];
+        for(int col=0; col<f0Gradient.length-1; col++) {
+            f0Gradient[col] = 0;
         }
-        f0_gradient[f0_gradient.length-1] = 1;
-        for(int row=0; row<f0_hessian.length; row++) {
-            for(int col=0; col<f0_hessian[0].length; col++) {
-                f0_hessian[row][col] = 0;
+        f0Gradient[f0Gradient.length-1] = 1;
+        for(int row=0; row<f0Hessian.length; row++) {
+            for(int col=0; col<f0Hessian[0].length; col++) {
+                f0Hessian[row][col] = 0;
             }
         }
         // Inequality constraints: fi(x, s) = fi(x)-s
-        for(int i=0; i<fi_results.length; i++) {
-            fi_results[i] = source.fi_results[i]-x[x.length-1];
-            for(int it=0; it<source.fi_gradients[i].length; it++) {
-                fi_gradients[i][it] = source.fi_gradients[i][it];
+        for(int i=0; i<fiResults.length; i++) {
+            fiResults[i] = _source.fiResults[i]-x[x.length-1];
+            for(int it=0; it<_source.fiGradients[i].length; it++) {
+                fiGradients[i][it] = _source.fiGradients[i][it];
             }
-            fi_gradients[i][fi_gradients[i].length-1] = -1;
-            clearMatrix(fi_hessians[i]);
-            for(int row=0; row<source.fi_hessians[i].length; row++) {
-                for(int col=0; col<source.fi_hessians[i][row].length; col++) {
-                    fi_hessians[i][row][col] = source.fi_hessians[i][row][col];
+            fiGradients[i][fiGradients[i].length-1] = -1;
+            clearMatrix(fiHessians[i]);
+            for(int row=0; row<_source.fiHessians[i].length; row++) {
+                for(int col=0; col<_source.fiHessians[i][row].length; col++) {
+                    fiHessians[i][row][col] = _source.fiHessians[i][row][col];
                 }
             }
         }
     }
-    public void addConstraints(int id, double val) {
-        source.addConstraints(id, val);
-    }
+    
+    @Override
     public void resetConstraints() {
-        source.resetConstraints();
+        _source.resetConstraints();
     }
+    /**
+     * set current searching point X
+     * @param x : current point which is to be set.
+     */
     public void setCurrentPoint(double[] x) {
-        for(int i=0; i<current_point.length; i++) {
-            current_point[i] = x[i];
-            if(i<current_point.length-1) {
-                source.current_point[i] = x[i];
+        for(int i=0; i<currentX.length; i++) {
+            currentX[i] = x[i];
+            if(i<currentX.length-1) {
+                _source.currentX[i] = x[i];
             }
         }
     }
+    
+    /*
+     * Private variables
+     */
+    private ObjectiveFunction _source;
 }
 
+/**
+ * The class of approximated objective function.
+ * In this class, non-linear multivariate function is approximated 
+ * using hessians and gradients.
+ * F0(X+dx) = F0(X) + 1/2 * dxT*H0*dx + g0*dx
+ * Fi(X+dx) = Fi(X) + gi*dx
+ * @author shuhei emoto
+ */
 class ApproximatedObjectiveFunction extends ObjectiveFunction{
-    private ObjectiveFunction source;
     public ApproximatedObjectiveFunction(ObjectiveFunction a_source) {
-        super(a_source.current_point.length, a_source.fi_results.length);
-        source = a_source;
+        super(a_source.currentX.length, a_source.fiResults.length);
+        _source = a_source;
         
-        for(int i=0; i<source.current_point.length; i++) {
-            current_point[i] = source.current_point[i];
+        for(int i=0; i<_source.currentX.length; i++) {
+            currentX[i] = _source.currentX[i];
         }
 
         // Copy f0 Hessian and fi_gradients
-        for(int row=0; row<f0_hessian.length; row++) {
-            for(int col=0; col<f0_hessian[row].length; col++) {
-                f0_hessian[row][col] = source.f0_hessian[row][col];
+        for(int row=0; row<f0Hessian.length; row++) {
+            for(int col=0; col<f0Hessian[row].length; col++) {
+                f0Hessian[row][col] = _source.f0Hessian[row][col];
             }
         }
-        for(int i=0; i<fi_results.length; i++) {
-            for(int it=0; it<fi_gradients[i].length; it++) {
-                fi_gradients[i][it] = source.fi_gradients[i][it];
+        for(int i=0; i<fiResults.length; i++) {
+            for(int it=0; it<fiGradients[i].length; it++) {
+                fiGradients[i][it] = _source.fiGradients[i][it];
             }
-            clearMatrix(fi_hessians[i]); //fi_hessians are all zero.
+            clearMatrix(fiHessians[i]); //fi_hessians are all zero.
         }
     }
-    public boolean calcFunc(double[] x) {
+    @Override
+    public void addConstraints(int id, double val) {
+        _source.addConstraints(id, val);
+    }
+    @Override
+    public boolean calcFunction(double[] x) {
         return false;
     }
     /**
      * Objective function called in QPSolver.
      * @param x : input variables
      */
+    @Override
     public void calcFuncInternal(double[] x) {
         double[] dx = new double[x.length];
         for(int i=0; i<x.length; i++) {
-            current_point[i] = x[i];
-            dx[i] = x[i]-source.current_point[i];
+            currentX[i] = x[i];
+            dx[i] = x[i]-_source.currentX[i];
         }
         
         /////////////////////////////////////////
         ///// result of objective function///////
-        // f(x+dx) = f(x)+(1/2)(dxTQdx)+Pdx 
-        double[] Qx = DoubleMatrixMath.multiply(dx, source.f0_hessian);
-        f0_result = source.f0_result;
+        // f(x+dx) = f(x)+(1/2)(dxTHdx)+g*dx 
+        double[] Qx = DoubleMatrixMath.multiply(dx, _source.f0Hessian);
+        f0Result = _source.f0Result;
         for(int i=0; i<Qx.length; i++) {
-            f0_result += (0.5*Qx[i]*dx[i] + source.f0_gradient[i]*dx[i]);
+            f0Result += (0.5*Qx[i]*dx[i] + _source.f0Gradient[i]*dx[i]);
         }
-        // df(x+dx) = df(x)+Qdx
-        for(int col=0; col<f0_gradient.length; col++) {
-            f0_gradient[col] = source.f0_gradient[col]+Qx[col];
+        // df(x+dx) = df(x)+H*dx
+        for(int col=0; col<f0Gradient.length; col++) {
+            f0Gradient[col] = _source.f0Gradient[col]+Qx[col];
         }
         // Hessian(x+dx) = Hessian(x) was already copied in the constructor.
         
         ///////////////////////////////////////////////////
         ////// Inequality constraints: 
-        // fi(x+dx) = fi(x)+Pdx
-        for(int i=0; i<fi_results.length; i++) {
-            fi_results[i] = source.fi_results[i];
+        // fi(x+dx) = fi(x)+g*dx
+        for(int i=0; i<fiResults.length; i++) {
+            fiResults[i] = _source.fiResults[i];
             for(int col=0; col<dx.length; col++) {
-                fi_results[i] += source.fi_gradients[i][col]*dx[col];
+                fiResults[i] += _source.fiGradients[i][col]*dx[col];
             }
         }
         // dfi(x+dx) = dfi(x) were already copied in the constructor.
         // Hessian_i(x+dx) = 0 were initialized in the constructor.
     }
-    public void addConstraints(int id, double val) {
-        source.addConstraints(id, val);
-    }
+    @Override
     public void resetConstraints() {
-        source.resetConstraints();
+        _source.resetConstraints();
     }
+    
+    /*
+     * Private variables
+     */
+    private ObjectiveFunction _source;
 }
