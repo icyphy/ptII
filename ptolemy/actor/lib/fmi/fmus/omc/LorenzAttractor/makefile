@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: : mkfmudir 70377 2014-10-21 22:32:43Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -36,6 +36,6 @@ export:
 
 # Place the include after the first rule so that it is the default.
 
-include ../fmus.mk
+include ../fmusfmi.mk
 
 KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu

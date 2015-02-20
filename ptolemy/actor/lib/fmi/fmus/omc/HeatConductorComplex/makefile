@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) 
+# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) HeatConductorComplex CoSimulation
 #
-# @Author: cxh (makefile only)
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $
+# @Version: $Id$
 #
-# @Copyright (c) 2013-2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-FMU_NAME = Influenza
+FMU_NAME = HeatConductorComplex
 
-OTHER_OTHER_FILES_TO_BE_JARED =
+include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmucs.mk
 
-include ../fmusfmi.mk
-
-
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu
