@@ -33,6 +33,6 @@ FMU_NAME = Test1
 
 OTHER_OTHER_FILES_TO_BE_JARED =
 
-include ../fmusfmi.mk
+include ../fmuSFMI.mk
 
 

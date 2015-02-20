@@ -35,5 +35,29 @@
 
 FMU_NAME = BouncingBallFMI20
 
-include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmucs.mk
+# We can't use $(wildcard *.c) here because the .c files are not
+# always present when make is invoked.
+# To update, use:
+# ls -1 *.c | sort | grep -v _me_ | grep -v _info.c | grep -v _init.c
+CFILES = \
+	BouncingBallFMI20_01exo.c \
+	BouncingBallFMI20_02nls.c \
+	BouncingBallFMI20_03lsy.c \
+	BouncingBallFMI20_04set.c \
+	BouncingBallFMI20_05evt.c \
+	BouncingBallFMI20_06inz.c \
+	BouncingBallFMI20_07dly.c \
+	BouncingBallFMI20_08bnd.c \
+	BouncingBallFMI20_09alg.c \
+	BouncingBallFMI20_10asr.c \
+	BouncingBallFMI20_11mix.c \
+	BouncingBallFMI20_12jac.c \
+	BouncingBallFMI20_13opt.c \
+	BouncingBallFMI20_14lnz.c \
+	BouncingBallFMI20.c \
+	BouncingBallFMI20_FMU.c \
+	BouncingBallFMI20_functions.c \
+	BouncingBallFMI20_records.c
+
+include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuCS.mk
 

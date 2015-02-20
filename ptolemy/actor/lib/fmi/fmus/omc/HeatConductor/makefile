@@ -64,13 +64,12 @@ export:
         # Can't use sed -i here under Mac OS X.
 	sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g' < $(PTII)/ptolemy/actor/lib/fmi/fmus/inc20/src/sources/build_fmu > src/sources/build_fmu
 
-
         # Generate makefile
 	echo "# The name of the FMU to be built." > src/sources/makefile
 	echo "FMU_NAME = $(FMU_NAME)" >> src/sources/makefile
 	echo "" >> src/sources/makefile
         # FIXME: The flags are not correct for Linux, but they don't seem to be needed (at least for this small model)
-	echo "CFLAGS = -I$(OPENMODELICAHOME)/include/omc/c -llapack -lblas -L/opt/local/lib/gcc49 -L$(OPENMODELICAHOME)/lib/omc -lSimulationRuntimeC -lgfortran" >> src/sources/makefile
+	echo "CFLAGS = -I$(OPENMODELICAHOME)/include/omc/c -L/opt/local/lib/gcc49 -L$(OPENMODELICAHOME)/lib/omc -Wl,-rpath,'$(OPENMODELICAHOME)/lib/omc' -lSimulationRuntimeC -L/usr/lib64 -llapack -lblas -lm -lgc -lpthread -rdynamic -L. -llis -lSimulationRuntimeC"  >> src/sources/makefile
 	echo "" >> src/sources/makefile
 	echo "# The rules are in a separate file so that we can easily update them." >> src/sources/makefile
 	echo "include fmu.mk" >> src/sources/makefile
@@ -83,6 +82,6 @@ export:
 
 # Place the include after the first rule so that it is the default.
 
-include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmusfmi.mk
+include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuSFMI.mk
 
 KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu

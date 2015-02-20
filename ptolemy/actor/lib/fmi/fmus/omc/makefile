@@ -32,10 +32,10 @@
 ME =		ptolemy/actor/lib/fmi/fmus/omc
 
 # Co-Simulation FMUS.
-FMUS_CS =	BouncingBall HeatConductorComplex
+FMUS_CS =	BouncingBallFMI20 HeatConductorComplex HelloWorldFMI20
 
 # Sparse FMI FMUS
-FMUS_SFMI =	HeatConductor Influenza Linsys Linsys2 Test1
+FMUS_SFMI =	HeatConductor Influenza Linsys LorenzAttractor Linsys2 Test1
 
 # Model Exchange FMUS.
 FMUS_ME =	$(FMUS_SFMI)
@@ -152,7 +152,7 @@ update_files:
 		done ; \
 	fi
 
-fmucheck:
+fmuCheck:
 	@if [ "x$(FMUS_CS)" != "x" ]; then \
 		set $(FMUS_CS); \
 		for x do \

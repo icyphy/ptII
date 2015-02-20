@@ -119,11 +119,13 @@ void model_data::update()
 	}
 }
 
+#include "fmi2Functions.h"
 // Functions from LAPACK
 extern "C"
 {
 	int dgetrf_(long*,long*,double*,long*,long*,long*);
 	int dgetrs_(char*,long*,long*,double*,long*,long*,double*,long*,long*);
+        FMI2_Export int measure_time_flag;
 };
 
 /**
@@ -146,4 +148,3 @@ void sfmi::GETRS(double* A, long size, long* p, double* B)
 	dgetrs_(&N,&size,&nrhs,A,&size,p,B,&size,&ok);
 	assert(ok==0);
 }
-
