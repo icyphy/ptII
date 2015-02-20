@@ -31,4 +31,28 @@
 
 FMU_NAME = HeatConductorComplex
 
-include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmucs.mk
+# We can't use $(wildcard *.c) here because the .c files are not
+# always present when make is invoked.
+# To update, use:
+# ls -1 *.c | sort | grep -v _me_ | grep -v _info.c | grep -v _init.c
+CFILES = \
+	HeatConductorComplex_01exo.c \
+	HeatConductorComplex_02nls.c \
+	HeatConductorComplex_03lsy.c \
+	HeatConductorComplex_04set.c \
+	HeatConductorComplex_05evt.c \
+	HeatConductorComplex_06inz.c \
+	HeatConductorComplex_07dly.c \
+	HeatConductorComplex_08bnd.c \
+	HeatConductorComplex_09alg.c \
+	HeatConductorComplex_10asr.c \
+	HeatConductorComplex_11mix.c \
+	HeatConductorComplex_12jac.c \
+	HeatConductorComplex_13opt.c \
+	HeatConductorComplex_14lnz.c \
+	HeatConductorComplex.c \
+	HeatConductorComplex_FMU.c \
+	HeatConductorComplex_functions.c \
+	HeatConductorComplex_records.c
+
+include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuCS.mk

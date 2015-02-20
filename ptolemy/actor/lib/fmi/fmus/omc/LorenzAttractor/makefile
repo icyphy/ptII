@@ -36,6 +36,6 @@ export:
 
 # Place the include after the first rule so that it is the default.
 
-include ../fmusfmi.mk
+include ../fmuSFMI.mk
 
 KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu
