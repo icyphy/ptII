@@ -1,4 +1,12 @@
+// $Id$
+
+// OpenModelica commands that are run by the OpenModelicaInteractive Ptolemy model.
+
+// To invoke, use omc dcmotor.mos
+
 loadModel(Modelica); getErrorString();
 loadFile("dcmotor.mo"); getErrorString();
-setComponentModifierValue(dcmotor, resistor1, $Code(=2)); getErrorString();
+getComponents(dcmotor); getErrorString();
+getComponentModifierNamed(dcmotor, resistor1);
+setComponentModifierValue(dcmotor, resistor1.R, $Code(=2)); getErrorString();
 buildModel(dcmotor,startTime=0.0,stopTime=0.1,numberOfIntervals=500,tolerance=1.0E-4,method="dassl",outputFormat="csv",variableFilter=".*",cflags="",simflags=""); getErrorString();
