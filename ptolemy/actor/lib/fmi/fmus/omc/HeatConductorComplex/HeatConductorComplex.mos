@@ -1,0 +1,7 @@
+loadModel(Modelica, {"3.2.1"});
+getErrorString();
+loadFile("HeatConductorComplex.mo"); getErrorString();
+OpenModelica.Scripting.translateModelFMU(
+	className=HeatConductorComplex,
+	version="2.0");
+getErrorString();

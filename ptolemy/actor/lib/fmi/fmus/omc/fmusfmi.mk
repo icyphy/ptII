@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) 
+# Makefile stub used to create fmus for sparse fmi
 #
-# @Author: cxh (makefile only)
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $
+# @Version: $Id: fmus.mk 71624 2015-02-19 00:50:20Z mwetter@lbl.gov $
 #
 # @Copyright (c) 2013-2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,10 +29,23 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-FMU_NAME = Influenza
 
-OTHER_OTHER_FILES_TO_BE_JARED =
+# The fmus in the fmus/ directory should have a makefile that looks like
+# FMU_NAME = dqME1
+# include ../fmus.mk
 
-include ../fmusfmi.mk
+# Include definitions and rules common to sparse fmi and regular
+# cosimulation.
+include fmustart.mk
 
+FMU_SRCS = \
+	src/modelDescription.xml \
+	src/sources/*
 
+# This rule differs for sfmi and regular cosimulation.
+# Below is the rule for sparse fmi.
+$(FMU_NAME).fmu: $(FMU_SRCS)
+	(cd src/sources; $(MAKE))
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
