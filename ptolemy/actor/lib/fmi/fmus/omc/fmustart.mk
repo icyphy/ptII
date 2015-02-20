@@ -111,6 +111,9 @@ update: $(FMU_NAME).fmu
         fi 
 	cp $(FMU_NAME).fmu ../test/auto/$(FMU_NAME).fmu
 
-test:
+test_me: $(FMU_NAME).fmu
 	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu  1.0 0.1 true
+
+test: $(FMU_NAME).fmu
+	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUCoSimulation $(FMU_NAME).fmu  1.0 0.1 true
 
