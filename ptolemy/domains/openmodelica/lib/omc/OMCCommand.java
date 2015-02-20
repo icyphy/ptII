@@ -563,9 +563,13 @@ public class OMCCommand implements IOMCCommand {
                                 if (childIndividualComponent.get(childKey)
                                         .compareTo("unspecified") == 0) {
 
-                                    // Return the value of a component.
+                                    // Return the value of a
+                                    // component.
+                                    // getComponentModifierNames() now
+                                    // takes its second argument with
+                                    // double quotes.
                                     String command = "getComponentModifierNames("
-                                        + modelName + "," + childKey + ")";
+                                        + modelName + ",\"" + childKey + "\")";
                                     getComponentModifierNames = sendCommand(command);
                                     if (!getComponentModifierNames.getError()
                                             .toString().isEmpty()) {
