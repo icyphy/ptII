@@ -51,7 +51,7 @@ OFILES = $(CFILES:%.c=%.o)
 
 # Export the fmu. $(FMU_NAME).xml is a dervied file created by omc
 #export: modelDescription.xml
-modelDescription.xml: $(FMU_NAME).mo
+modelDescription.xml: $(FMU_NAME).mos
 	omc $(FMU_NAME).mos
 
 $(OFILES): $(CFILES)
@@ -83,3 +83,5 @@ $(FMU_NAME).fmu: $(FMU_NAME).so
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c modelDescription.xml binaries sources

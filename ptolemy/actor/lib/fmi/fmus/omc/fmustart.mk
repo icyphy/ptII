@@ -86,6 +86,9 @@ install: jclass $(FMU_NAME).fmu jars
 	@echo "Optionally run 'make update' to update the test/auto directory."
 
 
+# Avoid "make: `fmuCheck' is up to date."
+.PHONY: fmuCheck
+
 # Test the FMU by running fmucheck.
 fmuCheck: $(FMU_NAME).fmu
 	if [ -f fmuCheck/input.csv ]; then \

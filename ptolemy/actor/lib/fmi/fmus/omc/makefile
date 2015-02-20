@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/fmi/fmus/omc
 
 # Co-Simulation FMUS.
-FMUS_CS =	HeatConductorComplex
+FMUS_CS =	BouncingBall HeatConductorComplex
 
 # Sparse FMI FMUS
 FMUS_SFMI =	HeatConductor Influenza Linsys Linsys2 Test1
