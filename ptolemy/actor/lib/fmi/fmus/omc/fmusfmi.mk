@@ -36,7 +36,7 @@
 
 # Include definitions and rules common to sparse fmi and regular
 # cosimulation.
-include fmustart.mk
+include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmustart.mk
 
 FMU_SRCS = \
 	src/modelDescription.xml \
