@@ -886,6 +886,8 @@ public class OMCCommand implements IOMCCommand {
         String errorMessage = null;
         String[] returnValue = { "" };
 
+        _omcLogger.getInfo("OMCCommand.sendCommand: " + modelicaCommand);
+
         if (_couldNotStartOMC) {
             return CompilerResult.makeResult(returnValue, errorMessage);
         }
