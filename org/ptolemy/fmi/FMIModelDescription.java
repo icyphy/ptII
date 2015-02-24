@@ -266,6 +266,13 @@ public class FMIModelDescription {
      */
     public void dispose() {
         if (_fmuAllocateMemory != null) {
+            if (!_printedDisposeMessage) {
+                _printedDisposeMessage = true;
+                System.err.println("org/ptolemy/fmi/FMIModelDescription.java: dispose() is being called, which "
+                        + "releases all instances of Memory and pointers that have been created.  "
+                        + "Instead, it should only release those for this FMU."
+                        + "This message will be printed only once per JVM.");
+            }
             // Prevent a memory leak by releasing Memory and Pointer objects to
             // the GC.
             // FIXME: This is wrong! This releases all instances of Memory and
@@ -671,4 +678,6 @@ public class FMIModelDescription {
     /** Record of continuous state variables. */
     private static HashMap<Integer, ContinuousState> _continuousStates;
 
+    /** True if we have printed the dispose() message. */
+    private static boolean _printedDisposeMessage = false;
 }

@@ -53,10 +53,13 @@ public class FMULog {
     /** Log a message.
      *  Note that arguments after the message are currently ignored.
      *  @param modelDescription The model description that contains
-     *  the names of the variables.  The FMI specification states that
-     *  the variable names might not be stored in the C-functions,
-     *  which is why we can't just use the fmiComponent.
-     *  @param fmiComponent The component that was instantiated.
+     *  the names of the variables.  In FMI-1.0, the FMI specification
+     *  states that the variable names might not be stored in the
+     *  C-functions, which is why we can't just use the second
+     *  argument, which is a fmiComponent.  In FMI-2.0, the second
+     *  argumet is a fmiComponentEnvironment.
+     *  @param fmiComponentOrEnvironment The component that was instantiated
+     *  or its environment.
      *  @param instanceName The name of the instance of the FMU.
      *  @param status The fmiStatus, see
      *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
@@ -66,18 +69,25 @@ public class FMULog {
      *  @param message The message in printf format
      */
     public static void log(FMIModelDescription modelDescription,
-            Pointer fmiComponent, String instanceName, int status,
+            Pointer fmiComponentOrEnvironment, String instanceName, int status,
             String category, String message
     /*, Pointer*//*...*//*parameters*/) {
 
         // // FIXME: Use the old logger now.
         // FMULog._logOld(modelDescription,
-        //         fmiComponent, instanceName, status,
+        //         fmiComponentOrEnvironment, instanceName, status,
         //         category, message);
         // // Fake out the compiler so we don't have to uncomment the rest.
         // if (1==1) {
         //     return;
         // }
+
+
+        if (fmiComponentOrEnvironment == null) {
+            System.err.println("Warning: FMULog.log() called with a null second argument. "
+                    + "Under FMI-1.0, the second argument is a fmiComponent. "
+                    + "Under FMI-2.0, the second argument is a fmiComponentEnvironment");
+        }
 
         // First time through, try to find the JNA variadic extensions
         // methods. See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNAVarargs
@@ -85,13 +95,15 @@ public class FMULog {
             try {
                 _initialize();
             } catch (Throwable throwable) {
+                System.err.println("FMULog.log(): Could not initialize variadic extensions.");
+                throwable.printStackTrace();
                 _useVariadicExtensions = false;
             }
         }
 
         if (!_useVariadicExtensions) {
             // We don't have the variadic extensions, so we fall back.
-            FMULog._nonVariadicLog(modelDescription, fmiComponent,
+            FMULog._nonVariadicLog(modelDescription, fmiComponentOrEnvironment,
                     instanceName, status, category, message, null /*parameters*/);
             return;
         }
@@ -101,7 +113,7 @@ public class FMULog {
             // functions which allow us to access variadic arguments.
 
             long ffi_cif = ((Long) _nativeCif.invoke(null,
-                    new Object[] { fmiComponent })).longValue();
+                    new Object[] { fmiComponentOrEnvironment })).longValue();
 
             // FIXME: Need to handle the fmi-specific # format:
             // #<Type><valueReference#, where <Type> is one of
@@ -116,9 +128,9 @@ public class FMULog {
                                     + "Java side of the variadic extensions, but the C side of the variadic extensions "
                                     + "have not been compiled for your platform.  To compile them, see "
                                     + "http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
-                    FMULog._nonVariadicLog(modelDescription, fmiComponent,
-                            instanceName, status, category, message, null /*parameters*/);
                 }
+                FMULog._nonVariadicLog(modelDescription, fmiComponentOrEnvironment,
+                        instanceName, status, category, message, null /*parameters*/);
             } else {
                 final char[] msg = message.toCharArray();
 
@@ -309,7 +321,7 @@ public class FMULog {
                                 modelDescription, out.toString()));
             }
         } catch (Throwable throwable) {
-            FMULog._nonVariadicLog(modelDescription, fmiComponent,
+            FMULog._nonVariadicLog(modelDescription, fmiComponentOrEnvironment,
                     instanceName, status, category, message, null /*parameters*/);
         }
     }
@@ -394,10 +406,12 @@ public class FMULog {
     /** Log a message without using the JNA variadic extensions.
      *  Note that arguments after the message are currently ignored.
      *  @param modelDescription The model description that contains
-     *  the names of the variables.  The FMI specification states that
-     *  the variable names might not be stored in the C-functions,
-     *  which is why we can't just use the fmiComponent.
-     *  @param fmiComponent The component that was instantiated.
+     *  the names of the variables. the names of the variables.  In
+     *  FMI-1.0, the FMI specification states that the variable names
+     *  might not be stored in the C-functions, which is why we can't
+     *  just use the second argument, which is a fmiComponent.  In
+     *  FMI-2.0, the second argumet is a fmiComponentEnvironment.
+     *  @param fmiComponentOrEnvironment The component that was instantiated.
      *  @param instanceName The name of the instance of the FMU.
      *  @param status The fmiStatus, see
      *  {@link org.ptolemy.fmi.FMILibrary.FMIStatus}
@@ -408,7 +422,7 @@ public class FMULog {
      *  @param parameters The printf style parameters.
      */
     private static void _nonVariadicLog(FMIModelDescription modelDescription,
-            Pointer fmiComponent, String instanceName, int status,
+            Pointer fmiComponentOrEnvironment, String instanceName, int status,
             String category, String message, Pointer /*...*/parameters) {
 
         _debugMessage("Java FMULogger, status: " + status);

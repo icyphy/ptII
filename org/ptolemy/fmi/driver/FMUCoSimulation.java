@@ -36,6 +36,7 @@ import org.ptolemy.fmi.FMICallbackFunctions;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMUFile;
 import org.ptolemy.fmi.FMULibrary;
+import org.ptolemy.fmi.NativeSizeT;
 
 import com.sun.jna.Function;
 import com.sun.jna.Pointer;
@@ -203,19 +204,31 @@ public class FMUCoSimulation extends FMUDriver {
 
         } else {
             // FMI 1.5 and greater.
-            // In FMI-1.5 and FMI-2.0, this is a pointer to the structure, which
-            // is by
-            // default how a subclass of Structure is handled, so there is no
-            // need for the inner class ByValue, as above.
+
+            // In FMI-2.0, the fmiComponentEnvironment is passed to
+            // the callback Functions so that the logger can access it
+            // to access the names.  However, JFM worked around that
+            // by providing access to the FMIModelDescription object.
+            // This could cause problems, but mainly we want to be
+            // sure that we differentiate between the
+            // fmiComponentEnvironment and the fmiComponent.
+            
+            // We use FMUAllocateMemory so that we can retain a reference
+            // to the allocated memory and the memory does not get gc'd.
+            Pointer fmiEnvironment = fmiModelDescription.getFMUAllocateMemory().apply(
+                    new NativeSizeT(1), new NativeSizeT(Pointer.SIZE));
+
+            // In FMI-1.5 and FMI-2.0, this is a pointer to the
+            // structure, which is by default how a subclass of
+            // Structure is handled, so there is no need for the inner
+            // class ByValue, as above.
             FMI20CallbackFunctions callbacks20 = new FMI20CallbackFunctions(
                     new FMULibrary.FMULogger(fmiModelDescription),
                     fmiModelDescription.getFMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
                     new FMULibrary.FMUStepFinished(),
-                    // FIXME: It is not clear if we should pass
-                    // fmiComponent here.  Instead, we should
-                    // pass an environment?  See the spec
-                    fmiComponent);
+                    // We use to pass a fmiComponent here, but in FMI-2.0 fmiEnvironment was introduced, ticket #41 and the FMI-2.0 spec.
+                    fmiEnvironment);
             Function fmiInstantiateFunction = fmiModelDescription
                     .getFmiFunction("fmiInstantiate");
 
