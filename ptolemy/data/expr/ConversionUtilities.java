@@ -126,6 +126,8 @@ public class ConversionUtilities {
      * conversion is possible, then this method will simply return an
      * ObjectToken wrapping the object.
      * @param object The object that is a Java type to be converted.
+     * The value of this parameter might be null, in which case an 
+     * ObjectToken with a null v
      * @exception IllegalActionException If the selected conversion fails.
      * @return A new token.
      */
@@ -232,7 +234,7 @@ public class ConversionUtilities {
             }
 
             returnValue = new ArrayToken(temp);
-        } else if (object.getClass().isArray()) {
+        } else if (object != null && object.getClass().isArray()) {
             Class elementClass = object.getClass().getComponentType();
             Type elementType = convertJavaTypeToTokenType(elementClass);
 
