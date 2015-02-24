@@ -4422,11 +4422,28 @@ $as_echo "$as_me: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     esac
 fi
 
+PRE_JDK17=no
 PRE_JDK18=no
 case "$JVERSION" in
-     1.6.*) PRE_JDK18=yes;;
+     1.6.*) PRE_JDK18=yes
+     	    PRE_JDK17=yes;;
      1.7.*) PRE_JDK18=yes;;
 esac
+
+if test "$PRE_JDK17" = "yes" ; then
+    # These must have trailing slash or the updateExcludes shell function will not work.
+    pre1_7packages="ptolemy/cg/"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: A version of Java ($JVERSION) earlier than Java 1.7 is the first JVM in your path.
+    The following packages will not be compiled:
+        $pre1_7packages" >&5
+$as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.7 is the first JVM in your path.
+    The following packages will not be compiled:
+        $pre1_7packages" >&2;}
+    for package in $pre1_7packages
+    do
+	updateExcludes $package
+    done
+fi
 
 # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
 PTJJS_DIR=
