@@ -716,8 +716,13 @@ public class OMCCommand implements IOMCCommand {
                             .getInfo("There is no compatibility between number of parameter(s)/variable(s) and values.");
                 }
             }
-        } catch (Exception e) {
-            throw new IllegalActionException(null, e, e.getMessage());
+        } catch (Throwable throwable) {
+            // Catch a throwable here and maybe avoid 
+            // FindBugs REC: RuntimeException capture.
+            throw new IllegalActionException(null, throwable,
+                    "Failed to modify component. Values: " + values
+                    + ", modelName: " + modelName
+                    + ", components: " + components + ".");
         }
     }
 
