@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FSMBlink" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SimpleFSM" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 59, 934, 634}, maximized=false}">
@@ -31,6 +31,8 @@
             <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="Sequence3" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{FALSE, TRUE}">
