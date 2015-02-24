@@ -99,19 +99,20 @@ static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible,
 		error("could not initialize model; failed FMI setup experiment");
 		return NULL;
 	}
-	fmi2Flag = fmu->enterInitializationMode(comp);
-	if (fmi2Flag > fmi2Warning) {
-		error("could not initialize model; failed FMI enter initialization mode");
-		return NULL;
-	}
-	printf("initialization mode entered\n");
-	fmi2Flag = fmu->exitInitializationMode(comp);
-	printf("successfully initialized.\n");
-
-	if (fmi2Flag > fmi2Warning) {
-		error("could not initialize model; failed FMI exit initialization mode");
-		return NULL;
-	}
+//	fmi2Flag = fmu->enterInitializationMode(comp);
+//	if (fmi2Flag > fmi2Warning) {
+//		error("could not initialize model; failed FMI enter initialization mode");
+//		return NULL;
+//	}
+//
+//	printf("initialization mode entered\n");
+//	fmi2Flag = fmu->exitInitializationMode(comp);
+//	printf("successfully initialized.\n");
+//
+//	if (fmi2Flag > fmi2Warning) {
+//		error("could not initialize model; failed FMI exit initialization mode");
+//		return NULL;
+//	}
 
 	return comp;
 }
@@ -264,6 +265,10 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 	if (checkForLegacyFMUs(fmus, &isLegacyFmu, &legacyFmuIndex) > fmi2Warning) {
 		terminateSimulation(fmus, 0, file, stepSize, nSteps);
 		return 0;
+	}
+
+	for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+		setupParameters(&fmus[i]);
 	}
 
 	// output solution for time t0
