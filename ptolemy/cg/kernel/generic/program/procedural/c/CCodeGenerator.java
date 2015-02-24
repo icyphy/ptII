@@ -658,8 +658,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
             if (defineEmptyToken) {
-                sharedStream.append("Token emptyToken; "
+                sharedStream.append("extern Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
+                codeC.append("Token emptyToken;" 
+                        + comment("Used by *_delete() and others.") + _eol); 
             }
             codeH.append(sharedStream.toString());
         }
@@ -2484,11 +2486,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
             if (containedActor instanceof AtomicActor
                     || containedActor instanceof FSMActor) {
-                HCode.append("struct AtomicActor* "
+                CCode.append("struct AtomicActor* "
+                        + CodeGeneratorAdapter.generateName(containedActor)
+                        + ";" + _eol);
+                HCode.append("extern struct AtomicActor* "
                         + CodeGeneratorAdapter.generateName(containedActor)
                         + ";" + _eol);
             } else if (containedActor instanceof CompositeActor) {
-                HCode.append("struct CompositeActor* "
+                CCode.append("struct CompositeActor* "
+                        + CodeGeneratorAdapter.generateName(containedActor)
+                        + ";" + _eol);
+                HCode.append("extern struct CompositeActor* "
                         + CodeGeneratorAdapter.generateName(containedActor)
                         + ";" + _eol);
             }
