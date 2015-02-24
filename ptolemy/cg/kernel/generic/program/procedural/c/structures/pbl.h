@@ -80,7 +80,7 @@ extern "C" {
         #include <string.h>
 #else
 #ifndef __CYGWIN__
-    #ifndef __AVR__
+    #if !defined(__AVR__) && !defined(__MBED__)
         #include <sys/dir.h>
     #endif
 #endif
