@@ -3009,7 +3009,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             _substituteMap.put("@MBED_INCLUDES@", _mbedIncludes());
             _substituteMap.put("@MBED_BASE@", _mbedBase());
             // FIXME: We need a way to include target specific functions.
-            _mbedCopy();
+            //_mbedCopy();
         }
 
         // Adds the .c and .o needed files
