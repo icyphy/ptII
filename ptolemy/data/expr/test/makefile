@@ -49,6 +49,7 @@ JSRCS = AttributeChanged.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ConversionUtilities.tcl \
 	CParseTreeCodeGenerator.tcl \
 	FileParameter.tcl \
 	Functions.tcl \
