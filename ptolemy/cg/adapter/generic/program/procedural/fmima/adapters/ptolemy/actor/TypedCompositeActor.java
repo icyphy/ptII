@@ -43,6 +43,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 
 
@@ -216,6 +217,12 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
 	                Parameter parameter = (Parameter) actor.getAttribute(sanitizedName,
 	                        Parameter.class);
 	                
+                        // Coverity Scan indicates that getAttribute could return null, so we check.
+                        if (parameter == null) {
+                            throw new InternalErrorException(actor, null, "Could not find parameter \""
+                                    + sanitizedName + "\" in " + actor.getFullName());
+                        }
+
 	                if (scalar.type instanceof FMIBooleanType) {
 	                	codeStream.append("fmi2Boolean tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
 	                	codeStream.append("_vr = " + scalar.valueReference + ";\n");
