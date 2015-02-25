@@ -463,6 +463,6 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
      */
     protected int[] _nCategories;
 
-    protected static int MAX_TRIALS = 100000;
+    protected static int MAX_TRIALS = 10000;
 
 }

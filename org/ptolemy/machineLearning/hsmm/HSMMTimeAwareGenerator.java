@@ -69,7 +69,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         if (trigger.hasToken(0) && timestamp.hasToken(0)) {
             _windowSize = ((IntToken)trigger.get(0)).intValue();
             long ts0 = ((IntToken) timestamp.get(0)).intValue(); 
-            System.out.println("Timestamp = " + ts0);
+            
             _ta = new TimedAutomaton(new DateToken(ts0,
                     DateToken.PRECISION_SECOND), _Tsampling);
 
@@ -145,7 +145,18 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                 observation.send(0, new ArrayToken(outputObservations));
                 hiddenState.send(0, new ArrayToken(states)); 
             } else {
-                System.out.println("No feasible sample sequence found.");
+                // Send out all zeros.
+                Token[] states = new IntToken[_windowSize];
+                for (int i = 0; i < _windowSize; i ++) { 
+                    states[i] = new IntToken(0);
+                    Token[] yArray = new Token[_nCategories.length];
+                    for (int x= 0; x < _nCategories.length; x++) {
+                        yArray[x] = new DoubleToken(0.0); 
+                    }  
+                    outputObservations[i] = new ArrayToken(yArray);
+                }
+                observation.send(0, new ArrayToken(outputObservations));
+                hiddenState.send(0, new ArrayToken(states)); 
             }
         }
     }
@@ -164,7 +175,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         return bin;
     } 
     
-    private class TimedAutomaton {
+    private static class TimedAutomaton {
         private TimedAutomaton(DateToken timestamp, long step) {
             this._step = step;
             this._currentTime = timestamp;
