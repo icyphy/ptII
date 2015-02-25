@@ -35,6 +35,8 @@ import ptolemy.data.DateToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -72,10 +74,24 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         timestamps.setTypeEquals(new ArrayType(BaseType.INT));
         empiricalStartTimes = new TypedIOPort(this, "empiricalStartTimes", false, true);
         empiricalStartTimes.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX)); 
+
+        transitionMatrixEstimationMethod = new StringParameter(this,
+                "transitionMatrixEstimationMethod");
+        transitionMatrixEstimationMethod.setExpression(INTERPOLATE);
+        transitionMatrixEstimationMethod.addChoice(FORCE_SELF); 
+        transitionMatrixEstimationMethod.addChoice(FORCE_ZERO);
+
     }
 
     /** Array of observation timestamps as UNIX timestamps */
     public TypedIOPort timestamps;
+
+    /** Transition Matrix partitioning options. 
+     * Force self transition asserts a self transition with probability 1 
+     * if no information has been learned for the state. Interpolate: Assigns
+     * uniform probabilities to any state that has Hamming distance less than 
+     * two to the current state. */
+    public Parameter transitionMatrixEstimationMethod;
 
     /** Array of estimated probability transition matrices for each hour. */
     public TypedIOPort empiricalStartTimes;
@@ -111,41 +127,52 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                 prevState = clusters[i];
             }
             Token[] Atokens = new Token[NUM_CATEGORIES];
+            
+            // for each hour, set the learned matrices
             for (int i = 0 ; i < NUM_CATEGORIES; i++) {
                 for (int j = 0 ; j < _nStates; j++) { 
                     double sum = 0.0;
                     for (int k=0; k < _nStates; k ++) { 
                         sum += At[i][j][k];
-                    } 
+                    }
+                    
                     if ( sum > 0 ) {
                         for (int k=0; k < _nStates; k ++) { 
                             At[i][j][k]/= sum;
                         }
-                    } else { 
-                        ArrayList<Integer> allowedTransitionIndices = new ArrayList<Integer>();
-                        for (int b = 0; b < _nStates; b ++) {
-                            // bitCount o the xor gives us the hamming distance
-                            // i.e., the number of bits that differ among x and b
-                            if (_bitCount(j ^ b) <=1) {
-                                allowedTransitionIndices.add(b);
+                    } else {  
+                        String method = transitionMatrixEstimationMethod.getExpression();
+                        switch (method) {
+                        case INTERPOLATE:
+                            ArrayList<Integer> allowedTransitionIndices = new ArrayList<Integer>();
+                            for (int b = 0; b < _nStates; b ++) {
+                                // bitCount o the xor gives us the hamming distance
+                                // i.e., the number of bits that differ among x and b
+                                if (_bitCount(j ^ b) <=1) {
+                                    allowedTransitionIndices.add(b);
+                                }
                             }
-                        }
-                        for (int b : allowedTransitionIndices) { 
-                            At[i][j][b] = 1.0/allowedTransitionIndices.size();
-                        }
-                        if (allowedTransitionIndices.size() == 0) {
-                            At[i][j][j] = 1.0; // force a self-transition.
-                        }
-                    }  
-                }  
+                            for (int b : allowedTransitionIndices) { 
+                                At[i][j][b] = 1.0/allowedTransitionIndices.size();
+                            } 
+                            break; 
+                        case FORCE_SELF:
+                            At[i][j][j] = 1.0;
+                            break;
+                        case FORCE_ZERO:
+                            At[i][j][0] = 1.0;
+                            break;
+                        default:
+                            At[i][j][0] = 1.0;
+                            break;
+                        }  
+                    } 
+                }
                 Atokens[i] = new DoubleMatrixToken(At[i]);
             }
-
             empiricalStartTimes.send(0, new ArrayToken(Atokens));
-
         }
     }
-
     /**
      * MIT HAKMEM Count algorithm.
      * @param u
@@ -161,5 +188,10 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
     /** Number of partitions in the probability transition matrix. */
     private final int NUM_CATEGORIES = 24;
+
+    private final String INTERPOLATE = "Interpolate";
+    private final String FORCE_SELF = "Force self-transition";
+    private final String FORCE_ZERO = "Force transition to state 0";
+
 
 }
