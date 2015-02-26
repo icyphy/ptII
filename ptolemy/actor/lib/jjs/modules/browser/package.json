@@ -1,0 +1,11 @@
+{
+  "name": "browser",
+  "version": "0.1.0",
+  "main": "browser.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Christopher Brooks, Edward A. Lee, Marten Lohstroh"
+    , "email" : "eal@eecs.berkeley.edu"}
+  ],
+  "description": "A simple package for using a browser as a display."
+}
