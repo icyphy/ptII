@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -1719,7 +1720,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // Allow the callback functions structure to be garbage collected.
         _callbacks = null;
     }
-
+    
     /**
      * Return the list of all the scalar variables defined in the FMU
      * interface.
@@ -1728,43 +1729,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     public List<FMIScalarVariable> getScalarVariables() {
         return _fmiModelDescription.modelVariables;
-    }
-
-    /** Return the value reference for a variable.
-     *  @param variable The name of the variable.
-     *  @return the value reference for the variable.
-     */
-    public long getValueReference(String variable) {
-        for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
-            if (_fmiModelDescription.modelVariables.get(i).name
-                    .equals(variable)) {
-                return _fmiModelDescription.modelVariables.get(i).valueReference;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Return the type of a FMU port.
-     *
-     * @param port The name of the port.
-     * @return the type of the port as string
-     */
-    public String getTypeOfPort(String port) {
-        for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
-            if (_fmiModelDescription.modelVariables.get(i).name.equals(port)) {
-                if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIBooleanType) {
-                    return "fmi2_Boolean";
-                } else if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIIntegerType) {
-                    return "fmi2_Integer";
-                } else if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIRealType) {
-                    return "fmi2_Real";
-                } else if (_fmiModelDescription.modelVariables.get(i).type instanceof FMIStringType) {
-                    return "fmi2_String";
-                }
-            }
-        }
-        return "";
     }
 
     /**
@@ -1776,17 +1740,18 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * value of the given output port. If port is not an output port
      * return null.
      */
-    public Set<String> getInputDependencyList(String port) {
-        Set<String> inputVariables = null;
-        for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
-            if (_fmiModelDescription.modelVariables.get(i).name.equals(port)) {
-                if (_fmiModelDescription.modelVariables.get(i).name
-                        .equals(port)) {
-                    inputVariables = _fmiModelDescription.modelVariables.get(i).directDependency;
-                }
-            }
-        }
-        return inputVariables;
+    public List<FMIScalarVariable> getInputDependencyList(FMIScalarVariable scalar) {
+    	List<FMIScalarVariable> inputVariables = new ArrayList<FMIScalarVariable>();
+        
+        if (scalar != null) {
+			for (String inputScalarName : scalar.directDependency) {
+				for (FMIScalarVariable inputVar : _fmiModelDescription.modelVariables) {
+					if (inputVar.name.equals(inputScalarName))
+						inputVariables.add(inputVar);
+				}
+			}
+		}
+		return inputVariables;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2753,6 +2718,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+        	System.out.println("===> Variable: " + scalar.name + " -> " + scalar.valueReference);
             if (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                     || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
