@@ -168,7 +168,6 @@ public class Director extends FMIMACodeGeneratorAdapter {
 				.deepEntityList().iterator();
 
 		// Add edges to the graph
-		int connectionNumber = 0;
 				
 		// Iterate through the actors and generate connection list.
 		while (actors.hasNext()) {
@@ -197,15 +196,11 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
 			// Add all the edges due to topological dependencies
 			for (TypedIOPort input : actor.inputPortList()) {
-				Node sink = port2Node.get(input);
-				
+				Node sink = port2Node.get(input);				
 				List<TypedIOPort> connected_ports = input.connectedPortList();
-
 				for (TypedIOPort output : connected_ports) {					
-					Node source = port2Node.get(output);
-					
+					Node source = port2Node.get(output);					
 					graph.addEdge(source, sink);
-					connectionNumber++;
 				}
 			}
 		}
@@ -232,79 +227,79 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
 		// Sort the graph in order to determine the correct get()/set() sequence
 		// to update the node values
-		List sortedGraph = graph.topologicalSort(nodeCollection);
-
+		List<Node> sortedGraph = graph.topologicalSort(nodeCollection);
 		// Add the sorted connections
 		int connectionIndex = 0;
 				
-		for (int i = 0; i < connectionNumber; i++) {
+		for (Node sourceNode : sortedGraph) {
+			if (node2Port.get(sourceNode).isOutput()) {
+				Collection<Node> successors = graph.successors(sourceNode);
+				for (Node sinkNode : successors) {
 
-			Node portSourceNode = (Node) sortedGraph.get(0);
-			Node portSinkNode = (Node) sortedGraph.get(1);
+					FMIScalarVariable sourceScalar = node2Scalar.get(sourceNode);
+					FMIScalarVariable sinkScalar = node2Scalar.get(sinkNode);
 
-			sortedGraph.remove(portSourceNode);
-			sortedGraph.remove(portSinkNode);
-			
-			FMIScalarVariable sourceScalar = node2Scalar.get(portSourceNode);
-			FMIScalarVariable sinkScalar = node2Scalar.get(portSinkNode);
+					ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport)
+							node2Port.get(sourceNode).getContainer();
+					ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport)
+							node2Port.get(sinkNode).getContainer();
 
-			ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport)
-					node2Port.get(portSourceNode).getContainer();
-			ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport)
-					node2Port.get(portSinkNode).getContainer();
+					String fmuSourceName = sourceActor.getName();
+					String fmuSinkName = sinkActor.getName();
 
-			String fmuSourceName = sourceActor.getName();
-			String fmuSinkName = sinkActor.getName();
-			
-			String sourceType = "";
-			String sinkType = "";
-			
-			if (sourceScalar.type instanceof FMIBooleanType) {
-				sourceType =  "fmi2_Boolean";
-            } else if (sourceScalar.type instanceof FMIIntegerType) {
-            	sourceType =  "fmi2_Integer";
-            } else if (sourceScalar.type instanceof FMIRealType) {
-            	sourceType =  "fmi2_Real";
-            } else if (sourceScalar.type instanceof FMIStringType) {
-            	sourceType =  "fmi2_String";
-            }
-			
-			if (sinkScalar.type instanceof FMIBooleanType) {
-				sinkType =  "fmi2_Boolean";
-            } else if (sinkScalar.type instanceof FMIIntegerType) {
-            	sinkType =  "fmi2_Integer";
-            } else if (sinkScalar.type instanceof FMIRealType) {
-            	sinkType =  "fmi2_Real";
-            } else if (sinkScalar.type instanceof FMIStringType) {
-            	sinkType =  "fmi2_String";
-            }
+					String sourceType = "";
+					String sinkType = "";
 
-			code.append("connections["
-					+ connectionIndex
-					+ "].sourceFMU = &fmus["
-					+ fmuSourceName
-					+ "];\n"
-					+ "connections["
-					+ connectionIndex
-					+ "].sourcePort = getValueReference(getScalarVariable(fmus["
-					+ fmuSourceName + "].modelDescription, "
-					+ sourceScalar.valueReference
-					+ "));\n" + "connections[" + connectionIndex
-					+ "].sourceType = "
-					+ sourceType + ";\n"
-					+ "connections[" + connectionIndex + "].sinkFMU = &fmus["
-                                + fmuSinkName + "];\n");
-			
-			code.append("connections[" + connectionIndex
-                  + "].sinkPort = getValueReference(getScalarVariable(fmus["
-                  + fmuSinkName + "].modelDescription, "
-                  + sinkScalar.valueReference
-                  + "));\n");
-			
-            code.append("connections[" + connectionIndex
-                  + "].sinkType = " + sinkType + ";\n");
-			connectionIndex++;
+					if (sourceScalar.type instanceof FMIBooleanType) {
+						sourceType = "fmi2_Boolean";
+					} else if (sourceScalar.type instanceof FMIIntegerType) {
+						sourceType = "fmi2_Integer";
+					} else if (sourceScalar.type instanceof FMIRealType) {
+						sourceType = "fmi2_Real";
+					} else if (sourceScalar.type instanceof FMIStringType) {
+						sourceType = "fmi2_String";
+					}
+
+					if (sinkScalar.type instanceof FMIBooleanType) {
+						sinkType = "fmi2_Boolean";
+					} else if (sinkScalar.type instanceof FMIIntegerType) {
+						sinkType = "fmi2_Integer";
+					} else if (sinkScalar.type instanceof FMIRealType) {
+						sinkType = "fmi2_Real";
+					} else if (sinkScalar.type instanceof FMIStringType) {
+						sinkType = "fmi2_String";
+					}
+
+					code.append("connections["
+							+ connectionIndex
+							+ "].sourceFMU = &fmus["
+							+ fmuSourceName
+							+ "];\n"
+							+ "connections["
+							+ connectionIndex
+							+ "].sourcePort = getValueReference(getScalarVariable(fmus["
+							+ fmuSourceName + "].modelDescription, "
+							+ sourceScalar.valueReference + "));\n"
+							+ "connections[" + connectionIndex
+							+ "].sourceType = " + sourceType + ";\n"
+							+ "connections[" + connectionIndex
+							+ "].sinkFMU = &fmus[" + fmuSinkName + "];\n");
+
+					code.append("connections["
+							+ connectionIndex
+							+ "].sinkPort = getValueReference(getScalarVariable(fmus["
+							+ fmuSinkName + "].modelDescription, "
+							+ sinkScalar.valueReference + "));\n");
+
+					code.append("connections[" + connectionIndex
+							+ "].sinkType = " + sinkType + ";\n");
+					connectionIndex++;
+				}
+			}
 		}
+			
+			
+
 
 		// Generate the end of the main() method.
 		// FIXME: we should generate the start of the main() method from some
