@@ -35,7 +35,7 @@
             <property name="html (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="An HTML document to render in the browser.">
             </property>
         </property>
-        <property name="html" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
+        <property name="html" class="ptolemy.actor.parameters.PortParameter" value="&quot;&lt;b&gt;Hello World again!&lt;/b&gt;&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 175.0]">
         </property>
@@ -48,7 +48,7 @@
         </port>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;b&gt;Hello World!&lt;/b&gt;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;b&gt;Hello World again!&lt;/b&gt;">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
