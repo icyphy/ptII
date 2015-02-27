@@ -29,8 +29,13 @@ package ptolemy.actor.lib.jjs.modules.browser;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
+import org.vertx.java.core.AsyncResult;
+import org.vertx.java.core.AsyncResultHandler;
+import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
+import org.vertx.java.core.http.HttpServerRequest;
+import org.vertx.java.core.http.HttpServerResponse;
 
 ///////////////////////////////////////////////////////////////////
 //// VertxHelper
@@ -49,14 +54,39 @@ public class VertxHelper {
     ////                     public methods                        ////
     
     /** Create a web server that serves the specified string.
+     *  @param currentObj The JavaScript object on which this method is called.
      *  @param html The string to serve.
      *  @param port The port to listen for requests on.
      *	@return A new VertxHelper.
      */
-    public static VertxHelper createServer(
-	    ScriptObjectMirror currentObj, String html, int port) {
-        // FIXME: Implement this!!!
-	return null;
+    public static Server createServer(int port) {
+	return new Server(port);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     inner classes                         ////
+
+    public static class Server {
+	public Server(int port) {
+	    Handler handler = new AsyncResultHandler<Void>() {
+		public void handle(AsyncResult<Void> asyncResult) {
+		    // FIXME: Called when the server actually starts listening.
+		    // Probably need to have a callback back to JavaScript here.
+		}
+	    };
+	    _vertx.createHttpServer().requestHandler(new Handler<HttpServerRequest>() {
+		public void handle(HttpServerRequest req) {
+		    HttpServerResponse response = req.response();
+		    response.setChunked(true);
+		    response.write(_response);
+		    response.end();
+		}
+	    }).listen(port, "0.0.0.0", handler);
+	}
+	public void setResponse(String response) {
+	    _response = response;
+	}
+	private String _response = "No data yet";
     }
     
     ///////////////////////////////////////////////////////////////////
