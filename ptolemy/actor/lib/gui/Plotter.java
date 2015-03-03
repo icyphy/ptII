@@ -107,7 +107,11 @@ public class Plotter extends PlotterBase {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == startingDataset) {
-            if (((IntToken) startingDataset.getToken()).intValue() < 0) {
+            IntToken dataset = (IntToken) startingDataset.getToken();
+            if (dataset == null) {
+                throw new IllegalActionException(this,
+                        "startingDataset null: please enter a nonnegative index value.");
+            } else if (dataset.intValue() < 0) {
                 throw new IllegalActionException(this,
                         "startingDataset: negative value is not allowed.");
             }
