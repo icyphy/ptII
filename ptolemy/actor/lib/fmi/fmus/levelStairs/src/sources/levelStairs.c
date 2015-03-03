@@ -141,17 +141,32 @@ int FMIAPI checkFMU(
              const fmiCallbackFunctions *functions,
              fmiBoolean visible,
              fmiBoolean loggingOn)  {
+    /* fprintf(stderr, "checkFMU()\n"); */
+    /* fprintf(stderr, "checkFMU() instanceName: %s \n", instanceName); */
+    /* fprintf(stderr, "checkFMU() GUID: %s \n", GUID); */
+    /* fprintf(stderr, "checkFMU() modelGUID: %s \n", modelGUID); */
+    /* fprintf(stderr, "checkFMU() fmuResourceLocation: %s \n", fmuResourceLocation); */
+    /* fprintf(stderr, "checkFMU() functions: %p\n", functions); */
+
+    if (functions == NULL) {
+        fprintf(stderr, "fmiInstantiateSlave: fmiCallbackFunctions is null?\n");
+        return 0;
+    }
     // Logger callback is required.
     if (!functions->logger) {
         return 0;
     }
+
+    // fprintf(stderr, "checkFMU() functions->logger: %p\n", functions->logger);
     // Functions to allocate and free memory are required.
     if (!functions->allocateMemory || !functions->freeMemory) {
+        fprintf(stderr, "fmiInstantiateSlave: Missing callback function?\n");
         functions->logger(NULL, instanceName, fmiError, "error",
                           "fmiInstantiateSlave: Missing callback function: freeMemory");
         return 0;
     }
     if (!instanceName || strlen(instanceName)==0) {
+        fprintf(stderr, "fmiInstantiateSlave: Missing instance name\n");
         functions->logger(NULL, instanceName, fmiError, "error",
                           "fmiInstantiateSlave: Missing instance name.");
         return 0;
@@ -164,6 +179,7 @@ int FMIAPI checkFMU(
         //                  "fmiInstantiateSlave: Wrong GUID %s. Expected %s.", GUID, modelGUID);
         return 0;
     }
+    //fprintf(stderr, "checkFMU() returning 1.\n");
     return 1;
 }
 
@@ -229,7 +245,13 @@ fmiStatus FMIAPI fmiDoStep(fmiComponent c, fmiReal currentCommunicationPoint,
  */
 void FMIAPI fmiFreeSlaveInstance(fmiComponent c) {
     ModelInstance* component = (ModelInstance *) c;
-    component->functions->freeMemory(component);
+    if (component != NULL) {
+        if (component->functions != NULL) {
+            if (component->functions->freeMemory != NULL) {
+                component->functions->freeMemory(component);
+            }
+        }
+    }
 }
 
 /*****************************************************************************************
