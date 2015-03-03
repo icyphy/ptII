@@ -42,6 +42,7 @@ import java.util.Set;
 import org.ptolemy.fmi.FMI20EventInfo;
 import org.ptolemy.fmi.FMI20ModelInstance;
 import org.ptolemy.fmi.FMICallbackFunctions;
+import org.ptolemy.fmi.FMI20CallbackFunctions;
 import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
@@ -1411,6 +1412,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             .getFmiFunction("fmiInitializeSlave");
                     _fmiInstantiateSlaveFunction = _fmiModelDescription
                             .getFmiFunction("fmiInstantiateSlave");
+                    if (_fmiVersion >= 1.5) {
+                        _fmiInstantiateFunction = _fmiInstantiateSlaveFunction;
+                    }
                 } else {
                     // Common with CS and ME.
                     _fmiInstantiateFunction = _fmiModelDescription
@@ -1522,14 +1526,30 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
             // FMI-1.5 is the experimental version with our extensions.
 
-            // In FMI-1.5 and FMI-2.0, this is a pointer to the structure, which
-            // is by
-            // default how a subclass of Structure is handled, so there is no
-            // need for the inner class ByValue, as above.
-            _callbacks = new FMICallbackFunctions(new FMULibrary.FMULogger(
-                    _fmiModelDescription), new FMULibrary.FMUAllocateMemory(),
+            // In FMI-2.0, the fmiComponentEnvironment is passed to
+            // the callback Functions so that the logger can access it
+            // to access the names.  However, JFMI worked around that
+            // by providing access to the FMIModelDescription object.
+            // This could cause problems, but mainly we want to be
+            // sure that we differentiate between the
+            // fmiComponentEnvironment and the fmiComponent.
+
+            // We use FMUAllocateMemory so that we can retain a reference
+            // to the allocated memory and the memory does not get gc'd.
+            Pointer fmiEnvironment = _fmiModelDescription.getFMUAllocateMemory().apply(
+                    new NativeSizeT(1), new NativeSizeT(Pointer.SIZE));
+
+            // In FMI-1.5 and FMI-2.0, this is a pointer to the
+            // structure, which is by default how a subclass of
+            // Structure is handled, so there is no need for the inner
+            // class ByValue, as above.
+            _callbacks20 = new FMI20CallbackFunctions(
+                    new FMULibrary.FMULogger(_fmiModelDescription),
+                    _fmiModelDescription.getFMUAllocateMemory(),
                     new FMULibrary.FMUFreeMemory(),
-                    new FMULibrary.FMUStepFinished());
+                    new FMULibrary.FMUStepFinished(),
+                    // We use to pass a fmiComponent here, but in FMI-2.0 fmiEnvironment was introduced, ticket #41 and the FMI-2.0 spec.
+                    fmiEnvironment);
             // The FMI standard is silent about whether an FMU needs to copy
             // the struct pointed to by the callbacks argument, so we have to
             // assume that the FMU will not. This means that we need to allocate
@@ -1552,7 +1572,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 fmiType = 0;
             }
 
-            if (_fmiVersion < 2.0) {
+            if (_fmiVersion < 1.5) {
                 // FMI-1.5 is the experimental version with our extensions.
                 if (_fmiModelDescription.modelExchange) {
                     // We don't have any FMI-1.5 Model Exchange
@@ -1573,6 +1593,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                     _fmiModelDescription.fmuResourceLocation,
                                     _callbacks, toBeVisible, loggingOn });
                 }
+            } else if (_fmiVersion == 1.5) {
+                _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
+                    .invoke(Pointer.class, new Object[] {
+                                getFullName(), _fmiModelDescription.guid,
+                                _fmiModelDescription.fmuResourceLocation,
+                                _callbacks20, toBeVisibleFMI2, loggingOnFMI2 });
             } else if (_fmiVersion >= 2.0) {
                 // FMI-2.0 Model Exchange and Cosimulation.
 
@@ -1586,7 +1612,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         Pointer.class, new Object[] { getFullName(), fmiType,
                                 _fmiModelDescription.guid,
                                 _fmiModelDescription.fmuResourceLocation,
-                                _callbacks, toBeVisibleFMI2, loggingOnFMI2 });
+                                _callbacks20, toBeVisibleFMI2, loggingOnFMI2 });
+            }
+            if (_debugging) {
+                _debugToStdOut("Done with fmi instantiate");
             }
         }
 
@@ -2292,6 +2321,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     @SuppressWarnings("deprecation")
     protected void _fmiInitialize() throws IllegalActionException {
+        if (_debugging) {
+            _debugToStdOut("FMUImport._fmiInitialize()");
+        }
         if (_fmiModelDescription.modelExchange) {
             if (_fmiVersion < 1.5) {
                 FMIEventInfo eventInfo = new FMIEventInfo.ByValue();
@@ -2401,6 +2433,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _recordFMUState();
             } else {
                 // _fmiVersion => 2.0
+                if (_debugging) {
+                    _debugToStdOut("FMUImport._fmiInitialize(): about to invoke the fmi setup experiment function");
+                }
                 fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
@@ -2413,6 +2448,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             "Failed to setup the experiment of the FMU: "
                                     + _fmiStatusDescription(fmiFlag));
                 }
+                if (_debugging) {
+                    _debugToStdOut("FMUImport._fmiInitialize(): about to invoke the fmi enter initialization function");
+                }
                 fmiFlag = ((Integer) _fmiEnterInitializationModeFunction
                         .invoke(Integer.class, new Object[] { _fmiComponent }))
                         .intValue();
@@ -2421,6 +2459,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     throw new IllegalActionException(this,
                             "Failed to enter the initialization mode of the FMU: "
                                     + _fmiStatusDescription(fmiFlag));
+                }
+                if (_debugging) {
+                    _debugToStdOut("FMUImport._fmiInitialize(): about to invoke the fmi exitr initialization function");
                 }
                 fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent }))
@@ -3403,6 +3444,28 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     ////                          protected fields                 ////
 
     /**
+     * FMI-1.0 callback functions provided to the C code as a
+     * struct. This reference is non-null between creation of the
+     * struct in preinitialize() and invocation of wrapup() so that
+     * the callback structure does not get garbage collected. JNA
+     * documentation is silent about whether there is any assurance a
+     * C pointer to this struct is valid until garbage collection, but
+     * we assume it is.
+     */
+    protected FMICallbackFunctions _callbacks;
+
+    /**
+     * FMI-2.0 callback functions provided to the C code as a
+     * struct. This reference is non-null between creation of the
+     * struct in preinitialize() and invocation of wrapup() so that
+     * the callback structure does not get garbage collected. JNA
+     * documentation is silent about whether there is any assurance a
+     * C pointer to this struct is valid until garbage collection, but
+     * we assume it is.
+     */
+    protected FMI20CallbackFunctions _callbacks20;
+
+    /**
      * The FMI component created by the modelIdentifier_fmiInstantiateSlave()
      * method.
      */
@@ -3446,16 +3509,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Function to get the event indicators of the FMU for model exchange. */
     protected Function _fmiGetEventIndicatorsFunction;
-
-    /**
-     * Callback functions provided to the C code as a struct. This reference is
-     * non-null between creation of the struct in preinitialize() and invocation
-     * of wrapup() so that the callback structure does not get garbage
-     * collected. JNA documentation is silent about whether there is any
-     * assurance a C pointer to this struct is valid until garbage collection,
-     * but we assume it is.
-     */
-    protected FMICallbackFunctions _callbacks;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
