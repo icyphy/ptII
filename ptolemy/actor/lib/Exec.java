@@ -209,6 +209,12 @@ public class Exec extends LimitedFiringSource {
      *  application, then ptolemy.actor.gui.jnlp.MenuApplication will
      *  change user.dir to be the value of user.home, which is the
      *  name of the user's home directory.</p>
+     *
+     *  <p>If the value of this parameter is the empty string,
+     *  then the working directory of the subprocess with be 
+     *  inherited from the working directory of the parent
+     *  process.  Typically, this is the value of the
+     *  user.dir property.</p>
      */
     public FileParameter directory;
 
@@ -512,8 +518,15 @@ public class Exec extends LimitedFiringSource {
                             .stringValue());
             commandList.addAll(Arrays.asList(commandArray));
 
+            // If the directory parameter is the empty string,
+            // then directoryAsFile will be null.
+            // If we call java.lang.Runtime.exec() with a null
+            // value for the directory, then the working directory
+            // of the subprocess will be inherited from the current process.
+            // See https://projects.ecoinformatics.org/ecoinfo/issues/6676
             directoryAsFile = directory.asFile();
-            if (!directoryAsFile.isDirectory()) {
+            if (directoryAsFile != null
+                    && !directoryAsFile.isDirectory()) {
                 throw new IllegalActionException("No such directory: "
                         + directoryAsFile);
             }
@@ -524,7 +537,8 @@ public class Exec extends LimitedFiringSource {
                     commands.append(aCommand + " ");
                 }
                 _debug("About to exec \"" + commands + "\"\n in \""
-                        + directoryAsFile + "\"\n with environment:");
+                        + (directoryAsFile == null ? "the working directory of the parent process" : directoryAsFile)
+                        + "\"\n with environment:");
             }
 
             // Process the environment parameter.
@@ -589,7 +603,9 @@ public class Exec extends LimitedFiringSource {
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem executing the command '" + command.getExpression()
-                    + "'\n" + "in the directory: " + directoryAsFile);
+                    + "'\n" + "in the "
+                    + (directoryAsFile == null ? "the working directory of the parent process."
+                            : directoryAsFile + " directory."));
         }
     }
 
