@@ -1,0 +1,81 @@
+# Makefile for Nashorn-based Ptolemy II JavaScript browser module
+#
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+#
+# @Version: $Id: makefile 70884 2014-12-06 17:42:10Z cxh $
+#
+# @Copyright (c) 2015 The Regents of the University of California.
+# All rights reserved.
+#
+# Permission is hereby granted, without written agreement and without
+# license or royalty fees, to use, copy, modify, and distribute this
+# software and its documentation for any purpose, provided that the
+# above copyright notice and the following two paragraphs appear in all
+# copies of this software.
+#
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+# PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# ENHANCEMENTS, OR MODIFICATIONS.
+#
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
+
+ME =		ptolemy/actor/lib/jjs/modules/browser
+
+DIRS = 		test
+
+# Root of the Java directory
+ROOT =		../../../../../..
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
+
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	browser
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+# Keep this list alphabetized.
+JSRCS = \
+	VertxHelper.java
+
+OTHER_FILES_TO_BE_JARED = \
+	browser.js \
+	package.json
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	#doc test
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	demo \
+	doc \
+	$(PTCLASSJAR) \
+	'VertxHelper$$Server$$1.class' \
+	'VertxHelper$$Server$$2.class' \
+	'VertxHelper$$Server.class'
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+
+all: jclass
+install: jclass jars
+
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
