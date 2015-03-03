@@ -1,7 +1,7 @@
 /* A variable is an attribute that contains a token and can be referenced
  in expressions.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -218,7 +218,7 @@ import ptolemy.util.MessageHandler;
  a value <code>""</code>; the value for the string mode parameter would
  be <code>$myEmptyParameter</code>.
 
- @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
+ @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong, contributor: Daniel Crawl.
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Red (neuendor)
@@ -816,6 +816,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
         }
+        if (_weakValueListeners != null) {
+            _weakValueListeners.remove(listener);
+        }
     }
 
     /** Reset the variable to its initial value. If the variable was
@@ -882,15 +885,26 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             NameDuplicationException {
         Nameable previousContainer = getContainer();
 
+        
         // Warn if there are variables that depend on this one.
-        if (container != previousContainer && previousContainer != null
-                && _valueListeners != null && _valueListeners.size() > 0) {
-            if (!MessageHandler
-                    .yesNoQuestion("WARNING: There are variables depending on "
-                            + getName() + ". Continue?")) {
-                // Cancel.
-                throw new IllegalActionException(this,
-                        "Cancelled change of container.");
+        if (container != previousContainer && previousContainer != null) {
+            Set<ValueListener> listeners = new HashSet<ValueListener>();
+            if (_valueListeners != null && !_valueListeners.isEmpty()) {
+                listeners.addAll(_valueListeners);
+            }
+            // See https://projects.ecoinformatics.org/ecoinfo/issues/6681
+            if (_weakValueListeners != null && !_weakValueListeners.isEmpty()) {
+                listeners.removeAll(_weakValueListeners);
+            }
+            
+            if (!listeners.isEmpty()) {
+                if (!MessageHandler
+                        .yesNoQuestion("WARNING: There are variables depending on "
+                                + getName() + ". Continue?")) {
+                    // Cancel.
+                    throw new IllegalActionException(this,
+                            "Cancelled change of container.");
+                }
             }
         }
 
@@ -1382,6 +1396,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         _isTokenUnknown = value;
     }
 
+    /** Set a value listener as a weak dependency. When this Variable changes
+     *  containers, the value listener is not considered a dependency.
+     *  @see #setContainer()
+     */
+    public void setValueListenerAsWeakDependency(ValueListener listener) {
+        // See https://projects.ecoinformatics.org/ecoinfo/issues/6681
+        if (_weakValueListeners == null) {
+            _weakValueListeners = new HashSet<ValueListener>();
+        }           
+        _weakValueListeners.add(listener);
+    }
+    
     /** Set the visibility of this variable.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this variable.
@@ -2536,6 +2562,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     // The visibility of this variable.
     private Settable.Visibility _visibility = Settable.EXPERT;
+    
+    /** Value listeners that should not be treated as true dependencies. */
+    private Set<ValueListener> _weakValueListeners;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
