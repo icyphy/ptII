@@ -77,6 +77,7 @@ public class SampleDelay extends SDFTransformer {
 
         initialOutputs = new Parameter(this, "initialOutputs");
         initialOutputs.setExpression("{0}");
+        initialOutputs.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
 
         output_tokenInitProduction.setExpression("initialOutputs.length()");
 
@@ -187,7 +188,7 @@ public class SampleDelay extends SDFTransformer {
         getDirector().invalidateResolvedTypes();
     }
 
-    /** Sets up backward type constraint that sets output &lt; input
+    /** Sets up backward type constraint that sets output &le; input
      *  if backward type inference is enabled.
      *  @return A set of Inequalities.
      */
