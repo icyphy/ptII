@@ -104,6 +104,9 @@ fmuCheck: $(FMU_NAME).fmu
 test_me:
 	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu  1.0 0.1 true
 
+test_cs:
+	$(JAVA) -classpath $(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR) org.ptolemy.fmi.driver.FMUCoSimulation $(FMU_NAME).fmu  1.0 0.1 true
+
 # We don't check in the fmu because it will be different on each platform
 # Instead, run make update to update the test directory.
 update: $(FMU_NAME).fmu
