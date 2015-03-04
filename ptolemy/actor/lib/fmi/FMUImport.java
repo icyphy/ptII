@@ -545,6 +545,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             }
 
             if (_fmiVersion >= 2.0) {
+                _enterContinuousTimeMode();
                 // Need to be in modelEventMode during second and subsequent
                 // fires
                 // for fmi2SetInteger() to work. See valuesME20.fmu.
@@ -1607,6 +1608,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // FIXME: Check canBeInstantiatedOnlyOncePerProcess capability
                 // flag.
                 // Do not instantiate if true and previously instantiated.
+
+                System.out.println("FMUImport: about to instantiate.  fmuResourceLocation: "
+                        + _fmiModelDescription.fmuResourceLocation);
 
                 _fmiComponent = (Pointer) _fmiInstantiateFunction.invoke(
                         Pointer.class, new Object[] { getFullName(), fmiType,
@@ -2707,8 +2711,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         FMIModelDescription fmiModelDescription = FMUFile
                 .parseFMUFile(fmuFileName);
 
+        // We want to be careful here because a FMI-2.0 FMU can have
+        // a modelDescription.xml file that supports both modelExchange and
+        // cosimulation.  Thus, _fmiModelDescription.modelExchange could
+        // be set to true if we import a dual-mode FMU, save the model and then
+        // run it.
         if (modelExchange) {
             fmiModelDescription.modelExchange = true;
+        } else {
+            fmiModelDescription.modelExchange = false;
         }
 
         // Check that the modelDescription is suitable.
@@ -3333,15 +3344,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 attributeChanged(fmiVersion);
             }
 
-            // An FMI-1.0 FMU may have the same modelDescription.xml file for
-            // both CS and ME.  (See the FMI-1.0 fmus in FMUSDK-2.0.3.)  So,
-            // this value is only used for FMI-1.0 fmus.
-            if (_fmiVersion < 2.0) {
-                // Specify whether the FMU is for model exchange or co-simulation.
-                // This gets determined when the FMU is initially imported.
-                _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
-                        .getToken()).booleanValue();
-            }
+            // Both an FMI-1.0 and a FMI-2.0 FMU may have the same
+            // modelDescription.xml file for both CS and ME.  See the
+            // FMI-1.0 fmus in FMUSDK-2.0.3.  See the JModelica FMUs like
+            // ptolemy/actor/lib/fmi/fmus/jmodelica/CoupledClutches
+
+            // Specify whether the FMU is for model exchange or co-simulation.
+            // This gets determined when the FMU is initially imported.
+            _fmiModelDescription.modelExchange = ((BooleanToken) modelExchange
+                    .getToken()).booleanValue();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to unzip, read in or process \"" + fmuFileName
@@ -3748,8 +3759,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // causality="local" and
                     // variability="continuous", so we should
                     // return it as an input.
-                    || (_fmiModelDescription.modelExchange
-                            && scalarVariable.causality == Causality.local
+                            || (_fmiModelDescription.modelExchange
+                                    /*((BooleanToken) modelExchange.getToken()).booleanValue()*/
+                                    && scalarVariable.causality == Causality.local
                     // If it is a scalar that is marked as a derivative, then it
                     // is not an input
                     && (((scalarVariable.type instanceof FMIRealType && ((FMIRealType) scalarVariable.type).indexState == -1)) || !(scalarVariable.type instanceof FMIRealType))))) {
