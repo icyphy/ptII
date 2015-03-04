@@ -542,10 +542,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
                 // To initialize the event indicators, call this.
                 _checkEventIndicators();
+
+                if (_fmiVersion >= 2.0) {
+                    _enterContinuousTimeMode();
+                }
+
             }
 
             if (_fmiVersion >= 2.0) {
-                _enterContinuousTimeMode();
                 // Need to be in modelEventMode during second and subsequent
                 // fires
                 // for fmi2SetInteger() to work. See valuesME20.fmu.
@@ -1594,7 +1598,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                     _fmiModelDescription.fmuResourceLocation,
                                     _callbacks, toBeVisible, loggingOn });
                 }
-            } else if (_fmiVersion == 1.5) {
+            } else if (_fmiVersion > 1.0 && _fmiVersion < 2.0) {
+                // FMI-1.5 is based on early versions of FMI-2.0
                 _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
                     .invoke(Pointer.class, new Object[] {
                                 getFullName(), _fmiModelDescription.guid,
@@ -1608,10 +1613,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // FIXME: Check canBeInstantiatedOnlyOncePerProcess capability
                 // flag.
                 // Do not instantiate if true and previously instantiated.
-
-                System.out.println("FMUImport: about to instantiate.  fmuResourceLocation: "
-                        + _fmiModelDescription.fmuResourceLocation);
-
                 _fmiComponent = (Pointer) _fmiInstantiateFunction.invoke(
                         Pointer.class, new Object[] { getFullName(), fmiType,
                                 _fmiModelDescription.guid,
