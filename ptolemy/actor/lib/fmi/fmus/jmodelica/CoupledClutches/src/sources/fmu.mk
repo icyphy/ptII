@@ -17,8 +17,11 @@ ARCH_DIR = ../binaries/$(ARCH)/
 # This is for model exhange
 #INCLUDE =  -I.
 
-# This is for model exhange witj JModelica
-INCLUDE =  -DFMUME20 -I.
+# This is for co-simulation with JModelica.
+INCLUDE =  -DFMUCS20 -I.
+
+# This is for model exchange with JModelica
+#INCLUDE =  -DFMUME20 -I.
 
 # For co-simulation FMUs, modelExchange.mk does not exist.
 # For model exchange FMUs, modelExchange.mk defines INCLUDE.
@@ -92,13 +95,15 @@ win64:
 	fi
 	cl /LD /wd04090 /nologo $< 
 
+FMI2CSTEMPLATE=/usr/local/jmodelica/CodeGenTemplates/fmi2_functions_cs_template.c
+
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -lfmi2 -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
+	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< $(FMU_NAME)_*.c -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -lfmi2 -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
 
 FMUDIR=..
 

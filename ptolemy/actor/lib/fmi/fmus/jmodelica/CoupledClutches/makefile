@@ -33,4 +33,9 @@ FMU_NAME = CoupledClutches
 
 include ../fmus.mk
 
-
+# To test this:
+fmuCheck:
+	if [ ! -d resources ]; then \
+		mkdir resources; \
+	fi
+	fmuCheck -k me -z . *.fmu

@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fmiModelDescription fmiVersion="2.0" modelName="CoupledClutches" guid="5e97f2c5cfc629d038344521604b7172" generationTool="JModelica.org" generationDateAndTime="2014-12-10T10:23:55" variableNamingConvention="structured" numberOfEventIndicators="27">
+<fmiModelDescription fmiVersion="2.0" modelName="CoupledClutches" guid="77afec03b06d6441475d7ce29d5d3523" generationTool="JModelica.org" generationDateAndTime="2015-03-03T18:38:39" variableNamingConvention="structured" numberOfEventIndicators="27">
 	<ModelExchange modelIdentifier="CoupledClutches" needsExecutionTool="false" completedIntegratorStepNotNeeded="true" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canGetAndSetFMUstate="false" canSerializeFMUstate="false" providesDirectionalDerivative="false" />
 	<CoSimulation modelIdentifier="CoupledClutches" needsExecutionTool="false" canHandleVariableCommunicationStepSize="true" canInterpolateInputs="true" maxOutputDerivativeOrder="0" canRunAsynchronuously="false" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canSerializeFMUstate="false" providesDirectionalDerivative="false" />
 	<UnitDefinitions>
-		<Unit name="W">
-		</Unit>
 		<Unit name="1">
 		</Unit>
 		<Unit name="Hz">
 		</Unit>
-		<Unit name="rad/s">
-		</Unit>
 		<Unit name="s">
-		</Unit>
-		<Unit name="N.m">
 		</Unit>
 		<Unit name="kg.m2">
 		</Unit>
-		<Unit name="N">
+		<Unit name="rad">
+			<DisplayUnit name="rad" />
+			<DisplayUnit name="deg" />
 		</Unit>
 		<Unit name="rad/s2">
 		</Unit>
-		<Unit name="rad">
-			<DisplayUnit name="deg" />
-			<DisplayUnit name="rad" />
+		<Unit name="W">
+		</Unit>
+		<Unit name="N.m">
+		</Unit>
+		<Unit name="rad/s">
+		</Unit>
+		<Unit name="N">
 		</Unit>
 	</UnitDefinitions>
 	<TypeDefinitions>
@@ -216,7 +216,7 @@
 			<Integer start="0" />
 		</ScalarVariable>
 		<ScalarVariable name="_cs_step_size" valueReference="53" causality="parameter" variability="fixed" initial="exact">
-			<Real relativeQuantity="false" start="0.0010" />
+			<Real relativeQuantity="false" start="0.001" />
 		</ScalarVariable>
 		<ScalarVariable name="_enforce_bounds" valueReference="536871013" causality="parameter" variability="fixed" initial="exact">
 			<Boolean start="true" />
