@@ -2,60 +2,47 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CoupledClutches" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={305, 115, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6298179475685385">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{567.2773399946756, 410.9455757141113}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 60}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 35.0}">
         </property>
     </property>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={500, 575, 500, 344}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="J1.flange_a.tau, J1.flange_b.phi, J1.flange_b.tau, J1.phi, J1.w, clutch3.tau, sin1.y,sin2.y">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={409, 69, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 210}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{530.0, 310.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="11.0"/>
+<yRange min="-9.999996829318347" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{195, 180}">
-        </property>
-    </entity>
-    <entity name="CoupledClutches" class="ptolemy.actor.lib.fmi.FMUImport">
+    <entity name="CoupledClutches2" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/CoupledClutches.fmu">
         </property>
-        <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 590.0}">
         </property>
         <property name="J1_J" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -89,7 +76,7 @@
         </property>
         <property name="_cs_step_size" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
-        <property name="_enforce_bounds" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_enforce_bounds" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_events_default_tol" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
@@ -104,6 +91,10 @@
         <property name="_nle_solver_default_tol" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_nle_solver_max_iter" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_nle_solver_max_residual_scaling_factor" class="ptolemy.data.expr.Parameter" value="1.0E10">
+        </property>
+        <property name="_nle_solver_min_residual_scaling_factor" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_nle_solver_min_tol" class="ptolemy.data.expr.Parameter" value="1.0E-12">
         </property>
@@ -121,15 +112,13 @@
         </property>
         <property name="_runtime_log_to_file" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_use_Brent_in_1d" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_use_Brent_in_1d" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_use_jacobian_equilibration" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="clutch1_cgeo" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="clutch1_fn_max" class="ptolemy.data.expr.Parameter" value="20.0">
-        </property>
-        <property name="clutch1_mue0" class="ptolemy.data.expr.Parameter" value="NaN">
         </property>
         <property name="clutch1_mue_pos_1_1_" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -141,15 +130,11 @@
         </property>
         <property name="clutch1_stateSelect" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="clutch1_useHeatPort" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="clutch1_w_small" class="ptolemy.data.expr.Parameter" value="1.0E10">
         </property>
         <property name="clutch2_cgeo" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="clutch2_fn_max" class="ptolemy.data.expr.Parameter" value="20.0">
-        </property>
-        <property name="clutch2_mue0" class="ptolemy.data.expr.Parameter" value="NaN">
         </property>
         <property name="clutch2_mue_pos_1_1_" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -161,15 +146,11 @@
         </property>
         <property name="clutch2_stateSelect" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="clutch2_useHeatPort" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="clutch2_w_small" class="ptolemy.data.expr.Parameter" value="1.0E10">
         </property>
         <property name="clutch3_cgeo" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="clutch3_fn_max" class="ptolemy.data.expr.Parameter" value="20.0">
-        </property>
-        <property name="clutch3_mue0" class="ptolemy.data.expr.Parameter" value="NaN">
         </property>
         <property name="clutch3_mue_pos_1_1_" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -181,11 +162,7 @@
         </property>
         <property name="clutch3_stateSelect" class="ptolemy.data.expr.Parameter" value="4">
         </property>
-        <property name="clutch3_useHeatPort" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="clutch3_w_small" class="ptolemy.data.expr.Parameter" value="1.0E10">
-        </property>
-        <property name="fixed_flange_phi" class="ptolemy.data.expr.Parameter" value="NaN">
         </property>
         <property name="fixed_phi0" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -203,8 +180,6 @@
         </property>
         <property name="sin2_amplitude" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="sin2_freqHz" class="ptolemy.data.expr.Parameter" value="NaN">
-        </property>
         <property name="sin2_offset" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="sin2_phase" class="ptolemy.data.expr.Parameter" value="1.57">
@@ -215,24 +190,12 @@
         </property>
         <property name="step1_offset" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="step1_startTime" class="ptolemy.data.expr.Parameter" value="NaN">
-        </property>
         <property name="step2_height" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="step2_offset" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="step2_startTime" class="ptolemy.data.expr.Parameter" value="NaN">
-        </property>
-        <property name="torque_phi_support" class="ptolemy.data.expr.Parameter" value="NaN">
-        </property>
-        <property name="torque_support_phi" class="ptolemy.data.expr.Parameter" value="NaN">
-        </property>
-        <property name="torque_useSupport" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
-        </property>
         <port name="J1_a" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.a"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -246,7 +209,7 @@
             </property>
         </port>
         <port name="J1_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -260,7 +223,7 @@
             </property>
         </port>
         <port name="J1_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -270,11 +233,11 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="J1_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -284,11 +247,11 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="J1_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.flange_b.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -298,11 +261,11 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="J1_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -312,12 +275,12 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="J1_der_phi_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J1.der(phi)"/>
+        <port name="der_J1_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J1.phi)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -329,9 +292,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J1_der_phi_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J1.der(phi,2)"/>
+        <port name="der_J1_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J1.phi,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -344,7 +307,7 @@
             </property>
         </port>
         <port name="J1_w" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J1.w"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -357,9 +320,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <port name="J1_der_w_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J1.der(w)"/>
+        <port name="der_J1_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J1.w)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -372,7 +335,7 @@
             </property>
         </port>
         <port name="J2_a" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.a"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -386,7 +349,7 @@
             </property>
         </port>
         <port name="J2_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -400,7 +363,7 @@
             </property>
         </port>
         <port name="J2_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -414,7 +377,7 @@
             </property>
         </port>
         <port name="J2_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -428,7 +391,7 @@
             </property>
         </port>
         <port name="J2_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.flange_b.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -442,7 +405,7 @@
             </property>
         </port>
         <port name="J2_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -455,9 +418,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J2_der_phi_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J2.der(phi,2)"/>
+        <port name="der_J2_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J2.phi)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -469,9 +432,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J2_der_phi_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J2.der(phi)"/>
+        <port name="der_J2_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J2.phi,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -484,7 +447,7 @@
             </property>
         </port>
         <port name="J2_w" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J2.w"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -497,9 +460,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J2_der_w_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J2.der(w)"/>
+        <port name="der_J2_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J2.w)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -512,7 +475,7 @@
             </property>
         </port>
         <port name="J3_a" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.a"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -526,7 +489,7 @@
             </property>
         </port>
         <port name="J3_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -540,7 +503,7 @@
             </property>
         </port>
         <port name="J3_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -554,7 +517,7 @@
             </property>
         </port>
         <port name="J3_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -568,7 +531,7 @@
             </property>
         </port>
         <port name="J3_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.flange_b.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -582,7 +545,7 @@
             </property>
         </port>
         <port name="J3_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -595,9 +558,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J3_der_phi_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J3.der(phi)"/>
+        <port name="der_J3_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J3.phi)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -609,9 +572,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J3_der_phi_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J3.der(phi,2)"/>
+        <port name="der_J3_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J3.phi,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -624,7 +587,7 @@
             </property>
         </port>
         <port name="J3_w" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J3.w"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -637,9 +600,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J3_der_w_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J3.der(w)"/>
+        <port name="der_J3_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J3.w)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -652,7 +615,7 @@
             </property>
         </port>
         <port name="J4_a" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J4.a"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -666,7 +629,7 @@
             </property>
         </port>
         <port name="J4_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J4.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -680,7 +643,7 @@
             </property>
         </port>
         <port name="J4_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J4.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -694,7 +657,7 @@
             </property>
         </port>
         <port name="J4_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J4.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -707,22 +670,8 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J4_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J4.flange_b.tau"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
         <port name="J4_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J4.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -735,9 +684,9 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J4_der_phi_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J4.der(phi)"/>
+        <port name="der_J4_phi_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J4.phi,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -749,12 +698,14 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J4_der_phi_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J4.der(phi,2)"/>
+        <port name="der_J4_phi_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J4.phi)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -764,12 +715,14 @@
             </property>
         </port>
         <port name="J4_w" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="J4.w"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -777,82 +730,14 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="J4_der_w_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="J4.der(w)"/>
+        <port name="der_J4_w_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(J4.w)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_Backward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.Backward"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_Forward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.Forward"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_Free" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.Free"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_Stuck" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.Stuck"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_Unknown" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.Unknown"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -862,11 +747,13 @@
             </property>
         </port>
         <port name="clutch1_a_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.a_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -876,11 +763,13 @@
             </property>
         </port>
         <port name="clutch1_a_relfric" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.a_relfric"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -890,11 +779,13 @@
             </property>
         </port>
         <port name="clutch1_f_normalized" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.f_normalized"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -904,11 +795,13 @@
             </property>
         </port>
         <port name="clutch1_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -918,11 +811,13 @@
             </property>
         </port>
         <port name="clutch1_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -932,11 +827,13 @@
             </property>
         </port>
         <port name="clutch1_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -946,11 +843,13 @@
             </property>
         </port>
         <port name="clutch1_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.flange_b.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -960,11 +859,13 @@
             </property>
         </port>
         <port name="clutch1_fn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.fn"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -974,11 +875,13 @@
             </property>
         </port>
         <port name="clutch1_free" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.free"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -988,11 +891,13 @@
             </property>
         </port>
         <port name="clutch1_locked" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.locked"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1002,11 +907,13 @@
             </property>
         </port>
         <port name="clutch1_lossPower" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.lossPower"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1016,11 +923,13 @@
             </property>
         </port>
         <port name="clutch1_mode" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.mode"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1030,25 +939,13 @@
             </property>
         </port>
         <port name="clutch1_phi_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.phi_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_der_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.der(phi_rel,2)"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1057,12 +954,30 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clutch1_der_phi_rel_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.der(phi_rel)"/>
+        <port name="der_clutch1_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch1.phi_rel,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="der_clutch1_phi_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch1.phi_rel)"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1072,11 +987,13 @@
             </property>
         </port>
         <port name="clutch1_sa" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.sa"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1086,11 +1003,13 @@
             </property>
         </port>
         <port name="clutch1_startBackward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.startBackward"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1100,11 +1019,13 @@
             </property>
         </port>
         <port name="clutch1_startForward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.startForward"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1114,11 +1035,13 @@
             </property>
         </port>
         <port name="clutch1_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1128,11 +1051,13 @@
             </property>
         </port>
         <port name="clutch1_tau0" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.tau0"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1142,39 +1067,13 @@
             </property>
         </port>
         <port name="clutch1_tau0_max" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.tau0_max"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_unitAngularAcceleration" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.unitAngularAcceleration"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch1_unitTorque" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.unitTorque"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1184,11 +1083,13 @@
             </property>
         </port>
         <port name="clutch1_w_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.w_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1197,12 +1098,14 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clutch1_der_w_rel_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch1.der(w_rel)"/>
+        <port name="der_clutch1_w_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch1.w_rel)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1212,81 +1115,13 @@
             </property>
         </port>
         <port name="clutch1_w_relfric" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch1.w_relfric"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_Backward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.Backward"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_Forward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.Forward"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_Free" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.Free"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_Stuck" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.Stuck"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_Unknown" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.Unknown"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1296,11 +1131,13 @@
             </property>
         </port>
         <port name="clutch2_a_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.a_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1310,11 +1147,13 @@
             </property>
         </port>
         <port name="clutch2_a_relfric" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.a_relfric"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1324,11 +1163,13 @@
             </property>
         </port>
         <port name="clutch2_f_normalized" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.f_normalized"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1338,11 +1179,13 @@
             </property>
         </port>
         <port name="clutch2_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1352,11 +1195,13 @@
             </property>
         </port>
         <port name="clutch2_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1366,11 +1211,13 @@
             </property>
         </port>
         <port name="clutch2_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1380,11 +1227,13 @@
             </property>
         </port>
         <port name="clutch2_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.flange_b.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1394,11 +1243,13 @@
             </property>
         </port>
         <port name="clutch2_fn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.fn"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1408,11 +1259,13 @@
             </property>
         </port>
         <port name="clutch2_free" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.free"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1422,11 +1275,13 @@
             </property>
         </port>
         <port name="clutch2_locked" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.locked"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1436,11 +1291,13 @@
             </property>
         </port>
         <port name="clutch2_lossPower" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.lossPower"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1450,11 +1307,13 @@
             </property>
         </port>
         <port name="clutch2_mode" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.mode"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1464,25 +1323,13 @@
             </property>
         </port>
         <port name="clutch2_phi_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.phi_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_der_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.der(phi_rel,2)"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1491,12 +1338,30 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clutch2_der_phi_rel_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.der(phi_rel)"/>
+        <port name="der_clutch2_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch2.phi_rel,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="der_clutch2_phi_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch2.phi_rel)"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1506,11 +1371,13 @@
             </property>
         </port>
         <port name="clutch2_sa" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.sa"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1520,11 +1387,13 @@
             </property>
         </port>
         <port name="clutch2_startBackward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.startBackward"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1534,11 +1403,13 @@
             </property>
         </port>
         <port name="clutch2_startForward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.startForward"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1548,11 +1419,13 @@
             </property>
         </port>
         <port name="clutch2_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1562,11 +1435,13 @@
             </property>
         </port>
         <port name="clutch2_tau0" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.tau0"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1576,39 +1451,13 @@
             </property>
         </port>
         <port name="clutch2_tau0_max" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.tau0_max"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_unitAngularAcceleration" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.unitAngularAcceleration"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch2_unitTorque" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.unitTorque"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1618,11 +1467,13 @@
             </property>
         </port>
         <port name="clutch2_w_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.w_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1631,12 +1482,14 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clutch2_der_w_rel_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch2.der(w_rel)"/>
+        <port name="der_clutch2_w_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch2.w_rel)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1646,81 +1499,13 @@
             </property>
         </port>
         <port name="clutch2_w_relfric" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch2.w_relfric"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_Backward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.Backward"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_Forward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.Forward"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_Free" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.Free"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_Stuck" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.Stuck"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_Unknown" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.Unknown"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1730,11 +1515,13 @@
             </property>
         </port>
         <port name="clutch3_a_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.a_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1744,11 +1531,13 @@
             </property>
         </port>
         <port name="clutch3_a_relfric" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.a_relfric"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1758,11 +1547,13 @@
             </property>
         </port>
         <port name="clutch3_f_normalized" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.f_normalized"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1772,11 +1563,13 @@
             </property>
         </port>
         <port name="clutch3_flange_a_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.flange_a.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1786,11 +1579,13 @@
             </property>
         </port>
         <port name="clutch3_flange_a_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.flange_a.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1800,11 +1595,13 @@
             </property>
         </port>
         <port name="clutch3_flange_b_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.flange_b.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1814,11 +1611,13 @@
             </property>
         </port>
         <port name="clutch3_flange_b_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.flange_b.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1828,11 +1627,13 @@
             </property>
         </port>
         <port name="clutch3_fn" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.fn"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1842,11 +1643,13 @@
             </property>
         </port>
         <port name="clutch3_free" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.free"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1856,11 +1659,13 @@
             </property>
         </port>
         <port name="clutch3_locked" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.locked"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1870,11 +1675,13 @@
             </property>
         </port>
         <port name="clutch3_lossPower" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.lossPower"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1884,11 +1691,13 @@
             </property>
         </port>
         <port name="clutch3_mode" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.mode"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1898,25 +1707,13 @@
             </property>
         </port>
         <port name="clutch3_phi_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.phi_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_der_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.der(phi_rel,2)"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1925,12 +1722,30 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clutch3_der_phi_rel_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.der(phi_rel)"/>
+        <port name="der_clutch3_phi_rel_2_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch3.phi_rel,2)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="der_clutch3_phi_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch3.phi_rel)"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1940,11 +1755,13 @@
             </property>
         </port>
         <port name="clutch3_sa" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.sa"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1954,11 +1771,13 @@
             </property>
         </port>
         <port name="clutch3_startBackward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.startBackward"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1968,11 +1787,13 @@
             </property>
         </port>
         <port name="clutch3_startForward" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.startForward"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1988,6 +1809,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1996,11 +1819,13 @@
             </property>
         </port>
         <port name="clutch3_tau0" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.tau0"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2010,39 +1835,13 @@
             </property>
         </port>
         <port name="clutch3_tau0_max" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.tau0_max"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_unitAngularAcceleration" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.unitAngularAcceleration"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="clutch3_unitTorque" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.unitTorque"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2052,11 +1851,13 @@
             </property>
         </port>
         <port name="clutch3_w_rel" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.w_rel"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2065,12 +1866,14 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="clutch3_der_w_rel_" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="clutch3.der(w_rel)"/>
+        <port name="der_clutch3_w_rel_" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="der(clutch3.w_rel)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2080,11 +1883,13 @@
             </property>
         </port>
         <port name="clutch3_w_relfric" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="clutch3.w_relfric"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2094,25 +1899,13 @@
             </property>
         </port>
         <port name="fixed_flange_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="fixed.flange.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="sin1_pi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="sin1.pi"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2122,53 +1915,45 @@
             </property>
         </port>
         <port name="sin1_y" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="sin1.y"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="sin2_pi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="sin2.pi"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="sin2_y" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="sin2.y"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
         <port name="step1_y" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="step1.y"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2178,11 +1963,13 @@
             </property>
         </port>
         <port name="step2_y" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="step2.y"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2192,11 +1979,13 @@
             </property>
         </port>
         <port name="torque_flange_phi" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="torque.flange.phi"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2206,11 +1995,13 @@
             </property>
         </port>
         <port name="torque_flange_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="torque.flange.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2220,11 +2011,13 @@
             </property>
         </port>
         <port name="torque_support_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="torque.support.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2234,11 +2027,13 @@
             </property>
         </port>
         <port name="torque_tau" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
+            <property name="output"/>
             <display name="torque.tau"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2248,12 +2043,142 @@
             </property>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.224646799147353E-15, -2.449293598294707E-15, -1.408962799656044E-14, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 40.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.9818976117236, 1.8647027865388, 2.6507512094075, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 110.0}">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-9.9999968293183, -9.9221419294812, -9.6878089242158, -9.3006933849991, -8.7669003551359, -8.7669003551359, -8.7669003551359, -8.7669003551359, -8.7669003551359, -8.7669003551359, -8.7669003551359, -8.7669003551359}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 175.0}">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.9818976117236, 1.8647027865388, 2.6507512094075, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561, 3.343927926561}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 240.0}">
+        </property>
+    </entity>
+    <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10.0, 9.6392417691229, 8.0208013686637, 7.7067264904743, 6.1656018519688, 6.1656018519688, 6.1656018519688, 6.1656018519688, 6.1656018519688, 6.1656018519688, 6.1656018519688, 6.1656018519688}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 380.0}">
+        </property>
+    </entity>
+    <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 445.0}">
+        </property>
+    </entity>
+    <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.224646799147353E-15, -2.449293598294707E-15, -1.408962799656044E-14, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15, -4.898587196589413E-15}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 510.0}">
+        </property>
+    </entity>
+    <entity name="Test8" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.9999996829318, 0.9922141929481, 0.9687808924216, 0.9300693384999, 0.8766900355136, 0.8766900355136, 0.8766900355136, 0.8766900355136, 0.8766900355136, 0.8766900355136, 0.8766900355136, 0.8766900355136}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 630.0}">
+        </property>
+    </entity>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{455.0, 40.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, tail={id=&quot;Test.input&quot;,x=505.0,y=40.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, points={455.0,275.0} },{ head={id=&quot;CoupledClutches2.J1_flange_a_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, points={300.0,550.0,300.0,40.0} } }">
+        </property>
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{425.0, 110.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, tail={id=&quot;Test2.input&quot;,x=505.0,y=110.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, points={425.0,280.0} },{ head={id=&quot;CoupledClutches2.J1_flange_b_phi&quot;,x=195.0,y=590.0}, tail={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, points={315.0,560.0,315.0,110.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{410.0, 175.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, tail={id=&quot;Test3.input&quot;,x=505.0,y=175.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, points={410.0,285.0} },{ head={id=&quot;CoupledClutches2.J1_flange_b_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, points={330.0,570.0,330.0,175.0} } }">
+        </property>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{440.0, 290.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, tail={id=&quot;Test4.input&quot;,x=505.0,y=240.0}, points={440.0,240.0} },{ head={id=&quot;CoupledClutches2.J1_phi&quot;,x=195.0,y=590.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, points={345.0,580.0,345.0,290.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{410.0, 380.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, tail={id=&quot;Test5.input&quot;,x=505.0,y=380.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, points={410.0,295.0} },{ head={id=&quot;CoupledClutches2.J1_w&quot;,x=195.0,y=590.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, points={360.0,600.0,360.0,380.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{425.0, 445.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, tail={id=&quot;Test6.input&quot;,x=505.0,y=445.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, points={425.0,300.0} },{ head={id=&quot;CoupledClutches2.clutch3_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, points={375.0,610.0,375.0,445.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{440.0, 510.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, tail={id=&quot;Test7.input&quot;,x=505.0,y=510.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, points={440.0,305.0} },{ head={id=&quot;CoupledClutches2.sin1_y&quot;,x=195.0,y=590.0}, tail={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, points={390.0,620.0,390.0,510.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{455.0, 630.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, tail={id=&quot;Test8.input&quot;,x=505.0,y=630.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, points={455.0,310.0} },{ head={id=&quot;CoupledClutches2.sin2_y&quot;,x=195.0,y=590.0}, tail={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="SequencePlotter.input" relation="relation9"/>
+    <link port="SequencePlotter.input" relation="relation"/>
     <link port="SequencePlotter.input" relation="relation2"/>
-    <link port="Const.output" relation="relation"/>
-    <link port="CoupledClutches.J1_w" relation="relation"/>
-    <link port="CoupledClutches.clutch3_tau" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
+    <link port="SequencePlotter.input" relation="relation6"/>
+    <link port="SequencePlotter.input" relation="relation7"/>
+    <link port="CoupledClutches2.J1_flange_a_tau" relation="relation9"/>
+    <link port="CoupledClutches2.J1_flange_b_phi" relation="relation"/>
+    <link port="CoupledClutches2.J1_flange_b_tau" relation="relation2"/>
+    <link port="CoupledClutches2.J1_phi" relation="relation3"/>
+    <link port="CoupledClutches2.J1_w" relation="relation4"/>
+    <link port="CoupledClutches2.clutch3_tau" relation="relation5"/>
+    <link port="CoupledClutches2.sin1_y" relation="relation6"/>
+    <link port="CoupledClutches2.sin2_y" relation="relation7"/>
+    <link port="Test.input" relation="relation9"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="Test3.input" relation="relation2"/>
+    <link port="Test4.input" relation="relation3"/>
+    <link port="Test5.input" relation="relation4"/>
+    <link port="Test6.input" relation="relation5"/>
+    <link port="Test7.input" relation="relation6"/>
+    <link port="Test8.input" relation="relation7"/>
 </entity>
