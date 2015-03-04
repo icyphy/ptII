@@ -1566,7 +1566,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         + " not supported.");
             }
         }
-
     }
 
     /**
