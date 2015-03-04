@@ -1450,7 +1450,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final Input input = _inputs.get(ii);
             double initialValue;
             // Look for a token.
-            if (input.port.hasToken(0)) {
+            if (input.port.hasNewToken(0)) {
                 final Token token = input.port.get(0);
                 if (token instanceof SmoothToken) {
                     initialValue = ((SmoothToken) token).doubleValue();
@@ -1529,7 +1529,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final Output output = _nonStateDependentOutputs.get(ii);
 
             final TypedIOPort port = output.port;
-            Token token = null;
             FMIScalarVariable scalarVariable = output.scalarVariable;
 
             if (scalarVariable.type instanceof FMIBooleanType) {
@@ -1545,9 +1544,18 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // token = new IntToken(result);
             } else if (scalarVariable.type instanceof FMIRealType) {
                 double result = scalarVariable.getDouble(_fmiComponent);
-                final double[] ooArr = { result, 0.0, 0.0 };
-                _sendModelToPort(ooArr, port, currentTime);
-                // token = new DoubleToken(result);
+                // final double[] ooArr = { result };
+                // _sendModelToPort(ooArr, port, currentTime);       
+                final double[] ooArr = { result };
+                // Send the initial output values to the port.
+                if (_firstRound) {
+                    _sendModelToPort(ooArr, port, currentTime);
+                    _nonStateDependentOutputs.get(ii).lastOutput = result;
+                } else if (_nonStateDependentOutputs.get(ii).lastOutput != result
+                        && !_firstRound) {
+                    _sendModelToPort(ooArr, port, currentTime);
+                    _nonStateDependentOutputs.get(ii).lastOutput = result;
+                }
             } else if (scalarVariable.type instanceof FMIStringType) {
                 throw new IllegalActionException("Type " + scalarVariable.type
                         + " not supported.");
@@ -1557,14 +1565,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 throw new IllegalActionException("Type " + scalarVariable.type
                         + " not supported.");
             }
-
-            if (_debugging) {
-                _debugToStdOut(String.format(
-                        "-- Id{%d} send output %s value %s",
-                        System.identityHashCode(this), scalarVariable.name,
-                        token));
-            }
-            // port.send(0, token);
         }
 
     }
@@ -1593,7 +1593,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             final TypedIOPort port = output.port;
             if (output.dependencies.contains(outPort) && !output.isKnown) {
-                Token token = null;
                 FMIScalarVariable scalarVariable = output.scalarVariable;
 
                 if (scalarVariable.type instanceof FMIBooleanType) {
@@ -1610,9 +1609,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     // token = new IntToken(result);
                 } else if (scalarVariable.type instanceof FMIRealType) {
                     double result = scalarVariable.getDouble(_fmiComponent);
-                    // token = new DoubleToken(result);
-                    final double[] ooArr = { result, 0.0, 0.0 };
-                    _sendModelToPort(ooArr, port, currentTime);
+                    // final double[] ooArr = { result };
+                    // _sendModelToPort(ooArr, port, currentTime);      
+                    final double[] ooArr = { result };
+                    // Send the initial output values to the port.
+                    if (_firstRound) {
+                        _sendModelToPort(ooArr, port, currentTime);
+                        _stateDependentOutputs.get(ii).lastOutput = result;
+                    }
+                    else if (_stateDependentOutputs.get(ii).lastOutput != result
+                            && !_firstRound) {
+                        _sendModelToPort(ooArr, port, currentTime);
+                        _stateDependentOutputs.get(ii).lastOutput = result;
+                    }
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     throw new IllegalActionException("Type "
                             + scalarVariable.type + " not supported.");
@@ -1622,14 +1631,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     throw new IllegalActionException("Type "
                             + scalarVariable.type + " not supported.");
                 }
-
-                if (_debugging) {
-                    _debugToStdOut(String.format(
-                            "-- Id{%d} send output %s value %s",
-                            System.identityHashCode(this), scalarVariable.name,
-                            token));
-                }
-                // port.send(0, token);
                 _stateDependentOutputs.get(ii).isKnown = true;
             }
         }
@@ -1678,11 +1679,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 			derivatives = ((SmoothToken) doubleToken).derivativeValues();
 		}
 		final int ncoeffs = ivMdl.coeffs.length;
+		int factorial = 1;
 		for (int i = 1; i < ncoeffs; i++) {
 			if (derivatives == null || derivatives.length < i) {
 				ivMdl.coeffs[i] = 0.0;
 			} else {
-				ivMdl.coeffs[i] = derivatives[i - 1];
+				ivMdl.coeffs[i] = derivatives[i - 1]/factorial;
+				factorial = factorial * i;
 			}
 		}
 	}
@@ -1791,7 +1794,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 			assert (input.port.isKnown(0)); // Checked in
 											// _initializeQssIntegrator_inputVars();
 											// assume it doesn't change.
-			if (input.port.hasToken(0)) {
+			if (input.port.hasNewToken(0)) {
 				// Here, have a new value on the input port.
 				final Token token = input.port.get(0);
 				// Here we check whether we have an input distinct from previous one.
@@ -1944,6 +1947,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         /** The flag which indicates that an output is set. */
         public boolean isKnown;
+        
+        /** The last token seen at the input port. */
+        public double lastOutput;
     }
 
 }
