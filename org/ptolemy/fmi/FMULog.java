@@ -124,7 +124,11 @@ public class FMULog {
                     _printedMessage = true;
                     System.err
                             .println("org/ptolemy/fmi/FMULog.java called Pointer.nativeCif(fmiCoomponent), "
-                                    + "but received a value of 0?  This can happen if the the jna jar file has the "
+                                    + "but received a value of 0?  This can happen if a FMU invokes a logger() method "
+                                    + "from within fmi2Instantiate() because the Java interface to FMI uses the fmi2Component "
+                                    + "returned by fmi2Instantiate() to handle variable numbers of arguments in the "
+                                    + "logger callback.\n"
+                                    +" In addition, this can happen if the the jna jar file has the "
                                     + "Java side of the variadic extensions, but the C side of the variadic extensions "
                                     + "have not been compiled for your platform.  To compile them, see "
                                     + "http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
