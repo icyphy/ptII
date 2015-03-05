@@ -13,9 +13,15 @@ ARCH = darwin64
 ARCH_DIR = ../binaries/$(ARCH)/
 
 # This is for co-simulation
-INCLUDE = -DFMI_COSIMULATION -I.
+#INCLUDE = -DFMI_COSIMULATION -I.
 # This is for model exhange
 #INCLUDE =  -I.
+
+# This is for co-simulation with JModelica.
+INCLUDE =  -DFMUCS20 -I.
+
+# This is for model exchange with JModelica
+#INCLUDE =  -DFMUME20 -I.
 
 # For co-simulation FMUs, modelExchange.mk does not exist.
 # For model exchange FMUs, modelExchange.mk defines INCLUDE.
@@ -80,7 +86,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) $(USER_CFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $<
+	$(CC) $(CBITSFLAGS) $(USER_CFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< -L/usr/local/jmodelica/lib/RuntimeLibrary/ -lfmi2 -ljmi
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
@@ -95,7 +101,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -l fmi1_me -lfmi1_cs -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
+	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< $(FMU_NAME)_*.c -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -lfmi2 -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
 
 FMUDIR=..
 

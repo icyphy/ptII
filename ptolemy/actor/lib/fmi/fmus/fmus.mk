@@ -131,6 +131,7 @@ valgrind:
 		$(VALGRIND) fmuCheck -h 1 -s 10 $(FMU_NAME).fmu; \
 	fi
 
+KRUFT=src/binaries
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

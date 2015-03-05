@@ -105,4 +105,4 @@ $(FMU_NAME).fmu: modelDescription.xml $(FMU_NAME).$(PTJNI_SHAREDLIBRARY_SUFFIX2)
 # Get the rest of the rules
 include $(PTII)/mk/ptcommon.mk
 
-KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c modelDescription.xml binaries sources *.so *.dylib *.o
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c modelDescription.xml binaries sources *.so *.dylib *.o src/binaries

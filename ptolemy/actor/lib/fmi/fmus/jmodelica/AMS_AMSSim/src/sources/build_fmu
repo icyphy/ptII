@@ -16,10 +16,16 @@ if [ ! -f $fmuBaseName.c ]; then
 fi
 
 # For co-simulation:
-include="-DFMI_COSIMULATION -I."
+#include="-DFMI_COSIMULATION -I."
 
 # For model exchange:
 #include="-I."
+
+# For co-simulation with JModelica
+include="-DFMUCS20 -I."
+
+# For model exchange with JModelica
+#include="-DFMUME20 -I."
 
 case "`uname -s`" in
      CYGWIN*) arch=win
