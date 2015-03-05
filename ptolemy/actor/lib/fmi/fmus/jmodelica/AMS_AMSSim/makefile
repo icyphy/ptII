@@ -36,3 +36,9 @@ OTHER_OTHER_FILES_TO_BE_JARED = AMS_AMSSim.xml
 include ../fmus.mk
 
 
+# To test this:
+fmuCheck:
+	if [ ! -d resources ]; then \
+		mkdir resources; \
+	fi
+	fmuCheck -k cs -z . *.fmu

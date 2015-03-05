@@ -18,14 +18,12 @@ fi
 # For co-simulation:
 #include="-DFMI_COSIMULATION -I."
 
-# For model exchange:
-#include="-I."
-
 # For co-simulation with JModelica
 include="-DFMUCS20 -I."
 
 # For model exchange with JModelica
 #include="-DFMUME20 -I."
+
 
 case "`uname -s`" in
      CYGWIN*) arch=win
@@ -53,10 +51,10 @@ if [ $arch = linux -a $bits = 32 ]; then
     CBITSFLAGS=-m32
 fi
 
-if [ -x userCflagd ]; then
+if [ -x userCflags ]; then
     userCflags=`./userCflags`
 fi
 set -x
 echo `pwd`; \
 make dirclean; \
-make ARCH=${arch}${bits} CBITSFLAGS=${CBITSFLAGS} INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} USER_FLAGS="${userCflags}" $fmuBaseName.fmu
+make ARCH=${arch}${bits} CBITSFLAGS=${CBITSFLAGS} INCLUDE="${include}" PIC=${pic} SHARED_LIBRARY_SUFFIX=${sharedLibrarySuffix} USER_CFLAGS="${userCflags}" $fmuBaseName.fmu
