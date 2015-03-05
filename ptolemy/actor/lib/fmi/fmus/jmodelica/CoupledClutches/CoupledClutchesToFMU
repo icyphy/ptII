@@ -9,5 +9,7 @@ from pymodelica import compile_fmu
 #my_fmu = compile_fmu(className, target='me')
 
 # Add compiler_log_level='i' to the compile_fmu line to get the link command.
-my_fmu = compile_fmu('CoupledClutches', 'CoupledClutches.mo', target='me+cs', version='2.0')
+
+my_fmu = compile_fmu('CoupledClutches', 'CoupledClutches.mo', target='me+cs', version='2.0', compiler_log_level='i')
+
 EoF

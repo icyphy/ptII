@@ -86,7 +86,7 @@ win64:
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) $(CBITSFLAGS) $(USER_CFLAGS) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< -L/usr/local/jmodelica/lib/RuntimeLibrary/ -lfmi2 -ljmi
+	$(CC) $(CBITSFLAGS) $(USER_CFLAGS) $(PIC) -g -Wall -shared -Wl,-soname,$@ $(INCLUDE) -o $(ARCH_DIR)$@ $< $(FMU_NAME)_*.c -L/usr/local/jmodelica/lib/RuntimeLibrary/ -L/usr/local/jmodelica/lib/RuntimeLibrary -lfmi2 -ljmi "-L/usr/local/jmodelica/lib"  -llapack -llapack -lblas -lgfortran -lModelicaExternalC -L/usr/local/jmodelica/ThirdParty/Sundials/lib -l:libsundials_kinsol.a -l:libsundials_nvecserial.a -L/usr/local/jmodelica/ThirdParty/Minpack/lib -l:libcminpack.a -lstdc++ -lm -l:libsundials_cvode.a
 
 %.dll: %.c
 	@if [ ! -d $(ARCH_DIR) ]; then \
@@ -94,6 +94,8 @@ win64:
 		mkdir -p $(ARCH_DIR); \
 	fi
 	cl /LD /wd04090 /nologo $< 
+
+FMI2CSTEMPLATE=/usr/local/jmodelica/CodeGenTemplates/fmi2_functions_cs_template.c
 
 # Include the c file on the link line so that the debug .dylib.dSYM directory is created.
 %.dylib: %.c
