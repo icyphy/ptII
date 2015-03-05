@@ -542,6 +542,10 @@ public class FMIModelDescription {
                             + "To debug loading errors, "
                             + "Restart Java with \"-Djna.debug_load=true\".  "
                             + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
+                            + "On thing to try under any platform, downloading fmuCheck from "
+                            + "https://svn.fmi-standard.org/fmi/branches/public/Test_FMUs/Compliance-Checker/, "
+                            + "then run fmuCheck on the .fmu file.\n"
+                            + "Another thing to try is to unzip the .fmu file and check the shared library dependencies.\n"
                             + osMessage);
             exception.initCause(throwable3);
             throw exception;
