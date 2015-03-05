@@ -18,7 +18,7 @@ fi
 # For co-simulation:
 #include="-DFMI_COSIMULATION -I."
 
-# For model exchange with JModelica
+# For co-simulation with JModelica
 include="-DFMUCS20 -I."
 
 # For model exchange with JModelica

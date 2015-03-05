@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fmiModelDescription fmiVersion="2.0" modelName="AMS.AMSSim" guid="fc9ab008db6240a0335abf0ab37c4c35" generationTool="JModelica.org" generationDateAndTime="2014-12-17T08:41:40" variableNamingConvention="structured" numberOfEventIndicators="0">
+<fmiModelDescription fmiVersion="2.0" modelName="AMS.AMSSim" guid="fc9ab008db6240a0335abf0ab37c4c35" generationTool="JModelica.org" generationDateAndTime="2015-03-03T18:51:16" variableNamingConvention="structured" numberOfEventIndicators="0">
 	<ModelExchange modelIdentifier="AMS_AMSSim" needsExecutionTool="false" completedIntegratorStepNotNeeded="true" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canGetAndSetFMUstate="false" canSerializeFMUstate="false" providesDirectionalDerivative="false" />
 	<CoSimulation modelIdentifier="AMS_AMSSim" needsExecutionTool="false" canHandleVariableCommunicationStepSize="true" canInterpolateInputs="true" maxOutputDerivativeOrder="0" canRunAsynchronuously="false" canBeInstantiatedOnlyOncePerProcess="true" canNotUseMemoryManagementFunctions="false" canSerializeFMUstate="false" providesDirectionalDerivative="false" />
 	<UnitDefinitions>
-		<Unit name="W">
-		</Unit>
-		<Unit name="kg/m3">
-			<DisplayUnit name="g/cm3" />
-		</Unit>
-		<Unit name="kg">
-		</Unit>
-		<Unit name="kg/s">
-		</Unit>
 		<Unit name="Pa">
 			<DisplayUnit name="bar" />
 		</Unit>
-		<Unit name="J/(kg.K)">
+		<Unit name="kg/s">
 		</Unit>
 		<Unit name="m2">
 		</Unit>
 		<Unit name="m3">
 		</Unit>
+		<Unit name="W">
+		</Unit>
 		<Unit name="J">
+		</Unit>
+		<Unit name="kg/m3">
+			<DisplayUnit name="g/cm3" />
 		</Unit>
 		<Unit name="K">
 			<DisplayUnit name="degC" />
+		</Unit>
+		<Unit name="kg">
+		</Unit>
+		<Unit name="J/(kg.K)">
 		</Unit>
 	</UnitDefinitions>
 	<LogCategories>

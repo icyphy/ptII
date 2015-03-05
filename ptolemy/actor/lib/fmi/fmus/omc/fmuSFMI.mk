@@ -49,3 +49,6 @@ $(FMU_NAME).fmu: $(FMU_SRCS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c modelDescription.xml binaries sources *.so *.dylib *.o src/binaries
+

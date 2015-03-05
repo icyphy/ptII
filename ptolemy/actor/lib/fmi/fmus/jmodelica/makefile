@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy II Functional Mock-up Interface (FMI) FMU files
+# Makefile for Java Ptolemy II Functional Mock-up Interface (FMI) FMU files for Jmodelica
 #
 # @Author: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2014-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -71,6 +71,8 @@ OTHER_FILES_TO_BE_JARED = \
 	README.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+KRUFT = src/binaries
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

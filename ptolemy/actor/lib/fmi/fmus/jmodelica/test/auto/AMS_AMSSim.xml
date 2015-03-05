@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AMS_AMSSim" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
     </property>
@@ -10,16 +10,79 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140, 85}">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 75.0}">
         </property>
     </property>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="cabin.m, fork.Q, fork.m, hx.Q">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={294, 354, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 215.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="9.0"/>
+<yRange min="0.003915143069646687" max="2848913.25"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296, 124.7404957852296}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.971999999999999E-7">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 80.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242, 982.162578309242}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.971999999999999E-7">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 145.0}">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696, 0.0039151430696}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.971999999999999E-7">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 280.0}">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6, 2.84891325E6}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.00284891325">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 370.0}">
+        </property>
+    </entity>
     <entity name="AMS_AMSSim" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/lib/fmi/fmus/AMS_AMSSim/AMS_AMSSim.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica/AMS_AMSSim/AMS_AMSSim.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 262.0">
+        <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 350.0}">
         </property>
         <property name="_block_jacobian_check" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -31,9 +94,9 @@
         </property>
         <property name="_cs_solver" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_cs_step_size" class="ptolemy.data.expr.Parameter" value="0.0010">
+        <property name="_cs_step_size" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
-        <property name="_enforce_bounds" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_enforce_bounds" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_events_default_tol" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
@@ -47,11 +110,17 @@
         </property>
         <property name="_nle_solver_default_tol" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
-        <property name="_nle_solver_log_level" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="_nle_solver_max_iter" class="ptolemy.data.expr.Parameter" value="100">
         </property>
+        <property name="_nle_solver_max_residual_scaling_factor" class="ptolemy.data.expr.Parameter" value="1.0E10">
+        </property>
+        <property name="_nle_solver_min_residual_scaling_factor" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="_nle_solver_min_tol" class="ptolemy.data.expr.Parameter" value="1.0E-12">
+        </property>
+        <property name="_nle_solver_regularization_tolerance" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="_nle_solver_step_limit_factor" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="_nle_solver_tol_factor" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
@@ -63,7 +132,7 @@
         </property>
         <property name="_runtime_log_to_file" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_use_Brent_in_1d" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="_use_Brent_in_1d" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_use_jacobian_equilibration" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -88,8 +157,6 @@
         <property name="hx_Ahx" class="ptolemy.data.expr.Parameter" value="0.00161">
         </property>
         <property name="hx_Cmetal" class="ptolemy.data.expr.Parameter" value="837.3">
-        </property>
-        <property name="hx_hc" class="ptolemy.data.expr.Parameter" value="NaN">
         </property>
         <property name="hx_hc_grid_1_1_" class="ptolemy.data.expr.Parameter" value="5.08">
         </property>
@@ -621,19 +688,8 @@
         </property>
         <property name="inlet_t_env" class="ptolemy.data.expr.Parameter" value="350.0">
         </property>
-        <port name="P1" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
+        <property name="maximumStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
         <port name="P2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
@@ -647,46 +703,7 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="P5" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="T1" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
         <port name="T3" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="T4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -718,11 +735,11 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="T8" class="ptolemy.actor.TypedIOPort">
@@ -803,76 +820,8 @@
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="W4" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="W7" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
         <port name="W8" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="ambientair_port_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="ambientair.port.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="ambientair_port_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="ambientair.port.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="ambientair_port_w" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="ambientair.port.w"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -887,20 +836,6 @@
         <port name="cabin_Q" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <display name="cabin.Q"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="cabin_inport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="cabin.inport.p"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -951,29 +886,15 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
-        <port name="cabin_der_m_" class="ptolemy.actor.TypedIOPort">
+        <port name="der_cabin_m_" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <display name="cabin.der(m)"/>
+            <display name="der(cabin.m)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="cabin_outport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="cabin.outport.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -989,19 +910,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="cabin_outport_w" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="cabin.outport.w"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1017,11 +926,13 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="false">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="cabin_wa" class="ptolemy.actor.TypedIOPort">
@@ -1031,19 +942,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="fan_inport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="fan.inport.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1059,33 +958,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="fan_inport_w" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="fan.inport.w"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="fan_outport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="fan.outport.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1101,19 +974,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="fan_outport_w" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="fan.outport.w"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1129,19 +990,21 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
-        <port name="fork_der_Q_" class="ptolemy.actor.TypedIOPort">
+        <port name="der_fork_Q_" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <display name="fork.der(Q)"/>
+            <display name="der(fork.Q)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1157,19 +1020,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="fork_inport_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="fork.inport.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1185,6 +1036,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1199,19 +1052,21 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
-        <port name="fork_der_m_" class="ptolemy.actor.TypedIOPort">
+        <port name="der_fork_m_" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <display name="fork.der(m)"/>
+            <display name="der(fork.m)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1227,6 +1082,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1240,6 +1097,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1255,6 +1114,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1268,6 +1129,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1283,6 +1146,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1297,61 +1162,21 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="hx_der_Q_" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="hx.der(Q)"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
-        <port name="hx_cin_p" class="ptolemy.actor.TypedIOPort">
+        <port name="der_hx_Q_" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <display name="hx.cin.p"/>
+            <display name="der(hx.Q)"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="hx_cin_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="hx.cin.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="hx_cin_w" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="hx.cin.w"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1367,6 +1192,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1380,6 +1207,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1395,6 +1224,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1409,19 +1240,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="hx_hout_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="hx.hout.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1437,6 +1256,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1450,6 +1271,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1465,6 +1288,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1478,6 +1303,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1493,6 +1320,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1507,19 +1336,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="hx_wc" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="hx.wc"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1535,33 +1352,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="inlet_port_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="inlet.port.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="inlet_port_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="inlet.port.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1577,19 +1368,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="mixer_inport_1__p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="mixer.inport[1].p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1605,6 +1384,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1619,19 +1400,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="mixer_inport_2__p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="mixer.inport[2].p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1647,33 +1416,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="mixer_inport_2__w" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="mixer.inport[2].w"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="mixer_inport_3__p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="mixer.inport[3].p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1689,6 +1432,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1703,19 +1448,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="mixer_outport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="mixer.outport.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1731,6 +1464,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1745,47 +1480,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve1_C" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve1.C"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve1_inport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve1.inport.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve1_inport_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve1.inport.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1801,6 +1496,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1815,19 +1512,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve1_outport_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve1.outport.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1843,19 +1528,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve1_pi" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve1.pi"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1871,19 +1544,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve1_t" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve1.t"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1899,19 +1560,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve2_C" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve2.C"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1927,6 +1576,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1940,6 +1591,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1955,19 +1608,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve2_outport_p" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve2.outport.p"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -1983,6 +1624,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -1996,6 +1639,8 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2011,19 +1656,7 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="valve2_po" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <display name="valve2.po"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
@@ -2039,6 +1672,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2053,6 +1688,8 @@
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
             </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
@@ -2061,34 +1698,48 @@
             </property>
         </port>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 353, 500, 344}, maximized=false}">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <vertex name="vertex1" value="{325.0, 80.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=375.0,y=80.0}, tail={id=&quot;relation5.vertex1&quot;,x=325.0,y=80.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=380.0,y=215.0,index=4}, tail={id=&quot;relation5.vertex1&quot;,x=325.0,y=80.0}, points={325.0,200.0} },{ head={id=&quot;.AMS_AMSSim.cabin_m&quot;,x=180.0,y=350.0}, tail={id=&quot;relation5.vertex1&quot;,x=325.0,y=80.0}, points={260.0,330.0,260.0,80.0} },{ head={id=&quot;relation5.vertex1&quot;,x=325.0,y=80.0}, tail={id=&quot;AMS_AMSSim.cabin_m&quot;,x=180.0,y=350.0}, points={260.0,80.0,260.0,330.0} } }">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535, 240}">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xRange min="0.0" max="9.0"/>
-<yRange min="0.0" max="0.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{380, 350}">
-        </property>
-    </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{310.0, 205.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test2.input&quot;,x=375.0,y=145.0}, tail={id=&quot;relation.vertex1&quot;,x=310.0,y=205.0}, points={310.0,145.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=380.0,y=215.0,index=4}, tail={id=&quot;relation.vertex1&quot;,x=310.0,y=205.0}, points={} },{ head={id=&quot;.AMS_AMSSim.fork_Q&quot;,x=180.0,y=350.0}, tail={id=&quot;relation.vertex1&quot;,x=310.0,y=205.0}, points={275.0,340.0,275.0,205.0} },{ head={id=&quot;relation.vertex1&quot;,x=310.0,y=205.0}, tail={id=&quot;AMS_AMSSim.fork_Q&quot;,x=180.0,y=350.0}, points={275.0,205.0,275.0,340.0} } }">
+        </property>
     </relation>
-    <link port="AMS_AMSSim.T7" relation="relation2"/>
-    <link port="SequencePlotter.input" relation="relation2"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{310.0, 280.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test3.input&quot;,x=375.0,y=280.0}, tail={id=&quot;relation2.vertex1&quot;,x=310.0,y=280.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=380.0,y=215.0,index=4}, tail={id=&quot;relation2.vertex1&quot;,x=310.0,y=280.0}, points={310.0,210.0} },{ head={id=&quot;.AMS_AMSSim.fork_m&quot;,x=180.0,y=350.0}, tail={id=&quot;relation2.vertex1&quot;,x=310.0,y=280.0}, points={290.0,360.0,290.0,280.0} },{ head={id=&quot;relation2.vertex1&quot;,x=310.0,y=280.0}, tail={id=&quot;AMS_AMSSim.fork_m&quot;,x=180.0,y=350.0}, points={290.0,280.0,290.0,360.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{325.0, 370.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test4.input&quot;,x=375.0,y=370.0}, tail={id=&quot;relation3.vertex1&quot;,x=325.0,y=370.0}, points={} },{ head={id=&quot;.AMS_AMSSim.hx_Q&quot;,x=180.0,y=350.0}, tail={id=&quot;relation3.vertex1&quot;,x=325.0,y=370.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=380.0,y=215.0,index=4}, tail={id=&quot;relation3.vertex1&quot;,x=325.0,y=370.0}, points={325.0,215.0} },{ head={id=&quot;relation3.vertex1&quot;,x=325.0,y=370.0}, tail={id=&quot;AMS_AMSSim.hx_Q&quot;,x=180.0,y=350.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="SequencePlotter.input" relation="relation5"/>
     <link port="SequencePlotter.input" relation="relation"/>
-    <link port="CurrentTime.output" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="Test.input" relation="relation5"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="Test3.input" relation="relation2"/>
+    <link port="Test4.input" relation="relation3"/>
+    <link port="AMS_AMSSim.cabin_m" relation="relation5"/>
+    <link port="AMS_AMSSim.fork_Q" relation="relation"/>
+    <link port="AMS_AMSSim.fork_m" relation="relation2"/>
+    <link port="AMS_AMSSim.hx_Q" relation="relation3"/>
 </entity>

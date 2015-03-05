@@ -84,4 +84,4 @@ export:
 
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuSFMI.mk
 
-KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c modelDescription.xml binaries sources *.so *.dylib *.o

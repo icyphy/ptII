@@ -31,7 +31,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 131, 1149, 733}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 131, 1166, 740}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[932, 630]">
     </property>
@@ -46,12 +46,21 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1440, 830]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 140.0}">
         </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="0.0"/>
+<yRange min="293.15" max="303.15"/>
+</plot>?>
+        </configure>
     </entity>
     <entity name="HeatConductorComplex2" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="HeatConductorComplex.fmu">
@@ -149,6 +158,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
                 </property>
+            </property>
+            <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="T" class="ptolemy.actor.TypedIOPort">
