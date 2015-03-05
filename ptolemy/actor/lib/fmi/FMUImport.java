@@ -3763,9 +3763,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             || (_fmiModelDescription.modelExchange
                                     /*((BooleanToken) modelExchange.getToken()).booleanValue()*/
                                     && scalarVariable.causality == Causality.local
-                    // If it is a scalar that is marked as a derivative, then it
-                    // is not an input
-                    && (((scalarVariable.type instanceof FMIRealType && ((FMIRealType) scalarVariable.type).indexState == -1)) || !(scalarVariable.type instanceof FMIRealType))))) {
+                                    && scalarVariable.initial != FMIScalarVariable.Initial.calculated
+                                    // If it is a scalar that is marked as a derivative, then it
+                                    // is not an input
+                                    && (((scalarVariable.type instanceof FMIRealType && ((FMIRealType) scalarVariable.type).indexState == -1)) || !(scalarVariable.type instanceof FMIRealType))
+                                )
+                        )
+                ) {
                 TypedIOPort port = (TypedIOPort) _getPortByNameOrDisplayName(scalarVariable.name);
                 if (port == null) {
                     throw new IllegalActionException(this,
