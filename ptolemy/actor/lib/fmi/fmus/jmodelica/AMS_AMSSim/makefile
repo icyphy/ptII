@@ -2,7 +2,7 @@
 #
 # @Author: cxh (makefile only)
 #
-# @Version: $
+# @Version: $Id$
 #
 # @Copyright (c) 2013-2014 The Regents of the University of California.
 # All rights reserved.
