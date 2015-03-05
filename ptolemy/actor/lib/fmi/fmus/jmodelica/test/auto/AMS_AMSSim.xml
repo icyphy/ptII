@@ -78,7 +78,7 @@
         </property>
     </entity>
     <entity name="AMS_AMSSim" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica/AMS_AMSSim/AMS_AMSSim.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/fmi/fmus/jmodelica/test/auto/AMS_AMSSim.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
