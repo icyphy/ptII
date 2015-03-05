@@ -146,6 +146,19 @@ public class FMIScalarVariable {
             }
         }
 
+        if (element.hasAttribute("initial")) {
+            String attribute = element.getAttribute("initial");
+
+            if (attribute.equals("approx")) {
+                initial = Initial.approx;
+            } else if (attribute.equals("calculated")) {
+                initial = Initial.calculated;
+            } else if (attribute.equals("exact")) {
+                initial = Initial.exact;
+            } else {
+                initial = Initial.notPresent;
+            }
+        }
         if (element.hasAttribute("valueReference")) {
             String valueReferenceString = element
                     .getAttribute("valueReference");
@@ -456,6 +469,25 @@ public class FMIScalarVariable {
         none
     }
 
+    /** Acceptable values for the initial xml attribute.  The initial
+     *  xml attribute defines how the variable is initialized.
+     */
+    public enum Initial {
+        /** "The variable is an iteration variable of an algebraic
+         *   loop and the iteration at initialization starts with the start value"
+         */
+        approx,
+        /** The variable is calculated from other variables during initialization.
+            It is not allowed to provide a “start” value. */
+        calculated,
+        /** The variable is initialized with the start value (provided under Real,
+            Integer, Boolean, String or Enumeration".*/
+        exact,
+        /** Not present.
+          */
+        notPresent
+    }
+
     /** Acceptable values for the variability xml attribute.
      *  The variablity attribute defines when a value changes,
      *  which determines when the value should be read.
@@ -500,6 +532,9 @@ public class FMIScalarVariable {
 
     /** The Model Description for this variable. */
     public FMIModelDescription fmiModelDescription;
+
+    /** The value of the initial xml attribute. */
+    public Initial initial;
 
     /** The value of the name xml attribute. */
     public String name;
