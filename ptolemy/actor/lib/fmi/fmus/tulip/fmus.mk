@@ -83,6 +83,8 @@ FMU_SRCS = \
 	src/model.png \
 	src/sources/* \
 
+KRUFT = src/binaries $(FMU_NAME).fmu
+
 all: jclass $(FMU_NAME).fmu
 
 
@@ -127,7 +129,6 @@ valgrind:
 	else \
 		$(VALGRIND) fmuCheck -h 1 -s 10 $(FMU_NAME).fmu; \
 	fi
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

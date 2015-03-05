@@ -61,8 +61,6 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-KRUFT = $(FMU_NAME).fmu
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
@@ -82,6 +80,8 @@ FMU_SRCS = \
 	src/modelDescription.xml \
 	src/model.png \
 	src/sources/* \
+
+KRUFT = src/binaries $(FMU_NAME).fmu
 
 all: jclass $(FMU_NAME).fmu
 
@@ -130,8 +130,6 @@ valgrind:
 	else \
 		$(VALGRIND) fmuCheck -h 1 -s 10 $(FMU_NAME).fmu; \
 	fi
-
-KRUFT=src/binaries
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
