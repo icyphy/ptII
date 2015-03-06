@@ -27,13 +27,15 @@
  */
 package ptolemy.actor.lib.jjs.modules.browser;
 
+import java.util.Map;
+
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.AsyncResult;
-import org.vertx.java.core.AsyncResultHandler;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
+import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.HttpServerResponse;
 
@@ -48,7 +50,7 @@ import org.vertx.java.core.http.HttpServerResponse;
    @Pt.ProposedRating Yellow (pd)
    @Pt.AcceptedRating Red (pd)
  */
-public class VertxHelper {
+public class VertxBrowserHelper {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -68,20 +70,31 @@ public class VertxHelper {
 
     public static class Server {
 	public Server(int port) {
-	    Handler handler = new AsyncResultHandler<Void>() {
-		public void handle(AsyncResult<Void> asyncResult) {
+	    Handler handler = new Handler<AsyncResult<HttpServer>>() {
+		public void handle(AsyncResult<HttpServer> asyncResult) {
+		    System.out.println(asyncResult.cause());
 		    // FIXME: Called when the server actually starts listening.
 		    // Probably need to have a callback back to JavaScript here.
 		}
 	    };
-	    _vertx.createHttpServer().requestHandler(new Handler<HttpServerRequest>() {
-		public void handle(HttpServerRequest req) {
-		    HttpServerResponse response = req.response();
+	    HttpServer server = _vertx.createHttpServer();
+	    server.requestHandler(new Handler<HttpServerRequest>() {
+		public void handle(HttpServerRequest request) {		        
+		    HttpServerResponse response = request.response();
+		    response.putHeader("content-type", "text/plain");
 		    response.setChunked(true);
 		    response.write(_response);
 		    response.end();
 		}
-	    }).listen(port, "0.0.0.0", handler);
+	    });
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	    server.listen(port, "127.0.0.1", handler); // The second argument specifies to listen
+	    					   // on localhost only (interface lo0).
 	}
 	public void setResponse(String response) {
 	    _response = response;
