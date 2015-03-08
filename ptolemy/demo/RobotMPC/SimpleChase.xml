@@ -1256,7 +1256,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, -205.0]">
             </property>
         </property>
-        <property name="r1" class="ptolemy.data.expr.Parameter" value="{0.8355673390803, 50.6487267848102}">
+        <property name="r1" class="ptolemy.data.expr.Parameter" value="{1.4955040964699, 50.3583438295577}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1365,7 +1365,7 @@
                 </port>
             </entity>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[vx,vy]">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{{vx,vy}}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -1643,7 +1643,7 @@
 <xLabel>time</xLabel>
 <yLabel>Distance [m]</yLabel>
 <xRange min="0.0" max="12.700000000000001"/>
-<yRange min="-58.12606777845228" max="100.0"/>
+<yRange min="-55.956001546117946" max="100.0"/>
 </plot>?>
                 </configure>
             </entity>
@@ -1734,7 +1734,7 @@
 <xLabel>time</xLabel>
 <yLabel>velocity [m/step]</yLabel>
 <xRange min="0.05" max="12.75"/>
-<yRange min="-4.439720995782947" max="4.92733193959441"/>
+<yRange min="-9.303200003116094" max="3.284721920098532"/>
 </plot>?>
                 </configure>
             </entity>
@@ -2183,19 +2183,19 @@
                 </property>
                 <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="1.702864475926106">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="1.8409103872057362">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="x+vx">
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="50.295359883791306">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="50.22810036239334">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="y+vy">
                 </property>
-                <property name="vx" class="ptolemy.data.expr.Parameter" value="-1.991009346640631">
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.8969562323353903">
                 </property>
                 <property name="vx_update" class="ptolemy.data.expr.Parameter" value="vx">
                 </property>
-                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.563760269999628">
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.15836880163324485">
                 </property>
                 <property name="vy_update" class="ptolemy.data.expr.Parameter" value="vy">
                 </property>
@@ -2208,7 +2208,7 @@
             </property>
             <property name="vy" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="[1.1436361242292; 0.8277580227508]">
+            <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="[-2.2163430990472; -0.6554848374304]">
             </property>
             <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2230,7 +2230,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="3.80214522594617">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2.7181160883944155">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2243,7 +2243,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="50.89268431617614">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="50.815955104938574">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2256,7 +2256,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="vx" class="ptolemy.data.expr.Parameter" value="-2.165805283601763">
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.755286137539253">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2269,7 +2269,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.394974970311322">
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.493296952499944">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2961,10 +2961,6 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 515.0]">
                     </property>
                 </entity>
-                <entity name="ArrayToMatrix" class="ptolemy.actor.lib.ArrayToMatrix">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, 595.0]">
-                    </property>
-                </entity>
                 <entity name="gradient_dX_dU" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="dX_dUs*dUs_dU">
                     </property>
@@ -3059,8 +3055,6 @@
                     <vertex name="vertex1" value="[75.0, 565.0]">
                     </vertex>
                 </relation>
-                <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-                </relation>
                 <relation name="relation21" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation23" class="ptolemy.actor.TypedIORelation">
@@ -3097,7 +3091,7 @@
                 <link port="IterateOverArray2.control_input" relation="relation3"/>
                 <link port="IterateOverArray2.gradiantOfConst" relation="relation23"/>
                 <link port="IterateOverArray2.dUi_dU" relation="relation14"/>
-                <link port="StatePredictorWithControl.control_input" relation="relation20"/>
+                <link port="StatePredictorWithControl.control_input" relation="relation3"/>
                 <link port="StatePredictorWithControl.current_state" relation="relation15"/>
                 <link port="StatePredictorWithControl.predicted_states" relation="relation5"/>
                 <link port="StatePredictorWithControl.jacobianOfStates" relation="relation21"/>
@@ -3115,8 +3109,6 @@
                 <link port="Expression2.m_per_sec" relation="relation10"/>
                 <link port="SequenceToArray3.input" relation="relation12"/>
                 <link port="SequenceToArray3.output" relation="relation14"/>
-                <link port="ArrayToMatrix.input" relation="relation17"/>
-                <link port="ArrayToMatrix.output" relation="relation20"/>
                 <link port="gradient_dX_dU.output" relation="relation19"/>
                 <link port="gradient_dX_dU.dUs_dU" relation="relation18"/>
                 <link port="gradient_dX_dU.dX_dUs" relation="relation21"/>
