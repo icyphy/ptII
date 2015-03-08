@@ -55,12 +55,16 @@ char* pblMap_c_id = "$Id$";
 
 #include <stdio.h>
 #ifndef PT_DOES_NOT_HAVE_MEMORY_H
+#ifndef __MBED__
 #include <memory.h>
+#endif
 #endif
 
 #ifndef __APPLE__
 #ifndef PT_DOES_NOT_HAVE_MALLOC_H
+#ifndef __MBED__
 #include <malloc.h>
+#endif
 #endif
 #endif
 
