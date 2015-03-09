@@ -70,36 +70,45 @@ public class VertxBrowserHelper {
 
     public static class Server {
 	public Server(int port) {
-	    Handler handler = new Handler<AsyncResult<HttpServer>>() {
+	    HttpServer server = _vertx.createHttpServer();
+            new Exception("Start of Server(" + port + ")").printStackTrace();
+            server.requestHandler(new Handler<HttpServerRequest>() {
+                        public void handle(HttpServerRequest request) {		        
+                            System.err.println("Server(" + port + ").handle(HttpServerRequest " + request + "), server: " + server + " _response: " + _getResponse());
+                            HttpServerResponse response = request.response();
+                            response.putHeader("content-type", "text/plain");
+                            response.setChunked(true);
+                            response.write(_getResponse());
+                            response.end();
+
+                            // Need to close the server after writing to it
+                            // otherwise subsequent firings of the accessor
+                            // will not write new material
+                            //server.close();
+                        }
+                    });
+            
+	    // The second argument specifies to listen
+	    // on localhost only (interface lo0).
+	    server.listen(port, "127.0.0.1", new Handler<AsyncResult<HttpServer>>() {
 		public void handle(AsyncResult<HttpServer> asyncResult) {
-		    System.out.println(asyncResult.cause());
+                    System.err.println("Server(" + port + ").handle(<AsyncResult> " + asyncResult + ")" + " Listen succeeded? " + asyncResult.succeeded() + " cause: " + asyncResult.cause() );
 		    // FIXME: Called when the server actually starts listening.
 		    // Probably need to have a callback back to JavaScript here.
-		}
-	    };
-	    HttpServer server = _vertx.createHttpServer();
-	    server.requestHandler(new Handler<HttpServerRequest>() {
-		public void handle(HttpServerRequest request) {		        
-		    HttpServerResponse response = request.response();
-		    response.putHeader("content-type", "text/plain");
-		    response.setChunked(true);
-		    response.write(_response);
-		    response.end();
-		}
-	    });
-	    try {
-		Thread.sleep(1000);
-	    } catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    server.listen(port, "127.0.0.1", handler); // The second argument specifies to listen
-	    					   // on localhost only (interface lo0).
+                }
+                    });
 	}
 	public void setResponse(String response) {
+            System.err.println("setResponse(" + response + ")");
 	    _response = response;
 	}
-	private String _response = "No data yet";
+
+        private String _getResponse() {
+            System.err.println("getResponse(): " + _response);
+            return _response;
+        }
+
+        private  String  _response = "No data yet";
     }
     
     ///////////////////////////////////////////////////////////////////
