@@ -1,10 +1,10 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript browser module
+# Makefile for Ptolemy II HelloBrowser demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 70884 2014-12-06 17:42:10Z cxh $
+# @Version: $Id: makefile 71527 2015-01-31 18:08:37Z pd $
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,53 +29,59 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/browser
-
-DIRS = 		test
+ME =		ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/HelloBrowser
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	browser
+PTPACKAGE = 	HelloBrowser
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	VertxBrowserHelper.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	browser.js \
-	package.json
+	HelloBrowser.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#doc test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc \
-	$(PTCLASSJAR) \
-	'VertxBrowserHelper$$Server$$1.class' \
-	'VertxBrowserHelper$$Server$$2.class' \
-	'VertxBrowserHelper$$Server.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+
+
+#_vergil:
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" VertxBus.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" VertxBus.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

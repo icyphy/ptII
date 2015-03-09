@@ -1,8 +1,8 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript browser module
+# Makefile for Java Ptolemy II JavaScript demos
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 70884 2014-12-06 17:42:10Z cxh $
+# @Version: $Id: makefile 70841 2014-12-02 23:15:50Z pd $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -29,53 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/browser
+ME =		ptolemy/actor/lib/jjs/modules/browser/demo
 
-DIRS = 		test
+DIRS =		HelloBrowser
 
-# Root of the Java directory
-ROOT =		../../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	browser
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	HelloBrowser/HelloBrowser.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	VertxBrowserHelper.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	browser.js \
-	package.json
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#doc test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc \
-	$(PTCLASSJAR) \
-	'VertxBrowserHelper$$Server$$1.class' \
-	'VertxBrowserHelper$$Server$$2.class' \
-	'VertxBrowserHelper$$Server.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

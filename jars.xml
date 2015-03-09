@@ -78,6 +78,8 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/browser/browser.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar" />
@@ -1763,6 +1765,26 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.txt"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/browser/browser.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/browser/browser.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/browser/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/browser/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/browser/*.json"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/browser/demo/*/*.xml"/>
       </fileset>
     </jar>
 
