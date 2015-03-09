@@ -131,13 +131,20 @@ LIBFOO=-lfoo
 LIBFOO_DIRECTORY=/usr/lib/foo
 LIBFOO_DIRECTIVE=-L$(LIBFOO_DIRECTORY) $(LIBFOO)
 
+
+
 # We need -D__int64="long long" when invoking jni interface under cygwin
-$(MODELNAME).o: $(MODELNAME).cpp 
+$(MODELNAME).o: fixcpp_ $(MODELNAME)_Main.c 
 	$(MBED_GPP) -c $(MBED_DEFINES) $(MBED_INCLUDES) -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o $(MODELNAME).o -lm $(PTCGLIBRARIES) $(LIBFOO_DIRECTIVE)
 
+#Rename the c files to cpp in the actors folder.
+fixcpp_: 
+	-@for file in _$(MODELNAME)/*.c; do j=`echo $$file | cut -d . -f 1`;j=$$j".cpp";mv $$file $$j; done
+	mv _$(MODELNAME)/$(MODELNAME).cpp _$(MODELNAME)/$(MODELNAME).c
+    
 # Copy the .c file to a .cpp file so that we can run g++
-$(MODELNAME).cpp: $(MODELNAME)_Main.c
-	cp $(MODELNAME)_Main.c $@
+#$(MODELNAME).cpp: $(MODELNAME)_Main.c
+#	cp $(MODELNAME)_Main.c $@
 
 # Other Targets
 
@@ -153,6 +160,7 @@ run:
 clean:
 	rm -rf $(PTCG_OFILES) @modelName@
 	-@echo ' '
+	
 
-.PHONY: all clean dependents
+.PHONY: fixcpp_ all clean dependents
 .SECONDARY:
