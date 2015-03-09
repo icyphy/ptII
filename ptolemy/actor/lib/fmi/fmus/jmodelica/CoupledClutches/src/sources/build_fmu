@@ -52,8 +52,13 @@ if [ $arch = linux -a $bits = 32 ]; then
 fi
 
 if [ -x userCflags ]; then
+    # If we unjar a source distribution, then userCflags might not be executable.
+    if [ ! -x userFlags ]; then
+        chmod a+x userCflags
+    fi        
     userCflags=`./userCflags`
 fi
+
 set -x
 echo `pwd`; \
 make dirclean; \
