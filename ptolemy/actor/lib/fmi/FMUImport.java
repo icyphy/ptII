@@ -3754,6 +3754,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (scalarVariable.variability != FMIScalarVariable.Variability.parameter
                     && scalarVariable.variability != FMIScalarVariable.Variability.constant
                     && scalarVariable.variability != FMIScalarVariable.Variability.fixed // FMI-2.0rc1
+                    && scalarVariable.variability != FMIScalarVariable.Variability.tunable // FMI-2.0rc1
                     && (scalarVariable.causality == Causality.input
                     // FMUTankOpen uses a Model Exchange FMU
                     // that has a ScalarVariable T with
