@@ -103,7 +103,7 @@ FMI2CSTEMPLATE=/usr/local/jmodelica/CodeGenTemplates/fmi2_functions_cs_template.
 		echo "Creating $(ARCH_DIR)"; \
 		mkdir -p $(ARCH_DIR); \
 	fi
-	$(CC) -dynamiclib -g $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< $(FMU_NAME)_*.c -L/usr/local/jmodelica/lib/RuntimeLibrary -ljmi -lfmi2 -L/usr/local/jmodelica//ThirdParty/Sundials/lib -lsundials_cvode -lsundials_kinsol -lsundials_nvecserial -llapack -lblas 
+	$(CC) -dynamiclib -Wl,-rpath,@loader_path/ -pthread -g -std=c89 -pedantic $(CFLAGS) $(USER_CFLAGS) $(INCLUDE) -o $(ARCH_DIR)$@ $< $(FMU_NAME)_*.c -L/usr/local/jmodelica/lib/RuntimeLibrary -lfmi2 -ljmi "-L/usr/local/jmodelica/lib"  -llapack -llapack -lblas -lgfortran -lModelicaExternalC -static-libstdc++ -L/usr/local/jmodelica/ThirdParty/Sundials/lib /usr/local/jmodelica/ThirdParty/Sundials/lib/libsundials_kinsol.a /usr/local/jmodelica/ThirdParty/Sundials/lib/libsundials_nvecserial.a -L/usr/local/jmodelica/ThirdParty/Minpack/lib /usr/local/jmodelica/ThirdParty/Minpack/lib/libcminpack.a /usr/local/jmodelica/ThirdParty/Sundials/lib/libsundials_cvode.a
 
 FMUDIR=..
 

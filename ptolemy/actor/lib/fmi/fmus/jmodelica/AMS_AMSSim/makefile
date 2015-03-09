@@ -31,7 +31,7 @@
 
 FMU_NAME = AMS_AMSSim
 
-OTHER_OTHER_FILES_TO_BE_JARED = AMS_AMSSim.xml
+OTHER_OTHER_FILES_TO_BE_JARED =
 
 include ../fmus.mk
 
