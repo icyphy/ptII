@@ -516,7 +516,7 @@ public class FMUModelExchange extends FMUDriver {
                                             + time + ": ");
                         }
 
-
+                        if (stateEvent) {
                             numberOfStateEvents++;
                             if (enableLogging) {
                                 for (int i = 0; i < numberOfEventIndicators; i++) {

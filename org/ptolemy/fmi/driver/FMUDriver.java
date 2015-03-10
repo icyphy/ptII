@@ -177,7 +177,7 @@ public abstract class FMUDriver {
         if (args == null || args.length < 1) {
             throw new Exception("Incorrect arguments, missing a .fmu file.\n"
                     + "Usage: file.fmu [endTime] [stepTime] [loggingOn] [csvSeparator] [outputFile]"
-                    + "For example: java -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} org.ptolemy.fmi.driver.FMUModelExchange $PTII/org/ptolemy/fmi/fmu/me/bouncingBallME1.fmu 4.0 0.01 true c result.csv"
+                    + "For example: java -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} org.ptolemy.fmi.driver.FMUModelExchange $PTII/org/ptolemy/fmi/fmu/me/bouncingBallME1.fmu 4.0 0.01 true c result.csv");
         }
         _fmuFileName = args[0];
         if (args.length >= 2) {
