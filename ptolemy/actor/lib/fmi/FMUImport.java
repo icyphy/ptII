@@ -29,6 +29,7 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
@@ -1016,12 +1017,26 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             FileParameter fmuFileParameter, NamedObj context, double x,
             double y, boolean modelExchange) throws IllegalActionException,
             IOException {
-
+        // FIXME: we should use a factory here.  The issue is that
+        // when we import a fmu for QSS, we want to call
+        // FMUQSS._acceptFMU().  However, we are using static methods
+        // because we use a MoMLChangeRequest to instantiate the actor
+        // so we can't use object-oriented design to have the subclass
+        // provide an implementation of _acceptFMU(). ick.
+        Method acceptFMUMethod = null; 
+        try {
+            Class clazz = Class.forName("ptolemy.actor.lib.fmi.FMUImport");
+            acceptFMUMethod = clazz.getDeclaredMethod("_acceptFMU", new Class []  {FMIModelDescription.class});
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(context, throwable,
+                    "Failed to get the static _acceptFMU(FMIModelDescription) method for FMUImport.");
+        }
         // We use a protected method so that we can change
         // the name of the entity that is instantiated.
         FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
                 modelExchange, true /*addMaximumStepSize*/,
-                "ptolemy.actor.lib.fmi.FMUImport");
+                "ptolemy.actor.lib.fmi.FMUImport",
+                 acceptFMUMethod);
     }
 
     /**
@@ -2683,15 +2698,19 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * "maximumStepSize" should be added.
      * @param actorClassName The class name of the Ptolemy actor
      * to be instantiated, for example "ptolemy.actor.lib.fmi.FMUImport".
+     * @param acceptFMUMethod The {@link #_acceptFMU(FMIModelDescription)}
+     * method.  Derived classes provide a different method than
+     * the parent class.
      * @exception IllegalActionException If there is a problem
      * instantiating the actor.
      * @exception IOException If there is a problem parsing the fmu file.
      */
-    public static void _importFMU(Object originator,
+    protected static void _importFMU(Object originator,
             FileParameter fmuFileParameter, NamedObj context, double x,
             double y, boolean modelExchange,
             boolean addMaximumStepSizeParameter,
-            String actorClassName)
+            String actorClassName,
+            Method acceptFMUMethod)
             throws IllegalActionException, IOException {
 
         File fmuFile = fmuFileParameter.asFile();
@@ -2726,10 +2745,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // Check that the modelDescription is suitable.
         // For example FMUQSS only imports FMI-2.0 ME FMUs and
         // will throw an exception in FMUQSS._acceptFMU().
-        if (!_acceptFMU(fmiModelDescription)) {
-            return;
+        try {
+            Boolean accept = (Boolean) acceptFMUMethod.invoke(null /* Invoking a static method */,
+                    new Object[] {fmiModelDescription});
+            if (!accept) {
+                return;
+            }
+        } catch (Throwable throwable) {
+            new IllegalActionException(context, throwable,
+                    "Failed to invoke the _acceptFMU(FMIModelDescription) method "
+                    + acceptFMUMethod);
         }
-
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
         // If a location is given as a URL, construct MoML to
