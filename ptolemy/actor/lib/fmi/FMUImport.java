@@ -791,13 +791,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             }
                         }
                         if (timeEventOccurred) {
-                            // nTimeEvents++;
+                            _numberOfTimeEvents++;
                             if (_debugging) {
                                 _debugToStdOut("time event at t=" + currentTimeValue);
                             }
                         }
                         if (stateEventOccurred) {
-                            // nStateEvents++;
+                            _numberOfStateEvents++;
                             if (_debugging) {
                                 for (int i = 0; i < _fmiModelDescription.numberOfEventIndicators; i++) {
                                     _debugToStdOut("state event "
@@ -810,7 +810,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             }
                         }
                         if (stepEvent) {
-                            // nStepEvents++;
+                            _numberOfStepEvents++;
                             if (_debugging) {
                                 _debugToStdOut("step event at t=" + currentTimeValue);
                             }
@@ -865,6 +865,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // FIXME: Need to do an event update. Zero step size.
             }
         }
+        _numberOfSteps++;
 
         /*
          * The following commented out code was a first attempt to get this FMU
@@ -1329,6 +1330,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         if (_debugging) {
             _debugToStdOut("FMUImport.preinitialize()");
         }
+
+        _numberOfSteps = 0;
+        _numberOfStateEvents = 0;
+        _numberOfStepEvents = 0;
+        _numberOfTimeEvents = 0;
 
         try {
             _nativeLibrary = _fmiModelDescription.getNativeLibrary();
@@ -1828,6 +1834,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     @Override
     public void wrapup() throws IllegalActionException {
+        if (_debugging) {
+            _debugToStdOut("  steps: " + _numberOfSteps
+                    + "\n  stateEvents: " + _numberOfStateEvents
+                    + "\n  stepEvents: " + _numberOfStepEvents
+                    + "\n  timeEvents: " + _numberOfTimeEvents);
+        }
+
         _checkFmiCommon();
 
         _fmiTerminate();
@@ -4194,6 +4207,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The new states computed in fire(), to be committed in postfire. */
     private double[] _newStates;
+
+    private int _numberOfSteps;
+    private int _numberOfStateEvents;
+    private int _numberOfStepEvents;
+    private int _numberOfTimeEvents;
 
     /** The outputs of this FMU. */
     private List<Output> _outputs;
