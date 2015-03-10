@@ -29,6 +29,7 @@
 package ptolemy.actor.lib.fmi;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -329,13 +330,29 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     public static void importFMU(Object originator,
             FileParameter fmuFileParameter, NamedObj context, double x, double y)
             throws IllegalActionException, IOException {
+        // FIXME: we should use a factory here.  The issue is that
+        // when we import a fmu for QSS, we want to call
+        // FMUQSS._acceptFMU().  However, we are using static methods
+        // because we use a MoMLChangeRequest to instantiate the actor
+        // so we can't use object-oriented design to have the subclass
+        // provide an implementation of _acceptFMU(). ick.
+        Method acceptFMUMethod = null; 
+        try {
+            Class clazz = Class.forName("ptolemy.actor.lib.fmi.FMUQSS");
+            acceptFMUMethod = clazz.getDeclaredMethod("_acceptFMU", new Class []  {FMIModelDescription.class});
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(context, throwable,
+                    "Failed to get the static _acceptFMU(FMIModelDescription) method for FMUImport.");
+        }
+
         // Note that this method is declared to not have a modelExchange
         // parameter because all QSS fmus are model exchange fmus.  However,
         // _importFMU does take a modelExchange parameter.
         FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
                 true /* modelExchange */,
                 false /*addMaximumStepSize*/,
-                "ptolemy.actor.lib.fmi.FMUQSS");
+                "ptolemy.actor.lib.fmi.FMUQSS",
+                acceptFMUMethod);
     }
 
     /**
