@@ -95,8 +95,10 @@ public class FMUModelExchange extends FMUDriver {
      *
      * <p>For example, under Mac OS X or Linux:
      * <pre>
-     * java -classpath $PTII/lib/jna.jar:${PTII} org.ptolemy.fmi.driver.FMUModelExchange \
-     *   $PTII/org/ptolemy/fmi/fmu/me/bouncingBall.fmu 4.0 0.01 true c foo.csv
+     * java -classpath $PTII/lib/jna-4.0.0-variadic.jar:${PTII} \
+     *    org.ptolemy.fmi.driver.FMUModelExchange \
+     *    $PTII/org/ptolemy/fmi/fmu/me/bouncingBallME1.fmu \
+     *    4.0 0.01 true c result.csv"
      * </pre>
      *
      *  <p>The command line arguments have the following meaning:</p>
@@ -402,12 +404,15 @@ public class FMUModelExchange extends FMUDriver {
                     if (_fmiVersion < 1.5) {
                         timeEvent = eventInfo.upcomingTimeEvent == 1
                                 && eventInfo.nextEventTime < time;
+                        if (timeEvent) {
+                            time = eventInfo.nextEventTime;
+                        }
                     } else {
                         timeEvent = eventInfo20Reference.nextEventTimeDefined == 1
                                 && eventInfo20Reference.nextEventTime < time;
-                    }
-                    if (timeEvent) {
-                        time = eventInfo.nextEventTime;
+                        if (timeEvent) {
+                            time = eventInfo20Reference.nextEventTime;
+                        }
                     }
 
                     double dt = time - stepStartTime;
@@ -490,7 +495,7 @@ public class FMUModelExchange extends FMUDriver {
                         // Get the eventIndicators.
                         invoke(getEventIndicators, new Object[] { fmiComponent,
                                 eventIndicators, numberOfEventIndicators },
-                                "Could not set get event indicators, time was "
+                                "Could not get event indicators, time was "
                                         + time + ": ");
 
                         stateEvent = Boolean.FALSE;
@@ -511,7 +516,7 @@ public class FMUModelExchange extends FMUDriver {
                                             + time + ": ");
                         }
 
-                        if (stateEvent) {
+
                             numberOfStateEvents++;
                             if (enableLogging) {
                                 for (int i = 0; i < numberOfEventIndicators; i++) {
