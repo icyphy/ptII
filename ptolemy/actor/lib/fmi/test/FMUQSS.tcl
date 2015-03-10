@@ -52,7 +52,12 @@ proc tryToLoadNonQSSFMU {fmu} {
     $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
     catch {java::call ptolemy.actor.lib.fmi.FMUQSS importFMU $e1 $fmuFileParameter $e1 100.0 100.0} err
     regsub {The fmu ".*ptII/ptolemy} $err {The fmu "xxx/ptII/ptolemy} err2
-    return $err2
+
+    # Windows... why?
+    regsub {The fmu ".*ptII\\ptolemy} $err2 {The fmu "xxx/ptII/ptolemy} err3
+    regsub {\\} $err3 {/} err4
+
+    return $err4
 }
 
 ######################################################################
@@ -76,3 +81,15 @@ test FMUQSS-1.2 {Test out importFMU on an FMU that has no state and should be re
   in .top
 Because:
 The number of continuous states of this FMU is: 0.  The FMU does not have any state variables.  The FMU needs to have at least one state variable. Please check the FMU.}}
+
+
+######################################################################
+####
+#
+test FMUQSS-1.3 {Test out importFMU on an Co-Simulation FMU that should be rejected} {
+    set err [tryToLoadNonQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu}]
+    list $err
+} {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptII/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu" is not acceptable.
+  in .top
+Because:
+There is no ModelExchange attribute in the model description file of This FMU to indicate whether it is for model exchange or not.  QSS currently only supports FMU for model exchange.}}
