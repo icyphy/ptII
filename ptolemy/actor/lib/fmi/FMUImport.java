@@ -520,9 +520,23 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     fmi20EventInfo = new FMI20EventInfo.ByReference(
                             fmi20ModelInstance.eventInfo);
 
-                    // "event iteration"
+                    // FMUSDK: "event iteration"
                     fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
                     fmi20EventInfo.terminateSimulation = (byte) 0;
+
+                    // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
+                    while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1)
+                            && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
+                        // FMUSDK: "update discrete states"
+                        int fmiFlag = ((Integer)
+                                _fmiNewDiscreteStatesFunction.invoke(Integer.class,
+                                        new Object[] {
+                                            _fmiComponent, fmi20EventInfo})).intValue();
+                        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                            throw new
+                                IllegalActionException("Failed to set a new discrete state.");
+                        }
+                    }
 
                     if (fmi20EventInfo.terminateSimulation == (byte) 1) {
                         double currentTimeValue = currentTime.getDoubleValue();
@@ -752,25 +766,24 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                 _debug("step event at t=" + currentTimeValue);
                             }
                         }
-                        // "event iteration in one step, ignoring intermediate results"
+                        // FMUSDK: "event iteration in one step, ignoring intermediate results"
                         fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
                         fmi20EventInfo.terminateSimulation = (byte) 0;
 
-                        System.out
-                                .println("FMUImport: ME not supported under FMI-2.0 right now.");
-                        // while ((fmi20EventInfo.newDiscreteStatesNeeded ==
-                        // (byte)1) && !(fmi20EventInfo.terminateSimulation ==
-                        // (byte)1)) {
-                        // // "update discrete states"
-                        // int fmiFlag = ((Integer)
-                        // _fmiNewDiscreteStatesFunction.invoke(Integer.class,
-                        // new Object[] {
-                        // _fmiComponent, fmi20EventInfo})).intValue();
-                        // if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                        // throw new
-                        // IllegalActionException("Failed to set a new discrete state.");
-                        // }
-                        // }
+                        // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
+                        while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1)
+                                && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
+                            // FMUSDK: "update discrete states"
+                            int fmiFlag = ((Integer)
+                                    _fmiNewDiscreteStatesFunction.invoke(Integer.class,
+                                            new Object[] {
+                                                _fmiComponent, fmi20EventInfo})).intValue();
+                            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                                throw new
+                                    IllegalActionException("Failed to set a new discrete state.");
+                            }
+                        }
+                    
                         if (fmi20EventInfo.terminateSimulation == (byte) 1) {
                             System.out
                                     .println("model requested termination at t="
