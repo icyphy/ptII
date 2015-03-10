@@ -636,7 +636,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (fmiModelDescription.fmiVersion.compareTo("2.0") < 0) {
             throw new IOException("The FMI version of this FMU is: "
                     + fmiModelDescription.fmiVersion
-                    + "which is not supported.  "
+                    + " which is not supported.  "
                     + "QSS currently only supports FMI version 2.0.");
         }
 

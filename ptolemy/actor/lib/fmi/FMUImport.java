@@ -2846,9 +2846,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 return;
             }
         } catch (Throwable throwable) {
-            new IllegalActionException(context, throwable,
-                    "Failed to invoke the _acceptFMU(FMIModelDescription) method "
-                    + acceptFMUMethod);
+            if (throwable.getCause() instanceof IOException) {
+                throw new IllegalActionException(context, throwable.getCause(),
+                        "The fmu \"" + fmuFile + "\" is not acceptable.");
+            } else {
+                throw new IllegalActionException(context, throwable,
+                        "Failed to invoke the _acceptFMU(FMIModelDescription) method "
+                        + acceptFMUMethod);
+            }
         }
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
