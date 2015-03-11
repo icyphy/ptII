@@ -42,8 +42,7 @@ HSMMTimeAwareMultinomialEstimator {
     }
     public void fire() throws IllegalActionException { 
 
-        super.fire();
-
+        super.fire(); 
         _code = generateCode();  
         code.send(0, new StringToken(_code.toString()));
     } 
@@ -56,7 +55,7 @@ HSMMTimeAwareMultinomialEstimator {
         // header
         String header = "dtmc" + _eol + 
                 "const int MAX_STEP = " + _maxStep + "; // 288 time steps per improvisation" + _eol + 
-                "const int PMAX = " + PMAXi + "*(MAX_STEP+1); // maximum power consumption" + _eol+
+                "const int PMAX = " + PMAXi + "; // maximum power consumption" + _eol+
                 "const int DMAX = " + _maxDuration + ";// maximum duration consumption" + _eol+
                 "const int T = 5; // sampling period is 5 minutes." + _eol;
                 
@@ -77,13 +76,13 @@ HSMMTimeAwareMultinomialEstimator {
 
         for (int s = 0; s <_nStates; s++) {
             String emissions = INDENT2 +  "[step] s=";
-            emissions += s + "& d>0 & pow < PMAX-" +PMAXi + " & n < MAX_STEP -> ";
+            emissions += s + "& d>0 & n < MAX_STEP -> ";
             //       + "initDist=false -> ";
             double[] p = (double[])stateEmissions.get(s);
             p = cleanAndTruncate(p, 0.01, precision);
             for (int d=0; d< p.length; d++) {
                 if (p[d] > 0.0) {
-                    emissions += p[d] + ": (pow'=pow+" + d + ") + ";
+                    emissions += p[d] + ": (pow' =" + d + ") + ";
                 }
             }
             // remove the extra plus
@@ -127,6 +126,8 @@ HSMMTimeAwareMultinomialEstimator {
             newModule = newModule.substring(0,newModule.length()-3) + ";" + _eol;
             code.append(newModule);
         } 
+        
+        code.append(INDENT2 + "[step] d > 0 -> (d'=d-1);" + _eol);
         
         code.append(INDENT1 +"endmodule" + _eol+ " " + _eol); 
         // state transitions -- first, only use At[0], not the time dependent A.
