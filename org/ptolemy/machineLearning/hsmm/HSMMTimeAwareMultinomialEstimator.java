@@ -78,8 +78,10 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         transitionMatrixEstimationMethod = new StringParameter(this,
                 "transitionMatrixEstimationMethod");
         transitionMatrixEstimationMethod.setExpression(INTERPOLATE);
+        transitionMatrixEstimationMethod.addChoice(INTERPOLATE);
         transitionMatrixEstimationMethod.addChoice(FORCE_SELF); 
         transitionMatrixEstimationMethod.addChoice(FORCE_ZERO);
+        transitionMatrixEstimationMethod.addChoice(NO_ACTION);
 
     }
 
@@ -117,7 +119,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             // empirical distribution for the state transition times.
 
             // hourly empirical distributions
-            double[][][] At = new double[NUM_CATEGORIES][_nStates][_nStates]; 
+            At = new double[NUM_CATEGORIES][_nStates][_nStates]; 
             int prevState = clusters[0];
             for (int i = 1 ; i < clusters.length; i++) {
                 if (clusters[i] != prevState) {
@@ -162,6 +164,8 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                         case FORCE_ZERO:
                             At[i][j][0] = 1.0;
                             break;
+                        case NO_ACTION:
+                            break;
                         default:
                             At[i][j][0] = 1.0;
                             break;
@@ -192,6 +196,10 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     private final String INTERPOLATE = "Interpolate";
     private final String FORCE_SELF = "Force self-transition";
     private final String FORCE_ZERO = "Force transition to state 0";
+    private final String NO_ACTION = "No action";
+    
+    /** Time-dependent transition prob .matrix*/
+    protected double[][][] At;
 
 
 }

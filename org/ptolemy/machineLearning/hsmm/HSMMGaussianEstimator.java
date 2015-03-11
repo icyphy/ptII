@@ -113,54 +113,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         _mu0 = new double[4][2];
 
     }
-
-    @Override
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == observationDimension) {
-            _obsDimension = ((IntToken) observationDimension.getToken())
-                    .intValue();
-        } else if (attribute == meanVectorGuess) {
-            int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
-            if (nS > 0) {
-                _obsDimension = ((ArrayToken) ((ArrayToken) meanVectorGuess
-                        .getToken()).getElement(0)).length();
-                _mu0 = new double[nS][_obsDimension];
-                for (int i = 0; i < nS; i++) {
-                    ArrayToken arr1 = ((ArrayToken) ((ArrayToken) meanVectorGuess
-                            .getToken()).getElement(i));
-                    for (int j = 0; j < _obsDimension; j++) {
-                        _mu0[i][j] = ((DoubleToken) arr1.getElement(j))
-                                .doubleValue();
-                    }
-                }
-            } else {
-                throw new IllegalActionException("Mean guess cannot be empty");
-            }
-
-        } else if (attribute == standardDeviationGuess) {
-            int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
-            if (nS > 0) {
-                int _obsDimension = (((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
-                        .getToken()).getElement(0)).doubleMatrix()).length;
-                _sigma0 = new double[nS][_obsDimension][_obsDimension];
-                for (int i = 0; i < nS; i++) {
-                    double[][] dm = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
-                            .getToken()).getElement(i)).doubleMatrix();
-                    for (int j = 0; j < _obsDimension; j++) {
-                        for (int k = 0; k < _obsDimension; k++) {
-                            _sigma0[i][j][k] = dm[j][k];
-                        }
-                    }
-                }
-            } else {
-                throw new IllegalActionException(
-                        "Covariance guess cannot be empty");
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
+ 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -176,6 +129,56 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == meanVectorGuess) {
+            int nS = ((ArrayToken) meanVectorGuess.getToken()).length();
+            if (((ArrayToken) meanVectorGuess.getToken()).getElementType().equals(BaseType.DOUBLE)) {
+                _obsDimension = 1;
+                _mu0 = new double[nS][1];
+                for (int i = 0; i < nS; i++) {
+                    _mu0[i][0] = ((DoubleToken) ((ArrayToken) meanVectorGuess
+                            .getToken()).getElement(i)).doubleValue(); 
+                } 
+            } else {
+                _obsDimension = ((ArrayToken)((ArrayToken) meanVectorGuess.getToken()).getElement(0)).length();
+                _mu0 = new double[nS][_obsDimension]; 
+                for (int i = 0; i < nS; i++) {
+                    for (int j = 0; j < _obsDimension; j++) {
+                        _mu0[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) meanVectorGuess
+                                .getToken()).getElement(i)).getElement(j)).doubleValue();
+                    }
+                }
+            }
+            if (_obsDimension > 1) {
+                mean.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
+                standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+            } else {
+                mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+                standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+            }
+        } else if (attribute == standardDeviationGuess) {
+            int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
+            if (((ArrayToken) standardDeviationGuess.getToken()).getElementType().equals(BaseType.DOUBLE)) {
+                _obsDimension = 1;
+                _sigma0 = new double[nS][1][1];
+                for (int i = 0; i < nS; i++) {
+                    _sigma0[i][0][0] = ((DoubleToken) ((ArrayToken) standardDeviationGuess
+                            .getToken()).getElement(i)).doubleValue(); 
+                } 
+            } else {
+                _obsDimension = ((DoubleMatrixToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(0)).getColumnCount();
+                _sigma0 = new double[nS][_obsDimension][_obsDimension]; 
+                for (int i = 0; i < nS; i++) { 
+                    _sigma0[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
+                            .getToken()).getElement(i)).doubleMatrix(); 
+                }
+            } 
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HSMMGaussianEstimator newObject = (HSMMGaussianEstimator) super
@@ -207,12 +210,17 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             Token[] lTokens = new Token[_likelihoodHistory.size()];
 
             for (int i = 0; i < _nStates; i++) {
-                Token[] stateitokens = new Token[_obsDimension];
-                for (int j = 0; j < _obsDimension; j++) {
-                    stateitokens[j] = new DoubleToken(_mu[i][j]);
+                if (_obsDimension > 1) {
+                    Token[] meani = new Token[_obsDimension];
+                    for (int j = 0; j < _obsDimension; j++) {
+                        meani[j] = new DoubleToken(m_new[i][j]);
+                    }
+                    mTokens[i] = new ArrayToken(meani);
+                    sTokens[i] = new DoubleMatrixToken(s_new[i]);
+                } else {
+                    mTokens[i] = new DoubleToken(m_new[i][0]);
+                    sTokens[i] = new DoubleToken(Math.sqrt(s_new[i][0][0]));
                 }
-                mTokens[i] = new ArrayToken(stateitokens);
-                sTokens[i] = new DoubleMatrixToken(s_new[i]);
                 pTokens[i] = new DoubleToken(prior_new[i]);
             }
             for (int i = 0; i < _maxDuration; i++) {

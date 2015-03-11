@@ -130,6 +130,10 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
 
         hiddenState = new TypedIOPort(this, "hiddenState", false, true);
         hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
+        
+        windowSize = new PortParameter(this, "windowSize");
+        windowSize.setTypeEquals(BaseType.INT);
+        windowSize.setExpression("100");
          
 
     }
@@ -158,6 +162,8 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
     public TypedIOPort observation;
 
     public TypedIOPort hiddenState;
+    
+    public PortParameter windowSize;
 
 
     public PortParameter powerUpperBound;
@@ -178,7 +184,10 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == multinomialEstimates) {
+        if (attribute == windowSize) {
+
+            _windowSize = ((IntToken)windowSize.getToken()).intValue();
+        } else if (attribute == multinomialEstimates) {
            _B = ((DoubleMatrixToken)multinomialEstimates.getToken()).doubleMatrix();
            _nStates = _B.length;
                    
@@ -373,7 +382,7 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
         double randomValue = Math.random() * cumSums[cumSums.length-1];
         int bin = Algorithms._binaryIntervalSearch(cumSums, randomValue, 0,
                 cumSums.length-1);
-        return bin + 1;
+        return bin;
     }
 
     protected int _sampleDurationForState() {
@@ -387,7 +396,7 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
         double randomValue = Math.random() * cumSums[_maxDuration];
         int bin = Algorithms._binaryIntervalSearch(cumSums, randomValue, 0,
                 _maxDuration);
-        return bin + 1;
+        return bin;
     }
 
     protected int _propagateState() {
