@@ -608,7 +608,7 @@ public class FMUFile {
                     for (int i = 0; i < unknowVariables.getLength(); i++) {
                         current = unknowVariables.item(i);
                         if (current.getNodeName().equalsIgnoreCase("Unknown")) {
-                            fmiModelDescription.continousStateDerivatives
+                            fmiModelDescription.continuousStateDerivatives
                             .add(new FMI20ContinuousStateDerivative(
                                     fmiModelDescription, current));
                         }

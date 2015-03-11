@@ -3617,7 +3617,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The _fmi2NewDiscreteStates function, present only in FMI-2.0. */
     protected Function _fmiNewDiscreteStatesFunction;
 
-    /** The fmiEnterContinousTimeMode Function, present only in FMI-2.0. */
+    /** The fmiEnterContinuousTimeMode Function, present only in FMI-2.0. */
     protected Function _fmiEnterContinuousTimeModeFunction;
 
     /** The fmiCompletedIntegratorStep() function. */
