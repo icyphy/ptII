@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2013-2014 The Regents of the University of California.
+# @Copyright (c) 2013-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = hmm hmmAOM hsmm particleFilter
+DIRS = hmm hmmAOM hsmm particleFilter test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
