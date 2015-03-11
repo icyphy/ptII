@@ -18,10 +18,13 @@ ARCH_DIR = ../binaries/$(ARCH)/
 #INCLUDE =  -I.
 
 # This is for co-simulation with JModelica.
-INCLUDE =  -DFMUCS20 -I.
+#INCLUDE =  -DFMUCS20 -I.
 
 # This is for model exchange with JModelica
 #INCLUDE =  -DFMUME20 -I.
+
+# This is for co-simulation and model exchange with JModelica
+INCLUDE =  -D FMUCS20 -DFMUME20 -I.
 
 # For co-simulation FMUs, modelExchange.mk does not exist.
 # For model exchange FMUs, modelExchange.mk defines INCLUDE.

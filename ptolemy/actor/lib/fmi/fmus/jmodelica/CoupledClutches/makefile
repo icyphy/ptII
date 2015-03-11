@@ -38,4 +38,8 @@ fmuCheck:
 	if [ ! -d resources ]; then \
 		mkdir resources; \
 	fi
-	fmuCheck -k me -z . *.fmu
+	# Need -z . so we can find the resources/ directory
+	fmuCheck -z . -s 1.2 -f -h 0.01 -o result.csv $(FMU_NAME).fmu
+
+fmusdk:
+	$(PTII)/bin/ptinvoke org.ptolemy.fmi.driver.FMUModelExchange CoupledClutches.fmu 1.2 0.01 0 c fmusdkResults.csv 

@@ -41,4 +41,7 @@ fmuCheck:
 	if [ ! -d resources ]; then \
 		mkdir resources; \
 	fi
-	fmuCheck -k cs -z . *.fmu
+	fmuCheck  -z . *.fmu
+
+fmusdk:
+	$(PTII)/bin/ptinvoke org.ptolemy.fmi.driver.FMUModelExchange $(FMU_NAME).fmu 1.2 0.01 0 c fmusdkResults.csv 
