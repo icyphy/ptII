@@ -54,7 +54,7 @@ if [ $arch = linux -a $bits = 32 ]; then
     CBITSFLAGS=-m32
 fi
 
-if [ -x userCflags ]; then
+if [ -f userCflags ]; then
     # If we unjar a source distribution, then userCflags might not be executable.
     if [ ! -x userFlags ]; then
         chmod a+x userCflags
