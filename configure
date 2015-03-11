@@ -13094,13 +13094,14 @@ $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >
 	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTVERTX_JARS" >&5
 $as_echo "$PTVERTX_JARS" >&6; }; fi
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
 
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
