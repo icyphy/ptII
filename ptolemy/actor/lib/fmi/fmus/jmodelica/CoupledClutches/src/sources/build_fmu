@@ -25,7 +25,7 @@ fi
 #include="-DFMUME20 -I."
 
 # For co-simulation and model exchange with JModelica
-#include="-DFMUCS20 -DFMUME20 -I."
+include="-DFMUCS20 -DFMUME20 -I."
 
 
 case "`uname -s`" in
