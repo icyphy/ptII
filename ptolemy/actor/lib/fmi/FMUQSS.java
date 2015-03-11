@@ -788,7 +788,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     private double _evaluateInputDirectionalDerivatives(final int idx,
             final double[] uu_dot) throws IllegalActionException {
-        final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continousStateDerivatives
+        final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continuousStateDerivatives
                 .get(idx);
         final int numDepInputs = stateDeriv.dependentInputIndexes.size();
         final IntBuffer vRefStateDeriv = IntBuffer.allocate(1).put(0,
@@ -828,7 +828,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private double _evaluateStateDirectionalDerivatives(final int idx,
             final double[] xx_dot) throws IllegalActionException {
 
-        final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continousStateDerivatives
+        final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continuousStateDerivatives
                 .get(idx);
         final int numDepStates = stateDeriv.dependentStateIndexes.size();
         final IntBuffer vRefStateDeriv = IntBuffer.allocate(1).put(0,
@@ -1081,9 +1081,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Initialize arrays
         for (int i = 0; i < numContStates; i++) {
             // Initialize the lists.
-            _fmiModelDescription.continousStateDerivatives.get(i).dependentInputIndexes = new LinkedList<Integer>();
-            _fmiModelDescription.continousStateDerivatives.get(i).dependentStateIndexes = new LinkedList<Integer>();
-            final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continousStateDerivatives
+            _fmiModelDescription.continuousStateDerivatives.get(i).dependentInputIndexes = new LinkedList<Integer>();
+            _fmiModelDescription.continuousStateDerivatives.get(i).dependentStateIndexes = new LinkedList<Integer>();
+            final FMI20ContinuousStateDerivative stateDeriv = _fmiModelDescription.continuousStateDerivatives
                     .get(i);
             // Get the indexes of the dependent input variables.
             for (int j = 0; j < _inputs.size(); j++) {
@@ -1091,7 +1091,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 if (stateDeriv.dependentScalarVariables
                         .contains(curIpt.scalarVariable)) {
                     final int index = _inputs.indexOf(curIpt);
-                    _fmiModelDescription.continousStateDerivatives.get(i).dependentInputIndexes
+                    _fmiModelDescription.continuousStateDerivatives.get(i).dependentInputIndexes
                             .add(index);
                 }
             }
@@ -1103,7 +1103,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         .contains(curState.scalarVariable)) {
                     final int index = _fmiModelDescription.continuousStates
                             .indexOf(curState);
-                    _fmiModelDescription.continousStateDerivatives.get(i).dependentStateIndexes
+                    _fmiModelDescription.continuousStateDerivatives.get(i).dependentStateIndexes
                             .add(index);
                 }
             }
@@ -1204,7 +1204,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _stateValueReferences[i] = _fmiModelDescription.continuousStates.get(i).scalarVariable.valueReference;
             // Initialize vector of value references of derivatives of state
             // variables.
-            _stateDerivativeValueReferences[i] = _fmiModelDescription.continousStateDerivatives
+            _stateDerivativeValueReferences[i] = _fmiModelDescription.continuousStateDerivatives
                     .get(i).scalarVariable.valueReference;
 
             // Get the output retrieved from the model structure.
