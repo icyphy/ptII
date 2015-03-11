@@ -5923,13 +5923,14 @@ else
 
         if test ! -z "$PTVERTX_DIR"; then
 	    PT_MSG_RESULT([$PTVERTX_JARS])
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
 
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
