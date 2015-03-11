@@ -733,6 +733,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         }
                     }
                     _fmiSetContinuousStates(_newStates);
+                    if (_debugging) {
+                         _debugToStdOut("Step " + _numberOfSteps + " to t=" + currentTimeValue);
+                    }
                 }
 
                 // Check event indicators.
@@ -749,29 +752,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     boolean noSetFMUStatePriorToCurrentPoint = true;
                     boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
                     // "Handle Events"
-                    if (_debugging) {
-                        _debugToStdOut("Handle Events: " + currentTimeValue);
-                    }
+                    //if (_debugging) {
+                    // _debugToStdOut("Step " + _numberOfSteps + " to t=" + currentTimeValue);
+                                // + " timeEventOccurred: " + timeEventOccurred
+                                // + " stateEventOccurred: " + stateEventOccurred 
+                                //+ " stepEvent: " + stepEvent);
+                    //}
                     if (timeEventOccurred || stateEventOccurred || stepEvent) {
                         _enterEventMode();
-                        if (stateEventOccurred) {
-                            if (_debugging) {
-                                for (int i = 0; i < _fmiModelDescription.numberOfEventIndicators; i++) {
-                                    _debugToStdOut("state event "
-                                            + (_eventIndicatorsPrevious[i] > 0
-                                                    && _eventIndicators[i] < 0 ? "-\\-"
-                                                    : "-/-")
-                                            + " eventIndicator[" + i
-                                            + "], time: " + currentTimeValue);
-                                }
-                            }
-                        }
-                        if (timeEventOccurred) {
-                            _numberOfTimeEvents++;
-                            if (_debugging) {
-                                _debugToStdOut("time event at t=" + currentTimeValue);
-                            }
-                        }
                         if (stateEventOccurred) {
                             _numberOfStateEvents++;
                             if (_debugging) {
@@ -791,6 +779,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                 _debugToStdOut("step event at t=" + currentTimeValue);
                             }
                         }
+                        if (timeEventOccurred) {
+                            _numberOfTimeEvents++;
+                            if (_debugging) {
+                                _debugToStdOut("time event at t=" + currentTimeValue);
+                            }
+                        }
+
                         if (_fmi20ModelInstance.eventInfo == null) {
                             _fmi20ModelInstance.eventInfo = new FMI20EventInfo();
                         }
@@ -1022,45 +1017,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         _firstFireInIteration = false;
         _firstFire = false;
-    }
-
-    /** Invoke newDiscreteStatesNeeded() and return true if
-     *  the fmu wants to terminate.
-     *  @param fmi20EventInfo A reference to the FMI-2.0 event information.
-     *  @return true if the fmu wants to terminate.
-     *  @exception IllegalActionException If there was a failure to
-     *  set a new discrete state.
-     */
-    protected boolean _newDiscreteStatesNeeded(FMI20EventInfo.ByReference fmi20EventInfo) 
-            throws IllegalActionException {
-        fmi20EventInfo.newDiscreteStatesNeeded = 1;
-        fmi20EventInfo.terminateSimulation = 0;
-
-        // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
-        while ((fmi20EventInfo.newDiscreteStatesNeeded == 1)
-                && fmi20EventInfo.terminateSimulation == 0) {
-            // FMUSDK: "update discrete states"
-            int fmiFlag = ((Integer)
-                    _fmiNewDiscreteStatesFunction.invoke(Integer.class,
-                            new Object[] {
-                                _fmiComponent, fmi20EventInfo})).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new
-                    IllegalActionException("Failed to set a new discrete state.");
-            }
-        }
-        if (fmi20EventInfo.terminateSimulation == 1) {
-            if (_debugging) {
-                Director director = getDirector();
-                Time currentTime = director.getModelTime();
-                double currentTimeValue = currentTime.getDoubleValue();
-                _debugToStdOut("model requested termination at t="
-                        + currentTimeValue);
-            }
-            getDirector().finish();
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -3142,6 +3098,45 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
                 moml);
         context.requestChange(request);
+    }
+
+    /** Invoke newDiscreteStatesNeeded() and return true if
+     *  the fmu wants to terminate.
+     *  @param fmi20EventInfo A reference to the FMI-2.0 event information.
+     *  @return true if the fmu wants to terminate.
+     *  @exception IllegalActionException If there was a failure to
+     *  set a new discrete state.
+     */
+    protected boolean _newDiscreteStatesNeeded(FMI20EventInfo.ByReference fmi20EventInfo) 
+            throws IllegalActionException {
+        fmi20EventInfo.newDiscreteStatesNeeded = 1;
+        fmi20EventInfo.terminateSimulation = 0;
+
+        // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
+        while ((fmi20EventInfo.newDiscreteStatesNeeded == 1)
+                && fmi20EventInfo.terminateSimulation == 0) {
+            // FMUSDK: "update discrete states"
+            int fmiFlag = ((Integer)
+                    _fmiNewDiscreteStatesFunction.invoke(Integer.class,
+                            new Object[] {
+                                _fmiComponent, fmi20EventInfo})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new
+                    IllegalActionException("Failed to set a new discrete state.");
+            }
+        }
+        if (fmi20EventInfo.terminateSimulation == 1) {
+            if (_debugging) {
+                Director director = getDirector();
+                Time currentTime = director.getModelTime();
+                double currentTimeValue = currentTime.getDoubleValue();
+                _debugToStdOut("model requested termination at t="
+                        + currentTimeValue);
+            }
+            getDirector().finish();
+            return true;
+        }
+        return false;
     }
 
     /**
