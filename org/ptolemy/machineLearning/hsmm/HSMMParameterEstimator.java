@@ -76,7 +76,8 @@ the Hidden Semi-Markov Model family.
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */
-public abstract class HSMMParameterEstimator extends ParameterEstimator {
+public abstract class HSMMParameterEstimator extends ParameterEstimator { 
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -115,15 +116,14 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         modelLikelihood = new TypedIOPort(this, "modelLikelihood", false, true);
         modelLikelihood.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-
-        observationDimension = new Parameter(this,"observationDimension");
-        observationDimension.setExpression("2");
-        observationDimension.setTypeEquals(BaseType.INT);
-        _obsDimension = 2;
+//
+//        observationDimension = new Parameter(this,"observationDimension");
+//        observationDimension.setExpression("2");
+//        observationDimension.setTypeEquals(BaseType.INT);
+//        _obsDimension = 2;
 
         _initializeArrays();
-
-
+ 
     }
 
     @Override
@@ -185,10 +185,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /* Duration Prior estimates
      */
     public TypedIOPort durationPriorEstimates;
-
-
-    public Parameter observationDimension;
-
+ 
     /* Hidden-State Assignments */
     public TypedIOPort clusterAssignments;
 

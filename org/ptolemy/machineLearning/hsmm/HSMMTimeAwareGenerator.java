@@ -21,8 +21,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
 
     public HSMMTimeAwareGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-        timestamp = new TypedIOPort(this, "timestamp", true, false);
+        super(container, name); 
         At = new PortParameter(this,"specArray");
         At.setExpression("{[1.0]}");
         samplingPeriod = new Parameter(this, "samplingPeriod");
@@ -44,8 +43,6 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
             super.attributeChanged(attribute);
         }
     }
-    /** Timestamp at which the first sample should be generated */
-    public TypedIOPort timestamp;
     
     /** An array of transition matrices **/
     public PortParameter At;
@@ -66,9 +63,8 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         At.update();
         _maxDuration = ((DoubleMatrixToken)durationProbabilities.getToken()).getColumnCount();
 
-        if (trigger.hasToken(0) && timestamp.hasToken(0)) {
-            _windowSize = ((IntToken)trigger.get(0)).intValue();
-            long ts0 = ((IntToken) timestamp.get(0)).intValue(); 
+        if (trigger.hasToken(0)) {
+            long ts0 = ((IntToken) trigger.get(0)).intValue(); 
             
             _ta = new TimedAutomaton(new DateToken(ts0,
                     DateToken.PRECISION_SECOND), _Tsampling);

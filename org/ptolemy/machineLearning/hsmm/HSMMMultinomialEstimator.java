@@ -111,6 +111,9 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         _nCategories = new int[1];
         _nCategories[0]= 3;
         _etaDimension = IntStream.of(_nCategories).sum();
+        
+        observationDimension = new Parameter(this, "observationDimension");
+        observationDimension.setExpression("1");
 
         _B = new double[_nStates][_etaDimension];
         _B0 = new double[_nStates][_etaDimension]; 
@@ -121,7 +124,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
             throws IllegalActionException {
         if (attribute == observationDimension) {
             _obsDimension = ((IntToken)observationDimension.getToken()).intValue();
-        } if (attribute == observationProbabilities) {
+        } else if (attribute == observationProbabilities) {
 
             int nCat = ((MatrixToken) observationProbabilities.getToken())
                     .getColumnCount();
@@ -169,6 +172,10 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
      */
     public Parameter observationProbabilities;
 
+    /**
+     * 
+     */
+    public Parameter observationDimension;
     /**
      * Number of categories in the multinomial distribution
      */
@@ -325,7 +332,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     /**
      *  Emission distributions Bij = P(Yt=j | qt = i)
      */
-    private double[][] _B;
+    protected double[][] _B;
     /**
      * Initial guess of Emission distribution matrix
      */
@@ -335,7 +342,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     /**
      * Number of categories
      */
-    private int[] _nCategories;
+    protected int[] _nCategories;
 
     /*
      * Updated transition probability matrix
@@ -350,7 +357,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     /**
      * Updated state prior belief
      */
-    private double[] prior_new;
+    protected double[] prior_new;
 
     @Override
     protected double durationProbability(int y, int hiddenState) {
