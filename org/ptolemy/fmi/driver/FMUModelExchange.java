@@ -449,6 +449,12 @@ public class FMUModelExchange extends FMUDriver {
                             stateEvent = stateEvent
                                     || (preEventIndicators[i]
                                             * eventIndicators[i] < 0);
+                            //System.out.println("stateEvent: " + i + " "
+                            //        + preEventIndicators[i] + " " + eventIndicators[i] 
+                            //        + " " + (preEventIndicators[i] * eventIndicators[i] < 0.0));
+                            if (stateEvent) {
+                                break;
+                            }
                         }
                     }
 

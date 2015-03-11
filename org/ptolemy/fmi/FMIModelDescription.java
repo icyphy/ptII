@@ -170,7 +170,7 @@ public class FMIModelDescription {
     public List<String> continuousStateNames = new LinkedList<String>();
 
     /** The list of state derivatives. */
-    public List<FMI20ContinuousStateDerivative> continousStateDerivatives = new LinkedList<FMI20ContinuousStateDerivative>();
+    public List<FMI20ContinuousStateDerivative> continuousStateDerivatives = new LinkedList<FMI20ContinuousStateDerivative>();
 
     /** The list of output variables. */
     public List<FMI20Output> outputs = new LinkedList<FMI20Output>();
@@ -215,10 +215,10 @@ public class FMIModelDescription {
         int count = 0;
         _continuousStates = new HashMap<Integer, ContinuousState>();
 
-        for (int i = 0; i < continousStateDerivatives.size(); i++) {
+        for (int i = 0; i < continuousStateDerivatives.size(); i++) {
             ContinuousState state = new ContinuousState();
-            int index = continousStateDerivatives.get(i).index;
-            // Substract the index by 1 since the numbering of scalar variables
+            int index = continuousStateDerivatives.get(i).index;
+            // Subtract the index by 1 since the numbering of scalar variables
             // starts with 1 in the FMU model description file whereas the get()
             // starts by 0.
             FMIScalarVariable scalar = modelVariables.get(index - 1);
@@ -233,7 +233,7 @@ public class FMIModelDescription {
                         .get(((FMIRealType) scalar.type).indexState - 1).type).start;
                 state.nominal = ((FMIRealType) modelVariables
                         .get(((FMIRealType) scalar.type).indexState - 1).type).nominal;
-                state.dependentScalarVariables = continousStateDerivatives
+                state.dependentScalarVariables = continuousStateDerivatives
                         .get(i).dependentScalarVariables;
                 state.scalarVariable = modelVariables
                         .get(((FMIRealType) scalar.type).indexState - 1);
@@ -245,9 +245,9 @@ public class FMIModelDescription {
                 count++;
             }
         }
-        if (continousStateDerivatives.size() != count) {
+        if (continuousStateDerivatives.size() != count) {
             throw new IOException("Number of state derivatives "
-                    + continousStateDerivatives.size()
+                    + continuousStateDerivatives.size()
                     + " does not match the number of continuous states "
                     + count);
         }
