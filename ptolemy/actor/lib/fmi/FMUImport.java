@@ -570,6 +570,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // fires
                 // for fmi2SetInteger() to work. See valuesME20.fmu.
                 _enterEventMode();
+                _newDiscreteStatesNeeded(fmi20EventInfo);
             }
             // Initialize the _newStates vector.
             double states[] = _states.array();

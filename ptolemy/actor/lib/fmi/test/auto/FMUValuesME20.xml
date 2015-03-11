@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
     </property>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -29,7 +29,7 @@
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, true, false, false, true, true, false, false, true, true, false}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, true, false, true, false, true, false, true, false, true, false, true, false}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;jan&quot;, &quot;feb&quot;, &quot;feb&quot;, &quot;march&quot;, &quot;march&quot;, &quot;april&quot;, &quot;april&quot;, &quot;may&quot;, &quot;may&quot;, &quot;june&quot;, &quot;june&quot;, &quot;july&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;feb&quot;, &quot;march&quot;, &quot;april&quot;, &quot;may&quot;, &quot;june&quot;, &quot;july&quot;, &quot;august&quot;, &quot;sept&quot;, &quot;october&quot;, &quot;november&quot;, &quot;december&quot;, &quot;december&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

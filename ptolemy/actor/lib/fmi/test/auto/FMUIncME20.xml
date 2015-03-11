@@ -46,7 +46,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 2, 2, 2, 3, 3, 4, 4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 2, 3, 3, 4, 4, 5, 5}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -68,7 +68,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.1" max="4.6000000000000005"/>
-<yRange min="1.0" max="4.0"/>
+<yRange min="1.0" max="5.0"/>
 <default connected="no" stems="yes"/>
 </plot>?>
         </configure>
