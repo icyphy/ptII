@@ -497,22 +497,30 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 derivatives = _fmiGetDerivatives();
             }
 
-            //if (_firstFire) {
-            //    timeEventOccurred = false;
-            //}
-//             if (_fmiVersion < 1.5) {
-//                 timeEvent = eventInfo.upcomingTimeEvent == 1
-//                     && eventInfo.nextEventTime < time;
-//                 if (timeEvent) {
-//                     time = eventInfo.nextEventTime;
-//                 }
-//             } else {
-//                 timeEvent = eventInfo20Reference.nextEventTimeDefined == 1
-//                     && eventInfo20Reference.nextEventTime < time;
-//                 if (timeEvent) {
-//                     time = eventInfo20Reference.nextEventTime;
-//                 }
-//             }
+            if (_fmiVersion < 1.5) {
+                //timeEvent = eventInfo.upcomingTimeEvent == 1
+                //    && eventInfo.nextEventTime < time;
+                //if (timeEvent) {
+                //    time = eventInfo.nextEventTime;
+                //}
+            } else {
+                if (_firstFire) {
+                    _fmi20ModelInstance = new FMI20ModelInstance(
+                            _fmiComponent);
+                    if (_fmi20ModelInstance.eventInfo == null) {
+                        _fmi20ModelInstance.eventInfo = new FMI20EventInfo();
+                    }
+                }
+
+                fmi20EventInfo = new FMI20EventInfo.ByReference(
+                        _fmi20ModelInstance.eventInfo);
+
+                timeEventOccurred = fmi20EventInfo.nextEventTimeDefined == 1
+                    && fmi20EventInfo.nextEventTime < currentTime.getDoubleValue();
+                //if (timeEventOccurred) {
+                //    time = eventInfo20Reference.nextEventTime;
+                //}
+            }
 
             // Set the time.
             // FIXME: Is it OK to do this even if time has not advanced?
@@ -537,42 +545,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiInitialize();
 
                 if (_fmiVersion >= 2.0) {
-                    _fmi20ModelInstance = new FMI20ModelInstance(
-                            _fmiComponent);
-                    if (_fmi20ModelInstance.eventInfo == null) {
-                        _fmi20ModelInstance.eventInfo = new FMI20EventInfo();
-                    }
-                    fmi20EventInfo = new FMI20EventInfo.ByReference(
-                            _fmi20ModelInstance.eventInfo);
-
                     // FMUSDK: "event iteration"
-                    fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
-                    fmi20EventInfo.terminateSimulation = (byte) 0;
-
-                    // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
-                    while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1)
-                            && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
-                        // FMUSDK: "update discrete states"
-                        int fmiFlag = ((Integer)
-                                _fmiNewDiscreteStatesFunction.invoke(Integer.class,
-                                        new Object[] {
-                                            _fmiComponent, fmi20EventInfo})).intValue();
-                        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                            throw new
-                                IllegalActionException("Failed to set a new discrete state.");
-                        }
-                    }
-
-                    if (fmi20EventInfo.terminateSimulation == (byte) 1) {
-                        double currentTimeValue = currentTime.getDoubleValue();
-                        System.out.println("model requested termination at t="
-                                + currentTimeValue);
-                        getDirector().finish();
+                    if (_newDiscreteStatesNeeded(fmi20EventInfo)) {
                         return;
                     }
-                    // Can't enter continuous mode here, calling
-                    // fmi2SetInteger will fail if we are in the
-                    // modelContinuousTimeMode.
                 }
 
                 // Record the state.
@@ -824,27 +800,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         // FMUSDK: "event iteration in one step, ignoring intermediate results"
                         fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
                         fmi20EventInfo.terminateSimulation = (byte) 0;
-
-                        // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
-                        while ((fmi20EventInfo.newDiscreteStatesNeeded == (byte)1)
-                                && !(fmi20EventInfo.terminateSimulation == (byte)0)) {
-                            // FMUSDK: "update discrete states"
-                            int fmiFlag = ((Integer)
-                                    _fmiNewDiscreteStatesFunction.invoke(Integer.class,
-                                            new Object[] {
-                                                _fmiComponent, fmi20EventInfo})).intValue();
-                            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                                throw new
-                                    IllegalActionException("Failed to set a new discrete state.");
-                            }
-                        }
-                    
-                        if (fmi20EventInfo.terminateSimulation == (byte) 1) {
-                            System.out
-                                    .println("model requested termination at t="
-                                            + currentTimeValue);
-                            getDirector().finish();
-                        }
+                        _newDiscreteStatesNeeded(fmi20EventInfo);
 
                         _enterContinuousTimeMode();
 
@@ -1066,6 +1022,45 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         _firstFireInIteration = false;
         _firstFire = false;
+    }
+
+    /** Invoke newDiscreteStatesNeeded() and return true if
+     *  the fmu wants to terminate.
+     *  @param fmi20EventInfo A reference to the FMI-2.0 event information.
+     *  @return true if the fmu wants to terminate.
+     *  @exception IllegalActionException If there was a failure to
+     *  set a new discrete state.
+     */
+    protected boolean _newDiscreteStatesNeeded(FMI20EventInfo.ByReference fmi20EventInfo) 
+            throws IllegalActionException {
+        fmi20EventInfo.newDiscreteStatesNeeded = 1;
+        fmi20EventInfo.terminateSimulation = 0;
+
+        // Dymola FMUs want us to call fmi2NewDiscreteStates() here.
+        while ((fmi20EventInfo.newDiscreteStatesNeeded == 1)
+                && fmi20EventInfo.terminateSimulation == 0) {
+            // FMUSDK: "update discrete states"
+            int fmiFlag = ((Integer)
+                    _fmiNewDiscreteStatesFunction.invoke(Integer.class,
+                            new Object[] {
+                                _fmiComponent, fmi20EventInfo})).intValue();
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                throw new
+                    IllegalActionException("Failed to set a new discrete state.");
+            }
+        }
+        if (fmi20EventInfo.terminateSimulation == 1) {
+            if (_debugging) {
+                Director director = getDirector();
+                Time currentTime = director.getModelTime();
+                double currentTimeValue = currentTime.getDoubleValue();
+                _debugToStdOut("model requested termination at t="
+                        + currentTimeValue);
+            }
+            getDirector().finish();
+            return true;
+        }
+        return false;
     }
 
     /**
