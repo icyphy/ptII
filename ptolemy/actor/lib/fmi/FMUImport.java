@@ -793,19 +793,19 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                 _fmi20ModelInstance.eventInfo);
 
                         // FMUSDK: "event iteration in one step, ignoring intermediate results"
-                        fmi20EventInfo.newDiscreteStatesNeeded = (byte) 1;
-                        fmi20EventInfo.terminateSimulation = (byte) 0;
+                        fmi20EventInfo.newDiscreteStatesNeeded = 1;
+                        fmi20EventInfo.terminateSimulation = 0;
                         _newDiscreteStatesNeeded(fmi20EventInfo);
 
                         _enterContinuousTimeMode();
 
                         // "check for change of value of states"
                         if (_debugging) {
-                            if (fmi20EventInfo.valuesOfContinuousStatesChanged == (byte) 1) {
+                            if (fmi20EventInfo.valuesOfContinuousStatesChanged ==  1) {
                                 _debugToStdOut("continuous state values changed at t="
                                         + currentTimeValue);
                             }
-                            if (fmi20EventInfo.nominalsOfContinuousStatesChanged == (byte) 1) {
+                            if (fmi20EventInfo.nominalsOfContinuousStatesChanged == 1) {
                                 _debugToStdOut("nominals of continuous state changed  at t="
                                         + currentTimeValue);
                             }
@@ -1537,7 +1537,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // FIXME: We should send logging messages to the debug listener.
         // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
         byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-        int loggingOnFMI2 = _debugging ? (byte) 1 : (byte) 0;
+        int loggingOnFMI2 = _debugging ? 1 : 0;
 
         if (_fmiVersion < 1.5) {
             _callbacks = new FMICallbackFunctions.ByValue(
@@ -2430,7 +2430,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
                                 _relativeTolerance, startTime.getDoubleValue(),
-                                (byte) 1, stopTime.getDoubleValue() }))
+                                1, stopTime.getDoubleValue() }))
                         .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
@@ -2505,7 +2505,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         Integer.class,
                         new Object[] { _fmiComponent, _toleranceControlled,
                                 _relativeTolerance, startTime.getDoubleValue(),
-                                (byte) 1, stopTime.getDoubleValue() }))
+                                1, stopTime.getDoubleValue() }))
                         .intValue();
 
                 if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
