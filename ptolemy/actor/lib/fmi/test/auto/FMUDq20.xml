@@ -2,15 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FMUDq20" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
-    </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 55.0}">
-        </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
     </property>
@@ -18,12 +10,42 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
-    <entity name="dq20" class="ptolemy.actor.lib.fmi.FMUImport">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 50.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU is from FMUSDK.&#10;&#10;The stop time (1.0 and step (0.1)&#10;are from fmusdk2.0.3/run_all.bat&#10;&#10;&#10;The fmu sets the initial values:&#10;k=1&#10;x=1&#10;&#10;The fmu sets:&#10;x=x&#10;der(x) = - k * x&#10;k=k&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 75.0]">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9043820750088, 0.8179069375972, 0.7397003733883, 0.6689717585697, 0.6050060671375, 0.5471566423908, 0.4948386596002, 0.4475232137638, 0.4047319726783}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 120.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.9043820750088, -0.8179069375972, -0.7397003733883, -0.6689717585697, -0.6050060671375, -0.5471566423908, -0.4948386596002, -0.4475232137638, -0.4047319726783}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 270.0}">
+        </property>
+    </entity>
+    <entity name="dq2" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/dq20.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 260.0}">
         </property>
         <property name="k" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -56,11 +78,13 @@
         </port>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x,der(x)">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 353, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 190.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -72,40 +96,26 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.9043820750088, 0.8179069375972, 0.7397003733883, 0.6689717585697, 0.6050060671375, 0.5471566423908, 0.4948386596002, 0.4475232137638, 0.4047319726783}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 125.0}">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -0.9043820750088, -0.8179069375972, -0.7397003733883, -0.6689717585697, -0.6050060671375, -0.5471566423908, -0.4948386596002, -0.4475232137638, -0.4047319726783}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 275.0}">
-        </property>
-    </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{225.0, 190.0}">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=225.0,y=190.0}, tail={id=&quot;Test.input&quot;,x=275.0,y=125.0}, points={225.0,125.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=270.0,y=195.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=190.0}, points={} },{ head={id=&quot;dq20.x&quot;,x=135.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=190.0}, points={205.0,255.0,205.0,190.0} } }">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{225.0, 275.0}">
+        <vertex name="vertex1" value="{155.0, 270.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=225.0,y=275.0}, tail={id=&quot;Test2.input&quot;,x=275.0,y=275.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=270.0,y=195.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=225.0,y=275.0}, points={225.0,195.0} },{ head={id=&quot;dq20.der_x_&quot;,x=135.0,y=265.0}, tail={id=&quot;relation.vertex1&quot;,x=225.0,y=275.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test2.input&quot;,x=205.0,y=270.0}, tail={id=&quot;relation.vertex1&quot;,x=155.0,y=270.0}, points={} },{ head={id=&quot;dq2.der_x_&quot;,x=65.0,y=260.0}, tail={id=&quot;relation.vertex1&quot;,x=155.0,y=270.0}, points={} },{ head={id=&quot;relation.vertex1&quot;,x=155.0,y=270.0}, tail={id=&quot;SequencePlotter.input&quot;,x=200.0,y=190.0,index=2}, points={155.0,190.0} } }">
         </property>
     </relation>
-    <link port="dq20.x" relation="relation3"/>
-    <link port="dq20.der_x_" relation="relation"/>
-    <link port="SequencePlotter.input" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{155.0, 185.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;dq2.x&quot;,x=65.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=155.0,y=185.0}, points={135.0,250.0,135.0,185.0} },{ head={id=&quot;Test.input&quot;,x=205.0,y=120.0}, tail={id=&quot;relation3.vertex1&quot;,x=155.0,y=185.0}, points={155.0,120.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=200.0,y=190.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=155.0,y=185.0}, points={} } }">
+        </property>
+    </relation>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation"/>
+    <link port="dq2.x" relation="relation3"/>
+    <link port="dq2.der_x_" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation"/>
 </entity>
