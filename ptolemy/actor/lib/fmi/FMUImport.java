@@ -632,10 +632,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _setFMUScalarVariable(input.scalarVariable, token);
                     // If the input is a continuous state, update the newStates
                     // vector.
-                    if ((_fmiVersion >= 2.0)
-                            && _fmiModelDescription.modelExchange
-                            && _fmiModelDescription.continuousStateNames
-                                    .contains(input.scalarVariable.name)) {
+                     if ((_fmiVersion >= 2.0)
+                             && _fmiModelDescription.modelExchange
+                             && _fmiModelDescription.continuousStateNames
+                                     .contains(input.scalarVariable.name)) {
                         _index = _fmiModelDescription.continuousStateNames
                                 .indexOf(input.scalarVariable.name);
                         _newStates[_index] = ((DoubleToken) token)
@@ -2848,10 +2848,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            if (scalar.variability == FMIScalarVariable.Variability.parameter
+            if (!FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar)
+                    && (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                     || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
-            ) {
+                        )) {
                 // Parameters
                 // Parameter parameter = new Parameter(this, scalar.name);
                 // parameter.setExpression(Double.toString(((FMIRealType)scalar.type).start));
@@ -2933,13 +2934,19 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // // FIXME: set the type
                 // port.setTypeEquals(BaseType.DOUBLE);
 
+
                 // If the fmu is model exchange and the name of the scalar is
                 // in the list of continuousStates, then we *don't* hide the
                 // scalar,
                 // Otherwise, we do hide the scalar.
                 boolean hideLocal = false;
-
                 String causality = "";
+                if (FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar)) {
+                    portCount++;
+                    hideLocal = false;
+                    causality = "input";
+                } else { // The scalarVariable name is not in continuousStateNames.
+
                 switch (scalar.causality) {
                 case local:
                     // If an FMU is imported as model exchange, then
@@ -2998,6 +3005,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     hideLocal = true;
                     causality = "output";
                     break;
+                }
                 }
                 portMoML.append("  <port name=\""
                         + StringUtilities.sanitizeName(scalar.name)
@@ -3099,6 +3107,34 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
                 moml);
         context.requestChange(request);
+    }
+
+    /** Return true if scalar is a Ptolemy input.
+     *  Under FMI-2.0 Model Exchange, a scalar is an input
+     *  if the scalar has a derivative scalar.
+     *  Under FMI-1.0 or 2.0, Model Exchange or Co-Simulation,
+     *  a scalar with causality="input" is also an input
+     *  @param fmiModelDescription The model description.
+     *  @param The name of the port
+     *  @return true if the scalar should be an input.
+     */
+    protected static boolean _isScalarAPtolemyInput(FMIModelDescription fmiModelDescription,
+            FMIScalarVariable scalar) {
+        double fmiVersion = 0.0;
+        try {
+            fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
+        } catch (NumberFormatException ex) {
+            throw new InternalErrorException(null, null, 
+                    "Invalid fmiVersion \"" + fmiModelDescription.fmiVersion
+                    + "\". The version is required to be of the form n.m, where n and m are natural numbers.");
+        }
+        if ((fmiVersion >= 2.0
+                        && fmiModelDescription.modelExchange
+                        && fmiModelDescription.continuousStateNames.contains(scalar.name))
+                || scalar.causality == Causality.input) {
+            return true;
+        }
+        return false;
     }
 
     /** Invoke newDiscreteStatesNeeded() and return true if
@@ -3867,7 +3903,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 continue;
             }
 
-            if (scalarVariable.variability != FMIScalarVariable.Variability.parameter
+            // There are Ptolemy inputs and FMU inputs.  In Ptolemy,
+            // an input port is created for an state variables.  Note
+            // that the state variable might have 'initial="exact"',
+            // which indicates that the scalar is not an input for a
+            // FMU.  Rest assured, it should be a *Ptolemy* input.
+            if (FMUImport._isScalarAPtolemyInput(_fmiModelDescription, scalarVariable)
+                || (scalarVariable.variability != FMIScalarVariable.Variability.parameter
                     && scalarVariable.variability != FMIScalarVariable.Variability.constant
                     && scalarVariable.variability != FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                     && scalarVariable.variability != FMIScalarVariable.Variability.tunable // FMI-2.0rc1
@@ -3877,13 +3919,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     // causality="local" and
                     // variability="continuous", so we should
                     // return it as an input.
-                            || (_fmiModelDescription.modelExchange
-                                    /*((BooleanToken) modelExchange.getToken()).booleanValue()*/
-                                    && scalarVariable.causality == Causality.local
-                                    && scalarVariable.initial != FMIScalarVariable.Initial.calculated
-                                    // If it is a scalar that is marked as a derivative, then it
-                                    // is not an input
-                                    && (((scalarVariable.type instanceof FMIRealType && ((FMIRealType) scalarVariable.type).indexState == -1)) || !(scalarVariable.type instanceof FMIRealType))
+//                             || (_fmiModelDescription.modelExchange
+//                                     /*((BooleanToken) modelExchange.getToken()).booleanValue()*/
+//                                     && scalarVariable.causality == Causality.local
+//                                     && scalarVariable.initial != FMIScalarVariable.Initial.calculated
+//                                     // If it is a scalar that is marked as a derivative, then it
+//                                     // is not an input
+//                                     && (((scalarVariable.type instanceof FMIRealType && ((FMIRealType) scalarVariable.type).indexState == -1)) || !(scalarVariable.type instanceof FMIRealType))
                                 )
                         )
                 ) {
