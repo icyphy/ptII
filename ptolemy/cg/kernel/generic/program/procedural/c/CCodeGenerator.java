@@ -2493,12 +2493,16 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + CodeGeneratorAdapter.generateName(containedActor)
                         + ";" + _eol);
             } else if (containedActor instanceof CompositeActor) {
-                CCode.append("struct CompositeActor* "
-                        + CodeGeneratorAdapter.generateName(containedActor)
-                        + ";" + _eol);
+                //Why is this here?
+                /*if(_isTopLevel()){
+                    CCode.append("struct CompositeActor* "
+                            + CodeGeneratorAdapter.generateName(containedActor)
+                            + ";" + _eol + comment("Struct in CCcodeGenerator Kevin"));
+                
                 HCode.append("extern struct CompositeActor* "
                         + CodeGeneratorAdapter.generateName(containedActor)
                         + ";" + _eol);
+                }*/
             }
         }
 
@@ -3006,8 +3010,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // FIXME: Temporary hack to set up platform dependent -I
             // directive for the mbed, see
             // $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed/makefile.in
-            _substituteMap.put("@MBED_INCLUDES@", _mbedIncludes());
-            _substituteMap.put("@MBED_BASE@", _mbedBase());
+            //_substituteMap.put("@MBED_INCLUDES@", _mbedIncludes());
+            //_substituteMap.put("@MBED_BASE@", _mbedBase());
             // FIXME: We need a way to include target specific functions.
             //_mbedCopy();
         }
