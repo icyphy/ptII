@@ -1,0 +1,253 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CompositeFSM" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 59, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.mbed">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{480, 100}">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 50}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="Sequence3" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{FALSE, TRUE}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 260.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 280, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 260.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 255.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 120.0}">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+                <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 190.0}">
+            </property>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 190.0}">
+            </property>
+        </port>
+        <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+            <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 190.0}">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+            <port name="fromSequence" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="input"/>
+            </port>
+            <port name="toDisplay" class="ptolemy.domains.modal.modal.ModalPort">
+                <property name="output"/>
+            </port>
+            <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+                <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the (Mac: command key, Windows: control key)
+and dragging from one state to another.  
+Right click to configure the properties 
+of this model, including setting the final state(s).
+Then delete this annotation.</text>
+    </svg></configure>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 105.0}">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                    </property>
+                </property>
+                <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                    <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+                </property>
+                <port name="fromSequence" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 295.0]">
+                    </property>
+                    <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                        <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                        </property>
+                    </property>
+                </port>
+                <port name="toDisplay" class="ptolemy.domains.modal.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="output"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 305.0]">
+                    </property>
+                </port>
+                <entity name="state" class="ptolemy.domains.modal.kernel.State">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 315.0]">
+                    </property>
+                </entity>
+                <entity name="state2" class="ptolemy.domains.modal.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 230.0]">
+                    </property>
+                </entity>
+                <entity name="state3" class="ptolemy.domains.modal.kernel.State">
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                    <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 315.0]">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="True">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="toDisplay = TRUE">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.04318458375023497">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7512624728714141">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="TRUE">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="toDisplay = FALSE">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.04920270959971385">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7648872728240617">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="TRUE">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="toDisplay = TRUE">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.9443458434937005">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.08033235103868">
+                    </property>
+                </relation>
+                <link port="state.incomingPort" relation="relation3"/>
+                <link port="state.outgoingPort" relation="relation"/>
+                <link port="state2.incomingPort" relation="relation"/>
+                <link port="state2.outgoingPort" relation="relation2"/>
+                <link port="state3.incomingPort" relation="relation2"/>
+                <link port="state3.outgoingPort" relation="relation3"/>
+            </entity>
+            <relation name="fromSequenceRelation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="toDisplayRelation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="fromSequence" relation="fromSequenceRelation"/>
+            <link port="toDisplay" relation="toDisplayRelation"/>
+            <link port="_Controller.fromSequence" relation="fromSequenceRelation"/>
+            <link port="_Controller.toDisplay" relation="toDisplayRelation"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;in._location&quot;,x=40.0,y=190.0}, tail={id=&quot;ModalModel.fromSequence&quot;,x=105.0,y=190.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=170.0,y=190.0}, tail={id=&quot;ModalModel.toDisplay&quot;,x=105.0,y=190.0}, points={} } }">
+            </property>
+        </relation>
+        <link port="in" relation="relation"/>
+        <link port="out" relation="relation2"/>
+        <link port="ModalModel.fromSequence" relation="relation"/>
+        <link port="ModalModel.toDisplay" relation="relation2"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Sequence3.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="CompositeActor.in" relation="relation"/>
+    <link port="CompositeActor.out" relation="relation2"/>
+</entity>
