@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0155036197150507">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.50999348958354}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.5099934895836}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The key with QSS1 is to quantize the inputs!">
@@ -88,6 +88,8 @@
         </property>
         <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 105.0}">
         </property>
     </entity>
@@ -127,6 +129,19 @@
 </plot>?>
         </configure>
     </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.125, 1.2678571429, 1.4345238096, 1.6345238096, 1.8845238096, 2.217857143, 2.7178571431, 3.7178571435, 10.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -137,6 +152,8 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Expression.output" relation="relation2"/>
     <link port="Expression.q" relation="relation3"/>
     <link port="Expression.u" relation="relation"/>
@@ -145,4 +162,7 @@
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Test.input" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
 </entity>
