@@ -127,7 +127,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 4.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.01, {1.0,0.0}), smoothToken(4.0, {1.0,0.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -147,7 +147,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0099999999631, 0.1628285692229, 0.3356571395184, 0.5284857120721, 0.7413142819125, 0.9741428518838, 1.226971421986, 1.5303730371836, 1.8982968273249, 2.3460343950205, 2.8863722148837, 3.5428515620862, 4.3357431543331, 5.295837960664, 6.4579617379522, 7.8646197722, 9.565560970423, 11.6238430835456, 12.0000035283191}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.0099999999631, {1.0099504938,0.0}), smoothToken(0.1628285692229, {1.1513718505,0.0}), smoothToken(0.3356571395184, {1.2927932079,0.0}), smoothToken(0.5284857120721, {1.4342145668000001,0.0}), smoothToken(0.7413142819125, {1.5756359235000001,0.0}), smoothToken(0.9741428518838, {1.7170572802000001,0.0}), smoothToken(1.226971421986, {1.8584786369000001,0.0}), smoothToken(1.5303730371836, {2.0151292947000004,0.0}), smoothToken(1.8982968273249, {2.1900791759000002,0.0}), smoothToken(2.3460343950205, {2.3857754462000003,0.0}), smoothToken(2.8863722148837, {2.6023944882,0.0}), smoothToken(3.5428515620862, {2.8435018259,0.0}), smoothToken(4.3357431543331, {3.1098907723,0.0}), smoothToken(5.295837960664, {3.404644729,0.0}), smoothToken(6.4579617379522, {3.7304233388,0.0}), smoothToken(7.8646197722, {4.0901582389,0.0}), smoothToken(9.565560970423, {4.486790041000001,0.0}), smoothToken(11.6238430835456, {4.9241926212,0.0}), smoothToken(12.0000035283191, {5.0,0.0})}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
@@ -169,6 +169,46 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 195.0]">
         </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={296, 173, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{570, 330}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="0.0" max="4.0"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={294, 529, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 395.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="0.0" max="12.000003528319127"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -213,4 +253,6 @@
     <link port="CurrentTime2.output" relation="relation7"/>
     <link port="CurrentTime2.trigger" relation="relation6"/>
     <link port="Test4.input" relation="relation7"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="TimedPlotter2.input" relation="relation6"/>
 </entity>

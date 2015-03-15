@@ -52,6 +52,10 @@ import ptolemy.kernel.util.StringAttribute;
  when outputs are sent. That is, if this port is connected, then outputs
  will be produced only when an event is received on some channel of the
  trigger port.
+ <p>
+ This actor is no longer needed, since retrieving a SmoothToken from an input
+ port will automatically be extrapolated to the current time. You can use the
+ ordinary Sampler actor instead.
 
  @author Edward A. Lee
  @version $Id$

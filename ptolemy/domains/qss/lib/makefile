@@ -55,6 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Align.java \
+	SmoothCrossingDetector \
 	SmoothSignal.java
 
 OTHER_FILES_TO_BE_JARED = \
