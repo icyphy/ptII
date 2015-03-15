@@ -30,6 +30,7 @@ package ptolemy.actor.lib.conversions;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -112,14 +113,15 @@ public class PolarToCartesian extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        double magnitudeValue = ((DoubleToken) magnitude.get(0)).doubleValue();
+        DoubleToken magnitudeValue = (DoubleToken) magnitude.get(0);
         double angleValue = ((DoubleToken) angle.get(0)).doubleValue();
 
-        double xValue = magnitudeValue * Math.cos(angleValue);
-        double yValue = magnitudeValue * Math.sin(angleValue);
+        // Perform multiplication using Token methods so as to preserve units of length.
+        Token xValue = magnitudeValue.multiply(new DoubleToken(Math.cos(angleValue)));
+        Token yValue = magnitudeValue.multiply(new DoubleToken(Math.sin(angleValue)));
 
-        x.send(0, new DoubleToken(xValue));
-        y.send(0, new DoubleToken(yValue));
+        x.send(0, xValue);
+        y.send(0, yValue);
     }
 
     /** Return false if either of the input ports has no token, otherwise
