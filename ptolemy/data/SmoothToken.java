@@ -137,9 +137,8 @@ public class SmoothToken extends DoubleToken {
 
     /** Construct a SmoothToken with the specified value at the specified
      *  time, and with the specified derivatives.
-     *  This constructor does not copy the derivatives argument, so it is up
-     *  to the caller to ensure that the array passed in does not later get
-     *  modified (tokens are required to be immutable).
+     *  This constructor copies the derivatives argument, so
+     *  the caller is free to modify it (tokens are required to be immutable).
      *  @param value The specified value.
      *  @param time The specified time.
      *  @param derivatives The specified derivatives.
@@ -150,11 +149,15 @@ public class SmoothToken extends DoubleToken {
     	if (_time == null) {
     	    _time = Time.ZERO;
     	}
-    	if (derivatives != null && derivatives.length > _maxOrder){
-    	    _derivatives = new double[_maxOrder];
-    	    System.arraycopy(derivatives, 0, _derivatives, 0, _maxOrder);
-    	} else{
-    	    _derivatives = derivatives;
+    	if (derivatives != null) {
+    	    int length = derivatives.length;
+    	    if (length > _maxOrder) {
+    		length = _maxOrder;
+    	    }
+    	    _derivatives = new double[length];
+    	    System.arraycopy(derivatives, 0, _derivatives, 0, length);
+    	} else {
+    	    _derivatives = null;
     	}
     }
 
@@ -329,8 +332,8 @@ public class SmoothToken extends DoubleToken {
         	// Derivatives are identical (should be true only if null).
         	return true;
             }
-            if (derivatives == null && _derivatives != null
-        	    || derivatives != null && _derivatives == null) {
+            if ((derivatives == null && _derivatives != null)
+        	    || (derivatives != null && _derivatives == null)) {
         	return false;
             }
             // Both tokens have derivatives.
@@ -408,6 +411,13 @@ public class SmoothToken extends DoubleToken {
      */
     public static int getOrderLimit(){
         return _maxOrder;
+    }
+    
+    /** Return the time for which the values of this smooth token are valid.
+     *  @return The time of this token.
+     */
+    public Time getTime() {
+	return _time;
     }
     
     /** Return the hash code for the SmoothToken object. If two SmoothToken
