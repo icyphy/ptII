@@ -12,6 +12,7 @@
 -->
 <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator"/>
 <entity name="SmoothSignal" class="ptolemy.domains.qss.lib.SmoothSignal"/>
+<entity name="SmoothZeroCrossingDetector" class="ptolemy.domains.qss.lib.SmoothZeroCrossingDetector"/>
 
       </group>
     ?>

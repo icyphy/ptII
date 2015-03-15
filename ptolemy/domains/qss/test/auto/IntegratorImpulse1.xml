@@ -1,0 +1,101 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IntegratorImpulse1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+        </property>
+        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 170.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(0.1, {1.0}), smoothToken(0.2, {1.0}), smoothToken(0.3, {1.0}), smoothToken(0.4, {1.0}), smoothToken(0.5, {1.0}), smoothToken(0.6, {1.0}), smoothToken(0.7, {1.0}), smoothToken(0.8, {1.0}), smoothToken(0.9, {1.0}), smoothToken(-1.110223024625157E-16, {1.0}), smoothToken(0.1, {1.0}), smoothToken(0.2, {1.0}), smoothToken(0.3, {1.0}), smoothToken(0.4, {1.0}), smoothToken(0.5, {1.0}), smoothToken(0.6, {1.0}), smoothToken(0.7, {1.0}), smoothToken(0.8, {1.0}), smoothToken(0.9, {1.0}), smoothToken(1.0, {1.0})}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375, 170}">
+        </property>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 467, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365, 90}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={903, 337, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370, 240}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="2.0"/>
+<yRange min="-1.1102230246251565E-16" max="0.9999999999999998"/>
+<default stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{280.0, 170.0}">
+        </vertex>
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="QSSIntegrator.u" relation="relation"/>
+    <link port="QSSIntegrator.q" relation="relation4"/>
+    <link port="QSSIntegrator.impulse" relation="relation2"/>
+    <link port="SingleEvent2.output" relation="relation2"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="TimedDisplay.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+</entity>

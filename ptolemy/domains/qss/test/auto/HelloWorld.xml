@@ -45,7 +45,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(0.01, {1.0}), smoothToken(0.02, {1.0}), smoothToken(0.03, {1.0}), smoothToken(0.04, {1.0}), smoothToken(0.05, {1.0}), smoothToken(0.06, {1.0}), smoothToken(0.07, {1.0}), smoothToken(0.08, {1.0}), smoothToken(0.09, {1.0}), smoothToken(0.1, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
