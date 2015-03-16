@@ -37,7 +37,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 360.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -83,7 +83,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 235.0]">
         </property>
     </entity>
     <entity name="values2" class="ptolemy.actor.lib.fmi.FMUImport">
@@ -203,6 +203,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 200.0]">
         </property>
     </entity>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 49, 558, 359}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 315]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 305.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="11.0"/>
+<yRange min="-1.0" max="11.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;values2.int_in&quot;,x=240.0,y=330.0}, tail={id=&quot;Ramp.output&quot;,x=95.0,y=320.0}, points={} } }">
         </property>
@@ -215,14 +235,6 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp2.output&quot;,x=95.0,y=470.0}, tail={id=&quot;values2.string_in&quot;,x=240.0,y=330.0}, points={160.0,470.0,160.0,340.0} } }">
         </property>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;values2.der_x_&quot;,x=240.0,y=330.0}, tail={id=&quot;Test4.input&quot;,x=395.0,y=265.0}, points={345.0,320.0,345.0,265.0} } }">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=395.0,y=330.0}, tail={id=&quot;values2.int_out&quot;,x=240.0,y=330.0}, points={} } }">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test2.input&quot;,x=395.0,y=400.0}, tail={id=&quot;values2.bool_out&quot;,x=240.0,y=330.0}, points={345.0,400.0,345.0,340.0} } }">
         </property>
@@ -231,24 +243,41 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test3.input&quot;,x=395.0,y=470.0}, tail={id=&quot;values2.string_out&quot;,x=240.0,y=330.0}, points={330.0,470.0,330.0,350.0} } }">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;values2.x&quot;,x=240.0,y=330.0}, tail={id=&quot;Test5.input&quot;,x=395.0,y=200.0}, points={330.0,310.0,330.0,200.0} } }">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="{320.0, 265.0}">
+        </vertex>
     </relation>
-    <link port="Test.input" relation="relation4"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{320.0, 300.0}">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{320.0, 330.0}">
+        </vertex>
+    </relation>
+    <link port="Test.input" relation="relation6"/>
     <link port="Test2.input" relation="relation"/>
     <link port="Test3.input" relation="relation9"/>
     <link port="Ramp.output" relation="relation5"/>
     <link port="Pulse.output" relation="relation7"/>
     <link port="Ramp2.output" relation="relation3"/>
-    <link port="Test4.input" relation="relation6"/>
-    <link port="values2.x" relation="relation2"/>
-    <link port="values2.der_x_" relation="relation6"/>
+    <link port="Test4.input" relation="relation2"/>
+    <link port="values2.x" relation="relation8"/>
+    <link port="values2.der_x_" relation="relation2"/>
     <link port="values2.int_in" relation="relation5"/>
-    <link port="values2.int_out" relation="relation4"/>
+    <link port="values2.int_out" relation="relation6"/>
     <link port="values2.bool_in" relation="relation7"/>
     <link port="values2.bool_out" relation="relation"/>
     <link port="values2.string_in" relation="relation3"/>
     <link port="values2.string_out" relation="relation9"/>
-    <link port="Test5.input" relation="relation2"/>
+    <link port="Test5.input" relation="relation8"/>
+    <link port="SequencePlotter.input" relation="relation8"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
+    <link port="SequencePlotter.input" relation="relation6"/>
 </entity>
