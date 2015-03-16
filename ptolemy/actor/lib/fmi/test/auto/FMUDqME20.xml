@@ -59,12 +59,14 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Model Exchange FMU is from FMUSDK.&#10;&#10;The stop time (1.0) and step (0.1)&#10;are from fmusdk2.0.3/run_all.bat&#10;&#10;&#10;The fmu sets the initial values:&#10;k=1&#10;x=1&#10;&#10;The fmu sets:&#10;x=x&#10;der(x) = - k * x&#10;k=k&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Model Exchange FMU is from FMUSDK.&#10;&#10;The equation is known as the Dahlquist test equation, see.&#10;http://en.wikipedia.org/wiki/Germund_Dahlquist&#10;&#10;The stop time (1.0) and step (0.1)&#10;are from fmusdk2.0.3/run_all.bat&#10;&#10;The fmu sets the initial values:&#10;k=1&#10;x=1&#10;&#10;The fmu sets:&#10;x=x&#10;der(x) = - k * x&#10;k=k&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 55.0]">
         </property>
     </property>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x, der(x)">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 49, 558, 359}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 315]">
@@ -78,7 +80,7 @@
 <title>SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="9.0"/>
+<xRange min="0.0" max="20.0"/>
 <yRange min="-1.0" max="1.0"/>
 <default marks="dots"/>
 </plot>?>
