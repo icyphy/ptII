@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.5, 314.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.20698991402116, 297.8006572420635}">
     </property>
     <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Model Exchange FMU is from FMUSDK.&#10;&#10;The stop time (12.0) and period (aka step) (0.1)&#10;are from fmusdk2.0.3/run_all.bat&#10;&#10;&#10;The fmu sets the initial values:&#10;    r(x_) = 1;&#10;    i(int_in_) = 2;&#10;    i(int_out_) = 0;&#10;    b(bool_in_) = fmi2True;&#10;    b(bool_out_) = fmi2False;&#10;    copy(string_in_, &quot;QTronic&quot;);&#10;    copy(string_out_, month[0]);&#10;&#10;The fmu sets:&#10;if (isTimeEvent) {&#10;        eventInfo-&gt;nextEventTimeDefined = fmi2True;&#10;        eventInfo-&gt;nextEventTime        = 1 + comp-&gt;time;&#10;        i(int_out_) += 1;&#10;	b(bool_out_) = !b(bool_out_);&#10;        if (i(int_out_) &lt; 12) copy(string_out_, month[i(int_out_)]);&#10;        else eventInfo-&gt;terminateSimulation = fmi2True;&#10;    }&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Model Exchange FMU is from FMUSDK.&#10;&#10;The stop time (12.0) and period (aka step) (0.1)&#10;are from fmusdk2.0.3/run_all.bat&#10;&#10;&#10;The fmu sets the initial values:&#10;    x = 1;&#10;    int_in = 2;&#10;    int_out = 0;&#10;    bool_in= fmi2True;&#10;    bool_out = fmi2False;&#10;    copy(string_in_, &quot;QTronic&quot;);&#10;    copy(string_out_, month[0]);&#10;&#10;The fmu sets:&#10;  if (isTimeEvent) {&#10;        eventInfo-&gt;nextEventTimeDefined = fmi2True;&#10;        eventInfo-&gt;nextEventTime        = 1 + comp-&gt;time;&#10;        int_out_ += 1;&#10;        bool_out = !bool_out_;&#10;        if (int_out &lt; 12) copy(string_out_, month[int_out]);&#10;        else eventInfo-&gt;terminateSimulation = fmi2True;&#10;    }&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 210.0]">
         </property>
@@ -264,7 +264,7 @@
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={749, 434, 558, 359}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 475, 558, 359}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[558, 315]">
         </property>
@@ -283,9 +283,15 @@
 </plot>?>
         </configure>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={922, 22, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{605, 250}">
+        </property>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -313,9 +319,15 @@
         <vertex name="vertex1" value="[395.0, 115.0]">
         </vertex>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{430.0, 175.0}">
+        </vertex>
+    </relation>
     <link port="Test3.input" relation="relation4"/>
     <link port="Test4.input" relation="relation8"/>
-    <link port="Test5.input" relation="relation7"/>
+    <link port="Test5.input" relation="relation6"/>
     <link port="Ramp.output" relation="relation3"/>
     <link port="Pulse.output" relation="relation5"/>
     <link port="Ramp2.output" relation="relation"/>
@@ -327,7 +339,7 @@
     <link port="valuesME.bool_in" relation="relation5"/>
     <link port="valuesME.bool_out" relation="relation8"/>
     <link port="valuesME.string_in" relation="relation"/>
-    <link port="valuesME.string_out" relation="relation7"/>
+    <link port="valuesME.string_out" relation="relation6"/>
     <link port="Scale.input" relation="relation11"/>
     <link port="Scale.output" relation="relation9"/>
     <link port="Accumulator.input" relation="relation9"/>
@@ -336,4 +348,5 @@
     <link port="SampleDelay.output" relation="relation2"/>
     <link port="SequencePlotter.input" relation="relation11"/>
     <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="Display.input" relation="relation6"/>
 </entity>
