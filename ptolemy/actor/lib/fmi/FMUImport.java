@@ -235,6 +235,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         persistentInputs.setTypeEquals(BaseType.BOOLEAN);
         persistentInputs.setExpression("false");
 
+        stateVariablesAsPorts = new Parameter(this, "stateVariablesAsPorts");
+        stateVariablesAsPorts.setTypeEquals(BaseType.BOOLEAN);
+        stateVariablesAsPorts.setExpression("true");
+        stateVariablesAsPorts.setVisibility(Settable.EXPERT);
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"7\" "
@@ -267,6 +272,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * mode because normally a user should not be allowed to change it.
      */
     public Parameter modelExchange;
+
+    /**
+     * If true, then this FMU has state variables that are visible as Ptolemy
+     * ports.
+     * This is a boolean that defaults to true. Importing an FMU for use with
+     * QSS would set this to parameter to false.
+     * This parameter is set to expert
+     * mode because normally a user should not be allowed to change it.
+     */
+    public Parameter stateVariablesAsPorts;
 
     /**
      * If true, then previously received input values will be re-used on
@@ -1055,7 +1070,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         // We use a protected method so that we can change
         // the name of the entity that is instantiated.
         FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
-                modelExchange, true /*addMaximumStepSize*/,
+                modelExchange, true /* addMaximumStepSize */,
+                true /* stateVariablesAsPorts */,
                 "ptolemy.actor.lib.fmi.FMUImport",
                  acceptFMUMethod);
     }
@@ -2742,6 +2758,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * as a model exchange fmu.
      * @param addMaximumStepSizeParameter True if a parameter named
      * "maximumStepSize" should be added.
+     * @param stateVariablesAsPorts True if, under state variables in the FMU
+     * should be represented as ports in the Ptolemy actor.  Typically,
+     * this parameter is true, but for QSS, it would be false.
      * @param actorClassName The class name of the Ptolemy actor
      * to be instantiated, for example "ptolemy.actor.lib.fmi.FMUImport".
      * @param acceptFMUMethod The {@link #_acceptFMU(FMIModelDescription)}
@@ -2755,6 +2774,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             FileParameter fmuFileParameter, NamedObj context, double x,
             double y, boolean modelExchange,
             boolean addMaximumStepSizeParameter,
+            boolean stateVariablesAsPorts,
             String actorClassName,
             Method acceptFMUMethod)
             throws IllegalActionException, IOException {
@@ -2848,7 +2868,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
-            if (!FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar)
+            if (!FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar, stateVariablesAsPorts)
                     && (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                     || scalar.variability == FMIScalarVariable.Variability.tunable// FMI-2.0rc1
@@ -2924,8 +2944,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             } else if (scalar.variability == FMIScalarVariable.Variability.constant) {
                 // Variables with the variability constant will be skipped.
                 continue;
+            } else if (!stateVariablesAsPorts) { 
+                // If state variables should not be ports, then skip.
+                continue;
             } else {
-
+                
                 // Ports
                 // // FIXME: All output ports?
                 // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
@@ -2941,71 +2964,71 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // Otherwise, we do hide the scalar.
                 boolean hideLocal = false;
                 String causality = "";
-                if (FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar)) {
+                if (FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar, stateVariablesAsPorts)) {
                     portCount++;
                     hideLocal = false;
                     causality = "input";
                 } else { // The scalarVariable name is not in continuousStateNames.
 
-                switch (scalar.causality) {
-                case local:
-                    // If an FMU is imported as model exchange, then
-                    // Ptolemy should automatically add an input port
-                    // for all state variables. This will allow users
-                    // to connect them to the output of an integrator
-                    // actor. The missing piece is that in
-                    // modelDescription.xml, whenever the entry " Real
-                    // derivative="index" " appears, then Ptolemy
-                    // should read the "index", go to this variable,
-                    // and add it to the list of input ports,
+                    switch (scalar.causality) {
+                    case local:
+                        // If an FMU is imported as model exchange, then
+                        // Ptolemy should automatically add an input port
+                        // for all state variables. This will allow users
+                        // to connect them to the output of an integrator
+                        // actor. The missing piece is that in
+                        // modelDescription.xml, whenever the entry " Real
+                        // derivative="index" " appears, then Ptolemy
+                        // should read the "index", go to this variable,
+                        // and add it to the list of input ports,
 
-                    // The default is to hide local scalars
-                    hideLocal = true;
-                    if (fmiModelDescription.modelExchange) {
-                        if (scalar.isState) {
-                            // This local scalar is the state variable
-                            // for a scalar that has a "<Real
-                            // derivative=N" element, where N is the
-                            // index (starting with 1) of this scalar.
-                            hideLocal = false;
-                        } else {
-                            if (scalar.type instanceof FMIRealType) {
-                                if (((FMIRealType) scalar.type).indexState != -1) {
-                                    portCount++;
-                                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                        // The default is to hide local scalars
+                        hideLocal = true;
+                        if (fmiModelDescription.modelExchange) {
+                            if (scalar.isState) {
+                                // This local scalar is the state variable
+                                // for a scalar that has a "<Real
+                                // derivative=N" element, where N is the
+                                // index (starting with 1) of this scalar.
+                                hideLocal = false;
+                            } else {
+                                if (scalar.type instanceof FMIRealType) {
+                                    if (((FMIRealType) scalar.type).indexState != -1) {
+                                        portCount++;
+                                        dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                                    }
                                 }
                             }
                         }
+                        // Local variables are outputs do not get hidden.
+                        // portCount is not updated since we want this variable to
+                        // always
+                        // be visible.
+                        causality = "output";
+                        break;
+                    case input:
+                        portCount++;
+                        hideLocal = false;
+                        causality = "input";
+                        break;
+                    case none:
+                        // FIXME: Not sure what to do with causality == none.
+                        hideLocal = true;
+                        causality = "output";
+                        break;
+                    case output:
+                        portCount++;
+                        hideLocal = false;
+                        causality = "output";
+                        // Override the empty string to provide this parameter.
+                        dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
+                        break;
+                    case internal:
+                        // Internal variables are outputs that get hidden.
+                        hideLocal = true;
+                        causality = "output";
+                        break;
                     }
-                    // Local variables are outputs do not get hidden.
-                    // portCount is not updated since we want this variable to
-                    // always
-                    // be visible.
-                    causality = "output";
-                    break;
-                case input:
-                    portCount++;
-                    hideLocal = false;
-                    causality = "input";
-                    break;
-                case none:
-                    // FIXME: Not sure what to do with causality == none.
-                    hideLocal = true;
-                    causality = "output";
-                    break;
-                case output:
-                    portCount++;
-                    hideLocal = false;
-                    causality = "output";
-                    // Override the empty string to provide this parameter.
-                    dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
-                    break;
-                case internal:
-                    // Internal variables are outputs that get hidden.
-                    hideLocal = true;
-                    causality = "output";
-                    break;
-                }
                 }
                 portMoML.append("  <port name=\""
                         + StringUtilities.sanitizeName(scalar.name)
@@ -3050,6 +3073,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // Provide a parameter for a forward Euler maximum step size.
                 parameterMoML
                     .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
+            }
+
+            if (stateVariablesAsPorts) {
+                // FIXME: We need a way to annotate the FMUImport actor that is created that it state variables should
+                // not have Ptolemy actor imports.  So, we set a parameter.
+                // An alternative would be to create a "qss" parameter, but that creates specifies an implementation.
+                // It is better to specify a feature of the implementation.
+                parameterMoML
+                    .append("  <property name=\"stateVariablesAsPorts\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
             }
 
             /*
@@ -3115,11 +3147,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  Under FMI-1.0 or 2.0, Model Exchange or Co-Simulation,
      *  a scalar with causality="input" is also an input
      *  @param fmiModelDescription The model description.
-     *  @param The name of the port
+     *  @param scalar the FMIScalarVariable in question
+     *  @param stateVariablesAsPorts True if, under state variables in the FMU
+     *  should be represented as ports in the Ptolemy actor.  Typically,
+     *  this parameter is true, but for QSS, it would be false.
      *  @return true if the scalar should be an input.
      */
     protected static boolean _isScalarAPtolemyInput(FMIModelDescription fmiModelDescription,
-            FMIScalarVariable scalar) {
+            FMIScalarVariable scalar, boolean stateVariablesAsPorts) {
+
         double fmiVersion = 0.0;
         try {
             fmiVersion = Double.parseDouble(fmiModelDescription.fmiVersion);
@@ -3128,12 +3164,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     "Invalid fmiVersion \"" + fmiModelDescription.fmiVersion
                     + "\". The version is required to be of the form n.m, where n and m are natural numbers.");
         }
+        //System.out.print("FMUImport._isScalarAPtolemyInput(, " + scalar.name + ", " + stateVariablesAsPorts + "): returning ");
         if ((fmiVersion >= 2.0
                         && fmiModelDescription.modelExchange
+                        && stateVariablesAsPorts
                         && fmiModelDescription.continuousStateNames.contains(scalar.name))
                 || scalar.causality == Causality.input) {
+            //System.out.println("true");
             return true;
         }
+        //System.out.println("false");
         return false;
     }
 
@@ -3908,7 +3948,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // that the state variable might have 'initial="exact"',
             // which indicates that the scalar is not an input for a
             // FMU.  Rest assured, it should be a *Ptolemy* input.
-            if (FMUImport._isScalarAPtolemyInput(_fmiModelDescription, scalarVariable)
+            boolean stateVariablesAsPortsValue = ((BooleanToken) stateVariablesAsPorts
+                        .getToken()).booleanValue();
+            if (FMUImport._isScalarAPtolemyInput(_fmiModelDescription, scalarVariable, stateVariablesAsPortsValue)
                 || (scalarVariable.variability != FMIScalarVariable.Variability.parameter
                     && scalarVariable.variability != FMIScalarVariable.Variability.constant
                     && scalarVariable.variability != FMIScalarVariable.Variability.fixed // FMI-2.0rc1

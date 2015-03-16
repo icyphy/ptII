@@ -43,6 +43,27 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
     source [file join $PTII util testsuite models.tcl]
 } {}
 
+# Load a FMU into a sdf model as a model exchange FMU and return the model
+proc importFMU {fmu} {
+    set e1 [sdfModel 5]
+    set fmuFile [java::call ptolemy.util.FileUtilities nameToFile $fmu [java::null]]
+    set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParameter]
+    $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
+    # Last argument is true if we should import as a model exchange FMU
+    java::call ptolemy.actor.lib.fmi.FMUQSS importFMU $e1 $fmuFileParameter $e1 100.0 100.0 true
+    return $e1
+}
+
+# Load a FMU as QSS into a sdf model and return the model
+proc importQSSFMU {fmu} {
+    set e1 [sdfModel 5]
+    set fmuFile [java::call ptolemy.util.FileUtilities nameToFile $fmu [java::null]]
+    set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParameter]
+    $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
+    java::call ptolemy.actor.lib.fmi.FMUQSS importFMU $e1 $fmuFileParameter $e1 100.0 100.0
+    return $e1
+}
+
 # Try to load a non-qss FMU and return the error in a format
 # that will be the same on all platforms
 proc tryToLoadNonQSSFMU {fmu} {
@@ -93,3 +114,30 @@ test FMUQSS-1.3 {Test out importFMU on an Co-Simulation FMU that should be rejec
   in .top
 Because:
 There is no ModelExchange attribute in the model description file of This FMU to indicate whether it is for model exchange or not.  QSS currently only supports FMU for model exchange.}}
+
+
+######################################################################
+####
+#
+
+# Two tests, one that imports as a QSS FMU, one that imports as a regular, non-QSS ME FMU.
+
+test FMUQSS-2.1.1 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a QSS and be sure that the state variables are not ports} {
+    set bouncingBallME20Model [importQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBallME20.fmu}]
+    set bouncingBallME [$bouncingBallME20Model getEntity bouncingBallME]
+    set v [$bouncingBallME getPort {v}]
+    set h [$bouncingBallME getPort {h}]
+    # The state variable v *should not* be included as a port when we import a FMU for QSS.
+    # We could list all the ports and parameters here, but we would get failures as we add functionality
+    list [java::isnull $v] [java::isnull $h]
+} {1 1}
+
+test FMUQSS-2.1.2 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a non-QSS and be sure that the state variables are not ports} {
+    set bouncingBallME20Model2_1_2 [importFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBallME20.fmu}]
+    set bouncingBallME2_1_2 [$bouncingBallME20Model2_1_2 getEntity bouncingBallME]
+    set v [$bouncingBallME2_1_2 getPort {v}]
+    set h [$bouncingBallME2_1_2 getPort {h}]
+    # The state variable v *should* be included as a port when we import a FMU as ME and not for QSS
+    # We could list all the ports and parameters here, but we would get failures as we add functionality
+    list [$v getName] [$h getName]
+} {v h}
