@@ -351,6 +351,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
                 true /* modelExchange */,
                 false /*addMaximumStepSize*/,
+                false /* stateVariablesAsPorts */,
                 "ptolemy.actor.lib.fmi.FMUQSS",
                 acceptFMUMethod);
     }
