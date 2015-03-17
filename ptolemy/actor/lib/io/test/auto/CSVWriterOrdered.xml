@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.186458893068243">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.78125, 318.7359601449275}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -19,24 +19,27 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1E-6">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 80.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Check to make sure that CSVWriter preserves the order in an OrderedRecordToken.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 115.0]">
         </property>
     </property>
     <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 275.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 300.0]">
         </property>
-        <port name="diode" class="ptolemy.actor.TypedIOPort">
+        <port name="capacitor" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <display name="rectifier1.IdealDiode3_off"/>
+            <display name="rectifier1.Capacitor1_v"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+        </port>
+        <port name="t" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -46,26 +49,23 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="[t=double,&quot;rectifier1.Capacitor1_v&quot;=double, &quot;rectifier1.IdealDiode3_off&quot;=int]">
             </property>
         </port>
-        <port name="t" class="ptolemy.actor.TypedIOPort">
+        <port name="diode" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <display name="rectifier1.IdealDiode3_off"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-        </port>
-        <port name="capacitor" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="rectifier1.Capacitor1_v"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 255.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{190, 295}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 190.0]">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
@@ -73,7 +73,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230, 345}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 330.0]">
         </property>
     </entity>
     <entity name="CSVWriter" class="ptolemy.actor.lib.io.CSVWriter">
@@ -83,7 +83,7 @@
         </property>
         <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{530, 405}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 385.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -93,11 +93,11 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[t = 0.0, &quot;rectifier1.Capacitor1_v&quot; = 0.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 1.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 1.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 2.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 2.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 3.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 3.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 4.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 4.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 5.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 5.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 6.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 6.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 7.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 7.0, &quot;rectifier1.IdealDiode3_off&quot; = 0]}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[&quot;rectifier1.Capacitor1_v&quot; = 0.0, t = 0.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 1.0, t = 1.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0], [&quot;rectifier1.Capacitor1_v&quot; = 2.0, t = 2.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 3.0, t = 3.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0], [&quot;rectifier1.Capacitor1_v&quot; = 4.0, t = 4.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 5.0, t = 5.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0], [&quot;rectifier1.Capacitor1_v&quot; = 6.0, t = 6.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 7.0, t = 7.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0]}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 320.0]">
         </property>
     </entity>
     <entity name="TypeTest" class="ptolemy.actor.lib.TypeTest">
@@ -107,27 +107,33 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555, 200}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 255.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=280.0,y=200.0}, tail={id=&quot;OrderedRecordAssembler.t&quot;,x=460.0,y=275.0}, points={355.0,200.0,355.0,285.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OrderedRecordAssembler.t&quot;,x=290.0,y=300.0}, tail={id=&quot;CurrentTime.output&quot;,x=100.0,y=255.0}, points={160.0,320.0,160.0,255.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OrderedRecordAssembler.capacitor&quot;,x=290.0,y=300.0}, tail={id=&quot;Ramp.output&quot;,x=110.0,y=190.0}, points={175.0,310.0,175.0,190.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OrderedRecordAssembler.diode&quot;,x=290.0,y=300.0}, tail={id=&quot;Sequence.output&quot;,x=110.0,y=330.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{495.0, 340.0}">
+        <vertex name="vertex1" value="[465.0, 320.0]">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TypeTest.input&quot;,x=515.0,y=255.0}, tail={id=&quot;relation5.vertex1&quot;,x=465.0,y=320.0}, points={465.0,255.0} },{ head={id=&quot;OrderedRecordAssembler.output&quot;,x=290.0,y=300.0}, tail={id=&quot;relation5.vertex1&quot;,x=465.0,y=320.0}, points={} },{ head={id=&quot;Test.input&quot;,x=515.0,y=320.0}, tail={id=&quot;relation5.vertex1&quot;,x=465.0,y=320.0}, points={} },{ head={id=&quot;CSVWriter.input&quot;,x=540.0,y=385.0}, tail={id=&quot;relation5.vertex1&quot;,x=465.0,y=320.0}, points={465.0,375.0} } }">
+        </property>
     </relation>
-    <link port="OrderedRecordAssembler.diode" relation="relation2"/>
-    <link port="OrderedRecordAssembler.output" relation="relation5"/>
-    <link port="OrderedRecordAssembler.t" relation="relation3"/>
     <link port="OrderedRecordAssembler.capacitor" relation="relation"/>
+    <link port="OrderedRecordAssembler.t" relation="relation3"/>
+    <link port="OrderedRecordAssembler.output" relation="relation5"/>
+    <link port="OrderedRecordAssembler.diode" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Sequence.output" relation="relation2"/>
