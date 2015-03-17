@@ -91,6 +91,35 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	PATH="$(PTII)/ptolemy/actor/lib/fmi/fmus/win32:$(PATH)" $(JTCLSH) alljtests.tcl
 
 
+# Create reference csv files for fmus.
+# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMICertification
+# fmuCheck command line arguments:
+#   -f "Print all variables to the output file. Default is to only print outputs."
+#   -s stopTime
+#   -h stepSize
+# -s and -h values are from FMUSDK-2.0.3/run_all.bat
+FMUCHECK = fmuCheck
+
+REF_CSVS =  auto/bouncingBall20_ref.csv auto/dq20_ref.csv auto/inc20_ref.csv \
+	auto/vanDerPol20_ref.csv
+
+# Build all the *_ref.csv files
+refs: $(REF_CSVS)
+
+clean_refs:
+	rm -rf $(REF_CSVS)
+
+auto/bouncingBall20_ref.csv:
+	$(FMUCHECK) -f -o $@ -s 4.0 -h 0.01 auto/bouncingBall20.fmu
+
+auto/dq20_ref.csv:
+	$(FMUCHECK) -f -o $@ -s 1.0 -h 0.1 auto/dq20.fmu
+
+auto/inc20_ref.csv:
+	$(FMUCHECK) -f -o $@ -s 15.0 -h 0.5 auto/inc20.fmu
+
+auto/vanDerPol20_ref.csv:
+	$(FMUCHECK) -f -o $@ -s 5.0 -h 0.1 auto/vanDerPol20.fmu
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
