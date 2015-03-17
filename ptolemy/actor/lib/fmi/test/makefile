@@ -98,11 +98,13 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 #   -s stopTime
 #   -h stepSize
 # -s and -h values are from FMUSDK-2.0.3/run_all.bat
+# fmuCheck has bugs where it does not produce values for 0.8.  See https://trac.fmi-standard.org/ticket/329
 FMUCHECK = fmuCheck
+
+FMU20SIM_CS = $(HOME)/src/fmi/fmusdk2/fmu20/bin/fmusim_cs
 
 REF_CSVS =  auto/bouncingBall20_ref.csv auto/dq20_ref.csv auto/inc20_ref.csv \
 	auto/vanDerPol20_ref.csv
-
 # Build all the *_ref.csv files
 refs: $(REF_CSVS)
 
@@ -110,16 +112,25 @@ clean_refs:
 	rm -rf $(REF_CSVS)
 
 auto/bouncingBall20_ref.csv:
+	$(FMU20SIM_CS) auto/bouncingBall20.fmu 4.0 0.01
+	mv result.csv $@
 	$(FMUCHECK) -f -o $@ -s 4.0 -h 0.01 auto/bouncingBall20.fmu
 
 auto/dq20_ref.csv:
+	$(FMU20SIM_CS) auto/dq20.fmu 1.0 0.1
+	mv result.csv $@
 	$(FMUCHECK) -f -o $@ -s 1.0 -h 0.1 auto/dq20.fmu
 
 auto/inc20_ref.csv:
 	$(FMUCHECK) -f -o $@ -s 15.0 -h 0.5 auto/inc20.fmu
 
 auto/vanDerPol20_ref.csv:
-	$(FMUCHECK) -f -o $@ -s 5.0 -h 0.1 auto/vanDerPol20.fmu
+	$(FMU20SIM_CS) auto/vanDerPol20.fmu 5.0 0.1
+	mv result.csv $@
+	#$(FMUCHECK) -f -o $@ -s 5.0 -h 0.1 auto/vanDerPol20.fmu
+
+vanDerPol20_compare:
+	java -jar ~/src/CSVCompare/CSVComparator.jar -olderFile=auto/vanDerPol20_ref.csv -youngerFile=auto/FMUVanDerPol20_out.csv -resultFile=/tmp/foo.csv
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
