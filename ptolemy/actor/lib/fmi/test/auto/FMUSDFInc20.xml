@@ -4,18 +4,18 @@
 <entity name="FMUSDFInc20" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 262, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 262, 870, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[636, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 239.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{318.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This FMU comes from the version 2.0 of the FMUSDK&#10;It is a counter that is supposed to increment&#10;its output by one every one time unit.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 320.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -23,7 +23,27 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 15}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.5, 55.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The CSVReader reads a file that&#10;was generated using fmuCheck">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.5, 180.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test3 compares the output &#10;of the FMU in Ptolemy&#10;with the reference output&#10;from FMUCheck.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.5, 180.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SDF is an untimed domain, but we&#10;use the period parameter to simulate&#10;the step size.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 15.0]">
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -31,7 +51,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.5, 205.0]">
         </property>
     </entity>
     <entity name="inc20" class="ptolemy.actor.lib.fmi.FMUImport">
@@ -39,11 +59,13 @@
         </property>
         <property name="suppressWarnings" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 175.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.5, 270.0]">
         </property>
         <port name="counter" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
@@ -52,7 +74,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[551, 626]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.5, 270.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -67,15 +89,62 @@
 </plot>?>
         </configure>
     </entity>
+    <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/inc20_ref.csv">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.5, 135.0]">
+        </property>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.5, 105.0]">
+        </property>
+        <port name="counter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <display name="&quot;counter&quot;"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.5, 135.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.5, 135.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{95.0, 175.0}">
+        <vertex name="vertex1" value="[305.5, 270.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, tail={id=&quot;TimedPlotter.input&quot;,x=240.0,y=180.0,index=2}, points={95.0,220.0,195.0,220.0,195.0,180.0} },{ head={id=&quot;Integrator.derivative&quot;,x=140.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=265.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={95.0,265.0} },{ head={id=&quot;inc20.counter&quot;,x=35.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=345.5,y=270.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.5,y=270.0}, points={} },{ head={id=&quot;Test.input&quot;,x=355.5,y=205.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.5,y=270.0}, points={305.5,205.0} },{ head={id=&quot;inc20.counter&quot;,x=85.5,y=270.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.5,y=270.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=305.5,y=270.0}, tail={id=&quot;AddSubtract.minus&quot;,x=345.5,y=135.0}, points={305.5,145.0} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader.output&quot;,x=85.5,y=135.0}, tail={id=&quot;RecordDisassembler.input&quot;,x=170.5,y=105.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=345.5,y=135.0}, tail={id=&quot;Test3.input&quot;,x=450.5,y=135.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.counter&quot;,x=170.5,y=105.0}, tail={id=&quot;AddSubtract.plus&quot;,x=345.5,y=135.0}, points={} } }">
         </property>
     </relation>
     <link port="Test.input" relation="relation2"/>
     <link port="inc20.counter" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="CSVReader.output" relation="relation"/>
+    <link port="RecordDisassembler.input" relation="relation"/>
+    <link port="RecordDisassembler.counter" relation="relation4"/>
+    <link port="AddSubtract.plus" relation="relation4"/>
+    <link port="AddSubtract.minus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
+    <link port="Test3.input" relation="relation3"/>
 </entity>
