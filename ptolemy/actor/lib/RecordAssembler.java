@@ -27,11 +27,12 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
@@ -131,7 +132,7 @@ public class RecordAssembler extends TypedAtomicActor {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RecordAssembler newObject = (RecordAssembler) super.clone(workspace);
-        newObject._portMap = new HashMap<String, TypedIOPort>();
+        newObject._portMap = _newPortMap();
         return newObject;
     }
 
@@ -256,6 +257,18 @@ public class RecordAssembler extends TypedAtomicActor {
         return null;
     }
 
+    /** Return a new _portMap, which is a map between
+     *  port names and strings.  Derived classes
+     *  like OrderedRecordAssembler would return
+     *  a map with a different ordering.
+     *  @return a Map from port names to TypedIOPorts.
+     */
+    protected Map<String, TypedIOPort> _newPortMap() {
+        // RecordToken._initializeStorage() should probably
+        // use a similar Collection class.
+        return new TreeMap<String, TypedIOPort>();
+    }
+
     /** Map port names or aliases to port objects. If the mapping
      *  has changed, then invalidate the resolved types, which
      *  forces new type constraints with appropriate field names
@@ -267,7 +280,7 @@ public class RecordAssembler extends TypedAtomicActor {
 
         // Generate a new mapping from names/aliases to ports.
         Map<String, TypedIOPort> oldMap = _portMap;
-        _portMap = new HashMap<String, TypedIOPort>();
+        _portMap = _newPortMap();
         for (TypedIOPort p : this.inputPortList()) {
             String name = p.getName();
             String alias = p.getDisplayName();

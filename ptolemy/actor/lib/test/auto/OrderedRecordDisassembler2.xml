@@ -2,85 +2,81 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OrderedRecordDisassembler2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[703, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 34.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 937, 634}, maximized=false}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test OrderedRecordAssembler&#10;&#10;Note that the portsof the OrderedRecordAssembler are &quot;c, a, b&quot;,&#10;which is reflected in the test between the assembler and the disassembler.&#10;&#10;However, the RecordDisassembler takes the disassembles &#10;the record according to a the port name.&#10;&#10;If the OrderedRecordAssembler was a RecordAssembler, &#10;then the values recorded by the test between the assembler and&#10;the disassembler would be different">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 55.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.5, 257.89453125}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;A&quot;">
+        </property>
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 129.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 370.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="&quot;b&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;B&quot;">
+        </property>
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="98.0, 208.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 435.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="252.0, 167.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 280.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
+        <port name="c" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="a" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="b" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
     </entity>
     <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 345.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -91,65 +87,126 @@
             <property name="output"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="b" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="c" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;aA&quot;, &quot;aAA&quot;, &quot;aAAA&quot;, &quot;aAAAA&quot;, &quot;aAAAAA&quot;, &quot;aAAAAAA&quot;, &quot;aAAAAAAA&quot;}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 170.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 300.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;b&quot;, &quot;bB&quot;, &quot;bBB&quot;, &quot;bBBB&quot;, &quot;bBBBB&quot;, &quot;bBBBBB&quot;, &quot;bBBBBBB&quot;, &quot;bBBBBBBB&quot;}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 365.0]">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;c&quot;, &quot;cC&quot;, &quot;cCC&quot;, &quot;cCCC&quot;, &quot;cCCCC&quot;, &quot;cCCCCC&quot;, &quot;cCCCCCC&quot;, &quot;cCCCCCCC&quot;}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 435.0]">
+        </property>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="&quot;c&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;C&quot;">
+        </property>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[c = &quot;c&quot;, a = &quot;a&quot;, b = &quot;b&quot;], [c = &quot;cC&quot;, a = &quot;aA&quot;, b = &quot;bB&quot;], [c = &quot;cCC&quot;, a = &quot;aAA&quot;, b = &quot;bBB&quot;], [c = &quot;cCCC&quot;, a = &quot;aAAA&quot;, b = &quot;bBBB&quot;], [c = &quot;cCCCC&quot;, a = &quot;aAAAA&quot;, b = &quot;bBBBB&quot;], [c = &quot;cCCCCC&quot;, a = &quot;aAAAAA&quot;, b = &quot;bBBBBB&quot;], [c = &quot;cCCCCCC&quot;, a = &quot;aAAAAAA&quot;, b = &quot;bBBBBBB&quot;], [c = &quot;cCCCCCCC&quot;, a = &quot;aAAAAAAA&quot;, b = &quot;bBBBBBBB&quot;]}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 300.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=90.0,y=370.0}, tail={id=&quot;OrderedRecordAssembler.a&quot;,x=175.0,y=280.0}, points={140.0,370.0,140.0,300.0} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.a&quot;,x=370.0,y=345.0}, tail={id=&quot;Test.input&quot;,x=550.0,y=300.0}, points={500.0,355.0,500.0,300.0} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.b&quot;,x=370.0,y=345.0}, tail={id=&quot;Test2.input&quot;,x=550.0,y=365.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler.c&quot;,x=370.0,y=345.0}, tail={id=&quot;Test3.input&quot;,x=550.0,y=435.0}, points={500.0,375.0,500.0,435.0} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp2.output&quot;,x=90.0,y=435.0}, tail={id=&quot;OrderedRecordAssembler.b&quot;,x=175.0,y=280.0}, points={155.0,435.0,155.0,310.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OrderedRecordAssembler.c&quot;,x=175.0,y=280.0}, tail={id=&quot;Ramp3.output&quot;,x=90.0,y=290.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[350.0, 300.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=350.0,y=300.0}, tail={id=&quot;Test4.input&quot;,x=400.0,y=300.0}, points={} },{ head={id=&quot;OrderedRecordAssembler.output&quot;,x=175.0,y=280.0}, tail={id=&quot;relation8.vertex1&quot;,x=350.0,y=300.0}, points={} },{ head={id=&quot;RecordDisassembler.input&quot;,x=370.0,y=345.0}, tail={id=&quot;relation8.vertex1&quot;,x=350.0,y=300.0}, points={350.0,365.0} } }">
+        </property>
     </relation>
     <link port="Ramp.output" relation="relation"/>
-    <link port="Ramp2.output" relation="relation3"/>
-    <link port="OrderedRecordAssembler.output" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation7"/>
+    <link port="OrderedRecordAssembler.c" relation="relation6"/>
+    <link port="OrderedRecordAssembler.output" relation="relation8"/>
     <link port="OrderedRecordAssembler.a" relation="relation"/>
-    <link port="OrderedRecordAssembler.b" relation="relation3"/>
-    <link port="RecordDisassembler.input" relation="relation4"/>
+    <link port="OrderedRecordAssembler.b" relation="relation7"/>
+    <link port="RecordDisassembler.input" relation="relation8"/>
     <link port="RecordDisassembler.a" relation="relation2"/>
     <link port="RecordDisassembler.b" relation="relation5"/>
+    <link port="RecordDisassembler.c" relation="relation3"/>
     <link port="Test.input" relation="relation2"/>
     <link port="Test2.input" relation="relation5"/>
+    <link port="Test3.input" relation="relation3"/>
+    <link port="Ramp3.output" relation="relation6"/>
+    <link port="Test4.input" relation="relation8"/>
 </entity>
