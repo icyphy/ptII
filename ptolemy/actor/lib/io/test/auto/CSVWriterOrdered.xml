@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CSVWriterOrdered" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 88, 934, 634}, maximized=false}">
     </property>
@@ -31,6 +31,14 @@
     <entity name="OrderedRecordAssembler" class="ptolemy.actor.lib.OrderedRecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 275.0}">
         </property>
+        <port name="diode" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <display name="rectifier1.IdealDiode3_off"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -47,14 +55,6 @@
             <property name="input"/>
             <display name="rectifier1.Capacitor1_v"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="diode" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <display name="rectifier1.IdealDiode3_off"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
     </entity>
@@ -124,10 +124,10 @@
         <vertex name="vertex1" value="{495.0, 340.0}">
         </vertex>
     </relation>
+    <link port="OrderedRecordAssembler.diode" relation="relation2"/>
     <link port="OrderedRecordAssembler.output" relation="relation5"/>
     <link port="OrderedRecordAssembler.t" relation="relation3"/>
     <link port="OrderedRecordAssembler.capacitor" relation="relation"/>
-    <link port="OrderedRecordAssembler.diode" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Sequence.output" relation="relation2"/>

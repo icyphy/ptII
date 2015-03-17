@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -106,4 +108,18 @@ public class OrderedRecordAssembler extends RecordAssembler {
         output.send(0, result);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a new _portMap, which is a map between
+     *  port names and strings.  Derived classes
+     *  like OrderedRecordAssembler return
+     *  a map with a different ordering.
+     *  @return a Map from port names to TypedIOPorts.
+     */
+    protected Map<String, TypedIOPort> _newPortMap() {
+        // RecordToken._initializeStorage() should probably
+        // use a similar Collection class.
+        return new LinkedHashMap<String, TypedIOPort>();
+    }
 }
