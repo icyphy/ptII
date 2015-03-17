@@ -224,6 +224,8 @@ public class OrderedRecordToken extends RecordToken {
      */
     @Override
     protected void _initializeStorage() {
+        // The OrderedRecordAssembler._newPortMap() sould probably
+        // probably use a similar Collection class.
         _fields = new LinkedHashMap<String, Token>();
     }
 
@@ -235,6 +237,59 @@ public class OrderedRecordToken extends RecordToken {
     @Override
     protected Set<String> _createSet() {
         return new LinkedHashSet<String>();
+    }
+
+    /** Test whether the value of this token is close to the first
+     *  argument, where "close" means that the distance between them
+     *  is less than or equal to the second argument.  This method
+     *  only makes sense for tokens where the distance between them is
+     *  reasonably represented as a double. It is assumed that the
+     *  argument is an RecordToken, and the isCloseTo() method of the
+     *  fields is used.  If the fields do not match, then the
+     *  return value is false.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @return A token containing true if the value of the first
+     *   argument is close to the value of this token.
+     *  @exception IllegalActionException If throw while checking
+     *  the closeness of an element of the record.
+     */
+    @Override
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+            throws IllegalActionException {
+        OrderedRecordToken recordToken = (OrderedRecordToken) rightArgument;
+
+        Set<String> myLabelSet = _fields.keySet();
+        Set<String> argLabelSet = recordToken._fields.keySet();
+
+        if (!myLabelSet.equals(argLabelSet)) {
+            return BooleanToken.FALSE;
+        }
+
+        // Loop through all of the fields, checking each one for closeness.
+        Iterator<String> iterator = myLabelSet.iterator();
+        Iterator<String> argIterator = argLabelSet.iterator();
+
+        while (iterator.hasNext()) {
+            String label = iterator.next();
+            String argLabel = argIterator.next();
+            // labels match
+            if (!label.equals(argLabel)) {
+                return BooleanToken.FALSE;
+            }
+
+            Token token1 = get(label);
+            Token token2 = recordToken.get(argLabel);
+
+            // tokens are close
+            BooleanToken result = token1.isCloseTo(token2, epsilon);
+            if (result.booleanValue() == false) {
+                return BooleanToken.FALSE;
+            }
+        }
+
+        return BooleanToken.TRUE;
     }
 
     /** Return true if the specified token is equal to this one.
@@ -251,7 +306,7 @@ public class OrderedRecordToken extends RecordToken {
     @Override
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
-        RecordToken recordToken = (RecordToken) rightArgument;
+        OrderedRecordToken recordToken = (OrderedRecordToken) rightArgument;
 
         Set<String> myLabelSet = _fields.keySet();
         Set<String> argLabelSet = recordToken._fields.keySet();
@@ -266,9 +321,10 @@ public class OrderedRecordToken extends RecordToken {
         while (iterator.hasNext()) {
             String label = iterator.next();
             String argLabel = argIterator.next();
-
+            System.out.println("OrderedRecordToken.isEqualTo(): " + label + " " + argLabel);
             // labels match
             if (!label.equals(argLabel)) {
+                System.out.println("OrderedRecordToken.isEqualTo(): " + label + " " + argLabel + " returning false");
                 return BooleanToken.FALSE;
             }
 
