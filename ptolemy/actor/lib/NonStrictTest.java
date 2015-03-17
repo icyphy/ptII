@@ -37,6 +37,7 @@ import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.OrderedRecordToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -607,6 +608,12 @@ public class NonStrictTest extends Sink {
                 || !(token2 instanceof RecordToken)) {
             return false;
         }
+
+        if (token1 instanceof OrderedRecordToken
+                && token2 instanceof OrderedRecordToken) {
+            return false;
+        }
+
         RecordToken record1 = (RecordToken) token1;
         RecordToken record2 = (RecordToken) token2;
 
