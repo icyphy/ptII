@@ -321,10 +321,8 @@ public class OrderedRecordToken extends RecordToken {
         while (iterator.hasNext()) {
             String label = iterator.next();
             String argLabel = argIterator.next();
-            System.out.println("OrderedRecordToken.isEqualTo(): " + label + " " + argLabel);
             // labels match
             if (!label.equals(argLabel)) {
-                System.out.println("OrderedRecordToken.isEqualTo(): " + label + " " + argLabel + " returning false");
                 return BooleanToken.FALSE;
             }
 
