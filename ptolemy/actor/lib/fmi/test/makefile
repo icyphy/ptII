@@ -114,12 +114,12 @@ clean_refs:
 auto/bouncingBall20_ref.csv:
 	$(FMU20SIM_CS) auto/bouncingBall20.fmu 4.0 0.01
 	mv result.csv $@
-	$(FMUCHECK) -f -o $@ -s 4.0 -h 0.01 auto/bouncingBall20.fmu
+	#$(FMUCHECK) -f -o $@ -s 4.0 -h 0.01 auto/bouncingBall20.fmu
 
 auto/dq20_ref.csv:
 	$(FMU20SIM_CS) auto/dq20.fmu 1.0 0.1
 	mv result.csv $@
-	$(FMUCHECK) -f -o $@ -s 1.0 -h 0.1 auto/dq20.fmu
+	#$(FMUCHECK) -f -o $@ -s 1.0 -h 0.1 auto/dq20.fmu
 
 auto/inc20_ref.csv:
 	$(FMUCHECK) -f -o $@ -s 15.0 -h 0.5 auto/inc20.fmu
