@@ -77,6 +77,15 @@ MISC_FILES = test doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = demo doc test \
+	'AbstractParticleFilter$$1.class' \
+	'AbstractParticleFilter$$InputType.class' \
+	'AbstractParticleFilter$$Particle.class' \
+	'AbstractParticleFilter$$VariableScope.class' \
+	'AbstractPredictor$$1.class' \
+	'AbstractPredictor$$Particle.class' \
+	'AbstractPredictor$$VariableScope.class' \
+	'AbstractStateSpaceSimulator$$1.class' \
+	'AbstractStateSpaceSimulator$$VariableScope.class' \
 	'Optimizer$$1.class' \
 	'ParticleFilter$$1.class' \
 	'ParticleFilter$$Particle.class' \
