@@ -141,3 +141,23 @@ test FMUQSS-2.1.2 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a non-Q
     # We could list all the ports and parameters here, but we would get failures as we add functionality
     list [$v getName] [$h getName]
 } {v h}
+
+######################################################################
+####
+#
+test FMUQSS-2.2 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a QSS and be sure that the state variables are not ports but an output is} {
+    # From qss_0first_0order.fmu, but with the binary directory
+    # removed because we are just testing the modelDescription.xml
+    # file.
+    set model [importQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/qss1State1OutputNoBinaries.fmu}]
+    # qss_0first_0order is the ModelExchange modelIdentifier in modelDescription.xml.
+    # However, the name of the actor is taken from the name of the .fmu file.
+    set qss [$model getEntity qss1State1OutputNoBinaries]
+    set x [$qss getPort {x}]
+    set y [$qss getPort {y}]
+
+    set numberOfPorts [[$qss portList] size]
+    # The state variable x *should not* be included as a port when we import a FMU for QSS.
+    # We could list all the ports and parameters here, but we would get failures as we add functionality
+    list [java::isnull $x] [java::isnull $y] $numberOfPorts
+} {1 0 1}

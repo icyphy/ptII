@@ -2779,6 +2779,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             Method acceptFMUMethod)
             throws IllegalActionException, IOException {
 
+        // System.out.println("FMUImport._importFMU(,,, modelExchange: " + modelExchange + ", , stateVariablesAsPorts: " + stateVariablesAsPorts + ")");
         File fmuFile = fmuFileParameter.asFile();
 
         String fmuFileName = fmuFile.getCanonicalPath();
@@ -2868,6 +2869,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         StringBuffer parameterMoML = new StringBuffer();
         StringBuffer portMoML = new StringBuffer();
         for (FMIScalarVariable scalar : fmiModelDescription.modelVariables) {
+
+            // System.out.println("FMUImport._importFMU() " + scalar.name + " causality:" + scalar.causality + " variability: " + scalar.variability + " isScalarAPtolemyInput(): " + FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar, stateVariablesAsPorts));
+
             if (!FMUImport._isScalarAPtolemyInput(fmiModelDescription, scalar, stateVariablesAsPorts)
                     && (scalar.variability == FMIScalarVariable.Variability.parameter
                     || scalar.variability == FMIScalarVariable.Variability.fixed // FMI-2.0rc1
@@ -2879,6 +2883,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 // // Prevent exporting this to MoML unless it has
                 // // been overridden.
                 // parameter.setDerivedLevel(1);
+
+                // System.out.println("FMUImport._importFMU() " + scalar.name + " causality:" + scalar.causality + " variability: " + scalar.variability + " switch(" + scalar.causality + ")");
+
                 switch (scalar.causality) {
                 case output:
                     // "fixed" and "tunable" outputs will be available as ports.
@@ -2927,7 +2934,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 case internal:
                     break;
                 case calculatedParameter:
-                    break;
+                    // jmodelica AMS_AMSSim has P1, which is a calculated parameter.
                 case parameter:
                     // Make "fixed" and "tunable" parameters accessible from
                     // actor.
@@ -2944,11 +2951,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             } else if (scalar.variability == FMIScalarVariable.Variability.constant) {
                 // Variables with the variability constant will be skipped.
                 continue;
-            } else if (!stateVariablesAsPorts) { 
+            } else if (!stateVariablesAsPorts && scalar.causality != FMIScalarVariable.Causality.output) { 
                 // If state variables should not be ports, then skip.
+
+                // FMUQSS-2.2 in FMUQSS.tcl tests for this by
+                // importing as QSS test/auto/qss1State1OutputNoBinaries.fmu
                 continue;
             } else {
-                
                 // Ports
                 // // FIXME: All output ports?
                 // TypedIOPort port = new TypedIOPort(this, scalar.name, false,
@@ -3006,6 +3015,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         // be visible.
                         causality = "output";
                         break;
+                    case independent:
+                        // MapleSoft CoupleClutches has an independent scalar, see 
+                        // https://trac.fmi-standard.org/browser/branches/public/Test_FMUs/FMI_2.0/CoSimulation/darwin64/MapleSim/7.01/CoupledClutches/CoupledClutches.fmu
+                        portCount++;
+                        hideLocal = false;
+                        causality = "input";
+                        break;
                     case input:
                         portCount++;
                         hideLocal = false;
@@ -3023,6 +3039,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         // Override the empty string to provide this parameter.
                         dependency = "       <property name=\"dependencies\" class=\"ptolemy.kernel.util.StringAttribute\"/>\n";
                         break;
+                    case calculatedParameter:
+                        // jmodelica AMS_AMSSim has P1, which is a calculated parameter.
                     case internal:
                         // Internal variables are outputs that get hidden.
                         hideLocal = true;
@@ -3956,6 +3974,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     && scalarVariable.variability != FMIScalarVariable.Variability.fixed // FMI-2.0rc1
                     && scalarVariable.variability != FMIScalarVariable.Variability.tunable // FMI-2.0rc1
                     && (scalarVariable.causality == Causality.input
+                            // MapleSoft CoupledClutches has causality="independent"
+                            || scalarVariable.causality == Causality.independent
                     // FMUTankOpen uses a Model Exchange FMU
                     // that has a ScalarVariable T with
                     // causality="local" and
