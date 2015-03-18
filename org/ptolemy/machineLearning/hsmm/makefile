@@ -52,8 +52,14 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	HSMMGaussianEstimator.java \
-	HSMMGenerator.java \
-	HSMMParameterEstimator.java
+	HSMMGeneratorGaussianEmissions.java \
+	HSMMGeneratorMultinomialEmissions.java \
+	HSMMMultiInputGenerator.java \
+	HSMMMultinomialEstimator.java \
+	HSMMParameterEstimator.java \
+	HSMMTimeAwareGenerator.java \
+	HSMMTimeAwareMultinomialEstimator.java \
+	HSMMTimeAwareMultinomialEstimatorWithCodegen.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -67,6 +73,10 @@ MISC_FILES = #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = demo test \
+	'HSMMTimeAwareGenerator$$1.class' \
+	'HSMMTimeAwareGenerator$$TimedAutomaton.class' \
+	'HSMMTimeAwareMultinomialEstimatorWithCodegen$$1.class' \
+	'HSMMTimeAwareMultinomialEstimatorWithCodegen$$SPEC_TYPE.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
