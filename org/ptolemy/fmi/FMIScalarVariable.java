@@ -126,6 +126,8 @@ public class FMIScalarVariable {
                 causality = Causality.calculatedParameter;
             } else if (attribute.equals("input")) {
                 causality = Causality.input;
+            } else if (attribute.equals("independent")) {
+                causality = Causality.independent;
             } else if (attribute.equals("internal")) {
                 causality = Causality.internal;
             } else if (attribute.equals("local")) {
@@ -451,6 +453,8 @@ public class FMIScalarVariable {
          * initially the value of the start attribute.
          */
         input,
+        /** New in FMI-2.0. */
+        independent,
         /** After initialization, a result may be stored.
          *  However, the value cannot be used in a connection.
          *  The default Causality is "internal".
