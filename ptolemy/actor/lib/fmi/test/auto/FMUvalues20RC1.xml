@@ -160,14 +160,6 @@
             </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 178, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{535.0, 270.0}">
-        </property>
-    </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;jan&quot;, &quot;feb&quot;, &quot;feb&quot;, &quot;feb&quot;, &quot;march&quot;, &quot;march&quot;, &quot;march&quot;, &quot;march&quot;, &quot;april&quot;, &quot;april&quot;, &quot;april&quot;, &quot;may&quot;, &quot;may&quot;, &quot;may&quot;, &quot;june&quot;, &quot;june&quot;, &quot;june&quot;, &quot;june&quot;, &quot;july&quot;, &quot;july&quot;, &quot;july&quot;, &quot;august&quot;, &quot;august&quot;, &quot;august&quot;, &quot;august&quot;, &quot;sept&quot;, &quot;sept&quot;}">
         </property>
@@ -242,8 +234,6 @@
     <link port="values20RC.bool_out" relation="relation"/>
     <link port="values20RC.string_in" relation="relation6"/>
     <link port="values20RC.string_out" relation="relation4"/>
-    <link port="Display.input" relation="relation4"/>
-    <link port="Display.input" relation="relation"/>
     <link port="Test3.input" relation="relation4"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Sequence.output" relation="relation5"/>
