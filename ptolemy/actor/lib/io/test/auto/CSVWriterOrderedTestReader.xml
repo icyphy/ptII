@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CSVWriterOrderedTestReader" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -35,7 +35,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[t = 0.0, &quot;rectifier1.Capacitor1_v&quot; = 0.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 1.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 1.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 2.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 2.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 3.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 3.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 4.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 4.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 5.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 5.0, &quot;rectifier1.IdealDiode3_off&quot; = 0], [t = 6.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 6.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [t = 7.0E-6, &quot;rectifier1.Capacitor1_v&quot; = 7.0, &quot;rectifier1.IdealDiode3_off&quot; = 0]}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{[&quot;rectifier1.Capacitor1_v&quot; = 0.0, t = 0.0, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 1.0, t = 1.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0], [&quot;rectifier1.Capacitor1_v&quot; = 2.0, t = 2.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 3.0, t = 3.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0], [&quot;rectifier1.Capacitor1_v&quot; = 4.0, t = 4.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 5.0, t = 5.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0], [&quot;rectifier1.Capacitor1_v&quot; = 6.0, t = 6.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 1], [&quot;rectifier1.Capacitor1_v&quot; = 7.0, t = 7.0E-6, &quot;rectifier1.IdealDiode3_off&quot; = 0]}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
