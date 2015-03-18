@@ -3093,14 +3093,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     .append("  <property name=\"maximumStepSize\" class=\"ptolemy.data.expr.Parameter\" value =\"0.01\"/>\n");
             }
 
-            if (stateVariablesAsPorts) {
-                // FIXME: We need a way to annotate the FMUImport actor that is created that it state variables should
-                // not have Ptolemy actor imports.  So, we set a parameter.
-                // An alternative would be to create a "qss" parameter, but that creates specifies an implementation.
-                // It is better to specify a feature of the implementation.
-                parameterMoML
-                    .append("  <property name=\"stateVariablesAsPorts\" class=\"ptolemy.data.expr.Parameter\" value =\"true\"/>\n");
-            }
+//             if (!stateVariablesAsPorts) {
+//                 // FIXME: We need a way to annotate the FMUImport actor that is created that it state variables should
+//                 // not have Ptolemy actor imports.  So, we set a parameter.
+//                 // An alternative would be to create a "qss" parameter, but that creates specifies an implementation.
+//                 // It is better to specify a feature of the implementation.
+//                 parameterMoML
+//                     .append("  <property name=\"stateVariablesAsPorts\" class=\"ptolemy.data.expr.Parameter\" value =\"false\"/>\n");
+//             }
 
             /*
              * If we want to use model exchange FMUs with the Continuous
