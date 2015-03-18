@@ -134,24 +134,27 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
 
         // Alphabetical by key class
         // We can convert any graphical classes that have a port named "input" to
-        // a Discard actor.  However, classes like XYPlot have ports named "X" and Y",
+        // a DiscardDoubles actor.  However, classes like XYPlot have ports named "X" and Y",
         // so XYPlot cannot be converted.
+
+        // We use DiscardDoubles here so that the types are preserved
+        // in case enableBackwardTypeInference is set.  
         _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.Display",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.HistogramPlotter",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.RealTimePlotter",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.TimedPlotter",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.SequencePlotter",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.vergil.actor.lib.LEDMatrix",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.actor.lib.DiscardDoubles");
 
         _graphicalClasses.put(
                 "ptolemy.data.properties.gui.PropertyHighlighter", null);
@@ -374,6 +377,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Tank",
                 "ptolemy.domains.wireless.kernel.WirelessComposite");
 
+        // FIXME: If these actors are used when enabledBackwardTypeInference
+        // is set, then the type of Discard is not the same as the type
+        // of ImageDisplay or MatrixViewer.
         _graphicalClasses.put("ptolemy.actor.lib.image.ImageDisplay",
                 "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.actor.lib.gui.MatrixViewer",
