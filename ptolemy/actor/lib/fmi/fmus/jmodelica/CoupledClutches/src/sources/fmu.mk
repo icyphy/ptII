@@ -62,13 +62,13 @@ $(FMU_NAME):
 # called by Ptolemy if a shared library is missing.
 
 darwin64:
-	$(MAKE) ARCH=darwin64 PIC= SHARED_LIBRARY_SUFFIX=dylib $(FMU_NAME).dylib
+	chmod a+x ./userCflags; $(MAKE) ARCH=darwin64 PIC= SHARED_LIBRARY_SUFFIX=dylib USER_CFLAGS="`./userCflags`" $(FMU_NAME).dylib
 
 linux32:
 	$(MAKE) ARCH=linux32 CBITSFLAGS=-m32 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so $(FMU_NAME).so
 
 linux64:
-	$(MAKE) ARCH=linux64 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so $(FMU_NAME).so
+	chmod a+x userCflags; $(MAKE) ARCH=linux64 PIC=-fPIC SHARED_LIBRARY_SUFFIX=so USER_CFLAGS="`./userCflags`" $(FMU_NAME).so
 
 win32:
 	$(MAKE) ARCH=win32 PIC= SHARED_LIBRARY_SUFFIX=dll $(FMU_NAME).dll
