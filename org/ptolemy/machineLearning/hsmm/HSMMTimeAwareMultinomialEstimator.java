@@ -28,7 +28,10 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hsmm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DateToken;
@@ -40,6 +43,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException; 
 
@@ -82,6 +86,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         transitionMatrixEstimationMethod.addChoice(FORCE_SELF); 
         transitionMatrixEstimationMethod.addChoice(FORCE_ZERO);
         transitionMatrixEstimationMethod.addChoice(NO_ACTION);
+        transitionMatrixEstimationMethod.addChoice(SELF_AND_ZERO);
 
     }
 
@@ -98,6 +103,13 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     /** Array of estimated probability transition matrices for each hour. */
     public TypedIOPort empiricalStartTimes;
 
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == transitionMatrixEstimationMethod) {
+            _method = transitionMatrixEstimationMethod.getExpression();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
@@ -109,97 +121,151 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             } 
 
             // generate a start time distribution given the timestamps.
-            int[] hourOfDay = new int[tsTokens.length];
+            _hourOfDay = new int[tsTokens.length];
             for ( int i = 0; i < tsTokens.length ; i++) { 
                 DateToken dt = new DateToken(((IntToken)tsTokens[i]).intValue(),
                         DateToken.PRECISION_SECOND);
-                hourOfDay[i] = dt.getHour();
+                _hourOfDay[i] = dt.getHour();
             }
             // find the transition times in the cluster assignments and build an 
             // empirical distribution for the state transition times.
 
             // hourly empirical distributions
-            At = new double[NUM_CATEGORIES][_nStates][_nStates]; 
-            int prevState = clusters[0];
-            for (int i = 1 ; i < clusters.length; i++) {
-                if (clusters[i] != prevState) {
-                    //transition
-                    At[hourOfDay[i]][prevState][clusters[i]]++; 
-                }
-                prevState = clusters[i];
-            }
-            Token[] Atokens = new Token[NUM_CATEGORIES];
+
+            // learn transitions from data.
+            _learnAt();
             
-            // for each hour, set the learned matrices
-            for (int i = 0 ; i < NUM_CATEGORIES; i++) {
-                for (int j = 0 ; j < _nStates; j++) { 
-                    double sum = 0.0;
-                    for (int k=0; k < _nStates; k ++) { 
-                        sum += At[i][j][k];
+            At = new double[NUM_CATEGORIES][_nStates][_nStates];
+            for (int h = 0; h < NUM_CATEGORIES; h++) {
+                for (int i =0; i < _nStates; i++) {
+                    for(int j=0; j< _nStates; j++) {
+                        At[h][i][j] = Atlearned[h][i][j];
                     }
-                    
-                    if ( sum > 0 ) {
-                        for (int k=0; k < _nStates; k ++) { 
-                            At[i][j][k]/= sum;
-                        }
-                    } else {  
-                        String method = transitionMatrixEstimationMethod.getExpression();
-                        switch (method) {
-                        case INTERPOLATE:
-                            ArrayList<Integer> allowedTransitionIndices = new ArrayList<Integer>();
-                            for (int b = 0; b < _nStates; b ++) {
-                                // bitCount o the xor gives us the hamming distance
-                                // i.e., the number of bits that differ among x and b
-                                if (_bitCount(j ^ b) <=1) {
-                                    allowedTransitionIndices.add(b);
-                                }
-                            }
-                            for (int b : allowedTransitionIndices) { 
-                                At[i][j][b] = 1.0/allowedTransitionIndices.size();
-                            } 
-                            break; 
-                        case FORCE_SELF:
-                            At[i][j][j] = 1.0;
-                            break;
-                        case FORCE_ZERO:
-                            At[i][j][0] = 1.0;
-                            break;
-                        case NO_ACTION:
-                            break;
-                        default:
-                            At[i][j][0] = 1.0;
-                            break;
-                        }  
-                    } 
                 }
-                Atokens[i] = new DoubleMatrixToken(At[i]);
             }
-            empiricalStartTimes.send(0, new ArrayToken(Atokens));
+             
+            for (int i = 0 ; i < NUM_CATEGORIES; i++) {
+                _calculateTransitionScheme(_method,i); 
+            }
+            
+            _sendEmpiricalMatrix();
         }
     }
+    public void _sendEmpiricalMatrix() throws NoRoomException, IllegalActionException {
+
+        Token[] Atokens = new Token[NUM_CATEGORIES];
+        for (int i = 0 ; i < NUM_CATEGORIES; i++) { 
+            Atokens[i] = new DoubleMatrixToken(At[i]);
+        }
+
+        empiricalStartTimes.send(0, new ArrayToken(Atokens));
+    }
     /**
-     * MIT HAKMEM Count algorithm.
-     * @param u
-     * @return
+     * Learn transitions purely from the data
      */
-    private int _bitCount( int xor)
-    {
-        int oneCount = 0; 
-        oneCount = xor - ((xor >> 1) & 033333333333) 
-                - ((xor >> 2) & 011111111111);
-        return ((oneCount + (oneCount >> 3)) & 030707070707) % 63;
+    protected void _learnAt() {
+        incompleteCategories = new HashSet<int[]>();
+        Atlearned = new double[NUM_CATEGORIES][_nStates][_nStates]; 
+        int prevState = clusters[0];
+        for (int i = 1 ; i < clusters.length; i++) {
+            if (clusters[i] != prevState) {
+                //transition
+                Atlearned[_hourOfDay[i]][prevState][clusters[i]]++; 
+            }
+            prevState = clusters[i];
+        }
+
+        // for each hour, set the learned matrices
+        for (int i = 0 ; i < NUM_CATEGORIES; i++) {
+            for (int j = 0 ; j < _nStates; j++) { 
+                double sum = 0.0;
+                for (int k=0; k < _nStates; k ++) { 
+                    sum += Atlearned[i][j][k];
+                } 
+                if ( Math.abs(sum) > 1E-5) {
+                    for (int k=0; k < _nStates; k ++) { 
+                        Atlearned[i][j][k]/= sum;
+                    }
+                } else {
+                    int[] cat = {i,j}; // at category i, from state j, not enough info.
+                    incompleteCategories.add(cat);
+                }
+            }
+        }
     }
 
-    /** Number of partitions in the probability transition matrix. */
-    private final int NUM_CATEGORIES = 24;
+    protected void _calculateTransitionScheme(String method, int category) {
+        double[][] Asub = At[category];
+        for (int[] A : incompleteCategories) {
+            if (A[0] == category) { 
+                int j = A[1];
+                switch (method) {
+                case INTERPOLATE:
+                    ArrayList<Integer> allowedTransitionIndices = new ArrayList<Integer>();
+                    for (int b = 0; b < _nStates; b ++) {
+                        // bitCount o the xor gives us the hamming distance
+                        // i.e., the number of bits that differ among x and b
+                        if (_bitCount(j ^ b) <=1) {
+                            allowedTransitionIndices.add(b);
+                        }
+                    }
+                    for (int b : allowedTransitionIndices) { 
+                        Asub[j][b] = 1.0/allowedTransitionIndices.size();
+                    } 
+                    break; 
+                case FORCE_SELF:
+                    Asub[j][j] = 1.0;
+                    break;
+                case FORCE_ZERO:
+                    Asub[j][0] = 1.0;
+                    break;
+                case NO_ACTION:
+                    break;
+                case SELF_AND_ZERO:
+                    if (j==0) {
+                        Asub[j][j] = 1.0;
+                    } else {
+                        Asub[j][0] = 0.5;
+                        Asub[j][j] = 0.5;
+                    }
+                    break;
+                default:
+                    Asub[j][0] = 1.0;
+                    break;
+                }  
+            }  
+        }
+        At[category] = Asub;
+    }
+        /**
+         * MIT HAKMEM Count algorithm.
+         * @param u
+         * @return
+         */
+        private int _bitCount( int xor)
+        {
+            int oneCount = 0; 
+            oneCount = xor - ((xor >> 1) & 033333333333) 
+                    - ((xor >> 2) & 011111111111);
+            return ((oneCount + (oneCount >> 3)) & 030707070707) % 63;
+        }
 
-    private final String INTERPOLATE = "Interpolate";
-    private final String FORCE_SELF = "Force self-transition";
-    private final String FORCE_ZERO = "Force transition to state 0";
-    private final String NO_ACTION = "No action";
-    
-    /** Time-dependent transition prob .matrix*/
-    protected double[][][] At;
+        /** Number of partitions in the probability transition matrix. */
+        protected final int NUM_CATEGORIES = 24;
 
+        protected final String INTERPOLATE = "Interpolate";
+        protected final String FORCE_SELF = "Force self-transition";
+        protected final String FORCE_ZERO = "Force transition to state 0";
+        protected final String NO_ACTION = "No action";
+        protected final String SELF_AND_ZERO = "Self and Zero";
 
-}
+        /** Time-dependent transition prob .matrix*/
+        protected double[][][] At;
+        protected double[][][] Atlearned;
+        protected Set<int[]> incompleteCategories; /** Hour categories for which At has not enough information */
+        protected int[] _hourOfDay; // hour of day for input observations
+        String _method;
+
+        
+
+    }
