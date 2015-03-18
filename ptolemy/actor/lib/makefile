@@ -169,16 +169,17 @@ JSRCS = \
 	CurrentTime.java \
 	DateConstructor.java \
 	DateElements.java \
+	DB.java \
 	Default.java \
 	DelayStart.java \
 	Differential.java \
-	DoubleReader.java \
-	DB.java \
 	Dictionary.java \
 	Discard.java \
+	DiscardDoubles.java \
 	DiscreteClock.java \
 	DiscreteRandomSource.java \
 	Distributor.java \
+	DoubleReader.java \
 	ElementsToArray.java \
 	ExceptionManager.java \
 	ExceptionManagerModel.java \
