@@ -1,7 +1,8 @@
-# Makefile for PtolemyII QSS Domain
+# Makefile for Ptolemy II QSS SmoothToken demo
 #
-# @Version: $Id: makefile 47480 2007-12-06 18:25:06Z cxh $
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands (makefile only)
+#
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -28,48 +29,55 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/qss/demo
+ME =		ptolemy/domains/qss/demo/SmoothToken
 
-# Keep these alphabetical please.
-DIRS =		FirstOrder HelloWorld Lorenz RLC SmoothToken Thermal
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	SmoothToken
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	FirstOrder/FirstOrder.jar \
-	HelloWorld/HelloWorld.jar \
-	Lorenz/Lorenz.jar \
-	RLC/RLC.jar \
-	SmoothToken/SmoothToken.jar \
-	Thermal/Thermal.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	SmoothToken.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo:  demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" SmoothToken.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" SmoothToken.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
