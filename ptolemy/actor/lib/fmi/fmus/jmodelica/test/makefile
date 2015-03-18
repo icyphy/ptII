@@ -90,6 +90,33 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
 
+# Create reference csv files for fmus.
+# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMICertification
+# fmuCheck command line arguments:
+#   -f "Print all variables to the output file. Default is to only print outputs."
+#   -s stopTime
+#   -h stepSize
+# -s and -h values are from FMUSDK-2.0.3/run_all.bat
+# fmuCheck has bugs where it does not produce values for 0.8.  See https://trac.fmi-standard.org/ticket/329
+FMUCHECK = fmuCheck
+
+FMU20SIM_CS = $(HOME)/src/fmi/fmusdk2/fmu20/bin/fmusim_cs
+
+REF_CSVS =  auto/CoupledClutches_ref.csv
+# Build all the *_ref.csv files
+refs: $(REF_CSVS)
+
+clean_refs:
+	rm -rf $(REF_CSVS)
+
+# https://trac.fmi-standard.org/browser/branches/public/Test_FMUs/FMI_2.0/CoSimulation/darwin64/MapleSim/7.01/CoupledClutches 
+# Stop and step are from https://trac.fmi-standard.org/browser/branches/public/Test_FMUs/FMI_2.0/CoSimulation/darwin64/MapleSim/7.01/CoupledClutches/CoupledClutches_cc.sh
+auto/CoupledClutches_ref.csv:
+	#$(FMU20SIM_CS) auto/CoupledClutches.fmu 1.5 0.01
+	#mv result.csv $@
+	rm -rf tmp
+	mkdir -p tmp/resources
+	$(FMUCHECK) -z tmp -f -k cs -o $@ -s 4.0 -h 0.01 auto/CoupledClutches.fmu
 
 
 # Get the rest of the rules
