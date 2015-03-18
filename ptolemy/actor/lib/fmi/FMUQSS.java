@@ -139,6 +139,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // parameter to true so a user does not need to set this manually.
         persistentInputs.setExpression("true");
 
+        // stateVariablesAsPorts is true in the parent class and
+        // it is used by FMUImport._getInputs().
+        stateVariablesAsPorts.setExpression("false");
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n" + "<text x=\"-25\" y=\"7\" "
