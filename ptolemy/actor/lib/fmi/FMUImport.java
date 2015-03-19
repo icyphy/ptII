@@ -414,20 +414,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
             }
         }
-        // Iterate through the continuous state ports and remove their dependencies 
-        // with respect to inputs. There are no direct dependencies 
-        // between the continuous state ports and the input ports.
-        if (_fmiVersion > 1.5 && _fmiModelDescription.modelExchange) {
-            for (int i = 0; i < _fmiModelDescription.numberOfContinuousStates; i++) {
-                String inputName = _fmiModelDescription.continuousStateNames
-                        .get(i);
-                IOPort port = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
-                for (Input input : _inputs) {
-                    // Remove the dependency of the state output on the actor inputs
-                    _declareDelayDependency(input.port, port, 0.0);
-                }
-            }
-        }
     }
 
     /**
