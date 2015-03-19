@@ -122,25 +122,26 @@ There is no ModelExchange attribute in the model description file of This FMU to
 
 # Two tests, one that imports as a QSS FMU, one that imports as a regular, non-QSS ME FMU.
 
-test FMUQSS-2.1.1 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a QSS and be sure that the state variables are not ports} {
+test FMUQSS-2.1.1 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a QSS and be sure that the state variables are output ports} {
     set bouncingBallME20Model [importQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBallME20.fmu}]
     set bouncingBallME [$bouncingBallME20Model getEntity bouncingBallME]
-    set v [$bouncingBallME getPort {v}]
-    set h [$bouncingBallME getPort {h}]
-    # The state variable v *should not* be included as a port when we import a FMU for QSS.
-    # We could list all the ports and parameters here, but we would get failures as we add functionality
-    list [java::isnull $v] [java::isnull $h]
-} {1 1}
+    set v [java::cast ptolemy.actor.IOPort [$bouncingBallME getPort {v}]]
+    set h [java::cast ptolemy.actor.IOPort [$bouncingBallME getPort {h}]]
 
-test FMUQSS-2.1.2 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a non-QSS and be sure that the state variables are not ports} {
+    list [$v isOutput] [$h isOutput] [enumToNames [$bouncingBallME getPorts]]
+} {1 1 {h v}}
+
+test FMUQSS-2.1.2 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a non-QSS and be sure that the state variables are input ports} {
     set bouncingBallME20Model2_1_2 [importFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBallME20.fmu}]
     set bouncingBallME2_1_2 [$bouncingBallME20Model2_1_2 getEntity bouncingBallME]
-    set v [$bouncingBallME2_1_2 getPort {v}]
-    set h [$bouncingBallME2_1_2 getPort {h}]
-    # The state variable v *should* be included as a port when we import a FMU as ME and not for QSS
-    # We could list all the ports and parameters here, but we would get failures as we add functionality
-    list [$v getName] [$h getName]
-} {v h}
+    set v [java::cast ptolemy.actor.IOPort [$bouncingBallME2_1_2 getPort {v}]]
+    set h [java::cast ptolemy.actor.IOPort [$bouncingBallME2_1_2 getPort {h}]]
+    #set numberOfPorts [[$bouncingBallME2_1_2 portList] size]
+    #puts [$bouncingBallME2_1_2 exportMoML]
+
+    #list [$v getName] [$h getName] $numberOfPorts
+    list [$v isInput] [$h isInput] [enumToNames [$bouncingBallME2_1_2 getPorts]]
+} {1 1 {h der_h_ v der_v_}}
 
 ######################################################################
 ####
@@ -153,11 +154,12 @@ test FMUQSS-2.2 {Test out importFMU on a FMI-2.0 Model Exchange FMU as a QSS and
     # qss_0first_0order is the ModelExchange modelIdentifier in modelDescription.xml.
     # However, the name of the actor is taken from the name of the .fmu file.
     set qss [$model getEntity qss1State1OutputNoBinaries]
-    set x [$qss getPort {x}]
-    set y [$qss getPort {y}]
+    set u [java::cast ptolemy.actor.IOPort [$qss getPort {u}]]
+    set x [java::cast ptolemy.actor.IOPort [$qss getPort {x}]]
+    set y [java::cast ptolemy.actor.IOPort [$qss getPort {y}]]
 
     set numberOfPorts [[$qss portList] size]
     # The state variable x *should not* be included as a port when we import a FMU for QSS.
     # We could list all the ports and parameters here, but we would get failures as we add functionality
-    list [java::isnull $x] [java::isnull $y] $numberOfPorts
-} {1 0 1}
+    list [$u isInput] [$x isOutput] [$y isOutput] $numberOfPorts
+} {1 1 1 3}
