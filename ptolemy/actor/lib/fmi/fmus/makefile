@@ -97,7 +97,8 @@ FMUS_2_0 = $(FMUS_2_0_CS) $(FMUS_2_0_ME)
 
 
 # PTJMODELICA_DIR is set to jmodelica if $PTII/configure find jmi.h
-DIRS =		fmusim2 template win32 $(FMUS) $(PTJMODELICA_DIR)
+# PTOMC_DIR is set by configureu to omc if the omc binary can be found.
+DIRS =		fmusim2 template win32 $(FMUS) $(PTJMODELICA_DIR) $(PTOMC_DIR)
 
 
 # Root of the Ptolemy II directory

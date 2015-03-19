@@ -345,6 +345,17 @@ KIELER_JAR =	@KIELER_JAR@
 # Jar files for Open Computer Vision (OpenCV), used in ptolemy.actor.lib.opencv/makefile
 OPENCV_JAR =	@OPENCV_JAR@
 
+# PTOMC_DIR is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
+PTOMC_DIR=	@PTOMC_DIR@
+
+# PTOPENMOELICA_DIRS is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
+PTOPENMODELICA_DIR=	@PTOPENMODELICA_DIR@
+
+#There are no OMC FMU .java files, so there is no PTOMC_PACKAGES.
+
+# PTOPENMODELICA_PACKAGES is used in doc/makefile.  
+PTOPENMODELICA_PACKAGES=	@PTOPENMODELICA_PACKAGES@
+
 # Open Sound Control/Processing.org jar file used by org.ptolemy.js
 PTOSCP5_JAR =	@PTOSCP5_JAR@
 
