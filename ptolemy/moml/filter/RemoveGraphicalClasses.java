@@ -143,8 +143,11 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
                 "ptolemy.actor.lib.DiscardDoubles");
+
+        // Display's input port is of type General.
         _graphicalClasses.put("ptolemy.actor.lib.gui.Display",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.actor.lib.Discard");
+
         _graphicalClasses.put("ptolemy.actor.lib.gui.HistogramPlotter",
                 "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.RealTimePlotter",
