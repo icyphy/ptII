@@ -423,7 +423,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         .get(i);
                 IOPort port = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
                 for (Input input : _inputs) {
-                    // Remove the dependence of the state output on the actor inputs
+                    // Remove the dependency of the state output on the actor inputs
                     _declareDelayDependency(input.port, port, 0.0);
                 }
             }

@@ -589,7 +589,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Rdeclare input/output dependencies.
+     * Initialize the continuous states.
      * 
      * @exception IllegalActionException if an exception occurs.
      */
