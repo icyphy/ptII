@@ -1101,7 +1101,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Initialize the values of the continuous state ports with their
-     * dependencies.
+     * dependencies and remove the direct dependency of states on inputs.
      * 
      * @exception IllegalActionException If no port matching the name of 
      * a variable declared as an input is found.
