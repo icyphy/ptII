@@ -90,7 +90,45 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
 
+# Create reference csv files for fmus.
+# See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMICertification
+# fmuCheck command line arguments:
+#   -f "Print all variables to the output file. Default is to only print outputs."
+#   -s stopTime
+#   -h stepSize
+# -s and -h values are from FMUSDK-2.0.3/run_all.bat
 
+# fmuCheck has bugs where it does not produce values for 0.8.  See
+# https://trac.fmi-standard.org/ticket/329
+FMUCHECK = fmuCheck
+
+# FMUSDK has driver binaries.  The original Windows distribution may
+# be found at http://www.qtronic.de/doc/fmusdk.zip.
+# A darwin64, linux64 port of FMUSDK may be found at
+# https://github.com/cxbrooks/fmusdk2
+FMU20SIM_CS = $(HOME)/src/fmi/fmusdk2/fmu20/bin/fmusim_cs
+FMU20SIM_ME = $(HOME)/src/fmi/fmusdk2/fmu20/bin/fmusim_me
+
+REF_CSVS =  auto/HeatConductor_ref.csv auto/VanDerPol_ref.csv
+
+# Build all the *_ref.csv files
+refs: $(REF_CSVS)
+
+clean_refs:
+	rm -rf $(REF_CSVS)
+
+auto/HeatConductor_ref.csv:
+	# fmusim_me segfaults under darwin64
+	$(FMU20SIM_ME) auto/HeatConductor.fmu 1.5 0.01
+	-mv result.csv $@
+	#rm -rf tmp
+	#mkdir -p tmp/resources
+	#$(FMUCHECK) -z tmp -f -k me -o $@ -s 4.0 -h 0.01 auto/HeatConductor.fmu
+
+auto/VanDerPol_ref.csv:
+	# fmusim_me segfaults under darwin64
+	-$(FMU20SIM_ME)VanDerPol.fmu 5.0 0.1
+	mv result.csv $@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

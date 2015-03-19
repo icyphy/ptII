@@ -55,8 +55,4 @@ CFILES = \
 	VanDerPol_functions.c \
 	VanDerPol_records.c
 
-VanDerPol_ref.csv: VanDerPol.fmu
-	$(HOME)/src/fmi/fmusdk2/fmu20/bin/fmusim_me VanDerPol.fmu 5.0 0.1
-	mv result.csv $@
-
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuCS.mk
