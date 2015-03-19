@@ -4873,6 +4873,34 @@ if test -d "$MESCAL_USER_DIR"; then
    updateExcludes "mescal/xml2hmdes/"
 fi
 
+#--------------------------------------------------------------------
+#       OpenModelica is an implementation of Modelica.
+#       At compile time, it is used in $PTII/ptolemy/actor/lib/fmi/fmus/omc
+#       At runtime, it is used in $PTII/ptolemy/domains/openmodelica        
+#	See https://openmodelica.org
+#--------------------------------------------------------------------
+
+# We only enable OpenModelical if either of these two directories are present
+PTOMC_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/omc"
+PTOPENMODELICA_USER_DIR="$PTII/ptolemy/domains/openmodelica"
+
+
+if test ! -d "$PTOMC_USER_DIR" -a ! -d "$PTOPENMODELICA_USER_DIR"; then
+    PT_MSG_STATUS([$PTOMC_USER_DIR and $PTOPENMODELICA_USER_DIR are not present])
+else
+    AC_PATH_PROG(PTOMC, omc)
+    if test "${PTOMC:-none}" = "none"; then
+        AC_MSG_WARN([Failed to find omc, the OpenModelicaCompiler.
+    Rebuilding the OpenModelica fmus will not be possible.
+    Running the OpenModelica models will not be possible.
+    This is only a concern if you are interested in OpenModelica])
+        updateExcludes "ptolemy/domains/openmodelica"
+    else
+        PTOMC_DIR=omc
+        PTOPENMODELICA_DIR=openmodelica
+        PTOPENMODELICA_PACKAGES="ptolemy.domains.openmodelica.kernel ptolemy.domains.openmodelica.lib ptolemy.domains.openmodelica.lib.omc ptolemy.domains.openmodelica.lib.omc.corba"
+    fi
+fi
 
 
 #--------------------------------------------------------------------
@@ -6864,6 +6892,17 @@ AC_SUBST(PTOPENCV_INCLUDE_DIR)
 # Ptolemy II packages that use OpenCV
 # PTOPENCV_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTOPENCV_PACKAGES)
+
+# PTOMC_DIR is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
+AC_SUBST(PTOMC_DIR)
+
+# PTOPENMOELICA_DIRS is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
+AC_SUBST(PTOPENMODELICA_DIR)
+
+#There are no OMC FMU .java files, so there is no PTOMC_PACKAGES.
+
+# PTOPENMODELICA_PACKAGES is used in doc/makefile.  
+AC_SUBST(PTOPENMODELICA_PACKAGES)
 
 # Open Sound Control/Processing.org jar file used by org.ptolemy.js
 AC_SUBST(PTOSCP5_JAR)

@@ -567,6 +567,7 @@ ALLPACKAGES = \
 	$(PTJUNITTESTS) \
 	$(PTMACHINE_LEARNING_PACKAGES) \
 	$(PTMETROII_PACKAGES) \
+	$(PTOPENMODELICA_PACKAGES) \
 	$(PTOPENCV_PACKAGES) \
 	$(PTOSCP5_PACKAGES) \
 	$(PTPAHO_MQTT_PACKAGES) \
@@ -616,10 +617,6 @@ ALLPACKAGES = \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.hdf.kernel \
 	ptolemy.domains.modal.kernel.fmv \
-	ptolemy.domains.openmodelica.kernel \
-	ptolemy.domains.openmodelica.lib \
-	ptolemy.domains.openmodelica.lib.omc \
-	ptolemy.domains.openmodelica.lib.omc.corba \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.petrinet.lib \
 	ptolemy.domains.petrinet.lib.gui \
