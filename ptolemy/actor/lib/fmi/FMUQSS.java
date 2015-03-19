@@ -139,9 +139,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // parameter to true so a user does not need to set this manually.
         persistentInputs.setExpression("true");
 
-        // stateVariablesAsPorts is true in the parent class and
+        // stateVariablesAsInputPorts is true in the parent class and
         // it is used by FMUImport._getInputs().
-        stateVariablesAsPorts.setExpression("false");
+        stateVariablesAsInputPorts.setExpression("false");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
@@ -355,7 +355,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
                 true /* modelExchange */,
                 false /*addMaximumStepSize*/,
-                false /* stateVariablesAsPorts */,
+                false /* stateVariablesAsInputPorts */,
                 "ptolemy.actor.lib.fmi.FMUQSS",
                 acceptFMUMethod);
     }
