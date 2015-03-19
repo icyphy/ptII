@@ -54,12 +54,14 @@ import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.actor.lib.fmi.FMUImport;
+import ptolemy.actor.lib.fmi.FMUImport.Input;
 //import ptolemy.actor.lib.fmi.FMUImport.Output;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
@@ -594,8 +596,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @exception IllegalActionException if an exception occurs.
      */
     public void preinitialize() throws IllegalActionException {
-        // Initialize the continuous states.
-        _initializeContinuousStates();
 
         // Initialize the input list.
         _inputs = new LinkedList<Input>();
@@ -608,6 +608,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         
         // Get the outputs from super class
         _outputs = _getOutputs();
+        
+        // Initialize the continuous states.
+        _initializeContinuousStates();
         
         // Get the indexes of dependent variables
         _getStateDerivativesDependenciesIndexes();
@@ -1134,6 +1137,18 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 dependencies.add(inputPort);
             }
         }
+
+		// Iterate through the continuous state ports and remove their
+		// dependencies with respect to inputs. There are no direct dependencies
+		// between the continuous state ports and the input ports.
+		for (int i = 0; i < _fmiModelDescription.numberOfContinuousStates; i++) {
+			String inputName = _fmiModelDescription.continuousStateNames.get(i);
+			IOPort port = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
+			for (Input input : _getInputs()) {
+				// Remove the dependency of the state output on the actor inputs
+				_declareDelayDependency(input.port, port, 0.0);
+			}
+		}
     }
 
     /**
