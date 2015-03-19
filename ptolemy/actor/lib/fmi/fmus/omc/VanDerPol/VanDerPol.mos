@@ -1,0 +1,7 @@
+loadModel(Modelica, {"3.2.1"});
+getErrorString();
+loadFile("VanDerPol.mo"); getErrorString();
+OpenModelica.Scripting.translateModelFMU(
+	className=VanDerPol,
+	version="2.0");
+getErrorString();
