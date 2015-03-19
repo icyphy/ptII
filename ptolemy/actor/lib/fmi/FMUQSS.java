@@ -61,8 +61,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.actor.lib.fmi.FMUImport;
-import ptolemy.actor.lib.fmi.FMUImport.Input;
-//import ptolemy.actor.lib.fmi.FMUImport.Output;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;
@@ -1142,8 +1140,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 		// dependencies with respect to inputs. There are no direct dependencies
 		// between the continuous state ports and the input ports.
 		for (int i = 0; i < _fmiModelDescription.numberOfContinuousStates; i++) {
-			String inputName = _fmiModelDescription.continuousStateNames.get(i);
-			IOPort port = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
+			IOPort port = _fmiModelDescription.continuousStates.get(i).port;
 			for (Input input : _getInputs()) {
 				// Remove the dependency of the state output on the actor inputs
 				_declareDelayDependency(input.port, port, 0.0);
