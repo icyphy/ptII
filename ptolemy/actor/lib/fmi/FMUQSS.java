@@ -881,15 +881,23 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final Input input = _inputs.get(curIdx);
             final IntBuffer valueReferenceInput = IntBuffer.allocate(1).put(0,
                     (int) input.scalarVariable.valueReference);
+            // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+            // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
+            // order. Dassault Systems was informed and will fix this in Dymola 2016.
+            // The current calling order is:  
+            //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
+            // The correct calling order should be:
+            //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
             int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
                         valueReferenceInput, new NativeSizeT(1), valueReferenceStateDerivative,
                             new NativeSizeT(1), valueInput, valueStateDerivative }))
                     .intValue();
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
                 throw new IllegalActionException(this,
-                        "Failed to get directional derivatives. fmiFlag = "
-                                + _fmiStatusDescription(fmiFlag));
+                        "Failed to get directional derivatives in "
+                        + "_evaluateInputDirectionalDerivatives. fmiFlag = "
+                        + _fmiStatusDescription(fmiFlag));
             }
             jacobianInputs = jacobianInputs + valueStateDerivative.get(0) * inputDerivatives[curIdx];
         }
@@ -923,15 +931,23 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     .get(curIdx);
             final IntBuffer valueReferenceState = IntBuffer.allocate(1).put(0,
                     (int) state.scalarVariable.valueReference);
-            int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
+            // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+            // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
+            // order. Dassault Systems was informed and will fix this in Dymola 2016.
+            // The current calling order is:  
+            //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
+            // The correct calling order should be:
+            //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
+           int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
                             valueReferenceState, new NativeSizeT(1),
                             valueReferenceStateDerivative, new NativeSizeT(1),
                             valueState, valueStateDerivative })).intValue();
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
                 throw new IllegalActionException(this,
-                        "Failed to get directional derivatives. fmiFlag = "
-                                + _fmiStatusDescription(fmiFlag));
+                        "Failed to get directional derivatives in "
+                        + "_evaluateStateDirectionalDerivatives. fmiFlag = "
+                        + _fmiStatusDescription(fmiFlag));
             }
             jacobianStates = jacobianStates + valueStateDerivative.get(0)
                     * stateDerivatives[curIdx];
@@ -1534,7 +1550,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 					_setModelFromToken(ivMdl, token);
 					// Update time.
 					ivMdl.tMdl = currentTime;
-					updatedInputVarMdl = true;
 					// Save the last token seen at this port
 					_inputs.get(curIdx).lastInput = token;
 					// Set the hasChanged flag to true.
@@ -1546,6 +1561,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 								ivMdl.toString()));
 					}
 				}
+                updatedInputVarMdl = true;
 			}
 			curIdx++;
 		}
