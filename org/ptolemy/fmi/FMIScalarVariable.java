@@ -478,7 +478,7 @@ public class FMIScalarVariable {
      */
     public enum Initial {
         /** "The variable is an iteration variable of an algebraic
-         *   loop and the iteration at initialization starts with the start value"
+         *   loop and the iteration at initialization starts with the start value."
          */
         approx,
         /** The variable is calculated from other variables during initialization.
