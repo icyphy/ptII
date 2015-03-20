@@ -61,7 +61,7 @@ public class RestrictedJavaScriptInterface {
 
     /** Clear the timeout with the specified handle, if it has not already executed.
      *  @param handle The timeout handle.
-     *  @see #setTimeout(Function, Integer)
+     *  @see #setTimeout(Runnable, int)
      */
     public void clearTimeout(Integer handle) {
         _actor.clearTimeout(handle);

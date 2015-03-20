@@ -1398,7 +1398,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     /** Set a value listener as a weak dependency. When this Variable changes
      *  containers, the value listener is not considered a dependency.
-     *  @see #setContainer()
+     *  @see #setContainer(NamedObj)
      */
     public void setValueListenerAsWeakDependency(ValueListener listener) {
         // See https://projects.ecoinformatics.org/ecoinfo/issues/6681
