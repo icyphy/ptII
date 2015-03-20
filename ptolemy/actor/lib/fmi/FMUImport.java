@@ -1407,7 +1407,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _fmiInstantiateFunction = _fmiModelDescription
                             .getFmiFunction("fmiInstantiate");
                     _fmiNewDiscreteStatesFunction = _fmiModelDescription
-                            .getFmiFunction("fmiNewDiscreteStates");
+                            .getFmiFunction("fmiNewDiscreteStates");             
                 }
                 _fmiSetTimeFunction = _fmiModelDescription
                         .getFmiFunction("fmiSetTime");
@@ -1424,6 +1424,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                         + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
                                         + "Try reimporting it and selecting the Model Exchange checkbox.");
                     }
+                }
+                // Common with Co Simulation and Model Exchange;
+                if (_fmiModelDescription.providesDirectionalDerivative){
+                    _fmiGetDirectionalDerivativeFunction =  _fmiModelDescription
+                            .getFmiFunction("fmiGetDirectionalDerivative");
                 }
                 _checkFmiModelExchange();
             } else {
@@ -1523,7 +1528,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                 "Could not find the _fmiSetupExperimentFunction function, "
                                         + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
                                         + "Try reimporting it and selecting the Model Exchange checkbox.");
-                    }
+                    }        
+                }
+                // Common with CoSimulation and Model Exchange;
+                if (_fmiModelDescription.providesDirectionalDerivative){
+                    _fmiGetDirectionalDerivativeFunction =  _fmiModelDescription
+                            .getFmiFunction("fmiGetDirectionalDerivative");
                 }
                 _checkFmiCoSimulation();
             }
