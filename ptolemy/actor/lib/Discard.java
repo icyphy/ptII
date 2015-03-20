@@ -46,6 +46,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  unconnected in the middle will not work because no channel is allocated
  to an unconnected relation in a bus.
 
+ <p>If a model has backward type propagation enabled, then either
+ use {@link ptolemy.actor.lib.DiscardDoubles} or
+ {@link ptolemy.actor.lib.DiscardDoublesArray} or set the 
+ type of the input port of the Discard actor accordingly.</p>
+
+ @see ptolemy.actor.lib.DiscardDoubles
+ @see ptolemy.actor.lib.DiscardDoublesArray
  @author Edward A. Lee, contributors: Christopher Brooks, Brian Hudson
  @version $Id$
  @since Ptolemy II 1.0

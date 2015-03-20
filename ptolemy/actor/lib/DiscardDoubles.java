@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// Discard
+//// DiscardDoubles
 
 /**
  A simple sink actor that consumes and discards double input tokens.
@@ -46,11 +46,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  have inputs of type double.</p>
 
  @see ptolemy.actor.lib.Discard
+ @see ptolemy.actor.lib.DiscardDoublesArray
  @author Christopher Brooks
  @version $Id: Discard.java 70398 2014-10-22 23:44:32Z cxh $
  @since Ptolemy II 1.0
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Yellow (ssachs)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
  */
 public class DiscardDoubles extends Discard {
 

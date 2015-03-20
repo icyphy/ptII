@@ -137,17 +137,19 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         // a DiscardDoubles actor.  However, classes like XYPlot have ports named "X" and Y",
         // so XYPlot cannot be converted.
 
-        // We use DiscardDoubles here so that the types are preserved
+        // We use DiscardDoublesArray here so that the types are preserved
         // in case enableBackwardTypeInference is set.  
         _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.actor.lib.DiscardDoublesArray");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.actor.lib.DiscardDoublesArray");
 
         // Display's input port is of type General.
         _graphicalClasses.put("ptolemy.actor.lib.gui.Display",
                 "ptolemy.actor.lib.Discard");
 
+        // We use DiscardDoubles here so that the types are preserved
+        // in case enableBackwardTypeInference is set.  
         _graphicalClasses.put("ptolemy.actor.lib.gui.HistogramPlotter",
                 "ptolemy.actor.lib.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.RealTimePlotter",

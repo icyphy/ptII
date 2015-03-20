@@ -569,7 +569,7 @@ test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RemovePlots" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -590,23 +590,23 @@ test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
         </property>
     </entity>
-    <entity name="RealTimePlotter" class="ptolemy.actor.lib.Discard">
+    <entity name="RealTimePlotter" class="ptolemy.actor.lib.DiscardDoubles">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 65.0]">
         </property>
     </entity>
-    <entity name="ArrayPlotter" class="ptolemy.actor.lib.Discard">
+    <entity name="ArrayPlotter" class="ptolemy.actor.lib.DiscardDoublesArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 355.0]">
         </property>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.Discard">
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.DiscardDoubles">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
         </property>
     </entity>
-    <entity name="HistogramPlotter" class="ptolemy.actor.lib.Discard">
+    <entity name="HistogramPlotter" class="ptolemy.actor.lib.DiscardDoubles">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 130.0}">
         </property>
     </entity>
-    <entity name="BarGraph" class="ptolemy.actor.lib.Discard">
+    <entity name="BarGraph" class="ptolemy.actor.lib.DiscardDoublesArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 290.0]">
         </property>
     </entity>

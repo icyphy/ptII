@@ -251,9 +251,9 @@ test Configuration-10.0 {testConfiguration.xml has removeGraphicalClasses set to
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="removeGraphicalClassesMoML" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.Discard">
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.DiscardDoubles">
     </entity>
 </entity>
 }}
