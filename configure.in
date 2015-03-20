@@ -4894,11 +4894,17 @@ else
     Rebuilding the OpenModelica fmus will not be possible.
     Running the OpenModelica models will not be possible.
     This is only a concern if you are interested in OpenModelica])
+        updateExcludes "ptolemy/actor/lib/fmi/fmus/omc"
         updateExcludes "ptolemy/domains/openmodelica"
     else
-        PTOMC_DIR=omc
+        if test -d "$PTOMC_USER_DIR";  then
+                PTOMC_DIR=omc
+        fi
         PTOPENMODELICA_DIR=openmodelica
-        PTOPENMODELICA_PACKAGES="ptolemy.domains.openmodelica.kernel ptolemy.domains.openmodelica.lib ptolemy.domains.openmodelica.lib.omc ptolemy.domains.openmodelica.lib.omc.corba"
+        if test -d "$PTOPENMODELICA_USER_DIR";  then
+                PTOPENMODELICA_DIR=openmodelica
+                PTOPENMODELICA_PACKAGES="ptolemy.domains.openmodelica.kernel ptolemy.domains.openmodelica.lib ptolemy.domains.openmodelica.lib.omc ptolemy.domains.openmodelica.lib.omc.corba"
+        fi
     fi
 fi
 
