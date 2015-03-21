@@ -168,9 +168,9 @@ public class FMUFile {
                         canonicalFile = canonicalFile3;
                     } else {
                         File binariesDirectory = new File(topDirectory + File.separator + "binaries");
-                        if (binariesDirectory.isDirectory()) {
+                        File[] files = binariesDirectory.listFiles();
+                        if (files != null) {
                             library = "";
-                            File[] files = binariesDirectory.listFiles();
                             for (File file : files) {
                                 if (file.isDirectory()) {
                                     if (file.getName().matches(".*" + bitWidth + "-darwin.*")) {
