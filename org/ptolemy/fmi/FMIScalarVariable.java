@@ -481,8 +481,9 @@ public class FMIScalarVariable {
          *   loop and the iteration at initialization starts with the start value."
          */
         approx,
-        /** The variable is calculated from other variables during initialization.
-            It is not allowed to provide a “start” value. */
+        /** The variable is calculated from other variables during
+            initialization.  It is not allowed to provide a "start"
+            value. */
         calculated,
         /** The variable is initialized with the start value (provided under Real,
             Integer, Boolean, String or Enumeration".*/
