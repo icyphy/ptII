@@ -327,8 +327,8 @@ OTHER_FILES_TO_BE_JARED = \
 	DictionaryIcon.xml \
 	DifferentialIcon.xml \
 	DiscardIcon.xml \
-	DiscardDoublesIcon.xml
-	DiscardDoublesArrayIcon.xml
+	DiscardDoublesIcon.xml \
+	DiscardDoublesArrayIcon.xml \
 	DiscreteRandomSourceIcon.xml \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
