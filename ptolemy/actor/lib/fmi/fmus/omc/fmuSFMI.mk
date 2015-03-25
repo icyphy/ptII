@@ -38,6 +38,9 @@
 # cosimulation.
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuBase.mk
 
+src/modelDescription.xml:
+	$(MAKE) export
+
 FMU_SRCS = \
 	src/modelDescription.xml \
 	src/sources/*
