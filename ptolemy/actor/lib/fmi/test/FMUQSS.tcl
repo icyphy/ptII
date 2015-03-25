@@ -103,7 +103,6 @@ test FMUQSS-1.2 {Test out importFMU on an Co-Simulation FMU that should be rejec
 Because:
 There is no ModelExchange attribute in the model description file of This FMU to indicate whether it is for model exchange or not.  QSS currently only supports FMU for model exchange.}}
 
-
 ######################################################################
 ####
 #
