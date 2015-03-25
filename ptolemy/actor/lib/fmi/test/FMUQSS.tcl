@@ -95,19 +95,7 @@ The FMI version of this FMU is: 1.0 which is not supported.  QSS currently only 
 ######################################################################
 ####
 #
-test FMUQSS-1.2 {Test out importFMU on an FMU that has no state and should be rejected} {
-    set err [tryToLoadNonQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.fmu}]
-    list $err
-} {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorldME2.fmu" is not acceptable.
-  in .top
-Because:
-The number of continuous states of this FMU is: 0.  The FMU does not have any state variables.  The FMU needs to have at least one state variable. Please check the FMU.}}
-
-
-######################################################################
-####
-#
-test FMUQSS-1.3 {Test out importFMU on an Co-Simulation FMU that should be rejected} {
+test FMUQSS-1.2 {Test out importFMU on an Co-Simulation FMU that should be rejected} {
     set err [tryToLoadNonQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu}]
     list $err
 } {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptII/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu" is not acceptable.
