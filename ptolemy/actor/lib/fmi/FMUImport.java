@@ -3079,6 +3079,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         + acceptFMUMethod);
             }
         }
+        // If the FMU has been imported for QSS but it doesn't
+        // have states default and use FMUImport rather than FMUQSS.
+        if (actorClassName.equals("ptolemy.actor.lib.fmi.FMUQSS") && 
+        		fmiModelDescription.continuousStates.size() < 1) {
+        	actorClassName = "ptolemy.actor.lib.fmi.FMUImport";
+        }
         // FIXME: Use URLs, not files so that we can work from JarZip files.
 
         // If a location is given as a URL, construct MoML to
