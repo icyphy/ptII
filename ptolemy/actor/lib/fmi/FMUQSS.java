@@ -666,12 +666,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // Check if the FMU has at least one state variable.
-        if (fmiModelDescription.continuousStates.size() < 1) {
-            throw new IOException("The number of continuous states of this FMU is: "
-                    + fmiModelDescription.numberOfContinuousStates
-                    + ".  The FMU does not have any state variables.  "
-                    + "The FMU needs to have at least one state variable. Please check the FMU.");
-        }
+        // if (fmiModelDescription.continuousStates.size() < 1) {
+        //    throw new IOException("The number of continuous states of this FMU is: "
+        //            + fmiModelDescription.numberOfContinuousStates
+        //            + ".  The FMU does not have any state variables.  "
+        //            + "The FMU needs to have at least one state variable. Please check the FMU.");
+        //}
 
         return true;
     }
