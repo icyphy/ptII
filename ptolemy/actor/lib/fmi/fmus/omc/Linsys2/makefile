@@ -31,6 +31,6 @@
 
 FMU_NAME = Linsys2
 
-OTHER_OTHER_FILES_TO_BE_JARED =
+OTHER_OTHER_FILES_TO_BE_JARED = $(FMU_NAME).mo
 
 include ../fmuSFMI.mk
