@@ -63,16 +63,16 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1867663200916851">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{637.406013250351, 319.97225242607186}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{637.406013250351, 319.972252426072}">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.02">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-4">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Fd">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 75.0]">
         </property>
@@ -121,10 +121,9 @@
 <title>Strange Attractor</title>
 <xLabel>x1</xLabel>
 <yLabel>x2</yLabel>
-<xRange min="-15.441410829641967" max="17.7656333641947"/>
-<yRange min="-19.804444173461633" max="23.81675579763983"/>
+<xRange min="-14.972658787390426" max="17.603186233145877"/>
+<yRange min="-19.086232655967894" max="23.751499603886998"/>
 <noGrid/>
-<default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
@@ -207,17 +206,23 @@
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{605.0, 475.0}">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{605.0, 205.0}">
         </property>
     </entity>
     <entity name="QSSIntegrator3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 410.0}">
         </property>

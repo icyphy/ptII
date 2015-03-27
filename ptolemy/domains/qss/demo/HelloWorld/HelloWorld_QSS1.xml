@@ -9,11 +9,11 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 220.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 945, 688}, maximized=false}">
@@ -22,7 +22,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1473565048703243">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.48482403872714, 415.78015756607056}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.4848240387273, 415.78015756607056}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The Const produces&#10;a single event that specifies a signal starting at time 0 with constant&#10;value 1. The first integrator produces a signal with constant slope.&#10;The second integrator produces a quadratic signal.">
@@ -113,9 +113,9 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the simplest QSS solver is used. This solver results in the integrators&#10;producing output whenever their state changes by the specified quantum.&#10;Here, the quantum is 0.1, given by the absoluteTolerance parameter,&#10;and is independent of the signal magnitude (the relativeTolerance is 0.0).&#10;Experimenting with these parameters will lend some insight into the QSS technique.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the simplest QSS solver is used. This solver results in the integrators&#10;producing output whenever their state changes by the specified quantum.&#10;Here, the quantum is 0.1, given by the absoluteQuantum parameter,&#10;and is independent of the signal magnitude (the relativeQuantum is 0.0).&#10;The final output falls short of the correct target (12.0) because the second integrator&#10;is using QSS1, which assumes its input is piecewise constant. But in fact, its input&#10;is piecewise linear.  Try changing that integrator to use QSS2.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 525.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -123,32 +123,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 630.0]">
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare with a version using a higher-order QSS solver&#10;(click here).">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 630.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorld.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 445}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 650.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -180,9 +155,11 @@
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="">
         </property>
-        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 325.0}">
         </property>
@@ -190,9 +167,13 @@
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 325.0}">
         </property>

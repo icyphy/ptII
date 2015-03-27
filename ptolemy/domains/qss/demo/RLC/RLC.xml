@@ -134,11 +134,13 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="quantum">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="quantum">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -115.0]">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Fd">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-215.0, -115.0}">
         </property>
     </property>
     <entity name="CapacitorGain" class="ptolemy.actor.lib.Scale">
@@ -296,7 +298,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage (volts)</yLabel>
 <xRange min="0.0" max="20.0"/>
-<yRange min="0.0" max="1.0379481965017963"/>
+<yRange min="0.0" max="1.0350266892569142"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
@@ -346,16 +348,20 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>current (amps)</yLabel>
 <xRange min="0.0" max="20.0"/>
-<yRange min="-0.0030011442664756418" max="0.313317918514931"/>
+<yRange min="-0.006168011642936856" max="0.3165291662793662"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Inductor" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 150.0]">
         </property>
     </entity>
     <entity name="Capacitor" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 310.0]">
         </property>
     </entity>
