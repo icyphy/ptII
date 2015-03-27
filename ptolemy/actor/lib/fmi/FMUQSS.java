@@ -289,7 +289,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Requantize if necessary.
             _triggerQuantizationEvents(currentTime, false);
         }
-
     }
 
     /**
@@ -782,20 +781,24 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // Set quantization tolerances.
-        final double absTolMin = 1e-20;
-        final double relTol = _director.getErrorTolerance();
+        double absoluteQuantum = _director.getAbsoluteQuantum();;
+        final double relativeQuantum = _director.getRelativeQuantum();
         for (int ii = 0; ii < stateCt; ++ii) {
-            // Choose absolute tolerance for state based on its nominal value.
+            // If the relativeQuantum is greater than 0.0, then use the
+            // nominal value for the state, given by the FMU, to set the
+            // absolute quantum. Specifically, if the relativeQuantum
+            // times the nominal value is greater than the given absoluteQuantum,
+            // then change the absoluteQuantum to be the product of the nominal
+            // value and the relativeQuantum.
             // Thus a state with nominal value 1000 will have an absolute
-            // tolerance
-            // 1000 times greater than a state with nominal value 1.
+            // quantum 1000 times greater than a state with nominal value 1.
             final double nominalValue = _fmiModelDescription.continuousStates
                     .get(ii).nominal.doubleValue();
-            double absTol = Math.abs(nominalValue) * relTol;
-            if (absTol < absTolMin) {
-                absTol = absTolMin;
+            double modifiedAbsoluteQuantum = Math.abs(nominalValue) * relativeQuantum;
+            if (absoluteQuantum < modifiedAbsoluteQuantum) {
+        	absoluteQuantum = modifiedAbsoluteQuantum;
             }
-            _qssSolver.setQuantizationTolerance(ii, absTol, relTol);
+            _qssSolver.setQuantizationTolerance(ii, absoluteQuantum, relativeQuantum);
         }
 
         // Tell integrator to quantize.
