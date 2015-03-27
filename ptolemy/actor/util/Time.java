@@ -365,7 +365,7 @@ public class Time implements Comparable {
         // NOTE: a double time value can be either positive infinite,
         // negative infinite, or a NaN.
         if (Double.isNaN(timeValue)) {
-            throw new ArithmeticException("Time: Time value can not be NaN.");
+            throw new ArithmeticException("Time: Time value cannot be NaN.");
         }
 
         if (Double.isInfinite(timeValue)) {
