@@ -23,9 +23,9 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="24000">
         </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-1">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 30.0}">
         </property>
@@ -87,13 +87,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 227, 1046, 600}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 227, 1046, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 490]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7869634340222575">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.5535353535354, 303.969696969697}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.5535353535354, 325.5717171717172}">
     </property>
     <property name="Q_heat" class="ptolemy.data.expr.Parameter" value="200.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -252,6 +252,8 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[713.5, 358.0]">
         </property>
     </entity>
@@ -318,7 +320,9 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[378.5, 183.0]">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 180.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
@@ -332,21 +336,21 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[298.5, 183.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 180.0]">
         </property>
     </entity>
     <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="yI, T1, T2, T3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={605, 59, 655, 294}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={656, 22, 627, 295}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 250]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 251]">
         </property>
         <property name="disconnectGraphOnAbsentValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[980.0, 197.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{980.0, 195.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -356,8 +360,8 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="24000.0"/>
-<yRange min="0.0" max="26.855504874138543"/>
-<default marks="bigdots" stems="yes"/>
+<yRange min="-0.09256564743750681" max="27.37340449899963"/>
+<default marks="bigdots"/>
 </plot>?>
         </configure>
     </entity>
@@ -399,6 +403,8 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[713.5, 448.0]">
         </property>
     </entity>
@@ -431,11 +437,13 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[718.5, 523.0]">
         </property>
     </entity>
     <entity name="SmoothToDouble" class="ptolemy.actor.lib.conversions.SmoothToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 182.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 180.0]">
         </property>
     </entity>
     <entity name="SmoothToDouble2" class="ptolemy.actor.lib.conversions.SmoothToDouble">
@@ -481,7 +489,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[428.5, 183.0]">
+        <vertex name="vertex1" value="{425.0, 180.0}">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
