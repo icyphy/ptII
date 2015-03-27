@@ -35,15 +35,17 @@ import org.ptolemy.qss.solver.QSSBase;
 import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.TimeDelay;
+import ptolemy.actor.lib.conversions.SmoothToDouble;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -60,72 +62,121 @@ A quantized-state integrator.
 This integrator is designed to integrate continuous-time signals under the
 {@link QSSDirector}. The input events indicate significant changes in the input
 signal, and output events indicate significant changes in the output signal.
-The input signal is the derivative of the output.
+The value of the input signal is the derivative of the output.
 Here "significant" means that the signal has changed by more than the specified
-quantum, as defined by the selected solver, explained below.
+quantum, as defined by the selected solver, explained in detail below.
 <p>
-The output of this integrator is a {@link SmoothToken}, which potentially carries
-not only a value at the time of an output event, but also zero or more derivatives
-of the output signal at that time. The inputs can also accept SmoothTokens, though
-depending on the solver that is selected, some or all of the derivatives of the input
-may be ignored.
+Three types of solvers are provided:
+<ol>
+<li> <b>QSS1</b>: The input <i>u</i> is assumed to be piecewise constant.
+<li> <b>QSS2</b>: The input <i>u</i> is assumed to be piecewise linear.
+<li> <b>QSS3</b>: The input <i>u</i> is assumed to be piecewise quadratic.
+</ol>
+An input token can be instance of {@link DoubleToken} or {@link SmoothToken},
+the latter of which potentially carries
+not only a value at q time, but also zero or more derivatives
+of the input signal at that time. To provide a piecewise linear input to a
+QSS2 integrator, for example, you can specify an input with the expression
+<tt>smoothToken(2.0, {1.0})</tt>, which specifies a value of 2.0 and a first
+derivative of 1.0. All other derivatives are assumed to be zero.
+A QSS1 integrator will ignore all derivatives on the input.
+A QSS2 integrator will ignore all but the first derivative on the input.
+A QSS3 integrator will ignore all but the first and second derivatives on the input.
+If a {@link DoubleToken} is provided on the input, then all derivatives of the input
+are assumed to be zero.
 <p>
-For a SmoothToken, if no derivatives are provided, then the
-signal is semantically piecewise constant. If one derivative is provided, it is
-piecewise linear. If two are provided, then it is piecewise quadratic.
-A SmoothToken has that property that any
-actor can read the signal at any time, and the value will
-be extrapolated to the time of the read automatically, regardless of whether
-the source of the SmoothToken has produced an output at that time.
-Thus, the inputs and outputs of this integrator only need to occur
-explicitly when something interesting has changed.
-(What this means depends on the solver chosen.)
-And even though the signal contains only infrequent events, a downstream actor can read
-the values frequently, for example to generate more representative plots of
-the signal.
+This integrator has two modes of operation, depending on the value of
+<i>propagateInputDerivatives</i>. In both modes, the integrator will produce
+an output whenever a <i>quantization event</i> occurs. For QSS1, a quantization
+event occurs when the state of the integrator changes by the quantum (see below
+for an explanation of the quantum). For example, if the input is a constant 1.0
+and the quantum is 0.1, then an output will be produced every 0.1 seconds, because
+the input specifies that the state has slope 1.0, so it will increase by the quantum
+every 0.1 seconds. For QSS2, a quantization event occurs when
+the derivative of the state changes by the quantum. For example, if the input
+is piecewise linear with initial value 0.0 and first derivative 1.0 and the state
+has initial value 0.0, then at the start, the state has value 0.0,
+first derivative 0.0, and second derivative 1.0.
+Because of the second derivative, as time elapses, the first derivative of the state
+will increase. When it increases by the quantum, an output will be produced.
+For QSS3, a quantization
+event occurs when the second derivative changes by the quantum in a similar fashion.
+<p>
+Also, in both modes of operation, the integrator will produce an output whenever
+it is initialized, and whenever it receives an <i>impulse</i> input event.
+<p>
+When an output is produced, its value will be the current state of the integrator.
+In addition, depending on the solver, it may contain derivative information.
+For QSS1, the input is semantically piecewise constant, so the output
+is piecewise linear; hence each output event will be a SmoothToken
+that is piecewise linear, with a first derivative equal to the most recently
+received input value.
+For QSS2, the output will have a first and second derivative obtained from the input.
+For QSS3, the output will have first, second, and third derivatives.
+<p>
+We can now explain how the two modes of operation differ.
+If <i>propagateInputDerivatives</i> is set to
+true (the default), then this integrator will <i>also</i>
+produce an output every time it receives an input.
+Each output will include derivative
+information from the input, to the extent that these are appropriate for
+the solver.
+In this case, the output has a direct dependence on the input, so a cycle
+of instances of QSSIntegrator needs to contain at least one integrator that has
+<i>propagateInputDerivatives</i> set to false, or else it has to contain
+a {@link TimeDelay} actor. Otherwise, a causality loop blocks execution of the model.
+<p>
+If <i>propagateInputDerivatives</i> is set to
+false, then output is not produced <i>only</i> when quantization events occur,
+when the integrator is initialized, and when the <i>impulse</i> port receives an event.
+In this case, there is no direct dependence between the <i>u</i> input and the output,
+and hence there is no difficulty putting this integrator in a feedback loop.
+The price paid, however, is that downstream actors do not get immediately informed
+of changes in the derivatives of the output.
+They will learn of these changes when the next quantization event occurs.
+To see an example of the consequences, see the demo
+<a href="$PTII/ptolemy/domains/qss/demo/HelloWorld/HelloWorld_Propagate.xml">$PTII/ptolemy/domains/qss/demo/HelloWorld/HelloWorld_Propagate.xml</a>.
 <p>
 The frequency with which the output <i>q</i> of this integrator
-is produced depends on the <i>solver</i>,
-<i>absoluteTolerance</i>, and <i>relativeTolerance</i>. Specifically, an
-output will be produced whenever a <b>quantization event</b> occurs.
+is produced depends on the <i>solver</i> choice and the 
+<i>absoluteQuantum</i> and <i>relativeQuantum</i> parameter values.
+These determine when a quantization event occurs, as explained above.
+The <i>quantum</i> is equal to the larger of <i>absoluteQuantum</i>
+and the product of <i>relativeQuantum</i> and the current state value.
 The simplest case is
-where the solver is QSS1 and relativeTolerance is zero. In this case, a
+where the solver is QSS1 and <i>relativeQuantum</i> is zero. In this case, a
 quantization event occurs whenever the integral of the input signal changes by
-the absoluateTolerance. For QSS1, the input is assumed to be piecewise
+the <i>absoluateQuantum</i>. For QSS1, the input is assumed to be piecewise
 constant. If the input is a SmoothToken, the derivatives of the input
-are ignored. FIXME: Verify this.
+are ignored.
 <p>
-An output is also produced at the initialization time and whenever an event
-is received on the <i>impulse</i> input. On the first firing at initialization
+On the first firing at initialization
 time, the output value is given by <i>xInit</i>. That initial value can be a
 SmoothToken (expressed as smoothToken(value, {array of derivatives}).
+<p>
 When an <i>impulse</i> input is received, the value of that event
-is added to the current state of this integrator (any integrals provided
+is added to the current state of this integrator (any derivatives provided
 on the <i>impulse</i> input are ignored).
 Then an output event is produced and the integrator is reinitialized so
 that the next output quantum is relative to the new state value.
 <p>
-FIXME: Document QSS2 and QSS3.
+Note that in most cases, this actor outputs a SmoothToken.
+(The only exception is at initialization, where <i>xInit</i> is produced;
+it may not be a SmoothToken.)
+A SmoothToken has that property that any downstream
+actor can read the signal at any time, and the value will
+be extrapolated to the time of the read automatically, regardless of whether
+the source of the SmoothToken has produced an output at that time.
+Thus, the outputs of this integrator only need to occur
+explicitly when something interesting has changed that would make such prediction invalid.
+Even though the signal contains only infrequent events, a downstream actor can read
+the values frequently, for example to generate more representative plots of
+the signal.
+If want downstream actors to see only the actual events produced by this
+integrator, then you can feed the output into an instance of {@link SmoothToDouble}.
 <p>
-If <i>propagateInputDerivatives</i> is set to true, then this integrator will
-produce an output every time it receives an input, in addition to the times
-determined by the solver. Moreover, each output will include derivative
-information from the input, to the extent that these are appropriate for
-the solver. If the solver method is QSS1, then
-the input is semantically piecewise constant, and the output
-is piecewise linear, so each output will be a SmoothToken
-that is piecewise linear, with a first derivative equal to the most recently
-received input value. Note that if <i>propagateInputDerivatives</i> is set to true,
-then the output has a direct dependence on the input. Hence, a cycle
-of instances of QSSIntegrator needs to contain at least one that has
-<i>propagateInputDerivatives</i> set to false (the default).
-
-FIXME: Could put a MicrostepDelay in the feedback loop, since the implementation
-absorbs the steady state.
-
 FIXME: To do:
 - Make xInit a PortParameter.
-- Add an output that bundles the input to generate a SmoothToken.
 - Make a vector version.
 
 @see QSSDirector
@@ -148,6 +199,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         super(container, name);
         u = new TypedIOPort(this, "u", true, false);
         u.setTypeEquals(BaseType.DOUBLE);
+        new SingletonParameter(u, "_showName").setToken(BooleanToken.TRUE);
 
         q = new TypedIOPort(this, "q", false, true);
         q.setTypeEquals(BaseType.DOUBLE);
@@ -160,20 +212,21 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 	solver = new StringParameter(this, "solver");
 	QSSDirector.configureSolverParameter(solver, "");
 
-        absoluteTolerance = new Parameter(this, "absoluteTolerance");
-        absoluteTolerance.setTypeEquals(BaseType.DOUBLE);
+        absoluteQuantum = new Parameter(this, "absoluteQuantum");
+        absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
         
-        relativeTolerance = new Parameter(this, "relativeTolerance");
-        relativeTolerance.setTypeEquals(BaseType.DOUBLE);
+        relativeQuantum = new Parameter(this, "relativeQuantum");
+        relativeQuantum.setTypeEquals(BaseType.DOUBLE);
         
         impulse = new TypedIOPort(this, "impulse", true, false);
         impulse.setTypeEquals(BaseType.DOUBLE);
         StringAttribute cardinality = new StringAttribute(impulse, "_cardinal");
         cardinality.setExpression("SOUTH");
+        new SingletonParameter(impulse, "_showName").setToken(BooleanToken.TRUE);
         
         propagateInputDerivatives = new Parameter(this, "propagateInputDerivatives");
         propagateInputDerivatives.setTypeEquals(BaseType.BOOLEAN);
-        propagateInputDerivatives.setExpression("false");
+        propagateInputDerivatives.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -183,7 +236,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  This is a double, and by default is not given, which means
      *  that the quantum is specified by the director.
      */
-    public Parameter absoluteTolerance;
+    public Parameter absoluteQuantum;
 
     /** The impulse input port. This is a single port of type double.
      *  If any derivatives are provided on this port via a SmoothToken,
@@ -194,30 +247,25 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     /** Output (the quantized state). */
     public TypedIOPort q;
     
-    /** If true, then derivative information from the input will be
+    /** If true (the default), then derivative information from the input will be
      *  produced on the outputs, and an output will be produced whenever
-     *  an input is received. If false (the default), then the output
-     *  derivative information is determined by the solver, and outputs
+     *  an input is received. If false, then no derivative information is provided
+     *  on the output (the output is assumed to be piecewise constant), and outputs
      *  are produced only when the integral has changed enough to
      *  trigger a quantization event.
-     *  
-     *  FIXME: What about the first
-     *  output? What happens when an input is simultaneous with a
-     *  quantization event? Don't these two cases have direct
-     *  dependence?
      */
     public Parameter propagateInputDerivatives;
     
     /** If specified, the relative quantum for this integrator.
      *  If the value here is greater than zero, then the quantum
      *  that this integrator uses will be the larger of the
-     *  {@link #absoluteTolerance} and |x| * relativeTolerance,
+     *  {@link #absoluteQuantum} and |x| * relativeQuantum,
      *  where x is the current value of the state.
      *  This is a double that defaults to be empty (nothing
-     *  specified), which causes the relativeTolerance to be
+     *  specified), which causes the relativeQuantum to be
      *  retrieved from the director.
      */
-    public Parameter relativeTolerance;
+    public Parameter relativeQuantum;
 
     /** The class name of the QSS solver used for integration.  This
      *  is a string that defaults to the empty string, which delegates
@@ -319,11 +367,12 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // Read any impulse input that may be available.
         produceOutput = _handleImpulse() || produceOutput;
         
-        // If an input is available, read it.
-        boolean hasInput = _handleInput();
-        // If propagateInputDerivatives is true, then reading an inputs
+        // If propagateInputDerivatives is true, then reading an input
         // triggers an output.
+        boolean hasInput = false;
         if (isStrict()) {
+            // If an input is available, read it.
+            hasInput = _handleInput();
             produceOutput = hasInput || produceOutput;
         }
         
@@ -333,29 +382,38 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             // Note that the output will include derivative information
             // from reading the input above, if input was read. Otherwise,
             // it has derivative information from previous inputs.
-            double[] model = _qssSolver.getStateModel(0).coeffs;
+            double currentValue = _qssSolver.getStateModel(0).coeffs[0];
             
+            if (hasInput) {
+        	// If there is an input, then we might be producing an output
+        	// at a time other than the time of a quantization event.
+        	// We really need to evaluate the continuous state.
+        	currentValue = _qssSolver.evaluateStateModelContinuous(0, currentTime);
+            }
+
             // The derivatives of the output are determined by the most recent
             // input, extrapolated to the present, up to the n-th derivative, for QSSn.
             double[] derivatives = null;
             if (_previousInput != null) {
         	SmoothToken extrapolatedInput = _previousInput.extrapolate(currentTime);
-                derivatives = new double[_maximumInputOrder + 1];
+        	int order = SmoothToken.order(extrapolatedInput);
+                derivatives = new double[order + 1];
                 derivatives[0] = extrapolatedInput.doubleValue();
-        	double[] inputDerivatives = extrapolatedInput.derivativeValues();
-        	if (inputDerivatives != null) {
-        	    for (int i = 1; i <= _maximumInputOrder; i++) {
-        		if (i < inputDerivatives.length) {
-        		    derivatives[i] = inputDerivatives[i-1];
-        		}
-        	    }
+                for (int i = 1; i <= order; i++) {
+                    derivatives[i] = SmoothToken.derivativeValue(extrapolatedInput, i);
         	}
             }
-            Token token = new SmoothToken(model[0], currentTime, derivatives);
+            Token token = new SmoothToken(currentValue, currentTime, derivatives);
             q.send(0, token);
             if (_debugging) {
                 _debug("Send to output: " + token);
             }
+        }
+        // To ensure determinacy, read the input after producing the output.
+        // Otherwise, the output produced could depend on the order in which
+        // actors are created because this actor can be fired at any time.
+        if (!isStrict()) {
+            _handleInput();
         }
     }
 
@@ -395,7 +453,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         _previousInputTime = null;
         
         // Get director and check its type.
-        Director director = getDirector();
+        QSSDirector director = (QSSDirector)getDirector();
         if (!(director instanceof QSSDirector)) {
             throw new IllegalActionException(
                     this,
@@ -409,26 +467,27 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // If no solver is specified, use the director's specification.
         String solverSpec = solver.stringValue().trim();
         if (solverSpec.equals("")) {
-            _qssSolver = ((QSSDirector) director).newQSSSolver();
+            _qssSolver = director.newQSSSolver();
         } else {
-            _qssSolver = ((QSSDirector) director).newQSSSolver(solverSpec);
+            _qssSolver = director.newQSSSolver(solverSpec);
         }
         
-        // Find the error tolerance.
-        double absoluteToleranceValue;
-        DoubleToken tolerance = (DoubleToken)absoluteTolerance.getToken();
-        if (tolerance == null) {
-            absoluteToleranceValue = director.getErrorTolerance();
+        // Find the quanta.
+        double absoluteQuantumValue;
+        DoubleToken quantum = (DoubleToken)absoluteQuantum.getToken();
+        if (quantum == null) {
+            // No quantum given for this integrator. Use the director's value.
+            absoluteQuantumValue = director.getAbsoluteQuantum();
         } else {
-            absoluteToleranceValue = tolerance.doubleValue();
+            absoluteQuantumValue = quantum.doubleValue();
         }
-        double relativeToleranceValue;
-        tolerance = (DoubleToken)relativeTolerance.getToken();
-        if (tolerance == null) {
-            // FIXME: When the director acquires a relativeTolerance, use that.
-            relativeToleranceValue = director.getErrorTolerance();
+        double relativeQuantumValue;
+        quantum = (DoubleToken)relativeQuantum.getToken();
+        if (quantum == null) {
+            // No quantum given for this integrator. Use the director's value.
+            relativeQuantumValue = director.getRelativeQuantum();
         } else {
-            relativeToleranceValue = tolerance.doubleValue();
+            relativeQuantumValue = quantum.doubleValue();
         }
 
         // Determine the maximum order of the input variables.
@@ -448,8 +507,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         	this, 				// The derivative function implementer.
         	currentTime, 			// The simulation start time.
         	director.getModelStopTime(), 	// The maximum time to an event.
-        	absoluteToleranceValue, 	// The absolute quantum tolerance.
-        	relativeToleranceValue, 	// The relative quantum tolerance.
+        	absoluteQuantumValue, 		// The absolute quantum.
+        	relativeQuantumValue, 		// The relative quantum.
         	_maximumInputOrder);		// The order of the input variables.
 
         // Initialize the state variable to match the {@link #xInit} parameter.
@@ -608,7 +667,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             if (inputToken instanceof SmoothToken) {
         	// Discard any derivatives higher than the requisite order.
         	double[] inputDerivatives = ((SmoothToken)inputToken).derivativeValues();
-        	if (inputDerivatives == null || inputDerivatives.length == _maximumInputOrder) {
+        	if (inputDerivatives == null || inputDerivatives.length <= _maximumInputOrder) {
         	    // Easy case. Input already has the right form.
         	    _previousInput = (SmoothToken)inputToken;
         	} else if (_maximumInputOrder == 0) {
