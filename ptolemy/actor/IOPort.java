@@ -5088,6 +5088,22 @@ public class IOPort extends ComponentPort {
         	// that is not long enough to encompass this channel.
                 _persistentTokens[channelIndex] = null;
             } else {
+        	if (token instanceof SmoothToken) {
+        	    // If the token is generated using the expression language function
+        	    // smoothToken(), then it always has time equal to the start time.
+        	    // Here, we reset that time to the current time.
+        	    // This also ensures that if a SmoothToken is delayed, its time
+        	    // gets reset at the receiver. Notice that since tokens are
+        	    // immutable, we have to create a new SmoothToken here.
+        	    Time currentTime = getModelTime(channelIndex);
+        	    Time tokenTime = ((SmoothToken)token).getTime();
+        	    if (!currentTime.equals(tokenTime)) {
+        		token = new SmoothToken(
+        			((SmoothToken) token).doubleValue(),
+        			currentTime,
+        			((SmoothToken) token).derivativeValues());
+        	    }
+        	}
         	_persistentTokens[channelIndex] = token;
             }
         }
