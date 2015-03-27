@@ -49,9 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	FirstOrderOscillating.xml \
-	FirstOrder.xml \
-	SecondOrderContinuous.xml \
-	SecondOrder.xml
+	FirstOrder.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
