@@ -8,11 +8,9 @@
 
       <entity name="Spontaneous Sources" class="ptolemy.moml.EntityLibrary">
 
-        <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        </entity>
-
-        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        </entity>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock"/>
+        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock"/>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent"/>
 
       </entity>
 
