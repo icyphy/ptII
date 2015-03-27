@@ -161,7 +161,6 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
      *  error tolerance from that director. Otherwise, return 1e-4.
      *  @return The error tolerance used for detecting enabled transitions.
      */
-    @Override
     public final double getErrorTolerance() {
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         if (enclosingDirector == null) {

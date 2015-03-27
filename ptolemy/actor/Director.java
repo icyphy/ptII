@@ -638,16 +638,6 @@ public class Director extends Attribute implements Executable {
         return localClock.getLocalTime();
     }
 
-    /** Return the error tolerance, if any, of this director.
-     *  By default, a director has no error tolerance, so this method
-     *  returns 0.0. Some directors override this to allow computed
-     *  values to be approximate with a specified precision.
-     *  @return the error tolerance.
-     */
-    public double getErrorTolerance() {
-        return 0.0;
-    }
-
     /** Return the global time for this model. The global time is
      *  defined to be the value returned by the @link{#getModelTime()}
      *  method of the top-level director in the model.
