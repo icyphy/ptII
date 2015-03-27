@@ -9,9 +9,11 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
@@ -39,7 +41,7 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 110.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -47,7 +49,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 0.1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(0.01, {1.0}), smoothToken(0.1, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

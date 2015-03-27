@@ -41,9 +41,9 @@
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
         </property>
-        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 170.0]">
         </property>

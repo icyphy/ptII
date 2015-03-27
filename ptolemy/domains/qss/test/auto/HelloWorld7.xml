@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld4" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld7" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
@@ -95,6 +95,8 @@
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 110.0]">
         </property>
     </entity>
@@ -112,6 +114,8 @@
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 175.0]">
         </property>
     </entity>
@@ -129,7 +133,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(0.01, {1.0}), smoothToken(4.0, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.01, {1.0}), smoothToken(4.0, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -149,7 +153,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0,1.0}), smoothToken(0.0099999999631, {1.0099504938,1.0}), smoothToken(0.1628285692229, {1.1513718505,1.0}), smoothToken(0.3356571395184, {1.2927932079,1.0}), smoothToken(0.5284857120721, {1.4342145668000001,1.0}), smoothToken(0.7413142819125, {1.5756359235000001,1.0}), smoothToken(0.9741428518838, {1.7170572802000001,1.0}), smoothToken(1.226971421986, {1.8584786369000001,1.0}), smoothToken(1.499799992219, {1.9998999936000001,1.0}), smoothToken(1.7926285625829, {2.1413213503,1.0}), smoothToken(2.1056325797641, {2.2828246409000004,1.0}), smoothToken(2.4386493262274, {2.4243279322999998,1.0}), smoothToken(2.7918707748269, {2.5659052449,1.0}), smoothToken(3.1653538481748, {2.7075419506,1.0}), smoothToken(3.5590379429671, {2.8492319498,1.0}), smoothToken(3.9725067479712, {2.9908279768000003,1.0}), smoothToken(4.4057459964425, {3.1323375955,1.0}), smoothToken(4.8588107676517, {3.2737883696,1.0}), smoothToken(5.3320426382362, {3.4152873069000003,1.0}), smoothToken(5.8254762963698, {3.5568266216,1.0}), smoothToken(6.3391968087242, {3.6984363928,1.0}), smoothToken(6.8727581696772, {3.8399925602000002,1.0}), smoothToken(7.4261410888708, {3.9814957803,1.0}), smoothToken(7.9993524377373, {4.1229529933,1.0}), smoothToken(8.5925679136626, {4.2644098370000005,1.0}), smoothToken(9.2059278111608, {4.4058981033,1.0}), smoothToken(9.8394627782311, {4.5474150802,1.0}), smoothToken(10.4931292682653, {4.688955352100001,1.0}), smoothToken(11.1666520534729, {4.830459832600001,1.0}), smoothToken(11.8600225191186, {4.971929759,1.0}), smoothToken(11.9999795634914, {5.0,1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.0099999999631, {1.0099504938,1.0}), smoothToken(0.1628285692229, {1.1513718505,1.0}), smoothToken(0.3356571395184, {1.2927932079,1.0}), smoothToken(0.5284857120721, {1.4342145668000001,1.0}), smoothToken(0.7413142819125, {1.5756359235000001,1.0}), smoothToken(0.9741428518838, {1.7170572802000001,1.0}), smoothToken(1.226971421986, {1.8584786369000001,1.0}), smoothToken(1.499799992219, {1.9998999936000001,1.0}), smoothToken(1.7926285625829, {2.1413213503,1.0}), smoothToken(2.1056325797641, {2.2828246409000004,1.0}), smoothToken(2.4386493262274, {2.4243279322999998,1.0}), smoothToken(2.7918707748269, {2.5659052449,1.0}), smoothToken(3.1653538481748, {2.7075419506,1.0}), smoothToken(3.5590379429671, {2.8492319498,1.0}), smoothToken(3.9725067479712, {2.9908279768000003,1.0}), smoothToken(4.4057459964425, {3.1323375955,1.0}), smoothToken(4.8588107676517, {3.2737883696,1.0}), smoothToken(5.3320426382362, {3.4152873069000003,1.0}), smoothToken(5.8254762963698, {3.5568266216,1.0}), smoothToken(6.3391968087242, {3.6984363928,1.0}), smoothToken(6.8727581696772, {3.8399925602000002,1.0}), smoothToken(7.4261410888708, {3.9814957803,1.0}), smoothToken(7.9993524377373, {4.1229529933,1.0}), smoothToken(8.5925679136626, {4.2644098370000005,1.0}), smoothToken(9.2059278111608, {4.4058981033,1.0}), smoothToken(9.8394627782311, {4.5474150802,1.0}), smoothToken(10.4931292682653, {4.688955352100001,1.0}), smoothToken(11.1666520534729, {4.830459832600001,1.0}), smoothToken(11.8600225191186, {4.971929759,1.0}), smoothToken(11.9999795634914, {5.0,1.0})}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
@@ -159,7 +163,7 @@
         </property>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 175.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
