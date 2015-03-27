@@ -37,7 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -46,9 +45,9 @@ import ptolemy.kernel.util.Workspace;
  * to include a Quantized-State System (QSS) solver to perform integration.
  * This solver performs using a discrete-event style, quantizing the magnitude
  * of signals rather than the time, as done by a conventional ODE solver. 
- * The <i>errorTolerance</i> parameter determines the quantization
- * granularity.  For information about QSS, see
- * {@link QSSBase}.
+ * The <i>absoluteQuantum</i> and <i>relativeQuantum</i> parameters determine
+ * the quantization granularity.  For information about QSS, see
+ * {@link QSSIntegrator} and {@link QSSBase}.
  * <p>
  * Note that the expression function smoothToken(double, {double})
  * is available in the expression language. This function creates
@@ -109,10 +108,10 @@ public class QSSDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Error tolerance for QSS integration methods
-     *  The default value is 1e-4, and the type is double.
+    /** The minimum quantum for QSS integrations under the control
+     *  of this director. This is a double that defaults to 1E-4.
      */
-    public Parameter errorTolerance;
+    public Parameter absoluteQuantum;
 
     /** The class name of the QSS solver used for integration.  This
      *  is a string that defaults to "QSS1".  Solvers are all required
@@ -121,6 +120,16 @@ public class QSSDirector extends DEDirector {
      *  take effect until the model re-initialized.
      */
     public StringParameter QSSSolver;
+
+    /** The relative quantum to use for QSS integrations under the control
+     *  of this director. If the value here is greater than zero,
+     *  then the quantum will be the larger of the
+     *  {@link #absoluteQuantum} and |x| * relativeQuantum,
+     *  where x is the current value of the state being quantized.
+     *  This is a double that defaults to be 0.0, which causes the
+     *  absoluteQuantum to be used.
+     */
+    public Parameter relativeQuantum;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -138,16 +147,25 @@ public class QSSDirector extends DEDirector {
             _debug("attributeChanged: Updating QSSDirector parameter: "
                     + attribute.getName());
         }
-        if (attribute == errorTolerance) {
-            double value = ((DoubleToken) errorTolerance.getToken())
+        if (attribute == relativeQuantum) {
+            double value = ((DoubleToken) relativeQuantum.getToken())
                     .doubleValue();
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative error tolerance.");
+                        "Cannot set a negative quantum.");
             }
-            _errorTolerance = value;
+            _relativeQuantum = value;
+        } else if (attribute == absoluteQuantum) {
+            double value = ((DoubleToken) absoluteQuantum.getToken())
+                    .doubleValue();
+            if (value <= 0.0) {
+                throw new IllegalActionException(this,
+                        "absoluteQuantum is required to be greater than 0.0.");
+            }
+            _absoluteQuantum = value;
+        } else {
+            super.attributeChanged(attribute);
         }
-        super.attributeChanged(attribute);
     }
 
     /** Set the default solver method and list solver alternatives for the specified solver.
@@ -159,7 +177,7 @@ public class QSSDirector extends DEDirector {
 	solverParameter.setExpression(defaultSolver);
 	solverParameter.addChoice("QSS1");
 	solverParameter.addChoice("QSS2Fd");
-    solverParameter.addChoice("QSS2FdJac");
+	solverParameter.addChoice("QSS2FdJac");
 	solverParameter.addChoice("QSS2Pts");
 	solverParameter.addChoice("QSS2Qts");
 	solverParameter.addChoice("QSS3Fd");
@@ -168,12 +186,20 @@ public class QSSDirector extends DEDirector {
 	solverParameter.addChoice("LIQSS2Fd");
     }
 
-    /** Return the local truncation error tolerance.
-     *  @return The local truncation error tolerance.
+    /** Return the value of the absoluteQuantum parameter.
+     *  @return The absolute quantum.
      */
-    public final double getErrorTolerance() {
+    public final double getAbsoluteQuantum() {
         // This method is final for performance reason.
-        return _errorTolerance;
+        return _absoluteQuantum;
+    }
+
+    /** Return the value of the relativeQuantum parameter.
+     *  @return The relative quantum.
+     */
+    public final double getRelativeQuantum() {
+        // This method is final for performance reason.
+        return _relativeQuantum;
     }
 
     /** Return a new QSS solver for use.
@@ -240,22 +266,25 @@ public class QSSDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
-    /** initialize parameters. Set all parameters to their default values.
-     * @throws NameDuplicationException If adding parameters fails.
-     * @throws IllegalActionException If setting parameters fails.
+    /** Initialize parameters. Set all parameters to their default values.
+     *  @throws NameDuplicationException If adding parameters fails.
+     *  @throws IllegalActionException If setting parameters fails.
      */
     private void _initSolverParameters()
-	    throws IllegalActionException, NameDuplicationException {
-	_verbose = true;	// FIXME: Do we really want this?
-	
+	    throws IllegalActionException, NameDuplicationException {	
 	// The following is probably not needed.
 	// The errors it catches only occur with interaction with
 	// the continuous domain.
 	enforceMicrostepSemantics.setVisibility(Settable.EXPERT);
 	
-	errorTolerance = new Parameter(this, "errorTolerance");
-	errorTolerance.setExpression("1e-4");
-	errorTolerance.setTypeEquals(BaseType.DOUBLE);
+	absoluteQuantum = new Parameter(this, "absoluteQuantum");
+	absoluteQuantum.setExpression("1e-4");
+	absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
+
+	relativeQuantum = new Parameter(this, "relativeQuantum");
+	relativeQuantum.setExpression("0.0");
+	relativeQuantum.setTypeEquals(BaseType.DOUBLE);
+	
 	QSSSolver = new StringParameter(this, "QSSSolver");
 	configureSolverParameter(QSSSolver, "QSS1");
     }
@@ -263,8 +292,11 @@ public class QSSDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                 ////
     
-    /** The error tolerance for state resolution. */
-    private double _errorTolerance;
+    /** The absolute quantum for state resolution. */
+    private double _absoluteQuantum;
+
+    /** The relative quantum for state resolution. */
+    private double _relativeQuantum;
     
     /** The package name for the solvers supported by this director. */
     private static String _solverClasspath = "org.ptolemy.qss.solver.";
