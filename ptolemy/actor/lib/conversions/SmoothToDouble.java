@@ -39,8 +39,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// SmoothTDouble
 
 /**
-   Convert a SmoothToken (one that has a double value and an array of
- derivatives) to a DoubleToken.
+ Convert a {@link SmoothToken} (one that has a double value and an array of
+ derivatives) to a DoubleToken, discarding the derivative information.
+ Normally, such a conversion is not necessary
+ because any actor that can accept a DoubleToken can also transparently
+ accept a SmoothToken. However, when an input port receives a SmoothToken,
+ the port becomes <i>persistent</i>, meaning that it will always have a token.
+ If an actor reads from this input port at a time when no SmoothToken has arrived,
+ then the most recently received SmoothToken will be extrapolated, using its
+ derivative information, to obtain a value at that time. If you wish for a
+ downstream port to not be persistent, then you can use this actor to convert
+ the signal.  Downstream input ports will be absent at all times except those
+ when an actual token is sent.
 
  @author Thierry S. Nouidui, Christopher Brooks
  @version $Id$
@@ -69,22 +79,19 @@ public class SmoothToDouble extends Converter {
     /** Read exactly one token from the input and output the token
      *  the double value of the token if the token is a SmoothToken.
      *  The derivatives array of the SmoothToken is discarded.
-     *  @exception IllegalActionException If the token is not a
-     *  SmoothToken.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        SmoothToken inputToken = null;
-        try {
-            inputToken = (SmoothToken) input.get(0);
-        } catch (ClassCastException e) {
-            throw new IllegalActionException(this, e,
-                    " The input token"
-                    + (inputToken == null ? "null": inputToken.toString()) 
-                    +" cannot be cast to a SmoothToken.");
+        DoubleToken inputToken = (DoubleToken) input.get(0);
+        DoubleToken result = new DoubleToken(inputToken.doubleValue());
+        if (_debugging) {
+            _debug("Transferring input " + inputToken
+        	    + " to output " + result
+        	    + " at time " + getDirector().getModelTime());
         }
-        output.send(0, new DoubleToken(inputToken.doubleValue()));
+        output.send(0, result);
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -93,7 +100,10 @@ public class SmoothToDouble extends Converter {
      */
     @Override
     public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) {
+        if (!input.hasNewToken(0)) {
+            if (_debugging) {
+        	_debug("No new input at time " + getDirector().getModelTime());
+            }
             return false;
         }
         return super.prefire();
