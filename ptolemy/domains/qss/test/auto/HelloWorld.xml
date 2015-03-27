@@ -9,6 +9,8 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">

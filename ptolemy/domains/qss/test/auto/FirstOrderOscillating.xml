@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 301, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 262, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0155036197150507">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.50999348958354}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.5099934895836}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A key with QSS1 is to quantize the inputs!">
@@ -84,9 +84,11 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
         </property>
-        <property name="absoluteTolerance" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="relativeTolerance" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 105.0}">
         </property>

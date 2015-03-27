@@ -95,6 +95,8 @@
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 160.0]">
         </property>
     </entity>

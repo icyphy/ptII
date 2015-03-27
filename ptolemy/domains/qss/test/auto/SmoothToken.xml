@@ -1,0 +1,142 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SmoothToken" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 22, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
+    </property>
+    <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 260.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+        </port>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 335.0}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={719, 510, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 335.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="3.0"/>
+<yRange min="-1.4950000000000014" max="1.4950000000000014"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SmoothZeroCrossingDetector" class="ptolemy.domains.qss.lib.SmoothZeroCrossingDetector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {1.0, -1.0}), smoothToken(-1.0, {-1.0, 1.0})}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{530.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {1.0,-1.0}), smoothToken(1.095, {0.9,-1.0}), smoothToken(1.18, {0.8,-1.0}), smoothToken(1.255, {0.7000000000000001,-1.0}), smoothToken(1.32, {0.6000000000000001,-1.0}), smoothToken(1.375, {0.5000000000000001,-1.0}), smoothToken(1.42, {0.40000000000000013,-1.0}), smoothToken(1.455, {0.30000000000000016,-1.0}), smoothToken(1.48, {0.20000000000000015,-1.0}), smoothToken(1.495, {0.10000000000000014,-1.0}), smoothToken(-1.0, {-1.0,1.0}), smoothToken(-1.095, {-0.9,1.0}), smoothToken(-1.18, {-0.8,1.0}), smoothToken(-1.255, {-0.7000000000000001,1.0}), smoothToken(-1.32, {-0.6000000000000001,1.0}), smoothToken(-1.375, {-0.5000000000000001,1.0}), smoothToken(-1.42, {-0.40000000000000013,1.0}), smoothToken(-1.455, {-0.30000000000000016,1.0}), smoothToken(-1.48, {-0.20000000000000015,1.0}), smoothToken(-1.495, {-0.10000000000000014,1.0}), smoothToken(1.0, {1.0,-1.0}), smoothToken(1.095, {0.9,-1.0}), smoothToken(1.18, {0.8,-1.0}), smoothToken(1.255, {0.7000000000000001,-1.0}), smoothToken(1.32, {0.6000000000000001,-1.0}), smoothToken(1.375, {0.5000000000000001,-1.0}), smoothToken(1.42, {0.40000000000000013,-1.0}), smoothToken(1.455, {0.30000000000000016,-1.0}), smoothToken(1.48, {0.20000000000000015,-1.0}), smoothToken(1.495, {0.10000000000000014,-1.0}), smoothToken(-1.0, {-1.0,1.0})}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{530.0, 260.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{270.0, 105.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.input&quot;,x=370.0,y=260.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=105.0}, points={270.0,260.0} },{ head={id=&quot;.TimedDisplay3.input&quot;,x=265.0,y=100.0}, tail={id=&quot;relation.vertex1&quot;,x=225.0,y=160.0}, points={225.0,100.0} },{ head={id=&quot;SmoothZeroCrossingDetector.input&quot;,x=320.0,y=105.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=105.0}, points={} },{ head={id=&quot;DiscreteClock2.output&quot;,x=70.0,y=105.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=105.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.trigger&quot;,x=370.0,y=260.0}, tail={id=&quot;DiscreteClock.output&quot;,x=200.0,y=335.0}, points={370.0,335.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{480.0, 260.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.output&quot;,x=370.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=480.0,y=260.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=520.0,y=335.0}, tail={id=&quot;relation3.vertex1&quot;,x=480.0,y=260.0}, points={480.0,335.0} },{ head={id=&quot;.TimedDisplay2.input&quot;,x=470.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=430.0,y=230.0}, points={} },{ head={id=&quot;relation3.vertex1&quot;,x=480.0,y=260.0}, tail={id=&quot;Test3.input&quot;,x=530.0,y=260.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{480.0, 105.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=480.0,y=105.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=540.0,y=190.0}, points={480.0,190.0} },{ head={id=&quot;SmoothZeroCrossingDetector.output&quot;,x=320.0,y=105.0}, tail={id=&quot;relation5.vertex1&quot;,x=480.0,y=105.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=530.0,y=105.0}, tail={id=&quot;relation5.vertex1&quot;,x=480.0,y=105.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=645.0,y=190.0}, tail={id=&quot;CurrentTime.output&quot;,x=540.0,y=190.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Sampler.input" relation="relation"/>
+    <link port="Sampler.output" relation="relation3"/>
+    <link port="Sampler.trigger" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="SmoothZeroCrossingDetector.input" relation="relation"/>
+    <link port="SmoothZeroCrossingDetector.output" relation="relation5"/>
+    <link port="DiscreteClock2.output" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation5"/>
+    <link port="Test.input" relation="relation4"/>
+    <link port="Test2.input" relation="relation5"/>
+    <link port="Test3.input" relation="relation3"/>
+</entity>

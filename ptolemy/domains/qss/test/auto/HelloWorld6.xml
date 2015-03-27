@@ -1,13 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld3" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld6" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
@@ -22,28 +26,32 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the integrator specifies its own errorTolerance value of 0.02,&#10;so the quantum ends up being 0.02 rather than 0.01 specified by the director.">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are&#10;represented by events that indicate significant&#10;changes in value. Hence, a constant signal is&#10;represented by a single event. Here, a constant&#10;input with value 1.0 is integrated.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 165.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This uses the QSS2Fd solver, which uses derivative information.&#10;It assumes that the derivative of the input is zero (because none&#10;is given), and quickly adjusts the step size to get far fewer steps.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 270.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 110.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.02">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="absoluteQuantum">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 110.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(0.02, {1.0}), smoothToken(0.04, {1.0}), smoothToken(0.06, {1.0}), smoothToken(0.08, {1.0}), smoothToken(0.1, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.01, {1.0}), smoothToken(0.1, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -55,7 +63,7 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.02, 0.04, 0.06, 0.08, 0.1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 0.1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

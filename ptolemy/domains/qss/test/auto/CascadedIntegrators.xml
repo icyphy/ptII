@@ -1,0 +1,295 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 545.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1225.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="355.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 90.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These actors use QSS1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 145.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These actors use QSS2FD">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 420.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.23921569,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This token should be a value and the first derivative only,&#10;as the input to the QSS2 integrator was a value&#10;with no derivative specified.&#10;While the 2nd derivative is indeed zero, I see no&#10;benefit in propagating this information if the input is a&#10;value only, as the default assumption for non-specified derivatives&#10;is that they are zero.&#10;Not propagating this derivative will lead to higher efficiency&#10;if SmoothTokens are aligned.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.23921569,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The 2nd derivative should not be zero,&#10;as the input to T4 has a non-zero 1st derivative.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 380.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={239, 79, 1605, 919}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1391, 802]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{685.5, 391.0}">
+    </property>
+    <entity name="T" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 280.0}">
+        </property>
+        <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 300}">
+            </property>
+        </property>
+    </entity>
+    <entity name="T2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1194, 104, 726, 470}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[726, 421]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 160.0}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1172, 703, 726, 472}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[726, 423]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, 280.0}">
+        </property>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{615.0, 215.0}">
+        </property>
+    </entity>
+    <entity name="MonitorValue2" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 215.0}">
+        </property>
+    </entity>
+    <entity name="MonitorValue3" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[975.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="T3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 605.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 605.0]">
+        </property>
+    </entity>
+    <entity name="T4" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 605.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1194, 104, 726, 470}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[726, 421]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 680.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1172, 703, 726, 472}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[726, 423]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[855.0, 605.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue4" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue5" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue6" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1030.0, 540.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{145.0, 280.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=145.0,y=280.0}, tail={id=&quot;MonitorValue2.input&quot;,x=300.0,y=215.0}, points={145.0,215.0} },{ head={id=&quot;T.u&quot;,x=295.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=280.0}, points={} },{ head={id=&quot;SingleEvent.output&quot;,x=80.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{460.0, 280.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, tail={id=&quot;Display1.input&quot;,x=500.0,y=160.0}, points={460.0,160.0} },{ head={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, tail={id=&quot;MonitorValue.input&quot;,x=615.0,y=215.0}, points={460.0,215.0} },{ head={id=&quot;T2.u&quot;,x=610.0,y=280.0}, tail={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, points={} },{ head={id=&quot;T.q&quot;,x=295.0,y=280.0}, tail={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{775.0, 280.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display2.input&quot;,x=815.0,y=280.0}, tail={id=&quot;relation4.vertex1&quot;,x=775.0,y=280.0}, points={} },{ head={id=&quot;T2.q&quot;,x=610.0,y=280.0}, tail={id=&quot;relation4.vertex1&quot;,x=775.0,y=280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[130.0, 605.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=145.0,y=280.0}, tail={id=&quot;MonitorValue2.input&quot;,x=300.0,y=215.0}, points={145.0,215.0} },{ head={id=&quot;T.u&quot;,x=295.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=280.0}, points={} },{ head={id=&quot;SingleEvent.output&quot;,x=80.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[445.0, 605.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, tail={id=&quot;Display1.input&quot;,x=500.0,y=160.0}, points={460.0,160.0} },{ head={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, tail={id=&quot;MonitorValue.input&quot;,x=615.0,y=215.0}, points={460.0,215.0} },{ head={id=&quot;T2.u&quot;,x=610.0,y=280.0}, tail={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, points={} },{ head={id=&quot;T.q&quot;,x=295.0,y=280.0}, tail={id=&quot;relation.vertex1&quot;,x=460.0,y=280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[760.0, 605.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display2.input&quot;,x=815.0,y=280.0}, tail={id=&quot;relation4.vertex1&quot;,x=775.0,y=280.0}, points={} },{ head={id=&quot;T2.q&quot;,x=610.0,y=280.0}, tail={id=&quot;relation4.vertex1&quot;,x=775.0,y=280.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="T.u" relation="relation3"/>
+    <link port="T.q" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation3"/>
+    <link port="T2.u" relation="relation"/>
+    <link port="T2.q" relation="relation4"/>
+    <link port="Display1.input" relation="relation"/>
+    <link port="Display2.input" relation="relation4"/>
+    <link port="MonitorValue.input" relation="relation"/>
+    <link port="MonitorValue2.input" relation="relation3"/>
+    <link port="MonitorValue3.input" relation="relation4"/>
+    <link port="T3.u" relation="relation2"/>
+    <link port="T3.q" relation="relation5"/>
+    <link port="SingleEvent2.output" relation="relation2"/>
+    <link port="T4.u" relation="relation5"/>
+    <link port="T4.q" relation="relation6"/>
+    <link port="Display.input" relation="relation5"/>
+    <link port="Display3.input" relation="relation6"/>
+    <link port="MonitorValue4.input" relation="relation5"/>
+    <link port="MonitorValue5.input" relation="relation2"/>
+    <link port="MonitorValue6.input" relation="relation6"/>
+</entity>

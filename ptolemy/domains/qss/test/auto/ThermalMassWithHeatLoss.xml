@@ -23,9 +23,9 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="24000">
         </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-2">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Fd">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 30.0}">
         </property>
@@ -87,13 +87,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={675, 452, 1026, 603}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 412, 1046, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7869634340222575">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.5535353535354, 319.21818181818185}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.5535353535354, 325.5717171717172}">
     </property>
     <property name="Q_heat" class="ptolemy.data.expr.Parameter" value="200.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -244,7 +244,9 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[713.5, 358.0]">
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 360.0}">
         </property>
     </entity>
     <entity name="dT1_dt" class="ptolemy.actor.lib.Expression">
@@ -310,6 +312,8 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[378.5, 183.0]">
         </property>
     </entity>
@@ -365,6 +369,8 @@
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
         </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[713.5, 448.0]">
         </property>
     </entity>
@@ -396,6 +402,8 @@
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="solver" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[718.5, 523.0]">
         </property>

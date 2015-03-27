@@ -1,0 +1,213 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SecondOrder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 20.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 44, 1172, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[938, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4120879120879122">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.591439688716, 170.99999999999997}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The key with QSS1 is to quantize the inputs!">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple first-order feedback system.&#10;Here we are using QSS1 with a coarse&#10;quantization of 0.5. The input is also&#10;quantized to 0.5, so the final result&#10;does not oscillate.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 55.0}">
+        </property>
+    </property>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="u - q">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 320.0}">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="q" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="u" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+        </property>
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 330.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.5000000000845, {1.9994953448000001,0.0}), smoothToken(2.0707457341913, {3.872072258654766,0.0}), smoothToken(5.3593570572562, {5.261396077239739,0.0}), smoothToken(9.3697629459977, {4.096078256595766,0.0}), smoothToken(10.6375870893322, {1.7782105657359246,0.0}), smoothToken(10.8277958843553, {-0.7979436874926848,0.0}), smoothToken(10.0223144101751, {-3.4112390698526776,0.0}), smoothToken(8.1326644839862, {-5.864857309020744,0.0}), smoothToken(4.7479603761375, {-7.8976005885253455,0.0}), smoothToken(-4.885856436707, {-8.762623248569202,0.0}), smoothToken(-7.3253884892018, {-5.781758174549298,0.0}), smoothToken(-8.5434099506173, {-2.416500366959578,0.0}), smoothToken(-8.7256923346352, {1.1251138442277804,0.0}), smoothToken(-7.9102676956832, {4.692524563509498,0.0}), smoothToken(-6.050573970685, {8.14362609666832,0.0}), smoothToken(-2.9818875261941, {11.31383166182839,0.0}), smoothToken(1.7999292072986, {13.956185622327924,0.0}), smoothToken(11.7074932966774, {15.439228556150356,0.0}), smoothToken(15.6802724328308, {13.309006191912728,0.0})}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.063758708933223E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 265.0}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={847, 75, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 190.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="-8.725692334635184" max="15.680272432830757"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 330.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.4998738362, 2.0348958116, 2.755030966, 3.6122875745, 4.0439393465, 4.4320554222, 4.8147990523, 5.2222201984, 5.7140925213, 6.8706011916, 7.2060629555, 7.5032057697, 7.7855543675, 8.0658857338, 8.3556442532, 8.6710695786, 9.0495279755, 9.7236167088, 10.0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 330.0}">
+        </property>
+    </entity>
+    <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
+        </property>
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={847, 436, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 265.0}">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="-8.762623248569202" max="15.439228556150356"/>
+<default marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=145.0,y=320.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=230.0,y=190.0}, points={85.0,310.0,85.0,190.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{440.0, 190.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, tail={id=&quot;QSSIntegrator2.q&quot;,x=350.0,y=190.0}, points={} },{ head={id=&quot;Expression.q&quot;,x=145.0,y=320.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={420.0,320.0,420.0,190.0} },{ head={id=&quot;CurrentTime.trigger&quot;,x=505.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,330.0} },{ head={id=&quot;Test.input&quot;,x=490.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,265.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=480.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.u&quot;,x=145.0,y=320.0}, tail={id=&quot;SingleEvent.output&quot;,x=35.0,y=330.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=505.0,y=330.0}, tail={id=&quot;Test2.input&quot;,x=610.0,y=330.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{305.0, 190.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=305.0,y=190.0}, tail={id=&quot;TimedPlotter2.input&quot;,x=345.0,y=265.0}, points={305.0,265.0} },{ head={id=&quot;QSSIntegrator2.u&quot;,x=350.0,y=190.0}, tail={id=&quot;relation6.vertex1&quot;,x=305.0,y=190.0}, points={} },{ head={id=&quot;QSSIntegrator.q&quot;,x=230.0,y=190.0}, tail={id=&quot;relation6.vertex1&quot;,x=305.0,y=190.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="Expression.q" relation="relation3"/>
+    <link port="Expression.u" relation="relation"/>
+    <link port="QSSIntegrator.u" relation="relation2"/>
+    <link port="QSSIntegrator.q" relation="relation6"/>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation3"/>
+    <link port="CurrentTime.output" relation="relation4"/>
+    <link port="CurrentTime.trigger" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="QSSIntegrator2.u" relation="relation6"/>
+    <link port="QSSIntegrator2.q" relation="relation3"/>
+    <link port="TimedPlotter2.input" relation="relation6"/>
+</entity>
