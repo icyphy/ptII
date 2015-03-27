@@ -14,7 +14,7 @@
   <!-- Specify the help file to open. -->
   <property name="_help"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/doc/docs.htm"/>
+            value="$CLASSPATH/ptolemy/configs/cyphysim/docs.htm"/>
 
   <property name="_classesToRemove" 
             class="ptolemy.data.expr.Parameter"
