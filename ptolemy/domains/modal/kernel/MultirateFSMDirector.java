@@ -132,6 +132,27 @@ public class MultirateFSMDirector extends FSMDirector {
     }
 
     /** Override the base class to ignore the fireAt() call if the specified
+     *  actor is the controller and the time is the current time.
+     *  The controller calls fireAt()
+     *  if the destination state is enabled, but this director already handles
+     *  transient states.
+     *  @param actor The actor scheduled to be fired.
+     *  @return If the argument is the controller, then return Time.NEGATIVE_INFINITY,
+     *   to indicate that the request is being ignored. Otherwise, return what the
+     *   superclass returns.
+     *  @exception IllegalActionException If thrown by the executive director.
+     */
+    @Override
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        FSMActor controller = getController();
+        Time currentTime = getModelTime();
+        if (actor != controller || !currentTime.equals(time)) {
+            return super.fireAt(actor, time);
+        }
+        return Time.NEGATIVE_INFINITY;
+    }
+
+    /** Override the base class to ignore the fireAt() call if the specified
      *  actor is the controller. The controller calls fireAtCurrentTime()
      *  if the destination state is enabled, but this director already handles
      *  transient states.
