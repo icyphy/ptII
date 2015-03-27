@@ -295,7 +295,26 @@ public class SmoothToken extends DoubleToken {
 	return result;
     }
 
-    /** Return the derivatives in the token as a double[], or null if there are
+    /** Return the n-th derivative of the specified token.
+     *  If no n-th derivative has been specified, return 0.0.
+     *  If n is 0 or negative, just return the value.
+     *  @param token The token.
+     *  @param n The order of the desired derivative.
+     *  @return The value of n-th derivatives of this token.
+     */
+    public static final double derivativeValue(DoubleToken token, int n) {
+	if (n <= 0) {
+	    return token._value;
+	} else if (!(token instanceof SmoothToken)
+		|| ((SmoothToken)token)._derivatives == null
+		|| n > ((SmoothToken)token)._derivatives.length) {
+	    return 0.0;
+	} else {
+	    return ((SmoothToken)token)._derivatives[n-1];
+	}
+    }
+
+    /** Return the derivatives of the token as a double[], or null if there are
      *  no derivatives. Since tokens are immutable, the caller of this method must
      *  copy the returned array if it intends to modify the array.
      *  @return The value of the derivatives contained in this token.
@@ -327,26 +346,16 @@ public class SmoothToken extends DoubleToken {
     	    }
     	    */
     	    // Now we just have to check the derivatives.
-            double[] derivatives = ((SmoothToken) object).derivativeValues();
-            if (derivatives == _derivatives) {
-        	// Derivatives are identical (should be true only if null).
-        	return true;
-            }
-            if ((derivatives == null && _derivatives != null)
-        	    || (derivatives != null && _derivatives == null)) {
-        	return false;
-            }
-            // Both tokens have derivatives.
-            if (derivatives.length != _derivatives.length) {
-                return false;
-            }
-            // Both tokens have the same number of derivatives.
-            for(int i = 0; i < _derivatives.length; i++){
-                if (derivatives[i] != _derivatives[i]) {
-                    return false;
-                }
-            }
-            return true;
+    	    int order = maxOrder(this, (DoubleToken)object);
+    	    for (int i = 0; i < order; i++) {
+    		double d1 = derivativeValue(this, i+1);
+    		double d2 = derivativeValue((DoubleToken)object, i+1);
+    		if (d1 != d2) {
+    		    return false;
+    		}
+    	    }
+    	    // All derivatives are equal.
+    	    return true;
     	} else {
             return false;
     	}
@@ -447,6 +456,15 @@ public class SmoothToken extends DoubleToken {
         return this == SmoothToken.NIL;
     }
 
+    /** Return the maximum number of specified derivatives for the two tokens.
+     *  @param arg1 The first token.
+     *  @param arg2 The second token.
+     *  @return The maximum of the number of derivatives specified.
+     */
+    public static final int maxOrder(DoubleToken arg1, DoubleToken arg2) {
+	return Math.max(order(arg1), order(arg2));
+    }
+
     /** Return a new token that is the negative of this one.
      *  @return The negative, where all the derivatives are also negated.
      */
@@ -459,6 +477,19 @@ public class SmoothToken extends DoubleToken {
 	    derivatives[i] = - _derivatives[i];
 	}
 	return new SmoothToken(-_value, _time, derivatives);
+    }
+
+    /** Return the number of specified derivatives for the token.
+     *  @param token The token.
+     *  @return The number of derivatives specified.
+     */
+    public static final int order(DoubleToken token) {
+	if (!(token instanceof SmoothToken)
+		|| ((SmoothToken)token)._derivatives == null) {
+	    return 0;
+	} else {
+	    return ((SmoothToken)token)._derivatives.length;
+	}
     }
 
     /** Set the maximum order of any token (the number of derivatives).
@@ -662,6 +693,49 @@ public class SmoothToken extends DoubleToken {
         }
     }
 
+    /** Return true if the two arguments are within epsilon of one another.
+     *  @param arg1 First argument.
+     *  @param arg2 Second argument.
+     *  @param epsilon The maximum difference.
+     */
+    protected final boolean _isClose(double arg1, double arg2, double epsilon) {
+        if (arg1 > arg2 + epsilon || arg1 < arg2 - epsilon) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /** Test that the value of this token is close to the first
+     *  argument, where "close" means that the distance between their
+     *  values is less than or equal to the second argument. It is
+     *  assumed that the type of the first argument is DoubleToken.
+     *  Here, "close" also means that the derivatives have to be close.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The distance.
+     *  @return A token containing tue if the value of this token is close
+     *   to that of the argument.
+     */
+    @Override
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+	BooleanToken result = super._isCloseTo(rightArgument, epsilon);
+	if (!result.booleanValue()) {
+	    // Value is not close.
+	    return result;
+	}
+	// Now we just have to check the derivatives.
+	int order = maxOrder(this, (DoubleToken)rightArgument);
+	for (int i = 0; i < order; i++) {
+	    double d1 = derivativeValue(this, i+1);
+	    double d2 = derivativeValue((DoubleToken)rightArgument, i+1);
+	    if (!_isClose(d1, d2, epsilon)) {
+		return BooleanToken.FALSE;
+	    }
+	}
+	// All derivatives are close.
+	return BooleanToken.TRUE;
+    }
+    
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is SmoothToken.
      *  @param rightArgument The token to compare to this token.
@@ -671,17 +745,16 @@ public class SmoothToken extends DoubleToken {
      */
     @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
-            if (rightArgument instanceof DoubleToken){
-                return super._isLessThan(rightArgument);
-            }
-            else{
-                SmoothToken convertedArgument = (SmoothToken) rightArgument;
-                return BooleanToken.getInstance(_value < convertedArgument
-                    .doubleValue());
-            }
-   }
-
+	    throws IllegalActionException {
+	if (rightArgument instanceof DoubleToken){
+	    return super._isLessThan(rightArgument);
+	}
+	else{
+	    SmoothToken convertedArgument = (SmoothToken) rightArgument;
+	    return BooleanToken.getInstance(_value < convertedArgument
+		    .doubleValue());
+	}
+    }
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  The derivatives
