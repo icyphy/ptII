@@ -125,7 +125,8 @@ void CompositeActor_Fire(struct CompositeActor* actor) {
         }
         //}
     }
-    //pblIteratorFree(inputPorts);
+    //MEMORY_FIX: Uncommented link to free memory
+    pblIteratorFree(inputPorts);
 
     (*(actor->_director->fire))(actor->_director);
 

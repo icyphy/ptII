@@ -143,7 +143,8 @@ bool SDFDirector_Prefire(struct SDFDirector* director) {
             }
         }
     }
-
+	//MEMORY_FIX: Added this line to free memory
+    pblIteratorFree(inputPorts);
     return true;
 }
 bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* port) {

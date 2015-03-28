@@ -75,10 +75,14 @@ void SDFReceiver_Put(struct SDFReceiver* r, Token* token) {
         return;
     }
     Token* dynToken = calloc(1, sizeof(Token));
+    //MEMORY_FIX: Added this line to free memory
+    free(dynToken);
     if (!dynToken) {
         fprintf(stderr, "Allocation Problem : DEReceiver_Put");
         exit(-1);
     }
     dynToken = convert(token, ((struct TypedIOPort*)r->container)->_type);
     pblListAdd(r->_queue, dynToken);
+    //MEMORY_FIX: Added this line to free memory
+    //free(dynToken);
 }
