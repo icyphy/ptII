@@ -173,26 +173,26 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /* The user-provided initial guess on the prior probability distribution.*/
+    /** The user-provided initial guess on the prior probability distribution.*/
     public Parameter priorDurationDistribution;
 
-    /* The user-provided initial guess on the prior probability distribution.*/
+    /** The user-provided initial guess on the prior probability distribution.*/
     public Parameter durationProbabilities;
 
-    /* DurationEstimates. */
+    /** DurationEstimates. */
     public TypedIOPort durationEstimates;
 
-    /* Duration Prior estimates.
+    /** Duration Prior estimates.
      */
     public TypedIOPort durationPriorEstimates;
  
-    /* Hidden-State Assignments. */
+    /** Hidden-State Assignments. */
     public TypedIOPort clusterAssignments;
 
-    /* Maximum Duration. */
+    /** Maximum Duration. */
     public Parameter maxStateDuration;
 
-    /* Likelihood. */
+    /** Likelihood. */
     public TypedIOPort modelLikelihood;
 
     ///////////////////////////////////////////////////////////////////
@@ -313,7 +313,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     @Override
     protected abstract void _updateEstimates();
 
-    /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
+    /** Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
      * probabilities of input sequences, to ensure numerical stability. Set nCategories to zero for
      * continuous distribution types */
@@ -670,6 +670,10 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /** current duration distribution. */
     protected double[][] _D = null;
 
+    /** The user defined duration priors. Note that while _durationPriors
+     * gets updated on Baum-Welch Iterations, this array stays set at the 
+     * initial user setting such that if the algorithm fails to converge,
+     * the value of _durationPriors is rolled back to _dPriors0. */
     protected double[] _dPriors0 = null;
     /** maximum duration ( in time steps). */
     protected int _maxDuration; 
