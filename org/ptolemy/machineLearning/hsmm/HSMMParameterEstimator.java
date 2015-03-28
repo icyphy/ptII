@@ -173,26 +173,26 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /* The user-provided initial guess on the prior probability distribution*/
+    /* The user-provided initial guess on the prior probability distribution.*/
     public Parameter priorDurationDistribution;
 
-    /* The user-provided initial guess on the prior probability distribution*/
+    /* The user-provided initial guess on the prior probability distribution.*/
     public Parameter durationProbabilities;
 
-    /* DurationEstimates */
+    /* DurationEstimates. */
     public TypedIOPort durationEstimates;
 
-    /* Duration Prior estimates
+    /* Duration Prior estimates.
      */
     public TypedIOPort durationPriorEstimates;
  
-    /* Hidden-State Assignments */
+    /* Hidden-State Assignments. */
     public TypedIOPort clusterAssignments;
 
-    /* Maximum Duration */
+    /* Maximum Duration. */
     public Parameter maxStateDuration;
 
-    /* Likelihood */
+    /* Likelihood. */
     public TypedIOPort modelLikelihood;
 
     ///////////////////////////////////////////////////////////////////
@@ -283,6 +283,12 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     @Override
     protected abstract double emissionProbability(double[] y, int hiddenState);
 
+    /**
+     * Return the duration probability of duration y at hidden state
+     * @param y The duration index
+     * @param hiddenState The hidden state index
+     * @return p(y|hiddenState)
+     */
     protected abstract double durationProbability(int y, int hiddenState);
 
     @Override
@@ -309,7 +315,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
-     * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
+     * probabilities of input sequences, to ensure numerical stability. Set nCategories to zero for
      * continuous distribution types */
     protected HashMap HSMMAlphaBetaRecursion(double[][] y, double[][] A,
             double[] prior, int[] nCategories) {
@@ -654,21 +660,21 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         return estimates;
     }
 
-    /* Duration priors - nStates x nDurations*/
+    /** Duration priors - an nStates-by-nDurations matrix. */
     protected double[] _durationPriors;
 
-    /* new duration distribution */
+    /** new duration distribution. */
     protected double[][] D_new = null;
-    /* initial duration distribution */
+    /** initial duration distribution. */
     protected double[][] _D0 = null;
-    /* current duration distribution */
+    /** current duration distribution. */
     protected double[][] _D = null;
 
     protected double[] _dPriors0 = null;
-    /* maximum duration ( in time steps)c  */
+    /** maximum duration ( in time steps). */
     protected int _maxDuration; 
 
-    /* Total number of categories among all observation dimensions */
+    /** Total number of categories among all observation dimensions. */
     protected int _etaDimension;
 
     protected List<Double> _likelihoodHistory;

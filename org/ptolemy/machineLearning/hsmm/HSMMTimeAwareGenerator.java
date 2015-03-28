@@ -1,3 +1,4 @@
+/**Time aware EDHMM generator. */
 package org.ptolemy.machineLearning.hsmm;
 
 
@@ -5,8 +6,7 @@ import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import org.ptolemy.machineLearning.Algorithms;
-
-import ptolemy.actor.TypedIOPort;
+ 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DateToken;
@@ -38,7 +38,14 @@ matrix, and a sampling period with which to produce observations.
 @Pt.AcceptedRating
  */
 public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
-
+    /**
+     * Constructs a HSMMTimeAwareGenerator object.
+     *
+     * @param container  a CompositeEntity object
+     * @param name       a String ...
+     * @throws NameDuplicationException ...
+     * @throws IllegalActionException ...
+     */
     public HSMMTimeAwareGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name); 
@@ -64,10 +71,10 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         }
     }
 
-    /** An array of transition matrices **/
+    /** An array of transition matrices. **/
     public PortParameter At;
 
-    /** Sampling period in seconds */
+    /** Sampling period in seconds. */
     public Parameter samplingPeriod;
 
     @Override
