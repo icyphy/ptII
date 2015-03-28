@@ -72,4 +72,6 @@ void Receiver_PutToAll(struct Receiver* r, Token* token, PblList* receivers) {
         struct Receiver* receiver = pblIteratorNext(receiversIterator);
         (*(receiver->put))(receiver, token);
     }
+    //MEMORY_FIX: Added this line to free memory
+    pblIteratorFree(receiversIterator);
 }
