@@ -1,6 +1,9 @@
 package org.ptolemy.machineLearning.hsmm;
 
 
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
+
 import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.TypedIOPort;
@@ -16,7 +19,24 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+///////////////////////////////////////////////////////////////////
+////HSMMTimeAwareGenerator.java
 
+/**
+<p>This actor implements an Explicit-Duration Hidden-Markov Model (EDHMM) and executes this
+model to generates traces. This subclass assumes that the state transitions of the EDHMM
+are characterized by a set of transition matrices, each active for a certain time interval.
+By default, the actor expects to receive a set of hourly specifications for the transition
+matrix, and a sampling period with which to produce observations. 
+</p> 
+
+
+@author Ilge Akkaya
+@version $Id$ 
+@since Ptolemy II 10.0
+@Pt.ProposedRating Red (ilgea)
+@Pt.AcceptedRating
+ */
 public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
 
     public HSMMTimeAwareGenerator(CompositeEntity container, String name)
@@ -28,7 +48,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         samplingPeriod.setExpression("6"); 
     }
 
-    
+
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute == At) {
             ArrayToken spec = ((ArrayToken)At.getToken());
@@ -43,16 +63,16 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** An array of transition matrices **/
     public PortParameter At;
-    
+
     /** Sampling period in seconds */
     public Parameter samplingPeriod;
 
     @Override
     public void fire() throws IllegalActionException { 
-        
+
         durationPriors.update();
         durationProbabilities.update();
         transitionMatrix.update(); 
@@ -63,11 +83,12 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         At.update();
         _maxDuration = ((DoubleMatrixToken)durationProbabilities.getToken()).getColumnCount();
 
+
         if (trigger.hasToken(0)) {
-            long ts0 = ((IntToken) trigger.get(0)).intValue(); 
-            
+            long ts0 = ((IntToken) trigger.get(0)).intValue();  
             _ta = new TimedAutomaton(new DateToken(ts0,
-                    DateToken.PRECISION_SECOND), _Tsampling);
+                    DateToken.PRECISION_SECOND,tz),
+                    _Tsampling);
 
             Token[] outputObservations = new ArrayToken[_windowSize];
 
@@ -80,12 +101,13 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
             int trials = 0;
             double[][] ys = new double[_windowSize][_obsDimension];
             int [] xs = new int [_windowSize]; 
-            
+
             while (!validSequenceFound && trials < MAX_TRIALS && !_stopRequested) { 
                 double totalPower = 0.0;
-             // set to true if we're forcing an inner loop to end because we're in a deadlock.
+                // set to true if we're forcing an inner loop to 
+                // end because a deadlock has been detected
                 boolean _failFast = false; 
-                
+
                 for (int i = 0; i < _windowSize; i ++ ) {  
 
                     if (_firstIteration) {
@@ -103,9 +125,8 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                         _dt--;
                     }
                     double[] yt = _sampleObservation(); 
-                    yt = _sampleObservation();  
-                            
-                    //System.out.println("Time spec satisfied at time stamp " +_ta.getCurrentTime());
+                    yt = _sampleObservation();   
+
                     Token[] yArray = new Token[yt.length];
                     for (int x= 0; x < yArray.length; x++) {
                         yArray[x] = new DoubleToken(yt[x]);
@@ -116,12 +137,12 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                         continue;
                     }
                     outputObservations[i] = new ArrayToken(yArray);
- 
+
                     xs[i] = _xt;
                     ys[i] = yt;
                     _ta.advanceTime();
                 }
-                
+
                 if (totalPower <= ((DoubleToken)powerUpperBound.getToken()).doubleValue() 
                         && totalPower >= ((DoubleToken)powerLowerBound.getToken()).doubleValue() 
                         && !_failFast) {
@@ -131,13 +152,13 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                     trials++;
                 }
             }
-            
+
             if (validSequenceFound) {  
                 Token[] states = new IntToken[_windowSize];
                 for (int i = 0; i < _windowSize; i ++) { 
                     states[i] = new IntToken(xs[i]);
                 }
-                System.out.println("Sending out observations after " + trials + " trials.");
+                System.out.println( (trials) + " samples rejected.");
                 observation.send(0, new ArrayToken(outputObservations));
                 hiddenState.send(0, new ArrayToken(states)); 
             } else {
@@ -156,10 +177,14 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
             }
         }
     }
-    
+
     @Override
-    protected int _propagateState() {
+    protected int _propagateState() throws IllegalActionException {
         // use a time-dependent transition probability matrix.
+        if (_ta.getState() > (_At.length-1) ) {
+            throw new IllegalActionException(this, "The timed automaton is set "
+                    + "to produce state " + _ta.getState() + " but At unknown for this state.");
+        }
         _A = _At[_ta.getState()];
         double[] cumSums = new double[_nStates + 1];
         for (int i = 0; i < _nStates; i++) {
@@ -170,7 +195,13 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
                 _nStates);
         return bin;
     } 
-    
+
+    /**
+     * A simple timed automaton that runs synchronously with the generator to
+     * keep track of the timeline on which symbols are being generated.
+     * @author ilgea
+     *
+     */
     private static class TimedAutomaton {
         private TimedAutomaton(DateToken timestamp, long step) {
             this._step = step;
@@ -181,15 +212,24 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         }
         private void advanceTime() throws IllegalActionException {
             _currentTime = new DateToken(this._currentTime.getTimeInMilliseconds()/1000 
-                    + _step,DateToken.PRECISION_SECOND);
+                    + _step,DateToken.PRECISION_SECOND,tz);
         }  
+        /* Time step of the automaton. */
         private final long _step;
+        /* Current time variable of the automaton. */
         private DateToken _currentTime;
     } 
-    
+
+    /** sampling period in seconds. */
     private int _Tsampling;
-    // time-dependent transition matrix.
+    
+    /** an array of time-dependent transition matrices. */
     private double[][][] _At;
-   private TimedAutomaton _ta;
+    
+    /** A timed automaton that is synchronously composed with the EDHMM. */
+    private TimedAutomaton _ta; 
+
+    /** Default time zone. */
+    private static TimeZone tz = new SimpleTimeZone(0,"GMT");
 } 
 
