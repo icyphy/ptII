@@ -1,4 +1,5 @@
-/* Hidden Nonhomogeneous Semi-Markov Model Estimator with hourly transition probabilities.
+/* Explicit-duration Hidden-Markov Model Estimator with hourly transition matrix
+ * estimates.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
 All rights reserved.
@@ -30,6 +31,8 @@ package org.ptolemy.machineLearning.hsmm;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
@@ -48,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException; 
 
 ///////////////////////////////////////////////////////////////////
-////ExpectationMaximization
+////
 
 /**
 <p>This actor implements a parameter estimator for a Hidden Semi-Markov Model with Multinomial
@@ -113,6 +116,8 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
+        TimeZone tz = new SimpleTimeZone(0,"GMT");
+
         if (timestamps.hasToken(0)) { 
             Token[] tsTokens = ((ArrayToken)timestamps.get(0)).arrayValue();
             if (tsTokens.length != clusters.length) {
@@ -124,7 +129,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             _hourOfDay = new int[tsTokens.length];
             for ( int i = 0; i < tsTokens.length ; i++) { 
                 DateToken dt = new DateToken(((IntToken)tsTokens[i]).intValue(),
-                        DateToken.PRECISION_SECOND);
+                        DateToken.PRECISION_SECOND,tz); 
                 _hourOfDay[i] = dt.getHour();
             }
             // find the transition times in the cluster assignments and build an 
@@ -134,7 +139,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
             // learn transitions from data.
             _learnAt();
-            
+
             At = new double[NUM_CATEGORIES][_nStates][_nStates];
             for (int h = 0; h < NUM_CATEGORIES; h++) {
                 for (int i =0; i < _nStates; i++) {
@@ -143,14 +148,20 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                     }
                 }
             }
-             
+
             for (int i = 0 ; i < NUM_CATEGORIES; i++) {
                 _calculateTransitionScheme(_method,i); 
             }
-            
+
             _sendEmpiricalMatrix();
         }
     }
+    
+    /**
+     * Send the learned matrix to the output.
+     * @throws NoRoomException
+     * @throws IllegalActionException
+     */
     public void _sendEmpiricalMatrix() throws NoRoomException, IllegalActionException {
 
         Token[] Atokens = new Token[NUM_CATEGORIES];
@@ -160,8 +171,9 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
         empiricalStartTimes.send(0, new ArrayToken(Atokens));
     }
+    
     /**
-     * Learn transitions purely from the data
+     * Learn the transition probability matrix for each hour, from timestamped data.
      */
     protected void _learnAt() {
         incompleteCategories = new HashSet<int[]>();
@@ -186,9 +198,9 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                     for (int k=0; k < _nStates; k ++) { 
                         Atlearned[i][j][k]/= sum;
                     }
-                } else {
+                } else { 
                     int[] cat = {i,j}; // at category i, from state j, not enough info.
-                    incompleteCategories.add(cat);
+                    incompleteCategories.add(cat); 
                 }
             }
         }
@@ -237,35 +249,50 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         }
         At[category] = Asub;
     }
-        /**
-         * MIT HAKMEM Count algorithm.
-         * @param u
-         * @return
-         */
-        private int _bitCount( int xor)
-        {
-            int oneCount = 0; 
-            oneCount = xor - ((xor >> 1) & 033333333333) 
-                    - ((xor >> 2) & 011111111111);
-            return ((oneCount + (oneCount >> 3)) & 030707070707) % 63;
-        }
-
-        /** Number of partitions in the probability transition matrix. */
-        protected final int NUM_CATEGORIES = 24;
-
-        protected final String INTERPOLATE = "Interpolate";
-        protected final String FORCE_SELF = "Force self-transition";
-        protected final String FORCE_ZERO = "Force transition to state 0";
-        protected final String NO_ACTION = "No action";
-        protected final String SELF_AND_ZERO = "Self and Zero";
-
-        /** Time-dependent transition prob .matrix*/
-        protected double[][][] At;
-        protected double[][][] Atlearned;
-        protected Set<int[]> incompleteCategories; /** Hour categories for which At has not enough information */
-        protected int[] _hourOfDay; // hour of day for input observations
-        String _method;
-
-        
-
+    
+    /**
+     * Count number of 1's in integer's bit representation
+     * (MIT HAKMEM Count algorithm.)
+     * @param xor the input integer
+     * @return Number of 1's in bit representation
+     */
+    private int _bitCount( int xor)
+    {
+        int oneCount = 0; 
+        oneCount = xor - ((xor >> 1) & 033333333333) 
+                - ((xor >> 2) & 011111111111);
+        return ((oneCount + (oneCount >> 3)) & 030707070707) % 63;
     }
+
+    /** Number of partitions in the probability transition matrix. */
+    protected final int NUM_CATEGORIES = 24;
+
+    /** Completion strategy for A set to interpolation, that is, a uniform distribuition 
+     * on all states that have
+     * Hamming distance <= 1 to the binary representation of the source state. */
+    protected static final String INTERPOLATE = "Interpolate";
+    /** Completion strategy for A set to forcing a self-transition. */
+    protected static final String FORCE_SELF = "Force self-transition";
+    /** Completion strategy for A set to forcing a transition to state 0.*/
+    protected static final String FORCE_ZERO = "Force transition to state 0";
+    /** No completion strategy. */
+    protected static final String NO_ACTION = "No action";
+    /** Completion strategy for A set to self and zero transitions with equal probability. */
+    protected static final String SELF_AND_ZERO = "Self and Zero";
+
+    /** Time-dependent transition probability matrix*/
+    protected double[][][] At;
+    
+    /** The learned transition probability matrix: before completion strategy is applied. */
+    protected double[][][] Atlearned;
+
+    /** Hour categories for which At has not enough information. */
+    protected Set<int[]> incompleteCategories; 
+    
+    /** hour of day for input observations. */
+    protected int[] _hourOfDay; 
+    String _method;
+
+
+
+}
