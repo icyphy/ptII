@@ -1,4 +1,4 @@
-/* Parameter Estimation for Explicit-Duration Hidden Markov Models.
+/* A generative Explicit-Duration Hidden Markov Model.
 
 Copyright (c) 1998-2014 The Regents of the University of California.
 All rights reserved.
@@ -48,23 +48,14 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
-////ExpectationMaximization
+////HSMMGeneratorMultinomialEmissions
 
 /**
-<p> This actor implements the Expectation-Maximization(EM) algorithm for
-parameter estimation in a family of graphical stochastic models, known as
-the Hidden Semi-Markov Model family.
-<p> In addition to estimating the parameters of a hidden markov model,
-
-
- <p>
- <b>References</b>
- <p>[1]
- Dewar, M.; Wiggins, C.; Wood, F., <i>Inference in Hidden Markov Models with Explicit
- State Duration Distributions</i>, Signal Processing Letters, IEEE , vol.19, no.4, pp.235,238, April 2012
-
-@see org.ptolemy.machineLearning.hmm.ParameterEstimator
-
+<p> This actor generates observation traces from an Explicit-Duration
+Hidden-Markov Model (EDHMM) with multinomial emissions and multinomial
+duration distributions. 
+@see org.ptolemy.machineLearning.hsmm.HSMMParameterEstimator
+@see org.ptolemy.machineLearning.hsmm.HSMMTimeAwareMultinomialEstimator
 
  @author Ilge Akkaya
  @version $Id$
@@ -154,19 +145,26 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
      */
     public Parameter nCategories; 
     
-    
+    /** State prior distribution */
     public PortParameter statePriors;
 
+    /** The trigger which is of type DateToken, that indicates the start time of generation.*/
     public TypedIOPort trigger;
 
+    /** The output port that generates an array of observations, of size <i>windowSize</i>. */
     public TypedIOPort observation;
 
+    /** The output port that generates the hidden states corresponding to the observation array
+     * that has been simultaneously output. */ 
     public TypedIOPort hiddenState;
     
+    /** Generation window size. */
     public PortParameter windowSize;
 
-
+    /** A power upper bound on the generated trace, which applies to the entire generation window.*/
     public PortParameter powerUpperBound;
+    
+    /** A power lower bound on the generated trace, which applies to the entire generation window.*/
     public PortParameter powerLowerBound;
     /**
      * A matrix that has a row for each state and a column for each category 
@@ -325,10 +323,9 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
                         yArray[x] = new DoubleToken(yt[x]);
                         totalPower += yt[x];
                     }
-                    //System.out.println("y[0] = " + yt[0]);
+
                     outputObservations[i] = new ArrayToken(yArray);
-                        
-                    //cumulativePower += yt;
+                         
                     xs[i] = _xt;
                     ys[i] = yt;
                 }
@@ -399,7 +396,7 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
         return bin;
     }
 
-    protected int _propagateState() {
+    protected int _propagateState() throws IllegalActionException {
         double[] cumSums = new double[_nStates + 1];
         for (int i = 0; i < _nStates; i++) {
             cumSums[i + 1] = cumSums[i] + _A[_xt][i];
