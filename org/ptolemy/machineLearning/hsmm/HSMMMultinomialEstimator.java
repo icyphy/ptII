@@ -49,33 +49,8 @@ import ptolemy.kernel.util.Workspace;
 ////ExpectationMaximization
 
 /**
-<p>This actor implements a parameter estimator for a Hidden Semi-Markov Model with Gaussian
-Emissions. The base class ParameterEstimator performs the parameter estimation and
-the HMMGaussianEstimator class contains density-specific methods for Gaussian emission
-calculations and produces the relevant estimates at its output ports.</p>
-<p>
-The output ports for a Gaussian HMM model are the <i>mean</i> and the <i>standardDeviation</i>
-vectors of the possible hidden states in addition to the HMM parameters independent
-from the emission density: <i>transitionMatrix</i> .
-T
-he <i>mean</i>  is a double array output containing the mean estimates and
-<i>sigma</i> is a double array output containing standard deviation estimates of
-each mixture component. If the <i>modelType</i> is HMM, then an additional output,
-<i>transitionMatrix</i> is provided, which is an estimate of the transition matrix
-governing the Markovian process representing the hidden state evolution.
-If the <i>modelType</i> is MM, this port outputs a double array with the prior
-probability estimates of the mixture components.
-</p>
-<p>
-The user-defined parameters are initial guesses for the model parameters, given by
-<i>m0</i>, the mean vector guess, <i>s0</i>, the standard deviation vector guess,
-<i>prior</i>, the prior state distribution guess, <i>A0</i>, the transition
-matrix guess ( only for HMM). <i>iterations</i> is the number of EM iterations
-allowed until convergence.
-If, during iteration, the conditional log-likelihood of the observed
-sequence given the parameter estimates converges to a value within <i>likelihoodThreshold</i>,
-the parameter estimation stops iterating and delivers the parameter estimates.
-
+<p> A hidden semi-markov model estimator, configured as an Explicit-Duration
+Hidden Markov Model (EDHMM) with multinomial emissions.
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 10.0
@@ -162,13 +137,13 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
 
     /**
      * An output that defines a probability mass estimate of the multinomial
-     * observation probabilities
+     * observation probabilities.
      */
     public TypedIOPort emissionEstimates;
 
     /**
      * An input guess array that defines a probability mass, defining the multinomial
-     * observation probabilities
+     * observation probabilities.
      */
     public Parameter observationProbabilities;
 
@@ -177,7 +152,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
      */
     public Parameter observationDimension;
     /**
-     * Number of categories in the multinomial distribution
+     * Number of categories in the multinomial distribution.
      */
     public Parameter nCategories;
 
@@ -287,8 +262,8 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     @Override
     protected void _initializeEMParameters() { 
         _transitionMatrix = _A0;
-        _priorIn = _priors; 
-        _B = _B0;
+        _priorIn = _priors;   
+        _B = _B0; 
         B_new = new double[_nStates][_etaDimension];
         A_new = new double[_nStates][_nStates]; 
         prior_new = new double[_nStates];
@@ -314,48 +289,40 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         _transitionMatrix = A_new; 
         _priorIn = prior_new; // set to the original priors
         _D = D_new;
-        _B = B_new;
+        //_B = B_new;
         _durationPriors = dPrior_new; 
     }
 
 
 
-    /**
-     * Prior durations
+    /** Duration priors.
      */
     private double[] dPrior_new; 
-    /**
-     * Inferred cluster assignments
+    /** Inferred cluster assignments.
      */
     protected int[] clusters;
 
-    /**
-     *  Emission distributions Bij = P(Yt=j | qt = i)
+    /** Emission distributions Bij = P(Yt=j | qt = i).
      */
     protected double[][] _B;
-    /**
-     * Initial guess of Emission distribution matrix
+    /** Initial guess of the emission matrix.
      */
     private double[][] _B0;
      
 
-    /**
-     * Number of categories
+    /** Number of categories.
      */
     protected int[] _nCategories;
 
-    /*
-     * Updated transition probability matrix
+    /* Updated transition probability matrix.
      */
     private double[][] A_new;
 
-    /**
-     * Updated emission probability matrix
+    /** Updated emission probability matrix.
      */
     private double[][] B_new;
 
-    /**
-     * Updated state prior belief
+    /** Updated state prior belief
      */
     protected double[] prior_new;
 
@@ -367,7 +334,5 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         } else {
             return _D[hiddenState][y];
         }
-    }
-
-
+    } 
 }
