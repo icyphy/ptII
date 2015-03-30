@@ -31,7 +31,7 @@
 ME =		ptolemy/domains/qss/demo
 
 # Keep these alphabetical please.
-DIRS =		FirstOrder HelloWorld Lorenz RLC SmoothToken Thermal
+DIRS =		FirstOrder HelloWorld Lorenz RLC SecondOrder SmoothToken Thermal
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -50,6 +50,7 @@ PTCLASSALLJARS = \
 	HelloWorld/HelloWorld.jar \
 	Lorenz/Lorenz.jar \
 	RLC/RLC.jar \
+	SecondOrder/SecondOrder.jar \
 	SmoothToken/SmoothToken.jar \
 	Thermal/Thermal.jar
 
