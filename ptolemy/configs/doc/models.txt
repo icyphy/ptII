@@ -385,8 +385,8 @@ $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.x
 $CLASSPATH/ptolemy/domains/qss/demo/FirstOrder/FirstOrder.xml
 $CLASSPATH/ptolemy/domains/qss/demo/FirstOrder/FirstOrderOscillating.xml
 $CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorld.xml
-$CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorld_Propagate.xml
-$CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorld_QSS1.xml
+$CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorldPropagate.xml
+$CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorldQSS1.xml
 $CLASSPATH/ptolemy/domains/qss/demo/Lorenz/Lorenz.xml
 $CLASSPATH/ptolemy/domains/qss/demo/RLC/RLC.xml
 $CLASSPATH/ptolemy/domains/qss/demo/SecondOrder/SecondOrder.xml
