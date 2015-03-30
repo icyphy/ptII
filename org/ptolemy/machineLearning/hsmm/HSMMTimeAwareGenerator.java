@@ -106,6 +106,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     @Override
     public void fire() throws IllegalActionException { 
 
+        super.fire();
         durationPriors.update();
         durationProbabilities.update();
         transitionMatrix.update(); 

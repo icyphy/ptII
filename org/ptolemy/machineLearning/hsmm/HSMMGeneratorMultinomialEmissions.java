@@ -29,8 +29,6 @@ package org.ptolemy.machineLearning.hsmm;
 
 import org.ptolemy.machineLearning.Algorithms;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -38,14 +36,11 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
 ////HSMMGeneratorMultinomialEmissions
@@ -63,7 +58,7 @@ duration distributions.
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */
-public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
+public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -75,94 +70,29 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
     public HSMMGeneratorMultinomialEmissions(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        powerUpperBound = new PortParameter(this,"powerUpperBound"); 
-        powerLowerBound = new PortParameter(this,"powerLowerBound"); 
-        durationPriors = new PortParameter(this, "durationPriors");
-        durationPriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        durationPriors.setExpression("{1.0,0.0}");
-        StringAttribute cardinality = new StringAttribute(
-                durationPriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
+ 
+        powerLowerBound = new PortParameter(this,"powerLowerBound");  
         
         nCategories = new Parameter(this,"nCategories");
         nCategories.setExpression("{3,3}");
-
-        statePriors = new PortParameter(this, "statePriors");
-        statePriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        statePriors.setExpression("{0.5,0.5}");
-        cardinality = new StringAttribute(statePriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-        durationProbabilities = new PortParameter(this, "durationProbabilities");
-        durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        durationProbabilities.setExpression("[0,1.0;1.0,0]");
-        cardinality = new StringAttribute(durationProbabilities.getPort(),
-                "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-        transitionMatrix = new PortParameter(this, "transitionMatrix");
-        transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        transitionMatrix.setExpression("[0.0,1.0;1.0,0.0]");
-        cardinality = new StringAttribute(transitionMatrix.getPort(),
-                "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-
+ 
         multinomialEstimates = new PortParameter(this, "multinomialEstimates");
         multinomialEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);  
-        multinomialEstimates.setExpression("[0.5,0.5,0.0;0.0,0.0,1.0]");
-
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setMultiport(true);
-
-        observation = new TypedIOPort(this, "observation", false, true);
-        observation.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
-
-        hiddenState = new TypedIOPort(this, "hiddenState", false, true);
-        hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
-        
-        windowSize = new PortParameter(this, "windowSize");
-        windowSize.setTypeEquals(BaseType.INT);
-        windowSize.setExpression("100");
-         
-
+        multinomialEstimates.setExpression("[0.5,0.5,0.0;0.0,0.0,1.0]"); 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  //// 
     
-    /* The user-provided initial guess on the prior probability distribution*/
-    public PortParameter durationPriors;
-
-    /* The user-provided initial guess on the prior probability distribution*/
-    public PortParameter durationProbabilities;
-
-    /* Transition Probability Matrix */
-    public PortParameter transitionMatrix;
+     
     /**
      * Number of categories in the multinomial distribution
      */
     public Parameter nCategories; 
     
     /** State prior distribution */
-    public PortParameter statePriors;
+    public PortParameter statePriors; 
 
-    /** The trigger which is of type DateToken, that indicates the start time of generation.*/
-    public TypedIOPort trigger;
-
-    /** The output port that generates an array of observations, of size <i>windowSize</i>. */
-    public TypedIOPort observation;
-
-    /** The output port that generates the hidden states corresponding to the observation array
-     * that has been simultaneously output. */ 
-    public TypedIOPort hiddenState;
-    
-    /** Generation window size. */
-    public PortParameter windowSize;
-
-    /** A power upper bound on the generated trace, which applies to the entire generation window.*/
-    public PortParameter powerUpperBound;
     
     /** A power lower bound on the generated trace, which applies to the entire generation window.*/
     public PortParameter powerLowerBound;
@@ -172,20 +102,11 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
      * the categories for each dimension are concatenated into a single vector.
      */
     public PortParameter multinomialEstimates;
-
-    @Override
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _firstIteration = true;
-    }
-
+ 
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == windowSize) {
-
-            _windowSize = ((IntToken)windowSize.getToken()).intValue();
-        } else if (attribute == multinomialEstimates) {
+        if (attribute == multinomialEstimates) {
            _B = ((DoubleMatrixToken)multinomialEstimates.getToken()).doubleMatrix();
            _nStates = _B.length;
                    
@@ -200,76 +121,9 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
                     _nCategories[i] = ((IntToken)cat[i]).intValue();
                 }
             }
-        }  else if (attribute == durationPriors) {
-            ArrayToken durationPriorsToken = ((ArrayToken) durationPriors
-                    .getToken());
-            int maxDuration = durationPriorsToken.length();
-            _durationPriors = new double[maxDuration];
-            double checksum = 0.0;
-            for (int i = 0; i < maxDuration; i++) {
-                _durationPriors[i] = ((DoubleToken) durationPriorsToken
-                        .getElement(i)).doubleValue();
-                checksum += _durationPriors[i];
-            }
-            if (!SignalProcessing.close(checksum, 1.0)) {
-                throw new IllegalActionException(this,
-                        "Duration Priors must sum to one. Currently:"
-                                + checksum);
-            }
-        } else if (attribute == durationProbabilities) {
-            DoubleMatrixToken durationsToken = ((DoubleMatrixToken) durationProbabilities
-                    .getToken());
-            int maxDuration = durationsToken.getColumnCount();
-            int nStates = durationsToken.getRowCount();
-            _D = new double[nStates][maxDuration];
-            double[] checkSums = new double[nStates];
-            for (int i = 0; i < maxDuration; i++) {
-                for (int j = 0; j < nStates; j++) {
-                    _D[j][i] = durationsToken.getElementAt(j, i);
-                    checkSums[j] += _D[j][i];
-                }
-            }
-            for (int i = 0; i < nStates; i++) {
-                if (!SignalProcessing.close(checkSums[i], 1.0)) {
-                    throw new IllegalActionException(this,
-                            "Duration density of a state ( i.e., each row"
-                                    + "of " + durationProbabilities.getName()
-                                    + " must sum to one.");
-                }
-            }
-        } else if (attribute == transitionMatrix) {
-            DoubleMatrixToken transitionMatrixToken = ((DoubleMatrixToken) transitionMatrix
-                    .getToken());
-            int m = transitionMatrixToken.getRowCount();
-            int n = transitionMatrixToken.getColumnCount();
-            _A = new double[m][n];
-            double[] checkSums = new double[m];
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    _A[i][j] = transitionMatrixToken.getElementAt(i, j);
-                    checkSums[i] += _A[i][j];
-                }
-            }
-            for (int i = 0; i < m; i++) {
-                if (!SignalProcessing.close(checkSums[i], 1.0)) {
-                    throw new IllegalActionException(this,
-                            "Transition Probabilities originating from each state ( i.e., each row"
-                                    + "of " + transitionMatrix.getName()
-                                    + " must sum to one.");
-                }
-            }
-        } else if (attribute == statePriors) {
-            ArrayToken statePriorsToken = ((ArrayToken) statePriors.getToken());
-            int nStates = statePriorsToken.length();
-            _x0 = new double[nStates];
-            for (int i = 0; i < nStates; i++) {
-                _x0[i] = ((DoubleToken) statePriorsToken.getElement(i))
-                        .doubleValue();
-            }
         } else {
             super.attributeChanged(attribute);
-        }
-
+        } 
     }
 
     @Override
@@ -363,6 +217,8 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
          } 
          return result;
     }
+    
+    
     private double _sampleSingleDimension(int dim) {
         //FIXME
         double[] cumSums = new double[_nCategories[dim]+1];
@@ -382,6 +238,7 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
         return bin;
     }
 
+    @Override
     protected int _sampleDurationForState() {
         double[] cumSums = new double[_maxDuration + 1];
         for (int i = 0; i < _maxDuration; i++) {
@@ -396,6 +253,7 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
         return bin;
     }
 
+    @Override
     protected int _propagateState() throws IllegalActionException {
         double[] cumSums = new double[_nStates + 1];
         for (int i = 0; i < _nStates; i++) {
@@ -433,6 +291,7 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
         return bin;
     }
 
+    @Override
     protected int _sampleDurationFromPrior() {
         double[] cumSums = new double[_maxDuration + 1];
         for (int i = 0; i < _maxDuration; i++) {
@@ -446,29 +305,10 @@ public class HSMMGeneratorMultinomialEmissions extends TypedAtomicActor {
                 _maxDuration); 
         return bin + 1;
     }
-
-    /* Duration priors - nStates x nDurations*/
-    protected double[] _durationPriors;
-
-    /* new duration distribution */
-    protected double[][] _D = null;  
-    /* maximum duration ( in time steps)c  */
-    protected double[] _x0; 
-    protected double[][] _A;
-    protected double[][] _B;
-    protected boolean _firstIteration = true;
-    protected int _nStates;
-    protected int _maxDuration;
-    // Remaining time at the state
-    protected int _dt;
-    // Current state variable
-    protected int _xt;
-    protected int _windowSize;
+   
+    protected double[][] _B;   
     /**
      * Number of categories
      */
-    protected int[] _nCategories;
-
-    protected static int MAX_TRIALS = 10000;
-
+    protected int[] _nCategories;  
 }

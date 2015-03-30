@@ -99,7 +99,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         _maxDuration = 100;
 
         priorDurationDistribution = new Parameter(this,"priorDurationDistribution");
-        priorDurationDistribution.setExpression("repeat(maxDuration, 1.0/maxDuration)");
+        priorDurationDistribution.setExpression("repeat(maxStateDuration, 1.0/maxStateDuration)");
         priorDurationDistribution.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         durationProbabilities = new Parameter(this, "durationProbabilities");
@@ -112,15 +112,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         durationPriorEstimates = new TypedIOPort(this,
                 "durationPriorEstimates", false, true);
         durationPriorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-        modelLikelihood = new TypedIOPort(this, "modelLikelihood", false, true);
-        modelLikelihood.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-//
-//        observationDimension = new Parameter(this,"observationDimension");
-//        observationDimension.setExpression("2");
-//        observationDimension.setTypeEquals(BaseType.INT);
-//        _obsDimension = 2;
+ 
 
         _initializeArrays();
  
@@ -191,9 +183,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
 
     /** Maximum Duration. */
     public Parameter maxStateDuration;
-
-    /** Likelihood. */
-    public TypedIOPort modelLikelihood;
+ 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
