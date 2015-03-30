@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II QSS HelloWorld demo
+# Makefile for Ptolemy II QSS SecondOrder demo
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/qss/demo/HelloWorld
+ME =		ptolemy/domains/qss/demo/SecondOrder
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,17 +41,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	HelloWorld
+PTPACKAGE = 	SecondOrder
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	HelloWorld.xml \
-	HelloWorldContinuous.xml \
-	HelloWorldPropagate.xml \
-	HelloWorldQSS1.xml
+	SecondOrder.xml \
+	SecondOrderContinuous.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -77,10 +75,10 @@ install: all $(PTCLASSJAR)
 demo:  demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" HelloWorld.xml
+	"$(PTII)/bin/ptolemy" SecondOrder.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" HelloWorld.xml
+	"$(PTII)/bin/vergil" SecondOrder.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
