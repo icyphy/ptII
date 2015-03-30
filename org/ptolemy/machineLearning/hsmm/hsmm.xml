@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HSMM" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Hidden Semi-Markov Model Actors</doc>
+ 
+  	  <entity name="HSMMMultinomialEstimator" class="org.ptolemy.machineLearning.hsmm.HSMMMultinomialEstimator">
+      </entity>
+      
+      <entity name="HSMMTimeAwareMultinomialEstimator" class="org.ptolemy.machineLearning.hsmm.HSMMTimeAwareMultinomialEstimator">
+      </entity>
+      
+      <entity name="HSMMGaussianEstimator" class="org.ptolemy.machineLearning.hsmm.HSMMGaussianEstimator">
+      </entity>
+      
+      <entity name="HSMMTimeAwareGenerator" class="org.ptolemy.machineLearning.hsmm.HSMMTimeAwareGenerator">
+      </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

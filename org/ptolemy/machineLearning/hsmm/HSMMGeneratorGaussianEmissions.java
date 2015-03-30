@@ -29,15 +29,12 @@ package org.ptolemy.machineLearning.hsmm;
 
 import org.ptolemy.machineLearning.Algorithms;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -46,7 +43,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -73,7 +69,7 @@ the Hidden Semi-Markov Model family.
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */
-public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
+public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -85,33 +81,10 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
     public HSMMGeneratorGaussianEmissions(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        durationPriors = new PortParameter(this, "durationPriors");
-        durationPriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        durationPriors.setExpression("{1.0,0.0}");
+ 
         StringAttribute cardinality = new StringAttribute(
                 durationPriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-        statePriors = new PortParameter(this, "statePriors");
-        statePriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        statePriors.setExpression("{0.5,0.5}");
-        cardinality = new StringAttribute(statePriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-        durationProbabilities = new PortParameter(this, "durationProbabilities");
-        durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        durationProbabilities.setExpression("[0,1.0;1.0,0]");
-        cardinality = new StringAttribute(durationProbabilities.getPort(),
-                "_cardinal");
-        cardinality.setExpression("SOUTH");
-
-        transitionMatrix = new PortParameter(this, "transitionMatrix");
-        transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        transitionMatrix.setExpression("[0.0,1.0;1.0,0.0]");
-        cardinality = new StringAttribute(transitionMatrix.getPort(),
-                "_cardinal");
-        cardinality.setExpression("SOUTH");
+        cardinality.setExpression("SOUTH"); 
 
         mean = new PortParameter(this, "mean");
         mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -119,127 +92,27 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
         cardinality = new StringAttribute(mean.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        sigma = new PortParameter(this, "sigma");
-        sigma.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        sigma.setExpression("{10.0,10.0}");
-        cardinality = new StringAttribute(sigma.getPort(), "_cardinal");
+        covariance = new PortParameter(this, "sigma");
+        covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        covariance.setExpression("{10.0,10.0}");
+        cardinality = new StringAttribute(covariance.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
-
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setMultiport(true);
-
-        observation = new TypedIOPort(this, "observation", false, true);
-        observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
-        hiddenState = new TypedIOPort(this, "hiddenState", false, true);
-        hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
-
-        windowSize = new Parameter(this,"windowSize");
-        windowSize.setTypeEquals((BaseType.INT));
-        windowSize.setExpression("100");
-
-        powerLimit = new PortParameter(this, "powerLimit");
-        powerLimit.setTypeEquals(BaseType.DOUBLE);
-        powerLimit.setExpression("100.0");
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /* The user-provided initial guess on the prior probability distribution*/
-    public PortParameter durationPriors;
-
-    /* The user-provided initial guess on the prior probability distribution*/
-    public PortParameter durationProbabilities;
-
-    /* Transition Probability Matrix */
-    public PortParameter transitionMatrix;
-
+ 
+    /** Mean array. */
     public PortParameter mean;
 
-    public PortParameter sigma;
-
-    public PortParameter statePriors;
-
-    public TypedIOPort trigger;
-
-    public TypedIOPort observation;
-
-    public TypedIOPort hiddenState;
-
-    public Parameter windowSize; 
-
-    public PortParameter powerLimit;
-
-    @Override
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _firstIteration = true;
-    }
+    /** Variance array. */
+    public PortParameter covariance;
+  
 
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == durationPriors) {
-            ArrayToken durationPriorsToken = ((ArrayToken) durationPriors
-                    .getToken());
-            int maxDuration = durationPriorsToken.length();
-            _durationPriors = new double[maxDuration];
-            double checksum = 0.0;
-            for (int i = 0; i < maxDuration; i++) {
-                _durationPriors[i] = ((DoubleToken) durationPriorsToken
-                        .getElement(i)).doubleValue();
-                checksum += _durationPriors[i];
-            }
-            if (!SignalProcessing.close(checksum, 1.0)) {
-                throw new IllegalActionException(this,
-                        "Duration Priors must sum to one. Currently:"
-                                + checksum);
-            }
-        } else if (attribute == durationProbabilities) {
-            DoubleMatrixToken durationsToken = ((DoubleMatrixToken) durationProbabilities
-                    .getToken());
-            int maxDuration = durationsToken.getColumnCount();
-            int nStates = durationsToken.getRowCount();
-            _D = new double[nStates][maxDuration];
-            double[] checkSums = new double[nStates];
-            for (int i = 0; i < maxDuration; i++) {
-                for (int j = 0; j < nStates; j++) {
-                    _D[j][i] = durationsToken.getElementAt(j, i);
-                    checkSums[j] += _D[j][i];
-                }
-            }
-            for (int i = 0; i < nStates; i++) {
-                if (!SignalProcessing.close(checkSums[i], 1.0)) {
-                    throw new IllegalActionException(this,
-                            "Duration density of a state ( i.e., each row"
-                                    + "of " + durationProbabilities.getName()
-                                    + " must sum to one.");
-                }
-            }
-        } else if (attribute == transitionMatrix) {
-            DoubleMatrixToken transitionMatrixToken = ((DoubleMatrixToken) transitionMatrix
-                    .getToken());
-            int m = transitionMatrixToken.getRowCount();
-            int n = transitionMatrixToken.getColumnCount();
-            _A = new double[m][n];
-            double[] checkSums = new double[m];
-            for (int i = 0; i < m; i++) {
-                for (int j = 0; j < n; j++) {
-                    _A[i][j] = transitionMatrixToken.getElementAt(i, j);
-                    checkSums[i] += _A[i][j];
-                }
-            }
-            for (int i = 0; i < m; i++) {
-                if (!SignalProcessing.close(checkSums[i], 1.0)) {
-                    throw new IllegalActionException(this,
-                            "Transition Probabilities originating from each state ( i.e., each row"
-                                    + "of " + transitionMatrix.getName()
-                                    + " must sum to one.");
-                }
-            }
-        } else if (attribute == mean) {
+        if (attribute == mean) {
             ArrayToken meanToken = ((ArrayToken) mean.getToken());
             int nStates = meanToken.length();
             _mean = new double[nStates];
@@ -248,29 +121,17 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
                 _mean[i] = ((DoubleToken) meanToken.getElement(i))
                         .doubleValue();
             }
-        } else if (attribute == windowSize) {
-            IntToken wx = ((IntToken) windowSize.getToken()); 
-            _windowSize = wx.intValue(); 
-        } else if (attribute == sigma) {
-            ArrayToken sigmaToken = ((ArrayToken) sigma.getToken());
+        } else if (attribute == covariance) {
+            ArrayToken sigmaToken = ((ArrayToken) covariance.getToken());
             int nStates = sigmaToken.length();
-            _sigma = new double[nStates];
+            _covariance = new double[nStates];
             for (int i = 0; i < nStates; i++) {
-                _sigma[i] = ((DoubleToken) sigmaToken.getElement(i))
-                        .doubleValue();
-            }
-        } else if (attribute == statePriors) {
-            ArrayToken statePriorsToken = ((ArrayToken) statePriors.getToken());
-            int nStates = statePriorsToken.length();
-            _x0 = new double[nStates];
-            for (int i = 0; i < nStates; i++) {
-                _x0[i] = ((DoubleToken) statePriorsToken.getElement(i))
+                _covariance[i] = ((DoubleToken) sigmaToken.getElement(i))
                         .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);
-        }
-
+        } 
     }
 
     @Override
@@ -281,15 +142,15 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
         durationProbabilities.update();
         transitionMatrix.update();
         mean.update();
-        sigma.update();
+        covariance.update();
         statePriors.update();
-        powerLimit.update();
+        powerUpperBound.update();
         
         if (trigger.hasToken(0)) {
             trigger.get(0); 
             int nStates = ((ArrayToken) statePriors.getToken()).length();
             ArrayToken meanToken = ((ArrayToken) mean.getToken());
-            ArrayToken sigmaToken = ((ArrayToken) sigma.getToken());
+            ArrayToken sigmaToken = ((ArrayToken) covariance.getToken());
             ArrayToken statePriorsToken = ((ArrayToken) statePriors.getToken());
             ArrayToken durationPriorsToken = ((ArrayToken) durationPriors
                     .getToken());
@@ -336,12 +197,12 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
                         // _xt doesn't change, decrement _dt.
                         _dt--;
                     }
-                    double yt = _sampleObservation();
-                    cumulativePower += yt;
+                    double[] yt = _sampleObservation();
+                    cumulativePower += yt[0];
                     xs[i] = _xt;
-                    ys[i] = yt;
+                    ys[i] = yt[0];
                 }
-                if (cumulativePower <= ((DoubleToken)powerLimit.getToken()).doubleValue()) {
+                if (cumulativePower <= ((DoubleToken)powerUpperBound.getToken()).doubleValue()) {
                     validSequenceFound = true;
                     break;
                 } else {
@@ -362,17 +223,18 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
         }
     }
 
-    private double _sampleObservation() {
+    @Override
+    protected double[] _sampleObservation() {
         // generate y_t ~ p(y_t | x_t). In this class, y_t is Gaussian, whose mean and variance is a function of _xt.
         double mu = _mean[_xt];
-        double s = _sigma[_xt];
+        double s = _covariance[_xt];
 
         DoubleToken yt = UtilityFunctions.gaussian(mu, s);
-        return yt.doubleValue();
-
+        return new double[]{yt.doubleValue()}; 
     }
 
-    private int _sampleDurationForState() {
+    @Override
+    protected int _sampleDurationForState() {
         double[] cumSums = new double[_maxDuration + 1];
         for (int i = 0; i < _maxDuration; i++) {
             cumSums[i + 1] = cumSums[i] + _D[_xt][i];
@@ -386,7 +248,8 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
         return bin + 1;
     }
 
-    private int _propagateState() {
+    @Override
+    protected int _propagateState() {
         double[] cumSums = new double[_nStates + 1];
         for (int i = 0; i < _nStates; i++) {
             cumSums[i + 1] = cumSums[i] + _A[_xt][i];
@@ -400,11 +263,8 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
         return bin;
     }
 
-    /**
-     * Sample state at this iteration from the state prior.
-     * @return The hidden state at this iteration
-     */
-    private int _sampleHiddenStateFromPrior() {
+    @Override
+    protected int _sampleHiddenStateFromPrior() {
         // calculate cumulative sums and sample from the CDF
         double[] cumSums = new double[_nStates + 1];
         for (int i = 0; i < _nStates; i++) {
@@ -419,7 +279,8 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
         return bin;
     }
 
-    private int _sampleDurationFromPrior() {
+    @Override
+    protected int _sampleDurationFromPrior() {
         double[] cumSums = new double[_maxDuration + 1];
         for (int i = 0; i < _maxDuration; i++) {
             cumSums[i + 1] = cumSums[i] + _durationPriors[i];
@@ -432,29 +293,11 @@ public class HSMMGeneratorGaussianEmissions extends TypedAtomicActor {
                 _maxDuration);
         return bin + 1;
     }
-
-    /* Duration priors - nStates x nDurations*/
-    protected double[] _durationPriors;
-
-    /* new duration distribution */
-    protected double[][] D_new = null;
-    /* initial duration distribution */
-    protected double[][] _D0 = null;
-    /* current duration distribution */
-    protected double[][] _D = null;
-    /* maximum duration ( in time steps)c  */
-    private double[] _x0;
+ 
+    /** Mean vector. */
     private double[] _mean;
-    private double[] _sigma;
-    private double[][] _A;
-    private boolean _firstIteration = true;
-    private int _nStates;
-    private int _maxDuration;
-    // Remaining time at the state
-    private int _dt;
-    // Current state variable
-    private int _xt;
-    private int _windowSize;
-    private static int MAX_TRIALS = 100000;
+    
+    /** Covariance vector. */
+    private double[] _covariance; 
 
 }

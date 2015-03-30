@@ -118,12 +118,16 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Mean estimate array.*/
     public TypedIOPort mean;
 
+    /** Standard deviation estimate array. */
     public TypedIOPort standardDeviation;
 
+    /** Mean vector guess */
     public Parameter meanVectorGuess;
 
+    /** Standard deviation guess */
     public Parameter standardDeviationGuess;
 
     ///////////////////////////////////////////////////////////////////
@@ -242,8 +246,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             priorEstimates.send(0, new ArrayToken(pTokens));
             durationEstimates.send(0, new DoubleMatrixToken(D_new));
             clusterAssignments.send(0, new ArrayToken(cTokens));
-            durationPriorEstimates.send(0, new ArrayToken(dTokens));
-            modelLikelihood.send(0, new ArrayToken(lTokens));
+            durationPriorEstimates.send(0, new ArrayToken(dTokens)); 
         } else {
             System.err.println("EM Algorithm did not converge!");
         }

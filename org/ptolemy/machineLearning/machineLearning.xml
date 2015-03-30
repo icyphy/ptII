@@ -9,6 +9,7 @@
 
   <!-- Use paths from $PTII so that they work in jar files. -->
   <input source="org/ptolemy/machineLearning/hmm/hmm.xml"/>
+  <input source="org/ptolemy/machineLearning/hsmm/hsmm.xml"/>
   <input source="org/ptolemy/machineLearning/particleFilter/particleFilter.xml"/>
   <input source="org/ptolemy/ssm/ssm.xml"/>
 	
