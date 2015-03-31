@@ -28,7 +28,7 @@ PTCG_OFILES = $(PTCG_OFILES_TEMP:.c=.o)
 
 #FIXME: Should be able to store the mbed library path somewhere in Ptolemy
 # Probably get it like we get PTCGLibraries?
-LIBRARY_PATH = /Users/narenvasanad/workspace/mbed2/libraries/
+LIBRARY_PATH = $(PTII)vendors/mbed/libraries/
 
 OBJECTS = ./main.o $(PTCG_OFILES)
 
@@ -88,7 +88,7 @@ MBED_INCLUDES += -I$(LIBRARY_PATH)/HTTPClient -I$(LIBRARY_PATH)/HTTPClient/data 
 #Current MBED_BASE is /usr/local/mbed/gcc-arm-none-eabi. Not needed since it is already in the path
 #MBED_BASE=/usr/local/mbed/gcc-arm-none-eabi
 #FIXME: This shouldn't be hard coded. Figure out how to get this automatically
-MBED_BIN	= /Users/narenvasanad/workspace/gcc-arm-none-eabi-4_9-2014q4/bin/
+MBED_BIN	= $(PTII)/vendors/mbed/gcc-arm/bin/
 MBED_AR		= $(MBED_BIN)arm-none-eabi-ar
 MBED_AS		= $(MBED_BIN)arm-none-eabi-as
 MBED_GCC	= $(MBED_BIN)arm-none-eabi-gcc
