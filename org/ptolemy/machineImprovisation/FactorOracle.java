@@ -80,7 +80,7 @@ import ptolemy.kernel.util.Workspace;
  <b>References</b>
  <p>[1]
  C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching."
- <i>SOFSEM’99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
+ <i>SOFSEM'99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
 
  @author Ilge Akkaya
  @version  $Id$
