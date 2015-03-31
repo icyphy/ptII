@@ -53,7 +53,14 @@ An abstract decorator that defines a measurement model.
  */
 public abstract class MeasurementModel extends MirrorDecorator 
 implements StateSpaceActor {
-
+    /**
+     * Constructs a MeasurementModel object.
+     *
+     * @param container  a CompositeEntity object
+     * @param name       a String indicating the decorator name
+     * @throws IllegalActionException 
+     * @throws NameDuplicationException 
+     */
     public MeasurementModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
@@ -66,7 +73,7 @@ implements StateSpaceActor {
     public TypedIOPort z;
 
     /**
-     * The measurement port
+     * The measurement port.
      */
     public Parameter zParameter;
 
@@ -129,6 +136,10 @@ implements StateSpaceActor {
         return found;
     } 
 
+    /**
+     * Return the measurement postfix.
+     * @return
+     */
     public String getMeasurementParameterPostfix() {
         return MEASUREMENT_PARAMETER_POSTFIX;
     }
