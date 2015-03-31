@@ -31,10 +31,12 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -69,39 +71,50 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
         durationPriors = new PortParameter(this, "durationPriors");
         durationPriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         durationPriors.setExpression("{1.0,0.0}");
-        StringAttribute cardinality = new StringAttribute(
-                durationPriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
+        new StringAttribute(durationPriors.getPort(), "_cardinal")
+        .setExpression("SOUTH");
+        new SingletonParameter(durationPriors.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
 
         statePriors = new PortParameter(this, "statePriors");
         statePriors.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         statePriors.setExpression("{0.5,0.5}");
-        cardinality = new StringAttribute(statePriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
-
+        new StringAttribute(statePriors.getPort(), "_cardinal")
+            .setExpression("SOUTH");
+        new SingletonParameter(statePriors.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         durationProbabilities = new PortParameter(this, "durationProbabilities");
         durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
         durationProbabilities.setExpression("[0,1.0;1.0,0]");
-        cardinality = new StringAttribute(durationProbabilities.getPort(),
-                "_cardinal");
-        cardinality.setExpression("SOUTH");
+        new StringAttribute(durationProbabilities.getPort(), "_cardinal")
+        .setExpression("SOUTH");
+        new SingletonParameter(durationProbabilities.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
 
         transitionMatrix = new PortParameter(this, "transitionMatrix");
         transitionMatrix.setTypeEquals(BaseType.DOUBLE_MATRIX);
         transitionMatrix.setExpression("[0.0,1.0;1.0,0.0]");
-        cardinality = new StringAttribute(transitionMatrix.getPort(),
-                "_cardinal");
-        cardinality.setExpression("SOUTH"); 
+        new StringAttribute(transitionMatrix.getPort(), "_cardinal")
+        .setExpression("SOUTH");
+        new SingletonParameter(transitionMatrix.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
-
+        new SingletonParameter(trigger, "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         observation = new TypedIOPort(this, "observation", false, true);
         observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
+        new SingletonParameter(observation, "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         hiddenState = new TypedIOPort(this, "hiddenState", false, true);
         hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
-
+        new SingletonParameter(hiddenState, "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         windowSize = new Parameter(this,"windowSize");
         windowSize.setTypeEquals((BaseType.INT));
         windowSize.setExpression("100");
@@ -109,6 +122,8 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
         powerUpperBound = new PortParameter(this, "powerUpperBound");
         powerUpperBound.setTypeEquals(BaseType.DOUBLE);
         powerUpperBound.setExpression("100.0");
+        new SingletonParameter(powerUpperBound.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
 
     }
 

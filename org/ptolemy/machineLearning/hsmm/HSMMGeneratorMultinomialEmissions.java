@@ -31,11 +31,14 @@ import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -72,6 +75,8 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         super(container, name);
  
         powerLowerBound = new PortParameter(this,"powerLowerBound");  
+        new SingletonParameter(powerLowerBound.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
         
         nCategories = new Parameter(this,"nCategories");
         nCategories.setExpression("{3,3}");
@@ -79,6 +84,8 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         multinomialEstimates = new PortParameter(this, "multinomialEstimates");
         multinomialEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);  
         multinomialEstimates.setExpression("[0.5,0.5,0.0;0.0,0.0,1.0]"); 
+        new SingletonParameter(multinomialEstimates.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,11 +95,7 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
     /**
      * Number of categories in the multinomial distribution
      */
-    public Parameter nCategories; 
-    
-    /** State prior distribution */
-    public PortParameter statePriors; 
-
+    public Parameter nCategories;  
     
     /** A power lower bound on the generated trace, which applies to the entire generation window.*/
     public PortParameter powerLowerBound;
@@ -119,6 +122,14 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
                 _nCategories = new int[cat.length];  
                 for (int i = 0 ; i <cat.length ; i++) {
                     _nCategories[i] = ((IntToken)cat[i]).intValue();
+                }
+                
+                // dynamically set output type according to how many categories 
+                // are expected.
+                if (cat.length == 1) {
+                    observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+                } else {
+                    observation.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
                 }
             }
         } else {

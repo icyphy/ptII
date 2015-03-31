@@ -31,10 +31,12 @@ import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -81,22 +83,23 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
     public HSMMGeneratorGaussianEmissions(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
- 
-        StringAttribute cardinality = new StringAttribute(
-                durationPriors.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH"); 
+  
 
         mean = new PortParameter(this, "mean");
         mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         mean.setExpression("{0.0,100.0}");
-        cardinality = new StringAttribute(mean.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
+        new StringAttribute(mean.getPort(), "_cardinal")
+            .setExpression("SOUTH");
+        new SingletonParameter(mean.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
 
         covariance = new PortParameter(this, "sigma");
         covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         covariance.setExpression("{10.0,10.0}");
-        cardinality = new StringAttribute(covariance.getPort(), "_cardinal");
-        cardinality.setExpression("SOUTH");
+        new StringAttribute(covariance.getPort(), "_cardinal")
+            .setExpression("SOUTH");
+        new SingletonParameter(covariance.getPort(), "_showName")
+        .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
