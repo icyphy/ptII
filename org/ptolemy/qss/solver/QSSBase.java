@@ -298,33 +298,33 @@ import ptolemy.actor.util.Time;
  * <li> [Kofman-Junco-2001].
  * Kofman, E. and S. Junco (2001). "Quantized-State Systems: 
  * A {DEVS} Approach for Continuous System Simulation."
- * Trans. of The Society for Modeling and Simulation International 18(1): 2-8.
+ * Trans. of The Society for Modeling and Simulation International 18(1): 2-8.</li>
  *
  * <li> [Kofman-2002].
  * Ernesto Kofman,
  * "A second-order approximation for DEVS simulation of continuous systems",
- * Simulation, v.78, n.2, pp.76-89, 2002.</p>
+ * Simulation, v.78, n.2, pp.76-89, 2002.</li>
  *
  * <li> [Cellier-2006].
  * Francois E. Cellier and Ernesto Kofman,
  * "Continuous System Simulation",
- * Springer, 2006.</p>
+ * Springer, 2006.</li>
  *
  * <li> [Migoni-2009].
  * G. Migoni and E. Kofman,
  * "Linearly implicit discrete event methods for stiff ODE's",
- * Latin American Applied Research, v.39, pp.245–254, 2009.</p>
+ * Latin American Applied Research, v.39, pp.245-254, 2009.</li>
  *
  * <li> Floros, X., et al. (2010). "Discretizing Time or States?
  * A Comparative Study between DASSL and QSS - Work in Progress Paper,"
  * Workshop on Equation-Based Object-Oriented Modeling Languages and Tools (EOOLT),
- * Oslo, Norway, Linkoping University.
+ * Oslo, Norway, Linkoping University.</li>
  * 
  * <li> [Migoni-2013].
  * Gustavo Migoni, Mario Bortolotto, Ernesto Kofman, and Francois E. Cellier,
  * "Linearly implicit quantization-based integration methods for stiff ordinary
  * differential equations",
- * Simulation Modelling Practice and Theory, v.35, pp.118–136, 2013.</p>
+ * Simulation Modelling Practice and Theory, v.35, pp.118-136, 2013.</li>
  * 
  * </ol>
  *
