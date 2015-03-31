@@ -157,14 +157,26 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
         return list;
     }
 
+    /**
+     * Returns the added port names.
+     * @return a list containing the added port names
+     */
     public List<String> getAddedPortNames() {
         return _addedPortNames;
     }
 
+    /**
+     * Returns the added port parameter names.
+     * @return a list containing the added port parameter names
+     */
     public List<String> getAddedPortParameterNames() {
         return _addedPortParameterNames;
     }
 
+    /**
+     * Returns the added paramters
+     * @return a list containing the added parameters.
+     */
     public List<Parameter> getAddedParameters() {
         return _addedParameters;
     }
@@ -201,7 +213,7 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
 
     /** Notify the monitor that an event happened. 
      *  @param eventType Type of event.
-     *  @param portName Name of port to be added/removed
+     *  @param parameter Parameter to be added/removed
      */
     public void sendParameterEvent(DecoratorEvent eventType, Parameter parameter) {
         if (_listeners != null) {
@@ -320,10 +332,13 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     /** Listeners registered to receive events from this object. */
     protected ArrayList<MirrorDecoratorListener> _listeners;
 
+    /** A list containing the names of user added ports. */
     protected List<String> _addedPortNames = new ArrayList<>();  
 
+    /** A list containing the names of user added port parameters. */
     protected List<String> _addedPortParameterNames = new ArrayList<>();
 
+    /** A list containing the user added parameters. */
     protected List<Parameter> _addedParameters = new ArrayList<>(); 
 
 }
