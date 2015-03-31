@@ -75,7 +75,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     public HSMMTimeAwareGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name); 
-        At = new PortParameter(this,"specArray");
+        At = new PortParameter(this,"At");
         At.setExpression("{[1.0]}");
         samplingPeriod = new Parameter(this, "samplingPeriod");
         samplingPeriod.setExpression("6"); 

@@ -93,7 +93,7 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
         new SingletonParameter(mean.getPort(), "_showName")
         .setToken(BooleanToken.TRUE);
 
-        covariance = new PortParameter(this, "sigma");
+        covariance = new PortParameter(this, "covariance");
         covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         covariance.setExpression("{10.0,10.0}");
         new StringAttribute(covariance.getPort(), "_cardinal")
