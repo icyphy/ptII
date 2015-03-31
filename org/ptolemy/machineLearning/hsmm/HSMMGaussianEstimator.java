@@ -31,11 +31,13 @@ import org.ptolemy.machineLearning.Algorithms;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -95,11 +97,15 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             IllegalActionException {
         super(container, name);
 
-        standardDeviation = new TypedIOPort(this, "standardDeviation", false,
+        covariance = new TypedIOPort(this, "covariance", false,
                 true);
-
+        new SingletonParameter(covariance, "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         mean = new TypedIOPort(this, "mean", false, true);
-
+        new SingletonParameter(mean, "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         meanVectorGuess = new Parameter(this, "meanVectorGuess");
         meanVectorGuess
                 .setExpression("{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}");
@@ -122,7 +128,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     public TypedIOPort mean;
 
     /** Standard deviation estimate array. */
-    public TypedIOPort standardDeviation;
+    public TypedIOPort covariance;
 
     /** Mean vector guess */
     public Parameter meanVectorGuess;
@@ -157,10 +163,10 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             }
             if (_obsDimension > 1) {
                 mean.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
-                standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
+                covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
             } else {
                 mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-                standardDeviation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+                covariance.setTypeEquals(new ArrayType(BaseType.DOUBLE));
             }
         } else if (attribute == standardDeviationGuess) {
             int nS = ((ArrayToken) standardDeviationGuess.getToken()).length();
@@ -241,7 +247,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             _likelihoodHistory.clear();
 
             mean.send(0, new ArrayToken(mTokens));
-            standardDeviation.send(0, new ArrayToken(sTokens));
+            covariance.send(0, new ArrayToken(sTokens));
             transitionMatrix.send(0, new DoubleMatrixToken(A_new));
             priorEstimates.send(0, new ArrayToken(pTokens));
             durationEstimates.send(0, new DoubleMatrixToken(D_new));

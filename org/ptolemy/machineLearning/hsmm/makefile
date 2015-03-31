@@ -52,16 +52,20 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	HSMMGaussianEstimator.java \
+	HSMMGenerator.java \
 	HSMMGeneratorGaussianEmissions.java \
-	HSMMGeneratorMultinomialEmissions.java \
-	HSMMMultiInputGenerator.java \
+	HSMMGeneratorMultinomialEmissions.java \ 
 	HSMMMultinomialEstimator.java \
 	HSMMParameterEstimator.java \
 	HSMMTimeAwareGenerator.java \
 	HSMMTimeAwareMultinomialEstimator.java \
 	HSMMTimeAwareMultinomialEstimatorWithCodegen.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED =\
+	HSMMGaussianEstimatorIcon.xml \
+	HSMMMultinomialEstimatorIcon.xml \
+	HSMMTimeAwareMultinomialEstimatorIcon.xml 
+
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

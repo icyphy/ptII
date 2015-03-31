@@ -35,10 +35,12 @@ import org.ptolemy.machineLearning.hmm.ParameterEstimator;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -92,7 +94,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         clusterAssignments = new TypedIOPort(this, "clusterAssignments", false,
                 true);
         clusterAssignments.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-
+        new SingletonParameter(clusterAssignments, "_hide")
+        .setToken(BooleanToken.TRUE);
+        
         maxStateDuration = new Parameter(this, "maxStateDuration");
         maxStateDuration.setTypeEquals(BaseType.INT);
         maxStateDuration.setExpression("100");
@@ -108,11 +112,14 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         durationEstimates = new TypedIOPort(this, "durationEstimates", false,
                 true);
         durationEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
-
+        new SingletonParameter(durationEstimates, "_showName")
+        .setToken(BooleanToken.TRUE);
+        
         durationPriorEstimates = new TypedIOPort(this,
                 "durationPriorEstimates", false, true);
         durationPriorEstimates.setTypeEquals(new ArrayType(BaseType.DOUBLE));
- 
+        new SingletonParameter(durationPriorEstimates, "_showName")
+        .setToken(BooleanToken.TRUE);
 
         _initializeArrays();
  

@@ -105,8 +105,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
 
     @Override
     public void fire() throws IllegalActionException { 
-
-        super.fire();
+ 
         durationPriors.update();
         durationProbabilities.update();
         transitionMatrix.update(); 
@@ -116,8 +115,7 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
         multinomialEstimates.update();
         At.update();
         _maxDuration = ((DoubleMatrixToken)durationProbabilities.getToken()).getColumnCount();
-
-
+ 
         if (trigger.hasToken(0)) {
             long ts0 = ((IntToken) trigger.get(0)).intValue();  
             _ta = new TimedAutomaton(new DateToken(ts0,

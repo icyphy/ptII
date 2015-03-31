@@ -31,12 +31,14 @@ import java.util.stream.IntStream;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -74,6 +76,8 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         emissionEstimates = new TypedIOPort(this, "emissionEstimates", false,
                 true);
         emissionEstimates.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        new SingletonParameter(emissionEstimates, "_showName")
+        .setToken(BooleanToken.TRUE);
 
         observationProbabilities = new Parameter(this,
                 "observationProbabilities");

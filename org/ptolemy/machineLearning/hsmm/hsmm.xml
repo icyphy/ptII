@@ -16,6 +16,12 @@
       <entity name="HSMMGaussianEstimator" class="org.ptolemy.machineLearning.hsmm.HSMMGaussianEstimator">
       </entity>
       
+      <entity name="HSMMGeneratorGaussianEmissions" class="org.ptolemy.machineLearning.hsmm.HSMMGeneratorGaussianEmissions">
+      </entity>
+      
+      <entity name="HSMMGeneratorMultinomialEmissions" class="org.ptolemy.machineLearning.hsmm.HSMMGeneratorMultinomialEmissions">
+      </entity>
+      
       <entity name="HSMMTimeAwareGenerator" class="org.ptolemy.machineLearning.hsmm.HSMMTimeAwareGenerator">
       </entity>
 
