@@ -23,7 +23,9 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="24000">
         </property>
-        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-1">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-2">
+        </property>
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-2">
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
         </property>
@@ -342,7 +344,7 @@
     <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="yI, T1, T2, T3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={656, 22, 627, 295}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={656, 23, 627, 295}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 251]">
         </property>
@@ -360,7 +362,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="24000.0"/>
-<yRange min="-0.09256564743750681" max="27.37340449899963"/>
+<yRange min="-0.10101588080803314" max="27.083395072273564"/>
 <default marks="bigdots"/>
 </plot>?>
         </configure>
@@ -409,7 +411,7 @@
         </property>
     </entity>
     <entity name="dT3_dt" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="UA*(T2-T3)/C">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2*UA*(T2-T3)/C">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
