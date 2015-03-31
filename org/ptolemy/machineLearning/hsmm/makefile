@@ -54,7 +54,7 @@ JSRCS = \
 	HSMMGaussianEstimator.java \
 	HSMMGenerator.java \
 	HSMMGeneratorGaussianEmissions.java \
-	HSMMGeneratorMultinomialEmissions.java \ 
+	HSMMGeneratorMultinomialEmissions.java \
 	HSMMMultinomialEstimator.java \
 	HSMMParameterEstimator.java \
 	HSMMTimeAwareGenerator.java \
@@ -64,8 +64,9 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED =\
 	HSMMGaussianEstimatorIcon.xml \
 	HSMMMultinomialEstimatorIcon.xml \
-	HSMMTimeAwareMultinomialEstimatorIcon.xml 
-
+	HSMMTimeAwareGeneratorIcon.xml \
+	HSMMTimeAwareMultinomialEstimatorIcon.xml \
+	hsmm.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
