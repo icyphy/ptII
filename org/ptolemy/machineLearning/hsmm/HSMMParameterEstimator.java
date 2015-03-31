@@ -281,7 +281,7 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     protected abstract double emissionProbability(double[] y, int hiddenState);
 
     /**
-     * Return the duration probability of duration y at hidden state
+     * Return the duration probability of duration y at hidden state.
      * @param y The duration index
      * @param hiddenState The hidden state index
      * @return p(y|hiddenState)
@@ -313,7 +313,13 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /** Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
      * and cluster assignment. This method uses normalized alpha values for computing the conditional
      * probabilities of input sequences, to ensure numerical stability. Set nCategories to zero for
-     * continuous distribution types */
+     * continuous distribution types
+     * @param y Observation array
+     * @param A transition probability matrix
+     * @param prior State priors
+     * @param nCategories Number of categories in multinomial distribution
+     * @return a Map of parameter estimates
+     */
     protected HashMap HSMMAlphaBetaRecursion(double[][] y, double[][] A,
             double[] prior, int[] nCategories) {
 
@@ -678,5 +684,6 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
     /** Total number of categories among all observation dimensions. */
     protected int _etaDimension;
 
+    /** Likelihood history over iterations. Used for debugging at the moment. */
     protected List<Double> _likelihoodHistory;
 }

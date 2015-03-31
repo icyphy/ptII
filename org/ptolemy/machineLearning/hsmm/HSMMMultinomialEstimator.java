@@ -152,7 +152,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     public Parameter observationProbabilities;
 
     /**
-     * 
+     * Dimension of each observation array.
      */
     public Parameter observationDimension;
     /**
@@ -326,7 +326,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
      */
     private double[][] B_new;
 
-    /** Updated state prior belief
+    /** Updated state prior belief.
      */
     protected double[] prior_new;
 
