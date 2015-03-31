@@ -93,7 +93,7 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
     
      
     /**
-     * Number of categories in the multinomial distribution
+     * Number of categories in the multinomial distribution.
      */
     public Parameter nCategories;  
     
@@ -317,9 +317,12 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         return bin + 1;
     }
    
+    /**
+     * Multinomial emission probabilities per state.
+     */
     protected double[][] _B;   
     /**
-     * Number of categories
+     * Number of categories.
      */
     protected int[] _nCategories;  
 }

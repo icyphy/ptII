@@ -206,6 +206,11 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         }
     }
 
+    /**
+     * Compute missing transition probabilities in the hourly transition matrix estimates.
+     * @param method Completion strategy
+     * @param category Source category
+     */
     protected void _calculateTransitionScheme(String method, int category) {
         double[][] Asub = At[category];
         for (int[] A : incompleteCategories) {
