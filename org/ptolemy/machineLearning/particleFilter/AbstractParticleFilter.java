@@ -129,19 +129,20 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     /** A boolean parameter that when set to true, implements the so-called
      * bootstrap particle filter, where particles are resampled at each time step
      * If this parameter is false, particles are resampled only when the effective
-     * sample size drops below 50% of the total number of particles
+     * sample size drops below 50% of the total number of particles.
      */
     public Parameter bootstrap;
 
-    /** Low-variance resampler */
+    /** Low-variance resampler. */
     public Parameter lowVarianceSampler; 
     /**
-     * The expression that specifies the PDF for the measurementNoise. use N(m,s) for
-     * a Gaussian distribution with mean m and standard deviation s. unif (x,y) evaluates
-     * to a uniform distribution in range [x,y]
+     * Number of internal particles used to estimate the posterior distribution.
      */
     public Parameter particleCount;
 
+    /**
+     * Number of output particles.
+     */
     public Parameter outputParticleCount;
 
 
@@ -423,6 +424,11 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     }
 
 
+    /** 
+     * Get input type by name reference
+     * @param inputName The name of the input
+     * @return an InputType object indicating the type of input
+     */
     protected abstract InputType getInputType(String inputName);
 
     @Override
@@ -465,6 +471,12 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     protected abstract Parameter getUserDefinedParameter(String parameterName) 
             throws IllegalActionException;
 
+    /**
+     * Get measurement parameter expression.
+     * @param fullName Name of the measurement Parameter
+     * @return A string expression 
+     * @throws IllegalActionException
+     */
     protected String getMeasurementParameterExpression(String fullName)  throws IllegalActionException {
         Parameter param = getMeasurementParameter(fullName);
         if (param != null) {
@@ -476,33 +488,47 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     }
 
 
+    /** 
+     * Returns a parameter value corresponding to a measurement.
+     * @param fullName Name of measurement parameter
+     * @return a Parameter object that by name reference corresponds to a
+     * specific measurement.
+     * @throws IllegalActionException
+     */
     protected abstract Parameter getMeasurementParameter(String fullName)
             throws IllegalActionException;
 
+    /**
+     * Returns a parameter value corresponding to a noise distribution.
+     * @param inputName Name of noise parameter
+     * @return a Parameter object that by name reference corresponds to a
+     * specific noise distribution
+     * @throws IllegalActionException
+     */
     protected abstract Parameter getNoiseParameter(String inputName) throws IllegalActionException;
 
     /** Flag indicating whether the contained model is up to date. */
     protected boolean _upToDate;
 
-    /** Cached State variable names */
+    /** Cached State variable names. */
     protected ArrayToken _stateNames;
 
-    /** Array of input Relations */
+    /** Array of input Relations. */
     protected IORelation[] _inputRelations;
 
-    /** Labels of particles, that contains state names and a weight label */
+    /** Labels of particles, that contains state names and a weight label. */
     protected String[] _particleLabels;
 
-    /** Types of each particle dimension */
+    /** Types of each particle dimension. */
     protected Type[] _particleTypes;
 
-    /** Labels of states */
+    /** Labels of states. */
     protected String[] _stateLabels;
 
-    /** Types of each state dimension */
+    /** Types of each state dimension. */
     protected Type[] _stateTypes;
 
-    /** Measurement covariance matrix */
+    /** Measurement covariance matrix. */
     protected double[][] _Sigma;
 
     //////////////////////////////////////////////////////////////////////
@@ -908,28 +934,28 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     /** Internal particle representation that has memory of 1 in time */
     private Particle[] particles;
 
-    /** Number of particles to be used by the particle filter estimators */
+    /** Number of particles to be used by the particle filter estimators. */
     private int Nparticles;
 
-    /** Number of particles to be produced at the output port at each iteration */
+    /** Number of particles to be produced at the output port at each iteration. */
     private int Noutput;
 
-    //TODO: Add seed for random number generation.
+    /** Random number generator. */
     private Random _random;
 
-    /** Public seed for random number generation */
+    /** Public seed for random number generation. */
     private long _seed;
 
-    /** State-space size */
+    /** State-space size. */
     private int _stateSpaceSize;
 
-    /** Names of state variables */
+    /** Names of state variables. */
     private String[] _stateVariables;
 
-    /** State update equations, hashed by state variable name */
+    /** State update equations, hashed by state variable name. */
     private HashMap<String, Expression> _updateEquations; 
 
-    /** Names of the PortParameter inputs */
+    /** Names of the PortParameter inputs. */
     private List<String> _parameterInputs;
 
     private HashMap _tokenMap;
@@ -948,25 +974,53 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
 
 
-
+    /** State Variable names identifier. */
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
+    /** Process Noise identifier. */
     protected static final String PROCESS_NOISE = "processNoise";
+    /** Noise covariance identifier. */
     protected static final String MEASUREMENT_NOISE = "noiseCovariance"; 
+    /** Update variable postfix. */
     protected static final String UPDATE_POSTFIX = "_update";
+    /** Measurement variable postfix. */
     protected static final String MEASUREMENT_POSTFIX = "_m";
+    /** Prior distribution identifier. */
     protected static final String PRIOR_NAME = "prior";
 
+    /**
+     * Type of user-added input
+     * @author ilgea
+     *
+     */
     protected enum InputType {
+        /**
+         * Measurement
+         */
         MEASUREMENT_INPUT,
+        /** 
+         * Control
+         */
         CONTROL_INPUT
     };
 
-    // set particle dimensions to be equal to the state space dimension
+    /**
+     * A particle object definition.
+     * @author ilgea
+     *
+     */
     private class Particle {
+        /**
+         * Create a particle with given size
+         * @param size Particle dimension
+         */
         public Particle(int size) {
             this._particleValue = new double[size];
         }
 
+        /**
+         * Copy constructor for Particle object
+         * @param p A Particle object
+         */
         public Particle(Particle p) {
             this._weight = p.getWeight();
             this._particleValue = new double[p.getSize()];
@@ -1075,6 +1129,11 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             }
         }
 
+        /**
+         * Scale existing particle weight by the scaling factor.
+         * @param w The scaling factor.
+         * @return A boolean indicating the status of operation.
+         */
         public boolean adjustWeight(double w) {
             // normalize weight
             if (w > 0.0) {
@@ -1085,6 +1144,10 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             return true;
         }
 
+        /**
+         * Return the value of a particle.
+         * @return A double array corresponding to the Particle value.
+         */
         public double[] getValue() {
             double[] values = new double[this.getSize()];
             for (int i = 0; i < this.getSize(); i++) {
@@ -1093,10 +1156,18 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             return values;
         }
 
+        /**
+         * Return the dimension of the particle.
+         * @return particle dimension
+         */
         public int getSize() {
             return this._particleValue.length;
         }
 
+        /**
+         * Assign a value to the particle, given the prior distribution.
+         * @throws IllegalActionException
+         */
         public void sampleFromPrior() throws IllegalActionException {
             _parseTree = _updateTrees.get(PRIOR_NAME);
             Token priorSample = _parseTreeEvaluator.evaluateParseTree(
@@ -1131,6 +1202,12 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             }
         }
 
+        /**
+         * Propagate the particle value, with respect to the state-space model
+         * defined by the particle filter problem.
+         * @throws NameDuplicationException
+         * @throws IllegalActionException
+         */
         public void setNextParticle() throws NameDuplicationException,
         IllegalActionException {
 
@@ -1193,6 +1270,11 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
         }
 
+        /**
+         * Set the particle to have a desired value.
+         * @param l A desired particle value.
+         * @throws IllegalActionException
+         */
         public void setValue(double[] l) throws IllegalActionException {
 
             if (l.length != this._particleValue.length) {
@@ -1205,24 +1287,37 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             }
         }
 
+        /**
+         * Set the particle value to a desired weight.
+         * @param weight The particle weight.
+         */
         public void setWeight(double weight) {
             _weight = weight;
         }
 
+        /**
+         * Get particle weight.
+         * @return Particle weight
+         */
         public double getWeight() {
             return _weight;
         }
 
         /**
-         * Value of the particle. Size is equal to _ssSize
+         * Value of the particle. Size is equal to _ssSize.
          */
         private final double[] _particleValue;
         /**
-         * Weight of the particle
+         * Weight of the particle.
          */
         private double _weight;
     }
 
+    /**
+     * A local variable scope class.
+     * @author ilgea
+     *
+     */
     private class VariableScope extends ModelScope {
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
