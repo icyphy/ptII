@@ -131,7 +131,7 @@ public class Merge extends DETransformer {
         // and requests refiring at the current time to handle the
         // the remaining channels that have tokens.
         for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
+            if (input.hasNewToken(i)) {
                 if (firstAvailableToken == null) {
                     // we see the first available tokens
                     firstAvailableToken = input.get(i);
