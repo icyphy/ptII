@@ -4761,9 +4761,7 @@ public class IOPort extends ComponentPort {
      * 	@return The persistent value, or null if there isn't one.
      */
     private Token _getPersistentValue(int channelIndex) {
-	if (_persistentToken != null) {
-	    return _persistentToken;
-	} else if (_persistentTokens != null
+	if (_persistentTokens != null
 		&& _persistentTokens.length > channelIndex
 		&& _persistentTokens[channelIndex] != null) {
 	    Token result = _persistentTokens[channelIndex];
@@ -4778,9 +4776,11 @@ public class IOPort extends ComponentPort {
 		    }
 		}
 	    } else {
-		return _persistentTokens[channelIndex];
+		return result;
 	    }
-	}
+	} else if (_persistentToken != null) {
+	    return _persistentToken;
+	} 
 	return null;
     }
 
@@ -5042,6 +5042,7 @@ public class IOPort extends ComponentPort {
 	if (_persistentToken != null
         	|| _persistentTokens != null
         	|| token instanceof SmoothToken) {
+	    // Token may be persistent. Make sure there is a place to store it.
             int width = getWidth();
             if (_persistentTokens == null) {
         	_persistentTokens = new Token[width];
@@ -5050,7 +5051,7 @@ public class IOPort extends ComponentPort {
         	    for (int i = 0; i < width; i++) {
         		_persistentTokens[i] = _persistentToken;
         	    }
-        	}
+                }
             } else if (_persistentTokens.length != width) {
         	// Width doesn't match previous value. Create a new array and copy
         	// the old values into it.
@@ -5074,38 +5075,44 @@ public class IOPort extends ComponentPort {
         	    System.arraycopy(_persistentTokens, 0, newArray, 0, width);
         	}
         	_persistentTokens = newArray;
+        	if (_persistentToken != null) {
+        	    for (int i = 0; i < width; i++) {
+        		_persistentTokens[i] = _persistentToken;
+        	    }
+                }
             }
-            // The single default value will not be needed again.
-            _persistentToken = null;
-
+            // The single default value will continue to mark this persistent.
+            // So don't set it to null.
+            // _persistentToken = null;
+	}
+	if (token instanceof SmoothToken) {
+	    // Token is persistent.
+	    // If the token is generated using the expression language function
+	    // smoothToken(), then it always has time equal to the start time.
+	    // Here, we reset that time to the current time.
+	    // This also ensures that if a SmoothToken is delayed, its time
+	    // gets reset at the receiver. Notice that since tokens are
+	    // immutable, we have to create a new SmoothToken here.
+	    Time currentTime = getModelTime(channelIndex);
+	    Time tokenTime = ((SmoothToken)token).getTime();
+	    if (!currentTime.equals(tokenTime)) {
+		token = new SmoothToken(
+			((SmoothToken) token).doubleValue(),
+			currentTime,
+			((SmoothToken) token).derivativeValues());
+	    }
+	    _persistentTokens[channelIndex] = token;
+	} else if (_persistentTokens != null
+		&& _persistentToken == null
+		&& _persistentTokens[channelIndex] instanceof SmoothToken) {
             // If the persistence is because of having received a SmoothToken, but we are
             // now receiving something that is not a SmoothToken, then we need to reverse the
             // persistence.
-            if (_persistentTokens[channelIndex] instanceof SmoothToken &&
-        	    !(token instanceof SmoothToken) &&
-        	    defaultValue.getToken() == null) {
-        	// FIXME: Potential weird corner case here where defaultValue is an array
-        	// that is not long enough to encompass this channel.
-                _persistentTokens[channelIndex] = null;
-            } else {
-        	if (token instanceof SmoothToken) {
-        	    // If the token is generated using the expression language function
-        	    // smoothToken(), then it always has time equal to the start time.
-        	    // Here, we reset that time to the current time.
-        	    // This also ensures that if a SmoothToken is delayed, its time
-        	    // gets reset at the receiver. Notice that since tokens are
-        	    // immutable, we have to create a new SmoothToken here.
-        	    Time currentTime = getModelTime(channelIndex);
-        	    Time tokenTime = ((SmoothToken)token).getTime();
-        	    if (!currentTime.equals(tokenTime)) {
-        		token = new SmoothToken(
-        			((SmoothToken) token).doubleValue(),
-        			currentTime,
-        			((SmoothToken) token).derivativeValues());
-        	    }
-        	}
-        	_persistentTokens[channelIndex] = token;
-            }
+    	    // FIXME: Potential weird corner case here where defaultValue is an array
+    	    // that is not long enough to encompass this channel.
+	    _persistentTokens[channelIndex] = null;
+        } else if (_persistentToken != null) {
+            _persistentTokens[channelIndex] = token;
         }
     }
 
