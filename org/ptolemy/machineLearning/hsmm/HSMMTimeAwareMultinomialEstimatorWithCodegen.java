@@ -83,7 +83,7 @@ HSMMTimeAwareMultinomialEstimator {
 
     @Override
     public void initialize() throws IllegalActionException {
-
+        super.initialize();
         URI uri = URIAttribute.getModelURI(this);  
         if (uri == null) {
             throw new IllegalActionException(this,"Save model before running model checking.");
@@ -1001,9 +1001,7 @@ HSMMTimeAwareMultinomialEstimator {
 
     private boolean _useModelChecking;
 
-    private boolean _testPreset;
-
-    private int iteration=0;
+    private boolean _testPreset; 
 
     private List<double[]> knownOptima = new ArrayList<>();
 
