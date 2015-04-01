@@ -71,7 +71,7 @@ util.inherits(exports.Socket, EventEmitter);
 // Send text or binary data to the server. 
 exports.Socket.prototype.send = function(data) {
     if (!this.helper.isOpen()) {
-        throw new Error('not opened');
+        throw new Error('cannot send, because the socket is not opened');
     }
     if (typeof data == 'string') {
         this.helper.sendText(data);
@@ -90,7 +90,7 @@ exports.Socket.prototype.send = function(data) {
 // Close the current connection with the server.
 exports.Socket.prototype.close = function() {
     if (!this.helper.isOpen()) {
-        throw new Error('not opened');
+        throw new Error('cannot close, because the socket is not opened');
     }
     this.helper.close();
 }

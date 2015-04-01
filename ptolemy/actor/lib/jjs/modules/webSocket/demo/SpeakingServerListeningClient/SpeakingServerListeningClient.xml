@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="WebSocketsServerClient" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SpeakingServerListeningClient" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -11,33 +11,19 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 23, 865, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={136, 266, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{133.18073219476742, 84.81646075581392}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript Web Socket server / client.&#10;The client tries to connect to the server after the server starts listening.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 140.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 185.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  send('Server received a message: ' + data, output);&#10;}&#10;&#10;function onListening() {&#10;  send('Server started listening...', output);&#10;  send(true, started);&#10;}&#10;// React to a connection established.&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', output);&#10;  ws.on('message', onMessage);&#10;}&#10;// The web socket server, once created.&#10;var server = null;&#10;// Start an HTTP server and begin listening for connection requests.&#10;// If there already is a server, do nothing.&#10;exports.initialize = function() {&#10;  if (server == null) {&#10;    server = new WebSocket.Server({port:8082});&#10;    server.on('listening', onListening);&#10;    server.on('connection', onConnection);&#10;    server.startServer();&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;function onListening() {&#10;  print('server: listening');&#10;}&#10;&#10;// React to a connection established.&#10;var connected = false;&#10;var clientWs = null;&#10;function onConnection(ws) {&#10;  print('server: a client is connected');&#10;  connected = true;&#10;  ws.send('hi client!');&#10;  clientWs = ws;&#10;}&#10;&#10;// The web socket server, once created.&#10;var server = null;&#10;// Start an HTTP server and begin listening for connection requests.&#10;&#10;// If there already is a server, do nothing.&#10;exports.initialize = function() {&#10;  if (server == null) {&#10;    server = new WebSocket.Server({port:8081});&#10;    server.on('listening', onListening);&#10;    server.on('connection', onConnection);&#10;    server.startServer();&#10;  }&#10;}&#10;exports.fire = function()&#10;{&#10;  print('server: triggered');&#10;  if (connected) {&#10;    print('connected = true');&#10;  }&#10;  if (clientWs == null) {&#10;    print('server: clientWs is null');&#10;  }&#10;  else {&#10;    print('server: sending to client');&#10;    clientWs.send('hi again');&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -45,7 +31,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 110.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -75,11 +61,11 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{202.68073219476742, 74.81646075581395}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
         </property>
     </entity>
     <entity name="WSClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var opened = false;&#10;&#10;function onOpen() {&#10;  opened = true;&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;exports.initialize = function() {&#10;  if (ws == null) {&#10;   ws = new WebSocket.Socket('ws://localhost:8082');&#10;   ws.on('open', onOpen);&#10;  }&#10;}&#10;exports.fire = function() {&#10;  if (opened) {&#10;    count ++;&#10;    ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var opened = false;&#10;&#10;function onMessage(data, flags) {&#10;  print('client: onMessage');&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  send('Client received a message: ' + data, output);&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;&#10;function onOpen() {&#10;  opened = true;&#10;}&#10;&#10;exports.initialize = function() {&#10;  if (ws == null) {&#10;    print('client: connecting to a server');&#10;    ws = new WebSocket.Socket('ws://localhost:8081');&#10;    ws.on('open', onOpen);&#10;    ws.on('message', onMessage);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -87,7 +73,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 75.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 200.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -105,23 +91,19 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={418, 460, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 617, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="WSServer.output" relation="relation"/>
-    <link port="WSServer.started" relation="relation3"/>
-    <link port="DiscreteClock.output" relation="relation2"/>
-    <link port="DiscreteClock.start" relation="relation3"/>
-    <link port="WSClient.trigger" relation="relation2"/>
-    <link port="Display.input" relation="relation"/>
+    <link port="WSServer.trigger" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="WSClient.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>

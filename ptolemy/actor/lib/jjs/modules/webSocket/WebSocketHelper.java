@@ -246,6 +246,8 @@ public class WebSocketHelper {
         _engine = engine;
         _currentObj = currentObj;
         _webSocket = serverWebSocket;
+        // The serverSocket was already opened because a client successfully connected to the server.
+        _wsIsOpen = true;
 
         _webSocket.dataHandler(new DataHandler());
         _webSocket.endHandler(new EndHandler());
