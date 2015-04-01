@@ -31,7 +31,7 @@ var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSock
 //   to avoid Cross-Site WebSocket Hijacking attacks.
 exports.Server = function(options) {
     this.port = options['port'] || 80;
-    this.helper = WebSocketHelper.createServer(actor.getEngine(), this, this.port);
+    this.helper = WebSocketHelper.createServer(this, this.port);
 }
 var EventEmitter = require('events').EventEmitter;
 util.inherits(exports.Server, EventEmitter);
@@ -58,9 +58,9 @@ exports.Server.prototype.createServerWebSocket = function(serverWebSocket) {
 // This subclasses EventEmitter.
 exports.Socket = function(url, serverWebSocket) {
     if (serverWebSocket != null) {
-        this.helper = WebSocketHelper.createServerSocket(actor.getEngine(), this, serverWebSocket);;
+        this.helper = WebSocketHelper.createServerSocket(this, serverWebSocket);;
     } else {
-        this.helper = WebSocketHelper.createClientSocket(actor.getEngine(), this, url);
+        this.helper = WebSocketHelper.createClientSocket(this, url);
     }
     // Note that additional functions will be added via the prototype below.
     this.address = url;

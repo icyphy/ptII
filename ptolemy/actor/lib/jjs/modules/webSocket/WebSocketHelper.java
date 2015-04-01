@@ -27,9 +27,6 @@
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.AsyncResult;
@@ -76,38 +73,35 @@ public class WebSocketHelper {
 
     /** Create a WebSocketHelper instance for the specified JavaScript
      *  Socket instance for the client side of the socket.
-     *  @param engine The JavaScript engine of the JavaScript actor.
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param address address The URL of the WebSocket host and the port number. 
      *   (e.g. 'ws://localhost:8000'). If no port number is given, then 80 is used.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(
-	    ScriptEngine engine, ScriptObjectMirror currentObj, String address) {
-	return new WebSocketHelper(engine, currentObj, address);
+	    ScriptObjectMirror currentObj, String address) {
+	return new WebSocketHelper(currentObj, address);
     }
     
     /** Create a WebSocketHelper instance to help a JavaScript Server instance.
-     *  @param engine The JavaScript engine creating this helper.
      *  @param currentObj The JavaScript Server instance for which this is a helper.
      *  @param port The port number that the server will use.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createServer(
-	    ScriptEngine engine, ScriptObjectMirror currentObj, int port) {
-        return new WebSocketHelper(engine, currentObj, port);
+	    ScriptObjectMirror currentObj, int port) {
+        return new WebSocketHelper(currentObj, port);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
      *  Socket instance for the server side of the socket.
-     *  @param engine The JavaScript engine of the JavaScript actor.
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param serverWebSocket The given server-side Java socket.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createServerSocket(
-	    ScriptEngine engine, ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
-        return new WebSocketHelper(engine, currentObj, serverWebSocket);
+	    ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
+        return new WebSocketHelper(currentObj, serverWebSocket);
     }
 
     /**
@@ -177,14 +171,12 @@ public class WebSocketHelper {
 
     /** Private constructor for WebSocketHelper to open a client-side web socket.
      *  Open an internal web socket using Vert.x.
-     *  @param engine The JavaScript engine of the JavaScript actor.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param address The URL of the WebSocket host with an optional port number
      *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
      */
     private WebSocketHelper(
-	    ScriptEngine engine, ScriptObjectMirror currentObj, String address) {
-        _engine = engine;
+	    ScriptObjectMirror currentObj, String address) {
         _currentObj = currentObj;
 
         HttpClient client = _vertx.createHttpClient();
@@ -225,25 +217,20 @@ public class WebSocketHelper {
     }
 
     /** Private constructor for WebSocketHelper to create a web socket server.
-     *  @param engine The JavaScript engine creating this server.
      *  @param currentObj The JavaScript Server instance for which this a helper.
      *  @param port The port on which to create the server.
      */
     private WebSocketHelper(
-	    ScriptEngine engine, ScriptObjectMirror currentObj, int port) {
-        _engine = engine;
+	    ScriptObjectMirror currentObj, int port) {
         _currentObj = currentObj;
         _port = port;
     }
 
     /** Private constructor for WebSocketHelper for a server-side web socket.
-     *  @param engine The JavaScript engine creating this server.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
      */
-    private WebSocketHelper(
-	    ScriptEngine engine, ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
-        _engine = engine;
+    private WebSocketHelper(ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
         _currentObj = currentObj;
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
@@ -259,9 +246,6 @@ public class WebSocketHelper {
         
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
-
-    /** Instance of the current JavaScript engine. */
-    private static ScriptEngine _engine;
     
     /** The port on which the server listens. */
     private int _port;
@@ -288,16 +272,11 @@ public class WebSocketHelper {
             for (int i = 0; i < bytes.length; i++) {
                 objBytes[i] = (int)bytes[i];
             }
-
-            try {
-                // Properties of the data.
-        	// FIXME: What are these properties? Pass string directly?
-                Object jsArgs = _engine.eval(" var properties = {binary: true}; properties");
-                _currentObj.callMember("emit", "message", objBytes, jsArgs);
-            } catch (ScriptException e) {
-                // FIXME Auto-generated catch block
-                e.printStackTrace();
-            }
+            
+            // Properties of the data.
+            // FIXME: What are these properties? Pass string directly?
+            Object jsArgs = _currentObj.eval(" var properties = {binary: true}; properties");
+            _currentObj.callMember("emit", "message", objBytes, jsArgs);
         }
     }
 
