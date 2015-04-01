@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4120879120879122">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.591439688716, 170.99999999999997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.59143968871604, 170.99999999999997}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The key with QSS1 is to quantize the inputs!">
@@ -92,11 +92,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.5000000000845, {1.9994953448000001,0.0}), smoothToken(2.0707457341913, {3.872072258654766,0.0}), smoothToken(5.3593570572562, {5.261396077239739,0.0}), smoothToken(9.3697629459977, {4.096078256595766,0.0}), smoothToken(10.6375870893322, {1.7782105657359246,0.0}), smoothToken(10.8277958843553, {-0.7979436874926848,0.0}), smoothToken(10.0223144101751, {-3.4112390698526776,0.0}), smoothToken(8.1326644839862, {-5.864857309020744,0.0}), smoothToken(4.7479603761375, {-7.8976005885253455,0.0}), smoothToken(-4.885856436707, {-8.762623248569202,0.0}), smoothToken(-7.3253884892018, {-5.781758174549298,0.0}), smoothToken(-8.5434099506173, {-2.416500366959578,0.0}), smoothToken(-8.7256923346352, {1.1251138442277804,0.0}), smoothToken(-7.9102676956832, {4.692524563509498,0.0}), smoothToken(-6.050573970685, {8.14362609666832,0.0}), smoothToken(-2.9818875261941, {11.31383166182839,0.0}), smoothToken(1.7999292072986, {13.956185622327924,0.0}), smoothToken(11.7074932966774, {15.439228556150356,0.0}), smoothToken(15.6802724328308, {13.309006191912728,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.5000000000845, {1.9994953448000001,4.0}), smoothToken(2.0707457341913, {3.872072258654766,3.499999999915453}), smoothToken(5.3593570572562, {5.261396077239739,1.9292542658086531}), smoothToken(9.3697629459977, {4.096078256595766,-1.3593570572561786}), smoothToken(10.6375870893322, {1.7782105657359246,-5.369762945997689}), smoothToken(10.8277958843553, {-0.7979436874926848,-6.637587089332227}), smoothToken(10.0223144101751, {-3.4112390698526776,-6.827795884355313}), smoothToken(8.1326644839862, {-5.864857309020744,-6.0223144101750545}), smoothToken(4.7479603761375, {-7.8976005885253455,-4.132664483986158}), smoothToken(-4.885856436707, {-8.762623248569202,-0.74796037613749}), smoothToken(-7.3253884892018, {-5.781758174549298,8.885856436707016}), smoothToken(-8.5434099506173, {-2.416500366959578,11.325388489201831}), smoothToken(-8.7256923346352, {1.1251138442277804,12.543409950617287}), smoothToken(-7.9102676956832, {4.692524563509498,12.725692334635184}), smoothToken(-6.050573970685, {8.14362609666832,11.910267695683231}), smoothToken(-2.9818875261941, {11.31383166182839,10.050573970684956}), smoothToken(1.7999292072986, {13.956185622327924,6.981887526194123}), smoothToken(11.7074932966774, {15.439228556150356,2.2000707927014274}), smoothToken(15.6802724328308, {13.309006191912728,-7.707493296677363})}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.063758708933223E-8">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 265.0}">
         </property>
@@ -129,7 +129,7 @@
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.4998738362, 2.0348958116, 2.755030966, 3.6122875745, 4.0439393465, 4.4320554222, 4.8147990523, 5.2222201984, 5.7140925213, 6.8706011916, 7.2060629555, 7.5032057697, 7.7855543675, 8.0658857338, 8.3556442532, 8.6710695786, 9.0495279755, 9.7236167088, 10.0}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 330.0}">
         </property>
