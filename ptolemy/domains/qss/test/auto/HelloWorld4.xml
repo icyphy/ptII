@@ -9,11 +9,9 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
-        </property>
-        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Pts">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
@@ -29,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The top signal has&#10;constant value 1, and all derivatives are implicitly zero.&#10;The bottom signal has value 1 and slope 1 at time zero.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 345.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +39,7 @@
         </property>
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 240.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -57,7 +55,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal starting with value 1&#10;and with constant slope 1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 285.0]">
         </property>
     </property>
     <property name="Arrow3" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
@@ -77,7 +75,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Experiment with the error tolerance and solver techniques.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 445.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -85,7 +83,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 490.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -95,7 +93,9 @@
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 110.0]">
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 110.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -108,11 +108,17 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 230.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 175.0]">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
+        </property>
+        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 230.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -129,7 +135,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(0.01, {1.0}), smoothToken(4.0, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0}), smoothToken(4.0, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -141,7 +147,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.01, 4.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 4.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -149,27 +155,27 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(0.0, {1.0,1.0}), smoothToken(0.0099999999631, {1.0099504938,1.0}), smoothToken(0.1628285692229, {1.1513718505,1.0}), smoothToken(0.3356571395184, {1.2927932079,1.0}), smoothToken(0.5284857120721, {1.4342145668000001,1.0}), smoothToken(0.7413142819125, {1.5756359235000001,1.0}), smoothToken(0.9741428518838, {1.7170572802000001,1.0}), smoothToken(1.226971421986, {1.8584786369000001,1.0}), smoothToken(1.499799992219, {1.9998999936000001,1.0}), smoothToken(1.7926285625829, {2.1413213503,1.0}), smoothToken(2.1056325797641, {2.2828246409000004,1.0}), smoothToken(2.4386493262274, {2.4243279322999998,1.0}), smoothToken(2.7918707748269, {2.5659052449,1.0}), smoothToken(3.1653538481748, {2.7075419506,1.0}), smoothToken(3.5590379429671, {2.8492319498,1.0}), smoothToken(3.9725067479712, {2.9908279768000003,1.0}), smoothToken(4.4057459964425, {3.1323375955,1.0}), smoothToken(4.8588107676517, {3.2737883696,1.0}), smoothToken(5.3320426382362, {3.4152873069000003,1.0}), smoothToken(5.8254762963698, {3.5568266216,1.0}), smoothToken(6.3391968087242, {3.6984363928,1.0}), smoothToken(6.8727581696772, {3.8399925602000002,1.0}), smoothToken(7.4261410888708, {3.9814957803,1.0}), smoothToken(7.9993524377373, {4.1229529933,1.0}), smoothToken(8.5925679136626, {4.2644098370000005,1.0}), smoothToken(9.2059278111608, {4.4058981033,1.0}), smoothToken(9.8394627782311, {4.5474150802,1.0}), smoothToken(10.4931292682653, {4.688955352100001,1.0}), smoothToken(11.1666520534729, {4.830459832600001,1.0}), smoothToken(11.8600225191186, {4.971929759,1.0}), smoothToken(11.9999795634914, {5.0,1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, smoothToken(0.099999999961, {1.095445115,1.0}), smoothToken(0.6898979500651, {1.5426587119000001,1.0}), smoothToken(1.4797959014213, {1.9898723087999999,1.0}), smoothToken(2.4696938562503, {2.4370859057,1.0}), smoothToken(3.6597945764213, {2.8842994976,1.0}), smoothToken(5.0541978007213, {3.3329340366,1.0}), smoothToken(6.6465372733733, {3.7806587187000003,1.0}), smoothToken(8.4384656735793, {4.2281538038,1.0}), smoothToken(10.429658462628, {4.6754203825000005,1.0}), smoothToken(11.9999462202294, {5.0,1.0})}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 325.0]">
         </property>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 230.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0099504938, 0.1513718505, 0.2927932079, 0.4342145668, 0.5756359235, 0.7170572802, 0.8584786369, 0.9998999936, 1.1413213503, 1.2828246409, 1.4243279323, 1.5659052449, 1.7075419506, 1.8492319498, 1.9908279768, 2.1323375955, 2.2737883696, 2.4152873069, 2.5568266216, 2.6984363928, 2.8399925602, 2.9814957803, 3.1229529933, 3.264409837, 3.4058981033, 3.5474150802, 3.6889553521, 3.8304598326, 3.971929759, 4.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.095445115, 0.5426587119, 0.9898723088, 1.4370859057, 1.8842994976, 2.3329340366, 2.7806587187, 3.2281538038, 3.6754203825, 4.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 230.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -177,7 +183,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{570, 330}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 385.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -197,7 +203,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 450.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -207,7 +213,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
-<yRange min="0.0" max="11.999979563491426"/>
+<yRange min="0.0" max="11.999946220229416"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -215,7 +221,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{120.0, 110.0}">
+        <vertex name="vertex1" value="[120.0, 110.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -233,7 +239,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[450.0, 175.0]">
+        <vertex name="vertex1" value="[450.0, 230.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

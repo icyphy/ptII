@@ -34,9 +34,12 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -53,6 +56,11 @@ used to predict the time of the next zero crossing (or touching),
 and this actor will request a refiring at that time. If it refires
 at that time, and no other input has arrived in the intervening interval,
 then it will produce an output in that firing.
+If the very first input is zero, then produce an output at that time as well.
+<p>
+<b>NOTE:</b> This actor currently discards all derivatives of the input
+higher than the second derivative. Hence, it could miss a zero crossing
+by a substantial margin if there are higher-order derivatives.
 
 @see QSSDirector
 @author Edward A. Lee
@@ -77,19 +85,87 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
+        
+        level = new Parameter(this, "level", new DoubleToken(0.0));
+        level.setTypeEquals(BaseType.DOUBLE);
+
+        value = new Parameter(this, "value");
+        value.setExpression("level");
+
+        // By default, this director detects both directions of level crossings.
+        direction = new StringParameter(this, "direction");
+        direction.setExpression("both");
+        _detectRisingCrossing = true;
+        _detectFallingCrossing = true;
+
+        direction.addChoice("both");
+        direction.addChoice("falling");
+        direction.addChoice("rising");
+
+        output.setTypeAtLeast(value);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** A parameter that can be used to limit the detected level crossings
+     *  to rising or falling. There are three choices: "falling", "rising", and
+     *  "both". The default value is "both".
+     */
+    public StringParameter direction;
+
     /** Input signal. This has type double and is normally a SmoothToken. */
     public TypedIOPort input;
+
+    /** The parameter that specifies the level threshold. By default, it
+     *  contains a double with value 0.0. Note, a change of this
+     *  parameter at run time will not be applied until the next
+     *  iteration.
+     */
+    public Parameter level;
 
     /** Output event with value 0.0 when the zero crossing occurs. */
     public TypedIOPort output;
     
+    /** The output value to produce when a level-crossing is detected.
+     *  This can be any data type. It defaults to the same value
+     *  as the <i>level</i> parameter.
+     */
+    public Parameter value;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Update the attribute if it has been changed. If the attribute
+     *  is <i>direction</i> or <i>level</i>, then update the local cache.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the attribute change failed.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == direction) {
+            String crossingDirections = direction.stringValue();
+
+            if (crossingDirections.equalsIgnoreCase("falling")) {
+                _detectFallingCrossing = true;
+                _detectRisingCrossing = false;
+            } else if (crossingDirections.equalsIgnoreCase("rising")) {
+                _detectFallingCrossing = false;
+                _detectRisingCrossing = true;
+            } else if (crossingDirections.equalsIgnoreCase("both")) {
+                _detectFallingCrossing = true;
+                _detectRisingCrossing = true;
+            } else {
+                throw new IllegalActionException("Unknown direction: "
+                        + crossingDirections);
+            }
+        } else if (attribute == level) {
+            _level = ((DoubleToken) level.getToken()).doubleValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** If an input is available and either it equals zero or it has crossed
      *  zero from the most recently seen input, then output 0.0; otherwise, if
@@ -108,39 +184,40 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
             _debug("Firing at time: " + currentTime);
         }
         if (input.hasNewToken(0)) {
-            // If there is an input, then cancel any previous fireAt() request.
-            if (_lastFireAtTime != null) {
-                if (_debugging) {
-                    _debug("Canceling previous fireAt request at " + _lastFireAtTime);
-                }
-                // Director class is checked in initialize().
-                ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
-            }
-
             DoubleToken inputToken = (DoubleToken)input.get(0);
             double inputValue = inputToken.doubleValue();
             if (_debugging) {
         	_debug("Read input: " + inputToken);
             }
             if (_previousInput != null) {
-        	double previousValue = _previousInput.doubleValue();
         	// If either the input is zero or the sign of the input is opposite of
-        	// the previous input, then produce an output.
-        	// Note that normally, we do not compare doubles, but in this case,
-        	// an exactly zero input discrete event is treated as a zero crossing.
-        	if (inputValue == 0.0 || (inputValue * previousValue < 0.0)) {
-        	    output.send(0, DoubleToken.ZERO);
+        	// the previous input, then produce an output if the direction matches.
+        	double previousValue = _previousInput.doubleValue();
+        	boolean inputIsRising = inputValue >= 0.0 && previousValue < 0.0;
+        	boolean inputIsFalling = inputValue <= 0.0 && previousValue > 0.0;
+        	if (_detectFallingCrossing && inputIsFalling
+        		|| _detectRisingCrossing && inputIsRising) {
+        	    output.send(0, value.getToken());
         	}
             } else if (inputValue == 0.0) {
         	// If the input is zero, produce an output even if there is no previous input.
-        	output.send(0, DoubleToken.ZERO);
+        	output.send(0, value.getToken());
             }
             _previousInput = inputToken;
             
             // If the input is a SmoothToken, the predict the time of a future zero
             // crossing.
             if (inputToken instanceof SmoothToken) {
-        	// FIXME: Find a general solution here.
+                // First cancel any previous fireAt() request.
+                if (_lastFireAtTime != null) {
+                    if (_debugging) {
+                        _debug("Canceling previous fireAt request at " + _lastFireAtTime);
+                    }
+                    // Director class is checked in initialize().
+                    ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                }
+
+                // FIXME: Find a general solution here.
         	// FIXME: Move this code to SmoothToken.
         	double[] derivatives = ((SmoothToken)inputToken).derivativeValues();
         	// Handle linear case first.
@@ -149,7 +226,8 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         		|| (derivatives.length > 1 && derivatives[1] == 0.0)) {
         	    // There is a predictable zero crossing only if the derivative
         	    // and value have opposite signs.
-        	    if (inputValue * derivatives[0] < 0) {
+        	    if (_detectRisingCrossing && inputValue < 0.0 && derivatives[0] > 0.0
+        		    || _detectFallingCrossing && inputValue > 0.0 && derivatives[0] < 0.0) {
         		Time future = currentTime.add(- inputValue / derivatives[0]);
         		getDirector().fireAt(this, future);
         		_lastFireAtTime = future;
@@ -165,13 +243,18 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         	    //  t = (-d1 +- sqrt(d1^2 - 2*x*d2))/d2
         	    // This has a real-valued solution iff d1^2 >= 2*x*d2 and d2 != 0.
         	    // Already checked the second condition.
+        	    // If it has a real-valued solution, then it has two real-valued solutions.
         	    double d1squared = derivatives[0] * derivatives[0];
         	    if (d1squared >= 2 * inputValue * derivatives[1]) {
         		double sqrt = Math.sqrt(d1squared - 2 * inputValue * derivatives[1]);
         		double first = (-derivatives[0] + sqrt) / derivatives[1];
         		double second = (-derivatives[0] - sqrt) / derivatives[1];
         		Time future = null;
-        		if (first < second && first > 0.0) {
+        		if (first < second && first > 0.0
+        			&& (inputValue < 0.0 && _detectRisingCrossing
+        				|| inputValue > 0.0 && _detectFallingCrossing
+        				|| inputValue == 0.0 && (derivatives[0] > 0.0 && _detectFallingCrossing
+        					|| derivatives[0] < 0.0 && _detectRisingCrossing))) {
         		    future = currentTime.add(first);
         		} else if (second > 0.0) {
         		    future = currentTime.add(second);
@@ -185,8 +268,11 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
             }
         } else if (currentTime.equals(_lastFireAtTime)) {
             // There is no input, and time matches the last requested firing time.
-            output.send(0, DoubleToken.ZERO);
+            output.send(0, value.getToken());
             _lastFireAtTime = null;
+            if (_previousInput instanceof SmoothToken) {
+        	_previousInput = ((SmoothToken)_previousInput).extrapolate(currentTime);
+            }
         }
     }
 
@@ -206,7 +292,23 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The level threshold this actor detects. */
+    protected double _level;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** Flag indicating whether this actor detects the level crossing
+     *  when the input value is rising.
+     */
+    private boolean _detectRisingCrossing;
+
+    /** Flag indicating whether this actor detects the level crossing
+     *  when the input value is falling.
+     */
+    private boolean _detectFallingCrossing;
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;

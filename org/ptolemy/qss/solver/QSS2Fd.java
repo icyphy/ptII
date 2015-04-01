@@ -119,11 +119,11 @@ public final class QSS2Fd
         if( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
             // Here, most recent event was a quantization-event.
             tMostRecent = qStateMdl.tMdl;
-            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq, _exactInputs);
         } else {
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;
-            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq, _exactInputs);
         }
 
         // Require {dt} > 0.

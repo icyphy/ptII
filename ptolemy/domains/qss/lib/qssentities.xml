@@ -10,6 +10,7 @@
 <!-- Do not include the director here... Not visible in cyphysim.
 <entity name="QSSDirector" class="ptolemy.domains.qss.kernel.QSSDirector"/>
 -->
+<entity name="PeriodicSampler" class="ptolemy.domains.qss.lib.PeriodicSampler"/>
 <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
   <input source="ptolemy/domains/qss/kernel/QSSIntegrator_Icon.xml"/>
 </entity>

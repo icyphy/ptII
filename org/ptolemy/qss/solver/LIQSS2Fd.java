@@ -133,7 +133,7 @@ public final class LIQSS2Fd
             tMostRecent = qStateMdl.tMdl;
             // Note the math never refers to {qStateMdl.coeffs[0]}, so no need
             // to force it to use {_cStatesLastQevt[stateIdx]}.
-            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq, _exactInputs);
         } else {
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;
@@ -144,7 +144,7 @@ public final class LIQSS2Fd
             // to handle this as an added input argument.
             final double qHold = qStateMdl.coeffs[0];
             qStateMdl.coeffs[0] = _cStatesLastQevt[stateIdx];
-            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq, _exactInputs);
             qStateMdl.coeffs[0] = qHold;
         }
 

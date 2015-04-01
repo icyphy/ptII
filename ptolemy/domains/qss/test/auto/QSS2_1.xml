@@ -1,122 +1,80 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FirstOrder" class="ptolemy.actor.TypedCompositeActor">
+<entity name="QSS2_1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 30.0]">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 220.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 946, 763}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 653]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0155036197150507">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1473565048703243">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.50999348958348}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A key with QSS1 is to quantize the inputs!">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 160.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.92060838115066, 448.4639832478174}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that if the SingleEvent is not producing&#10;a SmoothToken, then the input needs to be&#10;given a defaultValue so it is persistent.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 45.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
-            </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Constant signal with value 1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 260.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple first-order feedback system.&#10;Here we are using QSS1 with a coarse&#10;quantization of 0.5. The input is also&#10;quantized to 0.5, so the final result&#10;does not oscillate.">
+    <property name="Arrow3" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 320.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 20.0]">
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-40.0">
+        </property>
+        <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
     </property>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="u - q">
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 690.0]">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 325.0}">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 195.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-            </property>
-        </port>
-        <port name="q" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
-            </property>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="u" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={803, 401, 590, 470}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 426]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 40.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="4.0000000002"/>
-<default marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 578, 611, 287}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[611, 243]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 325.0}">
         </property>
     </entity>
-    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+    <entity name="QSSIntegrator3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="4.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 205.0]">
-        </property>
-    </entity>
-    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -214,25 +172,35 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 325.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {1.0}), smoothToken(5.0, {1.0})}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 390.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=325.0}, tail={id=&quot;Const2.trigger&quot;,x=135.0,y=325.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[285.0, 105.0]">
+        <vertex name="vertex1" value="[280.0, 325.0]">
         </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Expression.output" relation="relation4"/>
-    <link port="Expression.q" relation="relation3"/>
-    <link port="Expression.u" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="TimedDisplay.input" relation="relation3"/>
-    <link port="SingleEvent.output" relation="relation"/>
-    <link port="QSSIntegrator.u" relation="relation4"/>
-    <link port="QSSIntegrator.q" relation="relation3"/>
+    <link port="SingleEvent.output" relation="relation2"/>
+    <link port="Const2.output" relation="relation4"/>
+    <link port="Const2.trigger" relation="relation2"/>
+    <link port="QSSIntegrator3.u" relation="relation4"/>
+    <link port="QSSIntegrator3.q" relation="relation6"/>
+    <link port="Test.input" relation="relation6"/>
 </entity>

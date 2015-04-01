@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorldQSS1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorldQSS2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
@@ -11,23 +11,23 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Pts">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 220.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 945, 688}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 946, 763}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 578]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 653]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1473565048703243">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.4848240387276, 415.78015756607056}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.9206083811506, 448.4639832478174}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In CyPhySim, continuous-time signals are represented by events that&#10;indicate significant changes in value. Here, we generate two signals&#10;by specifying their value and derivative at time 0. The Const produces&#10;a single event that specifies a signal starting at time 0 with constant&#10;value 1. The first integrator produces a signal with constant slope.&#10;The second integrator produces a quadratic signal.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 435.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -55,7 +55,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal starting with value 1&#10;and with constant slope 1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 390.0]">
         </property>
     </property>
     <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
@@ -113,9 +113,9 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, the simplest QSS solver is used. This solver results in the integrators&#10;producing output whenever their state changes by the specified quantum.&#10;Here, the quantum is 0.1, given by the absoluteQuantum parameter,&#10;and is independent of the signal magnitude (the relativeQuantum is 0.0).&#10;The final output falls short of the correct target (12.0) because the second integrator&#10;is using QSS1, which assumes its input is piecewise constant. But in fact, its input&#10;is piecewise linear.  Try changing that integrator to use QSS2.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, we use QSS2. The first integrator never has quantization events, because its&#10;input is constant. Hence, it only produces output events at the start and end times.&#10;The second integrator has a piecewise linear input and encounters a quantization&#10;event whenever the linear extrapolation of its state differs from the quadratic&#10;extrapolation by the quantum. For example, the first quantization event occurs at&#10;time 0.447 = sqrt(0.2). It is at this time that integral estimated by assuming a constant&#10;input with value 1 differs from the integral with piecewise linear input with slope 1&#10;differs by the quantum (0.1).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 545.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -123,7 +123,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 650.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 690.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -133,6 +133,8 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={861, 22, 571, 874}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 830]">
@@ -147,7 +149,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="4.0"/>
-<yRange min="0.0" max="11.799999999999988"/>
+<yRange min="0.0" max="11.999946220229416"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -187,10 +189,12 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+    <entity name="QSSIntegrator3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
+        </property>
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -291,10 +295,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 325.0]">
         </property>
     </entity>
-    <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS1">
+    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -399,7 +405,7 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=325.0}, tail={id=&quot;Const2.trigger&quot;,x=135.0,y=325.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[280.0, 325.0]">
@@ -407,17 +413,17 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SingleEvent.output" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="Const2.output" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="Const2.output" relation="relation4"/>
     <link port="Const2.trigger" relation="relation2"/>
-    <link port="TimedPlotter2.input" relation="relation"/>
-    <link port="QSSIntegrator.u" relation="relation3"/>
+    <link port="TimedPlotter2.input" relation="relation6"/>
+    <link port="QSSIntegrator3.u" relation="relation4"/>
+    <link port="QSSIntegrator3.q" relation="relation6"/>
+    <link port="QSSIntegrator.u" relation="relation6"/>
     <link port="QSSIntegrator.q" relation="relation"/>
-    <link port="QSSIntegrator2.u" relation="relation"/>
-    <link port="QSSIntegrator2.q" relation="relation4"/>
 </entity>

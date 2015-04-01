@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0155036197150507">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.50999348958348}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.50999348958354}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A key with QSS1 is to quantize the inputs!">
@@ -31,7 +31,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that if the SingleEvent is not producing&#10;a SmoothToken, then the input needs to be&#10;given a defaultValue so it is persistent.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -55,7 +55,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 195.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -112,7 +112,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="4.3">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 205.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
