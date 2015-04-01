@@ -35,10 +35,16 @@ import org.ptolemy.qss.solver.QSSBase;
 import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.conversions.SmoothToDouble;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.BreakCausalityInterface;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface;
+import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -50,6 +56,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
@@ -210,7 +217,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         xInit.setExpression("0.0");
 
 	solver = new StringParameter(this, "solver");
-	QSSDirector.configureSolverParameter(solver, "");
+	solver.addChoice("QSS1");
+	solver.addChoice("QSS2");
+	solver.addChoice("QSS3");
 
         absoluteQuantum = new Parameter(this, "absoluteQuantum");
         absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
@@ -227,6 +236,10 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         propagateInputDerivatives = new Parameter(this, "propagateInputDerivatives");
         propagateInputDerivatives.setTypeEquals(BaseType.BOOLEAN);
         propagateInputDerivatives.setExpression("true");
+        
+        exactInputs = new Parameter(this, "exactInputs");
+        exactInputs.setTypeEquals(BaseType.BOOLEAN);
+        exactInputs.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -237,6 +250,15 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  that the quantum is specified by the director.
      */
     public Parameter absoluteQuantum;
+    
+    /** Indicator of whether the inputs are exact. Set this to true if
+     *  the inputs to this integrator specify all non-zero derivatives.
+     *  That is, if the input is a DoubleToken, this should be interpreted
+     *  as a piecewise-constant input. If it is SmoothToken, then all non-zero
+     *  derivatives are given as part of the token.  This is a boolean that
+     *  defaults to false.
+     */
+    public Parameter exactInputs;
 
     /** The impulse input port. This is a single port of type double.
      *  If any derivatives are provided on this port via a SmoothToken,
@@ -269,7 +291,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
     /** The class name of the QSS solver used for integration.  This
      *  is a string that defaults to the empty string, which delegates
-     *  the choice to the director.
+     *  the choice to the director. The possibilities here are "QSS1",
+     *  "QSS2", and "QSS3".
      */
     public StringParameter solver;
     
@@ -282,18 +305,33 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If <i>propagateInputDerivatives</i> is false, then declare that the output
-     *  does not depend on the input <i>u</i> in a firing.
-     *  @exception IllegalActionException If propagateInputDerivatives cannot be evaluated.
-     *  @see #getCausalityInterface()
+    /** Notify this actor that the specified attribute has changed.
+     *  If the attribute is <i>propagateInputDerivatives</i>, then notify the
+     *  director that the schedule is now invalid.
+     *  @param attribute The attribute that changed.
      */
-    @Override
-    public void declareDelayDependency() throws IllegalActionException {
-	if (!isStrict()) {
-	    _declareDelayDependency(u, q, 0.0);
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+	if (attribute == propagateInputDerivatives) {
+	    Director director = getDirector();
+	    if (director != null) {
+		director.invalidateSchedule();
+	    }
+	} else if (attribute == solver) {
+	    String solverValue = solver.stringValue().trim();
+	    if (solverValue.startsWith("QSS1")) {
+		_solverOrder = 1;
+	    } else if (solverValue.startsWith("QSS2")) {
+		_solverOrder = 2;
+	    } else if (solverValue.startsWith("QSS3")) {
+		_solverOrder = 3;
+	    } else {
+		_solverOrder = 0;
+	    }
+	} else {
+	    super.attributeChanged(attribute);
 	}
     }
-
+    
     /** Set the derivative equal to the input.
      *  @return Success (0 for success, else user-defined error code).
      */
@@ -417,6 +455,29 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         }
     }
 
+    /** Override the base class to return a causality interface that matches
+     *  the value of <i>propagateInputDerivatives</i>.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     * @exception IllegalActionException Thrown in subclasses if causality
+     * interface cannot be computed.
+     */
+    @Override
+    public CausalityInterface getCausalityInterface()
+            throws IllegalActionException {
+	boolean dependency = ((BooleanToken)propagateInputDerivatives.getToken()).booleanValue();
+        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
+	if (dependency) {
+	    // Ensure the causality interface is the default one, which indicates
+	    // that all outputs depend on all inputs.
+	    return new DefaultCausalityInterface(this, defaultDependency);
+	} else {
+	    // Ensure the causality interface is the break causality interface, which indicates
+	    // that no output depends on any input.
+	    return new BreakCausalityInterface(this, defaultDependency);
+	}
+    }
+
     /** Return 1, because this actor always has one input variable,
      *  which specifies that value of the derivative.
      *  @return 1.
@@ -453,7 +514,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         _previousInputTime = null;
         
         // Get director and check its type.
-        QSSDirector director = (QSSDirector)getDirector();
+        Director director = getDirector();
         if (!(director instanceof QSSDirector)) {
             throw new IllegalActionException(
                     this,
@@ -465,11 +526,32 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
         // Create a new QSS solver and initialize it.
         // If no solver is specified, use the director's specification.
-        String solverSpec = solver.stringValue().trim();
-        if (solverSpec.equals("")) {
-            _qssSolver = director.newQSSSolver();
+        String solverValue = solver.stringValue().trim();
+        if (solverValue.equals("")) {
+            // Figure out what order the solver is.
+            String solverSpec = ((QSSDirector) director).QSSSolver.stringValue().trim();
+            if (solverSpec.startsWith("QSS1")) {
+        	_solverOrder = 1;
+            } else if (solverSpec.startsWith("QSS2")) {
+        	_solverOrder = 2;
+            } else if (solverSpec.startsWith("QSS3")) {
+        	_solverOrder = 3;
+            }
+        }
+        switch(_solverOrder) {
+        case 1: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS1");
+		break;
+        case 2: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS2FdJac");
+		break;
+        case 3: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS3Pts");
+		break;
+	default: throw new IllegalActionException(this, "Unsupported solver order: " + _solverOrder);
+        }
+        
+        if (((BooleanToken)exactInputs.getToken()).booleanValue()) {
+            _qssSolver.setExactInputs(true);
         } else {
-            _qssSolver = director.newQSSSolver(solverSpec);
+            _qssSolver.setExactInputs(false);
         }
         
         // Find the quanta.
@@ -477,7 +559,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         DoubleToken quantum = (DoubleToken)absoluteQuantum.getToken();
         if (quantum == null) {
             // No quantum given for this integrator. Use the director's value.
-            absoluteQuantumValue = director.getAbsoluteQuantum();
+            absoluteQuantumValue = ((QSSDirector) director).getAbsoluteQuantum();
         } else {
             absoluteQuantumValue = quantum.doubleValue();
         }
@@ -485,7 +567,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         quantum = (DoubleToken)relativeQuantum.getToken();
         if (quantum == null) {
             // No quantum given for this integrator. Use the director's value.
-            relativeQuantumValue = director.getRelativeQuantum();
+            relativeQuantumValue = ((QSSDirector) director).getRelativeQuantum();
         } else {
             relativeQuantumValue = quantum.doubleValue();
         }
@@ -551,9 +633,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         Time currentTime = getDirector().getModelTime();
         
         // Predict the next quantization event time.
-        final Time possibleFireAtTime = _qssSolver.predictQuantizationEventTimeEarliest();
+        final Time possibleFireAtTime = _predictQuantizationEventTimeEarliest(currentTime);
         if (_debugging) {
-            _debug("Request refiring at " + possibleFireAtTime);
+            _debug("Next expected firing time: " + possibleFireAtTime);
         }
 
         // Cancel previous firing time if necessary.
@@ -617,16 +699,12 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 // Apparently, the above loses any information about previously provided
                 // derivative information. Restore that information here.
                 if (_previousInput != null) {
-                    _setInputModel(_previousInput, _previousInput.getTime());
+                    // The following invokes triggerRateEvent.
+                    _setInputModel(_previousInput.extrapolate(currentTime), currentTime);
                 }
 
                 _qssSolver.triggerQuantizationEvents(true);
-                try {
-		    _qssSolver.triggerRateEvent();
-		} catch (Exception e) {
-		    throw new IllegalActionException(this, e, e.getMessage());
-		}
-
+                
                 if (_debugging) {
                     _debug("-- Due to impulse input, change state from "
                 	    + previousState
@@ -696,6 +774,15 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 	return false;
     }
     
+    /** Predict the next quantization event time.
+     *  @param currentTime The current time.
+     *  @return The next quantization event time, or the director's stop time
+     *   if there is no predicted event.
+     */
+    private Time _predictQuantizationEventTimeEarliest(Time currentTime) {
+	return _qssSolver.predictQuantizationEventTimeEarliest();
+    }
+
     /** Given a SmoothToken that specifies the derivatives being integrated,
      *  set the "input model."
      *  @param derivatives The input to this integrator, which represents the
@@ -785,6 +872,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     /** Track requests for firing. */
     private Time _lastFireAtTime;
     
+    /** Maximum input order. */
+    private Integer _maximumInputOrder;
+
     /** Previous input token, if any. */
     private SmoothToken _previousInput;
     
@@ -797,6 +887,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      */
     private QSSBase _qssSolver = null;
     
-    /** Maximum input order. */
-    private Integer _maximumInputOrder;
+    /** The order of the solver. This is 0, 1, 2, or 3,
+     *  where 0 delegates to the director.
+     */
+    private int _solverOrder = 0;
 }

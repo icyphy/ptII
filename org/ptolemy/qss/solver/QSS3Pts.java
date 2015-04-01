@@ -121,7 +121,7 @@ public final class QSS3Pts
         if( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
             // Here, most recent event was a quantization-event.
             tMostRecent = qStateMdl.tMdl;
-            dt = _predictQuantizationEventDeltaTimeQSS3QFromC(qStateMdl, cStateMdl, dq);
+            dt = _predictQuantizationEventDeltaTimeQSS3QFromC(qStateMdl, cStateMdl, dq, _exactInputs);
         } else {
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;

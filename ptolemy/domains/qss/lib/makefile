@@ -55,6 +55,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Align.java \
+	PeriodicSampler.xml \
+	PeriodicSamplerIcon.xml \
 	SmoothSignal.java \
 	SmoothZeroCrossingDetector.java
 

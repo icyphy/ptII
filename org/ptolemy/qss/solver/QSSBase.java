@@ -426,6 +426,16 @@ public abstract class QSSBase {
 	return( _currSimTime );
     }
 
+    /** Return whether inputs are assumed to be exact. By default, they are not,
+     *  but if you call {@link #setExactInputs(boolean)} with argument true,
+     *  then this will return true. A true value
+     *  asserts that all non-zero derivatives of the input model are provided.
+     *  @return True to indicate that inputs are assumed exact, or false otherwise.
+     */
+    public final boolean getExactInputs() {
+	return _exactInputs;
+    }
+
     /** Return the count of states predicted by the integrator.
      *
      * @return Count of states.
@@ -916,6 +926,16 @@ public abstract class QSSBase {
 	}
 
 	_currSimTime = newSimTime;
+    }
+    
+    /** Indicate whether inputs are exact. Calling this with a true argument
+     *  asserts that all non-zero derivatives of the input model are provided.
+     *  By default, this solver will assume that a zero value for derivatives
+     *  may simply mean that the derivatives are unknown.
+     *  @param exact True to indicate that inputs are exact.
+     */
+    public final void setExactInputs(boolean exact) {
+	_exactInputs = exact;
     }
 
     /** Set the model for an input variable to the derivative function.
@@ -1515,7 +1535,8 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2QFromC(
-	    final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
+	    final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+	    final double dq, final boolean exactInputs) {
 
 	// Check internal consistency.
 	//   QSS2 uses linear quantized state model, and quadratic
@@ -1537,14 +1558,19 @@ public abstract class QSSBase {
 	} else {
 	    // Here, the continuous state model may be a line or a constant.
 	    //   For a line, fall back on method from QSS1.
-	    final double cStateDeriv = cStateMdl.coeffs[1];
-	    if( cStateDeriv != 0 ) {
-		dt = dq / Math.abs(cStateDeriv);
-	    } else {
-		// Here, the continuous state model is a constant.
-		// Since the quantized state model was formed based on that
-		// model, it too is a constant with the same value.
+	    // EAL: Do not fall back to QSS1 if the inputs are known to be exact.
+	    if (exactInputs) {
 		dt = Double.POSITIVE_INFINITY;
+	    } else {
+		final double cStateDeriv = cStateMdl.coeffs[1];
+		if( cStateDeriv != 0 ) {
+		    dt = dq / Math.abs(cStateDeriv);
+		} else {
+		    // Here, the continuous state model is a constant.
+		    // Since the quantized state model was formed based on that
+		    // model, it too is a constant with the same value.
+		    dt = Double.POSITIVE_INFINITY;
+		}
 	    }
 	}
 
@@ -1578,7 +1604,8 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2General(
-	    final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
+	    final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+	    final double dq, final boolean exactInputs) {
 
 	// Check internal consistency.
 	//   QSS2 uses linear quantized state model, and quadratic
@@ -1602,11 +1629,26 @@ public abstract class QSSBase {
 	    // Here, last step had a numerical problem that let it violate the quantum.
 	    //   Initiate a quantization-event as early as possible.
 	    dt = 0;
-	} else if( qea==0 && qeb==0 ) {
+	} else if( qea==0 && (qeb==0 || exactInputs)) {
+	    // EAL: There is a tension here. When qea and qeb are 0, this could
+	    // mean one of two things: (a) They are unknown, or (b) they are known
+	    // to be 0.  In case (b), then we want to return POSITIVE_INFINITY whenever
+	    // qea == 0, regardless of qeb.  The input is piecewise linear. But in case
+	    // (a), this results in useless simulations that skip directly to the end
+	    // point.
+	    //
+	    // I would like to return POSITIVE_INFINITY whenever qea==0, regardless of
+	    // qeb. But this makes the Lorenz model, for example, useless. In such a feedback
+	    // loop, derivatives are not known initially. Moreover, they are never known fully.
+	    // 
 	    // Note that an alternate approach when {qea==0} would be to use
 	    // the QSS1 solution.  However, leave that decision up to caller.
 	    dt = Double.POSITIVE_INFINITY;
 	} else {
+	    // EAL: Why are the roots of this polynomial the right solution?
+	    // They don't seem to give the right answer for a simple test case.
+	    // Namely, with a quantum of 0.1, an input smoothToken(1.0, {1.0})
+	    // should have its first quantization event at time sqrt(0.2) = 0.447.
 	    final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot2(qea, qeb, qecConst+dq);
 	    assert( dtAddDq >= 0 );
 	    final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot2(qea, qeb, qecConst-dq);
@@ -1617,9 +1659,12 @@ public abstract class QSSBase {
 		    ) {
 		// Here, {dtAddDq} is positive and a better choice than {dtSubDq}.
 		dt = dtAddDq;
-	    } else {
+	    } else if (dtSubDq > 0) {
 		// Here, either {dtSubDq} a better choice than {dtAddDq}, or both are zero.
 		dt = dtSubDq;
+	    } else {
+		// Both are zero, so there are no positive roots.
+		dt = Double.POSITIVE_INFINITY;
 	    }
 	    assert( dt >= 0 );
 	}
@@ -1655,7 +1700,8 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3QFromC(
-	    final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
+	    final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+	    final double dq, final boolean exactInputs) {
 
 	// Check internal consistency.
 	//   QSS2 uses linear quantized state model, and quadratic
@@ -1675,7 +1721,7 @@ public abstract class QSSBase {
 	    // Here, the internal, continuous state model has a third derivative.
 	    dt = Math.pow( dq / Math.abs(cea), 1.0/3.0 );
 	} else {
-	    dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq);
+	    dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq, exactInputs);
 	}
 
 	return( dt );
@@ -1786,6 +1832,11 @@ public abstract class QSSBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables
+
+    // Flag indicating that the solver should assume that inputs are exact,
+    // meaning that if derivatives are zero, then they are genuinely zero,
+    // not just unknown.
+    protected boolean _exactInputs = false;
 
     // Derivative function.
     protected DerivativeFunction _derivFcn;
@@ -2071,7 +2122,7 @@ public abstract class QSSBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
-
+    
     // Identify specific member of the QSS family.
     private final int _qStateMdlOrder = getStateModelOrder();
 
