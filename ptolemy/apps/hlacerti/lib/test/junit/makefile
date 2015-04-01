@@ -37,7 +37,8 @@ ME =		ptolemy/apps/hlacerti/lib/test/junit
 ROOT =		../../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
+# PTJCERTI_JAR is set by configure if lib/jcerti.jar was found.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(PTJCERTI_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
