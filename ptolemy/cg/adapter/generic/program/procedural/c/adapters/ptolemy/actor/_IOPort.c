@@ -268,10 +268,10 @@ Token* IOPort_GetInside(struct IOPort* port, int channelIndex) {
         struct Receiver* receiver = pblListGet(localReceiver, j);
         Token* localToken = (*(receiver->get))(receiver);
 
-        if (token == NULL) {
+        if (localToken != NULL) {
             token = localToken;
+            break;
         }
-        break;
     }
 
     if (token == NULL) {
