@@ -116,8 +116,9 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.mod
                     + _eol);
         } else {
             code.append(_eol
-                    + "director->transferModalOutputs(pblMapNewHashMap());"
-                    + _eol);
+                    + "PblMap * outputMap = pblMapNewHashMap();" + _eol
+                    + "director->transferModalOutputs(outputMap);" + _eol
+                    + "pblMapFree(outputMap);" + _eol);
         }
 
         // Generate code for non-preemptive transition
