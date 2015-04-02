@@ -3559,24 +3559,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _requestRefiringIfNecessary() throws IllegalActionException {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        if (_fmiModelDescription.modelExchange) {
-            // Provide a conservative default.
-            double stepSize = 0.01;
-            Parameter maximumStepSize = (Parameter) getAttribute(
-                    "maximumStepSize", Parameter.class);
-            if (maximumStepSize != null) {
-                Token stepSizeValue = maximumStepSize.getToken();
-                if (stepSizeValue instanceof DoubleToken) {
-                    stepSize = ((DoubleToken) stepSizeValue).doubleValue();
-                }
-                // If the parameter maximumStepSize is set to an integer, then
-                // we parse its value to a double.
-                else if (stepSizeValue instanceof IntToken) {
-                    stepSize = ((IntToken) stepSizeValue).intValue();
-                }
-            }
-            director.fireAt(this, currentTime.add(stepSize));
-        } else {
+        if (!_fmiModelDescription.modelExchange) {
             // If the FMU can provide a maximum step size, query for the initial
             // maximum
             // step size so that we can call fireAt() and ensure that the FMU is
