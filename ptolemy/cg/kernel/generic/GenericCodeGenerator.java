@@ -502,7 +502,7 @@ Decorator {
                             .attributeList(GenericCodeGenerator.class);
 
                     String generatorPackageValue = _getGeneratorPackageValue();
-                    Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
+                    Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
 
                     if (codeGenerators.size() != 0) {
                         // Get the last CodeGenerator in the list, maybe
@@ -1509,7 +1509,7 @@ Decorator {
             // specific arguments.  This is a hack, but it beats have -help
             // not tell you about the command line arguments.
             String generatorPackageValue = _getGeneratorPackageValue();
-            Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
+            Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
             Constructor<?> codeGeneratorConstructor = generatorClass
                     .getConstructor(new Class[] { NamedObj.class, String.class });
             CompositeActor toplevel = new CompositeActor();
@@ -1541,13 +1541,30 @@ Decorator {
      *  is looked for.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    private static Class<?> _getCodeGeneratorClass(String generatorPackageValue)
+    private static Class<?> _getCodeGeneratorClass(String generatorPackageValue, String generatorDialect)
             throws IllegalActionException {
         String language = generatorPackageValue.substring(generatorPackageValue
                 .lastIndexOf("."));
+        
         String capitalizedLanguage = language.substring(1, 2).toUpperCase(
                 Locale.getDefault())
                 + language.substring(2);
+        
+        String dialect = "";
+        
+        if (generatorDialect != null && generatorDialect != "") {
+            dialect = generatorDialect.substring(0, 1).toUpperCase(
+                    Locale.getDefault());
+            if (generatorDialect.length() >= 2) {
+                dialect += generatorDialect.substring(1);
+            }
+        }
+        
+        // Append dialect
+        if (dialect != "") {
+            capitalizedLanguage += dialect;
+        }
+        
         String codeGeneratorClassName = generatorPackageValue + "."
                 + capitalizedLanguage + "CodeGenerator";
 
@@ -1555,8 +1572,13 @@ Decorator {
         try {
             result = Class.forName(codeGeneratorClassName);
         } catch (Throwable throwable) {
-            // If we have html, try HTMLCodeGenerator
             capitalizedLanguage = language.toUpperCase(Locale.getDefault());
+
+            // Append dialect
+            if (dialect != "") {
+                capitalizedLanguage += dialect;
+            }
+            
             String oldCodeGeneratorClassName = codeGeneratorClassName;
             codeGeneratorClassName = generatorPackageValue
                     + capitalizedLanguage + "CodeGenerator";
@@ -1627,6 +1649,24 @@ Decorator {
         return generatorPackageValue;
     }
 
+    
+    /** Return the value of the -generatorDialect or -dialect command
+     *  line argument.
+     *  @return The value of the generatorPackage argument
+     */
+    private static String _getGeneratorDialectValue() {
+        
+        int parameterIndex = -1;
+        if ((parameterIndex = _parameterNames.indexOf("generatorDialect")) != -1) {
+            return _parameterValues.get(parameterIndex);
+        }
+        
+        if ((parameterIndex = _parameterNames.indexOf("dialect")) != -1) {
+            return _parameterValues.get(parameterIndex);
+        }
+        
+        return "";
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
