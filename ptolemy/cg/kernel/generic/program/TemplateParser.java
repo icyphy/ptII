@@ -1342,6 +1342,8 @@ public class TemplateParser {
         }
         if (macro.equals("get")) {
             return _replaceGetMacro(parameter);
+        } else if (macro.equals("getNoPayload")) {
+            return _replaceGetMacro(parameter);
         } else if (macro.equals("put")) {
             return _replacePutMacro(parameter, false);
         } else if (macro.equals("putLocalInside")) {
@@ -1713,6 +1715,11 @@ public class TemplateParser {
 
     private String _replaceGetMacro(String parameter)
             throws IllegalActionException {
+        return _replaceGetMacro(parameter, true);
+    }
+
+    private String _replaceGetMacro(String parameter, boolean appendType)
+            throws IllegalActionException {
         // e.g. $get(input#channel, offset); or
         // $get(input, offset); or,
         // $get(input#channel); or,
@@ -1752,7 +1759,13 @@ public class TemplateParser {
         PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
                 .getAdapter(port);
 
-        return processCode(portAdapter.generateGetCode(channel, offset));
+        if (appendType) {
+            // This is the default, but leaks memory like a sieve.
+            return processCode(portAdapter.generateGetCode(channel, offset));
+        } else {
+            // The mbed demos pointed out that we had leaks.
+            return processCode(portAdapter.generateGetCodeWithoutType(channel, offset));
+        }
     }
 
     /** replace the $hasToken() with the corresponding parameter
