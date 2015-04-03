@@ -46,6 +46,10 @@ exports.Server.prototype.createServerWebSocket = function(serverWebSocket) {
     return new exports.Socket("", serverWebSocket);
 }
 
+exports.Server.prototype.close = function() {
+    this.helper.closeServer();
+}
+
 // FIXME: Should create one base class, Socket, and two derived classes,
 // ClientSocket and ServerSocket. The constructor arguments are different.
 
@@ -89,9 +93,6 @@ exports.Socket.prototype.send = function(data) {
 ////////////////////
 // Close the current connection with the server.
 exports.Socket.prototype.close = function() {
-    if (!this.helper.isOpen()) {
-        throw new Error('cannot close, because the socket is not opened');
-    }
     this.helper.close();
 }
 
