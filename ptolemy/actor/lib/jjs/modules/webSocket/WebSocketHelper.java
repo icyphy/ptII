@@ -67,7 +67,19 @@ public class WebSocketHelper {
      */
     public void close() {
         if (_webSocket != null) {
-            _webSocket.close();
+            if (_wsIsOpen) {
+                _webSocket.close();
+            }
+            _webSocket = null;
+        }
+    }
+    /** Close the web socket server.
+     *  FIXME: Separate the server and client.
+     */
+    public void closeServer() {
+        if (_server != null) {
+            _server.close();
+            _server = null;
         }
     }
 
@@ -138,8 +150,8 @@ public class WebSocketHelper {
         // callbacks before the server starts. Otherwise, there will be
         // a race condition where the callback could be called before
         // the server has started.
-        HttpServer server = _vertx.createHttpServer();
-        server.websocketHandler(new Handler<ServerWebSocket>() {
+        _server = _vertx.createHttpServer();
+        _server.websocketHandler(new Handler<ServerWebSocket>() {
             @Override
             public void handle(ServerWebSocket serverWebSocket) {
                 // Create the socket on this server side.
@@ -148,7 +160,7 @@ public class WebSocketHelper {
                 _currentObj.callMember("emit", "connection", jsWebSocket);
             }
         });
-        server.listen(_port, "localhost", new Handler<AsyncResult<HttpServer>>() {
+        _server.listen(_port, "localhost", new Handler<AsyncResult<HttpServer>>() {
             @Override
             public void handle(AsyncResult<HttpServer> arg0) {
         	_currentObj.callMember("emit", "listening");
@@ -180,14 +192,23 @@ public class WebSocketHelper {
         _currentObj = currentObj;
 
         HttpClient client = _vertx.createHttpClient();
-        
         // Parse the address.
         // FIXME: Use utilities for this. Perhaps on the JavaScript side?
-        // Strip off any trailing slash from the URI.
+        // So far, Java.net.URL raises an exception when protocol name is ws such as ws://localhost:8000.
+        // io.netty doesn't work either.
+        // Couldn't find a JavaScript side library for parsing URL, 
+        // except for using the document object which is not available in node.js.
         if (address.length() > 0 && address.charAt(address.length() - 1) == '/') {
             address = address.substring(0, address.length() - 1);
         }
+        int begin = address.indexOf("://");
+        if (begin < 0) {
+            throw new RuntimeException("Invalid host name in URI: " + address);
+        }
         int sep = address.lastIndexOf(':');
+        String host = address.substring(begin + 3, sep);
+        client.setHost(host);
+        
         if (sep > 0) {
             try {
         	client.setPort(Integer.parseInt(address.substring(sep + 1)));
@@ -250,7 +271,7 @@ public class WebSocketHelper {
     /** The port on which the server listens. */
     private int _port;
     
-    /** Instance of Vertx. Apparently we need only one. */
+    /** Instance of Vert.x Apparently we need only one. */
     private static Vertx _vertx = VertxFactory.newVertx();
 
     /** The internal web socket created by Vert.x */
@@ -258,6 +279,9 @@ public class WebSocketHelper {
 
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
+    
+    /** The internal http server created by Vert.x */
+    private HttpServer _server = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
