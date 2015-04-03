@@ -1,0 +1,447 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="28.0">
+        </property>
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Pts">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 198, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
+    </property>
+    <property name="r" class="ptolemy.data.expr.Parameter" value="0.9">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 35.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Coefficient of restitution">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 25.0]">
+        </property>
+    </property>
+    <property name="i" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Initial height">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-9.8">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="4.5, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[28.0, 4.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="propagateInputDerivatives?{0.8,0.8,0.8,1.0}:{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-48.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="arrowWidth" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={559, 226, 834, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/qss/kernel/integral.gif">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -17.0]">
+                </property>
+            </property>
+            <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="xInit">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, -11.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="init:">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, -21.0]">
+                </property>
+            </property>
+            <property name="ParameterExpression2" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="solver">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="4">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-9.0, -1.0]">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="i">
+        </property>
+        <property name="exactInputs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="4.5, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[28.0, 4.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="propagateInputDerivatives?{0.8,0.8,0.8,1.0}:{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-48.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="arrowWidth" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={559, 226, 834, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/qss/kernel/integral.gif">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, -17.0]">
+                </property>
+            </property>
+            <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="xInit">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, -11.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="init:">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-3.0, -21.0]">
+                </property>
+            </property>
+            <property name="ParameterExpression2" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+                </property>
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="solver">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="4">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-9.0, -1.0]">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="50.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="SmoothZeroCrossingDetector" class="ptolemy.domains.qss.lib.SmoothZeroCrossingDetector">
+        <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 105.0}">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-(1 + r) * v">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 385.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="v" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 385.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={850, 35, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 250.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Actual Points Computed</title>
+<xLabel>time</xLabel>
+<yLabel>position</yLabel>
+<xRange min="0.0" max="28.0"/>
+<yRange min="-12.726128279426636" max="10.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SmoothToDouble" class="ptolemy.actor.lib.conversions.SmoothToDouble">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 385.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 688, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Time of Collisions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550, 215}">
+        </property>
+    </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.qss.lib.PeriodicSampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={851, 383, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 315.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Interpolated Values</title>
+<xLabel>time</xLabel>
+<yLabel>position</yLabel>
+<xRange min="0.0" max="28.0"/>
+<yRange min="-12.726128279426636" max="10.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=50.0,y=180.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=135.0,y=180.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{210.0, 180.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSIntegrator2.u&quot;,x=255.0,y=180.0}, tail={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, points={} },{ head={id=&quot;QSSIntegrator.q&quot;,x=135.0,y=180.0}, tail={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, points={} },{ head={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, tail={id=&quot;Sampler.input&quot;,x=555.0,y=105.0}, points={210.0,105.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 180.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{460.0, 145.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="QSSIntegrator.u" relation="relation"/>
+    <link port="QSSIntegrator.q" relation="relation5"/>
+    <link port="QSSIntegrator.impulse" relation="relation7"/>
+    <link port="QSSIntegrator2.u" relation="relation5"/>
+    <link port="QSSIntegrator2.q" relation="relation8"/>
+    <link port="SmoothZeroCrossingDetector.input" relation="relation8"/>
+    <link port="SmoothZeroCrossingDetector.output" relation="relation2"/>
+    <link port="Sampler.input" relation="relation5"/>
+    <link port="Sampler.output" relation="relation3"/>
+    <link port="Sampler.trigger" relation="relation2"/>
+    <link port="Expression.output" relation="relation6"/>
+    <link port="Expression.v" relation="relation4"/>
+    <link port="TimeDelay.input" relation="relation6"/>
+    <link port="TimeDelay.output" relation="relation7"/>
+    <link port="TimedPlotter.input" relation="relation8"/>
+    <link port="SmoothToDouble.input" relation="relation3"/>
+    <link port="SmoothToDouble.output" relation="relation4"/>
+    <link port="TimedDisplay.input" relation="relation2"/>
+    <link port="PeriodicSampler.in" relation="relation8"/>
+    <link port="PeriodicSampler.out" relation="relation9"/>
+    <link port="TimedPlotter2.input" relation="relation9"/>
+</entity>
