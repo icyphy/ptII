@@ -1343,7 +1343,7 @@ public class TemplateParser {
         if (macro.equals("get")) {
             return _replaceGetMacro(parameter);
         } else if (macro.equals("getNoPayload")) {
-            return _replaceGetMacro(parameter);
+            return _replaceGetMacro(parameter,false);
         } else if (macro.equals("put")) {
             return _replacePutMacro(parameter, false);
         } else if (macro.equals("putLocalInside")) {

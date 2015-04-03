@@ -132,8 +132,8 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         Type type = port.getType();
         String typeString = getCodeGenerator().codeGenType(type);
         if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
-            return processCode("$new(" + typeString + "(0))->payload."
-                    + typeString);
+            return processCode("$new(" + typeString + "(0));");//->payload."
+                    //+ typeString);
         }
         String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
                 + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
