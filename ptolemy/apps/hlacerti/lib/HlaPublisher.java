@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.apps.hlacerti.lib;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
@@ -88,7 +89,8 @@ public class HlaPublisher extends TypedAtomicActor {
 
         // The single output port of the actor.
         input = new TypedIOPort(this, "input", true, false);
-
+        input.setMultiport(true);
+        
         classObjectHandle = new Parameter(this, "classObjectHandle");
         classObjectHandle.setDisplayName("Object class in FOM");
         classObjectHandle.setTypeEquals(BaseType.STRING);
@@ -202,9 +204,11 @@ public class HlaPublisher extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
-        if (inputPortList().get(0).hasToken(0)) {
-            Token in = inputPortList().get(0).get(0);
-            _hlaManager.updateHlaAttribute(this, in);
+       for(int i = 0 ; i < input.getWidth() ; ++i) {
+        if (input.hasToken(i)) {
+            Token in = input.get(i);
+            String name = input.sourcePortList().get(i).getContainer().getDisplayName();
+            _hlaManager.updateHlaAttribute(this, in,_registeredObject.get(name));
 
             if (_debugging) {
                 _debug(this.getDisplayName()
@@ -214,6 +218,8 @@ public class HlaPublisher extends TypedAtomicActor {
                         + _hlaManager.getDisplayName() + "\"");
             }
         }
+    }
+    
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message
@@ -230,6 +236,14 @@ public class HlaPublisher extends TypedAtomicActor {
         return _useHLAPtidesEvent;
     }
 
+    /**
+     *  Establish the mapping between id and opaqueIdentifier for all the HLASubscribers
+     * @param id : the object's id given by the RTIG
+     * @param opaqueIdentifier : the identifier we map to the above id
+     */
+    public void register(String opaqueIdentifier,Integer id) {        
+        _registeredObject.put(opaqueIdentifier, id);
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -241,4 +255,10 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
+    
+    /** Shared HashMap between all HlaPublishers for remembering with
+     * what id an actor as been registered (as an object instance)
+     * in the federation 
+     */
+    private static HashMap<String,Integer> _registeredObject = new HashMap();
 }
