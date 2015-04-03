@@ -2594,14 +2594,14 @@ fi
 #--------------------------------------------------------------------
 #       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
 #	See https://savannah.nongnu.org/projects/certi
-#       JCerti is used by ptolemy/apps/hlacerti
+#       JCerti is used by org/hlacerti
 #--------------------------------------------------------------------
 
-# JCERTI jar files used by ptolemy/apps/hlacerti
+# JCERTI jar files used by org/hlacerti
 PTJCERTI_JAR=
 
 # We only need to look for JCERTetty if $HLACERT_USER_DIR is present
-HLACERTI_USER_DIR="$PTII/ptolemy/apps/hlacerti"
+HLACERTI_USER_DIR="$PTII/org/hlacerti"
 
 if test ! -d "$HLACERTI_USER_DIR" ; then
     PT_MSG_STATUS([$HLACERTI_USER_DIR is not present,
@@ -2618,12 +2618,12 @@ else
 	# $PTII/ptolemy/apps/makefile if jcerti.jar was found.
 	PTHLACERTI_DIR=hlacerti
         # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
-	PTHLACERTI_PACKAGES="ptolemy.apps.hlacerti.lib"
+	PTHLACERTI_PACKAGES="org.hlacerti.lib"
 	updateClasspath "$PTJCERTI_JAR"
     else 
         AC_MSG_WARN([Failed to find jcerti.jar necessary to compile ptolemy/apps/hlacerti
     hlacerti is optional])	
-       updateExcludes "ptolemy/apps/hlacerti/"
+       updateExcludes "org/hlacerti/"
     fi
 fi
 
