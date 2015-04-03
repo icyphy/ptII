@@ -473,10 +473,6 @@ public class HlaSubscriber extends TypedAtomicActor {
      */ 
     private Parameter _opaqueIdendifier;
     
-
-    
-    //private String _oldName;
-    
     /**
      * used to remeber the mapping _opaqueIdendifier <-> HLA Object id
      * Filled up by register when HLAManager discovers an object
