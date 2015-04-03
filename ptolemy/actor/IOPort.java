@@ -316,10 +316,12 @@ public class IOPort extends ComponentPort {
             Token value = defaultValue.getToken();
             if (value instanceof ArrayToken) {
         	    _persistentTokens = ((ArrayToken) value).arrayValue();
+        	    _persistentTokensInside = ((ArrayToken) value).arrayValue();
         	    _persistentToken = null;
             } else {
         	    _persistentToken = value;
         	    _persistentTokens = null;
+        	    _persistentTokensInside = null;
             }
         }
         super.attributeChanged(attribute);
@@ -595,6 +597,7 @@ public class IOPort extends ComponentPort {
         
         newObject._persistentToken = null;
         newObject._persistentTokens = null;
+        newObject._persistentTokensInside = null;
         try {
 	    newObject.attributeChanged(newObject.defaultValue);
 	} catch (IllegalActionException e) {
@@ -997,7 +1000,7 @@ public class IOPort extends ComponentPort {
         }
 
         if (token == null) {
-            token = _getPersistentValue(channelIndex);
+            token = _getPersistentValue(channelIndex, false);
             if (token == null) {
         	throw new NoTokenException(this, "No token to return.");
             }
@@ -1008,7 +1011,7 @@ public class IOPort extends ComponentPort {
         }
         // If this port is persistent or the input is a smooth token,
         // then remember the value of this input.
-        _recordPersistentValueIfNecessary(channelIndex, token);
+        _recordPersistentValueIfNecessary(channelIndex, token, false);
 
         return token;
     }
@@ -1079,7 +1082,7 @@ public class IOPort extends ComponentPort {
         try {
             result = localReceivers[channelIndex][0].getArray(vectorLength);
             // Record the last of these received tokens if there is persistence.
-	    _recordPersistentValueIfNecessary(channelIndex, result[result.length - 1]);
+	    _recordPersistentValueIfNecessary(channelIndex, result[result.length - 1], false);
         } catch (NoTokenException ex) {
             // There are not enough tokens. If persistence has been specified,
             // or if a SmoothToken is available, then we can fill in the array.
@@ -1088,9 +1091,9 @@ public class IOPort extends ComponentPort {
             for (int i = 0; i < vectorLength; i++) {
         	if (localReceivers[channelIndex][0].hasToken()) {
         	    result[i] = localReceivers[channelIndex][0].get();
-        	    _recordPersistentValueIfNecessary(channelIndex, result[i]);
+        	    _recordPersistentValueIfNecessary(channelIndex, result[i], false);
         	} else {
-        	    result[i] = _getPersistentValue(channelIndex);
+        	    result[i] = _getPersistentValue(channelIndex, false);
         	    if (result[i] == null) {
         		throw new NoTokenException(this,
         			"get: Requested "
@@ -1282,7 +1285,7 @@ public class IOPort extends ComponentPort {
         }
 
         if (token == null) {
-            token = _getPersistentValue(channelIndex);
+            token = _getPersistentValue(channelIndex, true);
             if (token == null) {
         	throw new NoTokenException(this, "No token to return.");
             }
@@ -1293,7 +1296,7 @@ public class IOPort extends ComponentPort {
         }
         // If this port is persistent or the input is a smooth token,
         // then remember the value of this input.
-        _recordPersistentValueIfNecessary(channelIndex, token);
+        _recordPersistentValueIfNecessary(channelIndex, token, true);
 
         return token;
     }
@@ -1431,6 +1434,35 @@ public class IOPort extends ComponentPort {
      *  is out of range or if the port is not an input port.
      */
     public Time getModelTime(int channelIndex) throws IllegalActionException {
+	return getModelTime(channelIndex, false);
+    }
+
+    /** Return the current time associated with a certain channel.
+     *  In most domains, this is just the current time of the director.
+     *  However, in some domains, the current time is a per-channel
+     *  concept.  If the channel has a token to be read (i.e. hasToken()
+     *  returns true), then the current time is the time associated with
+     *  that token.  If there is no token to be read, then the current
+     *  time is the time of most recently read token. If no token has been
+     *  previously read, then the current time is 0.0.  Notice that this
+     *  means that an actor accessing time should do things in the
+     *  following order:
+     *  <pre>
+     *     if (hasToken(n)) {
+     *        double time = port.getCurrentTime(n);
+     *        Token token = port.get(n);
+     *     }
+     *  </pre>
+     *  I.e., getCurrentTime() is called before get().
+     *  Currently, only the DT domain uses this per-channel time feature.
+     *
+     *  @param channelIndex The channel index.
+     *  @param inside True for an inside channel.
+     *  @return The current time associated with a certain channel.
+     *  @exception IllegalActionException If the channel index
+     *  is out of range or if the port is not an input port.
+     */
+    public Time getModelTime(int channelIndex, boolean inside) throws IllegalActionException {
         Receiver[][] localReceivers;
 
         try {
@@ -1439,7 +1471,11 @@ public class IOPort extends ComponentPort {
 
                 // Note that the getReceivers() method might throw an
                 // IllegalActionException if there's no director.
-                localReceivers = getReceivers();
+                if (inside) {
+                    localReceivers = getInsideReceivers();
+                } else {
+                    localReceivers = getReceivers();
+                }
 
                 if (localReceivers[channelIndex] == null) {
                     throw new IllegalActionException(this,
@@ -2218,7 +2254,7 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex) throws IllegalActionException {
-        if (_getPersistentValue(channelIndex) != null) {
+        if (_getPersistentValue(channelIndex, false) != null) {
             return true;
         }
         return hasNewToken(channelIndex);
@@ -2242,7 +2278,7 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasToken(int channelIndex, int tokens)
             throws IllegalActionException {
-        if (_getPersistentValue(channelIndex) != null) {
+        if (_getPersistentValue(channelIndex, false) != null) {
             // FIXME: There is a corner case where this isn't quite right.
             // If a SmoothToken is received during retrieval of the vector of
             // inputs, then the port becomes persistent. But it may not be
@@ -2300,7 +2336,7 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasTokenInside(int channelIndex)
             throws IllegalActionException {
-        if (_getPersistentValue(channelIndex) != null) {
+        if (_getPersistentValue(channelIndex, true) != null) {
             // FIXME: See limitation documented in hasToken(int).
             return true;
         }
@@ -2928,10 +2964,12 @@ public class IOPort extends ComponentPort {
         Token value = defaultValue.getToken();
         if (value instanceof ArrayToken) {
     	    _persistentTokens = ((ArrayToken) value).arrayValue();
+    	    _persistentTokensInside = ((ArrayToken) value).arrayValue();
     	    _persistentToken = null;
         } else {
     	    _persistentToken = value;
     	    _persistentTokens = null;
+    	    _persistentTokensInside = null;
         }
     }
 
@@ -4758,23 +4796,23 @@ public class IOPort extends ComponentPort {
      *  If the persistent value is a SmoothToken, the first extrapolate its
      *  value to the current time.
      *  @param channelIndex The channel.
+     *  @param inside True to check an inside channel.
      * 	@return The persistent value, or null if there isn't one.
+     *  @throws IllegalActionException  If getting current time fails.
      */
-    private Token _getPersistentValue(int channelIndex) {
-	if (_persistentTokens != null
-		&& _persistentTokens.length > channelIndex
-		&& _persistentTokens[channelIndex] != null) {
-	    Token result = _persistentTokens[channelIndex];
+    private Token _getPersistentValue(int channelIndex, boolean inside)
+	    throws IllegalActionException {
+	Token[] tokens = _persistentTokens;
+	if (inside) {
+	    tokens = _persistentTokensInside;
+	}
+	if (tokens != null
+		&& tokens.length > channelIndex
+		&& tokens[channelIndex] != null) {
+	    Token result = tokens[channelIndex];
 	    if (result instanceof SmoothToken) {
-		// _checkContainer ensures the container is an Actor.
-		Actor container = (Actor)getContainer();
-		if (container != null) {
-		    Director director = container.getDirector();
-		    if (director != null) {
-			Time currentTime = director.getModelTime();
-			return ((SmoothToken)result).extrapolate(currentTime);
-		    }
-		}
+		Time currentTime = getModelTime(channelIndex, inside);
+		return ((SmoothToken)result).extrapolate(currentTime);
 	    } else {
 		return result;
 	    }
@@ -5034,50 +5072,56 @@ public class IOPort extends ComponentPort {
      *  as the value for the specified channel.
      *  @param channelIndex The channel index.
      *  @param token The token
+     *  @param inside True for an inside channel.
      *  @throws IllegalActionException If the width of this port cannot be
      *   determined.
      */
-    private void _recordPersistentValueIfNecessary(int channelIndex, Token token)
+    private void _recordPersistentValueIfNecessary(int channelIndex, Token token, boolean inside)
 	    throws IllegalActionException {
+	Token[] tokens = _persistentTokens;
+	if (inside) {
+	    tokens = _persistentTokensInside;
+	}
+
 	if (_persistentToken != null
-        	|| _persistentTokens != null
+        	|| tokens != null
         	|| token instanceof SmoothToken) {
 	    // Token may be persistent. Make sure there is a place to store it.
             int width = getWidth();
-            if (_persistentTokens == null) {
-        	_persistentTokens = new Token[width];
+            if (tokens == null) {
+        	tokens = new Token[width];
         	// If a single default has been given, enter that now.
         	if (_persistentToken != null) {
         	    for (int i = 0; i < width; i++) {
-        		_persistentTokens[i] = _persistentToken;
+        		tokens[i] = _persistentToken;
         	    }
                 }
-            } else if (_persistentTokens.length != width) {
+            } else if (tokens.length != width) {
         	// Width doesn't match previous value. Create a new array and copy
         	// the old values into it.
         	Token[] newArray = new Token[width];
-        	if (_persistentTokens.length < width) {
+        	if (tokens.length < width) {
         	    // The width has increased or is longer than the specified array.
         	    // Copy as many as we've got.
-        	    System.arraycopy(_persistentTokens, 0, newArray, 0, _persistentTokens.length);
+        	    System.arraycopy(tokens, 0, newArray, 0, tokens.length);
         	    // For the remaining slots, we need to examine the defaultValue parameter.
         	    Token value = defaultValue.getToken();
         	    if (value != null && !(value instanceof ArrayToken)) {
         		// A single default value has been given. Fill the new array with it.
         		// Otherwise, the array will be filled with null.
-        		for (int i = _persistentTokens.length; i < width; i++) {
-        		    _persistentTokens[i] = value;
+        		for (int i = tokens.length; i < width; i++) {
+        		    tokens[i] = value;
         		}
         	    }
         	} else {
         	    // The width has decreased or is shorter than the specified array.
         	    // Copy as many as we need.
-        	    System.arraycopy(_persistentTokens, 0, newArray, 0, width);
+        	    System.arraycopy(tokens, 0, newArray, 0, width);
         	}
-        	_persistentTokens = newArray;
+        	tokens = newArray;
         	if (_persistentToken != null) {
         	    for (int i = 0; i < width; i++) {
-        		_persistentTokens[i] = _persistentToken;
+        		tokens[i] = _persistentToken;
         	    }
                 }
             }
@@ -5093,7 +5137,7 @@ public class IOPort extends ComponentPort {
 	    // This also ensures that if a SmoothToken is delayed, its time
 	    // gets reset at the receiver. Notice that since tokens are
 	    // immutable, we have to create a new SmoothToken here.
-	    Time currentTime = getModelTime(channelIndex);
+	    Time currentTime = getModelTime(channelIndex, inside);
 	    Time tokenTime = ((SmoothToken)token).getTime();
 	    if (!currentTime.equals(tokenTime)) {
 		token = new SmoothToken(
@@ -5101,19 +5145,24 @@ public class IOPort extends ComponentPort {
 			currentTime,
 			((SmoothToken) token).derivativeValues());
 	    }
-	    _persistentTokens[channelIndex] = token;
-	} else if (_persistentTokens != null
+	    tokens[channelIndex] = token;
+	} else if (tokens != null
 		&& _persistentToken == null
-		&& _persistentTokens[channelIndex] instanceof SmoothToken) {
+		&& tokens[channelIndex] instanceof SmoothToken) {
             // If the persistence is because of having received a SmoothToken, but we are
             // now receiving something that is not a SmoothToken, then we need to reverse the
             // persistence.
     	    // FIXME: Potential weird corner case here where defaultValue is an array
     	    // that is not long enough to encompass this channel.
-	    _persistentTokens[channelIndex] = null;
+	    tokens[channelIndex] = null;
         } else if (_persistentToken != null) {
-            _persistentTokens[channelIndex] = token;
+            tokens[channelIndex] = token;
         }
+	if (inside) {
+	    _persistentTokensInside = tokens;
+	} else {
+	    _persistentTokens = tokens;
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -5216,6 +5265,11 @@ public class IOPort extends ComponentPort {
      *  indexed by channel.
      */
     private Token[] _persistentTokens;
+
+    /** Value of defaultValue (if it is an array) or the most recently received value
+     *  indexed by an inside channel.
+     */
+    private Token[] _persistentTokensInside;
 
     // A cache of the sink port list.
     private transient LinkedList<IOPort> _sinkPortList;
