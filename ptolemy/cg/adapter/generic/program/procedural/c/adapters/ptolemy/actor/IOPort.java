@@ -117,6 +117,38 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort {
         return result;
     }
 
+    /** Generate the code to get a token from a port, but don't
+     *  include the type, for example payload.Int.
+     *  @param channel The channel for which the get code is generated.
+     *  @param offset The offset in the array representation of the port.
+     *  @return The code that gets data from the channel.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
+     */
+    public String generateGetCodeWithoutType(String channel, String offset)
+            throws IllegalActionException {
+        int channelIndex = Integer.parseInt(channel);
+
+        TypedIOPort port = (TypedIOPort) getComponent();
+        Type type = port.getType();
+        String typeString = getCodeGenerator().codeGenType(type);
+        if (!((ptolemy.actor.IOPort) getComponent()).isOutsideConnected()) {
+            return processCode("$new(" + typeString + "(0))->payload."
+                    + typeString);
+        }
+        String result = "(*(" + port.getName() + "->get))((struct IOPort*) "
+                + port.getName() + "_X_COMA_X_ " + channelIndex + ")";
+
+        // if (type instanceof BaseType) {
+        //     result += "->payload." + typeString;
+        // } else if (type instanceof RecordType) {
+        //     result += "->payload.Record";
+        // }
+
+        return result;
+
+
+    }
+
     /**
      * Generate the code of the declaration of an IOPort (or a subclass)
      * Initialize all its dependencies (container, widths ...)

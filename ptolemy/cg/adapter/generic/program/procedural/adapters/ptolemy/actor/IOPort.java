@@ -214,6 +214,18 @@ PortCodeGenerator {
         return returnValue;
     }
 
+    /** Generate the code to get a token from a port, but don't
+     *  include the type, for example payload.Int.
+     *  @param channel The channel for which the get code is generated.
+     *  @param offset The offset in the array representation of the port.
+     *  @return The code that gets data from the channel.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
+     */
+    public String generateGetCodeWithoutType(String channel, String offset)
+            throws IllegalActionException {
+        return generateGetCode(channel, offset);
+    }
+
     /**
      * Generate code to check if the receiver has a token. This delegates to the
      * receiver adapter for the specified channel and asks it to generate the
