@@ -120,10 +120,7 @@ import certi.communication.MessageBuffer;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
-import java.util.HashSet;
-import java.util.Set;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
