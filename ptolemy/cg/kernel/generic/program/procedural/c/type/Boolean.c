@@ -65,12 +65,38 @@ Token* Boolean_negate(Token* thisToken, ...) {
 /**/
 
 /*** Boolean_new() ***/
+// Boolean Tokens can only be true or false and
+// are immutable, so we have just two Booleans
+Token* Boolean_False;
+Token* Boolean_True;
 // make a new integer token from the given value.
 Token* Boolean_new(boolean b) {
+    // Uncomment the next line to try the two Boolean apprach
+    //#define TWO_BOOLEANS
+#ifdef TWO_BOOLEANS
+    if (b) {
+        if (Boolean_True == NULL) {
+            Boolean_True = malloc(sizeof(Token));
+            Boolean_True->type = TYPE_Boolean;
+            Boolean_True->payload.Boolean = b;            
+        }
+        return Boolean_True;
+    } else {
+        if (Boolean_False == NULL) {
+            Boolean_False = malloc(sizeof(Token));
+            Boolean_False->type = TYPE_Boolean;
+            Boolean_False->payload.Boolean = b;
+        }
+        return Boolean_False;
+    }
+#else
+    // This code mallocs a token each time
+    // it is called.
     Token* result = malloc(sizeof(Token));
     result->type = TYPE_Boolean;
     result->payload.Boolean = b;
     return result;
+#endif    
 }
 /**/
 
