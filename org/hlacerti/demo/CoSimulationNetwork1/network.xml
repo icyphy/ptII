@@ -1,0 +1,198 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="network" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 55}">
+        </property>
+    </property>
+    <property name="producer" class="org.hlacerti.lib.HlaManager">
+        <display name="network"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;network&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;CoSimulationNetwork1&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="CoSimulationNetwork1.fed">
+            <display name="Path for .fed file"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={620, 132, 593, 456}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[359, 346]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1136">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{218.69899425287358, 172.54370959051724}">
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="75">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 320.0]">
+        </property>
+    </property>
+    <entity name="Bus" class="ptolemy.domains.de.lib.aspect.Bus">
+        <property name="serviceTimeMultiplicationFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="val1" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 135.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="val2" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 180.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="val3" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 235.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="val4" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 280.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="valnw1" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 135.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: Bus">
+            </property>
+        </port>
+    </entity>
+    <entity name="valnw2" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: Bus">
+            </property>
+        </port>
+    </entity>
+    <entity name="valnw3" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 235.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: Bus">
+            </property>
+        </port>
+    </entity>
+    <entity name="valnw4" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 280.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="DecoratorAttributesFor_Bus" class="ptolemy.domains.de.lib.aspect.Bus$BusAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Bus">
+                </property>
+                <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="sequenceNumber" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="messageLength" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </property>
+            <property name="_showInfo" class="ptolemy.kernel.util.StringAttribute" value="Aspects: Bus">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="val1.output" relation="relation"/>
+    <link port="val2.output" relation="relation2"/>
+    <link port="val3.output" relation="relation3"/>
+    <link port="val4.output" relation="relation4"/>
+    <link port="valnw1.input" relation="relation"/>
+    <link port="valnw2.input" relation="relation2"/>
+    <link port="valnw3.input" relation="relation3"/>
+    <link port="valnw4.input" relation="relation4"/>
+</entity>

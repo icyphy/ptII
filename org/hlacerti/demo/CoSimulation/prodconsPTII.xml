@@ -1,0 +1,151 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="prodconsPTII" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="startTime">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 50.0]">
+        </property>
+    </property>
+    <property name="producer" class="org.hlacerti.lib.HlaManager">
+        <display name="prodconsPTII"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;prodconsPTII&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;CoSimulation&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="CoSimulation.xml">
+            <display name="Path for .fed file"/>
+        </property>
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Is synchronization point creator ?"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={525, 22, 592, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[358, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0851950203425342">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{212.33984375, 256.50738595545977}">
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="11">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 85.0]">
+        </property>
+    </property>
+    <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 75.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 355.0]">
+        </property>
+    </property>
+    <entity name="val2" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 225.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="val" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 315.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 315.0]">
+        </property>
+    </entity>
+    <entity name="val1" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 140.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="val2.input" relation="relation3"/>
+    <link port="val.output" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="DiscreteClock2.output" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="val1.input" relation="relation4"/>
+</entity>

@@ -1,9 +1,10 @@
-# Makefile org sources from outside of Ptolemy
+# Makefile for Ptolemy II - HLA/CERTI cooperation
+#
+# @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
 #
-# @Copyright (c) 2007-2014 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,29 +30,41 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# configure sets PTBSH_MLC_DIR to mlc if BSH, the Java Bean Shell.
-# configure sets PTJSON_DIR to json if JSON, the JavaScript Object Notation was found.
-DIRS = $(PTBSH_MLC_DIR) $(PTJSON_DIR) $(PTHLACERTI_DIR) ptolemy terraswarm
+ME =		org/hlacerti
+
+DIRS =      lib demo
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =      ../..
 
-# $(ME) is used in ptdir.mk
-ME =		org
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-all: suball
-install: subinstall
+# Used to build jar files
+PTPACKAGE =     hlacerti
+PTCLASSJAR =
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = mlc json ptolemy terraswarm
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+        lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = lib
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+    demo
+
+all: jclass
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

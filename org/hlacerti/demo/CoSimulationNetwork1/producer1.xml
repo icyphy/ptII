@@ -1,0 +1,77 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="producer1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 55}">
+        </property>
+    </property>
+    <property name="producer" class="org.hlacerti.lib.HlaManager">
+        <display name="producer1"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;producer1&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;CoSimulationNetwork1&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="CoSimulationNetwork1.fed">
+            <display name="Path for .fed file"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 55.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 564, 359}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[330, 249]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0490220725023882">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{196.06242810582825, 258.2344468941718}">
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 205.0]">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="val1" class="org.hlacerti.lib.HlaPublisher">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 135.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="val1.input" relation="relation2"/>
+</entity>
