@@ -11,11 +11,11 @@
         </property>
         <property name="variablesAsArrays" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 115.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -38,26 +38,26 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={210, 59, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 184, 855, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[621, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.00000000000014}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.4, 252.00000000000014}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="NeoPixel_LED_Strip" class="ptolemy.cg.lib.EmbeddedCodeActor">
         <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
         </property>
-        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#include &quot;WS2812.h&quot;&#10;#endif&#10;#define WS2812_BUF 19&#10;int pixels[WS2812_BUF];&#10;#ifdef __MBED__&#10;WS2812 ws(D9, WS2812_BUF, 0, 5, 5, 0);&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;pixels[i] = 0x000000;&#10;}&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;#endif&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;pixels[$get(ledIndex)] = $get(color);&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;wait(0.004);&#10;#endif&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;&#10;&#10;">
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#include &quot;WS2812.h&quot;&#10;#endif&#10;#define WS2812_BUF 19&#10;int pixels[WS2812_BUF];&#10;#ifdef __MBED__&#10;WS2812 ws(D9, WS2812_BUF, 0, 5, 5, 0);&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;pixels[i] = 0x000000;&#10;}&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;#endif&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;/*&#10;Token * indexToken = (*(ledIndex-&gt;get))((struct IOPort*) ledIndex, 0);&#10;Token * colorToken = (*(color-&gt;get))((struct IOPort*) color, 0);&#10;indexToken-&gt;payload.Int&#10;free(indexToken);&#10;free(colorToken);*/&#10;&#10;&#10;Token * indexToken = $getNoPayload(ledIndex);&#10;Token * colorToken = $getNoPayload(color);&#10;//pixels[$getNoPayload(ledIndex)] = $getNoPayload(color);&#10;pixels[indexToken-&gt;payload.Int] = colorToken -&gt; payload.Int; &#10;free(indexToken);&#10;free(colorToken);&#10;&#10;&#10;&#10;&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;wait(0.004);&#10;#endif&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 270.0]">
         </property>
         <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
