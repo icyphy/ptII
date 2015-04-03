@@ -524,6 +524,15 @@ public class ClassChanges extends MoMLFilterSimple {
 
         _classChanges.put("ptolemy.vergil.basic.export.html.HTMLPageAssembler",
                 "ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler");
+        
+        //Move hlaptolemy classes from $PTII/ptolemy.apps to $PTII/org
+        {
+            String[] hlaPt2Classes={"HlaPublisher","HlaManager","HlaSubscriber"};
+            for(int i = 0 ; i < hlaPt2Classes.length;++i) {
+                _classChanges.put("ptolemy.apps.hlacerti.lib."+hlaPt2Classes[i],
+                        "org.hlacerti.lib."+hlaPt2Classes[i]);
+            }
+        }
     }
 
     // Set of class names that are obsolete and should be simply
