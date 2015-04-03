@@ -120,6 +120,10 @@ import certi.communication.MessageBuffer;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
+import java.util.HashSet;
+import java.util.Set;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
@@ -241,7 +245,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        //_debugging = true;
         //_lastProposedTime = null;
         _rtia = null;
         _federateAmbassador = null;
@@ -340,7 +344,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isCreator.setDisplayName("Is synchronization point creator ?");
         attributeChanged(isCreator);
     }
-
+     
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                     ////
 
@@ -1050,7 +1054,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  @throws IllegalActionException If a CERTI exception is raised then
      *  displayed it to the user.
      */
-    void updateHlaAttribute(HlaPublisher hp, Token in)
+    void updateHlaAttribute(HlaPublisher hp, Token in,int objectID)
             throws IllegalActionException {
         Time currentTime = _director.getModelTime();
 
@@ -1082,7 +1086,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         CertiLogicalTime ct = new CertiLogicalTime(currentTime.getDoubleValue()
                 + _hlaLookAHead);
         try {
-            _rtia.updateAttributeValues((Integer) tObj[5], suppAttributes, tag,
+            _rtia.updateAttributeValues(objectID, suppAttributes, tag,
                     ct);
         } catch (Exception e) {
             throw new IllegalActionException(this, e, e.getMessage());
@@ -1144,7 +1148,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // Resign HLA/CERTI Federation execution.
         try {
             _rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
-        } catch (RTIexception e) {
+        } catch (RTIexception e) {            
             throw new IllegalActionException(this, e, e.getMessage());
         }
         if (_debugging) {
@@ -1514,7 +1518,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             ((StringToken) ((Parameter) hs
                                     .getAttribute("classObjectHandle"))
                                     .getToken()).stringValue() });
-
+            
             // The events list to store updated values of HLA attribute,
             // (received by callbacks) from the RTI, is indexed by the HLA
             // Subscriber actors present in the model.
@@ -1570,6 +1574,39 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
     }
 
+        /**
+     * This function is used when we discover on object (HLA's id is object,
+     * the object HLA's class is theObjectClass).
+     * The function will try each HLASuscriber and map to the first free one
+     * the object we are currently registering
+     * handling
+     */
+    private  void _doMappingSuscriber(int object,int theObjectClass) {
+        Iterator<Entry<String, Object[]>> it = _hlaAttributesSubscribedTo
+                .entrySet().iterator();
+        
+        while (it.hasNext()) {
+            Map.Entry<String, Object[]> elt = it.next();
+            Object[] tObj = elt.getValue();
+            
+            //if we find a port whose object class handle match
+            //the object we are registering
+            if ((Integer) tObj[3] == theObjectClass) {
+                TypedIOPort port = (TypedIOPort) tObj[0];
+                HlaSubscriber actor = (HlaSubscriber) port.getContainer();
+                
+                if(!actor.isTaken()){
+                    if(_debugging){
+                    _debug(actor.getOpaqueIdentifier()+
+                            " will let go through itself objectID="+object +
+                            "(class = "+theObjectClass+')');
+                    }
+                    actor.register(object);
+                    break;
+                }
+            }
+        } //end of it.hasNext()
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1636,6 +1673,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  @author Gilles Lasnier
      */
     private class PtolemyFederateAmbassadorInner extends NullFederateAmbassador {
+
 
         ///////////////////////////////////////////////////////////////////
         ////                         public variables                  ////
@@ -1715,207 +1753,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
             this.synchronizationFailed = false;
             this.inPause = false;
 
-            // GL: FIXME: XXX: This method needs to be review and simplified.
-
-            // For each HlaPublisher actors deployed in the model we declare
-            // to the HLA/CERTI Federation a HLA attribute to publish.
-
-            // 1. Set classHandle and objAttributeHandle ids for each attribute
-            // value to publish (i.e. HlaPublisher). Update the HlaPublishers
-            // table with the information.
-            Iterator<Entry<String, Object[]>> it = _hlaAttributesToPublish
-                    .entrySet().iterator();
-
-            while (it.hasNext()) {
-                Map.Entry<String, Object[]> elt = it.next();
-                Object[] tObj = elt.getValue();
-
-                // Object class handle and object attribute handle are ids that
-                // allow to identify an HLA attribute.
-                int classHandle = rtia.getObjectClassHandle((String) tObj[2]);
-                int objAttributeHandle = rtia.getAttributeHandle(
-                        ((TypedIOPort) tObj[0]).getContainer().getName(),
-                        classHandle);
-
-                // Update HLA attribute information (for publication)
-                // from HLA services. In this case, the tObj[] object as
-                // the following structure:
-                // tObj[0] => input port which receives the token to transform
-                //            as an updated value of a HLA attribute,
-                // tObj[1] => type of the port (e.g. of the attribute),
-                // tObj[2] => object class name of the attribute,
-                // tObj[3] => id of the object class to handle,
-                // tObj[4] => id of the attribute to handle,
-                // tObj[5] => id of the registered attribute's instance.
-
-                // tObj[0 .. 2] are extracted from the Ptolemy model.
-                // tObj[3 .. 5] are provided by the RTI (CERTI).
-
-                // All these information are required to publish/unpublish
-                // updated value of a HLA attribute.
-                elt.setValue(new Object[] { tObj[0], tObj[1], tObj[2],
-                        classHandle, objAttributeHandle, null });
-            }
-
-            // 2. Create a table of HlaPublishers indexed by their corresponding
-            // classHandle (no duplication).
-            HashMap<String, LinkedList<String>> classHandleHlaPublisherTable = null;
-            classHandleHlaPublisherTable = new HashMap<String, LinkedList<String>>();
-
-            Iterator<Entry<String, Object[]>> it2 = _hlaAttributesToPublish
-                    .entrySet().iterator();
-
-            while (it2.hasNext()) {
-                Map.Entry<String, Object[]> elt = it2.next();
-                Object[] tObj = elt.getValue();
-
-                // The classHandle where the HLA attribute belongs to (see FOM).
-                String classHandleName = (String) tObj[2];
-
-                if (classHandleHlaPublisherTable.containsKey(classHandleName)) {
-                    classHandleHlaPublisherTable.get(classHandleName).add(
-                            elt.getKey());
-                } else {
-                    LinkedList<String> list = new LinkedList<String>();
-                    list.add(elt.getKey());
-                    classHandleHlaPublisherTable.put(classHandleName, list);
-                }
-            }
-
-            // 3. Declare to the Federation the HLA attributes to publish. If
-            // these attributes belongs to the same object class then only
-            // one registerObjectInstance call is performed.
-            // Then, update the HlaPublishers table with the new information.
-            Iterator<Entry<String, LinkedList<String>>> it3 = classHandleHlaPublisherTable
-                    .entrySet().iterator();
-
-            while (it3.hasNext()) {
-                Map.Entry<String, LinkedList<String>> elt = it3.next();
-                LinkedList<String> hlaPublishers = elt.getValue();
-
-                int classHandle = rtia.getObjectClassHandle(elt.getKey());
-
-                // The attribute handle set to declare all attributes to publish
-                // for one object class.
-                AttributeHandleSet _attributesLocal = RtiFactoryFactory
-                        .getRtiFactory().createAttributeHandleSet();
-
-                // Fill the attribute handle set with all attibute to publish.
-                for (String s : hlaPublishers) {
-                    _attributesLocal.add((Integer) _hlaAttributesToPublish
-                            .get(s)[4]);
-                }
-
-                // Declare to the Federation the HLA attribute(s) to publish.
-                try {
-                    rtia.publishObjectClass(classHandle, _attributesLocal);
-                } catch (OwnershipAcquisitionPending e) {
-                    e.printStackTrace();
-                }
-
-                int myObjectInstId = -1;
-
-                // ROI is called ** only once time ** for one federate. This
-                // means that only one instance of object class are allowed.
-                try {
-                    myObjectInstId = rtia.registerObjectInstance(classHandle,
-                            elt.getKey() + "%%" + _federateName);
-                } catch (ObjectClassNotPublished e) {
-                    e.printStackTrace();
-                } catch (ObjectAlreadyRegistered e) {
-                    e.printStackTrace();
-                }
-
-                for (String s : hlaPublishers) {
-                    Object[] tObj = _hlaAttributesToPublish.get(s);
-
-                    _hlaAttributesToPublish.put(s,
-                            new Object[] { tObj[0], tObj[1], tObj[2], tObj[3],
-                                    tObj[4], myObjectInstId });
-                }
-            }
-
-            // For each HlaSubscriber actors deployed in the model we declare
-            // to the HLA/CERTI Federation a HLA attribute to subscribe to.
-            Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
-                    .entrySet().iterator();
-
-            while (ot.hasNext()) {
-                Map.Entry<String, Object[]> elt = ot.next();
-                Object[] tObj = elt.getValue();
-
-                int classHandle = rtia.getObjectClassHandle((String) tObj[2]);
-                int objAttributeHandle = rtia.getAttributeHandle(
-                        ((TypedIOPort) tObj[0]).getContainer().getName(),
-                        classHandle);
-
-                // Update HLA attribute information (for subscription)
-                // from HLA services. In this case, the tObj[] object as
-                // the following structure:
-                // tObj[0] => output port which will produce the event received
-                //            as updated value of a HLA attribute,
-                // tObj[1] => type of the port (e.g. of the attribute),
-                // tObj[2] => object class name of the attribute,
-                // tObj[3] => id of the object class handle,
-                // tObj[4] => id of the attribute handle.
-
-                // tObj[0 .. 2] are extracted from the Ptolemy model.
-                // tObj[3 .. 4] are provided by the RTI (CERTI).
-
-                // All these information are required to subscribe to/unsubscribe
-                // to a HLA attribute.
-                elt.setValue(new Object[] { tObj[0], tObj[1], tObj[2],
-                        classHandle, objAttributeHandle });
-            }
-
-            // 2. Create a table of HlaSubscribers indexed by their corresponding
-            //    object class handle (no duplication).
-            HashMap<String, LinkedList<String>> classHandleHlaSubscriberTable = null;
-            classHandleHlaSubscriberTable = new HashMap<String, LinkedList<String>>();
-
-            Iterator<Entry<String, Object[]>> it4 = _hlaAttributesSubscribedTo
-                    .entrySet().iterator();
-
-            while (it4.hasNext()) {
-                Map.Entry<String, Object[]> elt = it4.next();
-                Object[] tObj = elt.getValue();
-
-                // The object class name of the HLA attribute (see FOM).
-                String classHandleName = (String) tObj[2];
-
-                if (classHandleHlaSubscriberTable.containsKey(classHandleName)) {
-                    classHandleHlaSubscriberTable.get(classHandleName).add(
-                            elt.getKey());
-                } else {
-                    LinkedList<String> list = new LinkedList<String>();
-                    list.add(elt.getKey());
-                    classHandleHlaSubscriberTable.put(classHandleName, list);
-                }
-            }
-
-            // 3. Declare to the Federation the HLA attributes to subscribe to.
-            Iterator<Entry<String, LinkedList<String>>> it5 = classHandleHlaSubscriberTable
-                    .entrySet().iterator();
-
-            while (it5.hasNext()) {
-                Map.Entry<String, LinkedList<String>> elt = it5.next();
-                LinkedList<String> hlaSubList = elt.getValue();
-
-                int classHandle = rtia.getObjectClassHandle(elt.getKey());
-
-                // The attribute handle set to declare all subscribed attributes
-                // for one object class.
-                AttributeHandleSet _attributesLocal = RtiFactoryFactory
-                        .getRtiFactory().createAttributeHandleSet();
-
-                for (String s : hlaSubList) {
-                    _attributesLocal.add((Integer) _hlaAttributesSubscribedTo
-                            .get(s)[4]);
-                }
-
-                _rtia.subscribeObjectClassAttributes(classHandle,
-                        _attributesLocal);
-            }
+            setUpHlaPublisher(rtia);
+            setUpHLASubscriber(rtia);
         }
 
         /** Initialize Federate's timing properties provided by the user.
@@ -1945,6 +1784,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 throws ObjectNotKnown, AttributeNotKnown,
                 FederateOwnsAttributes, InvalidFederationTime,
                 FederateInternalError {
+                        
             try {
                 for (int i = 0; i < theAttributes.size(); i++) {
                     Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
@@ -1962,8 +1802,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         int classHandle = _objectIdToClassHandle.get(theObject);
 
                         // The tuple (attributeHandle, classHandle) allows to
-                        // identify the object attribute (i.e. the HlaSubscriber)
-                        // where the updated value has to be stored.
+                        // identify the object attribute 
+                        // (i.e. one of the HlaSubscribers)
+                        // where the updated value has to be put.
                         if (theAttributes.getAttributeHandle(i) == (Integer) tObj[4]
                                 && (Integer) tObj[3] == classHandle) {
                             try {
@@ -2004,7 +1845,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
                                                     .getTime());
-                                    te = new TimedEvent(
+                                    te = new OriginatedEvent(
                                             ts,
                                             new Object[] {
                                                     (BaseType) tObj[1],
@@ -2012,7 +1853,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                             hs,
                                                             (BaseType) tObj[1],
                                                             theAttributes
-                                                                    .getValue(i)) });
+                                                                    .getValue(i)) },
+                                    theObject);
                                 }
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
@@ -2022,15 +1864,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     ((TypedIOPort) tObj[0]).getContainer()
                                             .getName()).add(te);
                             if (_debugging) {
+                                TypedIOPort port = (TypedIOPort) tObj[0];
+                                HlaSubscriber hs = ((HlaSubscriber)port.getContainer());
                                 _debug(HlaManager.this.getDisplayName()
                                         + " INNER"
                                         + " reflectAttributeValues() (RAV) - "
                                         + "HLA attribute: "
-                                        + ((TypedIOPort) tObj[0])
-                                                .getContainer().getName()
-                                        + "(value=" + te.contents
+                                        + hs.getParameterName()
                                         + ", timestamp=" + te.timeStamp
-                                        + ") has been received");
+                                        + ") has been received + pushed to " + hs.getDisplayName()
+                                );
                             }
                         }
                     }
@@ -2049,13 +1892,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 ObjectClassNotKnown, FederateInternalError {
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"
-                        + " discoverObjectInstance() - the object class "
-                        + objectName + " has been discovered" + " (theObject="
-                        + theObject + ", theObjectClass=" + theObjectClass
+                        + " discoverObjectInstance() - the object "
+                        + objectName + " has been discovered" + " (ID="
+                        + theObject + ", class'ID=" + theObjectClass
                         + ")");
             }
 
             _objectIdToClassHandle.put(theObject, theObjectClass);
+            _doMappingSuscriber(theObject, theObjectClass);
         }
 
         // HLA Time Management services (callbacks).
@@ -2169,5 +2013,227 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + " federationSynchronized() - inPause = " + inPause);
             }
         }
-    }
+
+        private void setUpHlaPublisher(RTIambassador rtia)throws NameNotFound,
+                ObjectClassNotDefined, FederateNotExecutionMember,
+                RTIinternalError, AttributeNotDefined, SaveInProgress,
+                RestoreInProgress, ConcurrentAccessAttempted {
+            // For each HlaPublisher actors deployed in the model we declare
+            // to the HLA/CERTI Federation a HLA attribute to publish.
+            // 1. Set classHandle and objAttributeHandle ids for each attribute
+            // value to publish (i.e. HlaPublisher). Update the HlaPublishers
+            // table with the information.
+            Iterator<Entry<String, Object[]>> it = _hlaAttributesToPublish
+                    .entrySet().iterator();
+
+            while (it.hasNext()) {
+                Map.Entry<String, Object[]> elt = it.next();
+                Object[] tObj = elt.getValue();
+
+                // Object class handle and object attribute handle are ids that
+                // allow to identify an HLA attribute.
+                int classHandle = rtia.getObjectClassHandle((String) tObj[2]);
+                int objAttributeHandle = rtia.getAttributeHandle(
+                        ((TypedIOPort) tObj[0]).getContainer().getName(),
+                        classHandle);
+
+                // Update HLA attribute information (for publication)
+                // from HLA services. In this case, the tObj[] object as
+                // the following structure:
+                // tObj[0] => input port which receives the token to transform
+                //            as an updated value of a HLA attribute,
+                // tObj[1] => type of the port (e.g. of the attribute),
+                // tObj[2] => object class name of the attribute,
+                // tObj[3] => id of the object class to handle,
+                // tObj[4] => id of the attribute to handle
+
+                // tObj[0 .. 2] are extracted from the Ptolemy model.
+                // tObj[3 .. 4] are provided by the RTI (CERTI).
+
+                // All these information are required to publish/unpublish
+                // updated value of a HLA attribute.
+                elt.setValue(new Object[] { tObj[0], tObj[1], tObj[2],
+                        classHandle, objAttributeHandle });
+            }
+
+            // 2. Create a table of HlaPublishers indexed by their corresponding
+            // classHandle (no duplication).
+            HashMap<String, LinkedList<String>> classHandleHlaPublisherTable = null;
+            classHandleHlaPublisherTable = new HashMap<String, LinkedList<String>>();
+
+            Iterator<Entry<String, Object[]>> it2 = _hlaAttributesToPublish
+                    .entrySet().iterator();
+
+            while (it2.hasNext()) {
+                Map.Entry<String, Object[]> elt = it2.next();
+                Object[] tObj = elt.getValue();
+
+                // The classHandle where the HLA attribute belongs to (see FOM).
+                String classHandleName = (String) tObj[2];
+
+                if (classHandleHlaPublisherTable.containsKey(classHandleName)) {
+                    classHandleHlaPublisherTable.get(classHandleName).add(
+                            elt.getKey());
+                } else {
+                    LinkedList<String> list = new LinkedList<String>();
+                    list.add(elt.getKey());
+                    classHandleHlaPublisherTable.put(classHandleName, list);
+                }
+            }
+
+            // 3. Declare to the Federation the HLA attributes to publish. If
+            // these attributes belongs to the same object class then only
+            // one registerObjectInstance call is performed.
+            // Then, update the HlaPublishers table with the new information.
+            Iterator<Entry<String, LinkedList<String>>> it3 = classHandleHlaPublisherTable
+                    .entrySet().iterator();
+
+            while (it3.hasNext()) {
+                Map.Entry<String, LinkedList<String>> elt = it3.next();
+                LinkedList<String> hlaPublishers = elt.getValue();
+
+                int classHandle = rtia.getObjectClassHandle(elt.getKey());
+
+                // The attribute handle set to declare all attributes to publish
+                // for one object class.
+                AttributeHandleSet _attributesLocal = RtiFactoryFactory
+                        .getRtiFactory().createAttributeHandleSet();
+
+                // Fill the attribute handle set with all attibute to publish.
+                for (String s : hlaPublishers) {
+                    _attributesLocal.add((Integer) _hlaAttributesToPublish
+                            .get(s)[4]);
+                }
+
+                // Declare to the Federation the HLA attribute(s) to publish.
+                try {
+                    rtia.publishObjectClass(classHandle, _attributesLocal);
+                } catch (OwnershipAcquisitionPending e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            Iterator<Entry<String, Object[]>> it5 = _hlaAttributesToPublish
+                    .entrySet().iterator();
+            LinkedList<String> alreadyRegistered = new LinkedList<String>();
+            while (it5.hasNext()) {
+                
+                Map.Entry<String, Object[]> elt = it5.next();
+                
+                Object[] tObj = elt.getValue();
+                int classHandle = rtia.getObjectClassHandle((String) tObj[2]);
+                TypedIOPort port = (TypedIOPort) tObj[0];
+                
+                List<IOPort> sender = port.sourcePortList();
+                for(IOPort s : sender){
+                    String senderName = s.getContainer().getName();
+                    if(!alreadyRegistered.contains(senderName)){
+                        alreadyRegistered.add(senderName);
+                        int myObjectInstId = -1;
+                        try {
+                            myObjectInstId = rtia.registerObjectInstance(classHandle,senderName);
+                            HlaPublisher pub = (HlaPublisher)port.getContainer();
+                            pub.register(senderName, myObjectInstId);
+                        } catch (ObjectClassNotPublished e) {
+                            e.printStackTrace();
+                        } catch (ObjectAlreadyRegistered e) {
+                            e.printStackTrace();
+                        }
+                    }                
+                }
+            }
+        }
+        /**
+         * Configure the different HLASubscribers (ie will make them suscribe
+         * to what they should)
+        */
+        private void setUpHLASubscriber(RTIambassador rtia)throws NameNotFound,
+                ObjectClassNotDefined, FederateNotExecutionMember,
+                RTIinternalError, AttributeNotDefined, SaveInProgress,
+                RestoreInProgress, ConcurrentAccessAttempted {
+            
+            // For each HlaSubscriber actors deployed in the model we declare
+            // to the HLA/CERTI Federation a HLA attribute to subscribe to.
+            Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
+                    .entrySet().iterator();
+            
+            while (ot.hasNext()) {
+                Map.Entry<String, Object[]> elt = ot.next();
+                Object[] tObj = elt.getValue();
+                TypedIOPort port = (TypedIOPort) tObj[0];
+                int classHandle = rtia.getObjectClassHandle((String) tObj[2]);
+                int objAttributeHandle = rtia.getAttributeHandle(
+                        ((HlaSubscriber)port.getContainer()).getParameterName(),
+                        classHandle);
+                
+                // Update HLA attribute information (for subscription)
+                // from HLA services. In this case, the tObj[] object as
+                // the following structure:
+                // tObj[0] => output port which will produce the event received
+                //            as updated value of a HLA attribute,
+                // tObj[1] => type of the port (e.g. of the attribute),
+                // tObj[2] => object class name of the attribute,
+                // tObj[3] => id of the object class handle,
+                // tObj[4] => id of the attribute handle.
+                
+                // tObj[0 .. 2] are extracted from the Ptolemy model.
+                // tObj[3 .. 4] are provided by the RTI (CERTI).
+                
+                // All these information are required to subscribe to/unsubscribe
+                // to a HLA attribute.
+                elt.setValue(new Object[] { tObj[0], tObj[1], tObj[2],
+                    classHandle, objAttributeHandle });
+            }
+            
+            // 2. Create a table (LinkedList of HlaSubscribers)
+            //indexed by their corresponding object class handle (no duplication).
+            HashMap<String, LinkedList<String>> classHandleHlaSubscriberTable = null;
+            classHandleHlaSubscriberTable = new HashMap<String, LinkedList<String>>();
+            
+            Iterator<Entry<String, Object[]>> it4 = _hlaAttributesSubscribedTo
+                    .entrySet().iterator();
+            
+            while (it4.hasNext()) {
+                Map.Entry<String, Object[]> elt = it4.next();
+                Object[] tObj = elt.getValue();
+                
+                // The object class name of the HLA attribute (see FOM).
+                String classHandleName = (String) tObj[2];
+                
+                if (classHandleHlaSubscriberTable.containsKey(classHandleName)) {
+                    classHandleHlaSubscriberTable.get(classHandleName).add(
+                            elt.getKey());
+                } else {
+                    LinkedList<String> list = new LinkedList<String>();
+                    list.add(elt.getKey());
+                    classHandleHlaSubscriberTable.put(classHandleName, list);
+                }
+            }
+            
+            // 3. Declare to the Federation the HLA attributes to subscribe to.
+            Iterator<Entry<String, LinkedList<String>>> it5 = classHandleHlaSubscriberTable
+                    .entrySet().iterator();
+            
+            while (it5.hasNext()) {
+                Map.Entry<String, LinkedList<String>> elt = it5.next();
+                LinkedList<String> hlaSubList = elt.getValue();
+                
+                int classHandle = rtia.getObjectClassHandle(elt.getKey());
+                
+                // The attribute handle set to declare all subscribed attributes
+                // for one object class.
+                AttributeHandleSet _attributesLocal = RtiFactoryFactory
+                        .getRtiFactory().createAttributeHandleSet();
+                
+                for (String s : hlaSubList) {
+                    _attributesLocal.add((Integer) _hlaAttributesSubscribedTo
+                            .get(s)[4]);
+                }
+                
+                _rtia.subscribeObjectClassAttributes(classHandle,
+                        _attributesLocal);
+            }
+        }
+    }    
+
 }

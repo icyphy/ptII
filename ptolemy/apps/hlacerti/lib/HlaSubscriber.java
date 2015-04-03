@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.apps.hlacerti.lib;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,10 +49,13 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.TupleToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.BaseType.IntType;
 import ptolemy.data.type.RecordType;
+import ptolemy.data.type.TupleType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesNetworkModelTimeType;
 import ptolemy.kernel.CompositeEntity;
@@ -104,7 +108,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         // The single output port of the actor.
         output = new TypedIOPort(this, "output", false, true);
-
+        
         classObjectHandle = new Parameter(this, "classObjectHandle");
         classObjectHandle.setDisplayName("Object class in FOM");
         classObjectHandle.setTypeEquals(BaseType.STRING);
@@ -122,7 +126,22 @@ public class HlaSubscriber extends TypedAtomicActor {
         useCertiMessageBuffer.setExpression("false");
         useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
         attributeChanged(useCertiMessageBuffer);
+        
 
+                
+        _opaqueIdendifier = new Parameter(this, "opaqueIdentifier");
+        _opaqueIdendifier.setDisplayName("Opaque identifier of the federate");
+        _opaqueIdendifier.setTypeEquals(BaseType.STRING);
+        _opaqueIdendifier.setExpression("\"opaqueIdentifier\"");
+        
+        _parameterName = new Parameter(this, "parameterName");
+        _parameterName.setDisplayName("Name of the parameter to receive");
+        _parameterName.setTypeEquals(BaseType.STRING);
+        _parameterName.setExpression("\"parameterName\"");
+        
+        attributeChanged(_opaqueIdendifier);
+        attributeChanged(_parameterName);
+        
         _reflectedAttributeValues = new LinkedList<TimedEvent>();
         _useHLAPtidesEvent = false;
         _useCertiMessageBuffer = false;
@@ -143,6 +162,10 @@ public class HlaSubscriber extends TypedAtomicActor {
     /** The output port. */
     public TypedIOPort output = null;
 
+    /**
+    * The HLA Parameter the HLASuscriber is interedted into
+    */
+    public Parameter _parameterName;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -179,6 +202,27 @@ public class HlaSubscriber extends TypedAtomicActor {
                         new Type[] { BaseType.INT, BaseType.DOUBLE,
                         BaseType.DOUBLE, BaseType.DOUBLE }));
             }
+        }
+        else if(attribute == _parameterName || attribute == _opaqueIdendifier){
+            try {
+                StringToken opaqueName = (StringToken) _opaqueIdendifier.getToken();
+                StringToken paramName = (StringToken) _parameterName.getToken();
+                String param = "";
+                String opaque = "";
+                if(opaqueName == null) {
+                    throw new IllegalActionException(this,
+                        "opaqueName Cant be null");
+                } else {
+                    opaque = opaqueName.stringValue();
+                }
+                if(paramName == null) {
+                    throw new IllegalActionException(this,
+                        "paramName Cant be null");
+                }else {
+                    param = paramName.stringValue();
+                }
+                setDisplayName(opaque + " " +param);
+            } catch (IllegalActionException illegalActionException) {}
         }
         super.attributeChanged(attribute);
     }
@@ -231,19 +275,37 @@ public class HlaSubscriber extends TypedAtomicActor {
         while (it.hasNext()) {
             TimedEvent te = it.next();
             if (te.timeStamp.compareTo(currentTime) == 0) {
-                this.outputPortList().get(0)
-                .send(0, _buildToken((Object[]) te.contents));
-
-                if (_debugging) {
-                    _debug(this.getDisplayName()
-                            + " Called fire() - An updated value"
-                            + " of the HLA attribute \"" + this.getName()
-                            + "\" has been sent at \"" + te.timeStamp + "\"");
+                
+                Token content = _buildToken((Object[]) te.contents);
+                int origin = -1;
+                if(te instanceof OriginatedEvent){
+                    OriginatedEvent oe = (OriginatedEvent) te;
+                    origin = oe.objectID;
                 }
-            }
+                
+                //OriginatedEvent can be null if the HLAsuscriber is not used
+                //
+                Integer potentialIdentifier = _mapping.get(getOpaqueIdentifier());
+                
+                //either it is NOT OriginatedEvent and we let it go
+                //either it is and it has to match the (potential) origin 
+                //and check potentialIdentifier before using it (short circuit evaluation) 
+                if(origin == -1 || 
+                        potentialIdentifier !=null && potentialIdentifier.equals(origin) == true){
+                    this.outputPortList().get(0).send(0, content);
+                    
+                    if (_debugging) {
+                        _debug(this.getDisplayName()
+                                + " Called fire() - An updated value"
+                                + " of the HLA attribute \"" + this.getName() + " from "
+                                + origin  
+                                + "\" has been sent at \"" + te.timeStamp + "\"");
+                    } //end debug
+                } //end test fire
             it.remove();
-        }
-    }
+            } //end current time
+        } //end of while
+    } //end of fire
 
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the tokens queue. Then, program the next firing time of this actor to
@@ -337,7 +399,60 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         return value;
     }
+    
+    /**
+     * Return true if the opaque identifier of the current HLASuscriber is already
+     * binded to an object instance.
+     */
+    public boolean isTaken(){
+        String name = null;
+        try {
+            name= ((StringToken) _opaqueIdendifier.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+            illegalActionException.printStackTrace();
+        }
+        return _mapping.get(name) != null;
+    }
+    /**
+     * Return the opaque identifier of the current HLASuscriber.
+    */
+    public String getOpaqueIdentifier(){
+        try {
+            return ((StringToken) _opaqueIdendifier.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+        }
+        return "";
+    }
+    
+    /**
+     * Bind the current HLASuscriber's opaque identifier to object's id theObject.
+     */
+    public void register(int theObject){
 
+        _mapping.put(getOpaqueIdentifier(),theObject);
+    }
+    /**
+     * Return the kind of HLA Attribute the HLASuscriber is handling.
+     */
+    public String getParameterName(){
+        String parameter ="";
+        try {
+            parameter = ((StringToken) _parameterName.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+        }
+        return parameter;
+    }
+    
+    
+    @Override 
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        
+        //we should do a clear but it is written as OPTIONNAL.
+        //safe way to deal with it is to create a whole new object.
+        //who said java is RAM consuming ?
+        _mapping = new HashMap<String,Integer>();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -349,4 +464,22 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
+    
+    /** 
+     * Meaningless string used for a 1 <-> 1 mapping with the objectID enabling
+     * the HLASuscriber to filter not relevant tokens.
+     * Thus all HLASuscribers with the same _opaqueIdendifier 
+     * will refere to the same object in the federation
+     */ 
+    private Parameter _opaqueIdendifier;
+    
+
+    
+    //private String _oldName;
+    
+    /**
+     * used to remeber the mapping _opaqueIdendifier <-> HLA Object id
+     * Filled up by register when HLAManager discovers an object
+    */
+    private static HashMap<String,Integer> _mapping = new HashMap<String,Integer>();
 }
