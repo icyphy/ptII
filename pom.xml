@@ -723,6 +723,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>**/ptolemy/backtrack/eclipse/**</exclude>
            <exclude>**/ptolemy/backtrack/test/**</exclude>
 	   <exclude>org/ptolemy/ssm/**</exclude>
+	   <exclude>org/hlacerti/**</exclude>
            <exclude>doc/coding/templates/**</exclude>
 	   <exclude>ptdb/**</exclude>
            <exclude>ptolemy/copernicus/kernel/fragment/**</exclude>
