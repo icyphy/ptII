@@ -1,24 +1,24 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HLA" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-<doc>HLA actors</doc>
+<configure>
+  <?moml
+    <group>
+    <doc>HLA actors</doc>
 
-<property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
+<property name="HlaManager" class="org.hlacerti.lib.HlaManager">
 </property>
 
-<entity name="HlaPublisher" class="ptolemy.apps.hlacerti.lib.HlaPublisher"> 
+<entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher"> 
 </entity>
 
-<entity name="HlaSubscriber" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+<entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
 </entity>
 
-      </group>
-    ?>
-  </configure>
+</group>
+?>
+</configure>
 </entity>
 
 

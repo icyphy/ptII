@@ -2,7 +2,7 @@
 #
 # @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 71890 2015-04-03 18:28:43Z David.COME@supaero.isae.fr $
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/CoSimulationFunctional
+ME =        org/hlacerti/demo/f14HLA
 
 # Root of the Java directory
 ROOT =      ../../../..
@@ -41,21 +41,22 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     CoSimulationFunctional
+PTPACKAGE =     f14HLA
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	CoSimulationFunctional.xml \
-	consumer.xml \
-	producerFunct.xml \
-	producerSkel.xml \
-	CoSimulationFunctional.fed
+	f14HLA.xml \
+	f14Aircraft.xml \
+	f14AutoPilot.xml \
+	f14Initial.xml \
+	f14PilotStick.xml \
+	f14HLA.fed 
 
 EXTRA_SRCS = \
-    $(OTHER_FILES_TO_BE_JARED) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -79,16 +80,10 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" CoSimulationFunctional.xml
-	"$(PTII)/bin/ptolemy" consumer.xml
-	"$(PTII)/bin/ptolemy" producerFunct.xml
-	"$(PTII)/bin/ptolemy" producerSkel.xml
+	"$(PTII)/bin/ptolemy" prodconsPTII.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" CoSimulationFunctional.xml
-	"$(PTII)/bin/vergil" consumer.xml
-	"$(PTII)/bin/vergil" producerFunct.xml
-	"$(PTII)/bin/vergil" producerSkel.xml
+	"$(PTII)/bin/vergil" prodconsPTII.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

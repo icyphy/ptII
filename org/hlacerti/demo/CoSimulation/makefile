@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/CoSimulation
+ME =        org/hlacerti/demo/CoSimulation
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -48,8 +48,9 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	prodconsPTII.xml \
-	CoSimulation.fed 
+	CoSimulation.xml \
+	CoSimulation.fed \
+	prodconsPTII.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
@@ -57,7 +58,7 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = cpp
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES

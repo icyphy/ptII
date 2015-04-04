@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/SimpleProducerConsumer
+ME =        org/hlacerti/demo/SimpleProducerConsumer
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -86,6 +86,6 @@ demo_vergil:
 	"$(PTII)/bin/vergil" consumer.xml
 	"$(PTII)/bin/vergil" producer.xml
 	"$(PTII)/bin/vergil" SimpleProducerConsumer.xml
-	
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

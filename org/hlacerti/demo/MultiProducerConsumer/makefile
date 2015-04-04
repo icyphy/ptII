@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/MultiProducerConsumer
+ME =        org/hlacerti/demo/MultiProducerConsumer
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 

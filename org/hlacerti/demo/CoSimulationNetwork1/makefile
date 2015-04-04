@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/CoSimulationNetwork1
+ME =        org/hlacerti/demo/CoSimulationNetwork1
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 
