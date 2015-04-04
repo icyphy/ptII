@@ -1,17 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Co-Simulation" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-	    <!-- matlab depends on Matlab being present -->
-            <input source="ptolemy/matlab/matlab.xml"/>
-	    <input source="lbnl/actor/lib/simulatorentities.xml"/>
-        
-        <!-- FIXME: see when present or not.  Also, move out of apps. -->
-        <input source="ptolemy/apps/hlacerti/lib/hlaentities.xml"/>
-      </group>
+<configure>
+  <?moml
+    <group>
+    <!-- matlab depends on Matlab being present -->
+    <input source="ptolemy/matlab/matlab.xml"/>
+
+    <input source="lbnl/actor/lib/simulatorentities.xml"/>
+    
+    <input source="org/hlacerti/lib/hlaentities.xml"/>
+    </group>
     ?>
-  </configure>
+</configure>
 </entity>
