@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/SynchronizeToRealTime
+ME =        org/hlacerti/demo/SynchronizeToRealTime
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -89,6 +89,6 @@ demo_vergil:
 	"$(PTII)/bin/vergil" clockHLA.xml
 	"$(PTII)/bin/vergil" clockTransmitter.xml
 	"$(PTII)/bin/vergil" SynchronizeToRealTime.xml
-	
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

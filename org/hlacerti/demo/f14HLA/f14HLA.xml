@@ -1,4 +1,4 @@
-<?xml version="1.0" standalone="no"?>
+f?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="f14HLA" class="ptolemy.actor.TypedCompositeActor">
@@ -17,7 +17,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_Aircraft.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14Aircraft.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -50,7 +50,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 165.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_AutoPilot.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14AutoPilot.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -75,7 +75,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 195.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_PilotStick.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14PilotStick.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

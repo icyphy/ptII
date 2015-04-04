@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/apps/hlacerti/lib/test
+ME =		org/hlacerti/lib/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
 # PTJCERTI_JAR is set by configure if lib/jcerti.jar was found.
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJCERTI_JAR)
@@ -58,11 +58,15 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	MultiDataTypes.fed \
+	MultiDataTypesConsumer.xml \
+	MultiDataTypesProducer.xml
+	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =		alljtests.tcl auto  junit
+MISC_FILES =		alljtests.tcl junit #auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

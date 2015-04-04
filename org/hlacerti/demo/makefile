@@ -29,18 +29,19 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo
+ME =        org/hlacerti/demo
 
 DIRS =  CoSimulation \
         CoSimulationFunctional \
         CoSimulationNetwork1 \
+	f14HLA \
         MultiDataTypes \
         MultiProducerConsumer \
         SimpleProducerConsumer \
         SynchronizeToRealTime
 
 # Root of the Java directory
-ROOT =      ../../../..
+ROOT =      ../../..
 
 CLASSPATH = $(ROOT)
 
@@ -56,10 +57,12 @@ PTCLASSALLJARS = \
         CoSimulation/CoSimulation.jar \
         CoSimulationFunctional/CoSimulationFunctional.jar \
         CoSimulationNetwork1/CoSimulationNetwork1.jar \
+	f14HLA \
         MultiDataTypes/MultiDataTypes.jar \
         MultiProducerConsumer/MultiProducerConsumer.jar \
         SimpleProducerConsumer/SimpleProducerConsumer.jar \
         SynchronizeToRealTime/SynchronizeToRealTime.jar
+
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 

@@ -31,10 +31,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/apps/hlacerti/lib/test/junit
+ME =		org/hlacerti/lib/test/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
 # PTJCERTI_JAR is set by configure if lib/jcerti.jar was found.
@@ -79,7 +79,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # JUNIT_JAVA_ARGS is set in $PTII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.apps.hlacerti.lib.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore org.hlacerti.lib.test.junit org.hlacerti.lib.test.junit.JUnitTclTest)
 
 test_java: jclass
 

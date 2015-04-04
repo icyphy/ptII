@@ -34,7 +34,7 @@ To install the software CERTI (and JCERTI), follow the instructions here:
   http://savannah.nongnu.org/cvs/?group=certi
 
 To execute a Ptolemy II demo, open each .xml files in a subdirectory of the
-ptolemy/apps/hlaCerti/demo/ directory.
+org/hlacerti/demo/ directory.
 
 - You can launch the RTIG process manually, by running the command "rtig" 
 in a terminal with the CERTI environment set. Be careful, you have to
@@ -74,13 +74,13 @@ The current implementation is composed of:
   from Ptolemy model
 For more information see:
 
-   ptolemy/apps/hlaCerti/lib/*.java
+   org/hlacerti/lib/*.java
 
 These entities are deployed in the Vergil library in the "Co-Simulation" 
 directory, for more information see:
 
-   ptolemy/apps/hlaCerti/lib/hlaentities.xml
+   org/hlacerti/lib/hlaentities.xml
    
 and,
 
-   ptolemy/configs/cosimumation.xml.
+   ptolemy/configs/cosimulation.xml.

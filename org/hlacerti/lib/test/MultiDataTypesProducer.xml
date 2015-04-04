@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -30.0]">
         </property>
     </property>
-    <property name="producer" class="ptolemy.apps.hlacerti.lib.HlaManager">
+    <property name="producer" class="org.hlacerti.lib.HlaManager">
         <display name="producer"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;producer&quot;">
             <display name="Federate's name"/>
@@ -74,7 +74,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 310.0]">
         </property>
     </property>
-    <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
+    <entity name="val" class="org.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 70.0]">
         </property>
     </entity>
@@ -105,7 +105,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 135.0]">
         </property>
     </entity>
-    <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
+    <entity name="val1" class="org.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 135.0]">
         </property>
     </entity>
@@ -128,7 +128,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 200.0]">
         </property>
     </entity>
-    <entity name="val2" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
+    <entity name="val2" class="org.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 200.0]">
         </property>
     </entity>
@@ -153,7 +153,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 270.0]">
         </property>
     </entity>
-    <entity name="val3" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
+    <entity name="val3" class="org.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 270.0]">
         </property>
     </entity>

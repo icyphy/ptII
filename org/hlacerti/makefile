@@ -53,6 +53,14 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
+OTHER_FILES_TO_BE_JARED = \
+	INSTALL_CERTI.txt \
+	INSTALL_JCERTI.txt \
+	INSTALL_VergilCERTI.txt \
+	manual-ptii-hla.pdf
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'

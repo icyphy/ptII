@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.5, 306.0}">
     </property>
-    <property name="HlaManager" class="ptolemy.apps.hlacerti.lib.HlaManager">
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <display name="consumer"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;consumer&quot;">
             <display name="Federate's name"/>
@@ -69,7 +69,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 325.0]">
         </property>
     </property>
-    <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+    <entity name="val" class="org.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 140.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -78,7 +78,7 @@
             </property>
         </port>
     </entity>
-    <entity name="val1" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+    <entity name="val1" class="org.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 195.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -87,7 +87,7 @@
             </property>
         </port>
     </entity>
-    <entity name="val2" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+    <entity name="val2" class="org.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 250.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -104,7 +104,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 250.0]">
         </property>
     </entity>
-    <entity name="val3" class="ptolemy.apps.hlacerti.lib.HlaSubscriber">
+    <entity name="val3" class="org.hlacerti.lib.HlaSubscriber">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
