@@ -46,18 +46,18 @@ import ptolemy.util.StreamExec;
 *  This is a subclass ProceduralCodeGenerator, which extends ProgramCodeGenerator, which
 *  extends GenericCodeGenerator.
 *  <p>To generate C-code from a Ptolemy II model, using the Master Algorithm 
-*  implemented by this code generator, use (optional parameter in brackets):
+*  implemented by this code generator, use:
 *  <pre>
 $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
-[-dialect <Dialect>] model.xml
+-dialect Hybrid model.xml
 * </pre>
 *  @author Christopher Brooks, Marten Lohstroh, Fabio Cremona
-*  @version $Id$
+*  @version $Id: FMIMACodeGenerator.java 70853 2014-12-04 00:26:35Z cxh $
 *  @since Ptolemy II 10.0
 *  @Pt.ProposedRating red (cxh)
 *  @Pt.AcceptedRating red (cxh)
 */
-public class FMIMACodeGenerator extends ProceduralCodeGenerator {
+public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -69,57 +69,17 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator {
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public FMIMACodeGenerator(NamedObj container, String name)
+    public FMIMAHybridCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        //super(container, name, "c");
-        super(container, name, "c", "c");
-        // This is where we set the package where the generic code generator
-        // will look for adapters
-        // NOTE: the package will be prepended with "ptolemy.cg.adapter."
-        // Hence, we are referring to the following package here:
-        // ptolemy.cg.adapter.generic.program.procedural.fmima
-        generatorPackageList.setExpression("generic.program.procedural.fmima");
-    }
-
-    /** Return a formatted comment containing the specified string. In
-     *  this base class, the comments is a C-style comment, which
-     *  begins with "/ *" and ends with "* /" followed by the platform
-     *  dependent end of line character(s): under Unix: backslash n, under
-     *  Windows: backslash n backslash r. Subclasses may override this produce comments
-     *  that match the code generation language.
-     *  @param comment The string to put in the comment.
-     *  @return A formatted comment.
-     */
-    @Override
-    public String comment(String comment) {
-        return "/" + "* " + comment + " *" + "/" + _eol;
-    }
-
-    /** Generate the main entry point.
-     *  @return Return the definition of the main entry point for a program.
-     *   In C, this would be defining main().
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    @Override
-    public String generateMainEntryCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(comment("ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java"));
-        code.append(comment("Probably the thing to do is to create .c files and copy them over to the cg/ directory."));
-        code.append(comment("Then we can create a few functions that do the real work."));
-        if (_isTopLevel()) {
-            code.append(_eol + _eol + "int main(int argc, char *argv[]) {"
-                    + _eol);
-            code.append(((FMIMACodeGeneratorAdapter) getAdapter(toplevel()))
-                    .generateFMIMA());
-
-            code.append(_eol + "return 0;" + _eol + "}");
-        }
-        return code.toString();
+        super(container, name);
+        // FIXME: generatorPackageList.setExpression("generic.program.procedural.fmima");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    // FIXME: Is there anything specific in this method? If not, erase it.
+    
     /** Generate FMIMA and append it to the given string buffer.
      *  Write the code to the directory specified by the <i>codeDirectory</i>
      *  parameter.  The file name is a sanitized version of the model
@@ -232,7 +192,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator {
      */
     @Override
     protected Class<?> _getAdapterClassFilter() {
-        return FMIMACodeGeneratorAdapter.class;
+        return FMIMACodeGeneratorAdapter.class; // FIXME: should we change this to FMIMAHybridGeneratorAdapter? Perhaps not. In that case, erase this method.
     }
 
     /** Read in a template makefile, substitute variables and write
