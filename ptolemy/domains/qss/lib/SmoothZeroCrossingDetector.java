@@ -258,9 +258,9 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
 
             double[] derivatives = ((SmoothToken)inputToken).derivativeValues();
             // Handle linear case first.
-            if (derivatives.length == 1
+            if (derivatives != null && (derivatives.length == 1
         	    || (derivatives.length == 2 && derivatives[1] == 0.0)
-        	    || (derivatives.length > 2 && derivatives[1] == 0.0 && derivatives[2] == 0.0)) {
+        	    || (derivatives.length > 2 && derivatives[1] == 0.0 && derivatives[2] == 0.0))) {
         	// There is a predictable zero crossing only if the derivative
         	// and value have opposite signs.
         	if (_detectRisingCrossing && inputValue < 0.0 && derivatives[0] > 0.0
