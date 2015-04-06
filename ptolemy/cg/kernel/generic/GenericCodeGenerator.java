@@ -1735,7 +1735,7 @@ Decorator {
         //    { "-compileTarget",
         // "     <target to be run, defaults to empty string>" },
         { "-dialect", "              <Use to distinguish between different implementations in the same package>" },
-        { "-Generatordialect", "     <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>" },
+        { "-generatorDialect", "     <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>" },
         {
             "-generatorPackage",
         " <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>" },
