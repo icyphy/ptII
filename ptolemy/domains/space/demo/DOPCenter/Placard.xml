@@ -54,7 +54,7 @@
         </property>
     </property>
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
-        <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://sisyphus.eecs.berkeley.edu:3306/space">
+        <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://terra.eecs.berkeley.edu:3306/space">
         </property>
         <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.spacecadet">
         </property>
