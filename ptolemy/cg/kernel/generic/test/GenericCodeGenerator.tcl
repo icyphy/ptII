@@ -199,6 +199,8 @@ test GenericCodeGenerator-13.1 {main -help} {
 
 Options that take values:
  -codeDirectory         <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>
+ -dialect               <Use to distinguish between different implementations in the same package>
+ -generatorDialect      <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>
  -generatorPackage  <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>
  -generatorPackageList  <Semicolon or * separated list of Java packages to be searched for adapters>
  -language              <c|java|html (default: c)>
