@@ -45,6 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// SmoothZeroCrossingDetector
@@ -188,6 +189,22 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    /** Clone the actor into the specified workspace and set the type
+     *  constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SmoothZeroCrossingDetector newObject = (SmoothZeroCrossingDetector) super.clone(workspace);
+
+        // Set the type constraints.
+        newObject.output.setTypeAtLeast(newObject.value);
+        return newObject;
     }
 
     /** If an input is available and either it equals zero or it has crossed
