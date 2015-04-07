@@ -1,0 +1,24 @@
+;; SimpleProducerConsumer 
+
+(Fed
+  (Federation SimpleProducerConsumer)
+  (FedVersion v1.3)
+  ;;(Federate "consumer" "Public")
+ ;; (Federate "producer" "Public")
+  (Spaces
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class myObjectClass
+		(Attribute val RELIABLE TIMESTAMP)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)
