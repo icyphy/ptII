@@ -167,6 +167,14 @@ public class HTMLAbout {
                     + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
                     + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
         }
+        if (_configurationExists("cyphysim")) {
+            htmlBuffer
+            .append("<tr rowspan=4><center><b>CyPhySim</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/cyphysim/intro.htm")
+                    + _aboutHTML("ptolemy/configs/cyphysim/demonstrations.htm")
+                    + _aboutHTML("ptolemy/configs/cyphysim/docs.htm")
+                    + _aboutHTML("ptolemy/configs/doc/docs.htm"));
+        }
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
             htmlBuffer
