@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2014 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural
+ME =		ptolemy/cg/adapter/generic/program/procedural/fmima/demo
 
-DIRS =		adapters c fmima fmimahybrid java
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,42 +45,38 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	procedural
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	c/c.jar \
-	fmima/fmima.jar \
-	fmimahybrid/fmimahybrid.jar \
-	java/java.jar
+PTCLASSALLJARS =
 
-# Keep this list alphabetized.
-JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = 
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	adapters c fmima java
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	doc 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

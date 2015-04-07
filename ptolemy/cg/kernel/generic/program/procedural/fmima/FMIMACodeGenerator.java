@@ -43,21 +43,19 @@ import ptolemy.util.StreamExec;
 ////FMIMACodeGenerator
 
 /** Generate a Functional Mockup Interface Master Algorithm (FMIMA) description of a model.
-*  This is a subclass ProceduralCodeGenerator, which extends ProgramCodeGenerator, which
-*  extends GenericCodeGenerator.
-*  <p>To generate C-code from a Ptolemy II model, using the Master Algorithm 
-*  implemented by this code generator, use (optional parameter in brackets):
-*  <pre>
+ *  <p>To generate an FMIMA version of a model, use:
+ *  <pre>
 $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
-[-dialect <Dialect>] model.xml
-* </pre>
-*  @author Christopher Brooks, Marten Lohstroh, Fabio Cremona
-*  @version $Id$
-*  @since Ptolemy II 10.0
-*  @Pt.ProposedRating red (cxh)
-*  @Pt.AcceptedRating red (cxh)
-*/
-public class FMIMACodeGenerator extends ProceduralCodeGenerator {
+    -generatorPackagelist generic.program.procedural.fmima \
+    $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20RC1pt.xml
+ * </pre>
+ *  @author Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating red (cxh)
+ *  @Pt.AcceptedRating red (cxh)
+ */
+public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGenerator*/{
 
     /** Create a new instance of the FMIMACodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -73,11 +71,6 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         //super(container, name, "c");
         super(container, name, "c", "c");
-        // This is where we set the package where the generic code generator
-        // will look for adapters
-        // NOTE: the package will be prepended with "ptolemy.cg.adapter."
-        // Hence, we are referring to the following package here:
-        // ptolemy.cg.adapter.generic.program.procedural.fmima
         generatorPackageList.setExpression("generic.program.procedural.fmima");
     }
 

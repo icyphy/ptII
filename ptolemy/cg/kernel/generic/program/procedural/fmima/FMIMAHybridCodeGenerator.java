@@ -72,7 +72,7 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
     public FMIMAHybridCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // FIXME: generatorPackageList.setExpression("generic.program.procedural.fmima");
+        generatorPackageList.setExpression("generic.program.procedural.fmimahybrid");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,9 +102,9 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
 
         // Hint:  Look at ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
 
-        code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
+        code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMAHybridCodeGenerator.java _generateCode"));
 
-        // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/ma.
+        // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/maHybrid.
 
         String directory = codeDirectory.stringValue();
         if (!directory.endsWith("/")) {
@@ -126,12 +126,12 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
                 _includes.add("-I " + directoryFmiShared);
             }
         }
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/", directoryFmi,
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/", directoryFmi,
                 "fmusdk-license.htm");
 
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/shared/", directoryFmiShared,
                 "sim_support.c");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
+        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/shared/", directoryFmiShared,
                 "sim_support.h");
 
         String directoryFmiIncludes = directoryFmi + "includes/";
@@ -140,7 +140,7 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
                 _includes.add("-I " + directoryFmiIncludes);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma2/includes/",
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/maHybrid/includes/",
                 directoryFmiIncludes, new String[] { "fmi2.h",
                         "fmi2FunctionTypes.h", "fmi2Functions.h",
                         "fmi2TypesPlatform.h" });
@@ -152,7 +152,7 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
             }
         }
         _copyCFilesTosrc(
-                "ptolemy/actor/lib/fmi/ma2/parser/",
+                "ptolemy/actor/lib/fmi/maHybrid/parser/",
                 directoryFmiParser,
                 new String[] { "XmlElement.cpp", "XmlElement.h",
                         "XmlParserCApi.cpp", "XmlParserCApi.h",
@@ -164,7 +164,7 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
                 _includes.add("-I " + directoryFmiParserLibxml);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma2/parser/libxml/",
+        _copyCFilesTosrc("ptolemy/actor/lib/fmi/maHybrid/parser/libxml/",
                 directoryFmiParserLibxml, new String[] { "dict.h",
                         "encoding.h", "entities.h", "globals.h", "hash.h",
                         "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
@@ -186,41 +186,41 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
         return super._generateCode(code);
     }
 
-    /** Return the filter class to find adapters. All
-     *  adapters have to extend this class.
-     *  @return The base class for the adapters.
-     */
-    @Override
-    protected Class<?> _getAdapterClassFilter() {
-        return FMIMACodeGeneratorAdapter.class; // FIXME: should we change this to FMIMAHybridGeneratorAdapter? Perhaps not. In that case, erase this method.
-    }
-
-    /** Read in a template makefile, substitute variables and write
-     *  the resulting makefile.
-     *
-     *  <p>See {@link  ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)}
-     *  for a complete list of variables that are substituted.</p>
-     *  <p>In this class, the following variables are substituted
-     *  <dl>
-     *  <dt><code>@PTCGPPCompiler@</code>
-     *  <dd>The g++ compiler</dd>
-     *  <dt><code>@PTCGCompler@</code>
-     *  <dd>The gcc compiler</dd>
-     *  </dl>
-     *  @param container The composite actor for which we generate the makefile
-     *  @param currentDirectory The director in which the makefile is to be written.
-     *  @exception IllegalActionException  If there is a problem reading
-     *  a parameter, if there is a problem creating the codeDirectory directory
-     *  or if there is a problem writing the code to a file.
-     */
-    @Override
-    protected void _writeMakefile(CompositeEntity container,
-            String currentDirectory) throws IllegalActionException {
-        _substituteMap.put("@PTCGPPCompiler@", "g++");
-        _substituteMap.put("@PTCGCompiler@", "gcc");
-
-        _substituteMap.put("@PTCGLibraries@", _concatenateElements(_libraries));
-
-        super._writeMakefile(container, currentDirectory);
-    }
+//    /** Return the filter class to find adapters. All
+//     *  adapters have to extend this class.
+//     *  @return The base class for the adapters.
+//     */
+//    @Override
+//    protected Class<?> _getAdapterClassFilter() {
+//        return FMIMACodeGeneratorAdapter.class; // FIXME: should we change this to FMIMAHybridGeneratorAdapter? Perhaps not. In that case, erase this method.
+//    }
+//
+//    /** Read in a template makefile, substitute variables and write
+//     *  the resulting makefile.
+//     *
+//     *  <p>See {@link  ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator#_writeMakefile(CompositeEntity, String)}
+//     *  for a complete list of variables that are substituted.</p>
+//     *  <p>In this class, the following variables are substituted
+//     *  <dl>
+//     *  <dt><code>@PTCGPPCompiler@</code>
+//     *  <dd>The g++ compiler</dd>
+//     *  <dt><code>@PTCGCompler@</code>
+//     *  <dd>The gcc compiler</dd>
+//     *  </dl>
+//     *  @param container The composite actor for which we generate the makefile
+//     *  @param currentDirectory The director in which the makefile is to be written.
+//     *  @exception IllegalActionException  If there is a problem reading
+//     *  a parameter, if there is a problem creating the codeDirectory directory
+//     *  or if there is a problem writing the code to a file.
+//     */
+//    @Override
+//    protected void _writeMakefile(CompositeEntity container,
+//            String currentDirectory) throws IllegalActionException {
+//        _substituteMap.put("@PTCGPPCompiler@", "g++");
+//        _substituteMap.put("@PTCGCompiler@", "gcc");
+//
+//        _substituteMap.put("@PTCGLibraries@", _concatenateElements(_libraries));
+//
+//        super._writeMakefile(container, currentDirectory);
+//    }
 }

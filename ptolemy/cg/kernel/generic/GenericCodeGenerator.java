@@ -1582,6 +1582,7 @@ Decorator {
             String oldCodeGeneratorClassName = codeGeneratorClassName;
             codeGeneratorClassName = generatorPackageValue
                     + capitalizedLanguage + "CodeGenerator";
+
             try {
                 result = Class.forName(codeGeneratorClassName);
             } catch (Throwable throwable2) {
