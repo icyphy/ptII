@@ -171,6 +171,9 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         newObject._B = null;
         newObject._B0 = null;
         newObject.B_new = null;
+        newObject._nCategories = null;
+        newObject.A_new = null;
+        newObject.prior_new = null;
         return newObject;
     }
 

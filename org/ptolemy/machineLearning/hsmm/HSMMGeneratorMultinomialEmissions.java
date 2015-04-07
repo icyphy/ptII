@@ -44,6 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////HSMMGeneratorMultinomialEmissions
@@ -137,6 +138,16 @@ public class HSMMGeneratorMultinomialEmissions extends HSMMGenerator {
         } 
     }
 
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HSMMGeneratorMultinomialEmissions newObject = (HSMMGeneratorMultinomialEmissions) super
+                .clone(workspace);
+        newObject._B = null;
+        newObject._nCategories = null;
+        
+        return newObject;
+    }
+    
     @Override
     public void fire() throws IllegalActionException {
 

@@ -201,6 +201,9 @@ public abstract class HSMMParameterEstimator extends ParameterEstimator {
         newObject._D0 = new double[_nStates][_maxDuration];
         newObject._durationPriors = new double[_maxDuration];
         newObject._priors = new double[_nStates];
+        newObject._dPriors0 = null;
+        newObject._D = null;
+        newObject._likelihoodHistory =null;
         return newObject;
     }
 

@@ -195,6 +195,14 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 .clone(workspace);
         newObject._sigma0 = new double[_nStates][_obsDimension][_obsDimension];
         newObject._mu0 = new double[_nStates][_obsDimension];
+        newObject._mu = null;
+        newObject._sigma = null;
+        newObject.A_new = null;
+        newObject.m_new = null;
+        newObject.dPrior_new = null;
+        newObject.s_new = null;
+        newObject.prior_new = null;
+        newObject.clusters =null;
         return newObject;
     }
 
