@@ -1,0 +1,136 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="cons" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, 45}">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <display name="cons"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;cons&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SimpleProducerConsumer&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SimpleProducerConsumer.fed">
+            <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 50.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={569, 340, 530, 393}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[296, 283]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1125783535311324">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{105.53027343749999, 139.86962890625}">
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 80.0]">
+        </property>
+    </property>
+    <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="A val"/>
+        <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="&quot;A&quot;">
+            <display name="Opaque identifier of the federate"/>
+        </property>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="HlaSubscriber2" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="B val"/>
+        <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="&quot;B&quot;">
+            <display name="Opaque identifier of the federate"/>
+        </property>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 175.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="HlaSubscriber3" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="C val"/>
+        <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="&quot;C&quot;">
+            <display name="Opaque identifier of the federate"/>
+        </property>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 225.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="ConsumerTimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="A,B,C">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 182, 483, 340}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[483, 296]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 135.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>ConsumerTimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="2.0999807042373098" max="2.1000175016250915"/>
+<yRange min="0.848102435318757" max="4.155352871264214"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="HlaSubscriber.output" relation="relation"/>
+    <link port="HlaSubscriber2.output" relation="relation2"/>
+    <link port="HlaSubscriber3.output" relation="relation3"/>
+    <link port="ConsumerTimedPlotter.input" relation="relation"/>
+    <link port="ConsumerTimedPlotter.input" relation="relation2"/>
+    <link port="ConsumerTimedPlotter.input" relation="relation3"/>
+</entity>
