@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="consumer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 53, 813, 731}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 441, 800, 727}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[579, 621]">
     </property>
@@ -70,6 +70,10 @@
         </property>
     </property>
     <entity name="val" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="opaqueIdentifier val"/>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 140.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -79,7 +83,7 @@
         </port>
     </entity>
     <entity name="string" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 535, 488, 210}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -87,6 +91,10 @@
         </property>
     </entity>
     <entity name="val1" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="opaqueIdentifier val1"/>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 195.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -96,6 +104,10 @@
         </port>
     </entity>
     <entity name="val2" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="opaqueIdentifier val2"/>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val2&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 250.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -105,7 +117,7 @@
         </port>
     </entity>
     <entity name="int" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 217, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={391, 484, 488, 210}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -113,6 +125,10 @@
         </property>
     </entity>
     <entity name="val3" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="opaqueIdentifier val3"/>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val3&quot;">
+            <display name="Name of the parameter to receive"/>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -122,7 +138,7 @@
         </port>
     </entity>
     <entity name="boolean" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 382, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={255, 598, 488, 210}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -130,7 +146,7 @@
         </property>
     </entity>
     <entity name="double" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 172, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={563, 463, 488, 210}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -138,8 +154,12 @@
         </property>
     </entity>
     <entity name="val4" class="org.hlacerti.lib.HlaSubscriber">
+        <display name="opaqueIdentifier val4"/>
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
+        </property>
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val4&quot;">
+            <display name="Name of the parameter to receive"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 350.0]">
         </property>
@@ -150,7 +170,7 @@
         </port>
     </entity>
     <entity name="double in CertiMessageBuffer" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 382, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 593, 488, 210}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -161,6 +181,8 @@
         <vertex name="vertex1" value="{68.0, 65.0}">
         </vertex>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -168,8 +190,6 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="val.output" relation="relation6"/>
     <link port="string.input" relation="relation6"/>
