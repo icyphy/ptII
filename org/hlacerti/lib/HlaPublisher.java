@@ -168,7 +168,8 @@ public class HlaPublisher extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
         newObject._hlaManager = _hlaManager;
-
+        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
+        newObject._useHLAPtidesEvent = _useHLAPtidesEvent;
         return newObject;
     }
 
