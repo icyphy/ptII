@@ -77,7 +77,8 @@ import ptolemy.util.FileUtilities;
    Execute a script in JavaScript that can read inputs and parameters,
    perform calculations, and write outputs. The script may be provided
    as the textual value of the <i>script</i> parameter, or as an input
-   on the <i>script</i> port. The script can change on each firing.
+   on the <i>script</i> port. You can add to the script or modify
+   function definitions on each firing.
    <p>
    To use this actor, add input and output ports, parameters (if you like),
    and specify a script. The names of the ports and parameters are required to be valid
@@ -91,7 +92,7 @@ import ptolemy.util.FileUtilities;
    parameter value will not be noticed.
    </p>
    <p>
-   Your script should define one or more of the following functions:</p>
+   Your script can define zero or more of the following functions:</p>
    <ul>
    <li> <b>exports.initialize</b>. This function is invoked each time this actor
    is initialized. This function should not read inputs or produce outputs.</li>
@@ -423,6 +424,7 @@ public class JavaScript extends TypedAtomicActor {
         newObject._outputTokens = null;
         newObject._pendingTimeoutFunctions = null;
         newObject._pendingTimeoutIDs = null;
+        newObject._proxies = null;
         return newObject;
     }
 
@@ -440,35 +442,32 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Produce any pending outputs specified by send() since the last firing,
      *  invoke any timer tasks that match the current time, and invoke the
-     *  fire function. If there are no new inputs and either a timer task
-     *  is triggered or a pending output is produced, then do not invoke
-     *  the fire() procedure. In this case, we assume that the only reason
-     *  for the firing is to produce the pending outputs and/or to handle
-     *  the timer task.
+     *  fire function. Specifically:
      *  <ol>
      *  <li>
-     *  First, send any outputs that have been queued to be sent by calling send()
+     *  First, if there is a new token on the script input port, then evaluate
+     *  the script specified on that port. Any previously defined methods
+     *  such as fire() will be replaced if the new script has a replacement,
+     *  and preserved otherwise.
+     *  If the new script has an initialize() method, that method will not be
+     *  invoked until the next time this actor is initialized.
+     *  <li>
+     *  Next, send any outputs that have been queued to be sent by calling send()
      *  from outside any firing of this JavaScript actor.
+     *  <li>
+     *  Next, read all available inputs, recording their values for subsequent calls to get().
      *  <li>
      *  Next, invoke any pending timer tasks whose timing matches the current time.
      *  <li>
-     *  Next, read all inputs, making a record of which ones have new tokens.
+     *  After updating all the inputs, for each input port that had a new token on any channel
+     *  and for which there is a handler function bound to that port
+     *  via the addInputHandler() method, then invoke that function.
+     *  Such function will be invoked in the following order: First, invoke the functions
+     *  for each PortParameter, in the order in which the PortParameters were created.
+     *  Then invoke the functions for the ordinary input ports.
      *  <li>
-     *  If there is a new token on the scriptIn input port, then replace the current
-     *  script with the one specified on that port. Any previously defined methods
-     *  such as fire() will be replaced or deleted (if the new script does not have one).
-     *  If the new script has an initialize() method, then invoke that method.
-     *  <li>
-     *  Next, if any input has a new token and there is a method bound to that port
-     *  via the setInputHandler() method, then invoke that method.
-     *  Such methods will be invoked in the order in which setInputHandler() was invoked.
-     *  <li>
-     *  Next, if the current script has a fire() function, and if there either new
-     *  input events that were not handled by an input handler,
-     *  or there were no timer tasks or pending outputs, then invoke the fire()
-     *  function.
+     *  Next, if the current script has a fire() function, then it.
      *  </ol>
-     *  FIXME: Timeout, setInputHandler, and handleInput() are not implemented.
      *  FIXME: Top-level docs don't explain fire().
      *  <p>
      *  @exception IllegalActionException If calling send() or super.fire()
@@ -502,6 +501,10 @@ public class JavaScript extends TypedAtomicActor {
         		    "Loading input script triggers an exception.");
         	}
             }
+            if (_debugging) {
+        	_debug("Evaluated new script on input port: " 
+        		+ scriptValue);
+            }
         }
 
         // Send out buffered outputs, if there are any.
@@ -518,6 +521,12 @@ public class JavaScript extends TypedAtomicActor {
                         if (queue != null) {
                             for (Token token : queue) {
                                 port.send(entry.getKey(), token);
+                                if (_debugging) {
+                                    _debug("Sent to output port "
+                                	    + port.getName()
+                                	    + " the value "
+                                	    + token);
+                                }
                             }
                         }
                     }
@@ -525,11 +534,24 @@ public class JavaScript extends TypedAtomicActor {
                 _outputTokens.clear();
             }
         }
+        
+        // Make a record of input handlers that need to be invoked.
+        List<PortOrParameterProxy> proxiesWithInputs = new LinkedList<PortOrParameterProxy>();
 
-        // Update any port parameters that have been added.
+        // Update port parameters.
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
-            if (portParameter == script) continue;
-            portParameter.update();
+            if (portParameter == script) {
+        	continue;
+            }
+            if (portParameter.update()) {
+        	proxiesWithInputs.add(_proxies.get(portParameter));
+        	if (_debugging) {
+        	    _debug("Received new input on " 
+        		    + portParameter.getName()
+        		    + " with value "
+        		    + portParameter.getToken());
+        	}
+            }
         }
 
         // Read all the available inputs.
@@ -544,13 +566,25 @@ public class JavaScript extends TypedAtomicActor {
                 continue;
             }
             HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
+            boolean hasInput = false;
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
+                    hasInput = true;
                     tokens.put(i, input.get(i));
+                    if (_debugging) {
+                	_debug("Received new input on " 
+                		+ input.getName()
+                		+ " with value "
+                		+ tokens.get(i));
+                    }
                 }
             }
             _inputTokens.put(input, tokens);
+            if (hasInput) {
+        	proxiesWithInputs.add(_proxies.get(input));
+            }
         }
+        // Invoke any timeout callbacks whose timeout matches current time.
         // Synchronize to ensure that this function invocation is atomic
         // w.r.t. to any callbacks.
         synchronized (this) {
@@ -571,23 +605,34 @@ public class JavaScript extends TypedAtomicActor {
                         	// reschedule itself using the same id.
                                 _pendingTimeoutFunctions.remove(id);
                                 function.run();
+                                if (_debugging) {
+                                    _debug("Invoked timeout function.");
+                                }
                             }
                         }
                         _pendingTimeoutIDs.remove(currentTime);
                     }
                 }
+                
+                // Invoke input handlers.
+                for (PortOrParameterProxy proxy : proxiesWithInputs) {
+                    proxy.invokeHandlers();
+                }
 
         	// Invoke the fire function.
-        	try {
-        	    ((Invocable)_engine).invokeFunction("fire");
-        	} catch (ScriptException | NoSuchMethodException e) {
-        	    if (error.getWidth() > 0) {
-        		error.send(0, new StringToken(e.getMessage()));
-        	    } else {
-        		throw new IllegalActionException(this, e,
-        			"fire() function triggers an exception.");
-        	    }
-        	}
+                try {
+                    ((Invocable)_engine).invokeFunction("fire");
+                    if (_debugging) {
+                        _debug("Invoked fire function.");
+                    }
+                } catch (ScriptException | NoSuchMethodException e) {
+                    if (error.getWidth() > 0) {
+                	error.send(0, new StringToken(e.getMessage()));
+                    } else {
+                	throw new IllegalActionException(this, e,
+                		"fire() function triggers an exception.");
+                    }
+                }
             } finally {
         	_inFire = false;
             }
@@ -615,6 +660,7 @@ public class JavaScript extends TypedAtomicActor {
         _pendingTimeoutFunctions = null;
         _pendingTimeoutIDs = null;
         _timeoutCount = 0;
+        _proxies = new HashMap<NamedObj,PortOrParameterProxy>();
         
         // Create a script engine.
         // This is private to this class, so each instance of JavaScript
@@ -676,7 +722,9 @@ public class JavaScript extends TypedAtomicActor {
         		"Port name is a JavaScript keyword: "
         		+ port.getName());
             }
-            _engine.put(port.getName(), new PortOrParameterProxy(port));
+            PortOrParameterProxy proxy = new PortOrParameterProxy(port);
+            _proxies.put(port, proxy);
+            _engine.put(port.getName(), proxy);
         }
 
         // Expose the parameters as JavaScript variables.
@@ -696,7 +744,9 @@ public class JavaScript extends TypedAtomicActor {
         		"Parameter name is a JavaScript keyword: "
         		+ parameter.getName());
             }
-            _engine.put(parameter.getName(), new PortOrParameterProxy(parameter));
+            PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
+            _proxies.put(parameter, proxy);
+            _engine.put(parameter.getName(), proxy);
         }
 
         _executing = true;
@@ -827,7 +877,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @return A unique ID for this callback.
      *  @throws IllegalActionException If the director cannot respect the request.
      */
-    public int setInterval(final Runnable function, final int milliseconds) throws IllegalActionException {
+    public int setInterval(final Runnable function, final int milliseconds)
+	    throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         // Create a new function that invokes the specified function and then reschedules
         // itself.
@@ -1051,6 +1102,9 @@ public class JavaScript extends TypedAtomicActor {
     /** Map from timeout time to pending timeout IDs. */
     private Map<Time, List<Integer>> _pendingTimeoutIDs;
 
+    /** Map of proxies for ports and parameters. */
+    private HashMap<NamedObj,PortOrParameterProxy> _proxies;
+    
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
 
@@ -1081,6 +1135,23 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         
+        /** Add an input handler for this port.
+         *  @param handle The handler handle.
+         *  @throws IllegalActionException If this proxy is not for an input port.
+         *  @see #removeInputHandler(Integer)
+         */
+        public void addInputHandler(final Runnable function) throws IllegalActionException {
+            if (_port == null || !_port.isInput()) {
+        	throw new IllegalActionException(JavaScript.this,
+        		"Not an input port: "
+        			+ ((_port == null)?_parameter.getName():_port.getName()));
+            }
+            if (_inputHandlers == null) {
+        	_inputHandlers = new LinkedList<Runnable>();
+            }
+            _inputHandlers.add(function);
+        }
+        
         /** Get the current value of the input port or a parameter.
          *  If it is a ParameterPort, then retrieve the value
          *  from the corresponding parameter instead (the fire() method
@@ -1105,6 +1176,33 @@ public class JavaScript extends TypedAtomicActor {
         	return token;
             }
             return null;
+        }
+        
+        /** Invoke any input handlers that have been added.
+         *  @see #addInputHandler(Runnable)
+         */
+        public void invokeHandlers() {
+            if (_inputHandlers != null) {
+        	for (Runnable function : _inputHandlers) {
+                    if (function != null) {
+                        function.run();
+                        if (_debugging) {
+                            _debug("Invoked handler function for " + _port.getName());
+                        }
+                    }
+        	}
+            }
+        }
+
+        /** Remove the input handler with the specified handle, if it exists.
+         *  @param handle The handler handle.
+         *  @see #addInputHandler(Runnable)
+         */
+        public void removeInputHandler(Integer handle) {
+            int n = handle.intValue();
+            if (_inputHandlers != null && n < _inputHandlers.size()) {
+        	_inputHandlers.remove(n);
+            }
         }
 
         /** Expose the send() method of the port.
@@ -1186,6 +1284,9 @@ public class JavaScript extends TypedAtomicActor {
             }
             return _parameter.getName();
         }
+        
+        /** A list of input handlers, in the order in which they are invoked. */
+        protected List<Runnable> _inputHandlers;
 
         /** The parameter that is proxied, or null if it's a port. */
         protected Variable _parameter;

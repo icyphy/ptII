@@ -20,6 +20,29 @@ var exports = {
 };
 
 ////////////////////
+// Add a handler function to call when the specified port receives a new input.
+// Return a handle to use in removeInputHandler(). If there are additional arguments
+// beyond the first two, then those arguments will be passed to the function
+// when it is invoked.
+// Note with this implementation, it is not necessary to
+// call removeInputHandler() in the actor's wrapup() function.
+// Nevertheless, it is a good idea to do that in an accessor
+// since other accessor hosts may not work the same way.
+function addInputHandler(port, func) {
+    var callback = func;
+    // If there are arguments to the callback, create a new function.
+    // Get an array of arguments excluding the first two.
+    var tail = Array.prototype.slice.call(arguments, 2);
+    if (tail.length !== 0) {
+        callback = function() {
+            func.apply(this, tail);
+        };
+    }
+    var id = port.addInputHandler(callback);
+    return id;
+}
+
+////////////////////
 // Default fire function, which invokes exports.fire().
 // Note that if the script simply defines a top-level fire() function instead
 // of exports.fire(), that function will overwrite this one and will still work
@@ -41,6 +64,13 @@ function get(port, channel) {
 // of exports.initialize(), that function will overwrite this one and will still work
 // as expected.
 function initialize() {exports.initialize();}
+
+////////////////////
+// Remove the input handler for the specified port
+// with the specified handle. See setInputHandler().
+function removeInputHandler(port, handle) {
+    port.removeInputHandler(handle);
+}
 
 ////////////////////
 // Function to send data to an output port.
