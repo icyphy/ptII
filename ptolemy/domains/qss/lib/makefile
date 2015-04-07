@@ -45,22 +45,21 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-    
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJARS =
+#
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Align.java \
-	PeriodicSampler.xml \
-	PeriodicSamplerIcon.xml \
 	SmoothSignal.java \
 	SmoothZeroCrossingDetector.java
 
 OTHER_FILES_TO_BE_JARED = \
+	PeriodicSampler.xml \
+	PeriodicSamplerIcon.xml \
 	qssentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
