@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 50.0}">
         </property>
