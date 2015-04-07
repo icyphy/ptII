@@ -1,0 +1,146 @@
+# Template makefile from $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in
+
+# Functional Mockup Unit (FMU) Master Algorithm in C
+
+# $Id: makefile.in 71467 2015-01-28 02:35:29Z marten $
+
+# The CodeGenerator class subsitutes strings like "@modelName@" with
+# the value of parameters and writes the results in the directory
+# where the source code is created.
+#
+# To use your _own_ makefile, create a makefile named "ModelName.mk.in".
+# For example, if the model is called Foo, then the code generator
+# looks for a makefile template file called "Foo.mk.in" and then
+# looks for $PTII/ptolemy/codegen/c/makefile.in.
+#
+# To compile using this makefile after substitution, run:
+#    make -f @modelName@.mk
+
+####-------
+# Helper sources
+SHARED_SRCS = sim_support.c
+
+CPP_SRCS = \
+	parser/XmlElement.cpp \
+	parser/XmlParser.cpp \
+	parser/XmlParserCApi.cpp
+
+# Main target
+TARGET = main.c
+
+# Dependencies
+DEPS = \
+	includes/fmi2.h \
+	includes/fmi2Functions.h \
+	includes/fmi2FunctionTypes.h \
+	includes/fmi2TypesPlatform.h \
+	parser/XmlElement.h \
+	parser/XmlParser.h \
+	parser/XmlParserCApi.h \
+	parser/XmlParserException.h
+
+EXTRA_SRCS = $(CPP_SRCS) $(TARGET) $(DEPS) fmi/shared/sim_support.h fmi/shared/sim_support.c
+
+
+PTCGLIBRARIES = @PTCGLibraries@
+PTCGINCLUDES = @PTCGIncludes@
+PTCG_CFILES = @modelName@.c fmi/shared/sim_support.c
+
+# Flags for the C compiler, but not the C++ compiler.
+C_ONLY_FLAGS=-std=gnu99
+
+# Under Windows, to create a binary that does not pop up a console window,
+# compile with: make -f @modelName@.mk CC_FLAGS=-mwindows
+CC_FLAGS=
+
+# If the user would like to add compile time options, run with
+# make -f @modelName@.mk USER_CC_FLAGS=xxx
+USER_CC_FLAGS =
+
+# We use -ggdb because -g fails with very large .c files
+DEBUG = -ggdb
+
+# Flags for warnings
+# Use -Wall so we have better code.
+WARNING_CC_FLAGS = -Wall
+
+
+# To compile very large C files, try:
+# make -f @modelName@.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0 --verbose -Q"
+# Each of the options above:
+#   No -Wall:  avoid any optimization
+#   -pipe: avoid temporary files
+#   -O0: avoid optimization
+#   --verbose: print out steps
+#   -Q: print out what functions are being compiled and timing stats.
+
+
+# We need -lm so we can get floor() for ftoi() 
+# We need -D__int64="long long" when invoking jni interface under cygwin
+
+
+INCFLAGS= -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser -Ifmi/shared
+# Set CFLAGS to -m32 to build for linux32
+CFLAGS= -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC $(INCFLAGS)
+LIBFLAGS= -lexpat -ldl -lxml2
+
+CPP_SRCS = fmi/parser/XmlElement.cpp fmi/parser/XmlParser.cpp fmi/parser/XmlParserCApi.cpp
+
+PTCGPPCompiler=@PTCGPPCompiler@
+@modelName@: @modelName@.o fmi/shared/sim_support.o $(CPP_SRCS)
+	@PTCGPPCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CFLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES) $(LIBFLAGS)
+
+# Each subdirectory must supply rules for building sources it contributes
+#./build/%.o: ./src/%.c
+#	gcc $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) -c -o "$@" "$<"
+
+
+# Build target
+PTCGCompiler=@PTCGCompiler@
+%.o: %.c
+	@PTCGCompiler@ -o $@ -c $< $(C_ONLY_FLAGS) $(CFLAGS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG)
+
+main: main.o fmi/shared/sim_support.o	
+	$(CXX) -o $@ $^ $(CPP_SRCS) $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) $(PTCGINCLUDES) $^ -o @modelName@ -lm $(PTCGLIBRARIES)
+
+FMU_DIRECTORY=$(PTII)/ptolemy/actor/lib/fmi/test/auto
+run: @modelName@
+	@echo "FIXME: Update ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in so that the names of the fmus are not hardwired in to the 'run' rule."
+	./@modelName@ 15 1
+
+
+
+# Rule to compile with different optimizers
+O_FLAGS=-O0 -O -Os -O2 -O3
+optimize:
+	for O_FLAG in $(O_FLAGS); do \
+	    echo "Compiling with $$O_FLAG"; \
+	    time @PTCGCompiler@ $$O_FLAG -D__int64="long long" $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@_$$O_FLAG -lm $(PTCGLIBRARIES); \
+	    cp @modelName@_$${O_FLAG}.exe @modelName@_$${O_FLAG}_stripped.exe; \
+	    strip @modelName@_$${O_FLAG}_stripped.exe; \
+	    ls -l @modelName@_$${O_FLAG}.exe @modelName@_$${O_FLAG}_stripped.exe; \
+	    echo "Running @modelName@_$${O_FLAG}.exe"; \
+	    time ./@modelName@_$${O_FLAG}.exe; \
+	    time ./@modelName@_$${O_FLAG}.exe; \
+	    time ./@modelName@_$${O_FLAG}.exe; \
+	    echo "Running @modelName@_$${O_FLAG}_stripped.exe"; \
+	    time ./@modelName@_$${O_FLAG}_stripped.exe; \
+	    time ./@modelName@_$${O_FLAG}_stripped.exe; \
+	    time ./@modelName@_$${O_FLAG}_stripped.exe; \
+	done	
+
+# Generate code coverage using gcov.
+# Under Mac OS X, to use gcov, use clang instead of gcc.
+# Use gcc --version to check that gcc is really gcc and not llvm-gcc.
+coverage:
+	rm -f @modelName@ @modelName@.exe
+	make -f @modelName@.mk USER_CC_FLAGS="-fprofile-arcs -ftest-coverage"
+	./@modelName@
+	#gcov @modelName@.c
+
+# Other Targets
+clean:
+	rm -rf $(PTCG_OFILES) @modelName@ *.dSYM *.o */*.o */*/*.o fmuTmp* result.csv
+
+.PHONY: all clean dependents
+.SECONDARY:
