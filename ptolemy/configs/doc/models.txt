@@ -382,6 +382,7 @@ $CLASSPATH/ptolemy/domains/ptides/demo/PowerManagementUnitSamplingWithoutCurrent
 $CLASSPATH/ptolemy/domains/ptides/demo/PowerPlant/PowerPlant.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PrintingPress/PrintingPress.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml
+$CLASSPATH/ptolemy/domains/qss/demo/BouncingBall/BouncingBall.xml
 $CLASSPATH/ptolemy/domains/qss/demo/FirstOrder/FirstOrder.xml
 $CLASSPATH/ptolemy/domains/qss/demo/FirstOrder/FirstOrderOscillating.xml
 $CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorld.xml
