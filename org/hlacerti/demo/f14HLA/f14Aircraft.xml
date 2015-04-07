@@ -1,6 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="f14Aircraft" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
@@ -1240,7 +1238,8 @@
         </port>
     </entity>
     <entity name="elevCom" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;elevCom&quot;"> 
+  <display name="Name of the parameter to receive"/> </property><property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
             <display name="Object class in FOM"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 115.0]">

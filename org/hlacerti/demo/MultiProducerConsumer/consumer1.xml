@@ -1,6 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="consumer1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
@@ -72,7 +70,8 @@
         </property>
     </property>
     <entity name="val1" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 180.0]">
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;"> 
+  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 180.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -103,7 +102,8 @@
         </configure>
     </entity>
     <entity name="val4" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 135.0]">
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val4&quot;"> 
+  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 135.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

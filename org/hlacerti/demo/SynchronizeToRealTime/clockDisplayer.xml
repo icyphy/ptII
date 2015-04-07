@@ -1,6 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="clockDisplayer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
@@ -68,7 +66,8 @@
         </property>
     </property>
     <entity name="clockValue" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;clock&quot;">
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;clockValue&quot;"> 
+  <display name="Name of the parameter to receive"/> </property><property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;clock&quot;">
             <display name="Object class in FOM"/>
         </property>
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">

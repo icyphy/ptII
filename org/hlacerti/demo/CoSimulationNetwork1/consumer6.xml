@@ -1,6 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="consumer6" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
@@ -86,11 +84,13 @@
         </configure>
     </entity>
     <entity name="valnw3" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;valnw3&quot;"> 
+  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 140.0]">
         </property>
     </entity>
     <entity name="valnw4" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
+        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;valnw4&quot;"> 
+  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 200.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
