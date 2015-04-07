@@ -129,18 +129,18 @@ public class HlaSubscriber extends TypedAtomicActor {
         
 
                 
-        _opaqueIdendifier = new Parameter(this, "opaqueIdentifier");
-        _opaqueIdendifier.setDisplayName("Opaque identifier of the federate");
-        _opaqueIdendifier.setTypeEquals(BaseType.STRING);
-        _opaqueIdendifier.setExpression("\"opaqueIdentifier\"");
+        opaqueIdendifier = new Parameter(this, "opaqueIdentifier");
+        opaqueIdendifier.setDisplayName("Opaque identifier of the federate");
+        opaqueIdendifier.setTypeEquals(BaseType.STRING);
+        opaqueIdendifier.setExpression("\"opaqueIdentifier\"");
         
-        _parameterName = new Parameter(this, "parameterName");
-        _parameterName.setDisplayName("Name of the parameter to receive");
-        _parameterName.setTypeEquals(BaseType.STRING);
-        _parameterName.setExpression("\"parameterName\"");
+        parameterName = new Parameter(this, "parameterName");
+        parameterName.setDisplayName("Name of the parameter to receive");
+        parameterName.setTypeEquals(BaseType.STRING);
+        parameterName.setExpression("\"parameterName\"");
         
-        attributeChanged(_opaqueIdendifier);
-        attributeChanged(_parameterName);
+        attributeChanged(opaqueIdendifier);
+        attributeChanged(parameterName);
         
         _reflectedAttributeValues = new LinkedList<TimedEvent>();
         _useHLAPtidesEvent = false;
@@ -165,7 +165,15 @@ public class HlaSubscriber extends TypedAtomicActor {
     /**
     * The HLA Parameter the HLASuscriber is interedted into
     */
-    public Parameter _parameterName;
+    public Parameter parameterName;
+    
+   /** 
+     * Meaningless string used for a 1 <-> 1 mapping with the objectID enabling
+     * the HLASuscriber to filter not relevant tokens.
+     * Thus all HLASuscribers with the same _opaqueIdendifier 
+     * will refere to the same object in the federation
+     */ 
+    public Parameter opaqueIdendifier;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -203,10 +211,10 @@ public class HlaSubscriber extends TypedAtomicActor {
                         BaseType.DOUBLE, BaseType.DOUBLE }));
             }
         }
-        else if(attribute == _parameterName || attribute == _opaqueIdendifier){
+        else if(attribute == parameterName || attribute == opaqueIdendifier){
             try {
-                StringToken opaqueName = (StringToken) _opaqueIdendifier.getToken();
-                StringToken paramName = (StringToken) _parameterName.getToken();
+                StringToken opaqueName = (StringToken) opaqueIdendifier.getToken();
+                StringToken paramName = (StringToken) parameterName.getToken();
                 String param = "";
                 String opaque = "";
                 if(opaqueName == null) {
@@ -407,7 +415,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     public boolean isTaken(){
         String name = null;
         try {
-            name= ((StringToken) _opaqueIdendifier.getToken()).stringValue();
+            name= ((StringToken) opaqueIdendifier.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
             illegalActionException.printStackTrace();
         }
@@ -418,7 +426,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     */
     public String getOpaqueIdentifier(){
         try {
-            return ((StringToken) _opaqueIdendifier.getToken()).stringValue();
+            return ((StringToken) opaqueIdendifier.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
         }
         return "";
@@ -437,7 +445,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     public String getParameterName(){
         String parameter ="";
         try {
-            parameter = ((StringToken) _parameterName.getToken()).stringValue();
+            parameter = ((StringToken) parameterName.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
         }
         return parameter;
@@ -464,15 +472,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
-    
-    /** 
-     * Meaningless string used for a 1 <-> 1 mapping with the objectID enabling
-     * the HLASuscriber to filter not relevant tokens.
-     * Thus all HLASuscribers with the same _opaqueIdendifier 
-     * will refere to the same object in the federation
-     */ 
-    private Parameter _opaqueIdendifier;
-    
+        
     /**
      * used to remeber the mapping _opaqueIdendifier <-> HLA Object id
      * Filled up by register when HLAManager discovers an object
