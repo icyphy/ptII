@@ -38,4 +38,4 @@ export:
 
 include ../fmuSFMI.mk
 
-KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu src

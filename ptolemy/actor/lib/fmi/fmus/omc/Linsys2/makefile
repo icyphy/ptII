@@ -34,3 +34,5 @@ FMU_NAME = Linsys2
 OTHER_OTHER_FILES_TO_BE_JARED = $(FMU_NAME).mo
 
 include ../fmuSFMI.mk
+
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu

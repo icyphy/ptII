@@ -56,7 +56,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fmus
+PTPACKAGE = 	omc
 # PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
