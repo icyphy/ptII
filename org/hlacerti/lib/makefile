@@ -59,7 +59,7 @@ JSRCS = \
 	HlaPublisher.java \
 	HlaSubscriber.java \
         MessageProcessing.java \
-	OriginatedEvent.java \
+	OriginatedEvent.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	hlaentities.xml \
