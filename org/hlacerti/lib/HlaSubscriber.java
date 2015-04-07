@@ -243,9 +243,15 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        System.out.println("CLONNING");
+        //take care of all public members ?
         HlaSubscriber newObject = (HlaSubscriber) super.clone(workspace);
-        newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();
-
+        
+        //take care of private members
+        newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();        
+        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
+        newObject._useHLAPtidesEvent = _useHLAPtidesEvent;
+        
         return newObject;
     }
 
