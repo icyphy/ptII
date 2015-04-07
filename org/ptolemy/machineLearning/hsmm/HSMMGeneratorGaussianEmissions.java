@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -137,6 +138,16 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
         } 
     }
 
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HSMMGeneratorGaussianEmissions newObject = (HSMMGeneratorGaussianEmissions) super
+                .clone(workspace);
+        newObject._mean = null;
+        newObject._covariance = null;
+        
+        return newObject;
+    }
+    
     @Override
     public void fire() throws IllegalActionException {
 

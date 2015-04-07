@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
  
 /**
@@ -157,6 +158,20 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
     /** Power limit on generation window. */
     public PortParameter powerUpperBound;
 
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HSMMGenerator newObject = (HSMMGenerator) super
+                .clone(workspace);
+        newObject._durationPriors = null;
+        newObject.D_new = null;
+        newObject._D0 = null;
+        newObject._D = null;
+        newObject._x0 = null;
+        newObject._A = null;
+        
+        return newObject;
+    }
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

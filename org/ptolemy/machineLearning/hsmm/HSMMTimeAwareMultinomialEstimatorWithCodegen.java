@@ -32,6 +32,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
 import ptolemy.util.StringUtilities;
 
@@ -185,6 +186,18 @@ HSMMTimeAwareMultinomialEstimator {
             super.attributeChanged(attribute);
         }
     }
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HSMMTimeAwareMultinomialEstimatorWithCodegen newObject = (HSMMTimeAwareMultinomialEstimatorWithCodegen) super
+                .clone(workspace);
+        newObject.knownOptima = null;
+        newObject.learningPattern =null; 
+        
+        return newObject;
+    }
+    
+    
     public void fire() throws IllegalActionException { 
 
         super.fire(); 

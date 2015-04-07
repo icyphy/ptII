@@ -32,7 +32,7 @@ import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import org.ptolemy.machineLearning.Algorithms;
- 
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DateToken;
@@ -47,6 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 ////HSMMTimeAwareGenerator.java
+import ptolemy.kernel.util.Workspace;
 
 /**
 <p>This actor implements an Explicit-Duration Hidden-Markov Model (EDHMM) and executes this
@@ -103,6 +104,17 @@ public class HSMMTimeAwareGenerator extends HSMMGeneratorMultinomialEmissions {
     /** Sampling period in seconds. */
     public Parameter samplingPeriod;
 
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HSMMTimeAwareGenerator newObject = (HSMMTimeAwareGenerator) super
+                .clone(workspace);
+        newObject._At = null;
+        newObject._ta = null;
+        
+        return newObject;
+    }
+    
     @Override
     public void fire() throws IllegalActionException { 
  

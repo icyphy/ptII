@@ -49,6 +49,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException; 
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 ////
@@ -113,6 +114,20 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             super.attributeChanged(attribute);
         }
     }
+    
+    
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HSMMTimeAwareMultinomialEstimator newObject = (HSMMTimeAwareMultinomialEstimator) super
+                .clone(workspace);
+        newObject.At = null;
+        newObject.Atlearned = null;
+        newObject.incompleteCategories = null;
+        newObject._hourOfDay = null;
+        
+        return newObject;
+    }
+    
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
