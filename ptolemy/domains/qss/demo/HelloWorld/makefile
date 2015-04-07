@@ -49,9 +49,11 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	HelloWorld.xml \
+	HelloWorldComputationallyExact.xml \
 	HelloWorldContinuous.xml \
 	HelloWorldPropagate.xml \
-	HelloWorldQSS1.xml
+	HelloWorldQSS1.xml \
+	HelloWorldQSS2.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Lorenz.xml
+	Lorenz.xml \
+	LorenzQSS2.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
