@@ -8237,10 +8237,10 @@ fi
 #--------------------------------------------------------------------
 #       "CERTI is an Open Source HLA RTI. HLA (High-Level Architecture) is a general purpose architecture for distributed computer simulation systems."
 #	See https://savannah.nongnu.org/projects/certi
-#       JCerti is used by ptolemy/apps/hlacerti
+#       JCerti is used by org/hlacerti
 #--------------------------------------------------------------------
 
-# JCERTI jar files used by ptolemy/apps/hlacerti
+# JCERTI jar files used by org/hlacerti
 PTJCERTI_JAR=
 
 # We only need to look for JCERTetty if $HLACERT_USER_DIR is present

@@ -355,7 +355,60 @@ public class HlaSubscriber extends TypedAtomicActor {
     public boolean useHLAPtidesEvent() throws IllegalActionException {
         return _useHLAPtidesEvent;
     }
+  
+    /**
+     * Return true if the opaque identifier of the current HLASuscriber is already
+     * binded to an object instance.
+     */
+    public boolean isTaken(){
+        String name = null;
+        try {
+            name= ((StringToken) opaqueIdendifier.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+            illegalActionException.printStackTrace();
+        }
+        return _mapping.get(name) != null;
+    }
+    /**
+     * Return the opaque identifier of the current HLASuscriber.
+    */
+    public String getOpaqueIdentifier(){
+        try {
+            return ((StringToken) opaqueIdendifier.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+        }
+        return "";
+    }
+    
+    /**
+     * Bind the current HLASuscriber's opaque identifier to object's id theObject.
+     */
+    public void register(int theObject){
 
+        _mapping.put(getOpaqueIdentifier(),theObject);
+    }
+    /**
+     * Return the kind of HLA Attribute the HLASuscriber is handling.
+     */
+    public String getParameterName(){
+        String parameter ="";
+        try {
+            parameter = ((StringToken) parameterName.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+        }
+        return parameter;
+    }
+    
+    
+    @Override 
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        
+        //we should do a clear but it is written as OPTIONNAL.
+        //safe way to deal with it is to create a whole new object.
+        //who said java is RAM consuming ?
+        _mapping = new HashMap<String,Integer>();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -417,60 +470,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         return value;
     }
-    
-    /**
-     * Return true if the opaque identifier of the current HLASuscriber is already
-     * binded to an object instance.
-     */
-    public boolean isTaken(){
-        String name = null;
-        try {
-            name= ((StringToken) opaqueIdendifier.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-            illegalActionException.printStackTrace();
-        }
-        return _mapping.get(name) != null;
-    }
-    /**
-     * Return the opaque identifier of the current HLASuscriber.
-    */
-    public String getOpaqueIdentifier(){
-        try {
-            return ((StringToken) opaqueIdendifier.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-        }
-        return "";
-    }
-    
-    /**
-     * Bind the current HLASuscriber's opaque identifier to object's id theObject.
-     */
-    public void register(int theObject){
-
-        _mapping.put(getOpaqueIdentifier(),theObject);
-    }
-    /**
-     * Return the kind of HLA Attribute the HLASuscriber is handling.
-     */
-    public String getParameterName(){
-        String parameter ="";
-        try {
-            parameter = ((StringToken) parameterName.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-        }
-        return parameter;
-    }
-    
-    
-    @Override 
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        
-        //we should do a clear but it is written as OPTIONNAL.
-        //safe way to deal with it is to create a whole new object.
-        //who said java is RAM consuming ?
-        _mapping = new HashMap<String,Integer>();
-    }
+  
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
