@@ -1507,7 +1507,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // A quantization-event implies other FMU outputs change.
-        // Produce outputs to all outputs that do not depend on the states.
+        // Produce outputs to all outputs that are not states.
         _produceOutputs(currentTime);
 
     }
