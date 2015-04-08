@@ -229,7 +229,11 @@ public class HlaSubscriber extends TypedAtomicActor {
                 }else {
                     param = paramName.stringValue();
                 }
-                setDisplayName(opaque + " " +param);
+                
+                if(!"opaqueIdentifier".equals(opaque) || !"parameterName".equals(param)){
+                    setDisplayName(opaque + " " +param);
+                }
+                
             } catch (IllegalActionException illegalActionException) {}
         }
         super.attributeChanged(attribute);
