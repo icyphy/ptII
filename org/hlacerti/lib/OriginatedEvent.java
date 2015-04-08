@@ -34,7 +34,7 @@ import ptolemy.actor.util.TimedEvent;
 /**
  * Extension to add to an TimedEvent in oder to give to the HLASubscriber the 
  * object's id which is reponsible for the update
- * @author Côme David
+ * @author David C&#244;me
  */
 public class OriginatedEvent extends TimedEvent{
 
