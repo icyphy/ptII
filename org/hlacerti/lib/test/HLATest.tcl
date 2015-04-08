@@ -119,7 +119,7 @@ initializing
 executing number 1
 wrapping up
 idle
-Completed execution with 5 iterations
+Completed execution with 6 iterations
 producer end
 }}
 
@@ -128,34 +128,3 @@ producer end
 # Let the listeners be gc'd.
 set listeners [java::null]
 
-######################################################################
-#### Run two HLA models
-#
-# test HLATest-1.0 {Run the HLA MultiDataTypes} {
-
-#     # Success is when the Test actor in the consumer gets all of its values.
-#     # The models are not in the auto/ directory because we want to run
-#     # them in sequence.
-#     set cmdArgs [java::new {java.lang.String[]} 4 \
-# 		     {{ptolemy/configs/full/configuration.xml} \
-# 			  {-runThenExit} \
-# 			  {MultiDataTypesConsumer.xml}
-# 			 {MultiDataTypesProducer.xml}}] 
-
-#     # ConfigurationApplication calls ptolemy.util.StringUtilities.exit(), which
-#     # Check to see if the ptolemy.ptII.doNotExit property is set.
-#     java::call System setProperty ptolemy.ptII.doNotExit true
-
-#     # Run the model
-#     set application [java::new ptolemy.actor.gui.ConfigurationApplication $cmdArgs]
-
-#     puts "sleeping for 5 seconds"
-#     # false means: Don't print dots
-#     sleep 5 false
-
-#     # Get some information just to be sure that we have parsed the models.
-#     set models [$application models]
-#     list [[$models get 0] toString] \
-# 	[[$models get 1] toString] \
-# 	[[$models get 2] toString] \
-# } {{ptolemy.actor.gui.Configuration {.configuration}} {ptolemy.actor.TypedCompositeActor {.MultiDataTypesConsumer}} {ptolemy.actor.TypedCompositeActor {.MultiDataTypesProducer}}}
