@@ -1141,13 +1141,20 @@ public class JavaScript extends TypedAtomicActor {
          *  @see #removeInputHandler(Integer)
          */
         public void addInputHandler(final Runnable function) throws IllegalActionException {
+            if (_inputHandlers == null) {
+        	_inputHandlers = new LinkedList<Runnable>();
+            }
             if (_port == null || !_port.isInput()) {
+        	if (_parameter instanceof PortParameter) {
+        	    TypedIOPort port = ((PortParameter)_parameter).getPort();
+        	    if (port != null) {
+        		_inputHandlers.add(function);
+        		return;
+        	    }
+        	}
         	throw new IllegalActionException(JavaScript.this,
         		"Not an input port: "
         			+ ((_port == null)?_parameter.getName():_port.getName()));
-            }
-            if (_inputHandlers == null) {
-        	_inputHandlers = new LinkedList<Runnable>();
             }
             _inputHandlers.add(function);
         }
