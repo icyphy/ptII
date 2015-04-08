@@ -1,4 +1,6 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FederationBillard" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
@@ -17,7 +19,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 305.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="upperBillard.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TwoBilliardBalls.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -37,20 +39,20 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={289, 169, 709, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={316, 448, 696, 630}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9183821075959011">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{257.16259765625, 293.83994665658605}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{257.16259765625, 293.839946656586}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Display Model">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="DisplayTest2.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BillardTable.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
