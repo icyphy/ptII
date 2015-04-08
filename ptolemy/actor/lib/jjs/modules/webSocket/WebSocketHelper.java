@@ -218,21 +218,21 @@ public class WebSocketHelper {
         } else {
             client.setPort(80);
         }
-
+        client.exceptionHandler(new HttpClientExceptionHandler());
         client.connectWebsocket(address, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
                 _wsIsOpen = true;
-                // Socket.io uses the name "connect" for this event, but WS uses "open",
-                // so we just emit both events.
-                _currentObj.callMember("emit", "connect");
-                _currentObj.callMember("emit", "open");
-
                 _webSocket = websocket;
                 
                 _webSocket.dataHandler(new DataHandler());
                 _webSocket.endHandler(new EndHandler());
-                _webSocket.exceptionHandler(new ExceptionHandler());
+                _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+                
+                // Socket.io uses the name "connect" for this event, but WS uses "open",
+                // so we just emit both events.
+                _currentObj.callMember("emit", "connect");
+                _currentObj.callMember("emit", "open");
             }
         });
     }
@@ -259,7 +259,7 @@ public class WebSocketHelper {
 
         _webSocket.dataHandler(new DataHandler());
         _webSocket.endHandler(new EndHandler());
-        _webSocket.exceptionHandler(new ExceptionHandler());
+        _webSocket.exceptionHandler(new WebSocketExceptionHandler());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -316,10 +316,21 @@ public class WebSocketHelper {
 
     /** The event handler that is triggered when an error occurs in the web socket connection.
      */
-    private class ExceptionHandler implements Handler<Throwable> {
+    private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
             _currentObj.callMember("emit", "error");
+            _wsIsOpen = false;
+        }
+    }
+
+    /** The event handler that is triggered when an error occurs in the http client.
+     */
+    private class HttpClientExceptionHandler implements Handler<Throwable> {
+        @Override
+        public void handle(Throwable arg0) {
+            Object jsArgs = _currentObj.eval("\'" + arg0.getMessage() + "\'");
+            _currentObj.callMember("emit", "close", jsArgs);
             _wsIsOpen = false;
         }
     }
