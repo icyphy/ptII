@@ -1,0 +1,97 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="cc3000test" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+        </property>
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.mbed.K64F">
+        </property>
+        <property name="variablesAsArrays" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 110.0}">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 100}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={210, 59, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0000000000001}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="CC3000" class="ptolemy.cg.lib.EmbeddedCodeActor">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+        </property>
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#include &quot;cc3000.h&quot;&#10;#include &quot;HTTPClient.h&quot;&#10;using namespace mbed_cc3000;&#10;cc3000 * wifi = new cc3000(PTD4, PTC9, PTC4, SPI(PTC6, PTC7, PTC5), SSID, PASSWORD, WPA2, false);&#10;Serial pc(USBTX, USBRX);&#10;HTTPClient http;&#10;char str[512];&#10;char url[80];&#10;DigitalOut led_red(LED_RED);&#10;DigitalOut led_green(LED_GREEN);&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;#ifdef __MBED__&#10;pc.baud(115200);&#10;wifi.init();&#10;#endif&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;#ifdef __MBED__&#10;    if (wifi.connect() == -1) {&#10;        printf(&quot;Failed to connect. Please verify connection details and try again. \r\n&quot;);&#10;        led_red = 0;&#10;        led_green = 1;&#10;    } else {&#10;        printf(&quot;IP address: %s \r\n&quot;,wifi.getIPAddress());&#10;        printf(&quot;MAC address: %s \r\n&quot;, wifi.getMACAddress());&#10;        printf(&quot;\r\ncc3000 connected to the Internet. Demo completed. \r\n&quot;);&#10;        led_red = 1;&#10;        led_green = 0;&#10;    }&#10;wait(1);&#10;#endif&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 210.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="localClock" class="ptolemy.actor.LocalClock">
+                <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                </property>
+                <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="startTime" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="stopTime" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+                </property>
+            </property>
+        </property>
+    </entity>
+</entity>
