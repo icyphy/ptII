@@ -51,7 +51,7 @@
     <entity name="Accelerometer" class="ptolemy.cg.lib.EmbeddedCodeActor">
         <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
         </property>
-        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#include &quot;FXOS8700Q.h&quot;&#10;FXOS8700Q_acc acc( PTE25, PTE24, FXOS8700CQ_SLAVE_ADDR1);&#10;MotionSensorDataUnits acc_data;&#10;/**/&#10;&#10;/***initBlock***/&#10;acc.enable();&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;float faX, faY, faZ;&#10;acc.getX(&amp;faX);&#10;acc.getY(&amp;faY);&#10;acc.getZ(&amp;faZ);&#10;$put(accX, faX); &#10;$put(accY, faY); &#10;$put(accZ, faZ); &#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#include &quot;FXOS8700Q.h&quot;&#10;#include &quot;mbed.h&quot;&#10;FXOS8700Q_acc acc( PTE25, PTE24, FXOS8700CQ_SLAVE_ADDR1);&#10;MotionSensorDataUnits acc_data;&#10;/**/&#10;&#10;/***initBlock***/&#10;acc.enable();&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;float faX, faY, faZ;&#10;acc.getX(&amp;faX);&#10;acc.getY(&amp;faY);&#10;acc.getZ(&amp;faZ);&#10;$put(accX, faX); &#10;$put(accY, faY); &#10;$put(accZ, faZ); &#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
@@ -170,7 +170,7 @@
     <entity name="NeoPixel_LED_Strip" class="ptolemy.cg.lib.EmbeddedCodeActor">
         <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
         </property>
-        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#include &quot;WS2812.h&quot;&#10;#endif&#10;#define WS2812_BUF 19&#10;int pixels[WS2812_BUF];&#10;#ifdef __MBED__&#10;WS2812 ws(D9, WS2812_BUF, 0, 5, 5, 0);&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;pixels[i] = 0x000000;&#10;}&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;#endif&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;&#10;&#10;&#10;Token * indexToken = $getNoPayload(ledIndex);&#10;Token * colorToken = $getNoPayload(color);&#10;Token * clearToken =  $getNoPayload(clear);&#10;pixels[indexToken-&gt;payload.Int] = colorToken -&gt; payload.Int; &#10;if (clearToken -&gt; payload.Boolean == TRUE) {&#10;    for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;         pixels[i] = 0x000000;&#10;    }&#10;}&#10;&#10;free(indexToken);&#10;free(colorToken);&#10;free(clearToken); &#10;&#10;&#10;&#10;&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;wait(0.004);&#10;#endif&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;&#10;&#10;">
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#include &quot;WS2812.h&quot;&#10;#endif&#10;#define WS2812_BUF 19&#10;int pixels[WS2812_BUF];&#10;#ifdef __MBED__&#10;WS2812 ws(D9, WS2812_BUF, 0, 5, 5, 0);&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;pixels[i] = 0x000000;&#10;}&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;#endif&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;&#10;&#10;&#10;Token * indexToken = $getNoPayload(ledIndex);&#10;Token * colorToken = $getNoPayload(color);&#10;Token * clearToken =  $getNoPayload(clear);&#10;if (clearToken -&gt; payload.Boolean == true) {&#10;    for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;         pixels[i] = 0x000000;&#10;    }&#10;}&#10;pixels[(int)(indexToken-&gt;payload.Double)] = colorToken -&gt; payload.Int; &#10;&#10;&#10;free(indexToken);&#10;free(colorToken);&#10;free(clearToken); &#10;&#10;&#10;&#10;&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;wait(0.004);&#10;#endif&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
@@ -394,8 +394,6 @@
         </port>
         <port name="clear" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -424,8 +422,6 @@
         </port>
         <port name="accX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
@@ -442,12 +438,17 @@
             </property>
         </property>
     </entity>
-    <entity name="ColorSequence2" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 350.0]">
         </property>
         <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
@@ -458,9 +459,9 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Accelerometer.accX" relation="relation"/>
     <link port="NeoPixel_LED_Strip.ledIndex" relation="relation2"/>
@@ -469,5 +470,5 @@
     <link port="Expression.output" relation="relation2"/>
     <link port="Expression.accX" relation="relation"/>
     <link port="ColorSequence.output" relation="relation4"/>
-    <link port="ColorSequence2.output" relation="relation3"/>
+    <link port="Const.output" relation="relation3"/>
 </entity>
