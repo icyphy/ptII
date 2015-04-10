@@ -138,7 +138,8 @@ implements StateSpaceActor {
 
     /**
      * Return the measurement postfix.
-     * @return
+     * @return the measurement postfix, which in this class
+     * is the string "Parameter".
      */
     public String getMeasurementParameterPostfix() {
         return MEASUREMENT_PARAMETER_POSTFIX;
