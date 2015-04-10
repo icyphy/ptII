@@ -1,0 +1,138 @@
+# Template makefile from ptolemy/cg/adapter/generic/program/procedural/c/mbed/makefile.in
+# $Id$
+# The CodeGenerator class subsitutes strings like "SimpleFSM" with
+# the value of parameters and writes the results in the directory
+# where the source code is created.
+#
+# To use your _own_ makefile, create a makefile named "ModelName.mk.in".
+# For example, if the model is called Foo, then the code generator
+# looks for a makefile template file called "Foo.mk.in" and then
+# looks for $PTII/ptolemy/codegen/c/makefile.in.
+#
+# To compile using this makefile after substitution, run:
+#    make -f SimpleFSM.mk
+
+# Gets the name of the model from Ptolemy
+MODELNAME=@modelName@
+
+PTCGLIBRARIES = @PTCGLibraries@
+PTCGINCLUDES = @PTCGIncludes@
+
+# Get names of all the .c and .cpp files except the $(MODELNAME)_Main.c because it gets
+# copied to main.cpp later on
+PTCG_CFILES = $(shell find . -type f \( -iname "*.c*" ! -iname "$(MODELNAME)_Main.c" \))
+
+# The .o files that are being built are just the .c and .cpp files.
+PTCG_OFILES_TEMP = $(PTCG_CFILES:.cpp=.o)
+PTCG_OFILES = $(PTCG_OFILES_TEMP:.c=.o)
+
+#FIXME: Should be able to store the mbed library path somewhere in Ptolemy
+# Probably get it like we get PTCGLibraries?
+LIBRARY_PATH = /Users/narenvasanad/workspace/mbed/libraries/
+
+OBJECTS = ./main.o $(PTCG_OFILES)
+
+# Searches through all the .o files in the mbed libraries folder (LIBRARY_PATH)
+SYS_OBJECTS = $(shell find $(LIBRARY_PATH) -type f \( -iname "*.o" \))
+
+# mbed specific variables till line 63
+LIBRARY_PATHS = -L$(LIBRARY_PATH)/mbed/TARGET_KL25Z/TOOLCHAIN_GCC_ARM -L$(LIBRARY_PATH)/mbed
+LIBRARIES = -lmbed
+LINKER_SCRIPT = $(LIBRARY_PATH)/mbed/TARGET_KL25Z/TOOLCHAIN_GCC_ARM/MKL25Z4.ld
+
+CPU = -mcpu=cortex-m0plus -mthumb
+CC_FLAGS = $(CPU) -c -g -fno-common -fmessage-length=0 -Wall -fno-exceptions -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-rtti
+CC_SYMBOLS = -DTARGET_KL25Z -DTARGET_M0P -DTARGET_Freescale -DTARGET_KLXX -DTOOLCHAIN_GCC_ARM -DTOOLCHAIN_GCC -D__CORTEX_M0PLUS -DARM_MATH_CM0PLUS -DMBED_BUILD_TIMESTAMP=1415921997.3 -D__MBED__=1 -DTARGET_FF_ARDUINO -DPT_DOES_NOT_HAVE_MALLOC_H -DPT_DOES_NOT_HAVE_MEMORY_H
+
+LD_FLAGS = -mcpu=cortex-m0plus -mthumb -Wl,--gc-sections --specs=nano.specs -u _printf_float -u _scanf_float
+LD_SYS_LIBS = -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys
+
+ifeq ($(DEBUG), 1)
+  CC_FLAGS += -DDEBUG -O0
+else
+  CC_FLAGS += -DNDEBUG -Os
+endif
+
+USER_CC_FLAGS = 
+
+# We use -ggdb because -g fails with very large .c files
+DEBUG = -ggdb
+
+# Flags for warnings
+# Use -Wall so we have better code.
+WARNING_CC_FLAGS = -Wall
+
+# MBED_INCLUDES is set in ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+# Over-riding this inbuilt definition
+#FIXME: Have to make this include paths according to actors used or do something similar to SYS_OBJECTS
+MBED_INCLUDES = -I. -I$(LIBRARY_PATH)/mbed -I$(LIBRARY_PATH)/mbed/TARGET_KL25Z -I$(LIBRARY_PATH)/mbed/TARGET_KL25Z/TARGET_Freescale -I$(LIBRARY_PATH)/mbed/TARGET_KL25Z/TARGET_Freescale/TARGET_KLXX -I$(LIBRARY_PATH)/mbed/TARGET_KL25Z/TARGET_Freescale/TARGET_KLXX/TARGET_KL25Z -I$(LIBRARY_PATH)/mbed/TARGET_KL25Z/TOOLCHAIN_GCC_ARM -I$(LIBRARY_PATH)/HTTPClient -I$(LIBRARY_PATH)/HTTPClient/data -I$(LIBRARY_PATH)/cc3000_hostdriver_mbedsocket -I$(LIBRARY_PATH)/cc3000_hostdriver_mbedsocket/Socket $(PTCGINCLUDES)
+
+CORE_INCLUDES = $(PTCGINCLUDES)
+
+# FIXME: we need a way to define the target platform.  Workaround: Use
+# a local makefile.in in the directory where the model is located.
+# See
+# ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+# MBED_BASE is set in ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+
+#Current MBED_BASE is /usr/local/mbed/gcc-arm-none-eabi. Not needed since it is already in the path
+#MBED_BASE=/usr/local/mbed/gcc-arm-none-eabi
+#FIXME: This shouldn't be hard coded. Figure out how to get this automatically
+MBED_BIN    = /Users/narenvasanad/workspace/gcc-arm-none-eabi-4_9-2014q4/bin/
+MBED_AR     = $(MBED_BIN)arm-none-eabi-ar
+MBED_AS     = $(MBED_BIN)arm-none-eabi-as
+MBED_GCC    = $(MBED_BIN)arm-none-eabi-gcc
+MBED_GPP    = $(MBED_BIN)arm-none-eabi-g++
+MBED_OBJCOPY= $(MBED_BIN)arm-none-eabi-objcopy
+MBED_SIZE   = $(MBED_BIN)arm-none-eabi-size
+
+MBED_DEFINES= -D__MBED__=1 -DPT_DOES_NOT_HAVE_MALLOC_H -DPT_DOES_NOT_HAVE_MEMORY_H#$(CC_SYMBOLS)
+
+$(MODELNAME).bin: $(MODELNAME).elf
+    $(MBED_OBJCOPY) -O binary $< $@
+
+$(MODELNAME).elf: $(OBJECTS) $(SYS_OBJECTS) main.o
+    $(MBED_GCC) $(LD_FLAGS) -T$(LINKER_SCRIPT) -o $@ $^ $(LIBRARY_PATHS) $(LIBRARIES) $(LD_SYS_LIBS)
+
+.s.o: main.cpp
+    $(MBED_AS) $(CPU) -o $@ $<
+
+.c.o: main.cpp
+    $(MBED_GCC) $(CC_FLAGS) $(CC_SYMBOLS) -std=gnu99 $(MBED_INCLUDES) -o $@ $<
+
+.cpp.o: main.cpp
+    $(info $(PTCG_CFILES))
+    $(MBED_GPP) $(CC_FLAGS) $(CC_SYMBOLS) -D__cplusplus -std=gnu++11 $(MBED_INCLUDES) -o $@ $<
+
+# Copy the .c files to .cpp files so that we can run g++ on actor files
+main.cpp: $(MODELNAME)_Main.c
+    mv $(MODELNAME)_Main.c $@
+    for file in _$(MODELNAME)/*.c; do \
+        j=`echo $$file | cut -d . -f 1`; \
+        j=$$j".cpp"; \
+        mv $$file $$j; \
+    done
+    if [ -f "_$(MODELNAME)/$(MODELNAME).cpp" ]; \
+    then \
+        mv _$(MODELNAME)/$(MODELNAME).cpp _$(MODELNAME)/$(MODELNAME).c; \
+    fi
+
+# Other Targets
+
+all: $(MODELNAME).bin
+
+clean:
+    rm -f $(MODELNAME).bin $(MODELNAME).elf $(OBJECTS) main.cpp *.o
+
+run:
+    # There is no run command, we would typically use avrdude.
+    # See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/ArduinoYun
+    #
+    # stty -f /dev/tty.usbmodem1421
+    # sleep 1
+    # Then run the avrdude command
+    # avrdude...
+
+#FIXME: Include this later
+#.PHONY: all clean dependents
+#.SECONDARY:
