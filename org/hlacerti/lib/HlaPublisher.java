@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  * RecordToken for HLA events.
  * </p>
  *
- *  @author Gilles Lasnier, Contributors: Patricia Derler
+ *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id$
  *  @since Ptolemy II 10.0
  *
