@@ -95,14 +95,9 @@ import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.FloatToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -217,7 +212,7 @@ import ptolemy.actor.IOPort;
  *     why and how ?", Spring Simulation Interoperability Workshop, pp. 23-27,
  *     Mar 2009.
  *
- *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee
+ *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come
  *  @version $Id$
  *  @since Ptolemy II 10.0
  *
@@ -613,7 +608,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
 
         // Initialize Federate timing values.
-        _federateAmbassador.initializeTimeValues(_hlaStartTime, _hlaTimeStep,
+        _federateAmbassador.initializeTimeValues(_hlaStartTime,
                 _hlaLookAHead);
 
         // Declare the Federate time constrained (if true).
@@ -1089,7 +1084,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         suppAttributes.add((Integer) tObj[4], valAttribute);
 
         byte[] tag = EncodingHelpers.encodeString(
-                getPortFromTab(tObj).getContainer().getName());
+                _getPortFromTab(tObj).getContainer().getName());
 
         // Create a representation of the current director time for CERTI.
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
@@ -1132,28 +1127,28 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // Unsubscribe to HLA attributes
         for (Object[] obj : _hlaAttributesSubscribedTo.values()) {
             try {
-                _rtia.unsubscribeObjectClass((Integer) obj[3]);
+                _rtia.unsubscribeObjectClass(_getClassHandleFromTab(obj));
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
             if (_debugging) {
                 _debug(this.getDisplayName() + " wrapup() - Unsubscribe "
-                        + ((TypedIOPort) obj[0]).getContainer().getName()
-                        + "(classHandle = " + obj[3] + ")");
+                        + _getPortFromTab(obj).getContainer().getName()
+                        + "(classHandle = " + _getClassHandleFromTab(obj) + ")");
             }
         }
 
         // Unpublish HLA attributes.
         for (Object[] obj : _hlaAttributesToPublish.values()) {
             try {
-                _rtia.unpublishObjectClass((Integer) obj[3]);
+                _rtia.unpublishObjectClass(_getClassHandleFromTab(obj));
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
             if (_debugging) {
                 _debug(this.getDisplayName() + " wrapup() - Unpublish "
-                        + ((TypedIOPort) obj[0]).getContainer().getName()
-                        + "(classHandle = " + obj[3] + ")");
+                        + _getPortFromTab(obj).getContainer().getName()
+                        + "(classHandle = " + _getClassHandleFromTab(obj) + ")");
             }
         }
 
@@ -1370,8 +1365,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
             
             //if we find a port whose object class handle match
             //the object we are registering
-            if ((Integer) tObj[3] == theObjectClass) {
-                TypedIOPort port = getPortFromTab(tObj);
+            if (_getClassHandleFromTab(tObj) == theObjectClass) {
+                TypedIOPort port = _getPortFromTab(tObj);
                 HlaSubscriber actor = (HlaSubscriber) port.getContainer();
                 
                 if(!actor.isTaken()){
@@ -1453,22 +1448,22 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * and for _hlaAttributesSubscribedTo. So instead of using magic indexes
      * and do each time the downgrade, you can use these functions.
      */
-    private static TypedIOPort getPortFromTab(Object[] tab){
+    private static TypedIOPort _getPortFromTab(Object[] tab){
         return (TypedIOPort)tab[0];
     }
     
-    static private Type getTypeFromTab(Object[] tab){
+    static private Type _getTypeFromTab(Object[] tab){
         return (Type)tab[1];
     }
-    static private String getClassNameFromTab(Object[] tab){
+    static private String _getClassNameFromTab(Object[] tab){
         return (String)tab[2];
     }
         
-    static private Integer getClassHandleFromTab(Object[] tab){
+    static private Integer _getClassHandleFromTab(Object[] tab){
         return (Integer)tab[3];
     }
     
-    static private Integer getAttributeHandleFromTab(Object[] tab){
+    static private Integer _getAttributeHandleFromTab(Object[] tab){
         return (Integer)tab[4];
     }
         
@@ -1504,9 +1499,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  is set by callback by the RTI.
          */
         public LogicalTime logicalTimeHLA;
-
-        /** Federate time step. */
-        //public LogicalTime timeStepHLA;
 
         /** Indicates if the request of synchronization by the Federate is
          *  validated by the HLA/CERTI Federation. This value is set by callback
@@ -1570,11 +1562,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  @param lookAHead The contract value used by HLA/CERTI to synchronize
          *  the Federates and to order TSO events.
          */
-        public void initializeTimeValues(Double startTime, Double timeStep,
-                Double lookAHead) {
+        public void initializeTimeValues(Double startTime, Double lookAHead) {
             logicalTimeHLA = new CertiLogicalTime(startTime);
             lookAHeadHLA = new CertiLogicalTimeInterval(lookAHead);
-            //timeStepHLA = new CertiLogicalTime(timeStep);
 
             timeAdvanceGrant = false;
         }
@@ -1593,6 +1583,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 FederateInternalError {
                         
             try {
+                // Get the object class handle corresponding to
+                // received "theObject" id.
+                int classHandle = _objectIdToClassHandle.get(theObject);
+                        
                 for (int i = 0; i < theAttributes.size(); i++) {
                     Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
                             .entrySet().iterator();
@@ -1604,24 +1598,20 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         Time ts = null;
                         TimedEvent te = null;
 
-                        // Get the object class handle corresponding to
-                        // received "theObject" id.
-                        int classHandle = _objectIdToClassHandle.get(theObject);
 
                         // The tuple (attributeHandle, classHandle) allows to
                         // identify the object attribute 
                         // (i.e. one of the HlaSubscribers)
                         // where the updated value has to be put.
-                        if (theAttributes.getAttributeHandle(i) == (Integer) tObj[4]
-                                && (Integer) tObj[3] == classHandle) {
+                        if (theAttributes.getAttributeHandle(i) == _getAttributeHandleFromTab(tObj)
+                                && _getClassHandleFromTab(tObj) == classHandle) {
                             try {
-                                HlaSubscriber hs = (HlaSubscriber) (getPortFromTab(tObj))
-                                        .getContainer();
+                                HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
 
                                 // GL: FIXME: PTIDES
                                 // This first case handle events from a PtidesPlatform
                                 // to PtidesPlatform, only network port are supported.
-                                if (getTypeFromTab(tObj) instanceof RecordType) {
+                                if (_getTypeFromTab(tObj) instanceof RecordType) {
                                     HlaPtidesEvent hpe = new HlaPtidesEvent(
                                             theAttributes.getValue(i));
 
@@ -1631,9 +1621,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             ((CertiLogicalTime) theTime)
                                                     .getTime());
                                     te = new TimedEvent(ts, new Object[] {
-                                            (RecordType) getTypeFromTab(tObj),
+                                            (RecordType) _getTypeFromTab(tObj),
                                             MessageProcessing.decodeHlaValue(hs,
-                                                    (RecordType) getTypeFromTab(tObj),
+                                                    (RecordType) _getTypeFromTab(tObj),
                                                     hpe.getValue()),
                                             // GL: FIXME: PTIDES: should be:
                                             // he.getLogicalTime(),
@@ -1655,10 +1645,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     te = new OriginatedEvent(
                                             ts,
                                             new Object[] {
-                                                    (BaseType) getTypeFromTab(tObj),
-                                                    MessageProcessing.decodeHlaValue(
-                                                            hs,
-                                                            (BaseType) getTypeFromTab(tObj),
+                                                    (BaseType) _getTypeFromTab(tObj),
+                                                    MessageProcessing.decodeHlaValue(hs,
+                                                            (BaseType) _getTypeFromTab(tObj),
                                                             theAttributes
                                                                     .getValue(i)) },
                                     theObject);
@@ -1667,11 +1656,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 e.printStackTrace();
                             }
 
-                            _fromFederationEvents.get(
-                                    (getPortFromTab(tObj)).getContainer()
+                            _fromFederationEvents.get((_getPortFromTab(tObj)).getContainer()
                                             .getName()).add(te);
                             if (_debugging) {
-                                TypedIOPort port = getPortFromTab(tObj);
+                                TypedIOPort port = _getPortFromTab(tObj);
                                 HlaSubscriber hs = ((HlaSubscriber)port.getContainer());
                                 _debug(HlaManager.this.getDisplayName()
                                         + " INNER"
@@ -1844,9 +1832,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                 // Object class handle and object attribute handle are ids that
                 // allow to identify an HLA attribute.
-                int classHandle = rtia.getObjectClassHandle(getClassNameFromTab(tObj));
-                int objAttributeHandle = rtia.getAttributeHandle(
-                        getPortFromTab(tObj).getContainer().getName(),
+                int classHandle = rtia.getObjectClassHandle(_getClassNameFromTab(tObj));
+                int objAttributeHandle = rtia.getAttributeHandle(_getPortFromTab(tObj).getContainer().getName(),
                         classHandle);
 
                 // Update HLA attribute information (for publication)
@@ -1864,8 +1851,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                 // All these information are required to publish/unpublish
                 // updated value of a HLA attribute.
-                elt.setValue(new Object[] { getPortFromTab(tObj), 
-                    getTypeFromTab(tObj), getClassNameFromTab(tObj),
+                elt.setValue(new Object[] { _getPortFromTab(tObj), 
+                    _getTypeFromTab(tObj), _getClassNameFromTab(tObj),
                         classHandle, objAttributeHandle });
             }
 
@@ -1882,7 +1869,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 Object[] tObj = elt.getValue();
 
                 // The classHandle where the HLA attribute belongs to (see FOM).
-                String classHandleName = getClassNameFromTab(tObj);
+                String classHandleName = _getClassNameFromTab(tObj);
 
                 if (classHandleHlaPublisherTable.containsKey(classHandleName)) {
                     classHandleHlaPublisherTable.get(classHandleName).add(
@@ -1934,8 +1921,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 Map.Entry<String, Object[]> elt = it5.next();
                 
                 Object[] tObj = elt.getValue();
-                int classHandle = rtia.getObjectClassHandle(getClassNameFromTab(tObj));
-                TypedIOPort port = getPortFromTab(tObj);
+                int classHandle = rtia.getObjectClassHandle(_getClassNameFromTab(tObj));
+                TypedIOPort port = _getPortFromTab(tObj);
                 
                 List<IOPort> sender = port.sourcePortList();
                 for(IOPort s : sender){
@@ -1973,8 +1960,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
             while (ot.hasNext()) {
                 Map.Entry<String, Object[]> elt = ot.next();
                 Object[] tObj = elt.getValue();
-                TypedIOPort port = getPortFromTab(tObj);
-                int classHandle = rtia.getObjectClassHandle(getClassNameFromTab(tObj));
+                TypedIOPort port = _getPortFromTab(tObj);
+                int classHandle = rtia.getObjectClassHandle(_getClassNameFromTab(tObj));
                 int objAttributeHandle = rtia.getAttributeHandle(
                         ((HlaSubscriber)port.getContainer()).getParameterName(),
                         classHandle);
@@ -1994,8 +1981,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 
                 // All these information are required to subscribe to/unsubscribe
                 // to a HLA attribute.
-                elt.setValue(new Object[] { getPortFromTab(tObj), getTypeFromTab(tObj), 
-                    getClassNameFromTab(tObj),
+                elt.setValue(new Object[] { _getPortFromTab(tObj), _getTypeFromTab(tObj), 
+                    _getClassNameFromTab(tObj),
                     classHandle, objAttributeHandle });
             }
             
@@ -2012,7 +1999,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 Object[] tObj = elt.getValue();
                 
                 // The object class name of the HLA attribute (see FOM).
-                String classHandleName = getClassNameFromTab(tObj);
+                String classHandleName = _getClassNameFromTab(tObj);
                 
                 if (classHandleHlaSubscriberTable.containsKey(classHandleName)) {
                     classHandleHlaSubscriberTable.get(classHandleName).add(

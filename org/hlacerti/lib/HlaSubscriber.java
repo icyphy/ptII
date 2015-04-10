@@ -49,13 +49,10 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.TupleToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.BaseType.IntType;
 import ptolemy.data.type.RecordType;
-import ptolemy.data.type.TupleType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.ptides.kernel.PtidesPlatform.PtidesNetworkModelTimeType;
 import ptolemy.kernel.CompositeEntity;
@@ -85,7 +82,7 @@ import ptolemy.kernel.util.Workspace;
  * RecordToken for HLA events.
  * </p>
  *
- *  @author Gilles Lasnier, Contributors: Patricia Derler
+ *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id$
  *  @since Ptolemy II 10.0
  *
