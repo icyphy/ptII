@@ -227,6 +227,156 @@ PortCodeGenerator {
     }
 
     /**
+     * Generate code for replacing the getAndFree() macro. This delegates to the
+     * receiver adapter for the specified channel and asks it to generate the
+     * get code.
+     *
+     * @param channel
+     *            The channel for which to generate the get code.
+     * @param offset
+     *            The offset in the array representation of the port.
+     * @return The code that gets data from the specified channel.
+     * @exception IllegalActionException
+     *                If the receiver adapter is not found or it encounters an
+     *                error while generating the get code.
+     */
+    public String generateGetAndFree(String channel, String offset)
+            throws IllegalActionException {
+        Receiver[][] receivers = getReceiverAdapters();
+        int channelIndex = Integer.parseInt(channel);
+        // FIXME: take care of the offset, and why are we getting all the
+        // receivers all the time?
+        // FIXME: Don't know why would a channel have more than one relations
+        // Thus for now to make sure we don't run into such problems, have a
+        // check to ensure
+        // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in
+        // the receivers would
+        // need to change to ensure no name collisions between multiple
+        // receivers within the same
+        // channel would occur.
+        if (receivers.length != 0) {
+            if (channelIndex >= receivers.length) {
+                throw new IllegalActionException(getComponent(),
+                        "The channelIndex \"" + channelIndex
+                        + "\" is greater than "
+                        + "or equal to the length of the receiver \""
+                        + receivers.length + "\".  The channel was: \""
+                        + channel + "\", the offset was: \"" + offset
+                        + "\".");
+            }
+            if (receivers[channelIndex].length > 1) {
+                throw new IllegalActionException(
+                        "Didn't take care of the case where one channel "
+                                + "has more than one receiver");
+            }
+            if (receivers[channelIndex].length > 0) {
+                TypedIOPort port = (TypedIOPort) getComponent();
+                try {
+                    // FIXME: I have no idea why generateGetCode of the receiver class is not called
+                    // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
+                    if (port.getContainer() != null
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
+                        return receivers[channelIndex][0]
+                                .generateGetCode(offset);
+                    }
+                    if (port.getContainer() != null
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
+                        return receivers[channelIndex][0]
+                                .generateGetCode(offset);
+                    }
+                    if (port.getContainer() != null
+                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.de.kernel.DEDirector) {
+                        return receivers[channelIndex][0]
+                                .generateGetCode(offset);
+                    } else {
+                        // Used by CaseDirector.
+                        // FIXME: A real hack.  The problem is that ptolemy.actor.lib.hoc.CaseDirector
+                        // extends actor.Director.  However, in cg, we end up needing a SDFDirector.
+                        // This code is duplicated from StaticSchedulingDirector.generatePortName()
+                        String portName = StringUtilities.sanitizeName(port
+                                .getFullName());
+                        if (portName.startsWith("_")) {
+                            portName = portName.substring(1, portName.length());
+                        }
+                        portName = TemplateParser.escapePortName(portName);
+                        // See ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/SDFDirector.java
+                        //    _portVariableDeclaration(StringBuffer codeResult, TypedIOPort port)
+                        if (port.isMultiport()) {
+                            return portName + "[" + offset + "]";
+                        } else {
+                            if (!((BooleanToken) getCodeGenerator().variablesAsArrays
+                                    .getToken()).booleanValue()) {
+                                return portName;
+                            }
+
+                            // Get the name of the port that refers to the array of all ports.
+                            // FIXME: we don't handle ports that have a BufferSize > 1.
+                            return getCodeGenerator()
+                                    .generatePortName(port, portName, 1 /*_ports.getBufferSize(port)*/);
+                        }
+                        //return "";
+                    }
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(getComponent(), throwable,
+                            " Failed to generate code for receiver "
+                                    + receivers[channelIndex][0]
+                                            + " on channel " + channelIndex);
+                }
+            }
+        }
+        TypedIOPort port = (TypedIOPort) getComponent();
+        Type type = port.getType();
+        if (port instanceof ParameterPort) {
+            Parameter parameter = ((ParameterPort) getComponent())
+                    .getParameter();
+            // FIXME: Should this be isConnected() instead of numLinks()?
+            if (port.numLinks() <= 0) {
+                // Then use the parameter (attribute) instead.
+                // FIXME: this seems wrong, why are we doing substitution only here?
+                if (parameter.isStringMode()) {
+                    // FIXME: Why do we need to escape other characters here?
+                    // FIXME: Shouldn't this happen every where?
+                    // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
+                    return "\""
+                    + parameter.getExpression().replace("\\d", "\\\\d")
+                    .replace("\\D", "\\\\D")
+                    .replace("\"", "\\\"")
+                    .replace("\\b", "\\\\b") + "\"";
+                } else {
+                    return parameter.getValueAsString();
+                }
+            } else {
+                throw new InternalErrorException(
+                        port,
+                        null,
+                        "Should not be happening, "
+                                + "a ParameterPort is connected, but not handled earlier?");
+            }
+        }
+
+        String typeString = getCodeGenerator().codeGenType(type);
+        // The component port is not connected to anything, so get should
+        // always return something trivial;
+
+        String returnValue = "$convert_"
+                + getCodeGenerator().codeGenType(BaseType.INT) + "_"
+                + typeString + "(0)";
+        System.err.println("cg IOPort: Warning: component port \""
+                + getComponent().getFullName()
+                + "\" is not connected, returning: " + returnValue);
+        // FIXME: This is wrong, this could be a PortParameter.
+        return returnValue;
+    }
+
+
+
+
+
+
+
+
+
+    /**
      * Generate code to check if the receiver has a token. This delegates to the
      * receiver adapter for the specified channel and asks it to generate the
      * hasToken code.
