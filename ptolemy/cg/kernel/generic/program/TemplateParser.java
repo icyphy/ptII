@@ -1344,6 +1344,8 @@ public class TemplateParser {
             return _replaceGetMacro(parameter);
         } else if (macro.equals("getNoPayload")) {
             return _replaceGetMacro(parameter,false);
+        } else if (macro.equals("getAndFree")) {
+            return _replaceGetAndFree(parameter);
         } else if (macro.equals("put")) {
             return _replacePutMacro(parameter, false);
         } else if (macro.equals("putLocalInside")) {
@@ -1767,6 +1769,53 @@ public class TemplateParser {
             return processCode(portAdapter.generateGetCodeWithoutType(channel, offset));
         }
     }
+
+    //mbed method to get and free token to fix memory leak 
+    private String _replaceGetAndFree(String parameter)
+            throws IllegalActionException {
+        // e.g. $get(input#channel, offset); or
+        // $get(input, offset); or,
+        // $get(input#channel); or,
+        // $get(input);
+        List<String> parameters = parseList(parameter);
+        String offset;
+        if (parameters.size() == 1) {
+            offset = "0";
+        } else {
+            offset = parameters.get(1);
+        }
+
+        String[] portChannel = _parsePortChannel(parameters.get(0));
+
+        TypedIOPort port = getPort(portChannel[0]);
+        String channel = portChannel[1];
+
+        if (port == null) {
+            CGException.throwException(parameter
+                    + " is not acceptable by $get() because the getPort("
+                    + "\"" + portChannel[0] + "\") returned null."
+                    + "The $get macro can accept the following forms: "
+                    + "$get(input#channel, offset); or, "
+                    + "$get(input, offset); or, " + "$get(input#channel); or, "
+                    + "$get(input);");
+        }
+        if (channel.length() == 0) {
+            CGException.throwException(port, port.getFullName()
+                    + " is not acceptable by $get() because the length of "
+                    + "channel \"" + channel + "\" is 0."
+                    + "The $get macro can accept the following forms: "
+                    + "$get(input#channel, offset); or, "
+                    + "$get(input, offset); or, " + "$get(input#channel); or, "
+                    + "$get(input);");
+        }
+
+        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
+                .getAdapter(port);
+
+            return processCode(portAdapter.generateGetAndFree(channel, offset));
+        
+    }
+
 
     /** replace the $hasToken() with the corresponding parameter
      *  @param parameter The name and offset of the parameter

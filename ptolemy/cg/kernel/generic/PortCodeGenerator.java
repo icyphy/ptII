@@ -63,6 +63,15 @@ public interface PortCodeGenerator {
     public String generateGetCodeWithoutType(String channel, String offset)
             throws IllegalActionException;
 
+    /** Generate the code to get a token from a port and then free it.
+     *  @param channel The channel for which the get code is generated.
+     *  @param offset The offset in the array representation of the port.
+     *  @return The code that gets data from the channel.
+     *  @exception IllegalActionException If the director adapter class cannot be found.
+     */
+    public String generateGetAndFree(String channel, String offset)
+            throws IllegalActionException;
+
     /** Generate the code to put a token to a port.
      *  @param channel The channel for which the send code is generated.
      *  @param offset The offset in the array representation of the port.
