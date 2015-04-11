@@ -4,7 +4,7 @@
 <entity name="SimpleFSM_LED3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 71, 1097, 673}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={319, 180, 1097, 673}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[863, 563]">
     </property>
@@ -327,7 +327,7 @@ Then delete this annotation.</text>
     <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
         <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
         </property>
-        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#include &quot;mbed.h&quot; &#10;DigitalOut myled1(LED1); &#10;DigitalOut myled2(LED2);&#10;DigitalOut myled3(LED3);&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;myled1 = !($get(ledRed));&#10;myled2 = !($get(ledGreen));&#10;myled3 = !($get(ledBlue));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#include &quot;mbed.h&quot; &#10;DigitalOut myled1(LED1); &#10;DigitalOut myled2(LED2);&#10;DigitalOut myled3(LED3);&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;&#10;Token * redToken = $getNoPayload(ledRed); &#10;Token * greenToken = $getNoPayload(ledGreen); &#10;Token * blueToken = $getNoPayload(ledBlue); &#10;myled1 = !(redToken-&gt;payload.Int);&#10;myled2 = !(greenToken-&gt;payload.Int);&#10;myled3 = !(blueToken-&gt;payload.Int);&#10;free(redToken);&#10;free(greenToken);&#10;free(blueToken); &#10;&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
