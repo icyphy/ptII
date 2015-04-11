@@ -39,7 +39,8 @@ void FSMReceiver_New_Free(struct FSMReceiver* r) {
 
 // Other methods
 void FSMReceiver_Clear(struct FSMReceiver* r) {
-    r->_token = NULL;
+	//MEMORY_FIX: Used to assign r->_token to NULL
+    free(r->_token);
 }
 PblList* FSMReceiver_ElementList(struct FSMReceiver* r) {
     PblList* list = pblListNewArrayList();

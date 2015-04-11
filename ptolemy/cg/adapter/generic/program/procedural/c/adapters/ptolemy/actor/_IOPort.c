@@ -446,6 +446,10 @@ bool IOPort_HasTokenInside(struct IOPort* port, int channelIndex) {
                 result = true;
                 break;
             }
+            //MEMORY_FIX: Clearing memory because token was already used
+            else {
+            	receiver->clear(receiver);
+            }
         }
     }
 

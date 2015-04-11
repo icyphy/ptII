@@ -111,7 +111,12 @@ bool FSMDirector_TransferOutputs1(struct FSMDirector* director, struct IOPort* p
     for (int i = 0; i < port->getWidthInside(port); i++) {
         if (port->hasTokenInside(port, i)) {
             Token* t = port->getInside(port, i);
-            pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), t, sizeof(Token));
+            //MEMORY_FIX: Creating copy of t because pblMapAdd() does a memcopy.
+            //tempToken is then released inside pblMapAdd()
+            Token* tempToken = calloc(1, sizeof(Token));
+            tempToken->type = t->type;
+            tempToken->payload = t->payload;
+            pblMapAdd(tokensOut, &port, sizeof(struct IOPort*), tempToken, sizeof(Token));
             port->send(port, i, t);
             result = true;
         }
