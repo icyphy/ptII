@@ -1,0 +1,464 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SimpleFSM_LED3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 71, 1097, 673}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[863, 563]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{421.5, 271.5}">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.mbed">
+        </property>
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 55.0}">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 50.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,true}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 130.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 130.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <port name="fromSequence" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="ledRed" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="ledGreen" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="ledBlue" class="ptolemy.domains.modal.modal.ModalPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the (Mac: command key, Windows: control key)
+and dragging from one state to another.  
+Right click to configure the properties 
+of this model, including setting the final state(s).
+Then delete this annotation.</text>
+    </svg></configure>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, -45.0]">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+      <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+    </configure>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 82, 934, 635}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8581234864181458">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{272.1630859375, 263.5258520153985}">
+            </property>
+            <property name="count" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 325.0]">
+                </property>
+            </property>
+            <property name="maxCount" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 345.0]">
+                </property>
+            </property>
+            <port name="fromSequence" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 280.0]">
+                </property>
+                <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                    <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                    </property>
+                </property>
+            </port>
+            <port name="ledRed" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 240.0]">
+                </property>
+            </port>
+            <port name="ledGreen" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 290.0]">
+                </property>
+            </port>
+            <port name="ledBlue" class="ptolemy.domains.modal.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 335.0]">
+                </property>
+            </port>
+            <entity name="RED" class="ptolemy.domains.modal.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 270.0]">
+                </property>
+            </entity>
+            <entity name="BLUE" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 210.0]">
+                </property>
+            </entity>
+            <entity name="GREEN" class="ptolemy.domains.modal.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 270.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fromSequence == TRUE &amp;&amp; count &gt;= maxCount">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ledBlue = 1; ledGreen = 0; ledRed = 0">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0 ">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4291543923384512">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.9011676742555311">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fromSequence == TRUE &amp;&amp; count &gt;= maxCount">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ledBlue = 0; ledGreen = 1; ledRed = 0">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5778083250143508">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.093349324103943">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fromSequence == TRUE &amp;&amp; count &gt;= maxCount">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.modal.kernel.OutputActionsAttribute" value="ledBlue = 0; ledGreen = 0; ledRed = 1">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = 0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8934216048730229">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.0818740929865016">
+                </property>
+            </relation>
+            <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &lt; maxCount">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1 ">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1842333688044038">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.879892323888985">
+                </property>
+            </relation>
+            <relation name="relation5" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &lt; maxCount">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1 ">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1599824186632866">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5731593740097765">
+                </property>
+            </relation>
+            <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &lt; maxCount">
+                </property>
+                <property name="setActions" class="ptolemy.domains.modal.kernel.CommitActionsAttribute" value="count = count + 1 ">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1992281689136446">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.110116679870342">
+                </property>
+            </relation>
+            <link port="RED.incomingPort" relation="relation3"/>
+            <link port="RED.incomingPort" relation="relation6"/>
+            <link port="RED.outgoingPort" relation="relation"/>
+            <link port="RED.outgoingPort" relation="relation6"/>
+            <link port="BLUE.incomingPort" relation="relation"/>
+            <link port="BLUE.incomingPort" relation="relation4"/>
+            <link port="BLUE.outgoingPort" relation="relation2"/>
+            <link port="BLUE.outgoingPort" relation="relation4"/>
+            <link port="GREEN.incomingPort" relation="relation2"/>
+            <link port="GREEN.incomingPort" relation="relation5"/>
+            <link port="GREEN.outgoingPort" relation="relation3"/>
+            <link port="GREEN.outgoingPort" relation="relation5"/>
+        </entity>
+        <relation name="fromSequenceRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="ledRedRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="ledGreenRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="ledBlueRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="fromSequence" relation="fromSequenceRelation"/>
+        <link port="ledRed" relation="ledRedRelation"/>
+        <link port="ledGreen" relation="ledGreenRelation"/>
+        <link port="ledBlue" relation="ledBlueRelation"/>
+        <link port="_Controller.fromSequence" relation="fromSequenceRelation"/>
+        <link port="_Controller.ledRed" relation="ledRedRelation"/>
+        <link port="_Controller.ledGreen" relation="ledGreenRelation"/>
+        <link port="_Controller.ledBlue" relation="ledBlueRelation"/>
+    </entity>
+    <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+        </property>
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#include &quot;mbed.h&quot; &#10;DigitalOut myled1(LED1); &#10;DigitalOut myled2(LED2);&#10;DigitalOut myled3(LED3);&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;myled1 = !($get(ledRed));&#10;myled2 = !($get(ledGreen));&#10;myled3 = !($get(ledBlue));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 130.0}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="localClock" class="ptolemy.actor.LocalClock">
+                <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                </property>
+                <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                </property>
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CodeGenerator_AutoAdded" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="EmbeddedCodeActor.CodeGenerator_AutoAdded">
+                </property>
+                <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+                <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="maximumLinesPerBlock" class="ptolemy.data.expr.Parameter" value="2500">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="java -classpath &quot;@PTCGLibraries@&quot; -Xmx1500M @MODELCLASS@">
+            </property>
+            <property name="useMake" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="variablesAsArrays" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="verbosity" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileCommand" class="ptolemy.data.expr.StringParameter" value="javac -classpath &quot;@PTCGLibraries@&quot; -J-Xmx1500M @modelName@.java">
+            </property>
+            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </property>
+        <port name="ledRed" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="ledGreen" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="ledBlue" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sequence.output&quot;,x=100.0,y=130.0}, tail={id=&quot;ModalModel.fromSequence&quot;,x=245.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.ledRed&quot;,x=245.0,y=130.0}, tail={id=&quot;EmbeddedCodeActor.ledRed&quot;,x=395.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.ledGreen&quot;,x=245.0,y=130.0}, tail={id=&quot;EmbeddedCodeActor.ledGreen&quot;,x=395.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.ledBlue&quot;,x=245.0,y=130.0}, tail={id=&quot;EmbeddedCodeActor.ledBlue&quot;,x=395.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Sequence.output" relation="relation"/>
+    <link port="ModalModel.fromSequence" relation="relation"/>
+    <link port="ModalModel.ledRed" relation="relation2"/>
+    <link port="ModalModel.ledGreen" relation="relation3"/>
+    <link port="ModalModel.ledBlue" relation="relation4"/>
+    <link port="EmbeddedCodeActor.ledRed" relation="relation2"/>
+    <link port="EmbeddedCodeActor.ledGreen" relation="relation3"/>
+    <link port="EmbeddedCodeActor.ledBlue" relation="relation4"/>
+</entity>
