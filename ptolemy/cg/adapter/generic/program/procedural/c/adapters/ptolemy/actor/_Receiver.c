@@ -69,9 +69,15 @@ void Receiver_PutArrayToAll(struct Receiver* r, Token** tokens,
 void Receiver_PutToAll(struct Receiver* r, Token* token, PblList* receivers) {
     PblIterator* receiversIterator = pblIteratorNew(receivers);
     while (pblIteratorHasNext(receiversIterator)) {
+    	//MEMORY_FIX: Creating separate token for each receiver, so that each can delete it when
+    	//consumed without having to worry about whether it's been consumed everywhere else.
+    	Token* newToken = calloc(1, sizeof(Token));
+    	newToken->type = token->type;
+    	newToken->payload = token->payload;
         struct Receiver* receiver = pblIteratorNext(receiversIterator);
-        (*(receiver->put))(receiver, token);
+        (*(receiver->put))(receiver, newToken);
     }
     //MEMORY_FIX: Added this line to free memory
     pblIteratorFree(receiversIterator);
+    free(token);
 }
