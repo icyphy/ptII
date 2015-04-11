@@ -139,6 +139,7 @@ bool SDFDirector_Prefire(struct SDFDirector* director) {
 
         for (int channel = 0; channel < (*(inputPort->getWidth))(inputPort); channel++) {
             if (threshold > 0 && !(*(inputPort->hasToken1))(inputPort, channel, threshold)) {
+                pblIteratorFree(inputPorts);
                 return false;
             }
         }
