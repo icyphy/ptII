@@ -106,7 +106,7 @@ main: main.o fmi/shared/sim_support.o
 FMU_DIRECTORY=$(PTII)/ptolemy/actor/lib/fmi/test/auto
 run: @modelName@
 	@echo "FIXME: Update ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in so that the names of the fmus are not hardwired in to the 'run' rule."
-	./@modelName@ 15 1
+	./@modelName@
 
 
 
