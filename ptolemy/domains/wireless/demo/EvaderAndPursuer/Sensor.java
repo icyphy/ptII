@@ -317,12 +317,13 @@ public class Sensor extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        double[] location = _getLocation();
-        DoubleToken[] _parentLocation = new DoubleToken[location.length];
+        //double[] location = _getLocation();
+        // FindBugs: Useless object stored in variable _parentLocation
+        //DoubleToken[] _parentLocation = new DoubleToken[location.length];
 
-        for (int i = 0; i < location.length; i++) {
-            _parentLocation[i] = new DoubleToken(location[i]);
-        }
+        //for (int i = 0; i < location.length; i++) {
+        //    _parentLocation[i] = new DoubleToken(location[i]);
+        //}
 
         _parentDepth = 0;
         _timeValue = 0.0;

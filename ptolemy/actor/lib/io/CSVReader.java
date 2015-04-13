@@ -273,10 +273,10 @@ public class CSVReader extends LineReader {
             _fieldNames = new String[1];
             _fieldNames = fieldNames.toArray(_fieldNames);
 
-            Type[] fieldTypes = new Type[_fieldNames.length];
-            for (int i = 0; i < _fieldNames.length; i++) {
-                fieldTypes[i] = BaseType.STRING;
-            }
+            // Type[] fieldTypes = new Type[_fieldNames.length];
+            // for (int i = 0; i < _fieldNames.length; i++) {
+            //     fieldTypes[i] = BaseType.STRING;
+            // }
 
             // Skip the first line, which only has header information.
             _currentLine = _nextLine;

@@ -142,12 +142,13 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         // Input ports created and filled before elementary task called
         int dataSize = nbTokens;
         String[] dims = new String[nDims];
-        int[] sizes = new int[dims.length];
+        // FindBugs: ptolemy/domains/pthales/lib/PthalesIOPort.java
+        //int[] sizes = new int[dims.length];
 
         for (int i = 0; i < nDims; i++) {
             dataSize *= ((IntToken) headerIn[2 * i + 1]).intValue();
             dims[i] = ((StringToken) headerIn[2 * i]).stringValue();
-            sizes[i] = ((IntToken) headerIn[2 * i + 1]).intValue();
+            //sizes[i] = ((IntToken) headerIn[2 * i + 1]).intValue();
         }
 
         // Token Arrays from simulation
