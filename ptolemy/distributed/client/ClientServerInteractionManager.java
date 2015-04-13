@@ -51,6 +51,7 @@ import net.jini.lookup.ServiceDiscoveryEvent;
 import net.jini.lookup.ServiceDiscoveryListener;
 import net.jini.lookup.ServiceDiscoveryManager;
 import ptolemy.distributed.common.DistributedActor;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 
 ///////////////////////////////////////////////////////////////////
@@ -342,6 +343,12 @@ ServiceDiscoveryListener {
                     .getInstance(new String[] { configFileName });
         } catch (ConfigurationException e) {
             KernelException.stackTraceToString(e);
+        }
+
+        if (configuration == null) {
+            throw new InternalErrorException(null, null,
+                    "Failed to get configuration from "
+                    + configFileName);
         }
 
         // The config file must have an exporter, a service and a codebase
