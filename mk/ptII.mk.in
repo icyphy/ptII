@@ -390,6 +390,9 @@ PTANGO_JARS = @PTANGO_JARS@
 # PTANGO_PACKAGES is used in ptII/doc/makefile
 PTANGO_PACKAGES = @PTANGO_PACKAGES@
 
+# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTBROWSER_DIR = @PTBROWSER_DIR@
+
 # Set to the BSH jar file and used to compile org/mlc
 PTBSH_JAR = @PTBSH_JAR@
 
