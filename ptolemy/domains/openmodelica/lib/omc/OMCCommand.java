@@ -279,9 +279,9 @@ public class OMCCommand implements IOMCCommand {
 
         // Get all components of the model.e.g. variable, parameter, discrete and etc.
 
+        String command = "getComponents(" + modelName + ")";
         try {
-            getComponentsResult = sendCommand("getComponents(" + modelName
-                    + ")");
+            getComponentsResult = sendCommand(command);
         } catch (ConnectException e) {
             new ConnectException(e.getMessage()).printStackTrace();
         }
@@ -326,7 +326,12 @@ public class OMCCommand implements IOMCCommand {
                 componentMap.put(componentName, componentType);
             }
         } else {
-            String loggerInfo = getComponentsResult.getError();
+            String loggerInfo = "";
+            if (getComponentsResult != null) {
+                loggerInfo = getComponentsResult.getError();
+            } else {
+                loggerInfo = "sendCommand(" + command + ") returned null?";
+            }
             _omcLogger.getInfo(loggerInfo);
         }
         return componentMap;
