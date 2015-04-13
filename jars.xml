@@ -95,6 +95,8 @@
     <include name="ptolemy/actor/lib/python/demo/demo.jar" />
     <include name="ptolemy/actor/lib/python/python.jar" />
     <include name="ptolemy/actor/lib/security/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/vertx/vertx.jar" />
+    <include name="ptolemy/actor/lib/vertx/demo/demo.jar" />
     <include name="ptolemy/actor/parameters/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/gt/demo/demo.jar" />
@@ -5229,6 +5231,27 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/security/demo/Signature/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/vertx/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/vertx/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/vertx/demo/*/*.js"/>
+	<include name="ptolemy/actor/lib/vertx/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/vertx/vertx.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/vertx/vertx.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/vertx/*.class"/>
+	<include name="ptolemy/actor/lib/vertx/*.htm"/>
+	<include name="ptolemy/actor/lib/vertx/*.xml"/>
       </fileset>
     </jar>
 
