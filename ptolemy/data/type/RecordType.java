@@ -389,12 +389,13 @@ public class RecordType extends AssociativeType implements Cloneable {
     @Override
     public void initialize(Type type) {
         try {
-            Iterator<String> fieldNames = _fields.keySet().iterator();
-
-            while (fieldNames.hasNext()) {
-                String label = fieldNames.next();
-                FieldType fieldType = _fields.get(label);
-
+            // FindBugs: ptolemy.data.type.RecordType.initialize(Type) makes inefficient use of keySet iterator instead of entrySet iterator
+            // Iterator<String> fieldNames = _fields.keySet().iterator();
+            // while (fieldNames.hasNext()) {
+            //   String label = fieldNames.next();
+            //   FieldType fieldType = _fields.get(label);
+            for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+                FieldType fieldType = fields.getValue();
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
                 }
@@ -523,15 +524,19 @@ public class RecordType extends AssociativeType implements Cloneable {
             return false;
         }
 
+
         // Loop over all the labels.
-        Iterator<String> fieldNames = myLabelSet.iterator();
+        // FindBugs: ptolemy.data.type.RecordType.isSubstitutionInstance(Type) makes inefficient use of keySet iterator instead of entrySet iterator
+        // Iterator<String> fieldNames = myLabelSet.iterator();
+        // while (fieldNames.hasNext()) {
+        //     String label = fieldNames.next();
+        //     FieldType fieldType = _fields.get(label);
+        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+            FieldType fieldType = fields.getValue();
 
-        while (fieldNames.hasNext()) {
-            String label = fieldNames.next();
-
-            FieldType fieldType = _fields.get(label);
             Type myDeclaredType = fieldType._declaredType;
-            Type argType = recordType.get(label);
+            //Type argType = recordType.get(label);
+            Type argType = recordType.get(fields.getKey());
 
             if (!myDeclaredType.isSubstitutionInstance(argType)) {
                 return false;
@@ -625,14 +630,16 @@ public class RecordType extends AssociativeType implements Cloneable {
                     + "Cannot update this type to the new type.");
         }
 
-        Iterator<String> fieldNames = _fields.keySet().iterator();
-
-        while (fieldNames.hasNext()) {
-            String label = fieldNames.next();
-            FieldType fieldType = _fields.get(label);
-
+        // FindBugs: ptolemy.data.type.RecordType.updateType(StructuredType) makes inefficient use of keySet iterator instead of entrySet iterator
+        // Iterator<String> fieldNames = _fields.keySet().iterator();
+        // while (fieldNames.hasNext()) {
+        //    String label = fieldNames.next();
+        //    FieldType fieldType = _fields.get(label);
+        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+            FieldType fieldType = fields.getValue();
             if (fieldType.isSettable()) {
-                Type newFieldType = ((RecordType) newType).get(label);
+                //Type newFieldType = ((RecordType) newType).get(label);
+                Type newFieldType = ((RecordType) newType).get(fields.getKey());
                 fieldType.setValue(newFieldType);
             }
         }

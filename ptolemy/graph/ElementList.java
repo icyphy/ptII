@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 ////////////////////////////////////////////////////////////////////////// //
 //ElementList
@@ -56,7 +58,7 @@ public class ElementList extends LabeledList {
         super();
         _descriptor = descriptor;
         _graph = graph;
-        _weightMap = new HashMap();
+        _weightMap = new HashMap<Object, ArrayList>();
         _unweightedSet = new HashSet();
     }
 
@@ -73,7 +75,7 @@ public class ElementList extends LabeledList {
         super();
         _descriptor = descriptor;
         _graph = graph;
-        _weightMap = new HashMap(elementCount);
+        _weightMap = new HashMap<Object, ArrayList>(elementCount);
         _unweightedSet = new HashSet(elementCount);
     }
 
@@ -133,14 +135,24 @@ public class ElementList extends LabeledList {
         } else {
             // Find the weight that was previously associated with this
             // element, if there was one.
-            Iterator weights = _weightMap.keySet().iterator();
+            // FindBugs: ptolemy.graph.ElementList.changeWeight(Element) makes inefficient use of keySet iterator instead of entrySet iterator
+
+            // Iterator weights = _weightMap.keySet().iterator();
             Object nextWeight = null;
             List nextList = null;
 
-            while (weights.hasNext() && !found) {
-                nextWeight = weights.next();
-                nextList = (List) _weightMap.get(nextWeight);
+            // while (weights.hasNext() && !found) {
+            //     nextWeight = weights.next();
+            //     nextList = (List) _weightMap.get(nextWeight);
+            //     found = nextList.contains(element);
+            // }
+            for (Map.Entry<Object, ArrayList> entry: _weightMap.entrySet()) {
+                nextList = entry.getValue();
                 found = nextList.contains(element);
+                if (found) {
+                    nextWeight = entry.getKey();
+                    break;
+                }
             }
 
             if (found) {
@@ -349,5 +361,5 @@ public class ElementList extends LabeledList {
     // elements are not represented in this map. Keys in this this map
     // are instances of of Object, and values instances of ArrayList
     // whose elements are instances of Element.
-    private HashMap _weightMap;
+    private HashMap<Object, ArrayList> _weightMap;
 }
