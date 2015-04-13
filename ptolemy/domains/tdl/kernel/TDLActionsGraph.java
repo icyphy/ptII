@@ -756,8 +756,12 @@ public class TDLActionsGraph {
                     || _tmpModeSwitchStarts.size() == 0) {
                 modeSwitchStart = modeSwitchEnd = _createNode(timeZero,
                         TDLAction.AFTERMODESWITCH, mode);
-                _tmpModeSwitchStarts.put(timeZero, modeSwitchStart);
-                _tmpModeSwitchEnds.put(timeZero, modeSwitchStart);
+                if (_tmpModeSwitchStarts != null) {
+                    _tmpModeSwitchStarts.put(timeZero, modeSwitchStart);
+                    _tmpModeSwitchEnds.put(timeZero, modeSwitchStart);
+                } else {
+                    new Exception("_tmpModeSwitchStarts was null?").printStackTrace();
+                }
             } else {
                 modeSwitchStart = _tmpModeSwitchStarts.get(timeZero);
                 if (modeSwitchStart == null) {

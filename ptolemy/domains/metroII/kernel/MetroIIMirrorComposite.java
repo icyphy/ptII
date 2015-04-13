@@ -472,15 +472,18 @@ HandlesInternalLinks {
                                 .setAssociatedPort((ParameterMirrorPort) insidePort);
                             }
 
-                            // Create a link only if it doesn't already exist.
-                            List connectedPorts = insidePort
+                            // FindBugs says: Possible null pointer dereference of insidePort.
+                            if (insidePort != null) {
+                                // Create a link only if it doesn't already exist.
+                                List connectedPorts = insidePort
                                     .connectedPortList();
 
-                            if (!connectedPorts.contains(castPort)) {
-                                // There is no connection. Create one.
-                                ComponentRelation newRelation = newRelation(uniqueName("relation"));
-                                insidePort.link(newRelation);
-                                castPort.link(newRelation);
+                                if (!connectedPorts.contains(castPort)) {
+                                    // There is no connection. Create one.
+                                    ComponentRelation newRelation = newRelation(uniqueName("relation"));
+                                    insidePort.link(newRelation);
+                                    castPort.link(newRelation);
+                                }
                             }
                         }
                     } finally {
