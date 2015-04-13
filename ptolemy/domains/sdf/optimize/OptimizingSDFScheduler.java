@@ -229,11 +229,13 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         // However, that comparator is very slow.
         // Map firingsRemainingVector = new TreeMap(
         //        new DFUtilities.NamedObjComparator());
-        Map firingsRemainingVector = new HashMap();
+
+        // FindBugs: Useless object stored in variable firingsRemainingVector
+        //Map firingsRemainingVector = new HashMap();
 
         // Initialized the firingsRemainingVector to the current
         // firing vector.
-        firingsRemainingVector.putAll(_firingVector);
+        //firingsRemainingVector.putAll(_firingVector);
 
         // A list of all that actors that we have not yet completely scheduled.
         // FIXME: Is this list needed?

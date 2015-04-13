@@ -650,7 +650,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
 
         ArrayList<String> args = new ArrayList<String>();
-        ArrayList<String> functionsDeclared = new ArrayList<String>();
+
+        // FindBugs: Useless object stored in variable functionsDeclared.
+        //ArrayList<String> functionsDeclared = new ArrayList<String>();
         // Token declareBlock.
         if (typeMembers.length() != 0) {
             sharedStream.clear();
@@ -801,7 +803,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         functionName = typesArray[i] + "_equals";
                         if (!_unsupportedTypeFunctions.contains(functionName)) {
                             args.add(functionName);
-                            functionsDeclared.add(functionName);
+                            //functionsDeclared.add(functionName);
                             sharedStream.appendCodeBlock("funcHeaderBlock",
                                     args);
                         }
@@ -814,7 +816,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     if (!_unsupportedTypeFunctions.contains(functionName)
                             && !functionName.endsWith("_new")) {
                         args.add(functionName);
-                        functionsDeclared.add(functionName);
+                        //functionsDeclared.add(functionName);
                         sharedStream.append("// functionHeader: " + _eol);
                         sharedStream.appendCodeBlock("funcHeaderBlock", args);
                     }

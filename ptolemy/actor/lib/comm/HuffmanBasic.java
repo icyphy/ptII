@@ -239,11 +239,11 @@ public class HuffmanBasic extends Transformer {
                             + "with same length.");
         }
 
-        Token[] alphabetTokens = new Token[_pmf.length];
+        // Token[] alphabetTokens = new Token[_pmf.length];
 
-        for (int i = 0; i < _pmf.length; i++) {
-            alphabetTokens[i] = alphabetArrayToken.getElement(i);
-        }
+        // for (int i = 0; i < _pmf.length; i++) {
+        //     alphabetTokens[i] = alphabetArrayToken.getElement(i);
+        // }
 
         if (_parametersInvalid) {
             _parametersInvalid = false;

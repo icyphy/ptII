@@ -110,7 +110,7 @@ public class PthalesIOPort {
     public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
 
         Actor actor = (Actor) port.getContainer();
-        Integer[] repetitions = { 1 };
+        Integer[] repetitions = null;
 
         repetitions = PthalesAtomicActor
                 .getRepetitions((ComponentEntity) actor);
