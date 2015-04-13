@@ -171,7 +171,6 @@ public class FMUModelExchange extends FMUDriver {
         // The modelName may have spaces in it.
         _modelIdentifier = fmiModelDescription.modelIdentifier;
 
-        new File(fmuFileName).toURI().toURL().toString();
         int numberOfStateEvents = 0;
         int numberOfStepEvents = 0;
         int numberOfSteps = 0;

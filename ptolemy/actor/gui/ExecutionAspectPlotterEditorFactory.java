@@ -91,7 +91,7 @@ implements ExecutionAspectListener {
             Configuration configuration = ((TableauFrame) parent)
                     .getConfiguration();
 
-            object.getContainer();
+            //object.getContainer();
 
             plot = new Plot();
             plot.setTitle("Execution Time Monitor");

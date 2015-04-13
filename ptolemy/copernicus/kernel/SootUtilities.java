@@ -1050,7 +1050,8 @@ public class SootUtilities {
         for (Iterator pairs = useList.iterator(); pairs.hasNext();) {
             UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
             Stmt useStmt = (Stmt) pair.getUnit();
-            /*ValueBox useBox = (ValueBox)*/pair.getValueBox();
+            // FindBugs: Return value of soot.toolkits.scalar.UnitValueBoxPair.getValueBox() ignored, but method has no side effect
+            /*ValueBox useBox = (ValueBox)*//*pair.getValueBox();*/
             System.out.println("used at = " + useStmt);
         }
 

@@ -440,7 +440,8 @@ public abstract class OntologyAdapter {
      */
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
-        getSolver();
+        // FindBugs: Return value of getSolver() ignored, but method has no side effect
+        //getSolver();
         /* FIXME: Haven't included these options yet on default constraints.
         if (solver.expressionASTNodeConstraintType.getExpression().equals(
                 "NONE")) {

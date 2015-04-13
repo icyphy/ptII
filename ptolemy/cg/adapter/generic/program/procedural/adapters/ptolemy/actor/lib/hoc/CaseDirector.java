@@ -78,7 +78,7 @@ public class CaseDirector extends Director {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
-        ((BooleanToken) codeGenerator.inline.getToken()).booleanValue();
+        //((BooleanToken) codeGenerator.inline.getToken()).booleanValue();
 
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
