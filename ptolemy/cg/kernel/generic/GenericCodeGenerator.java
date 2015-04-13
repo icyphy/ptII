@@ -1552,7 +1552,7 @@ Decorator {
         
         String dialect = "";
         
-        if (generatorDialect != null && generatorDialect != "") {
+        if (generatorDialect != null && !generatorDialect.equals("")) {
             dialect = generatorDialect.substring(0, 1).toUpperCase(
                     Locale.getDefault());
             if (generatorDialect.length() >= 2) {
@@ -1575,7 +1575,7 @@ Decorator {
             capitalizedLanguage = language.toUpperCase(Locale.getDefault());
 
             // Append dialect
-            if (dialect != "") {
+            if (!dialect.equals("")) {
                 capitalizedLanguage += dialect;
             }
             
