@@ -65,11 +65,12 @@ MISC_FILES =	doc test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	JavaScript$ParameterProxy.class \
-	JavaScript$PortProxy.class \
-	JavaScript$PtolemyFunctionObject.class \
-	JavaScript$PtolemyJavaScript.class \
-	JavaScript$PtolemyJavaScript$1.class \
+	'JavaScript$$1.class' \
+	'JavaScript$$ParameterProxy.class' \
+	'JavaScript$$PortProxy.class' \
+	'JavaScript$$PtolemyFunctionObject.class' \
+	'JavaScript$$PtolemyJavaScript.class' \
+	'JavaScript$$PtolemyJavaScript$$1.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -34,7 +34,7 @@
 ME =		ptolemy/actor/lib/fmi
 
 # PTFMIPP_DIR is set by configure in $PTII/mk/ptII.mk
-DIRS = 		fmus $(PTFMIPP_DIR) demo doc ma ma2 test
+DIRS = 		fmus $(PTFMIPP_DIR) demo doc ma ma2 maHybrid test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -62,7 +62,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.
-MISC_FILES = test doc fmus fmipp ma
+MISC_FILES = test doc fmus fmipp ma ma2 maHybrid
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

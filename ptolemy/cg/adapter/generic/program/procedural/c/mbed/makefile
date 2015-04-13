@@ -72,7 +72,9 @@ MISC_FILES =	adapters
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	K64F \
+	lib
 
 JCLASS = $(JSRCS:%.java=%.class)
 

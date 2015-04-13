@@ -1,10 +1,9 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Ptolemy models of a Simulated robot intruder detection system
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Version: $Id: makefile 70349 2014-10-12 22:45:57Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,59 +27,59 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/actor/lib/jjs/modules/webSocket
+ME =		ptolemy/demo/RobotMPC
 
-DIRS = 		test
+DIRS =
 
-# Root of the Java directory
-ROOT =		../../../../../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	webSocket
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	RobotMPC
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	WebSocketHelper.java
+
+EXAMPLE_MODELS = \
+	CollisionAvoidance.xml \
+	CollisionAvoidanceWithAccModel.xml \
+	SimpleChase.xml
 
 OTHER_FILES_TO_BE_JARED = \
-	package.json \
-	webSocket.js
+	$(EXAMPLE_MODELS) \
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXAMPLE_MODEL_HTML = $(EXAMPLE_MODELS:%.xml=%.htm)
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+
+#	$(EXAMPLE_MODEL_HTML) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =
 
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc \
-	$(PTCLASSJAR) \
-	'WebSocketHelper$$1.class' \
-	'WebSocketHelper$$2.class' \
-	'WebSocketHelper$$3.class' \
-	'WebSocketHelper$$DataHandler.class' \
-	'WebSocketHelper$$EndHandler.class' \
-	'WebSocketHelper$$ExceptionHandler.class' \
-	'WebSocketHelper$$HttpClientExceptionHandler.class' \
-	'WebSocketHelper$$WebSocketExceptionHandler.class'
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+# Files to remove with 'make clean'
+KRUFT = \
+	*.jar
 
+all: suball $(EXTRA_SRCS)
+install: subinstall jars
 
-all: jclass
-install: jclass jars
+jnlps:
+	cd $(ROOT); \
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		echo "Creating applet for $(ME)/$$x" ; \
+		$(MAKE) JNLP_MODEL_DIRECTORY=$(ME) JNLP_MODEL=`basename $$x .xml` book_dist_update; \
+	done
 
-
-# Get the rest of the rules
+# Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

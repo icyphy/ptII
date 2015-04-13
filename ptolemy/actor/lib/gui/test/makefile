@@ -65,6 +65,7 @@ EXTRA_SRCS =	\
 	LEDArray.xml \
 	Placeables.xml \
 	SketchedSource.xml \
+	TimedDisplay.xml \
 	XYScope.xml  #$(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

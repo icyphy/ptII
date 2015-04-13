@@ -50,7 +50,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
-TCL_SRCS =
+TCL_SRCS = \
+	RunDETestsAsQSS.tcl
 
 JSRCS = \
 	CancelFireAtTest.java \

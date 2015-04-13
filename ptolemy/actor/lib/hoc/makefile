@@ -104,6 +104,7 @@ OPTIONAL_FILES = \
 	'ApplyFunction$$1.class' \
 	'ApplyFunction$$ReturnTypeFunction.class' \
 	'CaseDirector$$1.class' \
+	'CatchUpComposite$$CatchUpDirector.class' \
 	'IterateOverArray$$1.class' \
 	'IterateOverArray$$2.class' \
 	'IterateOverArray$$3.class' \

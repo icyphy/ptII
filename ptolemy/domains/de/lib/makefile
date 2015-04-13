@@ -88,10 +88,11 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	DateToEventIcon.xml \
 	DateToModelTimeIcon.xml \
+	dedateentities.xml \
 	deentities.xml \
 	DerivativeIcon.xml \
 	DerivativeIcon.gif \
-	 EventToDateIcon.xml \
+	EventToDateIcon.xml \
 	IntegratorIcon.gif \
 	IntegratorIcon.xml \
 	NonInterruptibleTimerIcon.xml \

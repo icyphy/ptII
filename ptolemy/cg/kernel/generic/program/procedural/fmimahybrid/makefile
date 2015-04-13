@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen using C for the Functional Mockup-Interface Master Algorithm Hybrid
 #
-# @Version: $Id$
+# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2014 The Regents of the University of California
+# @Copyright (c) 2014 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/kernel/generic/program/procedural
+ME =		ptolemy/cg/kernel/generic/program/procedural/fmimahybrid
 
-DIRS =		c fmima fmimahybrid java
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,39 +45,35 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	procedural
-PTCLASSJAR =
+PTPACKAGE = 	fmimahybrid
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	c/c.jar \
-	fmima/fmima.jar \
-	fmimahybrid/fmimahybrid.jar \
-	java/java.jar
+#PTCLASSALLJARS =
 
 # Keep this list alphabetized.
-JSRCS = \
-	ProceduralCodeGenerator.java \
-	ProceduralParseTreeCodeGenerator.java \
-	ProceduralTemplateParser.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	makefile.in 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	c fmima fmimahybrid java
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	test
+	'CCodeGenerator$$1.class' \
+	'CCodeGeneratorAdapter$$1.class' \
+	'CCodeGenerator$$_JniFileFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
