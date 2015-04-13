@@ -51,6 +51,7 @@ import net.jini.export.Exporter;
 import net.jini.lease.LeaseRenewalManager;
 import net.jini.lookup.JoinManager;
 import net.jini.lookup.ServiceIDListener;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 
 ///////////////////////////////////////////////////////////////////
@@ -248,7 +249,9 @@ DiscoveryListener {
             System.out.println("Not Found: " + throwable);
         } finally {
             try {
-                din.close();
+                if (din != null) {
+                    din.close();
+                }
             } catch (IOException ex) {
                 System.out.println("Failed to close " + serviceIdFile);
             }
@@ -283,6 +286,11 @@ DiscoveryListener {
             KernelException.stackTraceToString(e);
         }
 
+        if (configuration == null) {
+            throw new InternalErrorException(null, null,
+                    "Failed to get configuration from "
+                    + configFileName);
+        }
         // The config file must have an exporter, a service and a codebase
         try {
             System.out.print("Reading exporter: ");
