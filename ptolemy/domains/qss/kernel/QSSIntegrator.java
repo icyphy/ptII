@@ -29,6 +29,7 @@ COPYRIGHTENDKEY
  */
 package ptolemy.domains.qss.kernel;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.ptolemy.qss.solver.QSSBase;
@@ -751,7 +752,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         	} else if (_maximumInputOrder == 0) {
         	    // No derivatives will be used.
         	    if (_debugging) {
-        		_debug("##### Warning: Input derivatives will be ignored: " + inputDerivatives);
+        		_debug("##### Warning: Input derivatives will be ignored: " + Arrays.toString(inputDerivatives));
         	    }
         	    _previousInput = new SmoothToken(inputValue, currentTime, null);
         	} else {
