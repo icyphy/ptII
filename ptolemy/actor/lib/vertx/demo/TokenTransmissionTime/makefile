@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II StockPrice demo
+# Makefile for Ptolemy II TokenTransmisstionTime demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -41,14 +41,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	PubSub
+PTPACKAGE = 	TokenTransmissionTime
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	TokenTransmissionTime.xml \
-			Sender.xml \
-			Receiver.xml
+OTHER_FILES_TO_BE_JARED = \
+	server.js \
+	TokenTransmissionTime.xml \
+	Sender.xml \
+	Receiver.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

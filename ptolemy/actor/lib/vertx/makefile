@@ -64,9 +64,18 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'EventBusTestServer$$1.class' \
+	'EventBusTestServer$$2.class' \
+	'EventBusTestServer$$3.class' \
+	'VertxBusHandler$$1.class' \
+	'VertxBusHandler$$2$$1.class' \
+	'VertxBusHandler$$2.class' \
+	'VertxBusHandler$$3.class' \
+	'VertxBusHandlerIcon.xml' \
 
 JCLASS = $(JSRCS:%.java=%.class)
+
 
 all: jclass
 install: jclass jars
