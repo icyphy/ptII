@@ -78,7 +78,10 @@ public class StateSpaceModel extends MirrorDecorator {
                                         y.setExpression("0.0"); 
                                         sendParameterEvent(DecoratorEvent.ADDED_PARAMETER, y);
                                     } 
-                                    y.setVisibility(Settable.NONE); 
+                                    // FindBugs: Possible null pointer dereference of y.
+                                    if (y != null) {
+                                        y.setVisibility(Settable.NONE); 
+                                    }
                                     if (this.getAttribute(stateName+"_update") == null) {
                                         Parameter yUpdate = new Parameter(this, stateName+"_update");
                                         yUpdate.setExpression(stateName); 

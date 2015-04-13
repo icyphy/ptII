@@ -510,11 +510,9 @@ public class FactorOracle extends ModalController {
                     System.out.println("Chord: " + chordName + " Tones:"
                             + chordTones.toString() + " Note being tested: "
                             + noteToTest);
-                }
-
-                if (chordTones.contains(pureNote)) {
-                    System.out.println("Accepted Note: " + noteToTest);
-                    //okay to play
+                    if (chordTones.contains(pureNote)) {
+                        System.out.println("Accepted Note: " + noteToTest);
+                        //okay to play
                     return BooleanToken.TRUE;
                 }
             }
