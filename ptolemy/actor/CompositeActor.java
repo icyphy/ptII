@@ -727,10 +727,15 @@ FiringsRecordable {
             return ((CompositeActor) container).getPublishedPorts(pattern);
         } else {
             if (_publishedPorts != null) {
-                for (String name : _publishedPorts.keySet()) {
-                    Matcher matcher = pattern.matcher(name);
+
+                // FindBugs: ptolemy.actor.CompositeActor.getPublishedPorts(Pattern) makes inefficient use of keySet iterator instead of entrySet iterator
+                //for (String name : _publishedPorts.keySet()) {
+                for (Map.Entry<String, Set<IOPort>> entry: _publishedPorts.entrySet()) {
+                    //Matcher matcher = pattern.matcher(name);
+                    Matcher matcher = pattern.matcher(entry.getKey());
                     if (matcher.matches()) {
-                        ports.addAll(_publishedPorts.get(name));
+                        //ports.addAll(_publishedPorts.get(name));
+                        ports.addAll(entry.getValue());
                     }
                 }
             }
@@ -751,9 +756,14 @@ FiringsRecordable {
             return ((CompositeActor) container).getPublishedPortChannel(port);
         } else {
             if (_publishedPorts != null) {
-                for (String name : _publishedPorts.keySet()) {
-                    if (_publishedPorts.get(name).contains(port)) {
-                        return name;
+                // FindBugs: ptolemy.actor.CompositeActor.getPublishedPortChannel(IOPort) makes inefficient use of keySet iterator instead of entrySet iterator
+
+                //for (String name : _publishedPorts.keySet()) {
+                //  if (_publishedPorts.get(name).contains(port)) {
+
+                for (Map.Entry<String, Set<IOPort>> entry: _publishedPorts.entrySet()) {
+                    if (entry.getValue().contains(port)) {
+                        return entry.getKey();
                     }
                 }
             }
@@ -774,9 +784,13 @@ FiringsRecordable {
             return ((CompositeActor) container).getPublishedPortChannel(port);
         } else {
             if (_subscribedPorts != null) {
-                for (String name : _subscribedPorts.keySet()) {
-                    if (_subscribedPorts.get(name).contains(port)) {
-                        return name;
+                // FindBugs: ptolemy.actor.CompositeActor.getSubscribedPortChannel(IOPort) makes inefficient use of keySet iterator instead of entrySet iterator
+                // for (String name : _subscribedPorts.keySet()) {
+                for (Map.Entry<String, List<IOPort>> entry: _subscribedPorts.entrySet()) {
+                    //if (_subscribedPorts.get(name).contains(port)) {
+                    // return name;
+                    if (entry.getValue().contains(port)) {
+                        return entry.getKey();
                     }
                 }
             }
