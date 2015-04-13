@@ -127,8 +127,6 @@ run2: main $(FMUS0)
 
 ../fmus/inc20pt/inc20pt.fmu:
 	(cd ../fmus/inc20pt; $(MAKE))
-../fmus/out20pt/out20pt.fmu:
-	(cd ../out20pt/out20pt; $(MAKE))
 
 clean_fmus:
 	rm -f $(FMUS)

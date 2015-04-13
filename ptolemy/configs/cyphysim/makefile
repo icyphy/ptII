@@ -63,6 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	copyright.htm \
 	cyphysimEffigies.xml \
 	cyphysimRefinements.xml \
+	CyPhySim.png \
 	de.xml \
 	demonstrations.htm \
 	docs.htm \

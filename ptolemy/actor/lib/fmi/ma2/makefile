@@ -118,8 +118,6 @@ run: main $(FMUS)
 	(cd ../fmus/inc20pt; $(MAKE))
 ../fmus/scale20pt/scale20pt.fmu:
 	(cd ../fmus/scale20pt; $(MAKE))
-../fmus/out20pt/out20pt.fmu:
-	(cd ../fmus/out20pt; $(MAKE))
 
 # Run yilin
 run2: main $(FMUS0)

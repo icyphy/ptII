@@ -58,6 +58,7 @@ JSRCS = \
 	ComplexToCartesian.java \
 	ComplexToPolar.java \
 	Converter.java \
+	DateToString.java \
 	DoubleToFix.java \
 	ExpressionToToken.java \
 	FixToDouble.java \
