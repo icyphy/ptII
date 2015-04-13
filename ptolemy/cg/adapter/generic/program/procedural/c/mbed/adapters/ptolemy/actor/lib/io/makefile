@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2014 The Regents of the University of California
+# @Copyright (c) 2012-2014 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,46 +27,52 @@
 # HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib
+ME =        ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/io
 
-DIRS =		gui	\
-            io
+DIRS =  test
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../..
+ROOT =      ../../../../../../../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE =     gui
+PTCLASSJAR =    $(PTPACKAGE).jar
+
+#PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+#PTCLASSALLJARS =
+
 
 # Keep this list alphabetized.
-JSRCS =
-
+JSRCS = \
+    GPIOWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c) 
+    $(JSRCS:%.java=%.c)
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = gui
+MISC_FILES = test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+    demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
