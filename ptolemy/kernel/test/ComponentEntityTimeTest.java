@@ -38,6 +38,8 @@ import ptolemy.kernel.ComponentEntity;
  */
 public class ComponentEntityTimeTest {
     public static void main(String args[]) {
+        // FindBugs: Useless object stored in variable entities.
+        // However, this is for time testing, so we should keep this.
         ComponentEntity entities[] = new ComponentEntity[10000];
         long startTime = System.currentTimeMillis();
 
