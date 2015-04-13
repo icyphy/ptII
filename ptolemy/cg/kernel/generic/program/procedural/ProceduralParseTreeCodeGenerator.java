@@ -1079,10 +1079,12 @@ implements ParseTreeCodeGenerator {
         }
 
         // The first child is the object to invoke the method on.
-        Type[] argTypes = new Type[argCount];
-        Object[] argValues = new Object[argCount];
-        argValues[0] = token;
-        argTypes[0] = token.getType();
+        // FindBugs: Useless object stored in variable argTypes.
+        //Type[] argTypes = new Type[argCount];
+        // FindBugs: Useless object stored in variable argValues.
+        //Object[] argValues = new Object[argCount];
+        //argValues[0] = token;
+        //argTypes[0] = token.getType();
 
         // First try to find a signature using argument token values.
         for (int i = 1; i < argCount; i++) {
@@ -1093,8 +1095,8 @@ implements ParseTreeCodeGenerator {
             token = _evaluateChild(node, i);
             result.append(_childCode);
 
-            argValues[i] = token;
-            argTypes[i] = token.getType();
+            //argValues[i] = token;
+            //argTypes[i] = token.getType();
         }
 
         //_fireCode.append("->" + node.getMethodName() + "()");
@@ -1715,7 +1717,8 @@ implements ParseTreeCodeGenerator {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         for (int i = 0; i < numChildren; i++) {
-            /* ASTPtRootNode child = (ASTPtRootNode) */node.jjtGetChild(i);
+            // FindBugs: Return value of ptolemy.data.expr.ASTPtRootNode.jjtGetChild(int) ignored, but method has no side effect
+            /* ASTPtRootNode child = (ASTPtRootNode) *//*node.jjtGetChild(i);*/
             tokens[i] = _evaluateChild(node, i);
         }
 

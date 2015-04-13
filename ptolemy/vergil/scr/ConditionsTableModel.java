@@ -161,7 +161,7 @@ public class ConditionsTableModel extends AbstractTableModel {
             String condition = "";
             String value = "";
             for (int j = 0; j < getColumnCount() - 1; j++) {
-                SCRTableHelper.getContentIndex(i, j, getColumnCount());
+                //SCRTableHelper.getContentIndex(i, j, getColumnCount());
                 condition = (String) getValueAt(i, j + 1);
                 value = (String) getValueAt(getRowCount() - 1, j + 1);
                 expression = expression.append("(" + condition + " ? " + value

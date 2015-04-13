@@ -769,9 +769,10 @@ public class TypeLattice {
             StructuredType unionRep = new UnionType(labels, types)
             ._getRepresentative();
 
-            /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
+            // FindBugs: Return value of FunctionType._getRepresentative() ignored, but method has no side effect
+            /*StructuredType functionRep = *//*new ptolemy.data.type.FunctionType(
                     new ptolemy.data.type.Type[0],
-                    ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
+                    ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();*/
 
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
             _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);

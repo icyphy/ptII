@@ -1328,7 +1328,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         for (int i = 0; i < numChildren; i++) {
-            /* ASTPtRootNode child = (ASTPtRootNode) */node.jjtGetChild(i);
+            // FindBugs: Return value of ASTPtRootNode.jjtGetChild(int) ignored, but method has no side effect
+            /* ASTPtRootNode child = (ASTPtRootNode) *//*node.jjtGetChild(i);*/
             tokens[i] = _evaluateChild(node, i);
         }
 
