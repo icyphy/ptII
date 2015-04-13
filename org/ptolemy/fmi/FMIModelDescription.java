@@ -497,7 +497,7 @@ public class FMIModelDescription {
 
                 // We load with RTLD_LAZY here. RTLD_LOCAL is define
                 // in /usr/local/bits/dlfcn.h as 0 and gets or'd.
-                Integer RTLD_LAZY = new Integer(1);
+                Integer RTLD_LAZY = Integer.valueOf(1);
                 options.put(Library.OPTION_OPEN_FLAGS, RTLD_LAZY);
 
                 _nativeLibrary = NativeLibrary.getInstance(sharedLibrary,
