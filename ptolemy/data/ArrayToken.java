@@ -38,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -1188,6 +1189,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     // Use this method to get a consistent error message
                     // defined in one place.
                     _checkArgumentLength(rightArgument);
+                    // Note that we might not be setting result here.
                 }
 
             }
@@ -1198,6 +1200,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             for (int i = 0; i < length(); i++) {
                 result[i] = getElement(i).add(rightArgument);
             }
+        }
+        if (result == null) {
+            // FindBugs wants us to check to see if result is null.
+            throw new InternalErrorException("result was null?");
         }
         return new ArrayToken(result);
     }
