@@ -81,8 +81,17 @@ WARNING_CC_FLAGS = -Wall
 
 INCFLAGS= -Ifmi/includes -Ifmi/parser/libxml -Ifmi/parser -Ifmi/shared
 # Set CFLAGS to -m32 to build for linux32
+
 CFLAGS= -g -Wall -DFMI_COSIMULATION -DSTANDALONE_XML_PARSER -DLIBXML_STATIC $(INCFLAGS)
+
 LIBFLAGS= -lexpat -ldl -lxml2
+
+ifdef SPACEEX_LIB_HOME
+	CFLAGS+= -Wl,--no-as-needed
+endif
+ifdef SPACEEX_LIB_HOME
+	LIBFLAGS+= -lspaceex -L$(SPACEEX_LIB_HOME)
+endif
 
 CPP_SRCS = fmi/parser/XmlElement.cpp fmi/parser/XmlParser.cpp fmi/parser/XmlParserCApi.cpp
 
