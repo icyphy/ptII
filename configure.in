@@ -5901,6 +5901,9 @@ PTVERTX_JARS=
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR=
 
+# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTBROWSER_DIR=
+
 # Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTXEVENTBUS_DIR=
 
@@ -5932,6 +5935,7 @@ else
             PTVERTX_JAR_DIR=$withval,
         PTVERTX_JAR_DIR=$PTII/lib)
             if test -d "$PTVERTX_JAR_DIR"; then
+            PTBROWSER_DIR=browser
     	    PTVERTX_DIR=vertx
 	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
@@ -6455,6 +6459,9 @@ AC_SUBST(PTBACKTRACK_ECLIPSE_PACKAGES)
 # Set to the directory that contains boost/numeric/odeint.hpp
 # and used in actor/lib/fmi/fmipp
 AC_SUBST(PTBOOST_INCLUDE_DIR)
+
+# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+AC_SUBST(PTBROWSER_DIR)
 
 # Set to the BSH jar file and used to compile org/mlc
 AC_SUBST(PTBSH_JAR)
