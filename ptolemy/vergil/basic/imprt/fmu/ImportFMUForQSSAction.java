@@ -191,8 +191,10 @@ public class ImportFMUForQSSAction extends AbstractAction {
                         FMUQSS.importFMU(this, fmuFileParameter, context, x,
                                 y);
                     } finally {
-                        // Avoid leaving a parameter in the model.
-                        fmuFileParameter.setContainer(null);
+                        if (fmuFileParameter != null) {
+                            // Avoid leaving a parameter in the model.
+                            fmuFileParameter.setContainer(null);
+                        }
                     }
                 }
             }

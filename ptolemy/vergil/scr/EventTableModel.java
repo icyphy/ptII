@@ -38,6 +38,8 @@ import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -166,7 +168,7 @@ public class EventTableModel extends AbstractTableModel {
             String value = "";
             State state = (State) _model.getEntity((String) getValueAt(i, 0));
             for (int j = 0; j < getColumnCount() - 1; j++) {
-                _getContentIndex(i, j);
+                //_getContentIndex(i, j);
                 String condition = (String) getValueAt(i, j + 1);
                 value = (String) getValueAt(getRowCount() - 1, j + 1);
                 String[] conditions = _handleInmodeExpression(condition, value,
@@ -222,13 +224,13 @@ public class EventTableModel extends AbstractTableModel {
                                         .getName() + "_transition"));
                         state.outgoingPort.link(transition);
                         state.incomingPort.link(transition);
-                    } catch (IllegalActionException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (NameDuplicationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                    } catch (KernelException e) {
+                        throw new IllegalActionException(_model, "Failed to create "
+                                + state.getName() + "_transition");
                     }
+                }
+                if (transition == null) {
+                    throw new InternalErrorException(_model, null, "transition is null?");
                 }
                 transition.setActions.setExpression(_parameter.getName()
                         + " = " + insideModeExpression);
