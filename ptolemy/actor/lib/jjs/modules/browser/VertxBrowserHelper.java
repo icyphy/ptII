@@ -114,9 +114,6 @@ public class VertxBrowserHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
     
-    /** The current instance of the JavaScript module. */
-    private ScriptObjectMirror _currentObj;
-    
     /** Instance of Vertx. Apparently we need only one. */
     private static Vertx _vertx = VertxFactory.newVertx();
 }
