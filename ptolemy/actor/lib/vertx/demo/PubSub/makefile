@@ -46,9 +46,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	PubSub.xml \
-			Publisher.xml \
-			Subscriber.xml
+OTHER_FILES_TO_BE_JARED = \
+	server.js \
+	PubSub.xml \
+	Publisher.xml \
+	Subscriber.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
