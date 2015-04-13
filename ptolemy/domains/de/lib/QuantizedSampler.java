@@ -176,12 +176,15 @@ public class QuantizedSampler extends Transformer {
         double[] derivativesNewToken = ((SmoothToken) newToken).derivativeValues();
         double[] derivativesLastToken = ((SmoothToken) lastToken).derivativeValues();
         if (derivativesNewToken == derivativesLastToken) {
-    	// Derivatives are identical (should be true only if null).
-    	return true;
+            // Derivatives are identical (should be true only if null).
+            return true;
         }
         if (derivativesNewToken == null && derivativesLastToken != null
+                // Findbugs wants us to check for null here to avoid dereferencing
+                // a null when we check the length below.
+            || derivativesNewToken == null && derivativesLastToken == null
     	    || derivativesNewToken != null && derivativesLastToken == null) {
-    	return false;
+            return false;
         }
         // Both tokens have derivatives.
         if (derivativesNewToken.length != derivativesLastToken.length) {
