@@ -434,6 +434,7 @@ public class SyntacticGraph extends CompositeEntity {
             NameDuplicationException {
         if (_nodes == null) {
             System.out.print("Node-list _nodes.\n");
+            return;
         }
 
         for (SyntacticNode node : _nodes) {
