@@ -99,7 +99,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Michael Wetter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -75.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, 400.0]">
         </property>
     </property>
     <property name="quantum" class="ptolemy.data.expr.Parameter" value="0.005">

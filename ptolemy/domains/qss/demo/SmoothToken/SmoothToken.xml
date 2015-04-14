@@ -7,7 +7,7 @@
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.0, 51.5]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 22, 934, 634}, maximized=false}">
@@ -16,16 +16,16 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a signal that, at each second interval, alternates&#10;between a rising quadratic and a falling quadratic. It shows that signals&#10;generated with SmoothTokens can be sampled at any time, and their value&#10;is extrapolated, and that zero crossings are detected exactly.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[144.0, 16.5]">
         </property>
     </property>
     <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[369.0, 251.5]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -39,7 +39,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[609.0, 251.5]">
         </property>
     </entity>
     <entity name="TimedDisplay3" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -47,14 +47,14 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[309.0, 186.5]">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[199.0, 341.5]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -62,7 +62,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 160.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[609.0, 181.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -78,7 +78,7 @@
         </configure>
     </entity>
     <entity name="SmoothZeroCrossingDetector" class="ptolemy.domains.qss.lib.SmoothZeroCrossingDetector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[319.0, 126.5]">
         </property>
     </entity>
     <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -86,7 +86,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.0, 126.5]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -97,13 +97,13 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {1.0, -1.0}), smoothToken(-1.0, {-1.0, 1.0})}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.0, 251.5]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{270.0, 230.0}">
+        <vertex name="vertex1" value="[269.0, 251.5]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.input&quot;,x=370.0,y=230.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=230.0}, points={} },{ head={id=&quot;TimedDisplay3.input&quot;,x=310.0,y=165.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=230.0}, points={270.0,165.0} },{ head={id=&quot;SmoothZeroCrossingDetector.input&quot;,x=320.0,y=105.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=230.0}, points={270.0,105.0} },{ head={id=&quot;DiscreteClock2.output&quot;,x=70.0,y=230.0}, tail={id=&quot;relation.vertex1&quot;,x=270.0,y=230.0}, points={} } }">
         </property>
@@ -115,7 +115,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{570.0, 230.0}">
+        <vertex name="vertex1" value="[569.0, 251.5]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.output&quot;,x=370.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=570.0,y=230.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=610.0,y=160.0}, tail={id=&quot;relation3.vertex1&quot;,x=570.0,y=230.0}, points={570.0,160.0} },{ head={id=&quot;TimedDisplay2.input&quot;,x=610.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=570.0,y=230.0}, points={} } }">
         </property>

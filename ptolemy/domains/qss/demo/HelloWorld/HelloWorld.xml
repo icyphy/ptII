@@ -125,7 +125,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 565.0]">
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -158,7 +158,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 560.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorld_QSS1.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HelloWorldQSS1.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

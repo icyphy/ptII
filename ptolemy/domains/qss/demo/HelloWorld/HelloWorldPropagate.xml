@@ -13,21 +13,21 @@
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 960, 808}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 22, 929, 728}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[726, 698]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[695, 618]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1473565048703243">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.0215891750769, 468.07427865686554}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.5, 309.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the impact of the propagateInputDerivatives parameter&#10;on the accuracy of the integration. Here, the left integrators use QSS1 (since&#10;their inputs are piecewise constant) and the right one uses QSS2 (since their inputs are&#10;piecewise linear). On the upper path, the left integrator has propagateInputDerivatives&#10;set to true, and on the bottom path it is set to false.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 330.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,11 +35,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Constant signal with value 1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 110.0]">
         </property>
     </property>
     <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 185.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -55,11 +55,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Signal starting&#10;with value 0 and &#10;constant slope 1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 210.0]">
         </property>
     </property>
     <property name="Arrow2" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 180.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -75,11 +75,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 8.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 225.0]">
         </property>
     </property>
     <property name="Arrow3" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 170.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -91,7 +91,7 @@
         </property>
     </property>
     <property name="Arrow4" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 95.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -107,7 +107,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="After 4 time units, the&#10;integral should be 4.0.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 20.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -115,11 +115,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 565.0]">
         </property>
     </property>
     <property name="Arrow5" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 295.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
@@ -135,13 +135,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="On the lower path, the second integrator does not get informed that the&#10;derivative of its input is 1.0 until it reaches its first quantization event&#10;at time near 1.1. Hence, it has a systematic error that persists henceforth.&#10;Also, the plotter samples its output at times 0.5 and 1.0 (because the upper&#10;path provides plotter inputs at those times). These samples are extrapolated&#10;from the one at time 0, which has an incorrect derivative of 0.0. This explains&#10;the odd artifact in the blue curve, which shows two zero-valued samples at&#10;times 0.5 and 1.0.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 425.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 325.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 175.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -151,7 +151,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[571, 830]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 180.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -176,7 +176,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 175.0]">
         </property>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -188,7 +188,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 424]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 105.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -302,7 +302,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 175.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -404,7 +404,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 175.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -508,7 +508,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 295.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator4" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -612,7 +612,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 295.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -620,7 +620,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[275.0, 325.0]">
+        <vertex name="vertex1" value="[305.0, 175.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
         </property>
@@ -628,7 +628,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[280.0, 445.0]">
+        <vertex name="vertex1" value="[310.0, 295.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
         </property>
@@ -636,7 +636,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[165.0, 325.0]">
+        <vertex name="vertex1" value="[195.0, 175.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

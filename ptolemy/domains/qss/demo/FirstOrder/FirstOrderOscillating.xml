@@ -11,27 +11,27 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 50.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0155036197150507">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.02880859375006, 252.50999348958354}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A key with QSS1 is to quantize the inputs!">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 145.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that if the SingleEvent is not producing&#10;a SmoothToken, then the input needs to be&#10;given a defaultValue so it is persistent.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-175.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-180.0, 50.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Expression">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -41,7 +41,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple first-order feedback system.&#10;Here we are using QSS1 with a coarse&#10;quantization of 0.5. The input is NOT&#10;quantized to 0.5, (it goes to 4.3), so the&#10;final result oscillates.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 40.0]">
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -55,7 +55,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 215.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +84,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 426]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 60.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -104,7 +104,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[611, 243]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -112,7 +112,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="4.3">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 225.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -214,13 +214,13 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 125.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[285.0, 105.0]">
+        <vertex name="vertex1" value="[250.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
