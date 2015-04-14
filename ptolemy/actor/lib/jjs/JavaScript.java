@@ -1231,7 +1231,7 @@ public class JavaScript extends TypedAtomicActor {
         		+ data + " to " + _port.getName()
         		+ ", but the model is not executing.");
             }
-            synchronized (this) {
+            synchronized (JavaScript.this) {
         	if (_inFire) {
         	    // Currently firing. Can go ahead and send data.
         	    if (_debugging) {
