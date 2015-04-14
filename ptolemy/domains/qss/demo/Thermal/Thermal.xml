@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Thermal" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[422.5, 457.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[427.5, 480.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="805.0">
         </property>
@@ -29,7 +29,7 @@
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 52.5]">
         </property>
     </property>
     <property name="T_amb" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -48,7 +48,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 57.5]">
         </property>
     </property>
     <property name="UA" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -67,7 +67,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 27.5]">
         </property>
     </property>
     <property name="C" class="ptolemy.data.expr.Parameter" value="150000.0">
@@ -86,16 +86,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 27.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={165, 227, 1046, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 32, 1301, 820}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1067, 710]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7869634340222575">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{521.5535353535354, 325.5717171717172}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{533.5, 355.0}">
     </property>
     <property name="Q_heat" class="ptolemy.data.expr.Parameter" value="200.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -113,7 +113,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 87.5]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
@@ -137,7 +137,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 57.5]">
         </property>
     </property>
     <property name="KI" class="ptolemy.data.expr.Parameter" value="0.0005">
@@ -156,11 +156,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 87.5]">
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[422.5, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[427.5, 247.5]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="805.0">
         </property>
@@ -180,19 +180,19 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="plant">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[45.0, 572.5]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[50.0, 595.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="controller">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[40.0, 292.5]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[45.0, 315.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Plant model with PI controller and discrete time sampling of its input and output.&#10;The plant has a thermal mass, approximated using finite differences&#10;with two states. It has heat loss to T_amb and a heat gain. &#10;The heat gain is controlled by the PI controller.&#10;&#10;This model illustrates how QSS methods decouple state variables. The dots on the plot&#10;show that the slow varying states are updated much less frequent than the control signal.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 22.5]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -200,7 +200,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Michael Wetter">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 107.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 642.5]">
         </property>
     </property>
     <property name="KI2" class="ptolemy.data.expr.Parameter" value="0.0005">
@@ -238,7 +238,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 112.5]">
         </property>
     </property>
     <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
@@ -246,7 +246,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="60.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 427.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 450.0]">
         </property>
     </property>
     <entity name="T1" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -256,7 +256,7 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[713.5, 358.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[718.5, 380.5]">
         </property>
     </entity>
     <entity name="dT1_dt" class="ptolemy.actor.lib.Expression">
@@ -270,7 +270,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[548.5, 358.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[553.5, 380.5]">
         </property>
         <port name="y" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -295,7 +295,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 262.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 285.0]">
         </property>
     </entity>
     <entity name="error" class="ptolemy.actor.lib.Expression">
@@ -309,7 +309,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 262.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 285.0]">
         </property>
         <port name="T" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -324,11 +324,11 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 202.5]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 272.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 295.0]">
         </property>
     </entity>
     <entity name="I_gain" class="ptolemy.actor.lib.Scale">
@@ -338,7 +338,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 202.5]">
         </property>
     </entity>
     <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -352,7 +352,7 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{980.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 217.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -368,7 +368,7 @@
         </configure>
     </entity>
     <entity name="Limiter" class="ptolemy.actor.lib.Limiter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 272.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 295.0]">
         </property>
     </entity>
     <entity name="dT2_dt" class="ptolemy.actor.lib.Expression">
@@ -382,7 +382,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 447.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 470.0]">
         </property>
         <port name="T1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -407,7 +407,7 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[713.5, 448.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[718.5, 470.5]">
         </property>
     </entity>
     <entity name="dT3_dt" class="ptolemy.actor.lib.Expression">
@@ -421,7 +421,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 522.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 545.0]">
         </property>
         <port name="T2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -441,35 +441,35 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[718.5, 523.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[723.5, 545.5]">
         </property>
     </entity>
     <entity name="SmoothToDouble" class="ptolemy.actor.lib.conversions.SmoothToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 202.5]">
         </property>
     </entity>
     <entity name="SmoothToDouble2" class="ptolemy.actor.lib.conversions.SmoothToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 357.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 380.0]">
         </property>
     </entity>
     <entity name="SmoothToDouble3" class="ptolemy.actor.lib.conversions.SmoothToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 447.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 470.0]">
         </property>
     </entity>
     <entity name="SmoothToDouble4" class="ptolemy.actor.lib.conversions.SmoothToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[880.0, 567.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 590.0]">
         </property>
     </entity>
     <entity name="PeriodicSampler2" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 272.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 295.0]">
         </property>
     </entity>
     <entity name="PeriodicSampler1" class="ptolemy.domains.continuous.lib.PeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 262.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 285.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -477,13 +477,13 @@
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[400.0, 397.5]">
+        <vertex name="vertex1" value="[405.0, 420.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[235.0, 262.5]">
+        <vertex name="vertex1" value="[240.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -491,31 +491,31 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{425.0, 180.0}">
+        <vertex name="vertex1" value="[430.0, 202.5]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[420.0, 482.5]">
+        <vertex name="vertex1" value="[425.0, 505.0]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[774.1249084472656, 397.8750305175781]">
+        <vertex name="vertex1" value="[779.1249084472656, 420.3750305175781]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[773.5, 358.0]">
+        <vertex name="vertex1" value="[778.5, 380.5]">
         </vertex>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[773.5, 448.0]">
+        <vertex name="vertex1" value="[778.5, 470.5]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -523,7 +523,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[440.0, 567.5]">
+        <vertex name="vertex1" value="[445.0, 590.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -531,13 +531,13 @@
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[774.1249084472656, 482.8750305175781]">
+        <vertex name="vertex1" value="[779.1249084472656, 505.3750305175781]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[778.5, 568.0]">
+        <vertex name="vertex1" value="[783.5, 590.5]">
         </vertex>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">

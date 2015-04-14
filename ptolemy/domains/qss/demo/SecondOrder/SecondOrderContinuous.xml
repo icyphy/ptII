@@ -4,30 +4,30 @@
 <entity name="SecondOrderContinuous" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 44, 1172, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 44, 924, 522}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[938, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[690, 412]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4120879120879122">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.59143968871615, 170.99999999999997}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.0, 206.0}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Comparison model for the simple second-order QSS feedback system.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 85.0]">
         </property>
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simulation is stable (the oscillation decays over time).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 345.0]">
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -41,7 +41,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 290.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -70,7 +70,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 300.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -78,7 +78,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 160.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -97,7 +97,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 235.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -112,21 +112,21 @@
         </configure>
     </entity>
     <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 300.0]">
         </property>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 160.0]">
         </property>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 160.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{505.0, 125.0}">
+        <vertex name="vertex1" value="[545.0, 160.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.QSSIntegrator2.q&quot;,x=350.0,y=190.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={} },{ head={id=&quot;Expression.q&quot;,x=255.0,y=255.0}, tail={id=&quot;relation3.vertex1&quot;,x=505.0,y=125.0}, points={505.0,255.0,505.0,125.0} },{ head={id=&quot;.CurrentTime.trigger&quot;,x=505.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,330.0} },{ head={id=&quot;.Test.input&quot;,x=490.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,265.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=555.0,y=125.0}, tail={id=&quot;relation3.vertex1&quot;,x=505.0,y=125.0}, points={} },{ head={id=&quot;relation3.vertex1&quot;,x=505.0,y=125.0}, tail={id=&quot;Integrator2.state&quot;,x=440.0,y=125.0}, points={} } }">
         </property>
@@ -134,7 +134,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{390.0, 125.0}">
+        <vertex name="vertex1" value="[430.0, 160.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter2.input&quot;,x=430.0,y=200.0}, tail={id=&quot;relation6.vertex1&quot;,x=390.0,y=125.0}, points={390.0,200.0} },{ head={id=&quot;.QSSIntegrator2.u&quot;,x=350.0,y=190.0}, tail={id=&quot;relation6.vertex1&quot;,x=305.0,y=190.0}, points={} },{ head={id=&quot;.QSSIntegrator.q&quot;,x=230.0,y=190.0}, tail={id=&quot;relation6.vertex1&quot;,x=305.0,y=190.0}, points={} },{ head={id=&quot;relation6.vertex1&quot;,x=390.0,y=125.0}, tail={id=&quot;Integrator2.derivative&quot;,x=440.0,y=125.0}, points={} },{ head={id=&quot;Integrator.state&quot;,x=335.0,y=125.0}, tail={id=&quot;relation6.vertex1&quot;,x=390.0,y=125.0}, points={} } }">
         </property>

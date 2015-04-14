@@ -11,27 +11,27 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 38, 1172, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 38, 836, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[938, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3813574021844672">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{337.9014830385201, 255.4824755191803}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 262.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple second-order feedback system.&#10;Here we are using QSS1 with a coarse&#10;quantization of 0.5. The true behavior should&#10;be a pair of sinusoids. The system is marginally&#10;stable, but with QSS, the simulation is unstable.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 65.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare with Continuous version (click here).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 310.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SecondOrderContinuous.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -64,7 +64,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 325.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 265.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -99,7 +99,7 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -107,7 +107,7 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 275.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -115,7 +115,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 325.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 265.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -140,24 +140,20 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 200.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=145.0,y=325.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=230.0,y=260.0}, points={85.0,315.0,85.0,260.0} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[420.0, 325.0]">
+        <vertex name="vertex1" value="[445.0, 265.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.CurrentTime.trigger&quot;,x=505.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,330.0} },{ head={id=&quot;.Test.input&quot;,x=490.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,265.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.u&quot;,x=145.0,y=325.0}, tail={id=&quot;SingleEvent.output&quot;,x=35.0,y=335.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>

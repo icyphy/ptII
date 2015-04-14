@@ -13,16 +13,16 @@
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Pts">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 198, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 198, 986, 698}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[752, 588]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 253.43359375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{376.0, 294.0}">
     </property>
     <property name="r" class="ptolemy.data.expr.Parameter" value="0.9">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -72,6 +72,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Initial height">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There are two plots: &#10;* One shows the actual points computed, which mostly includes only the collision times.&#10;* The other interpolates using a periodic sampler, showing the power of SmoothToken.&#10;&#10;The ball still tunnels through the surface eventually (every implementation will do this).&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 425.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Bouncing Ball using the&#10;Quantized-State System (QSS) &#10;model of computation&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 535.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -181,7 +201,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -293,11 +313,11 @@
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 180.0]">
         </property>
     </entity>
     <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 115.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -311,7 +331,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 385.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -324,7 +344,7 @@
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 385.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -334,7 +354,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 250.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -344,29 +364,29 @@
 <xLabel>time</xLabel>
 <yLabel>position</yLabel>
 <xRange min="0.0" max="28.0"/>
-<yRange min="-12.726128279426636" max="10.0"/>
+<yRange min="-5.864008539302664" max="10.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="SmoothToDouble" class="ptolemy.actor.lib.conversions.SmoothToDouble">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 385.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 688, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={853, 736, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Time of Collisions">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{550, 215}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 220.0]">
         </property>
     </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.qss.lib.PeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 315.0]">
         </property>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -374,7 +394,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 315.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -384,13 +404,11 @@
 <xLabel>time</xLabel>
 <yLabel>position</yLabel>
 <xRange min="0.0" max="28.0"/>
-<yRange min="-12.726128279426636" max="10.0"/>
+<yRange min="-5.864008539302664" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=50.0,y=180.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=135.0,y=180.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -415,7 +433,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{460.0, 145.0}">
+        <vertex name="vertex1" value="[465.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

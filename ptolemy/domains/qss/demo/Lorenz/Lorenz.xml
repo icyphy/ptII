@@ -4,7 +4,7 @@
 <entity name="Lorenz" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[421, 743]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[464, 721]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 114]">
     </property>
@@ -20,7 +20,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 45.0]">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -37,7 +37,7 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 60.0]">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
@@ -54,16 +54,16 @@
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 30.0]">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 30, 655, 853}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 30, 698, 831}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1733196773780565">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.1440838861732, 346.1096368715084}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.4087800274929, 310.2259371151478}">
     </property>
     <property name="CyPhy Director" class="ptolemy.domains.qss.kernel.QSSDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -74,13 +74,13 @@
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Fd">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows a nonlinear feedback&#10;system that exhibits chaotic behavior.&#10;It is modeled using a QSS (quantized-state&#10;system) director. This particular&#10;model is known as a Lorenz attractor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 85.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -88,7 +88,32 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee, based on the&#10;Continuous domain Lorenz demo by Jie Liu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 610.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 650.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compare with the Continuous version (click here).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 610.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/domains/continuous/demo/Lorenz/Lorenz.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 445}">
+            </property>
         </property>
     </property>
     <entity name="XY Plotter" class="ptolemy.actor.lib.gui.XYPlotter">
@@ -100,7 +125,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 235.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 225.0]">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -136,7 +161,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 295.0]">
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -158,7 +183,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 435.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 425.0]">
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -185,7 +210,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 530.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 520.0]">
         </property>
         <port name="x1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -208,7 +233,7 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 435.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 425.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -216,7 +241,7 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 295.0]">
         </property>
     </entity>
     <entity name="QSSIntegrator3" class="ptolemy.domains.qss.kernel.QSSIntegrator">
@@ -224,34 +249,26 @@
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 520.0]">
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{145.0, 295.0}">
+        <vertex name="vertex1" value="[35.0, 255.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression 2.x1&quot;,x=245.0,y=435.0}, tail={id=&quot;relation5.vertex1&quot;,x=145.0,y=295.0}, points={145.0,425.0} },{ head={id=&quot;Expression 3.x1&quot;,x=220.0,y=530.0}, tail={id=&quot;relation5.vertex1&quot;,x=145.0,y=295.0}, points={145.0,520.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=375.0,y=305.0}, tail={id=&quot;relation5.vertex1&quot;,x=145.0,y=295.0}, points={445.0,305.0,445.0,190.0,145.0,190.0} },{ head={id=&quot;Expression 1.x1&quot;,x=235.0,y=305.0}, tail={id=&quot;relation5.vertex1&quot;,x=145.0,y=295.0}, points={} },{ head={id=&quot;XY Plotter.inputX&quot;,x=200.0,y=235.0}, tail={id=&quot;relation5.vertex1&quot;,x=145.0,y=295.0}, points={145.0,225.0} } }">
-        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{160.0, 380.0}">
+        <vertex name="vertex1" value="[53.41627502441406, 366.24513244628906]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression 2.x2&quot;,x=245.0,y=435.0}, tail={id=&quot;relation6.vertex1&quot;,x=160.0,y=380.0}, points={160.0,435.0} },{ head={id=&quot;XY Plotter.inputY&quot;,x=200.0,y=235.0}, tail={id=&quot;relation6.vertex1&quot;,x=160.0,y=380.0}, points={160.0,245.0} },{ head={id=&quot;Expression 3.x2&quot;,x=220.0,y=530.0}, tail={id=&quot;relation6.vertex1&quot;,x=160.0,y=380.0}, points={160.0,530.0} },{ head={id=&quot;Expression 1.x2&quot;,x=235.0,y=305.0}, tail={id=&quot;relation6.vertex1&quot;,x=160.0,y=380.0}, points={160.0,315.0} },{ head={id=&quot;QSSIntegrator2.q&quot;,x=375.0,y=435.0}, tail={id=&quot;relation6.vertex1&quot;,x=160.0,y=380.0}, points={445.0,435.0,445.0,380.0} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[130.0, 600.0]">
+        <vertex name="vertex1" value="[23.416275024414062, 586.2451324462891]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression 1.output&quot;,x=235.0,y=305.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=375.0,y=305.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression 2.output&quot;,x=245.0,y=435.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=375.0,y=435.0}, points={} } }">
-        </property>
     </relation>
     <link port="XY Plotter.inputX" relation="relation5"/>
     <link port="XY Plotter.inputY" relation="relation6"/>
