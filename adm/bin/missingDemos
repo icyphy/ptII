@@ -1,0 +1,22 @@
+#!/bin/sh
+# Find missing demos
+# $Id$
+# 1) Get all the demos from ptolemy/configs/doc/models.txt
+# 2) For each demo/ directory in models.txt, look for .xml files that are not listed
+#
+modelsFile=$PTII/ptolemy/configs/doc/models.txt
+
+demoDirectories=`cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i); if ($i ~ /demo/) {printf("\n"); break}}}' | sort | uniq`
+   
+modelsInModelsFile=/tmp/modelsInModelsFile.$$
+modelsInDemoDirectory=/tmp/modelsInDemoDirectory.$$
+for demoDirectory in $demoDirectories
+do
+    demoDirectoryNoSlash=`echo $demoDirectory | sed 's@/$@@'`
+
+    echo "Checking $demoDirectoryNoSlash"
+
+    find $PTII/$demoDirectoryNoSlash -name "*.xml" | sed "s@$PTII/@@" > $modelsInDemoDirectory
+    grep $demoDirectory $modelsFile | sed 's@\$CLASSPATH/@@' > $modelsInModelsFile
+    comm -23 $modelsInDemoDirectory $modelsInModelsFile
+done
