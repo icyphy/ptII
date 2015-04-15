@@ -262,12 +262,8 @@ public class UnionType extends AssociativeType implements Cloneable {
     @Override
     public void initialize(Type type) {
         try {
-            Iterator fieldNames = _fields.keySet().iterator();
-
-            while (fieldNames.hasNext()) {
-                String label = (String) fieldNames.next();
-                FieldType fieldType = (FieldType) _fields.get(label);
-
+            for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+                FieldType fieldType = fields.getValue();
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
                 }
@@ -418,14 +414,11 @@ public class UnionType extends AssociativeType implements Cloneable {
         }
 
         // Loop over all the labels.
-        Iterator fieldNames = myLabelSet.iterator();
+        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+            FieldType fieldType = fields.getValue();
 
-        while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
-
-            FieldType fieldType = (FieldType) _fields.get(label);
             Type myDeclaredType = fieldType._declaredType;
-            Type argType = unionType.get(label);
+            Type argType = unionType.get(fields.getKey());
 
             if (!myDeclaredType.isSubstitutionInstance(argType)) {
                 return false;
@@ -514,14 +507,11 @@ public class UnionType extends AssociativeType implements Cloneable {
                     + "Cannot update this type to the new type.");
         }
 
-        Iterator fieldNames = _fields.keySet().iterator();
-
-        while (fieldNames.hasNext()) {
-            String label = (String) fieldNames.next();
-            FieldType fieldType = (FieldType) _fields.get(label);
-
+        for (Map.Entry<String, FieldType> fields: _fields.entrySet()) {
+            FieldType fieldType = fields.getValue();
             if (fieldType.isSettable()) {
-                Type newFieldType = ((UnionType) newType).get(label);
+                //Type newFieldType = ((UnionType) newType).get(label);
+                Type newFieldType = ((UnionType) newType).get(fields.getKey());
                 fieldType.setValue(newFieldType);
             }
         }
@@ -698,7 +688,7 @@ public class UnionType extends AssociativeType implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Mapping from label to field information.
-    private Map _fields = new HashMap();
+    private Map<String, FieldType> _fields = new HashMap<String, FieldType>();
 
     // the representative in the type lattice is the empty record.
     private static UnionType _representative = new UnionType(new String[0],

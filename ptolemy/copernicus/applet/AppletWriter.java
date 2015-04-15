@@ -532,7 +532,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // Set up the HashMap we will use when we read in files like
         // model.htm.in and search for strings like @codebase@ and
         // substitute in the value of _codeBase.
-        _substituteMap = new HashMap();
+        _substituteMap = new HashMap<String, String>();
         _substituteMap.put("@appletHeight@", Integer.toString(appletHeight));
         _substituteMap.put("@appletWidth@", Integer.toString(appletWidth));
         _substituteMap.put("@codeBase@", _codeBase);
@@ -551,12 +551,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@vergilWidth@", Integer.toString(vergilWidth));
 
         // Print out the map for debugging purposes
-        Iterator keys = _substituteMap.keySet().iterator();
-
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            System.out.println("AppletWriter: '" + key + "' '"
-                    + (String) _substituteMap.get(key) + "'");
+        //Iterator keys = _substituteMap.keySet().iterator();
+        //while (keys.hasNext()) {
+        //    String key = (String) keys.next();
+        for (Map.Entry<String,String> substitute: _substituteMap.entrySet()) {
+            //System.out.println("AppletWriter: '" + key + "' '"
+            //        + (String) _substituteMap.get(key) + "'");
+            System.out.println("AppletWriter: '" + substitute.getKey() + "' '"
+                    + (String) substitute.getValue() + "'");
         }
 
         // Generate the .xml file.
@@ -2514,7 +2516,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private String _ptIIUserDirectory;
 
     // Map used to map @model@ to MyModel.
-    private Map _substituteMap;
+    private Map<String, String> _substituteMap;
 
     // The parent package relative to $PTII to generate the code in
     // The code itself is generated in a child package of the parent package

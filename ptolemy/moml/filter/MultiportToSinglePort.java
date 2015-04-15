@@ -28,6 +28,8 @@ package ptolemy.moml.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
@@ -195,16 +197,17 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
                 + "single ports.\n"
                 + "Below are the actors that are affected, along "
                 + "with the port name:\n");
-        Iterator actors = _actorsWithMultiPortToSinglePortChanges.keySet()
-                .iterator();
+        //Iterator actors = _actorsWithMultiPortToSinglePortChanges.keySet()
+        //.iterator();
 
-        while (actors.hasNext()) {
-            String actor = (String) actors.next();
+        //while (actors.hasNext()) {
+        for (Map.Entry<String,String> actor: _actorsWithMultiPortToSinglePortChanges.entrySet()) {
+            //String actor = (String) actors.next();
             results.append("\t"
-                    + actor
+                    + actor.getKey()
                     + "\n"
-                    + (String) _actorsWithMultiPortToSinglePortChanges
-                    .get(actor));
+                    //+ (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
+                    + actor.getValue());
         }
 
         return results.toString();
@@ -214,7 +217,7 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
     ////                         private variables                 ////
     // Map of actor names a HashMap of class names to multiport names
     // that should be single ports.
-    private static HashMap _actorsWithMultiPortToSinglePortChanges;
+    private static HashMap<String, String> _actorsWithMultiPortToSinglePortChanges;
 
     // The the full name of the actor we are currently processing
     private String _currentActorFullName;
@@ -235,7 +238,7 @@ public class MultiportToSinglePort extends MoMLFilterSimple {
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have ports that have changed from multi to single
-        _actorsWithMultiPortToSinglePortChanges = new HashMap();
+        _actorsWithMultiPortToSinglePortChanges = new HashMap<String, String>();
 
         // Autocorrelation
         _actorsWithMultiPortToSinglePortChanges.put(

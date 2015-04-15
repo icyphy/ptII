@@ -30,6 +30,7 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
@@ -55,7 +56,7 @@ import ptolemy.moml.MoMLParser;
  // PNDirectory: After 2.2, 'Initial_queue_capacity'
  // property is now 'initialQueueCapacity'
 
- HashMap pnDirectorChanges = new HashMap();
+ HashMap pnDirectorChanges = new HashMap<String, String>();
  // Key = property name, Value = new class name
  pnDirectorChanges.put("Initial_queue_capacity",
  "initialQueueCapacity");
@@ -201,14 +202,12 @@ public class ParameterNameChanges extends MoMLFilterSimple {
                 + "that have been renamed.\n"
                 + "Below are the actors that are affected, along "
                 + "with the Parameter name \nand the new name:\n");
-        Iterator actors = _classesWithParameterNameChanges.keySet().iterator();
-
-        while (actors.hasNext()) {
-            String actor = (String) actors.next();
+        for (Map.Entry<String,HashMap<String,String>> classChange: _classesWithParameterNameChanges.entrySet()) {
+            String actor = classChange.getKey();
             results.append("\t" + actor + "\n");
 
-            HashMap propertyMap = (HashMap) _classesWithParameterNameChanges
-                    .get(actor);
+            HashMap<String,String> propertyMap = classChange.getValue();
+
             Iterator propertiesMapEntries = propertyMap.entrySet().iterator();
 
             while (propertiesMapEntries.hasNext()) {
@@ -226,7 +225,7 @@ public class ParameterNameChanges extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Map of actor names a HashMap of property names to new classes.
-    private static HashMap _classesWithParameterNameChanges;
+    private static HashMap<String, HashMap<String, String>> _classesWithParameterNameChanges;
 
     // The the full name of the actor we are currently processing
     private String _currentActorFullName;
@@ -248,11 +247,11 @@ public class ParameterNameChanges extends MoMLFilterSimple {
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.
-        _classesWithParameterNameChanges = new HashMap();
+        _classesWithParameterNameChanges = new HashMap<String, HashMap<String, String>>();
 
         // PNDirectory: After 2.2, 'Initial_queue_capacity'
         // property is now 'initialQueueCapacity'
-        HashMap pnDirectorChanges = new HashMap();
+        HashMap pnDirectorChanges = new HashMap<String, String>();
 
         // Key = property name, Value = new class name
         pnDirectorChanges.put("Initial_queue_capacity", "initialQueueCapacity");
@@ -261,7 +260,7 @@ public class ParameterNameChanges extends MoMLFilterSimple {
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
-        HashMap variableDelayChanges = new HashMap();
+        HashMap variableDelayChanges = new HashMap<String, String>();
         variableDelayChanges.put("defaultDelay", "delay");
         _classesWithParameterNameChanges.put(
                 "ptolemy.domains.de.lib.VariableDelay", variableDelayChanges);
@@ -269,7 +268,7 @@ public class ParameterNameChanges extends MoMLFilterSimple {
         // Server: After 4.1, 'serviceTime'
         // property is now 'newServiceTime'
         // Regrettably, after 5.1, this reverted to serviceTime.
-        HashMap serverChanges = new HashMap();
+        HashMap serverChanges = new HashMap<String, String>();
         serverChanges.put("newServiceTime", "serviceTime");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.Server",
                 serverChanges);
@@ -277,26 +276,26 @@ public class ParameterNameChanges extends MoMLFilterSimple {
         // CodeGenerator: After 7.2, 'generateJNI'
         // property is now 'generateEmbeddedCode'
         {
-            HashMap codegen = new HashMap();
+            HashMap codegen = new HashMap<String, String>();
             codegen.put("generateJNI", "generateEmbeddedCode");
             _classesWithParameterNameChanges.put(
                     "ptolemy.codegen.kernel.CodeGenerator", codegen);
         }
         {
-            HashMap codegen = new HashMap();
+            HashMap codegen = new HashMap<String, String>();
             codegen.put("generateJNI", "generateEmbeddedCode");
             _classesWithParameterNameChanges.put(
                     "ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
                     codegen);
         }
         {
-            HashMap codegen = new HashMap();
+            HashMap codegen = new HashMap<String, String>();
             codegen.put("generateJNI", "generateEmbeddedCode");
             _classesWithParameterNameChanges.put(
                     "ptolemy.codegen.c.kernel.CCodeGenerator", codegen);
         }
 
-        HashMap embeddedCodeActorChanges = new HashMap();
+        HashMap embeddedCodeActorChanges = new HashMap<String, String>();
         embeddedCodeActorChanges.put("embeddedCCode", "embeddedCode");
         _classesWithParameterNameChanges.put(
                 "ptolemy.cg.lib.EmbeddedCodeActor", embeddedCodeActorChanges);
