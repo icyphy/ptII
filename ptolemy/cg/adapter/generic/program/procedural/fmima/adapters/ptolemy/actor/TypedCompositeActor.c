@@ -361,7 +361,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 		// Perform doStep() for all FMUs with the discovered stepSize
 		for (int i = 0; i < NUMBER_OF_FMUS; i++) {
 			if (fmus[i].canGetMaxStepSize || fmus[i].canGetAndSetFMUstate) {
-				fmi2Status currentStatus = fmus[i].doStep(fmus[i].component, time, stepSize, fmi2False);
+				fmi2Status currentStatus = fmus[i].doStep(fmus[i].component, time, stepSize, fmi2True);
 				if (currentStatus > fmi2Discard) {
 					printf("Could not step FMU (%s) after minimum step has been determined. Terminating simulation.\n", NAMES_OF_FMUS[i]);
 					terminateSimulation(fmus, 0, file, stepSize, nSteps);
