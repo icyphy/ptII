@@ -536,7 +536,7 @@ size_t valueLength /**              Length of the value       */
         memcpy( newEntry->buffer + keyLength, value, valueLength );
     }
     //MEMORY_FIX: Freeing value, since it's been memcpy'd.
-    free(value);
+    //free(value);
     return newEntry;
 }
 
