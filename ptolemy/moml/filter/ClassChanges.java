@@ -29,6 +29,8 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import ptolemy.kernel.util.NamedObj;
@@ -59,8 +61,8 @@ public class ClassChanges extends MoMLFilterSimple {
     /** Clear the map of class renames and the set of class removals.
      */
     public static void clear() {
-        _classChanges = new HashMap();
-        _classesToRemove = new HashSet();
+        _classChanges = new HashMap<String,String>();
+        _classesToRemove = new HashSet<String>();
     }
 
     /** If the attributeName is "class" and attributeValue names a
@@ -164,12 +166,11 @@ public class ClassChanges extends MoMLFilterSimple {
                 + "renamed and remove obsolete classes.\n"
                 + "Below are original class names followed by "
                 + "the new class names:\n");
-        Iterator classNames = _classChanges.keySet().iterator();
 
-        while (classNames.hasNext()) {
-            String className = (String) classNames.next();
+        for (Map.Entry<String,String> classChange: _classChanges.entrySet()) {
+            String className = classChange.getKey();
             results.append("\t" + className + "\t -> "
-                    + _classChanges.get(className) + "\n");
+                    + classChange.getValue() + "\n");
         }
 
         results.append("\nBelow are the classes to remove:\n");
@@ -187,12 +188,12 @@ public class ClassChanges extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Map of actor names a HashMap of property names to new classes.
-    private static HashMap _classChanges;
+    private static HashMap<String,String> _classChanges;
 
     static {
         ///////////////////////////////////////////////////////////
         // Actors and attributes that have changed names.
-        _classChanges = new HashMap();
+        _classChanges = new HashMap<String,String>();
 
         // If the ptolemy.ptII.classesToChange property is set, then
         // assume that it is consists of fully qualified class names in
@@ -537,12 +538,12 @@ public class ClassChanges extends MoMLFilterSimple {
 
     // Set of class names that are obsolete and should be simply
     // removed.
-    private static HashSet _classesToRemove;
+    private static HashSet<String> _classesToRemove;
 
     static {
         ////////////////////////////////////////////////////////////
         // Classes that are obsolete and should be removed.
-        _classesToRemove = new HashSet();
+        _classesToRemove = new HashSet<String>();
 
         _classesToRemove.add("ptolemy.codegen.c.kernel.CCodeGenerator");
 
