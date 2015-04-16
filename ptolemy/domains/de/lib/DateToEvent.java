@@ -33,7 +33,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -142,8 +144,11 @@ public class DateToEvent extends Transformer {
                             + token.toString()
                             + ") lies in the past.");
                 } else {
+                	if (_manager == null) {
+                    	_manager = ((CompositeActor) getContainer()).getManager();
+                    }
                     long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis()
-                	    - _director.elapsedTimeSinceStart();
+                	    - _manager.getAfterInitTime();
                     Time fireTime = new Time(
                             _director,
                             ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.
@@ -170,5 +175,6 @@ public class DateToEvent extends Transformer {
     private HashMap<Time, List<Integer>> _outputTokensForChannel;
 
     private DEDirector _director;
+    private Manager _manager;
 
 }

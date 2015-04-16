@@ -109,7 +109,7 @@ public class DateToModelTime extends Transformer {
         for (int channel = 0; channel < input.getWidth(); channel++) {
             if (input.hasToken(channel)) {
                 DateToken token = (DateToken) input.get(channel);
-                if (_manager != null) {
+                if (_manager == null) {
                 	_manager = ((CompositeActor) getContainer()).getManager();
                 }
                 long realStartTime = _manager.getAfterInitTime();
