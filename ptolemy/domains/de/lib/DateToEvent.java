@@ -33,7 +33,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -116,9 +118,15 @@ public class DateToEvent extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         long systemTime = System.currentTimeMillis();
+        if (_debugging) {
+            _debug("System time: " + systemTime);
+        }
         Time time = _director.getModelTime();
         if (_outputTokensForChannel != null && _outputTokensForChannel.size() > 0) {
             Time t = (Collections.min(_outputTokensForChannel.keySet()));
+            if (_debugging) {
+                _debug("at model time " + time + " output tokens > 0 starting with " + t);
+            }
             if (t.compareTo(time) == 0) {
                 List<Integer> channels = _outputTokensForChannel.get(t);
                 for (int i = 0; i < channels.size(); i++) {
@@ -136,11 +144,19 @@ public class DateToEvent extends Transformer {
                             + token.toString()
                             + ") lies in the past.");
                 } else {
+                	Manager manager = ((CompositeActor) getContainer()).getManager();
+                    long realStartTime = manager.getAfterInitTime();
+                    
                     long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis()
-                	    - _director.elapsedTimeSinceStart();
+                	    - realStartTime;
                     Time fireTime = new Time(
                             _director,
                             ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.
+                    if (_debugging) {
+                    	_debug("director start time: " + _director.elapsedTimeSinceStart());
+                    	_debug("real time difference " + realTimeDifferenceInMillis);
+                        _debug("Scheduling firing at " + fireTime);
+                    }
                     _director.fireAt(this, fireTime);
                     if (_outputTokensForChannel == null) {
                         _outputTokensForChannel = new HashMap<Time, List<Integer>>();
