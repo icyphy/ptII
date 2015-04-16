@@ -15,20 +15,6 @@
   </port>
 </entity>
 
-<entity name="DiscardDoubles" class="ptolemy.actor.lib.DiscardDoubles">
-  <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true"/>
-  <port name="input" class="ptolemy.actor.TypedIOPort">
-    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH"/>
-  </port>
-</entity>
-
-<entity name="DiscardDoublesArray" class="ptolemy.actor.lib.DiscardDoublesArray">
-  <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true"/>
-  <port name="input" class="ptolemy.actor.TypedIOPort">
-    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH"/>
-  </port>
-</entity>
-
 <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
 
 <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">

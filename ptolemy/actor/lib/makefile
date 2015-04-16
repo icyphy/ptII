@@ -175,8 +175,6 @@ JSRCS = \
 	Differential.java \
 	Dictionary.java \
 	Discard.java \
-	DiscardDoubles.java \
-	DiscardDoublesArray.java \
 	DiscreteClock.java \
 	DiscreteRandomSource.java \
 	Distributor.java \
@@ -327,8 +325,6 @@ OTHER_FILES_TO_BE_JARED = \
 	DictionaryIcon.xml \
 	DifferentialIcon.xml \
 	DiscardIcon.xml \
-	DiscardDoublesIcon.xml \
-	DiscardDoublesArrayIcon.xml \
 	DiscreteRandomSourceIcon.xml \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
