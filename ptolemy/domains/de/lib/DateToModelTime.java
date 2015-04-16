@@ -28,7 +28,9 @@
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -107,11 +109,13 @@ public class DateToModelTime extends Transformer {
         for (int channel = 0; channel < input.getWidth(); channel++) {
             if (input.hasToken(channel)) {
                 DateToken token = (DateToken) input.get(channel);
+                Manager manager = ((CompositeActor) getContainer()).getManager();
+                long realStartTime = manager.getAfterInitTime();
+                
                 Time modelTime = new Time(
                         _director,
                         (double)(token.getCalendarInstance().getTimeInMillis()
-                        	- _director.elapsedTimeSinceStart())
-                                / 1000); // The default unit of time is seconds.
+                        	- realStartTime) / 1000); // The default unit of time is seconds.
                 output.send(channel, new DoubleToken(modelTime.getDoubleValue()));
             }
         }
