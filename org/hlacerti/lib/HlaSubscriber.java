@@ -244,7 +244,6 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        System.out.println("CLONNING");
         //take care of all public members ?
         HlaSubscriber newObject = (HlaSubscriber) super.clone(workspace);
         
@@ -266,8 +265,15 @@ public class HlaSubscriber extends TypedAtomicActor {
         super.initialize();
 
         CompositeActor ca = (CompositeActor) this.getContainer();
-
-        List<HlaManager> hlaManagers = ca.attributeList(HlaManager.class);
+        List<HlaManager> hlaManagers = null;
+        while(ca != null) {
+            hlaManagers = ca.attributeList(HlaManager.class);
+            if(hlaManagers.size() < 1){
+                ca = (CompositeActor) ca.getContainer();
+            } else{
+                break;
+            }
+        }
         if (hlaManagers.size() > 1) {
             throw new IllegalActionException(this,
                     "Only one HlaManager attribute is allowed per model");
