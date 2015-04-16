@@ -23,8 +23,15 @@
             </property>
             <!-- Get documentation for each input. -->
             <xsl:for-each select="input">
-		    	<property name="{@name} (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="{@description}">
-            	</property>
+            	<xsl:choose>
+					<!-- If there is a value, then make a PortParameter. Otherwise, make a port. -->
+					<xsl:when test="@value">
+            	    	<property name="{@name} (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="{@description}"/>
+					</xsl:when>
+					<xsl:otherwise>
+            	    	<property name="{@name} (port)" class="ptolemy.kernel.util.StringAttribute" value="{@description}"/>
+					</xsl:otherwise>
+				</xsl:choose>
             </xsl:for-each>
             <!-- Get documentation for each output. -->
             <xsl:for-each select="output">
@@ -105,10 +112,15 @@
   									<!-- JavaScript number is a double. -->
   									<xsl:value-of select="'double'"/>
  	 							</xsl:when>
-  								<xsl:otherwise>
+  								<xsl:when test="@type">
+  									<!-- A type is given. -->
   									<!-- NOTE: Assume that other than 'number', accessor types are -->
   									<!-- specified identically to Ptolemy types. -->
     								<xsl:value-of select="@type"/>
+ 	 							</xsl:when>
+  								<xsl:otherwise>
+  									<!-- No type is given. Default to general. -->
+  									<xsl:value-of select="'general'"/>
   								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>

@@ -193,7 +193,7 @@ public class ImportAccessorAction extends AbstractAction {
                     } catch (Throwable throwable) {
                         throw new Throwable("Failed to parse \""
                                 + url
-                                + "\", perhaps there is no index.json file?",
+                                + "\".",
                                 throwable);
                     }
                 } finally {

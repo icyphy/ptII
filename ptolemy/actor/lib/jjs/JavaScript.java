@@ -1171,15 +1171,26 @@ public class JavaScript extends TypedAtomicActor {
         public Object get(int channelIndex)
         	throws IllegalActionException {
             if (_parameter != null) {
-        	return _parameter.getToken();
+        	Token token = _parameter.getToken();
+        	if (token == null || token.isNil()) {
+        	    return null;
+        	}
+        	return token;
             }
             // Probably don't need to check for ParameterPort, but let's be paranoid...
             if (_port instanceof ParameterPort) {
-        	return ((ParameterPort)_port).getParameter().getToken();
+        	Token token = ((ParameterPort)_port).getParameter().getToken();
+        	if (token == null || token.isNil()) {
+        	    return null;
+        	}
+        	return token;
             }
             Map<Integer,Token> tokens = _inputTokens.get(_port);
             if (tokens != null) {
         	Token token = tokens.get(channelIndex);
+        	if (token == null || token.isNil()) {
+        	    return null;
+        	}
         	return token;
             }
             return null;
