@@ -576,6 +576,13 @@ public class Manager extends NamedObj implements Runnable {
             return _nameToAnalysis.get(name);
         }
     }
+    
+    /** Get the real time at which the model began executing.
+     * @return The real time at which the model began executing.
+     */
+    public long getAfterInitTime() {
+    	return _afterInitTime;
+    }
 
     /** Return the top-level composite actor for which this manager
      *  controls execution.
