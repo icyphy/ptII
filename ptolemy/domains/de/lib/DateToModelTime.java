@@ -109,8 +109,10 @@ public class DateToModelTime extends Transformer {
         for (int channel = 0; channel < input.getWidth(); channel++) {
             if (input.hasToken(channel)) {
                 DateToken token = (DateToken) input.get(channel);
-                Manager manager = ((CompositeActor) getContainer()).getManager();
-                long realStartTime = manager.getAfterInitTime();
+                if (_manager != null) {
+                	_manager = ((CompositeActor) getContainer()).getManager();
+                }
+                long realStartTime = _manager.getAfterInitTime();
                 
                 Time modelTime = new Time(
                         _director,
@@ -122,5 +124,6 @@ public class DateToModelTime extends Transformer {
     }
 
     private DEDirector _director;
+    private Manager _manager;
 
 }
