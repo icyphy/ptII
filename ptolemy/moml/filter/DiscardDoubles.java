@@ -25,36 +25,36 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib;
+package ptolemy.moml.filter;
 
-import ptolemy.data.type.ArrayType;
+import ptolemy.actor.lib.Discard;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// DiscardDoublesArrays
+//// DiscardDoubles
 
 /**
- A simple sink actor that consumes and discards arrays of double input
- tokens.
+ A simple sink actor that consumes and discards double input tokens.
 
- <p>The primary use of this actor is that it is used when the MoML
- filter replaces plotters.  A Discard actor is not sufficient because
- the type of the input is general.  If backward type propagation is in
- use, a Discard actor that accepts arrays of double is needed to
- replace the plotters that have inputs of type double array.</p>
+ <p>The primary use of this actor is that it is used 
+ when the MoML filter replaces plotters.  A Discard actor
+ is not sufficient because the type of the input is general.
+ If backward type propagation is in use, a Discard actor
+ that has type double is needed to replace the plotters that
+ have inputs of type double.</p>
 
  @see ptolemy.actor.lib.Discard
- @see ptolemy.actor.lib.DiscardDoubles
+ @see ptolemy.moml.filter.DiscardDoublesArray
  @author Christopher Brooks
  @version $Id: Discard.java 70398 2014-10-22 23:44:32Z cxh $
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class DiscardDoublesArray extends Discard {
+public class DiscardDoubles extends Discard {
 
     /** Construct an actor with an input multiport with type double.
      *  @param container The container.
@@ -64,9 +64,9 @@ public class DiscardDoublesArray extends Discard {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DiscardDoublesArray(CompositeEntity container, String name)
+    public DiscardDoubles(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        input.setTypeEquals(BaseType.DOUBLE);
     }
 }

@@ -140,9 +140,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         // We use DiscardDoublesArray here so that the types are preserved
         // in case enableBackwardTypeInference is set.  
         _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
-                "ptolemy.actor.lib.DiscardDoublesArray");
+                "ptolemy.moml.filter.DiscardDoublesArray");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
-                "ptolemy.actor.lib.DiscardDoublesArray");
+                "ptolemy.moml.filter.DiscardDoublesArray");
 
         // Display's input port is of type General.
         _graphicalClasses.put("ptolemy.actor.lib.gui.Display",
@@ -151,15 +151,15 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         // We use DiscardDoubles here so that the types are preserved
         // in case enableBackwardTypeInference is set.  
         _graphicalClasses.put("ptolemy.actor.lib.gui.HistogramPlotter",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.moml.filter.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.RealTimePlotter",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.moml.filter.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.TimedPlotter",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.moml.filter.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.SequencePlotter",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.moml.filter.DiscardDoubles");
         _graphicalClasses.put("ptolemy.vergil.actor.lib.LEDMatrix",
-                "ptolemy.actor.lib.DiscardDoubles");
+                "ptolemy.moml.filter.DiscardDoubles");
 
         _graphicalClasses.put(
                 "ptolemy.data.properties.gui.PropertyHighlighter", null);

@@ -54,6 +54,8 @@ JSRCS = \
 	BackwardCompatibility.java \
 	ChangeFixedWidth1ToAuto.java \
 	ClassChanges.java \
+	DiscardDoubles.java \
+	DiscardDoublesArray.java \
 	GRColorChanges.java \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
