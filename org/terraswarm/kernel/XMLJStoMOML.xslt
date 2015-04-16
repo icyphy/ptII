@@ -50,19 +50,47 @@
 		<!-- Create a PortParameter for each input. -->
 		<!-- NOTE: We ignore the type, if any, and infer the type from the value. -->
 		<xsl:for-each select="input">
-		    <property name="{@name}" class="ptolemy.actor.parameters.PortParameter">
-		    	<!-- The default value needs quotation marks if the type is a string. -->
-		    	<!-- FIXME: Put in string mode. -->
-			    <xsl:variable name="defaultValue">
-                	<xsl:choose>
-						<xsl:when test="@type='string'">&quot;<xsl:value-of select="@value"/>&quot;</xsl:when>
-  						<xsl:otherwise><xsl:value-of select="@value"/></xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-                <xsl:attribute name="value">
-					<xsl:value-of select="$defaultValue"/>
-				</xsl:attribute>
-			</property>
+			<xsl:choose>
+				<!-- If there is a value, then make a PortParameter. Otherwise, make a port. -->
+				<xsl:when test="@value">
+				    <property name="{@name}" class="ptolemy.actor.parameters.PortParameter">
+				    	<!-- The default value needs quotation marks if the type is a string. -->
+				    	<!-- FIXME: Put in string mode. -->
+					    <xsl:variable name="defaultValue">
+		                	<xsl:choose>
+								<xsl:when test="@type='string'">&quot;<xsl:value-of select="@value"/>&quot;</xsl:when>
+		  						<xsl:otherwise><xsl:value-of select="@value"/></xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+		                <xsl:attribute name="value">
+							<xsl:value-of select="$defaultValue"/>
+						</xsl:attribute>
+					</property>
+				</xsl:when>
+				<xsl:otherwise>
+				    <port name="{@name}" class="ptolemy.actor.TypedIOPort">
+		                <property name="input"/>
+		                <property name="_type" class="ptolemy.actor.TypeAttribute">
+		                	<xsl:attribute name="value">
+		                		<xsl:variable name="portType">
+		                			<xsl:choose>
+		  								<xsl:when test="@type='number'">
+		  									<!-- JavaScript number is a double. -->
+		  									<xsl:value-of select="'double'"/>
+		 	 							</xsl:when>
+		  								<xsl:otherwise>
+		  									<!-- NOTE: Assume that other than 'number', accessor types are -->
+		  									<!-- specified identically to Ptolemy types. -->
+		    								<xsl:value-of select="@type"/>
+		  								</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:value-of select="$portType"/>
+							</xsl:attribute>
+		        		</property>
+					</port>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 			
 		<!-- Create a Port for each output. -->
