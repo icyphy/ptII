@@ -28,7 +28,9 @@
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DateToken;
 import ptolemy.data.type.BaseType;
@@ -97,12 +99,17 @@ public class EventToDate extends Transformer {
             }
             double modelTimeSinceStart = _director.getModelTime().getDoubleValue() - 
                     _director.getModelStartTime().getDoubleValue();
+            if (_manager == null) {
+            	_manager = ((CompositeActor) getContainer()).getManager();
+            }
             long time = (long) (modelTimeSinceStart * 1000) // The default unit of time is seconds. 
-                    + _director.elapsedTimeSinceStart();
+                    + _manager.getAfterInitTime();
             output.send(channel, new DateToken(time));
         }
     }
 
     private DEDirector _director;
+    
+    private Manager _manager;
 
 }
