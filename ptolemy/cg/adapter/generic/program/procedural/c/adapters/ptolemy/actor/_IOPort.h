@@ -47,6 +47,18 @@ struct IOPort {
     PblList* (*deepGetReceivers)(struct IOPort*);
     Token* (*get)(struct IOPort*, int);
     Token** (*get1)(struct IOPort*, int, int);
+    
+    //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+    #ifdef TYPE_Boolean
+    boolean (*getBoolean)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Int
+    int (*getInt)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Double
+    double (*getDouble)(struct IOPort*, int);
+    #endif
+    
     int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
     Token* (*getInside)(struct IOPort*, int);
     PblList* (*getInsideReceivers)(struct IOPort*);
@@ -94,6 +106,18 @@ void IOPort_Broadcast1(struct IOPort* port, Token** tokenArray, int sizeTokenArr
 PblList* IOPort_DeepGetReceivers(struct IOPort* port);
 Token* IOPort_Get(struct IOPort* port, int channelIndex);
 Token** IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength);
+
+//MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+#ifdef TYPE_Boolean
+boolean IOPort_GetBoolean(struct IOPort* port, int channelIndex);
+#endif
+#ifdef TYPE_Int
+int IOPort_GetInt(struct IOPort* port, int channelIndex);
+#endif
+#ifdef TYPE_Double
+double IOPort_GetDouble(struct IOPort* port, int channelIndex);
+#endif
+
 int IOPort_GetChannelForReceiver(struct IOPort* port, struct Receiver* receiver);
 Token* IOPort_GetInside(struct IOPort* port, int channelIndex);
 PblList* IOPort_GetInsideReceivers(struct IOPort* port);
