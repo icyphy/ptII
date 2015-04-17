@@ -47,6 +47,18 @@ struct TypedIOPort {
     PblList* (*deepGetReceivers)(struct IOPort*);
     Token* (*get)(struct IOPort*, int);
     Token* (*get1)(struct IOPort*, int, int);
+    
+    //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+    #ifdef TYPE_Boolean
+    boolean (*getBoolean)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Int
+    int (*getInt)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Double
+    double (*getDouble)(struct IOPort*, int);
+    #endif
+    
     int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
     Token* (*getInside)(struct IOPort*, int);
     PblList* (*getInsideReceivers)(struct IOPort*);

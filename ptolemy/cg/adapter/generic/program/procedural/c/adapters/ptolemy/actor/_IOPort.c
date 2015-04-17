@@ -41,6 +41,18 @@ void IOPort_Init(struct IOPort* port) {
     port->deepGetReceivers = IOPort_DeepGetReceivers;
     port->get = IOPort_Get;
     port->get1 = IOPort_Get1;
+    
+    //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+    #ifdef TYPE_Boolean
+    port->getBoolean = IOPort_GetBoolean;
+    #endif
+    #ifdef TYPE_Int
+    port->getInt = IOPort_GetInt;
+    #endif
+    #ifdef TYPE_Double
+    port->getDouble = IOPort_GetDouble;
+    #endif
+    
     port->getChannelForReceiver = IOPort_GetChannelForReceiver;
     port->getInside = IOPort_GetInside;
     port->getInsideReceivers = IOPort_GetInsideReceivers;
@@ -218,6 +230,34 @@ Token** IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength) {
 
     return retArray;
 }
+
+//MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+#ifdef TYPE_Boolean
+boolean IOPort_GetBoolean(struct IOPort* port, int channelIndex) {
+	Token * tempToken = IOPort_Get(port, channelIndex);
+	boolean result = tempToken->payload.Boolean;
+	free(tempToken);
+	return result;
+}
+#endif
+#ifdef TYPE_Int
+int IOPort_GetInt(struct IOPort* port, int channelIndex) {
+	Token * tempToken = IOPort_Get(port, channelIndex);
+	int result = tempToken->payload.Int;
+	free(tempToken);
+	return result;
+}
+#endif
+#ifdef TYPE_Double
+double IOPort_GetDouble(struct IOPort* port, int channelIndex) {
+	Token * tempToken = IOPort_Get(port, channelIndex);
+	double result = tempToken->payload.Double;
+	free(tempToken);
+	return result;
+}
+#endif
+
+
 int IOPort_GetChannelForReceiver(struct IOPort* port, struct Receiver* receiver) {
     PblList* receivers;
     if ((*(port->isInput))(port)) {
