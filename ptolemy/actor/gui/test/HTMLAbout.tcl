@@ -171,6 +171,31 @@ tag specially.
     <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
+<tr rowspan=4><center><b>CyPhySim</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/demonstrations.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/cyphysim/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/cyphysim/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/cyphysim/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/cyphysim/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
 <tr rowspan=4><center><b>HyVisual</b></center></tr>
   <tr>
     <code>ptolemy/configs/hyvisual/intro.htm</code>
@@ -326,6 +351,18 @@ For each of the files below, we list demos that are not included in <a href="fil
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/demonstrations.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docs.htm</code></a></h2>
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/hyvisual/intro.htm</code></a></h2>
