@@ -116,6 +116,7 @@ import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
 import ptolemy.actor.IOPort;
+import ptolemy.kernel.ComponentEntity;
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
@@ -1103,7 +1104,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     + " send (UAV) updateAttributeValues "
                     + " current Ptolemy Time=" + currentTime.getDoubleValue()
                     + " HLA attribute \""
-                    + ((TypedIOPort) tObj[0]).getContainer().getName()
+                    + _getPortFromTab(tObj).getContainer().getName()
                     + "\" (timestamp=" + ct.getTime() + ", value="
                     + in.toString() + ")");
         }
@@ -1249,12 +1250,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
     private void _populateHlaAttributeTables() throws IllegalActionException {
         CompositeActor ca = (CompositeActor) this.getContainer();
 
-        List<HlaSubscriber> _hlaSubscribers = null;
-        List<HlaPublisher> _hlaPublishers = null;
         _hlaAttributesToPublish.clear();
-        _hlaAttributesSubscribedTo.clear();
-
-        _hlaPublishers = ca.entityList(HlaPublisher.class);
+        List<HlaPublisher> _hlaPublishers = ca.entityList(HlaPublisher.class);
         for (HlaPublisher hp : _hlaPublishers) {
             if (_hlaAttributesToPublish.get(hp.getName()) != null) {
                 throw new IllegalActionException(this,
@@ -1274,9 +1271,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     .getToken()).stringValue() });
         }
 
-        _hlaSubscribers = ca.entityList(HlaSubscriber.class);
+        _hlaAttributesSubscribedTo.clear();
+        //List<HlaSubscriber> _hlaSubscribers = ca.entityList(HlaSubscriber.class);
+        List<HlaSubscriber> _hlaSubscribers = new LinkedList<HlaSubscriber>();
+        List<ComponentEntity> allEntities = ca.allAtomicEntityList();
+        for(ComponentEntity e : allEntities){
+            if(e instanceof HlaSubscriber){
+                _hlaSubscribers.add((HlaSubscriber) e);
+            }
+        }
         for (HlaSubscriber hs : _hlaSubscribers) {
-            if (_hlaAttributesSubscribedTo.get(hs.getName()) != null) {
+            if (_hlaAttributesSubscribedTo.get(hs.getIdentity()) != null) {
                 throw new IllegalActionException(this,
                         "A HLA attribute with the same name is already "
                                 + "registered for subscription");
@@ -1285,7 +1290,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             TypedIOPort tiop = hs.outputPortList().get(0);
 
             _hlaAttributesSubscribedTo.put(
-                    hs.getName(),
+                    hs.getIdentity(),
                     new Object[] {
                             tiop,
                             tiop.getType(),
@@ -1296,7 +1301,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             // The events list to store updated values of HLA attribute,
             // (received by callbacks) from the RTI, is indexed by the HLA
             // Subscriber actors present in the model.
-            _fromFederationEvents.put(hs.getName(),
+            _fromFederationEvents.put(hs.getIdentity(),
                     new LinkedList<TimedEvent>());
         }
     }
@@ -1655,12 +1660,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
                             }
-
-                            _fromFederationEvents.get((_getPortFromTab(tObj)).getContainer()
-                                            .getName()).add(te);
+                            
+                            HlaSubscriber hs = (HlaSubscriber) (_getPortFromTab(tObj)).getContainer();
+                            _fromFederationEvents.get(hs.getIdentity()).add(te);
                             if (_debugging) {
-                                TypedIOPort port = _getPortFromTab(tObj);
-                                HlaSubscriber hs = ((HlaSubscriber)port.getContainer());
                                 _debug(HlaManager.this.getDisplayName()
                                         + " INNER"
                                         + " reflectAttributeValues() (RAV) - "

@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import jdk.internal.dynalink.support.Guards;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
@@ -318,9 +319,11 @@ public class HlaSubscriber extends TypedAtomicActor {
                     if (_debugging) {
                         _debug(this.getDisplayName()
                                 + " Called fire() - An updated value"
-                                + " of the HLA attribute \"" + this.getName() + " from "
+                                + " of the HLA attribute \"" + getParameterName() + " from "
                                 + origin  
-                                + "\" has been sent at \"" + te.timeStamp + "\"");
+                                + "\" has been sent at \"" + te.timeStamp + "\" ("
+                                +content.toString()+")");
+                        
                     } //end debug
                 } //end test fire
             it.remove();
@@ -328,6 +331,13 @@ public class HlaSubscriber extends TypedAtomicActor {
         } //end of while
     } //end of fire
 
+    /*
+    * Return a string that is used to identify the HlaSubscriber. 
+    * Should be unique if
+    */
+    public String getIdentity(){
+        return getOpaqueIdentifier() + "-" + getParameterName();
+    }
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the tokens queue. Then, program the next firing time of this actor to
      *  send the token at its expected time. This method is called by the
