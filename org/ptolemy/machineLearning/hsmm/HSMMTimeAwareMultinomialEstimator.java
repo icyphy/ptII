@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 Emissions. The transition probability matrix is estimated on an hourly basis.
 
  @author Ilge Akkaya
- @version $Id $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
