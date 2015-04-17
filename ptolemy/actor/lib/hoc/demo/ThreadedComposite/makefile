@@ -51,7 +51,8 @@ DEMOS = \
 	ConcurrentChat.xml \
 	MulticoreExecution.xml \
 	ParallelExecution.xml \
-	SpontaneousSources.xml
+	SpontaneousSources.xml \
+	ThreadedComposite.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
