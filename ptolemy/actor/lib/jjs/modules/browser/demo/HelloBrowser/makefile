@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/HelloBrowser
+ME =		ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser
 
 # Root of the Java directory
 ROOT =		../../../../../../../..
@@ -73,15 +73,13 @@ install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
-
-
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" VertxBus.xml
+	"$(PTII)/bin/ptolemy" HelloBrowser.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" VertxBus.xml
+	"$(PTII)/bin/vergil" HelloBrowser.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

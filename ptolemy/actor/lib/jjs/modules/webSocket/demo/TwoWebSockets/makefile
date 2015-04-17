@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets
 
 # Root of the Java directory
-ROOT =		../../../../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
@@ -47,7 +47,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	TwoWebSockets.xml
+	TwoWebSockets.xml \
+	Server1.js \
+	Server2.js
 
 EXTRA_SRCS = \
 	$(JSRCS) \
