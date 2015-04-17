@@ -121,6 +121,7 @@
       <li><a href="#ptera">Ptera (Ptolemy Event Relationship Actor)</a></li>
       <li><a href="#pthales">Pthales</a></li>
       <li><a href="#ptides">Ptides (Programming Temporally Integrated Distributed Embedded Systems)</a></li>
+      <li><a href="#ptinyos">PtinyOS</a></li>
       <li><a href="#qss">QSS (Quantized State Systems)</a></li>
       <!--vergilDocs-->
 
@@ -139,6 +140,7 @@
       <!--/bcvtbDocs-->
       <!--/ptinyKeplerDocs-->
       <!--/vergilDocs-->
+      <li><a href="#sequence">Sequence</a></li>
       <li><a href="#space">Space (Office Space/Database)</a></li>
       <li><a href="#sr">SR (Synchronous/Reactive)</a></li>
       <!--vergilDocs-->
@@ -146,22 +148,39 @@
 
       <!--/vergilDocs-->
       <li><a href="#taskpt">TaskPt</a></li>
+    <li><a href="#tdl">TDL</a></li>
       <li><a href="#tm">TM (Timed Multitasking)</a></li>
       <li><a href="#wireless">Wireless</a></li>
     </ul>
 
     <h1>Other Demos</h1>
     <ul>
+      <li><a href="#aspect"></a></li>
+      <li><a href="#classes">Actor-Oriented Classes</a></li>
+      <li><a href="#cg">Code Generation</a></li>
+      <li><a href="#curriculum">Curriculum</a></li>
       <li><a href="#hoc">Higher Order Components</a></li>
       <li><a href="#modelTransformation">Model Transformation</a></li>
-      <li><a href="#cg">Code Generation</a></li>
+      <li><a href="#hlacerti">High Level Architecture (HLA) Certi</a></li>
       <li><a href="#javascript">JavaScript</a></li>
       <li><a href="#ontologies">Ontology Analysis</a></li>
-      <li><a href="#probabilistic">Probabilistic Models</a></li>
+      <li><a href="#optimizationAndML">Optimization and Machine Learning</a>
+        <ul>
+          <li><a href="#improvisation">Control Improvisation</a></li>
+          <li><a href="#optimization">Optimization</a></li>
+          <li><a href="#particleFilter">Particle Filter</a></li>
+          <li><a href="#probabilistic">Probabilistic Models</a></li>
+          <li><a href="#ssm">State Space Model</a></li>
+        </ul>
+      </li>
+      <li><a href="#osc">Open Sound Countrol (osc)</a></li>
       <li><a href="#ptango">Ptango</a></li>
-      <li><a href="#classes">Actor-Oriented Classes</a></li>
-      <li><a href="#curriculum">Curriculum</a></li>
+      <li><a href="#ptulip">Ptulip: Interface to Tulip: synthesis of provably correct software</a></li>
+      <li><a href="#ssm">State Space Model</a></li>
       <li><a href="#systemTypes">System-Level Types</a></li>
+      <li><a href="#terraswarm"></a></li>
+      <li><a href="#vertx"></a></li>
+      <li><a href="#webSocket"></a></li>
       <!--vergilDocs-->
       <!--bcvtbDocs-->
     </ul>
@@ -313,7 +332,14 @@
       <li><a href="../../actor/lib/fmi/demo/FMUSimulationX/FMUSimulationX.xml">Functional Mock-up Unit (FMU) SimulationX</a> (Requires SimulationX)
       <li><a href="../../actor/lib/fmi/demo/FMUSimulationX/FMUSimulationXPIController.xml">Functional Mock-up Unit (FMU) SimulationX</a> (Requires SimulationX)
       <li><a href="../../actor/lib/fmi/demo/FMUStairs/FMUStairs.xml">Functional Mock-up Unit (FMU) Stairs</a> 
-      <li><a href="../../actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xml">Functional Mock-up Unit (FMU) Two Ball Collision</a> 
+      <li><a href="../../actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xml">Functional Mock-up Unit (FMU) Two Ball Collision</a> </li>
+
+      <!-- Skipping fmipp demos because the use native code at runtime and thus are not likely to work. -->
+      <!-- ../../../ptolemy/actor/lib/fmi/fmipp/demo/FMUModelExchange/FMUModelExchange.xml -->
+      <!-- ../../../ptolemy/actor/lib/fmi/fmipp/demo/GeneratorContactorLoad/GeneratorContactorLoad.xml -->
+      <!-- ../../../ptolemy/actor/lib/fmi/fmipp/demo/HouseControl/HouseControl.xml -->
+      <!-- ../../../ptolemy/actor/lib/fmi/fmipp/demo/HouseControl/HouseControlNoPDF.xml -->
+
 	<!--vergilDocs-->
 
 	<!--/vergilDocs-->
@@ -442,7 +468,15 @@
       <li><a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer: location control, visible parameters, and MonitorValue</a> 
       <li><a href="../../domains/de/demo/Clock/Clock.xml">Clock</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)  
       <li><a href="../../domains/de/demo/ClockDrift/ClockDrift.xml">Clock Drift</a> 
-      <li><a href="../../actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml">Concurrent Chat</a> 
+      <li><a href="../../actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml">Concurrent Chat</a> </li>
+      <!-- Do not include DataGram here, it is confusing and has problems. adm/bin/missingDemos needs these files listed here. -->
+      <!-- ../../../ptolemy/actor/lib/net/demo/Datagram/Datagram.xml -->
+      <!-- ptolemy/actor/lib/net/demo/Datagram/Datagram.xml -->
+      <!-- ptolemy/actor/lib/net/demo/Datagram/DatagramCounter.xml -->
+      <!-- ptolemy/actor/lib/net/demo/Datagram/DatagramDE.xml -->
+      <!-- ptolemy/actor/lib/net/demo/Datagram/DatagramInjector.xml -->
+      <!-- ptolemy/actor/lib/net/demo/Datagram/DatagramParsed.xml -->
+      <!-- ptolemy/actor/lib/net/demo/Datagram/DatagramUnparsed.xml -->
       <li><a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">Higher-Order Components</a> 
 	<!--vergilDocs-->
       <li><a href="../../domains/de/demo/OpenQueueingNetwork/OpenQueueingNetwork.xml">Open Queueing Network</a>  
@@ -510,6 +544,7 @@
       <!-- Legiotto-->
       <li><a href="../../domains/giotto/demo/Multimode/Multimode.xml">Multimode</a></li>
       <li><a href="../../domains/giotto/demo/Simple/Simple.xml">Simple</a></li>
+      <li><a href="../../../ptolemy/domains/giotto/cgc/demo/SoundGenerator/SoundGenerator.xml">SoundGenerator</a> C Code Generation</li>
     </ul>
 
     <!--/vergilDocs-->
@@ -543,7 +578,9 @@
     <h2><a name="metroII">MetroII</a></h2>
     <!-- Please keep the demos alphabetical -->
     <ul>
-      <li><i>No MetroII demos yet</i>
+      <li><a href="../../../ptolemy/domains/metroII/demo/AircraftEPSController/AircraftEPSController.xml">AircraftEPSController</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/metroII/demo/MotorControl/MotorControl.xml">MotorControl</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/metroII/demo/VariableDelay/VariableDelay.xml">VariableDelay</a>(New in Ptolemy II 11.0)</li>
     </ul>
     <!--/dontship-->
 
@@ -647,6 +684,7 @@
     <h2><a name="pthales">Pthales</a></h2>
     <ul>
       <li><a href="../../domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.xml">Adaptive Beam Forming</a> </li> 
+      <li><a href="../../../ptolemy/domains/pthales/demo/Dynamic/Dynamic.xml">Dynamic</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/pthales/demo/FFT/FFT.xml">FFT</a> </li> 
       <li><a href="../../domains/pthales/demo/HelloWorld/HelloWorld.xml">HelloWorld</a> </li>  
       <li><a href="../../domains/pthales/demo/Illustrative/Illustrative.xml">Illustrative</a> </li> 
@@ -662,6 +700,7 @@
       <li><a href="../../domains/ptides/demo/Controller/Controller.xml">Two Controllers </a>
       <li><a href="../../domains/ptides/demo/CoSimulation/CoSimulation.xml">CoSimulation of Application and Architecture models </a>
       <li><a href="../../domains/ptides/demo/DistributedPowerPlant/DistributedPowerPlant.xml">Distributed Power Plant </a>
+      <li><a href="../../../ptolemy/domains/ptides/demo/LocalSource/LocalSource.xml">LocalSource</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/ptides/demo/MixedSimulator/MixedSimulator.xml">Mixed Simulator </a>
       <li><a href="../../domains/ptides/demo/MultiPlatformTDMA/MultiPlatformTDMA.xml">Multiple Platforms TDMA </a>
       <li><a href="../../domains/ptides/demo/MultipleCores/MultipleCores.xml">Scheduling actors on multiple cores </a>
@@ -669,6 +708,16 @@
       <li><a href="../../domains/ptides/demo/PowerPlant/PowerPlant.xml">Power Plant </a>
       <li><a href="../../domains/ptides/demo/PrintingPress/PrintingPress.xml">Printing Press </a>
       <li><a href="../../domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml">Synchrophasor </a>
+      <li><a href="../../../ptolemy/domains/ptides/demo/SRinPtides/SRinPtides.xml">SRinPtides</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/ptides/demo/VertxDemo/VertxDemo.xml">VertxDemo</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+    <h2><a name="ptinyos"></a>PtinyOS</h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/domains/ptinyos/demo/CntToLeds/CntToLeds.xml">CntToLeds</a></li>
+      <li><a href="../../../ptolemy/domains/ptinyos/demo/HelloWorld/HelloWorld.xml">HelloWorld</a></li>
+      <li><a href="../../../ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds.xml">SenseToLeds</a></li>
+      <li><a href="../../../ptolemy/domains/ptinyos/demo/Surge/Surge.xml">Surge</a>(New in Ptolemy II 11.0)</li>
     </ul>
 
     <h2><a name="qss">(Quantized State Systems)</a></h2>
@@ -683,9 +732,13 @@
 
       <li><a href="../../domains/qss/demo/FirstOrder/FirstOrderOscillating.xml">FirstOrderOscillating</a>, first-order oscillation (New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/HelloWorld/HelloWorld.xml">HelloWorld</a>, cascade of two integrators using QSS2 (New in Ptolemy II 11.0)</li>
+      <li><a href="../../domains/qss/demo/HelloWorld/HelloWorldComputationallyExact.xml">HelloWorldComputationallyExact.xml</a> (New in Ptolemy II 11.0)</li>
+      <li><a href="../../domains/qss/demo/HelloWorld/HelloWorldContinuous.xml">HelloWorldContinuous.xml</a> (New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/HelloWorld/HelloWorldQSS1.xml">HelloWorldQSS1</a>, cascade of two integrators using QSS1 (New in Ptolemy II 11.0)</li>
+      <li><a href="../../domains/qss/demo/HelloWorld/HelloWorldQSS2.xml">HelloWorldQSS2.xml</a> (New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/HelloWorld/HelloWorldPropagate.xml">HelloWorldPropagate</a>, propagation of derivatives (New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/Lorenz/Lorenz.xml">Lorenz</a>, chaotic feedback system (New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/ptolemy/qss/demo/RLC/RLC.xml">RLC</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/RLC/RLC.xml">RLC</a>, QSS + algebraic loop solver (New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/SecondOrder/SecondOrder.xml">SecondOrder</a>, second-order feedback system (New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/qss/demo/SmoothToken/SmoothToken.xml">SmoothToken</a>, smooth signals from discrete events (New in Ptolemy II 11.0)</li>
@@ -791,7 +844,9 @@
       <li><a href="../../domains/sdf/demo/Expression/Expression.xml">Expression</a>
       <li><a href="../../domains/sdf/demo/Eye/Eye.xml">Eye Diagram</a>
       <li><a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">Fixed-Point FIR Filter</a>
-      <li><a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">Fixed-Point Arithmetic</a>
+      <li><a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">Fixed-Point Arithmetic</a></li>
+        <!-- Excel is incomplete. -->
+        <!-- ../../ptolemy/actor/lib/excel/demo/Excel/Excel.xml-->
 	<!--/vergilDocs-->
       <li><a href="../../actor/lib/fmi/demo/FMUBouncingBall/FMUBouncingBall.xml">Functional Mock-up Unit (FMU) Bouncing Ball</a> 
 	<!--vergilDocs-->
@@ -827,9 +882,10 @@
       <li>Java Media Framework (JMF) actors,
 	requires that JMF be installed:
 	<a href="../../actor/lib/jmf/demo/JMFJAI/JMFJAI.xml">JMFJAI</a>,
-	<a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">Video Capture</a> (Both demos use a USB video camera)
-
-	<!--vergilDocs-->
+	<a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">Video Capture</a> (Both demos use a USB video camera)</li>
+      <!-- Do not include VideoCapture here, it requires a camera. adm/bin/missingDemos needs these files listed here. -->
+      <!-- ../../../ptolemy/vergil/actor/lib/demo/VideoCapture/VideoCapture.xml -->
+      <!--vergilDocs-->
       <li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong Sound Synthesis</a>
 
 	<!--/vergilDocs-->
@@ -837,10 +893,22 @@
       <li>Linear Temporal Logic:  <a href="../../vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml">Arbitor</a>,  <a href="../../vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml">Numerical</a>,   <a href="../../vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml">Priority Arbitor</a>  </li>
       <!--vergilDocs-->
 
+      <!-- Do not ship Joystick, uses GPL'd code at runtime ->
+      <!-- ../../../ptolemy/actor/lib/joystick/demo/Joystick/Joystick.xml -->
 
       <li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMS Adaptive Filter</a> 
       <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>
       <li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">Maximum Entropy Spectrum</a> 
+
+        <!-- Do not include the OpenCV demos, they were never properly completed. -->
+      <!-- ../../../ptolemy/actor/lib/opencv/demo/OpenCVReader/OpenCVReader.xml -->
+      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraFlipView/CameraFlipView.xml -->
+      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraSmoothView/CameraSmoothView.xml -->
+      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/CameraView/CameraView.xml -->
+      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageCopySmoothView/ImageCopySmoothView.xml -->
+      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageCopyView/ImageCopyView.xml -->
+      <!-- ../../../ptolemy/actor/lib/opencv/jna/demo/ImageView/ImageView.xml -->
+
 	<!--Kepler does not include Javamail-->
 	<!--/ptinyKeplerDocs-->
 	<!--/bcvtbDocs-->
@@ -860,6 +928,7 @@
 
       <li><a href="../../domains/sdf/demo/ModelDisplay/ModelDisplay.xml">ModelDisplay</a>  
       <li><a href="../../actor/lib/hoc/demo/ModelReference/ModelReference.xml">Model Reference</a>
+      <li><a href="../../../ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/MoMLFileTransformation.xml">MoMLFileTransformation</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">Multiple Runs</a>
       <li><a href="../../moml/demo/Networked/Networked.xml">Network Integration</a>
       <li><a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">NoisySinewave</a>
@@ -900,15 +969,27 @@
       <li><a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a>
       <li><a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>
       <li><a href="../../domains/sdf/demo/Type/Type.xml">Type</a>
+      <li>Video: <a href="../../../ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc.xml">DCT2x2dc</a>, 
+        <a href="../../../ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc.xml">DCT4x4dc</a> and 
+        <a href="../../../ptolemy/actor/lib/video/demo/DCT8x8/DCT8x8.xml">DCT8x8</a></li>
+      <li><a href="../../../ptolemy/actor/lib/xslt/demo/XMLInclusion/XMLInclusion.xml">XMLInclusion</a>(New in Ptolemy II 11.0)</li>
     </ul>
 
     <!--/ptinyKeplerDocs-->
     <!--/bcvtbDocs-->
     <!--/vergilDocs-->
+
+    <h2><a name="sequence">Sequence</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/domains/sequence/demo/HelloWorld/HelloWorld.xml">HelloWorld</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/sequence/demo/Visual/Visual.xml">Visual</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
     <h2><a name="space">Space (Office Space/Database)</a></h2>
     <ul>
       <li><a href="../../domains/space/demo/DOPCenter/DOPCenter.xml">UC Berkeley DOP Center Office Database</a><i>Requires password to run</i>  </li>
       <li><a href="../../domains/space/demo/DOPCenter/Placard.xml">UC Berkeley DOP Center Office Database Door Placards</a><i>Requires password to run</i>  </li>
+      <li><a href="../../../ptolemy/actor/lib/database/demo/InteractiveQuery/InteractiveQuery.xml">InteractiveQuery</a>(New in Ptolemy II 11.0)</li>
     </ul>
     <!--vergilDocs-->
 
@@ -949,6 +1030,16 @@
       <li><a href="../../domains/taskpt/demo/SharedMemory/SharedMemory.xml">SharedMemory</a> 
       <li><a href="../../domains/taskpt/demo/Task/Task.xml">Task</a> 
     </ul>
+
+    <!--Ptiny does not include TM-->
+    <h2><a name="tdl">TDL</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/domains/tdl/demo/ActiveRearSteeringCT/ActiveRearSteeringCT.xml">ActiveRearSteeringCT</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/tdl/demo/ActiveRearSteeringDE/ActiveRearSteeringDE.xml">ActiveRearSteeringDE</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/tdl/demo/IncrementDecrement/IncrementDecrement.xml">IncrementDecrement</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/domains/tdl/demo/ZeroTimeDEActorLoop/ZeroTimeDEActorLoop.xml">ZeroTimeDEActorLoop</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
     <!--Ptiny does not include TM-->
     <h2><a name="tm">Priority driven multi-tasking (TM)</a></h2>
     <ul>
@@ -989,6 +1080,69 @@
 
     <hr>
     <h1>Other Demos</h1>
+    <!-- Ptiny does not include these somewhat esoteric models -->
+    <!--/vergilDocs-->
+    <h2><a name="aspect">Aspect-Oriented Programming</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/actor/lib/aspect/demo/CanBus/CanBus.xml">CanBus</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/aspect/demo/CompositeQM/CompositeQM.xml">CompositeQM</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/aspect/demo/DE/DE.xml">DE</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+    <h2><a name="classes">Actor-Oriented Classes</a></h2>
+    <ul>
+      <li><a href="../../configs/doc/ClassesIllustrated.xml">Classes Illustrated</a></li> 
+    </ul>
+
+    <!-- Ptiny does not include cg -->
+    <h2><a name="cg">Code Generation</a></h2>
+
+    <h2><a name="arduino">Arduino</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Blink/Blink.xml">Blink</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/Life.xml">Life</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.xml">Ultrasonic</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+    <h3><a name="cgLib">Library Demos</a></h3>
+    <!-- Please keep the demos alphabetical -->
+    <ul>
+      <li><a href="../../cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml">CompiledCompositeActor</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECG.xml">Discrete Event Code Generation</a> </li>
+      <li><a href="../../cg/lib/demo/ModularCG/ModularCG.xml">ModularCG</a> </li>
+      <li><a href="../../cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml">ModularCGPubSub</a> </li>
+      <li><a href="../../cg/lib/demo/Scale/ScaleC.xml">Scale C</a> </li>
+      <li><a href="../../cg/lib/demo/Scale/ScaleJava.xml">Scale Java</a> </li>
+    </ul>
+
+    <h3><a name="cgDE">C DE Demos</a></h3>
+    <!-- Please keep the demos alphabetical -->
+    <ul>
+      <li><a href="../../cg/lib/demo/DECG/DECGHelloWorld.xml">Hello World!</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECGClockRamp.xml">Clock and Ramp</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECGMath.xml">Maths</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECGPiSquare.xml">Pi Square Calculus</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECGPi.xml">Pi Calculus</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECGPoisson.xml">Poisson Clock</a> </li>
+      <li><a href="../../cg/lib/demo/DECG/DECGDelay.xml">Time Delay</a> </li>
+    </ul>
+
+    <h3><a name="html"></a></h3>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalModel.xml">HierarchicalModel</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+    <!-- codegen is obsolete -->
+    <!-- <h2><a name"codegen"><code>ptolemy/codegen</code></a></h2> -->
+    Older Ptolemy code generation demos that use files  in <code>ptolemy/codegen</code>.
+
+    <h2><a name="curriculum">Curriculum</a></h2>
+    <ul>
+      <li><a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a></li> 
+    </ul>
+    <!--vergilDocs-->
+
     <h2><a name="hoc">Higher Order Components</a></h2>
     <!-- These are duplicates of some of the domain-oriented models above. -->
     <ul>
@@ -1046,53 +1200,44 @@
       <li><a href="../../actor/gt/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> </li>
       <li><a href="../../actor/gt/demo/SinewaveOptimization/Sinewave.xml">Sinewave</a> </li>
       <li><a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a> </li>
+      <!-- These are experimental. adm/bin/missingDemos needs these files listed here. -->
+      <!-- ../../../ptolemy/domains/gr/lib/experimental/demo/InverseKinematics/InverseKinematics.xml -->
+      <!-- ../../../ptolemy/domains/gr/lib/experimental/demo/RobotArm/RobotArm.xml -->
+      <!-- ../../../ptolemy/domains/gr/lib/experimental/demo/microwave/microwave.xml -->
+      <!-- ../../../ptolemy/domains/gr/lib/experimental/demo/pickstates/pickstates.xml -->
+      <!-- ../../../ptolemy/domains/gr/lib/quicktime/demo/SimpleMovie/SimpleMovie.xml -->
     </ul>
+
     <!--vergilDocs-->
 
     <!--ptinyKeplerDocs-->
 
     <!--/ptinyKeplerDocs-->
+
     <!-- Ptiny does not include cg -->
     <!--/vergilDocs-->
-    <h2><a name="cg">Code Generation</a></h2>
-
-    <h3><a name="cgLib">Library Demos</a></h3>
-    <!-- Please keep the demos alphabetical -->
-    <ul>
-      <li><a href="../../cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml">CompiledCompositeActor</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECG.xml">Discrete Event Code Generation</a> </li>
-      <li><a href="../../cg/lib/demo/ModularCG/ModularCG.xml">ModularCG</a> </li>
-      <li><a href="../../cg/lib/demo/ModularCGPubSub/ModularCGPubSub.xml">ModularCGPubSub</a> </li>
-      <li><a href="../../cg/lib/demo/Scale/ScaleC.xml">Scale C</a> </li>
-      <li><a href="../../cg/lib/demo/Scale/ScaleJava.xml">Scale Java</a> </li>
-    </ul>
-
-    <h3><a name="cgDE">C DE Demos</a></h3>
-    <!-- Please keep the demos alphabetical -->
-    <ul>
-      <li><a href="../../cg/lib/demo/DECG/DECGHelloWorld.xml">Hello World!</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGClockRamp.xml">Clock and Ramp</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGMath.xml">Maths</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGPiSquare.xml">Pi Square Calculus</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGPi.xml">Pi Calculus</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGPoisson.xml">Poisson Clock</a> </li>
-      <li><a href="../../cg/lib/demo/DECG/DECGDelay.xml">Time Delay</a> </li>
-    </ul>
-
-    <!-- codegen is obsolete -->
-    <!-- <h2><a name"codegen"><code>ptolemy/codegen</code></a></h2> -->
-    Older Ptolemy code generation demos that use files  in <code>ptolemy/codegen</code>.
-
     <h3><a name="sdfCodegen">C SDF Code Generation</a></h3>
     <ul>
       <li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
       <li><a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
       <li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>   
     </ul>
-    -->
+
+    <h2><a name="hlacerti">High Level Architecture</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../org/hlacerti/demo/CoSimulation/CoSimulation.xml">CoSimulation</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/CoSimulationFunctional/CoSimulationFunctional.xml">CoSimulationFunctional</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/CoSimulationNetwork1/CoSimulationNetwork1.xml">CoSimulationNetwork1</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml">MultiDataTypes</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/MultiProducerConsumer/MultiProducerConsumer.xml">MultiProducerConsumer</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/SimpleProducerConsumer/SimpleProducerConsumer.xml">SimpleProducerConsumer</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml">SimpleProducerConsumerMulti</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml">SynchronizeToRealTime</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/f14HLA/f14HLA.xml">f14HLA</a>(New in Ptolemy II 11.0)</li>
+    <ul>
+
     <!--vergilDocs-->
     <!--ptinyKeplerDocs-->
-
 
     <!--/ptinyKeplerDocs-->
     <!-- Ptiny does not include actor/lib/js -->
@@ -1100,7 +1245,16 @@
     <h2><a name="javascript">JavaScript</a></h2>
     <h3>JavaScript demos that use Nashorn, present in Java 1.8 and later</h3>
     <ul>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml">HelloBrowser</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml">Factorial</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml">JavaScript Shell</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml">LocalStorage</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/terraswarm/accessor/jjs/demo/MoC/MoC.xml">MoC</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml">ModelBuilder</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml">MQTTPubSub</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml">VertxBus</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxDateServer/VertxDateServer.xml">VertxDateServer</a>(New in Ptolemy II 11.0)</li>
+
     </ul>
     <h3>JavaScript demos that use Rhino, a third party library</h3>
     <ul>
@@ -1130,15 +1284,18 @@
     <!--Ptiny does not include optimization and machine learning, it is still too new. -->
     <!--/vergilDocs-->
     <h2><a name="optimizationAndML">Optimization and Machine Learning</a></h2>
+
     <h3><a name="improvisation">Control Improvisation</a></h3>
     <ul>
       <li><a href="../../../org/ptolemy/machineImprovisation/demo/JazzImprovisation/JazzImprovisation.xml">Jazz Improvisation</a>  </li>
     </ul>
+
     <h3><a name="optimization">Optimization</a></h3>
     <ul>
       <li><a href="../../../org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml">Constrained Simple Linear Regression</a>  </li>
       <li><a href="../../../org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml">Simple Function Minimization</a>  </li>
     </ul>
+
     <h3><a name="particleFilter">Particle Filter</a></h3>
     <ul>
       <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking.xml">Multi Robot Intruder Tracking</a>  </li>
@@ -1149,6 +1306,7 @@
       <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml">Multi-Observer Particle Filtering</a>  </li>
       <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange.xml">Particle Filter Range</a>  </li>
     </ul>
+
     <h3><a name="probabilistic">Probabilistic Models</a></h3>
     <ul>
       <li><a href="../../demo/ProbabilisticModels/ChannelFaultModel.xml"> Channel Fault Model</a>  </li>
@@ -1159,6 +1317,19 @@
       <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">Hidden Markov Model Analysis</a>  </li>
       <li><a href="../../demo/ProbabilisticModels/TwoStateMarkovChain.xml">Discrete-Time Markov Chain</a>  </li>
     </ul>
+
+    <h3><a name="ssm">State Space Model</a></h3>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../org/ptolemy/ssm/demo/SingleRobotTargetLocalization/SingleRobotTargetLocalization.xml">SingleRobotTargetLocalization</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml">StatePrediction</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+        <h3><a name="osc">Open Sound Countrol (osc)</a></h3>
+      <li><a href="../../../org/ptolemy/osc/demo/OscSendReceive/OscSendReceive.xml">OscSendReceive</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+
+
     <!--vergilDocs-->
 
     <!-- Ptiny does not include these somewhat esoteric models -->
@@ -1187,22 +1358,20 @@
       <li><a href="../../../org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml">UCBPowerPtera</a>  </li>
       <li><a href="../../../org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml">WebServerDE</a>  </li>
     </ul>
-    <!--vergilDocs-->
 
-    <!-- Ptiny does not include these somewhat esoteric models -->
-    <!--/vergilDocs-->
-    <h2><a name="classes">Actor-Oriented Classes</a></h2>
-    <ul>
-      <li><a href="../../configs/doc/ClassesIllustrated.xml">Classes Illustrated</a></li> 
+    <h2><a name="ptulip">Ptulip: Interface to Tulip: synthesis of provably correct software</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../org/ptolemy/ptulip/demo/robot/robot.xml">robot</a>(New in Ptolemy II 11.0)</li>
     </ul>
-    <h2><a name="curriculum">Curriculum</a></h2>
-    <ul>
-      <li><a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a></li> 
-    </ul>
+
+    <!--vergilDocs-->
 
     <!-- Don't ship Fuzzy because it is gpl'd -->
     <!-- ../../actor/lib/logic/fuzzy/demo/ArchitectureModel/ArchitectureModel.xml Architecture Model (Fuzzy Logic) /a  -->
 
+    <!-- Ptiny does not include these somewhat esoteric models -->
+    <!--/vergilDocs-->
+        
     <h2><a name="systemTypes"></a><a href="../../domains/modal/demo/SystemLevelType/README.htm">System Level Types</a></h2>
     <!-- The SystemLevelType models are included here so that we can be sure that they open -->
     <ul>
@@ -1236,5 +1405,27 @@
       <li><a href="../../domains/modal/demo/SystemLevelType/UNKNOWN.xml"><code>UNKNOWN.xml</code></a>
     </ul>
 
+    <h2><a name="terraswarm">TerraSwarm</a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../org/terraswarm/accessor/js/demo/StockTick/StockTick.xml">StockTick Accessor</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/terraswarm/accessor/js/demo/c4po/c4po.xml">c4po Accessor</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/terraswarm/demo/StockTick/StockTick.xml">StockTick</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/terraswarm/demo/c4po/c4po.xml">c4po</a>(New in Ptolemy II 11.0)</li>
+
+    </ul>
+
+    <h2><a name="vertx"></a>Vert.x</h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml">PubSub</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/TokenTransmissionTime.xml">TokenTransmissionTime</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+
+    <h2><a name="webSocket"></a></h2>
+    <ul><!-- Alphabetical Please -->
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml">SpeakingServerListeningClient</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml">TwoWebSockets</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml">WebSocketsServerClient</a>(New in Ptolemy II 11.0)</li>
+    </ul>
+    <!--vergilDocs-->
   </body>
 </html>

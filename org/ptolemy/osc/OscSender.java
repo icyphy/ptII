@@ -1,4 +1,4 @@
-/* A Generic actor that generates OSC Messages via the provided input ports.
+/* An actor that generates Open Sound Control (OSC) Messages via the provided input ports.
 
 Copyright (c) 2013-2014 The Regents of the University of California.
 All rights reserved.
@@ -52,23 +52,24 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
-<p> An actor that generates and sends OSC Messages. Add input ports to this actor
-and name the ports to match the desired tag name. Any token received via an input
-port will have a tag equal to the name. A tag prefix common to all ports
-can be defined by the help of the <i>tagPrefix</i> PortParameter. If specified, this
+/** An actor that generates Open Sound Control (OSC) Messages via the
+ provided input ports.
+
+<p>Add input ports to this actor and name the ports to match the
+desired tag name. Any token received via an input port will have a tag
+equal to the name. A tag prefix common to all ports can be defined by
+the help of the <i>tagPrefix</i> PortParameter. If specified, this
 prefix will be prepended to all the tags, defined by the port names.
 
-<p> Tokens that are received simultaneously at multiple input ports, i.e., that have
-the same time stamp, will be bundled into a single OSCBundle object and will be sent
-out as a single OSC message.
-
+<p> Tokens that are received simultaneously at multiple input ports,
+i.e., that have the same time stamp, will be bundled into a single
+OSCBundle object and will be sent out as a single OSC message.
 
 @see org.ptolemy.osc.OscReceiver
 
  @author Ilge Akkaya
-@version $Id$
-@since Ptolemy II 10.0
+ @version $Id$
+ @since Ptolemy II 10.0
  @version $Id$
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
@@ -115,7 +116,7 @@ public class OscSender extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /**
-     * IP Address of the remote host
+     * IP Address of the remote host.
      */
     public Parameter remoteHost;
 
@@ -129,7 +130,7 @@ public class OscSender extends TypedAtomicActor {
     public Parameter localPort;
 
     /**
-     * OSC prefix tag that will be prepended to each port name
+     * OSC prefix tag that will be prepended to each port name.
      */
     public PortParameter tagPrefix;
 

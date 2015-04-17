@@ -17,9 +17,9 @@ demos1=/tmp/missingDemos.demos1.$$
 cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i); if ($i ~ /demo/) {printf("\n"); break}}}' | sed 's@demo/$@demo@' | sort | uniq > $demos1
    
 
-# Look for demo diretories that are not listed in completeDemos
+# Look for demo directories that are not listed in completeDemos
 demos2=/tmp/missingDemos.demos2.$$
-(cd $PTII; find . -name demo -type d | egrep -v '(adm|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) > $demos2
+(cd $PTII; find . -name demo -type d | egrep -v '(adm|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/diva/canvas/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|ptolemy/apps)' > $demos2
 
 echo "# Demo directories that are not listed in $PTII/ptolemy/configs/doc/completeDemos.htm"
 comm -3 $demos1 $demos2
@@ -29,15 +29,19 @@ comm -3 $demos1 $demos2
 function demoHTML {
     if [ $1 = "yes" ]; then 
         if [ ! -z "$2" ]; then
+            foundDemo=no
             for demo in $2
             do                 
                 demoDirectory=`dirname $demo`
                 demoName=`basename $demoDirectory`
                 if [ $demo = "$demoDirectory/$demoName.xml" ]; then
                    echo "      <li><a href=\"../../../$demo\">$demoName</a>(New in Ptolemy II 11.0)</li>"
+                   foundDemo=yes
                 fi
             done
-            echo "    <ul>"
+            if [ $foundDemo = "no" ]; then
+                echo "      <!-- Did not find demo with the same name as the directory? -->"
+            fi
         fi
     fi
 }
@@ -49,12 +53,45 @@ if [ $verbose = "yes" ]; then
         echo $demoDirectory                     
         dirname=`dirname $demoDirectory`
         package=`basename $dirname`
-        cat <<EOF
+        demos=`ls $demoDirectory/*/*.xml`
+
+        if [ -z "$demos" ]; then
+            echo "$demoDirectory contains no subdirectories with models."
+            continue;
+        fi
+
+        # For each demo in the directory, check to see if
+        # it appears in completeDemos.htm as a commented out demo
+        # If there is any demo that does not appear in
+        # completeDemos as a commented out demo, then print
+        # html for those demos
+
+        missingDemos=""
+        for demo in $demos
+        do
+            egrep "<!--.*$demo" $PTII/ptolemy/configs/doc/completeDemos.htm  >& /dev/null
+            status=$?
+            if [ $status -eq 1 ]; then
+                missingDemos="$missingDemos $demo"
+            fi
+        done
+
+        if [ ! -z "$demos" -a -z "$missingDemos" ]; then
+            echo "$demoDirectory contains demos that are in completeDemos.htm, but commented out."
+        else
+            echo "demos: $demos, missingDemos: $missingDemos"
+
+            cat <<EOF
+
+    <li><a href="#$package"></a></li>
+...
     <h2><a name="$package"></a></h2>
     <ul><!-- Alphabetical Please -->
 EOF
-        demos=`ls $demoDirectory/*/*.xml`
-        demoHTML $verbose "$demos"
+
+            demoHTML $verbose "$missingDemos"
+            echo "    </ul>"
+        fi
     done    
 fi
 

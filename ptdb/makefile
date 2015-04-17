@@ -63,7 +63,6 @@ MISC_FILES = \
 	build \
 	common \
 	config \
-	demo \
 	doc \
 	gui \
 	kernel \
