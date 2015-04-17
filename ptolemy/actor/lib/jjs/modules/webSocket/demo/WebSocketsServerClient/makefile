@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient
 
 # Root of the Java directory
-ROOT =		../../../../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 

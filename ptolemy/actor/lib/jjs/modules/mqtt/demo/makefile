@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II LocalStorage demo
+# Makefile for Java Ptolemy II JavaScript demos
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70841 2014-12-02 23:15:50Z pd $
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,57 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage
+ME =		ptolemy/actor/lib/jjs/modules/browser/demo
 
-# Root of the Java directory
-ROOT =		../../../../../../../..
+DIRS =		MQTTPubSub
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	LocalStorage
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	MQTTPubSub/MQTTPubSub.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	LocalStorage.xml
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run all the demos, run 'make demo'"
+	@echo "To run the demos, run 'make demo'"
 
-install: all $(PTCLASSJAR)
+install: jclass jars
 
-demo: demo_ptolemy demo_vergil
-
-#_vergil:
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" LocalStorage.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" LocalStorage.xml
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

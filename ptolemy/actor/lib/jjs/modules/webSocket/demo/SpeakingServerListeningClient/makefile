@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II LocalStorage demo
+# Makefile for Ptolemy II SpeakingServerListeningClient demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70873 2014-12-05 19:50:20Z hokeunkim $
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage
+ME =		ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient
 
 # Root of the Java directory
 ROOT =		../../../../../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	LocalStorage
+PTPACKAGE = 	SpeakingServerListeningClient
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	LocalStorage.xml
+	SpeakingServerListeningClient.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -73,13 +73,15 @@ install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
+
+
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" LocalStorage.xml
+	"$(PTII)/bin/ptolemy" SpeakingServerListeningClient.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" LocalStorage.xml
+	"$(PTII)/bin/vergil" SpeakingServerListeningClient.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

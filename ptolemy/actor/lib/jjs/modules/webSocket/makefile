@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/webSocket
 
-DIRS = 		test
+DIRS = 		test demo
 
 # Root of the Java directory
 ROOT =		../../../../../..

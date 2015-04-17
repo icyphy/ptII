@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub
 
 # Root of the Java directory
-ROOT =		../../../../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
 
@@ -47,7 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	mqttPubSub.xml
+	MQTTPubSub.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
