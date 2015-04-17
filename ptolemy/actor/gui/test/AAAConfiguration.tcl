@@ -253,7 +253,7 @@ test Configuration-10.0 {testConfiguration.xml has removeGraphicalClasses set to
 <entity name="removeGraphicalClassesMoML" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.DiscardDoubles">
+    <entity name="SequencePlotter" class="ptolemy.moml.filter.DiscardDoubles">
     </entity>
 </entity>
 }}
