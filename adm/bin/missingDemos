@@ -4,19 +4,94 @@
 # 1) Get all the demos from ptolemy/configs/doc/models.txt
 # 2) For each demo/ directory in models.txt, look for .xml files that are not listed
 #
+
+verbose=no
+if [ "$1" = "-v" ]; then
+    verbose=yes
+else
+    echo "# $0: Use $0 -v to generate html suitable for completeDemos.htm"
+fi
+
 modelsFile=$PTII/ptolemy/configs/doc/models.txt
-
-demoDirectories=`cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i); if ($i ~ /demo/) {printf("\n"); break}}}' | sort | uniq`
+demos1=/tmp/missingDemos.demos1.$$
+cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i); if ($i ~ /demo/) {printf("\n"); break}}}' | sed 's@demo/$@demo@' | sort | uniq > $demos1
    
-modelsInModelsFile=/tmp/modelsInModelsFile.$$
-modelsInDemoDirectory=/tmp/modelsInDemoDirectory.$$
-for demoDirectory in $demoDirectories
+
+# Look for demo diretories that are not listed in completeDemos
+demos2=/tmp/missingDemos.demos2.$$
+(cd $PTII; find . -name demo -type d | egrep -v '(adm|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) > $demos2
+
+echo "# Demo directories that are not listed in $PTII/ptolemy/configs/doc/completeDemos.htm"
+comm -3 $demos1 $demos2
+
+# Script that prints out html for the demos.
+# $demos is the list of .xml files for which we are to print demos.
+function demoHTML {
+    if [ $1 = "yes" ]; then 
+        if [ ! -z "$2" ]; then
+            for demo in $2
+            do                 
+                demoDirectory=`dirname $demo`
+                demoName=`basename $demoDirectory`
+                if [ $demo = "$demoDirectory/$demoName.xml" ]; then
+                   echo "      <li><a href=\"../../../$demo\">$demoName</a>(New in Ptolemy II 11.0)</li>"
+                fi
+            done
+            echo "    <ul>"
+        fi
+    fi
+}
+
+if [ $verbose = "yes" ]; then 
+    demoDirectories=`comm -3 $demos1 $demos2 | awk '{print $1}'`
+    for demoDirectory in $demoDirectories
+    do
+        echo $demoDirectory                     
+        dirname=`dirname $demoDirectory`
+        package=`basename $dirname`
+        cat <<EOF
+    <h2><a name="$package"></a></h2>
+    <ul><!-- Alphabetical Please -->
+EOF
+        demos=`ls $demoDirectory/*/*.xml`
+        demoHTML $verbose "$demos"
+    done    
+fi
+
+echo "# Look for .xml files that are in directories listed in completeDemos,"
+echo "#  but not the .xml file itself is not listed."
+modelsInModelsFile=/tmp/missingDemos.modelsInModelsFile.$$
+modelsInDemoDirectory=/tmp/missingDemos.modelsInDemoDirectory.$$
+for demoDirectory in `cat $demos1`
 do
-    demoDirectoryNoSlash=`echo $demoDirectory | sed 's@/$@@'`
+    # echo "# Checking $demoDirectory"
+    
+    individualDemoDirectories=`find $demoDirectory -type d -depth 1`
+    for individualDemoDirectory in $individualDemoDirectories
+    do                                   
+        demoName=`basename $individualDemoDirectory`
+        demoModel=`echo "$individualDemoDirectory/$demoName.xml" | sed "s@$PTII@@"`
+        if [ ! -f "$PTII/$demoModel" ]; then
+            echo "$demoModel is not present"
+            demoHTML $verbose $demoModel
+        fi
 
-    echo "Checking $demoDirectoryNoSlash"
+        grep $demoModel $modelsFile >& /dev/null
+        status=$?
+        if [ $status -eq 1 ]; then
+            echo "$demoModel is not present in completeDemos.xml"
+            demoHTML $verbose $demoModel
+        fi           
+    done
+    # find $PTII/$demoDirectory -name "*.xml" | sed "s@$PTII/@@" > $modelsInDemoDirectory
+    # grep $demoDirectory $modelsFile | sed 's@\$CLASSPATH/@@' > $modelsInModelsFile
 
-    find $PTII/$demoDirectoryNoSlash -name "*.xml" | sed "s@$PTII/@@" > $modelsInDemoDirectory
-    grep $demoDirectory $modelsFile | sed 's@\$CLASSPATH/@@' > $modelsInModelsFile
-    comm -23 $modelsInDemoDirectory $modelsInModelsFile
+    # comm -23 $modelsInDemoDirectory $modelsInModelsFile
+
+    # if [ $verbose = "yes" ]; then 
+    #     demos=`comm -23 $modelsInDemoDirectory $modelsInModelsFile | awk '{print $1}'`
+    #     demoHTML
+    # fi
 done
+
+rm -f /tmp/missingDemos.*
