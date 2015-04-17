@@ -153,7 +153,7 @@ public class Transformer {
                     }
 
                     ClassFileLoader loader = null;
-                    //try {
+                    try {
                         loader = new ClassFileLoader(paths);
 
                         for (int j = 0; j < files.length; j++) {
@@ -220,12 +220,12 @@ public class Transformer {
                                                                        .getPackage() == null) ? null : c.getPackage()
                                              .getName());
                         }
-                // java.net.URLClassLoader is not present in Java 1.6.
-//                     } finally {
-//                         if (loader != null) {
-//                             loader.close();
-//                         }
-//                     }
+                        // java.net.URLClassLoader is not present in Java 1.6.
+                    } finally {
+                        if (loader != null) {
+                            loader.close();
+                        }
+                    }
                 }
 
                 // Compute the array of cross-analyzed types.
