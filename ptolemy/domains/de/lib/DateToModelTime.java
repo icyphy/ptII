@@ -112,7 +112,7 @@ public class DateToModelTime extends Transformer {
                 if (_manager == null) {
                 	_manager = ((CompositeActor) getContainer()).getManager();
                 }
-                long realStartTime = _manager.getAfterInitTime();
+                long realStartTime = _manager.getRealStartTime();
                 
                 Time modelTime = new Time(
                         _director,

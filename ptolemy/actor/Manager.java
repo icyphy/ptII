@@ -580,7 +580,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Get the real time at which the model began executing.
      * @return The real time at which the model began executing.
      */
-    public long getAfterInitTime() {
+    public long getRealStartTime() {
     	return _afterInitTime;
     }
 

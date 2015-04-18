@@ -46,7 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that excepts DateTokens on the input. If the date in 
+/** A timed actor that accepts DateTokens on the input. If the date in 
  *  the DateToken is in the future, the output is generated at this 
  *  future date. If the date is in the past, an exception is thrown. 
  *  The output is a DateToken with the system time obtained when producing
@@ -148,14 +148,14 @@ public class DateToEvent extends Transformer {
                     	_manager = ((CompositeActor) getContainer()).getManager();
                     }
                     long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis()
-                	    - _manager.getAfterInitTime();
+                	    - _manager.getRealStartTime();
                     Time fireTime = new Time(
                             _director,
                             ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.
                     if (_debugging) {
-                    	_debug("director start time: " + _director.elapsedTimeSinceStart());
-                    	_debug("real time difference " + realTimeDifferenceInMillis);
-                        _debug("Scheduling firing at " + fireTime);
+                    	_debug("director start time (ms): " + _director.elapsedTimeSinceStart());
+                    	_debug("real time difference (ms):" + realTimeDifferenceInMillis);
+                        _debug("Scheduling firing at (model time):" + fireTime);
                     }
                     _director.fireAt(this, fireTime);
                     if (_outputTokensForChannel == null) {

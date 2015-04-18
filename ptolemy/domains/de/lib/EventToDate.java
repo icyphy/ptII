@@ -103,7 +103,7 @@ public class EventToDate extends Transformer {
             	_manager = ((CompositeActor) getContainer()).getManager();
             }
             long time = (long) (modelTimeSinceStart * 1000) // The default unit of time is seconds. 
-                    + _manager.getAfterInitTime();
+                    + _manager.getRealStartTime();
             output.send(channel, new DateToken(time));
         }
     }
