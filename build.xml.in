@@ -19,11 +19,12 @@
 
   <property name="debuglevel" value="source,lines,vars" />
 
-  <!-- Location of findbugs, which does static analysis on the code.  
-       We use a patched version of findbugs that supports the -nested:false command line argument,
-       see https://sourceforge.net/p/findbugs/feature-requests/295/
+  <!-- Location of findbugs, which does static analysis on the code.
+       With findbugs-3.0.0, we use a patched version of findbugs that
+       supports the -nested:false command line argument, see
+       https://sourceforge.net/p/findbugs/feature-requests/295/
     -->
-  <property name="findbugs.home" value="${basedir}/vendors/findbugs-3.0.0-dev" />
+  <property name="findbugs.home" value="${basedir}/vendors/findbugs-3.0.1" />
 
   <!-- The value of the memorymaximumsize javac and maxmemorysize and java parameter 
        We use 1400m so that we don't have problems under 32-bit
