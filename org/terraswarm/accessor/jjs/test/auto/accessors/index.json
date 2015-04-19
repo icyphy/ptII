@@ -1,4 +1,5 @@
 [
   "CallbackWithSuppress.xml",
-  "HandlerWithSuppress.xml"
+  "HandlerWithSuppress.xml",
+  "SendNullToOwnInput.xml"
 ]
