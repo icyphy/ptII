@@ -224,6 +224,7 @@ public class TypeAttribute extends Parameter {
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedIOPort, or if the base class throws it.
      */
+    /*
     @Override
     protected void _checkContainer(NamedObj container)
             throws IllegalActionException {
@@ -242,6 +243,7 @@ public class TypeAttribute extends Parameter {
 
         }
     }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

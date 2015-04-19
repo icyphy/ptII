@@ -154,6 +154,7 @@ public class WriterTest {
         }
         _debug("GDP Initialized.");
 
+        PointerByReference gclhByReference = new PointerByReference();
         if (xname == null) {
             // create a new GCL handle
             _debug("About to create a new handle.");
@@ -161,7 +162,6 @@ public class WriterTest {
             // Was: estat = gdp_gcl_create(NULL, &gclh);
             // gdp.h declared: extern EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t **);
             //estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
-            PointerByReference gclhByReference = new PointerByReference();
             estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer) null,
                     gclhByReference);
             gclh = gclhByReference.getValue();
@@ -173,13 +173,11 @@ public class WriterTest {
             if (append) {
                 _debug("About to call gdp_gcl_open()");
                 //estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
-                PointerByReference gclhByReference = new PointerByReference();
                 estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname,
                         Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclhByReference);
                 gclh = gclhByReference.getValue();
             } else {
                 _debug("About to call gdp_gcl_create()");
-                PointerByReference gclhByReference = new PointerByReference();
                 estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname,
                         gclhByReference);
                 gclh = gclhByReference.getValue();
@@ -227,6 +225,7 @@ public class WriterTest {
                     throw new Exception("The length of the line \"" + line
                             + "\" is greater than " + bufferLength);
                 }
+                // Create a C string that is a copy (?) of the Java String.
                 Memory memory = new Memory(bufferLength);
                 // FIXME: not sure about alignment.
                 Memory alignedMemory = memory.align(4);
@@ -235,10 +234,12 @@ public class WriterTest {
                 pointer.setString(0, line);
 
                 _debug("About to call gdp_datum_getbuf()");
+                // Get a reference to the buffer part of the datum.
                 PointerByReference dbuf = Gdp10Library.INSTANCE
                         .gdp_datum_getbuf(datum);
                 _debug("About to call gdp_buf_write(): pointer: " + pointer
                         + "pointer.getString(): " + pointer.getString(0));
+                // Write the C string to the buffer.
                 Gdp10Library.INSTANCE.gdp_buf_write(dbuf, pointer,
                         new NativeSizeT(line.length()));
 
@@ -246,9 +247,8 @@ public class WriterTest {
                 _debug("gclh: " + gclh);
                 _debug("datum: " + datum);
                 GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-                estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclh, datum);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclhByReference, datum);
                 if (!GdpUtilities.EP_STAT_ISOK(estat)) {
-                    PointerByReference gclhByReference = new PointerByReference();
                     _fail1(estat, gclhByReference);
                     gclh = gclhByReference.getValue();
                 }

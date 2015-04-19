@@ -48,6 +48,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
@@ -535,22 +536,26 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         
-        // Make a record of input handlers that need to be invoked.
-        List<PortOrParameterProxy> proxiesWithInputs = new LinkedList<PortOrParameterProxy>();
-
         // Update port parameters.
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
             if (portParameter == script) {
         	continue;
             }
+            PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
             if (portParameter.update()) {
-        	proxiesWithInputs.add(_proxies.get(portParameter));
+        	proxy._hasNewInput(true);
         	if (_debugging) {
         	    _debug("Received new input on " 
         		    + portParameter.getName()
         		    + " with value "
         		    + portParameter.getToken());
         	}
+            } else if (proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
+        	// There is no new input, but there is a locally provided one.
+        	portParameter.setToken(proxy._localInputTokens.remove(0));
+        	proxy._hasNewInput(true);
+            } else {
+        	proxy._hasNewInput(false);
             }
         }
 
@@ -567,6 +572,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
             boolean hasInput = false;
+            PortOrParameterProxy proxy = _proxies.get(input);
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
                     hasInput = true;
@@ -577,11 +583,26 @@ public class JavaScript extends TypedAtomicActor {
                 		+ " with value "
                 		+ tokens.get(i));
                     }
+                } else {
+                    // There is no external input, but there might be one
+                    // sent by the token to itself.
+                    if (proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
+                	tokens.put(i, proxy._localInputTokens.remove(0));
+                	hasInput = true;
+                    }
                 }
+            }
+            // Even if the input width is zero, there might be a token
+            // that the actor has sent to itself.
+            if (input.getWidth() == 0 && proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
+        	tokens.put(0, proxy._localInputTokens.remove(0));
+        	hasInput = true;
             }
             _inputTokens.put(input, tokens);
             if (hasInput) {
-        	proxiesWithInputs.add(_proxies.get(input));
+        	proxy._hasNewInput(true);
+            } else {
+        	proxy._hasNewInput(false);
             }
         }
         // Invoke any timeout callbacks whose timeout matches current time.
@@ -615,8 +636,12 @@ public class JavaScript extends TypedAtomicActor {
                 }
                 
                 // Invoke input handlers.
-                for (PortOrParameterProxy proxy : proxiesWithInputs) {
-                    proxy.invokeHandlers();
+                for (IOPort input : this.inputPortList()) {
+                    // Skip the scriptIn input
+                    if (input == script.getPort()) {
+                        continue;
+                    }
+                    _proxies.get(input).invokeHandlers();
                 }
 
         	// Invoke the fire function.
@@ -709,7 +734,7 @@ public class JavaScript extends TypedAtomicActor {
         // Expose the ports as JavaScript variables.
         for (TypedIOPort port : portList()) {
             // Do not convert the scriptIn port to a JavaScript variable.
-            if (port == script.getPort() || port == error || port instanceof ParameterPort) {
+            if (port == script.getPort() || port == error) {
                 continue;
             }
             if (!isValidIdentifier(port.getName())) {
@@ -734,6 +759,11 @@ public class JavaScript extends TypedAtomicActor {
             if (parameter == script) {
                 continue;
             }
+            // Do not create a proxy for a PortParameter. There is already
+            // a proxy for the port.
+            if (parameter instanceof PortParameter) {
+                continue;
+            }
             if (!isValidIdentifier(parameter.getName())) {
         	throw new IllegalActionException(this,
         		"Parameter name is not a valid JavaScript identifier: "
@@ -746,6 +776,8 @@ public class JavaScript extends TypedAtomicActor {
             }
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
+            // NOTE: If a parameter has the same name as a port,
+            // then this will shadow the port.
             _engine.put(parameter.getName(), proxy);
         }
 
@@ -840,6 +872,26 @@ public class JavaScript extends TypedAtomicActor {
 	} else {
 	    System.out.println(message);
 	}
+    }
+    
+    /** If there are any pending self-produced inputs, then request a firing
+     *  at the current time.
+     *  @throws IllegalActionException If the superclass throws it or the
+     *   refiring request fails.
+     */
+    public boolean postfire() throws IllegalActionException {
+	for (IOPort input : this.inputPortList()) {
+            // Skip the scriptIn input.
+            if (input == script.getPort()) {
+                continue;
+            }
+	    PortOrParameterProxy proxy = _proxies.get(input);
+	    if (proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
+		_fireAtCurrentTime();
+		break;
+	    }
+	}
+	return super.postfire();
     }
         
     /** Utility method to read a string from an input stream.
@@ -1002,6 +1054,20 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Methodsmm                  ////
+    
+    /** Fire me again at the current model time, one microstep later.
+     *  Unlike calling the director's fireAtCurrentTime() method, this
+     *  method is not affected by the current real time.
+     *  @throws IllegalActionException If the director throws it.
+     */
+    private void _fireAtCurrentTime() throws IllegalActionException {
+	Director director = getDirector();
+	Time currentTime = director.getModelTime();
+	// Note that it is not correct to call director.fireAtCurrentTime().
+	// At least in DE, that method uses current _real_ time, not
+	// model time.
+	director.fireAt(this, currentTime);
+    }
 
     /** Invoke the specified function, then schedule another call to this
      *  same method after the specified number of milliseconds, using the specified
@@ -1177,7 +1243,6 @@ public class JavaScript extends TypedAtomicActor {
         	}
         	return token;
             }
-            // Probably don't need to check for ParameterPort, but let's be paranoid...
             if (_port instanceof ParameterPort) {
         	Token token = ((ParameterPort)_port).getParameter().getToken();
         	if (token == null || token.isNil()) {
@@ -1196,11 +1261,12 @@ public class JavaScript extends TypedAtomicActor {
             return null;
         }
         
-        /** Invoke any input handlers that have been added.
+        /** Invoke any input handlers that have been added if there
+         *  are new inputs.
          *  @see #addInputHandler(Runnable)
          */
         public void invokeHandlers() {
-            if (_inputHandlers != null) {
+            if (_inputHandlers != null && _hasNewInput) {
         	for (Runnable function : _inputHandlers) {
                     if (function != null) {
                         function.run();
@@ -1243,7 +1309,19 @@ public class JavaScript extends TypedAtomicActor {
         		+ ", but the model is not executing.");
             }
             synchronized (JavaScript.this) {
-        	if (_inFire) {
+        	if (!_port.isOutput()) {
+        	    if (!_port.isInput()) {
+        		throw new IllegalActionException(JavaScript.this,
+        			"Cannot send to a port that is neither an input nor an output.");
+        	    }
+        	    // Port is an input.
+        	    // Record the token value to be provided in get().
+        	    if (_localInputTokens == null) {
+        		_localInputTokens = new LinkedList<Token>();
+        	    }
+        	    _localInputTokens.add(data);
+        	    _fireAtCurrentTime();
+        	} else if (_inFire) {
         	    // Currently firing. Can go ahead and send data.
         	    if (_debugging) {
         		_debug("Sending " + data + " to " + _port.getName());
@@ -1275,6 +1353,12 @@ public class JavaScript extends TypedAtomicActor {
                                 + " and requesting a firing.");
                     }
                     // Request a firing at the current time.
+                    // In this case, we _do_ want to use the director's
+                    // fireAtCurrentTime(), and not our _fireAtCurrentTime()
+                    // method, because we are not in firing, so if we are
+                    // synchronized to real time, we want the firing to
+                    // occur later than the current model time, at a time
+                    // matching current real time.
                     getDirector().fireAtCurrentTime(JavaScript.this);
                 }
             }
@@ -1303,8 +1387,30 @@ public class JavaScript extends TypedAtomicActor {
             return _parameter.getName();
         }
         
+        /////////////////////////////////////////////////////////////////
+        ////           Protected methods
+        
+        /** Indicate to this proxy there is a new input from the outside,
+         *  so handlers should be invoked.
+         *  @param hasNewInput True to indicate that there is a new input.
+         */
+        protected void _hasNewInput(boolean hasNewInput) {
+            _hasNewInput = hasNewInput;
+        }
+        
+        /////////////////////////////////////////////////////////////////
+        ////           Protected variables
+
+        /** Indicator that there is a new input from the outside,
+         *  so handlers should be invoked.
+         */
+        protected boolean _hasNewInput;
+        
         /** A list of input handlers, in the order in which they are invoked. */
         protected List<Runnable> _inputHandlers;
+        
+        /** A list of tokens that this JavaScript actor has sent to its own input. */
+        protected List<Token> _localInputTokens;
 
         /** The parameter that is proxied, or null if it's a port. */
         protected Variable _parameter;

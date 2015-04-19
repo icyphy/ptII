@@ -28,7 +28,7 @@ var exports = {
 // call removeInputHandler() in the actor's wrapup() function.
 // Nevertheless, it is a good idea to do that in an accessor
 // since other accessor hosts may not work the same way.
-function addInputHandler(port, func) {
+function addInputHandler(func, port) {
     var callback = func;
     // If there are arguments to the callback, create a new function.
     // Get an array of arguments excluding the first two.
@@ -67,8 +67,8 @@ function initialize() {exports.initialize();}
 
 ////////////////////
 // Remove the input handler for the specified port
-// with the specified handle. See setInputHandler().
-function removeInputHandler(port, handle) {
+// with the specified handle. See addInputHandler().
+function removeInputHandler(handle, port) {
     port.removeInputHandler(handle);
 }
 
