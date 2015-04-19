@@ -44,6 +44,10 @@
         <doc>Read an entire file and output as a string</doc>
       </entity>
       
+      <entity name="GPIOWriter" class="ptolemy.actor.lib.io.GPIOWriter">
+        <doc>Write to the GPIO of an embedded platform, changes the actors color</doc>
+      </entity>
+      
 <!-- depracated
       <entity name="TokenReader" class="ptolemy.actor.lib.io.TokenReader">
         <doc>Reads a string from a file or URL and parses it into tokens</doc>
