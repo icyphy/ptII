@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="renderHTML.xsl"?>
+<!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
+    "http://www.terraswarm.org/accessors/Accessor_1.dtd">
+<class name="DeviceDiscovery" extends="org.terraswarm.jjs.JSAccessor">
+  <version>0.1</version>
+  <author>Elizabeth Latronico</author>
+  <input
+    name="hostIP"
+    value="localhost"
+    type="string"
+    description="The IP address of the host.  Used to discover other devices on 
+     the local area network."/> 
+  <output
+    name="devices"
+    type="string"
+    description="A JSON object containing the IP address and (when available)
+     name and mac address of devices on the local area network." />        
+  <documentation type="text/html">
+    <![CDATA[
+	This accessor discovers devices on the local area network.
+	See: http://www.terraswarm.org/testbeds/wiki/Main/DiscoverEthernetMACs
+	]]>
+  </documentation>
+  <requires name="discovery"/>
+  <script type="text/javascript">
+    // <![CDATA[
+    
+	var ds = new discovery.DiscoveryService();
+
+	function fire() {
+        // Find all devices on the same subnet as host IP address
+		// (Could automate host IP address discovery, too)
+		// This will ping all devices every time fire is called
+		// Some other device discovery protocols (ssdp, bonjour / zero-conf)
+		// track on/off event messages
+		// However, an initial list would need to be built somehow.  And, the 
+		// device needs to support that protocol.
+		ds.discover(get(hostIP));
+	}
+
+	ds.on('discovered', function(data) {
+		send(data, devices);
+	});
+	
+	// ]]>
+  </script>
+</class>
