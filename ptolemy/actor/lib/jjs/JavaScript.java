@@ -119,7 +119,16 @@ import ptolemy.util.FileUtilities;
       var fire = function() {... function body ...};
       exports.fire = fire;
    </pre>
-   <p>
+   Your script may also register <b>input handler</b> functions by invoking
+   <pre>
+      addInputHandler(function, port);
+   </pre>
+   The specified function will be invoked whenever the port receives a new input.
+   Note that the fire() function, if defined, will also be invoked (after the
+   specified function) and will see
+   the same input. If the specified function is null, then only the fire() function
+   will be invoked.
+   </p><p>
    Usually, you will need to explicitly set the types
    of the output ports. Alternatively, you can enable backward
    type inference on the enclosing model, and the types of output
@@ -136,6 +145,7 @@ import ptolemy.util.FileUtilities;
    The context in which your functions run provide the following global functions:</p>
    <ul>
    <li> alert(string): pop up a dialog with the specified message.</li>
+   <li> clearInterval(int): clear an interval with the specified handle.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
    <li> get(portOrParameter, n): get an input from a port on channel n or a parameter
         (return null if there is no such port or parameter).</li>
@@ -147,6 +157,7 @@ import ptolemy.util.FileUtilities;
    <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
    <li> send(value, port, n): send a value to an output port on channel n</li>
    <li> set(value, parameter): set the value of a parameter of this JavaScript actor. </li>
+   <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
    The last argument of get() and send() (the channel number) is optional.
@@ -462,14 +473,13 @@ public class JavaScript extends TypedAtomicActor {
      *  <li>
      *  After updating all the inputs, for each input port that had a new token on any channel
      *  and for which there is a handler function bound to that port
-     *  via the addInputHandler() method, then invoke that function.
-     *  Such function will be invoked in the following order: First, invoke the functions
+     *  via the addInputHandler() method, invoke that function.
+     *  Such a function will be invoked in the following order: First, invoke the functions
      *  for each PortParameter, in the order in which the PortParameters were created.
      *  Then invoke the functions for the ordinary input ports.
      *  <li>
-     *  Next, if the current script has a fire() function, then it.
+     *  Next, if the current script has a fire() function, then invoke it.
      *  </ol>
-     *  FIXME: Top-level docs don't explain fire().
      *  <p>
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
