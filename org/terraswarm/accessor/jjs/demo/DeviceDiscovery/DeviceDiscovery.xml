@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DeviceDiscovery" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 48, 928, 617}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 40.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Enter host machine &#10;IP address here:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 195.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses an accessor to discover devices on the local area network.&#10;&#10;The host code, in DeviceDiscoveryHelper, is written in Java and interfaces&#10;to the Javascript accessor using Nashorn libraries.  &#10;&#10;The host code determines the host platform, then executes the ping and arp &#10;commands to find devices, and MAC addresses and names where available.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 25.0]">
+        </property>
+    </property>
+    <entity name="DeviceDiscoveryAccessor" class="org.terraswarm.accessor.jjs.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var discovery = require(&quot;c:/workspaceluna/ptII/org/terraswarm/accessor/jjs/demo/DeviceDiscovery/discovery.js&quot;);&#10;&#10;var ds = new discovery.DiscoveryService();&#10;&#10;function fire() {&#10;        // Find all devices on the same subnet as host IP address&#10;	// (Could automate host IP address discovery, too)&#10;	// This will ping all devices every time fire is called&#10;	// Some other device discovery protocols (ssdp, bonjour / zero-conf)&#10;	// track on/off event messages&#10;	// However, an initial list would need to be built somehow.  And, the &#10;	// device needs to support that protocol.&#10;	ds.discover(get(hostIP));&#10;}&#10;&#10;ds.on('discovered', function(data) {&#10;	send(data, devices);&#10;});&#10;">
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 265.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="devices" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(arrayType({IPaddress=string, name=string, mac=string}))">
+            </property>
+        </port>
+        <port name="hostIP" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="IPaddress" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;123.456.789.123&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 265.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DeviceDiscoveryAccessor.devices" relation="relation"/>
+    <link port="DeviceDiscoveryAccessor.hostIP" relation="relation2"/>
+    <link port="IPaddress.output" relation="relation2"/>
+    <link port="Display.input" relation="relation"/>
+</entity>
