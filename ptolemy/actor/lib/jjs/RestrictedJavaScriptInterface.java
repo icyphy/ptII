@@ -59,6 +59,14 @@ public class RestrictedJavaScriptInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear the interval with the specified handle, if it has not already executed.
+     *  @param handle The interval handle.
+     *  @see #setInterval(Runnable, int)
+     */
+    public void clearInterval(Integer handle) {
+        _actor.clearTimeout(handle);
+    }
+
     /** Clear the timeout with the specified handle, if it has not already executed.
      *  @param handle The timeout handle.
      *  @see #setTimeout(Runnable, int)
@@ -90,6 +98,23 @@ public class RestrictedJavaScriptInterface {
      */
     public void log(String message) {
 	_actor.log(message);
+    }
+
+    /** Invoke the specified function after the specified interval and
+     *  periodically after that.
+     *  The time will be added to the current time of the director, and fireAt()
+     *  request will be made of the director. If the director cannot fulfill the
+     *  request, this method will throw an exception. Note that if you want
+     *  real-time behavior, then the director's synchronizeToRealTime parameter
+     *  needs to be set to true.
+     *  @param function The function to invoke.
+     *  @param millisecond The number of milliseconds in the future to invoke it
+     *   and the period thereafter.
+     *  @return A unique ID for this callback
+     *  @throws IllegalActionException If the director cannot respect the request.
+     */
+    public int setInterval(final Runnable function, int millisecond) throws IllegalActionException {
+	return _actor.setInterval(function, millisecond);
     }
 
     /** Invoke the specified function after the specified amount of time.

@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HandlerWithSuppress" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every five seconds, suppress the output for five seconds.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 163, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 10.0, 11.0, 12.0, 13.0, 14.0, 20.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="10.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{5.0, 10.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 180.0}">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={826, 195, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 120.0}">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 190.0}">
+        </property>
+    </entity>
+    <entity name="HandlerWithSuppress" class="org.terraswarm.accessor.jjs.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    var handleTimeout = function() {&#10;      send(true, produce);&#10;    };&#10;	var inputHandler = function() {&#10;      count = count + 1;&#10;      if (!get(suppress)) {&#10;        send(count, output);&#10;      }&#10;    };&#10;	addInputHandler(inputHandler, produce);&#10;	exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(handleTimeout, 1000);&#10;    }&#10;	// &#10;  ">
+        </property>
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/accessor/jjs/test/auto/accessors/HandlerWithSuppress.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor produces outputs periodically, at one second intervals,&#10;as long as the most recently received suppress input is not true.&#10;The output is a count of the periods, starting with 1.&#10;	&#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="suppress (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, then suppress the output triggered by a callback.">
+            </property>
+            <property name="produce (port)" class="ptolemy.kernel.util.StringAttribute" value="An event here is produced as an output, unless suppressed.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The count of the firing.">
+            </property>
+        </property>
+        <property name="suppress" class="ptolemy.actor.parameters.PortParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 190.0]">
+        </property>
+        <port name="suppress" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="produce" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[315.0, 190.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=315.0,y=190.0}, tail={id=&quot;Display.input&quot;,x=355.0,y=120.0}, points={315.0,120.0} },{ head={id=&quot;CallbackWithSuppress.output&quot;,x=185.0,y=190.0}, tail={id=&quot;relation4.vertex1&quot;,x=315.0,y=190.0}, points={} },{ head={id=&quot;CurrentTime.trigger&quot;,x=375.0,y=190.0}, tail={id=&quot;relation4.vertex1&quot;,x=315.0,y=190.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Test.input" relation="relation3"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="Display.input" relation="relation4"/>
+    <link port="CurrentTime.output" relation="relation3"/>
+    <link port="CurrentTime.trigger" relation="relation4"/>
+    <link port="HandlerWithSuppress.suppress" relation="relation"/>
+    <link port="HandlerWithSuppress.output" relation="relation4"/>
+</entity>

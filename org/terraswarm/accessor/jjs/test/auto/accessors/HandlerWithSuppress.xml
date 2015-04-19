@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
+    "http://www.terraswarm.org/accessors/Accessor_1.dtd">
+<class name="HandlerWithSuppress" extends="org.terraswarm.JSAccessor">
+  <version>0.1</version>
+  <author>Edward A. Lee</author>
+  <input
+    name="suppress"
+    value="false"
+    type="boolean"
+    description="If true, then suppress the output triggered by a callback."/>
+  <input
+    name="produce"
+    description="An event here is produced as an output, unless suppressed."/>
+  <output
+    name="output"
+    type="number"
+    description="The count of the firing."/>       
+  <documentation type="text/html">
+    <![CDATA[
+This accessor produces outputs periodically, at one second intervals,
+as long as the most recently received suppress input is not true.
+The output is a count of the periods, starting with 1.
+	]]>
+  </documentation>
+  <script type="text/javascript">
+    // <![CDATA[
+    var count;
+    var handleTimeout = function() {
+      send(true, produce);
+    };
+	var inputHandler = function() {
+      count = count + 1;
+      if (!get(suppress)) {
+        send(count, output);
+      }
+    };
+	addInputHandler(inputHandler, produce);
+	exports.initialize = function() {
+      count = 0;
+      setInterval(handleTimeout, 1000);
+    }
+	// ]]>
+  </script>
+</class>
