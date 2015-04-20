@@ -22,7 +22,9 @@
 
             <input source="ptolemy/domains/rendezvous/lib/rendezvousentities.xml"/>
     	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
-    	    <input source="ptolemy/domains/qss/lib/qssentities.xml"/>
+
+            <!-- Do not include qss entities in Ptiny. qss entities should only by in -full and -cyphysim. -->
+    	    <!-- input source="ptolemy/domains/qss/lib/qssentities.xml"/  -->
     	    
 	    <!-- Do not include pthalesentities.xml here, this file is used by
                  ptiny, which includes only a subset of domains 
