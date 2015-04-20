@@ -1,9 +1,9 @@
-# Makefile for TerraSwarm actors.
+# Makefile for TerraSwarm demos
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70389 2014-10-22 22:25:44Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,17 +30,14 @@
 ##########################################################################
 
 # Root of Ptolemy II directory
-ROOT = ../../../..
+ROOT = ../../../../..
 
-DIRS = demo test
+DIRS = DeviceDiscovery	MoC
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/jjs
+ME =  org/terraswarm/accessor/jjs/demo
 
-# AccessorOne.java depends on JavaScript.java, which uses these
-# libraries.  If we run 'make fast', and JavaScript.class does not
-# exist, then we will need these jars in the classpath.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)
 
 # True source directory
 VPATH =	$(ROOT)/$(ME)
@@ -50,21 +47,25 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = jjs
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = demo
+#PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	JSAccessor.java 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	DeviceDiscovery/DeviceDiscovery.jar \
+	MoC/MoC.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	JSAccessorIcon.xml
+JSRCS = 
+
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

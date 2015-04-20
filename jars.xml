@@ -43,6 +43,8 @@
     <include name="org/ptolemy/qss/qss.jar" />
     <include name="org/ptolemy/qss/demo/demo.jar" />
     <include name="org/ptolemy/ssm/ssm.jar" />
+    <include name="org/terraswarm/accessor/jjs/demo/demo.jar" />
+    <include name="org/terraswarm/accessor/js/demo/demo.jar" />
     <include name="org/terraswarm/terraswarm.jar" />
     <include name="org/terraswarm/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
@@ -4229,7 +4231,29 @@
       </fileset>
   </jar>
 
-    <!-- org/terraswarm/demo/demo.jar -->
+  <!-- org/terraswarm/accessor/jjs/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/terraswarm/accessor/jjs/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/terraswarm/accessor/jjs/demo/*/*.class"/>
+        <include name="org/terraswarm/accessor/jjs/demo/*/*.js"/>
+        <include name="org/terraswarm/accessor/jjs/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+      <!-- org/terraswarm/accessor/js/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/terraswarm/accessor/js/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/terraswarm/accessor/js/demo/*/*.class"/>
+        <include name="org/terraswarm/accessor/js/demo/*/*.js"/>
+        <include name="org/terraswarm/accessor/js/demo/*/*.xml"/>
+      </fileset>
+  </jar>
+
+  <!-- org/terraswarm/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/terraswarm/demo/demo.jar"
 	 >

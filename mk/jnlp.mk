@@ -588,6 +588,8 @@ FULL_ONLY_JNLP_JARS = \
 	doc/papers/papers.jar \
 	$(EXPORT_JARS) \
 	$(PTANGO_JAR_FILES) \
+	org/terraswarm/accessors/jjs/demo/demo.jar \
+	org/terraswarm/accessors/js/demo/demo.jar \
 	org/terraswarm/terraswarm.jar \
 	org/terraswarm/demo/demo.jar \
 	org/ptolemy/ptango/ptango.jar \
