@@ -295,6 +295,9 @@ public class ExportModelJUnitTest {
                 "ModularCG.xml", // cg model fails to run while exporting.
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
+                "ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml",  // Has links to pub and sub
+                "ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml",  // Subscriber needs to run
+                "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml",  // Publisher needs to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RecordManipulation", // Python demo pops up a dialog.
@@ -310,6 +313,15 @@ public class ExportModelJUnitTest {
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
                 "TunnelingBallDevice", // Annotation says that it cannot be run.
+                "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/ReadFromVertxBus.xml", // Requires that other demos run.
+                "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml", // Requires that other demos run.
+                "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Just has links to other demos.
+                "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/WriteToVertxBus.xml", // Requires that other demos run.
+                "ptolemy/domains/ptides/demo/VertxDemo/VertxDemo.xml",  // Just has links to other VertX demos.
+                "ptolemy/domains/ptides/demo/VertxDemo/Publisher.xml", // Requires that other demos run.
+                "ptolemy/domains/ptides/demo/VertxDemo/Subscriber.xml", // Requires that other demos run.
+                "ptolemy/domains/ptides/demo/VertxDemo/Publisher2.xml", // Requires that other demos run.
+                "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
                 "VideoCapture.xml", // Requires a video camera.
         };
         for (String element : skip) {
