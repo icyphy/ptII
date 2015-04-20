@@ -1082,7 +1082,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e, "RTIinternalError ");
         }
-        suppAttributes.add((Integer) tObj[4], valAttribute);
+        suppAttributes.add(_getAttributeHandleFromTab(tObj), valAttribute);
 
         byte[] tag = EncodingHelpers.encodeString(
                 _getPortFromTab(tObj).getContainer().getName());
@@ -1335,8 +1335,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     event = elt.getValue().getFirst();
 
                     // Get the HLA subscriber actor destinatory of the event.
-                    TypedIOPort tiop = (TypedIOPort) _hlaAttributesSubscribedTo
-                            .get(elt.getKey())[0];
+                    TypedIOPort tiop = _getPortFromTab(_hlaAttributesSubscribedTo
+                            .get(elt.getKey()));
                     HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
 
                     hs.putReflectedHlaAttribute(event);
@@ -1602,7 +1602,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                         Time ts = null;
                         TimedEvent te = null;
-
+                        Object value = null;
 
                         // The tuple (attributeHandle, classHandle) allows to
                         // identify the object attribute 
@@ -1647,14 +1647,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
                                                     .getTime());
+                                    value = MessageProcessing.decodeHlaValue(hs,
+                                                            (BaseType) _getTypeFromTab(tObj),
+                                                            theAttributes.getValue(i));
                                     te = new OriginatedEvent(
                                             ts,
                                             new Object[] {
-                                                    (BaseType) _getTypeFromTab(tObj),
-                                                    MessageProcessing.decodeHlaValue(hs,
-                                                            (BaseType) _getTypeFromTab(tObj),
-                                                            theAttributes
-                                                                    .getValue(i)) },
+                                                (BaseType) _getTypeFromTab(tObj),value},
                                     theObject);
                                 }
                             } catch (IllegalActionException e) {
@@ -1664,13 +1663,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             HlaSubscriber hs = (HlaSubscriber) (_getPortFromTab(tObj)).getContainer();
                             _fromFederationEvents.get(hs.getIdentity()).add(te);
                             if (_debugging) {
-                                _debug(HlaManager.this.getDisplayName()
+                                _debug(getDisplayName()
                                         + " INNER"
                                         + " reflectAttributeValues() (RAV) - "
                                         + "HLA attribute: "
-                                        + hs.getParameterName()
-                                        + ", timestamp=" + te.timeStamp
-                                        + ") has been received + pushed to " + hs.getDisplayName()
+                                        + hs.getParameterName() 
+                                        + ", timestamp=" + te.timeStamp + " ,val="+value.toString() 
+                                        + ") has been received + stored for " 
+                                        + hs.getDisplayName()
                                 );
                             }
                         }
@@ -1904,8 +1904,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                 // Fill the attribute handle set with all attibute to publish.
                 for (String s : hlaPublishers) {
-                    _attributesLocal.add((Integer) _hlaAttributesToPublish
-                            .get(s)[4]);
+                    _attributesLocal.add(
+                            _getAttributeHandleFromTab(_hlaAttributesToPublish.get(s))
+                    );
                 }
 
                 // Declare to the Federation the HLA attribute(s) to publish.
@@ -2030,8 +2031,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         .getRtiFactory().createAttributeHandleSet();
                 
                 for (String s : hlaSubList) {
-                    _attributesLocal.add((Integer) _hlaAttributesSubscribedTo
-                            .get(s)[4]);
+                    _attributesLocal.add(_getAttributeHandleFromTab( _hlaAttributesSubscribedTo
+                            .get(s)));
                 }
                 
                 _rtia.subscribeObjectClassAttributes(classHandle,
