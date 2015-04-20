@@ -1,6 +1,6 @@
 /* This actor implements a subscriber in a HLA/CERTI federation.
 
-@Copyright (c) 2013 The Regents of the University of California.
+@Copyright (c) 2013-2015 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -66,22 +66,22 @@ import ptolemy.kernel.util.Workspace;
 //// HlaSubcriber
 
 /**
- * <p>This actor implements a subscriber in a HLA/CERTI federation. This
- * subscriber is associated to one HLA attribute. Reflected values of the HLA
- * attribute are received from the HLA/CERTI Federation by the
- * {@link HlaManager} attribute. The {@link HlaManager} invokes the
- * putReflectedAttribute() to put the received value in the subscriber
- * tokens queue and to program its next firing times, using the _fireAt()
- * method.
- * </p><p>
- * The name of this actor is mapped to the name of the HLA attribute in the
+ * This actor implements a subscriber in a HLA/CERTI federation.
+ *
+ * <p> This subscriber is associated to one HLA attribute. Reflected
+ * values of the HLA attribute are received from the HLA/CERTI
+ * Federation by the {@link HlaManager} attribute. The {@link
+ * HlaManager} invokes the putReflectedAttribute() to put the received
+ * value in the subscriber tokens queue and to program its next firing
+ * times, using the _fireAt() method.</p>
+ *
+ * <p>The name of this actor is mapped to the name of the HLA attribute in the
  * federation and need to match the Federate Object Model (FOM) specified for
  * the Federation. The data type of the output port has to be the same type of
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
  * attribute object class describes in the FOM. The parameter
  * <i>useHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
- * RecordToken for HLA events.
- * </p>
+ * RecordToken for HLA events./p>
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id$
@@ -124,20 +124,18 @@ public class HlaSubscriber extends TypedAtomicActor {
         useCertiMessageBuffer.setExpression("false");
         useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
         attributeChanged(useCertiMessageBuffer);
-        
-
                 
-        opaqueIdendifier = new Parameter(this, "opaqueIdentifier");
-        opaqueIdendifier.setDisplayName("Opaque identifier of the federate");
-        opaqueIdendifier.setTypeEquals(BaseType.STRING);
-        opaqueIdendifier.setExpression("\"opaqueIdentifier\"");
+        opaqueIdentifier = new Parameter(this, "opaqueIdentifier");
+        opaqueIdentifier.setDisplayName("Opaque identifier of the federate");
+        opaqueIdentifier.setTypeEquals(BaseType.STRING);
+        opaqueIdentifier.setExpression("\"opaqueIdentifier\"");
         
         parameterName = new Parameter(this, "parameterName");
         parameterName.setDisplayName("Name of the parameter to receive");
         parameterName.setTypeEquals(BaseType.STRING);
         parameterName.setExpression("\"parameterName\"");
         
-        attributeChanged(opaqueIdendifier);
+        attributeChanged(opaqueIdentifier);
         attributeChanged(parameterName);
         
         _reflectedAttributeValues = new LinkedList<TimedEvent>();
@@ -161,17 +159,17 @@ public class HlaSubscriber extends TypedAtomicActor {
     public TypedIOPort output = null;
 
     /**
-    * The HLA Parameter the HLASuscriber is interedted into
-    */
+     * The HLA Parameter the HLASubscriber is interested in.
+     */
     public Parameter parameterName;
     
    /** 
      * Meaningless string used for a 1 <-> 1 mapping with the objectID enabling
      * the HLASuscriber to filter not relevant tokens.
-     * Thus all HLASuscribers with the same _opaqueIdendifier 
-     * will refere to the same object in the federation
+     * Thus all HLASuscribers with the same opaqueIdentifier 
+     * will refere to the same object in the federation.
      */ 
-    public Parameter opaqueIdendifier;
+    public Parameter opaqueIdentifier;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -209,9 +207,9 @@ public class HlaSubscriber extends TypedAtomicActor {
                         BaseType.DOUBLE, BaseType.DOUBLE }));
             }
         }
-        else if(attribute == parameterName || attribute == opaqueIdendifier){
+        else if(attribute == parameterName || attribute == opaqueIdentifier){
             try {
-                StringToken opaqueName = (StringToken) opaqueIdendifier.getToken();
+                StringToken opaqueName = (StringToken) opaqueIdentifier.getToken();
                 StringToken paramName = (StringToken) parameterName.getToken();
                 String param = "";
                 String opaque = "";
@@ -376,7 +374,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     public boolean isTaken(){
         String name = null;
         try {
-            name= ((StringToken) opaqueIdendifier.getToken()).stringValue();
+            name= ((StringToken) opaqueIdentifier.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
             illegalActionException.printStackTrace();
         }
@@ -387,7 +385,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     */
     public String getOpaqueIdentifier(){
         try {
-            return ((StringToken) opaqueIdendifier.getToken()).stringValue();
+            return ((StringToken) opaqueIdentifier.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
         }
         return "";
@@ -497,8 +495,8 @@ public class HlaSubscriber extends TypedAtomicActor {
     private boolean _useCertiMessageBuffer;
         
     /**
-     * used to remeber the mapping _opaqueIdendifier <-> HLA Object id
-     * Filled up by register when HLAManager discovers an object
-    */
+     * Wsed to remeber the mapping opaqueIdentifier <-> HLA Object id
+     * Filled up by register when HLAManager discovers an object.
+     */
     private static HashMap<String,Integer> _mapping = new HashMap<String,Integer>();
 }
