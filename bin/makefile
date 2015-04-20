@@ -92,6 +92,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	mkjnlp \
 	mkl4j \
 	mkosgi \
+	mkpttest \
 	ptjunit \
 	updateFmu \
 	viptos
