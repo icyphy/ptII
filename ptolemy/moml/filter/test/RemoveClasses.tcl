@@ -596,23 +596,23 @@ test RemoveClasses-2.2 {Filter a SequencePlotter} {
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
         </property>
     </entity>
-    <entity name="RealTimePlotter" class="ptolemy.actor.lib.DiscardDoubles">
+    <entity name="RealTimePlotter" class="ptolemy.moml.filter.DiscardDoubles">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 65.0]">
         </property>
     </entity>
-    <entity name="ArrayPlotter" class="ptolemy.actor.lib.DiscardDoublesArray">
+    <entity name="ArrayPlotter" class="ptolemy.moml.filter.DiscardDoublesArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 355.0]">
         </property>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.DiscardDoubles">
+    <entity name="SequencePlotter" class="ptolemy.moml.filter.DiscardDoubles">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
         </property>
     </entity>
-    <entity name="HistogramPlotter" class="ptolemy.actor.lib.DiscardDoubles">
+    <entity name="HistogramPlotter" class="ptolemy.moml.filter.DiscardDoubles">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 130.0}">
         </property>
     </entity>
-    <entity name="BarGraph" class="ptolemy.actor.lib.DiscardDoublesArray">
+    <entity name="BarGraph" class="ptolemy.moml.filter.DiscardDoublesArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 290.0]">
         </property>
     </entity>
