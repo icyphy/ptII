@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	DOPCSV.xml \
 	DOPCenter.gif \
 	DOPCenter.xml \
 	expand-group.vbs \
@@ -67,6 +68,7 @@ MISC_FILES = $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	Placard.pdf \
+	DOP.csv \
 	DOPCenter.png
 
 JCLASS = $(JSRCS:%.java=%.class)
