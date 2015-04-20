@@ -53,3 +53,6 @@ pdflatex Placard.tex
 
 # Clean up junk created by pdflatex and Ptolemy II.
 rm Placard.aux Placard.log Placard.tex
+
+# Update DOP.csv
+$PTII/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication DOPCSV.xml
