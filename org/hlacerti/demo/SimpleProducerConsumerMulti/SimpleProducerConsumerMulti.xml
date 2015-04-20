@@ -75,7 +75,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier &amp; David C&ecirc;me (ISAE-SUPAERO)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier &amp; David C&ocirc;me (ISAE-SUPAERO)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 230.0]">
         </property>
