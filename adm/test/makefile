@@ -119,7 +119,7 @@ missingDocPackages: $(JAVAFILENAMES)
 # Invoked in Release.tcl by the test that does a svn status.
 # Needed because it is hard to remove files that have dollar signs in them with tcl.
 rmClassFiles:
-	(cd $(ROOT); rm -f *.class)
+	(cd $(ROOT); rm -rf *.class ptolemy/vergil/basic/export/test/persist)
 
 KRUFT = \
 	$(JAVAFILENAMES) \
