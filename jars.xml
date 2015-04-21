@@ -28,6 +28,7 @@
     <include name="lbnl/lbnl.jar" />
     <include name="lib/diva.jar" />
     <include name="lib/ptliblicenses.jar" />
+    <include name="org/hlacert/hlacerti.jar" />
     <include name="org/json/json.jar" />
     <include name="org/mlc/mlc.jar" />
     <include name="org/ptolemy/fmi/fmi.jar" />
@@ -104,7 +105,6 @@
     <include name="ptolemy/actor/ptalon/gt/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/gt/gt.jar" />
     <include name="ptolemy/actor/ptalon/ptalon.jar" />
-    <include name="ptolemy/apps/hlacerti/hlacerti.jar" />
     <include name="ptolemy/backtrack/backtrack.jar" />
     <include name="ptolemy/backtrack/demo/demo.jar" />
     <include name="ptolemy/caltrop/caltrop.jar" />
@@ -1970,27 +1970,6 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/ptalon/gt/demo/Adder/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/apps/hlacerti/hlacerti.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/apps/hlacerti/hlacerti.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="lib/jcerti-license.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/apps/hlacerti/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/apps/hlacerti/demo/*/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/apps/hlacerti/demo/*/*.fed"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/apps/hlacerti/lib/*.class"/>
       </fileset>
     </jar>
 
@@ -3994,6 +3973,28 @@
 	<include name="com/jgoodies/forms/util/*.class"/>
       </fileset>
     </jar>
+
+    <!-- org/hlacerti/hlacerti.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/hlacerti/hlacerti.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="lib/jcerti-license.htm"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/hlacerti/*.txt"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/hlacerti/demo/*/*.xml"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/hlacerti/demo/*/*.fed"/>
+      </fileset>
+      <fileset dir="${basedir}">
+	<include name="org/hlacerti/lib/*.class"/>
+      </fileset>
+    </jar>
+
 
     <!-- org/json/json.jar -->
     <jar defaultexcludes="yes"
