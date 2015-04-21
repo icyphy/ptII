@@ -3,7 +3,7 @@
 # Version: $Id$
 # Makefile Author: Christopher Hylands
 #
-# Copyright (c) 1997-2014 The Regents of the University of California.
+# Copyright (c) 1997-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -268,6 +268,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.mbed.adapters.ptolemy.actor.lib.gui \
+	ptolemy.cg.adapter.generic.program.procedural.c.mbed.adapters.ptolemy.actor.lib.io \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel \
@@ -278,6 +279,8 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.xmos.adapters.ptolemy.domains.ptides.lib \
 	ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.fmima.adapters.ptolemy.actor.lib.fmi \
+	ptolemy.cg.adapter.generic.program.procedural.fmimahybrid.adapters.ptolemy.actor \
+	ptolemy.cg.adapter.generic.program.procedural.fmimahybrid.adapters.ptolemy.actor.lib.fmi \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.colt \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.conversions \
