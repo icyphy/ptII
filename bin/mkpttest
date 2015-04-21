@@ -32,7 +32,8 @@ case $1 in
             cd $2; make
             echo "Running make in $2/junit"
             cd junit; make
-            echo "To clean up, run $0 -c $2"
+            echo "If there are problems and the test files need to be regenerated, run '$0 -c $2' to clean up and then '$0 $2' to rebuild."
+            echo "If there are not problems, to add files to version control, run $0 -v $2"
             exit
         else
             echo "$0: $2/makefile does not exist, perhaps you need to first run $0 $2"
