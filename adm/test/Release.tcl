@@ -109,10 +109,11 @@ ptolemy.plot.servlet}
 set currentDirectory [pwd]
 test release-3.1 {Run svn status and look for files that should be checked in.  See ptII/adm/bin/svnignoreupdate for a script to fix this} {
 
+    exec make --no-print-directory --silent rmClassFiles
     cd "$PTII"
-    if {[glob -nocomplain {*.class}] != {}} {
-	exec rm [glob -nocomplain {*.class}]
-    } 
+    #if {[glob -nocomplain {*.class}] != {}} {
+	#exec rm [glob -nocomplain {*.class}]
+    #} 
     puts "Removing doc/books/systems because building jnlp files creates files and directories."
     exec rm -rf doc/books/systems papers
     exec svn update doc/books/systems

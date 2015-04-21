@@ -99,7 +99,7 @@ chktestdir:
 
 # Check the demos for demos that have $PTII in them.
 dollarPTII:
-	-(cd $(PTII); cat ptolemy/configs/doc/models.txt | sed 's@\$$CLASSPATH/@@' | xargs grep '$PTII' | grep -v StringAttribute)
+	-(cd $(PTII); cat ptolemy/configs/doc/models.txt | sed 's@\$$CLASSPATH/@@' | xargs grep '$PTII' |  egrep -v '(StringAttribute|ptinyos/demo/.*/output|CoSimulation.xml|ptulip/demo/robot/robot.xml)')
 
 PTIITXTFILES=adm/bin/ptIItxtfiles
 TXTFILENAMES=/tmp/txtfilenames
@@ -115,6 +115,11 @@ missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p
 	@(cd $(ROOT)/doc; $(MAKE) echo | sort > /tmp/missingDocPackages.d)
 	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal)"
+
+# Invoked in Release.tcl by the test that does a svn status.
+# Needed because it is hard to remove files that have dollar signs in them with tcl.
+rmClassFiles:
+	(cd $(ROOT); rm -f *.class)
 
 KRUFT = \
 	$(JAVAFILENAMES) \
