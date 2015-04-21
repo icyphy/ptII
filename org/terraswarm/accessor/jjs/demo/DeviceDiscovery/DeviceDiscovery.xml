@@ -4,13 +4,13 @@
 <entity name="DeviceDiscovery" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 48, 928, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 48, 1080, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.0, 252.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -35,7 +35,7 @@
         </property>
     </property>
     <entity name="DeviceDiscoveryAccessor" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var discovery = require(&quot;c:/workspaceluna/ptII/org/terraswarm/accessor/jjs/demo/DeviceDiscovery/discovery.js&quot;);&#10;&#10;var ds = new discovery.DiscoveryService();&#10;&#10;function fire() {&#10;        // Find all devices on the same subnet as host IP address&#10;	// (Could automate host IP address discovery, too)&#10;	// This will ping all devices every time fire is called&#10;	// Some other device discovery protocols (ssdp, bonjour / zero-conf)&#10;	// track on/off event messages&#10;	// However, an initial list would need to be built somehow.  And, the &#10;	// device needs to support that protocol.&#10;	ds.discover(get(hostIP));&#10;}&#10;&#10;ds.on('discovered', function(data) {&#10;	send(data, devices);&#10;});&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var discovery = require(&quot;$PTII/org/terraswarm/accessor/jjs/demo/DeviceDiscovery/discovery.js&quot;);&#10;&#10;var ds = new discovery.DiscoveryService();&#10;&#10;function fire() {&#10;        // Find all devices on the same subnet as host IP address&#10;	// (Could automate host IP address discovery, too)&#10;	// This will ping all devices every time fire is called&#10;	// Some other device discovery protocols (ssdp, bonjour / zero-conf)&#10;	// track on/off event messages&#10;	// However, an initial list would need to be built somehow.  And, the &#10;	// device needs to support that protocol.&#10;	ds.discover(get(hostIP));&#10;}&#10;&#10;ds.on('discovered', function(data) {&#10;	send(data, devices);&#10;});&#10;">
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </property>
@@ -57,7 +57,7 @@
         </port>
     </entity>
     <entity name="IPaddress" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;123.456.789.123&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;192.168.1.12&quot;">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
