@@ -60,6 +60,7 @@ test release-1.1 {Check for missing makefiles} {
 ./ptolemy/backtrack/eclipse/plugin/widgets/makefile
 ./ptolemy/backtrack/ui/makefile
 ./ptolemy/backtrack/util/java/util/makefile
+./ptolemy/domains/ptinyos/demo/Surge/output/makefile
 ./ptolemy/plot/servlet/makefile}
 
 test release-2.1 {Check for directories that have java files, but are not in doc/makefile} {
