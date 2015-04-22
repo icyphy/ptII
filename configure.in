@@ -4973,7 +4973,9 @@ else
 	PTPAHO_MQTT_JAR=$withval,
 	PTPAHO_MQTT_JAR=$PTII/lib/org.eclipse.paho.client.mqttv3.jar)
 
-    if test ! -f "$PTPAHO_MQTT_JAR"; then
+    if test -f "$PTPAHO_MQTT_JAR"; then
+        PT_MSG_RESULT([$PTPAHO_MQTT_JAR])
+    else
         AC_MSG_WARN([Failed to find the PTPAHO_MQTT Jar file.
     The default location is $PTII/lib/
     Paho MQTT is used by $PTII/ptolemy/actor/lib/jjs/modules/localStorage])
