@@ -1,0 +1,762 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="correctionBlock_LEDCube" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+        </property>
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.mbed">
+        </property>
+        <property name="variablesAsArrays" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 115.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155, 100}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 23, 855, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[621, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000009">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{363.4036458333333, 280.15540907118054}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="LEDCube" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[597.5, 260.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 50, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000095">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.9999999999997, 251.99999999999264}">
+        </property>
+        <port name="deltaSize" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 170.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="deltaX" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 205.0]">
+            </property>
+        </port>
+        <port name="deltaY" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 245.0]">
+            </property>
+        </port>
+        <port name="deltaZ" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 285.0]">
+            </property>
+        </port>
+        <port name="hue" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 320.0]">
+            </property>
+        </port>
+        <entity name="NeoPixel_LED_Strip" class="ptolemy.cg.lib.EmbeddedCodeActor">
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#include &quot;WS2812.h&quot;&#10;#endif&#10;#define WS2812_BUF 300&#10;int pixels[WS2812_BUF];&#10;#ifdef __MBED__&#10;WS2812 ws(D9, WS2812_BUF, 0, 5, 5, 0);&#10;#endif&#10;/**/&#10;&#10;/***initBlock***/&#10;for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;pixels[i] = 0x000000;&#10;}&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;#endif&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;if ($getAndFree(clear)) {&#10;for (int i = 0; i &lt; WS2812_BUF; i++) {&#10;pixels[i] = 0x000000;&#10;}&#10;}&#10;Token *  indexTokenArray = $get(ledIndex);&#10;Token *  colorsTokenArray = $get(color);&#10;int arraySize = indexTokenArray-&gt;payload.IntArray-&gt;size;&#10;for (int i = 0; i &lt; arraySize; i++) {&#10;    pixels[IntArray_get(indexTokenArray, i)] = IntArray_get(colorsTokenArray,i);&#10;}&#10;IntArray_delete(indexTokenArray);&#10;IntArray_delete(colorsTokenArray);&#10;free(indexTokenArray);&#10;free(colorsTokenArray);&#10;#ifdef __MBED__&#10;ws.write(pixels);&#10;//wait(1);&#10;#endif&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;&#10;&#10;">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 315.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="localClock" class="ptolemy.actor.LocalClock">
+                    <property name="globalTimeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
+                    </property>
+                    <property name="clockRate" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
+                </property>
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                    <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="constrainBufferSizes">
+                    </property>
+                </property>
+            </property>
+            <property name="CodeGenerator_AutoAdded" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+                <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+                    <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                </property>
+                <property name="generateInSubdirectory" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c">
+                </property>
+                <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="maximumLinesPerBlock" class="ptolemy.data.expr.Parameter" value="2500">
+                </property>
+                <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="make -f @modelName@.mk run">
+                </property>
+                <property name="useMake" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="variablesAsArrays" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="verbosity" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="compileCommand" class="ptolemy.data.expr.StringParameter" value="make -f @modelName@.mk">
+                </property>
+                <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0, 0, 0, 1.0}">
+                    </property>
+                </property>
+                <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, -1.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="14.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, -1.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7, 0.7, 0.7, 1.0}">
+                    </property>
+                </property>
+                <property name="rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -1.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="15.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="14.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -1.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7, 0.7, 0.7, 1.0}">
+                    </property>
+                </property>
+                <property name="ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -8.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.78, 0.2, 1.0}">
+                    </property>
+                </property>
+                <property name="ellipse4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.78, 0.2, 1.0}">
+                    </property>
+                </property>
+                <property name="ellipse5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 8.0]">
+                    </property>
+                    <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="6.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.78, 0.2, 1.0}">
+                    </property>
+                </property>
+                <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="59.0">
+                    </property>
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="26.0">
+                    </property>
+                    <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.4}">
+                    </property>
+                    <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+                </property>
+            </property>
+            <port name="ledIndex" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+                </property>
+            </port>
+            <port name="color" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+                </property>
+            </port>
+            <port name="clear" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="paramsToIndexes" class="ptolemy.cg.lib.EmbeddedCodeActor">
+            <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#ifdef __MBED__&#10;#include &quot;mbed.h&quot;&#10;#endif&#10;#define nCOLs 10&#10;int xPos;&#10;int yPos;&#10;int zPos;&#10;int cubeSize;&#10;/**/&#10;&#10;/***initBlock***/&#10;xPos = 0;&#10;yPos = 0;&#10;zPos = 0;&#10;cubeSize = 2;&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;&#10;////////////////////////////////////////////////////////&#10;xPos += $getAndFree(deltaX);&#10;yPos += $getAndFree(deltaY);&#10;zPos += $getAndFree(deltaZ);&#10;int red = $getAndFree(r);&#10;int green = $getAndFree(g);&#10;int blue = $getAndFree(b);&#10;cubeSize += $getAndFree(deltaSize);&#10;&#10;            if (xPos &lt; 0) {&#10;                xPos = 0;&#10;            }&#10;            if (yPos &lt; 0) {&#10;                yPos = 0;&#10;            }&#10;            if (zPos &lt; 0) {&#10;                zPos = 0;&#10;            }&#10;&#10;if (!((xPos + cubeSize) &lt;= nCOLs &amp;&amp; (yPos + cubeSize) &lt;= nCOLs &amp;&amp; (zPos + cubeSize) &lt;= nCOLs)) {&#10;            if ((xPos + cubeSize) &gt; nCOLs) {&#10;                xPos += nCOLs - (xPos + cubeSize);&#10;            }&#10;            if ((yPos + cubeSize) &gt; nCOLs) {&#10;                yPos += nCOLs - (yPos + cubeSize);&#10;            }&#10;            if ((zPos + cubeSize) &gt; nCOLs) {&#10;                zPos += nCOLs - (zPos + cubeSize);&#10;            }&#10;}&#10;&#10;&#10;Token * intTokenArray = IntArray_new(cubeSize*cubeSize, 0);&#10;Token * colorTokenArray = IntArray_new(cubeSize*cubeSize, 0);&#10;&#10;    double bright;&#10;    bright = 1.0 / ((yPos + 1) * (yPos + 1));&#10;    for(int i = xPos; i &lt; xPos + cubeSize; i++) {&#10;        for(int j = zPos; j &lt; zPos + cubeSize; j++) {&#10;            int led;&#10;        if (j % 2 == 0) {&#10;            led = nCOLs*2 * j + i;&#10;        }&#10;        else {&#10;            led = nCOLs*2 * j + nCOLs + ((nCOLs - 1) - i);&#10;        }&#10;                IntArray_insert(intTokenArray, led);&#10;                IntArray_insert(colorTokenArray, ((int)(red*bright) &lt;&lt; 16) + ((int)(green*bright) &lt;&lt; 8) + ((int)(blue*bright)));&#10;        }&#10;    }&#10;    &#10;    //Panel 2&#10;    bright = 1.0 / (((nCOLs-1) - xPos - (cubeSize-1) + 1) * ((nCOLs-1) - xPos - (cubeSize-1) + 1));&#10;    for(int i = yPos; i &lt; yPos + cubeSize; i++) {&#10;        for(int j = zPos; j &lt; zPos + cubeSize; j++) {&#10;            int led;&#10;        if (j % 2 == 0) {&#10;            led = nCOLs*2 * j + nCOLs + i;&#10;        }&#10;        else {&#10;            led = nCOLs*2 * j + ((nCOLs - 1) - i);&#10;        }&#10;                IntArray_insert(intTokenArray, led);&#10;                IntArray_insert(colorTokenArray, ((int)(red*bright) &lt;&lt; 16) + ((int)(green*bright) &lt;&lt; 8) + ((int)(blue*bright)));&#10;        }&#10;    }&#10;    &#10;    //Panel 3&#10;    bright = 1.0 / (((nCOLs-1) - zPos - (cubeSize-1) + 1) * ((nCOLs-1) - zPos - (cubeSize-1) + 1));   &#10;    for(int i = xPos; i &lt; xPos + cubeSize; i++) {&#10;        for(int j = yPos; j &lt; yPos + cubeSize; j++) {&#10;            int led;&#10;        if (j % 2 == 0) {&#10;            led = nCOLs * j + i + 200;&#10;        }&#10;        else {&#10;            led = nCOLs * j + ((nCOLs - 1) - i) + 200;&#10;        }&#10;                IntArray_insert(intTokenArray, led);&#10;                IntArray_insert(colorTokenArray, ((int)(red*bright) &lt;&lt; 16) + ((int)(green*bright) &lt;&lt; 8) + ((int)(blue*bright)));&#10;        }&#10;    }&#10;&#10;&#10;$put(indexes, intTokenArray);&#10;$put(colors, colorTokenArray);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 310.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            </property>
+            <port name="deltaSize" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="indexes" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+                </property>
+            </port>
+            <port name="deltaX" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="deltaY" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="deltaZ" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="colors" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+                </property>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="r" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="g" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="b" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 390.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <entity name="HSBtoRGB" class="ptolemy.cg.lib.EmbeddedCodeActor">
+            <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#include &lt;math.h&gt;&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;double hue_in = $getAndFree(hue);&#10;double saturation_in = $getAndFree(saturation);&#10;double brightness_in = $getAndFree(brightness);&#10;    int red = 0, green = 0, blue = 0;&#10;    if (saturation == 0) {&#10;        red = green = blue = (int) (brightness_in * 255.0 + 0.5);&#10;    } else {&#10;        double h = (hue_in - (double)floor(hue_in)) * 6.0;&#10;        double f = h - (double)floor(h);&#10;        double p = brightness_in * (1.0 - saturation_in);&#10;        double q = brightness_in * (1.0 - saturation_in * f);&#10;        double t = brightness_in * (1.0 - (saturation_in * (1.0 - f)));&#10;        switch ((int) h) {&#10;            case 0:&#10;                red = (int) (brightness_in * 255.0 + 0.5);&#10;                green = (int) (t * 255.0 + 0.5);&#10;                blue = (int) (p * 255.0 + 0.5);&#10;                break;&#10;            case 1:&#10;                red = (int) (q * 255.0 + 0.5);&#10;                green = (int) (brightness_in * 255.0 + 0.5);&#10;                blue = (int) (p * 255.0 + 0.5);&#10;                break;&#10;            case 2:&#10;                red = (int) (p * 255.0 + 0.5);&#10;                green = (int) (brightness_in * 255.0 + 0.5);&#10;                blue = (int) (t * 255.0 + 0.5);&#10;                break;&#10;            case 3:&#10;                red = (int) (p * 255.0 + 0.5);&#10;                green = (int) (q * 255.0 + 0.5);&#10;                blue = (int) (brightness_in * 255.0 + 0.5);&#10;                break;&#10;            case 4:&#10;                red = (int) (t * 255.0 + 0.5);&#10;                green = (int) (p * 255.0 + 0.5);&#10;                blue = (int) (brightness_in * 255.0 + 0.5);&#10;                break;&#10;            case 5:&#10;                red = (int) (brightness_in * 255.0 + 0.5);&#10;                green = (int) (p * 255.0 + 0.5);&#10;                blue = (int) (q * 255.0 + 0.5);&#10;                break;&#10;        }&#10;    }&#10;    $put(r, red);&#10;    $put(g, green);&#10;    $put(b, blue);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+            </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 330.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+            <port name="hue" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="saturation" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="brightness" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="r" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="g" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="b" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 400.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="[95.0, 400.0]">
+            </vertex>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="deltaSize" relation="relation3"/>
+        <link port="deltaX" relation="relation4"/>
+        <link port="deltaY" relation="relation5"/>
+        <link port="deltaZ" relation="relation6"/>
+        <link port="hue" relation="relation7"/>
+        <link port="NeoPixel_LED_Strip.ledIndex" relation="relation2"/>
+        <link port="NeoPixel_LED_Strip.color" relation="relation"/>
+        <link port="NeoPixel_LED_Strip.clear" relation="relation8"/>
+        <link port="paramsToIndexes.deltaSize" relation="relation3"/>
+        <link port="paramsToIndexes.indexes" relation="relation2"/>
+        <link port="paramsToIndexes.deltaX" relation="relation4"/>
+        <link port="paramsToIndexes.deltaY" relation="relation5"/>
+        <link port="paramsToIndexes.deltaZ" relation="relation6"/>
+        <link port="paramsToIndexes.colors" relation="relation"/>
+        <link port="paramsToIndexes.r" relation="relation9"/>
+        <link port="paramsToIndexes.g" relation="relation11"/>
+        <link port="paramsToIndexes.b" relation="relation12"/>
+        <link port="Const.output" relation="relation8"/>
+        <link port="HSBtoRGB.hue" relation="relation7"/>
+        <link port="HSBtoRGB.saturation" relation="relation10"/>
+        <link port="HSBtoRGB.brightness" relation="relation10"/>
+        <link port="HSBtoRGB.r" relation="relation9"/>
+        <link port="HSBtoRGB.g" relation="relation11"/>
+        <link port="HSBtoRGB.b" relation="relation12"/>
+        <link port="Const2.output" relation="relation10"/>
+    </entity>
+    <entity name="Correction" class="ptolemy.cg.lib.EmbeddedCodeActor">
+        <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;#define MAX_COUNT 10&#10;int counter;&#10;int secondCounter;&#10;bool flag;&#10;/**/&#10;&#10;/***initBlock***/&#10;counter = 0;&#10;secondCounter = 0;&#10;flag = false;&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary C code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;int finger1_val = $getAndFree(finger1);&#10;int finger2_val = $getAndFree(finger2);&#10;int finger3_val = $getAndFree(finger3);&#10;int finger4_val = $getAndFree(finger4);&#10;int finger5_val = $getAndFree(finger5);&#10;double roll_val = $getAndFree(roll);&#10;double pitch_val = $getAndFree(pitch);&#10;double yaw_val = $getAndFree(yaw);&#10;&#10;int deltaSize_val = 0;&#10;int deltaX_val = 0;&#10;int deltaY_val = 0;&#10;int deltaZ_val = 0;&#10;double hue_val = 0;&#10;&#10;int fingerThreshold = 350;&#10;int thumbThreshold = 200;&#10;&#10;if (++counter &gt;= MAX_COUNT) { &#10;    secondCounter++;&#10;    bool fBent[5];&#10;&#10;    fBent[0] = finger1_val &gt; fingerThreshold;&#10;    fBent[1] = finger2_val &gt; fingerThreshold;&#10;    fBent[2] = finger3_val &gt; fingerThreshold;&#10;    fBent[3] = finger4_val &gt; fingerThreshold;&#10;    fBent[4] = finger5_val &gt; thumbThreshold;&#10;    &#10;    if (secondCounter &gt; 3) {&#10;        //printf(&quot;%d %d %d %d %d\r\n&quot;, fBent[0], fBent[1], fBent[2], fBent[3], fBent[4]);&#10;        secondCounter = 0;&#10;    }&#10;    // Change size based on finger gesture  &#10;    if (flag) {  &#10;        if (fBent[0] &amp;&amp; fBent[1] &amp;&amp; fBent[2] &amp;&amp; (!fBent[3]) &amp;&amp; fBent[4]) &#10;            deltaSize_val = -1; &#10;        else if (fBent[0] &amp;&amp; fBent[1] &amp;&amp; (!fBent[2]) &amp;&amp; (!fBent[3]) &amp;&amp; fBent[4]) &#10;            deltaSize_val = 1; &#10;        flag = !flag;&#10;    }&#10;    else {&#10;        flag = !flag;&#10;    }&#10;    &#10;    if (fBent[0] &amp;&amp; (fBent[1]) &amp;&amp; (fBent[2]) &amp;&amp; (!fBent[4]))&#10;        hue_val = finger4_val/1000.0;  &#10;    &#10;    //Change position. Roll, pitch, and yaw are given as degrees. &#10;    if (roll_val &gt; 10 )&#10;        deltaX_val = -1;&#10;    else if (roll_val &lt; -10)&#10;        deltaX_val = 1;&#10;    if (pitch_val &gt; 10)&#10;        deltaZ_val = 1;&#10;    else if (pitch_val &lt; -10)&#10;        deltaZ_val = -1;&#10;    if (yaw_val &gt; 10)&#10;        deltaY_val = -1;&#10;    else if (yaw_val &lt; -10)&#10;        deltaY_val = 1;&#10;       &#10;    counter = 0;&#10;        &#10;} &#10;$put(deltaSize, deltaSize_val);&#10;$put(deltaX, deltaX_val);&#10;$put(deltaY, deltaY_val);&#10;$put(deltaZ, deltaZ_val);&#10;$put(hue, hue_val);&#10;&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 260.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <port name="deltaSize" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="deltaX" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="deltaY" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="deltaZ" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="hue" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="finger1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="finger2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="finger3" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="finger4" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="finger5" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="roll" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="pitch" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="yaw" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="SequenceFinger1" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 170.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequenceFinger2" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 215.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequenceFinger3" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 265.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequenceFinger4" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 315.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequenceFinger5" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 365.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequenceRoll" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{-15,-15,-15,0,0,0,0,0,0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 415.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequencePitch" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0,0,0,15,15,15,0,0,0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 460.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SequenceYaw" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0,0,0,0,0,0,-15,-15,-15}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 505.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="LEDCube.deltaSize" relation="relation"/>
+    <link port="LEDCube.deltaX" relation="relation2"/>
+    <link port="LEDCube.deltaY" relation="relation3"/>
+    <link port="LEDCube.deltaZ" relation="relation4"/>
+    <link port="LEDCube.hue" relation="relation5"/>
+    <link port="Correction.deltaSize" relation="relation"/>
+    <link port="Correction.deltaX" relation="relation2"/>
+    <link port="Correction.deltaY" relation="relation3"/>
+    <link port="Correction.deltaZ" relation="relation4"/>
+    <link port="Correction.hue" relation="relation5"/>
+    <link port="Correction.finger1" relation="relation6"/>
+    <link port="Correction.finger2" relation="relation7"/>
+    <link port="Correction.finger3" relation="relation8"/>
+    <link port="Correction.finger4" relation="relation9"/>
+    <link port="Correction.finger5" relation="relation10"/>
+    <link port="Correction.roll" relation="relation11"/>
+    <link port="Correction.pitch" relation="relation12"/>
+    <link port="Correction.yaw" relation="relation13"/>
+    <link port="SequenceFinger1.output" relation="relation6"/>
+    <link port="SequenceFinger2.output" relation="relation7"/>
+    <link port="SequenceFinger3.output" relation="relation8"/>
+    <link port="SequenceFinger4.output" relation="relation9"/>
+    <link port="SequenceFinger5.output" relation="relation10"/>
+    <link port="SequenceRoll.output" relation="relation11"/>
+    <link port="SequencePitch.output" relation="relation12"/>
+    <link port="SequenceYaw.output" relation="relation13"/>
+</entity>
