@@ -65,11 +65,10 @@ CPP_SRCS = \
 	parser/XmlParserCApi.cpp
 
 # Main target
-TARGET = main2.c
+TARGET = mainHybrid.c
 
 # Dependencies
 DEPS = \
-	maSupport.h \
 	shared/sim_support.h \
 	includes/fmi2.h \
 	includes/fmi2Functions.h \
@@ -101,6 +100,8 @@ all: main
 main: $(OBJECTS)
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
+<<<<<<< .mine
+=======
 FMUS = \
 	../fmus/inc20pt/inc20pt.fmu \
 	../fmus/scale20pt/scale20pt.fmu \
@@ -128,6 +129,7 @@ run2: main $(FMUS0)
 ../fmus/inc20pt/inc20pt.fmu:
 	(cd ../fmus/inc20pt; $(MAKE))
 
+>>>>>>> .r71985
 clean_fmus:
 	rm -f $(FMUS)
 
