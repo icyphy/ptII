@@ -32,7 +32,7 @@
 FMU_NAME = LorenzAttractor
 
 export:
-	../exportOMFMU $(FMU_NAME)
+	sh ../exportOMFMU $(FMU_NAME)
 
 # Place the include after the first rule so that it is the default.
 
