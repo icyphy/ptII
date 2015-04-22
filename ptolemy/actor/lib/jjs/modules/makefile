@@ -53,11 +53,13 @@ PTPACKAGE = 	modules
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	localStorage/localStorage.jar \
-	mqtt/mqtt.jar \
-	vertxEventBus/vertxEventBus.jar \
-	webSocket/webSocket.jar \
+PTCLASSALLJARS =
+
+# Don't include these possibly optional files.
+#	localStorage/localStorage.jar
+#	mqtt/mqtt.jar
+#	vertxEventBus/vertxEventBus.jar
+#	webSocket/webSocket.jar
 
 # Keep this list alphabetized.
 JSRCS =
@@ -80,7 +82,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: suball #jclass
-install: subjars #jclass jars
+install: subjars jars #jclass
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
