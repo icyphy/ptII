@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style code gen for the Mbed processor
 #
-# @Version: $Id$
+# @Version: $Id: makefile 69601 2014-07-30 13:51:01Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2014 The Regents of the University of California
+# @Copyright (c) 2015 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/vergil/actor/lib/demo/mbed
 
-DIRS =		adapters
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../../../..
+ROOT =		../../../../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,52 +46,44 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	mbed
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	adapters/adapters.jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	makefile.in \
-	README.htm \
-	K64F/makefile.in \
-	KL25Z/makefile.in \
-	lib/MKL25Z4.ld \
-	lib/board.o \
-	lib/cmsis_nvic.o \
-	lib/libmbed.a \
-	lib/mbed_overrides.o \
-	lib/retarget.o \
-	lib/startup_MKL25Z4.o \
-	lib/system_MKL25Z4.o
+	CompositeActorTest.xml \
+	CompositeFSM.xml \
+	GPIOWriter.xml \
+	SimpleFSM.xml \
+	SimpleFSM_LED1.xml \
+	SimpleFSM_LED3.xml \
+	accelActorDemo.xml \
+	accelerometerLEDdemo.xml \
+	accelerometerNeodemo.xml \
+	cc3000test.xml \
+	correctionBlock_LEDCube.xml \
+	cubeDemoK64F_sizePosHue.xml \
+	embeddedCodeActorTest.xml \
+	neoPixDemo.xml \
+	neoPixDemoK64F.xml \
+	neoPixDemoK64F_IndexColor.xml
 
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	adapters
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	K64F \
-	KL25Z \
-	lib
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
 # Get the rest of the rules

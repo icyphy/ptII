@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2014 The Regents of the University of California
+# @Copyright (c) 2015 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/vergil/actor/lib/demo
 
-DIRS =	    Blink Life Ultrasonic
+DIRS =	    mbed
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../../..
@@ -53,9 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	Blink/Blink.jar \
-	Life/Life.jar \
-	Ultrasonic/Ultrasonic.jar
+	mbed/mbed.jar
 
 # Keep this list alphabetized.
 JSRCS = 

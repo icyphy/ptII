@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen for Mbed IO actors
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2012-2014 The Regents of the University of California
+# @Copyright (c) 2015 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@
 
 ME =        ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/io
 
-DIRS =  test
+DIRS =  #test
 
 # Root of the Java directory
 ROOT =      ../../../../../../../../../../../../..
@@ -54,10 +54,10 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 # If you change this, change DIRS above
 #PTCLASSALLJARS =
 
-
 # Keep this list alphabetized.
 JSRCS = \
-    GPIOWriter.java
+	Accelerometer.java \
+	GPIOWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
     $(JSRCS:%.java=%.c)
@@ -67,7 +67,7 @@ EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test
+MISC_FILES = #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
