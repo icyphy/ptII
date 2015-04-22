@@ -100,36 +100,6 @@ all: main
 main: $(OBJECTS)
 	$(CXX) -o $@ $^ $(CPP_SRCS) $(CFLAGS) $(LIBFLAGS)
 
-<<<<<<< .mine
-=======
-FMUS = \
-	../fmus/inc20pt/inc20pt.fmu \
-	../fmus/scale20pt/scale20pt.fmu \
-	../fmus/out20pt/out20pt.fmu
-
-FMUS0 = \
-	../fmus/inc20pt/inc20pt.fmu \
-	../fmus/out20pt/out20pt.fmu
-
-# Run the master algorithm executable on two fmus.
-run: main $(FMUS)
-	./main -t15 -h1 -llogAll $(FMUS)
-
-../fmus/inc20RC1pt/inc20pt.fmu:
-	(cd ../fmus/inc20pt; $(MAKE))
-../fmus/scale20pt/scale20pt.fmu:
-	(cd ../fmus/scale20pt; $(MAKE))
-../fmus/out20pt/out20pt.fmu:
-	(cd ../fmus/out20pt; $(MAKE))
-
-# Run yilin
-run2: main $(FMUS0)
-	./main -t15 -h1 -llogAll $(FMUS0)
-
-../fmus/inc20pt/inc20pt.fmu:
-	(cd ../fmus/inc20pt; $(MAKE))
-
->>>>>>> .r71985
 clean_fmus:
 	rm -f $(FMUS)
 
