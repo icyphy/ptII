@@ -53,7 +53,6 @@ JSRCS = \
 	Comparator.java \
 	Equals.java \
 	IsPresent.java \
-	IsAbsent.java \
 	LogicFunction.java \
 	LogicalNot.java \
 	LogicGate.java \
