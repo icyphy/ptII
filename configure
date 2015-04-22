@@ -11917,7 +11917,11 @@ else
 fi
 
 
-    if test ! -f "$PTPAHO_MQTT_JAR"; then
+    if test -f "$PTPAHO_MQTT_JAR"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTPAHO_MQTT_JAR" >&5
+$as_echo "$PTPAHO_MQTT_JAR" >&6; }; fi
+    else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the PTPAHO_MQTT Jar file.
     The default location is $PTII/lib/
     Paho MQTT is used by $PTII/ptolemy/actor/lib/jjs/modules/localStorage" >&5
