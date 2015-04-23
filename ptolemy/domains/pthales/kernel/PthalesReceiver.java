@@ -635,6 +635,10 @@ public class PthalesReceiver extends SDFReceiver {
         String[] patternOrder = null;
         patternOrder = new String[pattern.size()];
         pattern.keySet().toArray(patternOrder);
+        if (tiling == null) {
+            throw new NullPointerException("tiling was null?  input: " + input + ", _patternOut: " + _patternOut
+                    + ", _patternIn: " + _patternIn);
+        }
         // tiling order
         String[] tilingOrder = new String[tiling.size()];
         tiling.keySet().toArray(tilingOrder);
