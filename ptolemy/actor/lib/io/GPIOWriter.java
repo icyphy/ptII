@@ -1,6 +1,6 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
- @Copyright (c) 2015-2015 The Regents of the University of California.
+ @Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -35,18 +35,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// GPIOWriter
 
 /**
- <p>This actor true or false values and writes to the GPIO port 
- of an embedded platform. If this is run as a model, the model 
- will write to a file with the name of the GPIO port</p>
- <p>
- The port is specified by the <i>BoardPortName</i> attribute
- using any form acceptable to the platform or a file name.</p>
+ Read true or false values and write to the GPIO port of an embedded
+ platform.
 
+ <p>If this is run as a model, the model will write to a file with the
+ name of the GPIO port</p>
+
+ <p> The port is specified by the <i>BoardPortName</i> attribute using
+ any form acceptable to the platform or a file name.</p>
 
  @author Kevin Albers
  @version $Id$
@@ -90,6 +92,21 @@ public class GPIOWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        GPIOWriter newObject = (GPIOWriter) super.clone(workspace);
+        newObject._GPIOIcon = (EditorIcon)newObject.getAttribute("_icon");
+        newObject._GPIOState = (RectangleAttribute)newObject.getAttribute("_led_");
+
+        return newObject;
+    }
+
     /** Change the color of the actor depending on if true or false 
      *  was sent to the actor.
      *  @exception IllegalActionException If the file cannot be opened
@@ -108,18 +125,10 @@ public class GPIOWriter extends Sink {
    
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     
     private RectangleAttribute _GPIOState;
     
-    EditorIcon _GPIOIcon;
+    private EditorIcon _GPIOIcon;
 
 }
