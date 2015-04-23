@@ -362,8 +362,6 @@ $CLASSPATH/ptolemy/domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.xml
 $CLASSPATH/ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.xml
 $CLASSPATH/ptolemy/domains/hdf/demo/Hysteresis/Hysteresis.xml
 $CLASSPATH/ptolemy/domains/hdf/demo/Merge/Merge.xml
-$CLASSPATH/ptolemy/domains/metroII/demo/AircraftEPSController/AircraftEPSController.xml
-$CLASSPATH/ptolemy/domains/metroII/demo/MotorControl/MotorControl.xml
 $CLASSPATH/ptolemy/domains/metroII/demo/VariableDelay/VariableDelay.xml
 $CLASSPATH/ptolemy/domains/modal/demo/ABP/ABP.xml
 $CLASSPATH/ptolemy/domains/modal/demo/Blending/Blending.xml
@@ -421,7 +419,6 @@ $CLASSPATH/ptolemy/domains/ptera/demo/CarWash/CarWashDE.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.xml
 $CLASSPATH/ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.xml
-$CLASSPATH/ptolemy/domains/pthales/demo/Dynamic/Dynamic.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
@@ -501,10 +498,6 @@ $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml
 $CLASSPATH/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml
 $CLASSPATH/ptolemy/domains/taskpt/demo/Task/Task.xml
-$CLASSPATH/ptolemy/domains/tdl/demo/ActiveRearSteeringCT/ActiveRearSteeringCT.xml
-$CLASSPATH/ptolemy/domains/tdl/demo/ActiveRearSteeringDE/ActiveRearSteeringDE.xml
-$CLASSPATH/ptolemy/domains/tdl/demo/IncrementDecrement/IncrementDecrement.xml
-$CLASSPATH/ptolemy/domains/tdl/demo/ZeroTimeDEActorLoop/ZeroTimeDEActorLoop.xml
 $CLASSPATH/ptolemy/domains/tm/demo/Controllers/Controllers.xml
 $CLASSPATH/ptolemy/domains/tm/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml
