@@ -51,6 +51,18 @@ struct PtidesPort {
     PblList* (*deepGetReceivers)(struct PtidesPort*);
     Token* (*get)(struct PtidesPort*, int);
     Token** (*get1)(struct PtidesPort*, int, int);
+
+    //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+    #ifdef TYPE_Boolean
+    boolean (*getBoolean)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Int
+    int (*getInt)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Double
+    double (*getDouble)(struct IOPort*, int);
+    #endif
+    
     int (*getChannelForReceiver)(struct PtidesPort*, struct Receiver*);
     Token* (*getInside)(struct PtidesPort*, int);
     PblList* (*getInsideReceivers)(struct PtidesPort*);
@@ -119,6 +131,17 @@ struct PtidesPort {
 struct PtidesPort* PtidesPort_New();
 void PtidesPort_Init(struct PtidesPort* port);
 void PtidesPort_New_Free(struct PtidesPort* port);
+
+//MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+#ifdef TYPE_Boolean
+boolean IOPort_GetBoolean(struct IOPort* port, int channelIndex);
+#endif
+#ifdef TYPE_Int
+int IOPort_GetInt(struct IOPort* port, int channelIndex);
+#endif
+#ifdef TYPE_Double
+double IOPort_GetDouble(struct IOPort* port, int channelIndex);
+#endif
 
 void PtidesPort_SetAssociatedPort(struct PtidesPort* port, struct PtidesPort* port1);
 bool PtidesPort_IsActuatorPort(struct PtidesPort* port);

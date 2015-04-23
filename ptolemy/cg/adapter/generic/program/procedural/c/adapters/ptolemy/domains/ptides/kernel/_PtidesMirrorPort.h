@@ -43,6 +43,18 @@ struct PtidesMirrorPort {
     PblList* (*deepGetReceivers)(struct PtidesMirrorPort*);
     Token (*get)(struct PtidesMirrorPort*, int);
     Token* (*get1)(struct PtidesMirrorPort*, int, int);
+
+    //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+    #ifdef TYPE_Boolean
+    boolean (*getBoolean)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Int
+    int (*getInt)(struct IOPort*, int);
+    #endif
+    #ifdef TYPE_Double
+    double (*getDouble)(struct IOPort*, int);
+    #endif
+
     int (*getChannelForReceiver)(struct PtidesMirrorPort*, struct Receiver*);
     Token (*getInside)(struct PtidesMirrorPort*, int);
     PblList* (*getInsideReceivers)(struct PtidesMirrorPort*);
@@ -90,6 +102,17 @@ struct PtidesMirrorPort {
 
     void (*setAssociatedPort)(struct PtidesMirrorPort*, struct PtidesMirrorPort*);
 };
+
+//MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
+#ifdef TYPE_Boolean
+boolean IOPort_GetBoolean(struct IOPort* port, int channelIndex);
+#endif
+#ifdef TYPE_Int
+int IOPort_GetInt(struct IOPort* port, int channelIndex);
+#endif
+#ifdef TYPE_Double
+double IOPort_GetDouble(struct IOPort* port, int channelIndex);
+#endif
 
 struct PtidesMirrorPort* PtidesMirrorPort_New();
 void PtidesMirrorPort_Init(struct PtidesMirrorPort* port);
