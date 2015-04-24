@@ -58,11 +58,13 @@ OTHER_FILES_TO_BE_JARED = \
 	SimpleFSM.xml \
 	SimpleFSM_LED1.xml \
 	SimpleFSM_LED3.xml \
+	SensorDataToGesture_LEDCube_HueSizePos.xml \
 	accelActorDemo.xml \
 	accelerometerLEDdemo.xml \
 	accelerometerNeodemo.xml \
 	cc3000test.xml \
 	correctionBlock_LEDCube.xml \
+	correction_sensorGesture_cube.xml \
 	cubeDemoK64F_sizePosHue.xml \
 	embeddedCodeActorTest.xml \
 	neoPixDemo.xml \
