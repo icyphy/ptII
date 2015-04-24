@@ -54,17 +54,17 @@ import ptolemy.kernel.util.NameDuplicationException;
  An actor that sends data to a remote coordinator that implements the
  Coordinator inteface defined in Coordinator.idl.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
+ Specify the ORB initial property with the<i>ORBInitProperties</i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the coordinator with <i>coordinatorName<i> that it wants
+ Specify the name of the coordinator with <i>coordinatorName</i> that it wants
  to connect to.
 
  Specify the name of this client application that this actor belongs to with
- <i>thisClientName<i>
+ <i>thisClientName</i>
 
  @author Yang Zhao
  @version $ $

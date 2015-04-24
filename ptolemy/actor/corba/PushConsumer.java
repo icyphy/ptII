@@ -55,18 +55,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  An actor that receives data from a remote publisher.
- Specify the ORB initial property with the<i>ORBInitProperties<i>
+ Specify the ORB initial property with the<i>ORBInitProperties</i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the consumer with <i>ConsumerName<i>, which is
+ Specify the name of the consumer with <i>ConsumerName</i>, which is
  registered on the name server.
 
- If the <i>blocking<i> paremerter is true, then wait until there is
+ If the <i>blocking</i> paremerter is true, then wait until there is
  token received, otherwise, send a default value specified by the
- <i>defaultToken<i> paremerter. Notice that the type of the output port
+ <i>defaultToken</i> paremerter. Notice that the type of the output port
  is determined by the type of this parameter.
 
  @author Yang Zhao
@@ -179,7 +179,7 @@ public class PushConsumer extends Source {
     }
 
     /** Read the received data if there is any and send to the output.
-     *  If no data received, then wait if <i>blocking<i> is true, or
+     *  If no data received, then wait if <i>blocking</i> is true, or
      *  a default token is sent.
      *  @exception IllegalActionException If the publication
      *  action fails due to network problems, transaction errors,
@@ -318,7 +318,7 @@ public class PushConsumer extends Source {
         /**
          * Implement the push() method defined in the pushConsumer intefece.
          * When the stub method is called, the call is trasfered by ORB to here,
-         * and the data is saved in <i>_lastReadToken<i>. If fire() is waiting
+         * and the data is saved in <i>_lastReadToken</i>. If fire() is waiting
          * for new data, then wake up fire(), otherwise call fireAt.
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */

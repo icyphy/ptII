@@ -62,13 +62,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  Coordinator.idl. The clients connect to this need to implement the Client
  interface defined in Coordinator.idl also.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
+ Specify the ORB initial property with the<i>ORBInitProperties</i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the coordinator with <i>coordinatorName<i> that it wants
+ Specify the name of the coordinator with <i>coordinatorName</i> that it wants
  to register to the name service.
 
  @author Yang Zhao

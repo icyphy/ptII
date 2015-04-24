@@ -54,13 +54,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  An actor that send data to a remote consumer when there is pull request.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
+ Specify the ORB initial property with the<i>ORBInitProperties</i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the supplier with <i>SupplierName<i>, which is
+ Specify the name of the supplier with <i>SupplierName</i>, which is
  registered on the name server.
 
  This actor can only be used in the CI domain currently. It is an
@@ -152,7 +152,7 @@ public class PullSupplier extends Sink {
     }
 
     /** cause the calling thread to wait if there is
-     *  no pull request. Return true if the <i>input<i>
+     *  no pull request. Return true if the <i>input</i>
      *  port has token, otherwise return false.
      *  @exception IllegalActionException should never be throwed
      */

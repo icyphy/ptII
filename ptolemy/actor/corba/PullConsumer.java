@@ -57,18 +57,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  An actor that sends pull request to a remote publisher and asks for data.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
+ Specify the ORB initial property with the<i>ORBInitProperties</i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the supplier with <i>remoteSupplierName<i>, which is
+ Specify the name of the supplier with <i>remoteSupplierName</i>, which is
  the supplier it wants to request data from.
 
- If the <i>blocking<i> parameter is true, then wait until there is
+ If the <i>blocking</i> parameter is true, then wait until there is
  token received, otherwise, send a default value specified by the
- <i>defaultToken<i> parameter. Notice that the type of the output port
+ <i>defaultToken</i> parameter. Notice that the type of the output port
  is determined by the type of this parameter.
 
  @author Yang Zhao

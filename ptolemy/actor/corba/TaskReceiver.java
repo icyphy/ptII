@@ -59,19 +59,19 @@ import ptolemy.kernel.util.NameDuplicationException;
  An actor that register itself to a romote data provide that implements the
  Coordinator inteface and receives data from it.
 
- Specify the ORB initial property with the<i>ORBInitProperties<i>
+ Specify the ORB initial property with the<i>ORBInitProperties</i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the coordinator with <i>coordinatorName<i>, which is
+ Specify the name of the coordinator with <i>coordinatorName</i>, which is
  registered on the name server.
 
  Specify whether the actor blocks when it haven't receive data with
- the <i>blocking<i> parameter.
+ the <i>blocking</i> parameter.
 
- Specify the name of this client with <i>thisClientName<i>.
+ Specify the name of this client with <i>thisClientName</i>.
 
  See TaskCoordinator.java for the implementation of the coordinator.
 
@@ -148,7 +148,7 @@ public class TaskReceiver extends Source {
 
     /** If the attribute is <i>blocking</i> update the local
      *  cache of the parameter value, else if the attribute is
-     *  <i>defaultToken<i> update the type of the output token to
+     *  <i>defaultToken</i> update the type of the output token to
      *  the be the same type of defaultToken, otherwise pass the
      *  call to the super class.
      *  @param attribute The attribute that changed.
@@ -199,7 +199,7 @@ public class TaskReceiver extends Source {
     }
 
     /** Read the received data if there is any and send to the output.
-     *  If no data received, then wait if <i>blocking<i> is true, or
+     *  If no data received, then wait if <i>blocking</i> is true, or
      *  a default token is sent.
      *  @exception IllegalActionException If the publication
      *  action fails due to network problems, transaction errors,
@@ -373,7 +373,7 @@ public class TaskReceiver extends Source {
         /**
          * Implement the push() method defined in the Client intefece.
          * When the stub method is called, the call is trasfered by ORB to here,
-         * and the data is saved in <i>_lastReadToken<i>. If fire() is waiting
+         * and the data is saved in <i>_lastReadToken</i>. If fire() is waiting
          * for new data, then wake up fire(), otherwise call fireAt.
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */
