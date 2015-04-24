@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides
 
-DIRS =		demo kernel lib
+DIRS =		kernel lib
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
@@ -53,7 +53,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	demo/demo.jar \
 	kernel/kernel.jar \
 	lib/lib.jar
 
@@ -71,8 +70,7 @@ MISC_FILES = kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo 
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
