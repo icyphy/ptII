@@ -4,7 +4,7 @@
 #
 # @Version $Id$
 #
-# @Copyright (c) 1997-2013 The Regents of the University of California.
+# @Copyright (c) 1997-2015 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -476,55 +476,7 @@ test Variable-12.0 {Test exportMoML} {
 </entity>
 }
 
-######################################################################
-####
-#
-test Variable-13.0 {Test setting structured type} {
-    set v [java::new ptolemy.data.expr.Variable]
-    set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
-    set natArrayType [java::new ptolemy.data.type.ArrayType $nat]
-    $v setTypeEquals $natArrayType
-
-    set int0 [java::new ptolemy.data.IntToken 0]
-    set int1 [java::new ptolemy.data.IntToken 1]
-    set valArray [java::new {ptolemy.data.Token[]} 2 [list $int0 $int1]]
-    set intArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
-
-    set double0 [java::new ptolemy.data.DoubleToken 2.2]
-    set double1 [java::new ptolemy.data.DoubleToken 3.3]
-    set valArray [java::new {ptolemy.data.Token[]} 2 [list $double0 $double1]]
-    set doubleArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
-
-    $v setToken $intArrayToken
-    $v setToken $doubleArrayToken
-
-    list [[$v getType] toString] [[$v getToken] toString]
-} {arrayType(double) {{2.2, 3.3}}}
-
-######################################################################
-####
-#
-test Variable-13.2 {Test setting structured type} {
-    set v [java::new ptolemy.data.expr.Variable]
-    set nat [java::field ptolemy.data.type.BaseType UNKNOWN]
-    set natArrayType [java::new ptolemy.data.type.ArrayType $nat]
-    $v setTypeEquals $natArrayType
-
-    set int0 [java::new ptolemy.data.IntToken 0]
-    set int1 [java::new ptolemy.data.IntToken 1]
-    set valArray [java::new {ptolemy.data.Token[]} 2 [list $int0 $int1]]
-    set intArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
-
-    set double0 [java::new ptolemy.data.DoubleToken 2.2]
-    set double1 [java::new ptolemy.data.DoubleToken 3.3]
-    set valArray [java::new {ptolemy.data.Token[]} 2 [list $double0 $double1]]
-    set doubleArrayToken [java::new {ptolemy.data.ArrayToken} $valArray]
-
-    $v setToken $doubleArrayToken
-    $v setToken $intArrayToken
-
-    list [[$v getType] toString] [[$v getToken] toString]
-} {arrayType(int) {{0, 1}}}
+# Variable-13.0 and 13.2 are in Variable2.tcl
 
 ######################################################################
 ####
