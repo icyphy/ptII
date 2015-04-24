@@ -43,7 +43,7 @@ src/modelDescription.xml:
 
 FMU_SRCS = \
 	src/modelDescription.xml \
-	src/sources/*
+	src/sources/
 
 # This rule differs for sfmi and regular cosimulation.
 # Below is the rule for sparse fmi.
