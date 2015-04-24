@@ -47,7 +47,9 @@ PTPACKAGE =     net
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = DatagramReader.java \
+JSRCS = \
+	IPAddress.java \
+	DatagramReader.java \
         DatagramWriter.java
 
 OTHER_FILES_TO_BE_JARED = \

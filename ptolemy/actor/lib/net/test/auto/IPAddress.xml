@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IPAddress" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, 65.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 1085, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[851, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{178.97601744186048, 253.68595566860466}">
+    </property>
+    <entity name="IPAddress" class="ptolemy.actor.lib.net.IPAddress">
+        <doc>Send the IP address of the host to the output port.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 185.0}">
+        </property>
+    </entity>
+    <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="[0-9]*[0-9]\.[0-9]*[0-9]\.[0-9]*[0-9]\.[0-9]*[0-9]">
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="128.32.45.159">
+        </property>
+        <doc>Determine if a string matches a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 140.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 140.0}">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[0-9]*[0-9]\.[0-9]*[0-9]\.[0-9]*[0-9]\.[0-9]*[0-9]">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 130.0}">
+        </property>
+    </entity>
+    <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 205.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringMatches.output&quot;,x=345.0,y=140.0}, tail={id=&quot;Test.input&quot;,x=445.0,y=140.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{255.0, 195.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.Display.input&quot;,x=310.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=270.0,y=205.0}, points={270.0,260.0} },{ head={id=&quot;StringMatches.matchString&quot;,x=345.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, points={255.0,150.0} },{ head={id=&quot;IPAddress.output&quot;,x=165.0,y=185.0}, tail={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, points={} },{ head={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, tail={id=&quot;LineWriter.input&quot;,x=330.0,y=205.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{235.0, 130.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=270.0,y=135.0}, tail={id=&quot;.Display2.input&quot;,x=310.0,y=135.0}, points={} },{ head={id=&quot;StringConst.output&quot;,x=65.0,y=130.0}, tail={id=&quot;relation.vertex1&quot;,x=235.0,y=130.0}, points={} },{ head={id=&quot;StringMatches.pattern&quot;,x=345.0,y=140.0}, tail={id=&quot;relation.vertex1&quot;,x=235.0,y=130.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="IPAddress.output" relation="relation3"/>
+    <link port="StringMatches.pattern" relation="relation"/>
+    <link port="StringMatches.matchString" relation="relation3"/>
+    <link port="StringMatches.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="StringConst.output" relation="relation"/>
+    <link port="LineWriter.input" relation="relation3"/>
+</entity>
