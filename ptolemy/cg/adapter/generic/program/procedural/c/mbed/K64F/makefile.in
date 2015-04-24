@@ -12,6 +12,10 @@
 # To compile using this makefile after substitution, run:
 #    make -f SimpleFSM.mk
 
+#####################################################################################################
+# Follow instructions on http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Gcc4mbed-OfflineCompiler
+#####################################################################################################
+
 # Gets the name of the model from Ptolemy
 MODELNAME=@modelName@
 

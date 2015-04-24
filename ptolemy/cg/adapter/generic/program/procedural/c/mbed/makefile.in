@@ -12,6 +12,10 @@
 # To compile using this makefile after substitution, run:
 #    make -f SimpleFSM.mk
 
+#####################################################################################################
+# Follow instructions on http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Gcc4mbed-OfflineCompiler
+#####################################################################################################
+
 # Gets the name of the model from Ptolemy
 MODELNAME=@modelName@
 
@@ -77,7 +81,7 @@ MBED_INCLUDES += -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSD
 #MBED_INCLUDES += -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/common -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/common/phyksz8081 
 #MBED_INCLUDES += -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/i2c -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/mcg -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/rtc -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/sim -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/pmc -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/enet -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/wdog -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/dmamux -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/edma -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/pit -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/adc -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/gpio -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/flextimer -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/dspi -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/port -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/osc -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/can -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/sdhc -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/smc -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/uart -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/hal/sai 
 #MBED_INCLUDES += -I$(LIBRARY_PATH)/mbed/TARGET_K64F/TARGET_Freescale/TARGET_KPSDK_MCUS/TARGET_KPSDK_CODE/utilities 
-MBED_INCLUDES += $(shell find $(LIBRARY_PATH) -type f -name '*.h' -not -path "$(LIBRARY_PATH)/mbed/*" | grep -o "\(.*\)/" | sort -u | head -5 | sed 's/^/-I/g')
+MBED_INCLUDES += $(shell find $(LIBRARY_PATH) -type f -name '*.h' -not -path "$(LIBRARY_PATH)/mbed/*" | grep -o "\(.*\)/" | sort -u | head -100 | sed 's/^/-I/g')
 MBED_INCLUDES += $(PTCGINCLUDES)
 
 # FIXME: we need a way to define the target platform.  Workaround: Use
