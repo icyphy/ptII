@@ -1,10 +1,10 @@
 # Makefile for the Java classes used to test the Ptolemy parser classes
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2013 The Regents of the University of California.
+# @Copyright (c) 1997-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -65,6 +65,7 @@ JSIMPLE_TESTS = \
 	UtilityFunctions.tcl \
 	FixFunctions.tcl \
 	Variable.tcl \
+	Variable2.tcl \
 	XMLParser.tcl
 
 # Graphical Java tests that use Tcl.
