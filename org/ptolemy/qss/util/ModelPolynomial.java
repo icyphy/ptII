@@ -70,7 +70,7 @@ import ptolemy.actor.util.Time;
  *
  * <p>Alternative designs that would enforce this condition include:</p>
  * <ul>
- * <li>Add a <code>Time> object to the constructor.
+ * <li>Add a <code>Time</code> object to the constructor.
  * This design was rejected because it implies that the model time is fixed,
  * and should not be changed during the lifetime of the model.</li>
  * <li>Allocate a new <code>Time</code> object, with a default
@@ -89,7 +89,7 @@ import ptolemy.actor.util.Time;
  * coefficients without the overhead of accessor (setter, getter) calls.</p>
  *
  * <p>The design intention is that multiple objects in a system can share a
- * single <code>ModelPolynomial<code>, in order to share a model of a common variable.
+ * single <code>ModelPolynomial</code>, in order to share a model of a common variable.
  * In principle, at any given simulation time, only one of those objects should
  * have "write access", and it alone should set the model parameters.
  * The other objects in the system can use the model, but should refrain from

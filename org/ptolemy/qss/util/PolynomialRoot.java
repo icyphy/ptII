@@ -142,7 +142,7 @@ public final class PolynomialRoot {
      * @param cec Coefficient `c`.
      * @param ced Coefficient `d`.
      * @param absTol The size of residual at which end search.
-     * @apram relTol The fractional difference in bracket on x, at which end search.
+     * @param relTol The fractional difference in bracket on x, at which end search.
      * @return The smallest positive real root.
      *   Return `Double.POSITIVE_INFINITY` if no root.
      *   Return 0 if only nonpositive roots.
