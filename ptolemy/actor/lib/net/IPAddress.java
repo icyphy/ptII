@@ -42,8 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  Send the IP address of the host to the output port.
 
+ <p>See <a href="http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java">Getting the IP address of the current machine using Java</a> for a discussion.</p>
+
  @author Christopher Brooks
- @version $Id: DatagramReader.java 70402 2014-10-23 00:52:20Z cxh $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
