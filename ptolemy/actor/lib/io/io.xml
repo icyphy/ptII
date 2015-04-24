@@ -44,6 +44,10 @@
         <doc>Read an entire file and output as a string</doc>
       </entity>
       
+      <entity name="IPAddress" class="ptolemy.actor.lib.net.IPAddress">
+        <doc>Send the IP address of the host to the output port.</doc>
+        </entity>
+        
       <entity name="GPIOWriter" class="ptolemy.actor.lib.io.GPIOWriter">
         <doc>Write to the GPIO of an embedded platform, changes the actors color</doc>
       </entity>
