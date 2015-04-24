@@ -54,7 +54,7 @@ export:
 	cp $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/template/sources/sfmi_runtime.cpp src/sources/
 
         # Generate the c files
-	@echo "*** Generating C files"
+	@echo "### Generating C files"
 	(cd src/sources; omc +s +simCodeTarget=sfmi HeatConductor.mo; mv HeatConductor_FMI.cpp HeatConductor.cpp)
 	mv src/sources/modelDescription.xml src/
         #FIXME: omc generates a cpp file. The FMI standard wants C code. build_fmu expects a HeatConductor.c.
