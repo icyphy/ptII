@@ -39,6 +39,7 @@ do
 	sed 's@domains.ct.lib.EventSource@domains.continuous.lib.EventSource@' |
 	sed 's@domains.ct.lib.Integrator@domains.continuous.lib.Integrator@' |
 	sed 's@domains.ct.lib.LevelCrossingDetector@domains.continuous.lib.LevelCrossingDetector@' |
+	sed 's@domains.ct.lib.LinearStateSpace@domains.continuous.lib.LinearStateSpace@' |
 	sed 's@domains.ct.lib.ZeroCrossingDetector@domains.continuous.lib.LevelCrossingDetector@' |
 	sed 's@domains.ct.lib.ZeroOrderHold@domains.continuous.lib.ZeroOrderHold@' |
 	sed 's@ContinuousClock@ContinuousClock@g' |
