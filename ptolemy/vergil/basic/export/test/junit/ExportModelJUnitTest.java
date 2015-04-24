@@ -292,6 +292,7 @@ public class ExportModelJUnitTest {
                 "KarplusStrong.xml", // "Audio Device Unavailable"
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "MapReduceDDF.xml", // Hangs.
+                "MoC.xml", // "No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported."
                 "ModularCG.xml", // cg model fails to run while exporting.
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
