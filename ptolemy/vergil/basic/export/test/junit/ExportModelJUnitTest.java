@@ -270,6 +270,18 @@ public class ExportModelJUnitTest {
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
+
+                // HLA Models that have links to other demos.                          
+                "org/hlacerti/demo/CoSimulation/CoSimulation.xml", // Has links to other demos.
+                "org/hlacerti/demo/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos.
+                "org/hlacerti/demo/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos.
+                "org/hlacerti/demo/f14HLA/f14HLA.xml",  // Has links to other demos.
+                "org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml", // Has links to other demos.
+                "org/hlacerti/demo/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos.
+                "org/hlacerti/demo/SimpleProducerConsumer/SimpleProducerConsumer.xml", // Has links to other demos.
+                "org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml", // Has links to other demos.
+                "org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml", // Has links to other demos.
+
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
@@ -313,7 +325,9 @@ public class ExportModelJUnitTest {
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
+                "TokenTransmissionTime.xml", // This demo has links to the demo that are to run
                 "TunnelingBallDevice", // Annotation says that it cannot be run.
+                          "Ultrasonic.xml", // Arduino only
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/ReadFromVertxBus.xml", // Requires that other demos run.
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml", // Requires that other demos run.
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Just has links to other demos.
