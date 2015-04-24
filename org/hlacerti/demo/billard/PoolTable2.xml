@@ -4,11 +4,11 @@
 <entity name="PoolTable2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.250000000000008">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000064">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1361.102478448276, -2273.160560344825}">
     </property>
@@ -70,7 +70,7 @@
         </property>
     </property>
     <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1670.0, -2510.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1670.0, -2515.0}">
         </property>
         <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;f&quot;">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -189,7 +189,7 @@
         <link port="Position.input" relation="relation3"/>
     </class>
     <entity name="A" class="Bille">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1565.0, -2340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1565.0, -2345.0}">
         </property>
         <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;A&quot;">
         </property>
@@ -212,7 +212,7 @@
         </entity>
     </entity>
     <entity name="B" class="Bille">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1565.0, -2445.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1565.0, -2450.0}">
         </property>
         <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;B&quot;">
         </property>
@@ -260,7 +260,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2330.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2335.0}">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -296,7 +296,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2270.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -316,7 +316,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2435.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2440.0}">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
@@ -326,7 +326,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2510.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1415.0, -2515.0}">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -334,39 +334,39 @@
         </property>
         <vertex name="vertex1" value="{-1480.0, -2395.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;A.X&quot;,x=-1565.0,y=-2340.0}, tail={id=&quot;relation7.vertex1&quot;,x=-1480.0,y=-2395.0}, points={-1515.0,-2350.0,-1515.0,-2395.0} },{ head={id=&quot;ArrayPlotterXY.x&quot;,x=-1415.0,y=-2330.0,index=3}, tail={id=&quot;relation7.vertex1&quot;,x=-1480.0,y=-2395.0}, points={-1480.0,-2350.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.x&quot;,x=-1415.0,y=-2335.0,index=3}, tail={id=&quot;relation7.vertex1&quot;,x=-1480.0,y=-2395.0}, points={-1480.0,-2355.0} },{ head={id=&quot;A.X&quot;,x=-1565.0,y=-2345.0}, tail={id=&quot;relation7.vertex1&quot;,x=-1480.0,y=-2395.0}, points={-1515.0,-2355.0,-1515.0,-2395.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-1465.0, -2510.0}">
+        <vertex name="vertex1" value="{-1465.0, -2515.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;B.X&quot;,x=-1565.0,y=-2445.0}, tail={id=&quot;relation.vertex1&quot;,x=-1465.0,y=-2510.0}, points={-1515.0,-2455.0,-1515.0,-2510.0} },{ head={id=&quot;Test4.input&quot;,x=-1415.0,y=-2510.0}, tail={id=&quot;relation.vertex1&quot;,x=-1465.0,y=-2510.0}, points={} },{ head={id=&quot;ArrayPlotterXY.x&quot;,x=-1415.0,y=-2330.0,index=3}, tail={id=&quot;relation.vertex1&quot;,x=-1465.0,y=-2510.0}, points={-1465.0,-2345.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.x&quot;,x=-1415.0,y=-2335.0,index=3}, tail={id=&quot;relation.vertex1&quot;,x=-1465.0,y=-2515.0}, points={-1465.0,-2350.0} },{ head={id=&quot;B.X&quot;,x=-1565.0,y=-2450.0}, tail={id=&quot;relation.vertex1&quot;,x=-1465.0,y=-2515.0}, points={-1515.0,-2460.0,-1515.0,-2515.0} },{ head={id=&quot;Test4.input&quot;,x=-1415.0,y=-2515.0}, tail={id=&quot;relation.vertex1&quot;,x=-1465.0,y=-2515.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-1480.0, -2265.0}">
+        <vertex name="vertex1" value="{-1480.0, -2270.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;C.X&quot;,x=-1565.0,y=-2200.0}, tail={id=&quot;relation2.vertex1&quot;,x=-1480.0,y=-2265.0}, points={-1515.0,-2210.0,-1515.0,-2265.0} },{ head={id=&quot;ArrayPlotterXY.x&quot;,x=-1415.0,y=-2330.0,index=3}, tail={id=&quot;relation2.vertex1&quot;,x=-1480.0,y=-2265.0}, points={-1480.0,-2340.0} },{ head={id=&quot;Test2.input&quot;,x=-1415.0,y=-2265.0}, tail={id=&quot;relation2.vertex1&quot;,x=-1480.0,y=-2265.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.x&quot;,x=-1415.0,y=-2335.0,index=3}, tail={id=&quot;relation2.vertex1&quot;,x=-1480.0,y=-2270.0}, points={-1480.0,-2345.0} },{ head={id=&quot;C.X&quot;,x=-1565.0,y=-2200.0}, tail={id=&quot;relation2.vertex1&quot;,x=-1480.0,y=-2270.0}, points={-1515.0,-2210.0,-1515.0,-2270.0} },{ head={id=&quot;Test2.input&quot;,x=-1415.0,y=-2270.0}, tail={id=&quot;relation2.vertex1&quot;,x=-1480.0,y=-2270.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-1515.0, -2330.0}">
+        <vertex name="vertex1" value="{-1515.0, -2335.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.y&quot;,x=-1415.0,y=-2330.0,index=3}, tail={id=&quot;relation3.vertex1&quot;,x=-1515.0,y=-2330.0}, points={} },{ head={id=&quot;A.Y&quot;,x=-1565.0,y=-2340.0}, tail={id=&quot;relation3.vertex1&quot;,x=-1515.0,y=-2330.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.y&quot;,x=-1415.0,y=-2335.0,index=3}, tail={id=&quot;relation3.vertex1&quot;,x=-1515.0,y=-2335.0}, points={} },{ head={id=&quot;A.Y&quot;,x=-1565.0,y=-2345.0}, tail={id=&quot;relation3.vertex1&quot;,x=-1515.0,y=-2335.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{-1495.0, -2435.0}">
+        <vertex name="vertex1" value="{-1495.0, -2440.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;B.Y&quot;,x=-1565.0,y=-2445.0}, tail={id=&quot;relation4.vertex1&quot;,x=-1495.0,y=-2435.0}, points={} },{ head={id=&quot;Test3.input&quot;,x=-1415.0,y=-2435.0}, tail={id=&quot;relation4.vertex1&quot;,x=-1495.0,y=-2435.0}, points={} },{ head={id=&quot;ArrayPlotterXY.y&quot;,x=-1415.0,y=-2330.0,index=3}, tail={id=&quot;relation4.vertex1&quot;,x=-1495.0,y=-2435.0}, points={-1495.0,-2325.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.y&quot;,x=-1415.0,y=-2335.0,index=3}, tail={id=&quot;relation4.vertex1&quot;,x=-1495.0,y=-2440.0}, points={-1495.0,-2330.0} },{ head={id=&quot;B.Y&quot;,x=-1565.0,y=-2450.0}, tail={id=&quot;relation4.vertex1&quot;,x=-1495.0,y=-2440.0}, points={} },{ head={id=&quot;Test3.input&quot;,x=-1415.0,y=-2440.0}, tail={id=&quot;relation4.vertex1&quot;,x=-1495.0,y=-2440.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -374,7 +374,7 @@
         </property>
         <vertex name="vertex1" value="{-1465.0, -2190.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;C.Y&quot;,x=-1565.0,y=-2200.0}, tail={id=&quot;relation5.vertex1&quot;,x=-1465.0,y=-2190.0}, points={} },{ head={id=&quot;Test.input&quot;,x=-1415.0,y=-2190.0}, tail={id=&quot;relation5.vertex1&quot;,x=-1465.0,y=-2190.0}, points={} },{ head={id=&quot;ArrayPlotterXY.y&quot;,x=-1415.0,y=-2330.0,index=3}, tail={id=&quot;relation5.vertex1&quot;,x=-1465.0,y=-2190.0}, points={-1465.0,-2320.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayPlotterXY.y&quot;,x=-1415.0,y=-2335.0,index=3}, tail={id=&quot;relation5.vertex1&quot;,x=-1465.0,y=-2190.0}, points={-1465.0,-2325.0} },{ head={id=&quot;C.Y&quot;,x=-1565.0,y=-2200.0}, tail={id=&quot;relation5.vertex1&quot;,x=-1465.0,y=-2190.0}, points={} },{ head={id=&quot;Test.input&quot;,x=-1415.0,y=-2190.0}, tail={id=&quot;relation5.vertex1&quot;,x=-1465.0,y=-2190.0}, points={} } }">
         </property>
     </relation>
     <link port="A.X" relation="relation7"/>
