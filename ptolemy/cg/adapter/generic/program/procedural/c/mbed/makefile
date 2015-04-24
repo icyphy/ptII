@@ -62,16 +62,7 @@ OTHER_FILES_TO_BE_JARED = \
 	makefile.in \
 	README.htm \
 	K64F/makefile.in \
-	KL25Z/makefile.in \
-	lib/MKL25Z4.ld \
-	lib/board.o \
-	lib/cmsis_nvic.o \
-	lib/libmbed.a \
-	lib/mbed_overrides.o \
-	lib/retarget.o \
-	lib/startup_MKL25Z4.o \
-	lib/system_MKL25Z4.o
-
+	KL25Z/makefile.in
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -86,7 +77,6 @@ OPTIONAL_FILES = \
 	demo \
 	K64F \
 	KL25Z \
-	lib
 
 JCLASS = $(JSRCS:%.java=%.class)
 
