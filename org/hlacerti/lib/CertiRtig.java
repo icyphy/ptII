@@ -176,7 +176,7 @@ public class CertiRtig extends NamedObj {
         File fedFileName = new File(directory);
 
         // The list of command and argumentss to execute in the shell. */
-        List<String> commandList = new LinkedList<String>();
+        List<String> commandList = null;
 
         // Execute command as shell interpret.
         commandList = _getCommandList();

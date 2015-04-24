@@ -1586,92 +1586,91 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 throws ObjectNotKnown, AttributeNotKnown,
                 FederateOwnsAttributes, InvalidFederationTime,
                 FederateInternalError {
-                        
+            
             try {
                 // Get the object class handle corresponding to
                 // received "theObject" id.
                 int classHandle = _objectIdToClassHandle.get(theObject);
-                        
+                
                 for (int i = 0; i < theAttributes.size(); i++) {
                     Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
                             .entrySet().iterator();
-
+                    
                     while (ot.hasNext()) {
                         Map.Entry<String, Object[]> elt = ot.next();
                         Object[] tObj = elt.getValue();
-
+                        
                         Time ts = null;
                         TimedEvent te = null;
                         Object value = null;
-
+                        
                         // The tuple (attributeHandle, classHandle) allows to
-                        // identify the object attribute 
+                        // identify the object attribute
                         // (i.e. one of the HlaSubscribers)
                         // where the updated value has to be put.
                         if (theAttributes.getAttributeHandle(i) == _getAttributeHandleFromTab(tObj)
                                 && _getClassHandleFromTab(tObj) == classHandle) {
                             try {
                                 HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
-
+                                
                                 // GL: FIXME: PTIDES
                                 // This first case handle events from a PtidesPlatform
                                 // to PtidesPlatform, only network port are supported.
                                 if (_getTypeFromTab(tObj) instanceof RecordType) {
                                     HlaPtidesEvent hpe = new HlaPtidesEvent(
                                             theAttributes.getValue(i));
-
+                                    
                                     // GL: FIXME: PTIDES: should be:
                                     //ts = new Time(_director, he.getSourceTime());
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
                                                     .getTime());
                                     te = new TimedEvent(ts, new Object[] {
-                                            (RecordType) _getTypeFromTab(tObj),
-                                            MessageProcessing.decodeHlaValue(hs,
-                                                    (RecordType) _getTypeFromTab(tObj),
-                                                    hpe.getValue()),
-                                            // GL: FIXME: PTIDES: should be:
-                                            // he.getLogicalTime(),
-                                            ts.getDoubleValue(),
-                                            hpe.getMicroStep(),
-                                            // GL: FIXME: PTIDES: should be:
-                                            hpe.getSourceTime() });
+                                        (RecordType) _getTypeFromTab(tObj),
+                                        MessageProcessing.decodeHlaValue(hs,
+                                                (RecordType) _getTypeFromTab(tObj),
+                                                hpe.getValue()),
+                                        // GL: FIXME: PTIDES: should be:
+                                        // he.getLogicalTime(),
+                                        ts.getDoubleValue(),
+                                        hpe.getMicroStep(),
+                                        // GL: FIXME: PTIDES: should be:
+                                        hpe.getSourceTime() });
                                     //ts.getDoubleValue()});
-
+                                    
                                     //  System.out.println("RAV " + "has to decode asHlaPtidesEvent");
                                     //  System.out.println("RAV " + "logicalTime="+he.getLogicalTime());
                                     //  System.out.println("RAV " + "srcTimeStamp="+he.getSourceTime());
                                     //  System.out.println("RAV " + "time of RAV=" + ts.getDoubleValue());
-
+                                    
                                 } else {
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
                                                     .getTime());
                                     value = MessageProcessing.decodeHlaValue(hs,
-                                                            (BaseType) _getTypeFromTab(tObj),
-                                                            theAttributes.getValue(i));
+                                            (BaseType) _getTypeFromTab(tObj),
+                                            theAttributes.getValue(i));
                                     te = new OriginatedEvent(
                                             ts,
                                             new Object[] {
                                                 (BaseType) _getTypeFromTab(tObj),value},
-                                    theObject);
+                                            theObject);
+                                }
+                                
+                                _fromFederationEvents.get(hs.getIdentity()).add(te);
+                                if (_debugging) {
+                                    _debug(getDisplayName()
+                                            + " INNER"
+                                            + " reflectAttributeValues() (RAV) - "
+                                            + "HLA attribute: "
+                                            + hs.getParameterName()
+                                            + ", timestamp=" + te.timeStamp + " ,val="+value.toString()
+                                            + ") has been received + stored for "
+                                            + hs.getDisplayName()
+                                    );
                                 }
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
-                            }
-                            
-                            HlaSubscriber hs = (HlaSubscriber) (_getPortFromTab(tObj)).getContainer();
-                            _fromFederationEvents.get(hs.getIdentity()).add(te);
-                            if (_debugging) {
-                                _debug(getDisplayName()
-                                        + " INNER"
-                                        + " reflectAttributeValues() (RAV) - "
-                                        + "HLA attribute: "
-                                        + hs.getParameterName() 
-                                        + ", timestamp=" + te.timeStamp + " ,val="+value.toString() 
-                                        + ") has been received + stored for " 
-                                        + hs.getDisplayName()
-                                );
                             }
                         }
                     }
