@@ -20,14 +20,6 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Enter host machine &#10;IP address here:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 195.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses an accessor to discover devices on the local area network.&#10;&#10;The host code, in DeviceDiscoveryHelper, is written in Java and interfaces&#10;to the Javascript accessor using Nashorn libraries.  &#10;&#10;The host code determines the host platform, then executes the ping and arp &#10;commands to find devices, and MAC addresses and names where available.">
         </property>
@@ -56,19 +48,6 @@
             </property>
         </port>
     </entity>
-    <entity name="IPaddress" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;192.168.1.12&quot;">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 265.0]">
-        </property>
-    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 246}, maximized=false}">
         </property>
@@ -77,12 +56,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 265.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="IPAddress" class="ptolemy.actor.lib.net.IPAddress">
+        <doc>Send the IP address of the host to the output port.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 476, 343, 230}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 355.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{120.0, 265.0}">
+        </vertex>
+    </relation>
     <link port="DeviceDiscoveryAccessor.devices" relation="relation"/>
-    <link port="DeviceDiscoveryAccessor.hostIP" relation="relation2"/>
-    <link port="IPaddress.output" relation="relation2"/>
+    <link port="DeviceDiscoveryAccessor.hostIP" relation="relation3"/>
     <link port="Display.input" relation="relation"/>
+    <link port="IPAddress.output" relation="relation3"/>
+    <link port="Display2.input" relation="relation3"/>
 </entity>
