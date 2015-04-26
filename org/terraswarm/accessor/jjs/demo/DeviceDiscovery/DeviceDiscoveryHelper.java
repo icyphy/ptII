@@ -1,6 +1,6 @@
 /* A helper class for the device discovery accessor.
 
-   Copyright (c) 2014 The Regents of the University of California.
+   Copyright (c) 2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ import org.json.JSONObject;
    It handles execution of the ping and arp commands and returns device 
    information to the accessor.
    
-   @author Elizabeth Latronico
+   @author Elizabeth Latronico, contributor: Christopher Brooks
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Red (ltrnc)
@@ -73,12 +73,17 @@ public class DeviceDiscoveryHelper {
      * @return A String containing a JSON representation of devices found.
      */
     public String discover(String IPAddress) {
-        
+        // FIXME: We probably want to take a broadcast address as an
+        // input and ping that to get all the hosts.  Pinging 1
+        // through 255 works for class C subnets.
+        if (_debugging) {
+            System.out.println("DeviceDiscoveryHelper.discover(" + IPAddress + ")");
+        }
         ipMap.clear();        
-        String baseIp, testIp;
+        String baseIP, testIP;
         
         if (IPAddress.lastIndexOf(".") > 0) {
-            baseIp = IPAddress.substring(0, IPAddress.lastIndexOf("."));
+            baseIP = IPAddress.substring(0, IPAddress.lastIndexOf("."));
             
             // Select appropriate function for the OS
             if (System.getProperty("os.name").substring(0,3)
@@ -88,8 +93,8 @@ public class DeviceDiscoveryHelper {
                 ArrayList<Thread> runnables = new ArrayList();
                 
                 for (int i = 1; i <= 255; i++) {
-                    testIp = baseIp + "." + i;                   
-                    Thread thread = new Thread(new PingWindowsRunnable(testIp));
+                    testIP = baseIP + "." + i;                   
+                    Thread thread = new Thread(new PingWindowsRunnable(testIP));
                     runnables.add(thread);
                     thread.start();
                 }
@@ -106,12 +111,15 @@ public class DeviceDiscoveryHelper {
                 arpWindows();
                 
             } else {
+                if (_debugging) {
+                    System.out.println("DeviceDiscovery: Run pings concurrently, in separate threads. baseIP: " + baseIP);
+                }
                 // Run pings concurrently, in separate threads
                 ArrayList<Thread> runnables = new ArrayList();
                 
                 for (int i = 1; i <= 255; i++) {
-                    testIp = baseIp + "." + i;
-                    Thread thread = new Thread(new PingLinuxRunnable(testIp));
+                    testIP = baseIP + "." + i;
+                    Thread thread = new Thread(new PingLinuxRunnable(testIP));
                     runnables.add(thread);
                     thread.start();
                 }
@@ -127,6 +135,9 @@ public class DeviceDiscoveryHelper {
                 arpLinux();
             }
         } else {
+            System.err.println("DeviceDiscoveryHelper.discover("
+                    + IPAddress + "): \"" + IPAddress + "\" does not have a period?");
+
             // TODO:  Return error message?  What should accessors do in case
             // of error?
         }
@@ -143,6 +154,7 @@ public class DeviceDiscoveryHelper {
             JSON.append(" ]");
             return JSON.toString();
         } else {
+            System.err.println("DeviceDiscoveryHelper.discover(" + IPAddress + "): no devices found? Returning [].");
             return "[]";
         }
     }
@@ -155,9 +167,13 @@ public class DeviceDiscoveryHelper {
      *  moment (which may be cached in the arp cache).
      */
     private void arpLinux() {
+        if (ipMap.size() == 0) {
+            System.err.println("Warning, no devices were found.  Perhaps the format returned by "
+                    + _pingLinuxCommand + " is different?");
+        }
         try {
             Process process = 
-                    Runtime.getRuntime().exec("arp -a ");
+                Runtime.getRuntime().exec(_arpCommand);
             
             BufferedReader stdOut = new BufferedReader(new
                     InputStreamReader(process.getInputStream()));
@@ -165,6 +181,9 @@ public class DeviceDiscoveryHelper {
                String line;
                
                while ((line = stdOut.readLine()) != null) {
+                   if (_debugging) {
+                       System.out.println("DeviceDiscovery: arp returns \"" + line + "\"");
+                   }
                    StringTokenizer tokenizer = new StringTokenizer(line, " ");
                    String token, name, ip;
                    
@@ -184,6 +203,9 @@ public class DeviceDiscoveryHelper {
                        token = (String) tokenizer.nextElement();
                        ip = token.substring(1, token.length() - 1);
                        
+                       if (_debugging) {
+                           System.out.println("DeviceDiscovery: name: " + name + ", token: " + token + " ,ip: " + ip);
+                       }
                        JSONObject object;
                        for (String key : ipMap.keySet()) {
                            object = ipMap.get(key);
@@ -200,7 +222,7 @@ public class DeviceDiscoveryHelper {
                    }
                }
        } catch(IOException e) {
-           System.err.println("Error executing arp");
+           System.err.println("Error executing " + _arpCommand);
        } catch(JSONException e2) {
            // If error, assume problem with MAC, since that's the only new info
            System.err.println("Arp error: MAC address is not JSON compatible.");
@@ -215,9 +237,13 @@ public class DeviceDiscoveryHelper {
      */
     
     private void arpWindows() {
+        if (ipMap.size() == 0) {
+            System.err.println("Warning, no devices were found.  Perhaps the format returned by "
+                    + _pingWindowsCommand + " is different?");
+        }
         try {
             Process process = 
-                    Runtime.getRuntime().exec("arp -a ");
+                Runtime.getRuntime().exec(_arpCommand);
             
             BufferedReader stdOut = new BufferedReader(new
                     InputStreamReader(process.getInputStream()));
@@ -246,7 +272,7 @@ public class DeviceDiscoveryHelper {
                    }
                }
        } catch(IOException e) {
-           System.err.println("Error executing arp");
+           System.err.println("Error executing " + _arpCommand);
        } catch(JSONException e2) {
            // If error, assume problem with MAC, since that's the only new info
            System.err.println("Arp error: MAC address is not JSON compatible.");
@@ -255,15 +281,15 @@ public class DeviceDiscoveryHelper {
     
     /** Execute ping of the testIP on a Linux or Mac platform.  
      * 
-     * @param testIp  The IP address to ping.
+     * @param testIP  The IP address to ping.
      * @return A Promise which is resolved once the ping command finishes.
      */
-    private JSONObject pingLinux(String testIp) {
+    private JSONObject pingLinux(String testIP) {
         JSONObject device = null;
         
         try {
             Process process = 
-                    Runtime.getRuntime().exec("ping -c 2 " + testIp);
+                Runtime.getRuntime().exec(_pingLinuxCommand + testIP);
             
             BufferedReader stdOut = new BufferedReader(new
                  InputStreamReader(process.getInputStream()));
@@ -271,6 +297,9 @@ public class DeviceDiscoveryHelper {
             String line;
             
             while ((line = stdOut.readLine()) != null) {
+                if (_debugging) {
+                    System.out.println("pingLinux(" + testIP + "): " + line);
+                }
                 // Example reply from a device that's on and available
                 // PING 192.168.5.6 (192.168.5.6) 56(84) bytes of data.
                 // 64 bytes from 192.168.5.6: icmp_seq=1 ttl=64 time=381 ms
@@ -284,25 +313,42 @@ public class DeviceDiscoveryHelper {
                 int found = line.indexOf("2 received");
                 if (found < 0) {
                     found = line.indexOf("1 received");
+                    if (found < 0) {
+                        // Think different.  Mac OS returns something a bit different
+                        // bash-3.2$ bash-3.2$ ping -c 2 192.168.1.2
+                        // PING 192.168.1.2 (192.168.1.2): 56 data bytes
+                        // 64 bytes from 192.168.1.2: icmp_seq=0 ttl=255 time=6.733 ms
+                        // 64 bytes from 192.168.1.2: icmp_seq=1 ttl=255 time=5.336 ms
+                        //
+                        // --- 192.168.1.2 ping statistics ---
+                        // 2 packets transmitted, 2 packets received, 0.0% packet loss
+                        // round-trip min/avg/max/stddev = 5.336/6.034/6.733/0.699 ms
+                        // bash-3.2$ 
+
+                        found = line.indexOf("2 packets received");
+                        if (found < 0) {
+                            found = line.indexOf("1 packets received");
+                        }
+                    }
                 }
-                    
+
                 if (found > 0) {
                     // Store IP.  Name and mac address are determined in arp
                     // The host machine will be pingable, but will have no arp 
                     // entry, so use "Host machine" as the default name, mac
-                    System.out.println("Device available at " + testIp);
+                    System.out.println("Device available at " + testIP);
                     try {
                             device = new JSONObject("{\"IPaddress\": " + 
-                                   testIp + "," + "\"name\": \"Host machine\"" + 
+                                   testIP + "," + "\"name\": \"Host machine\"" + 
                                    ", \"mac\": \"Host machine\"}");
                         } catch(JSONException e) {
                             System.err.println("Error creating JSON object " +
-                                    "for device at IP " + testIp);
+                                    "for device at IP " + testIP);
                         }
                     }
                 }
         } catch(IOException e) {
-            System.err.println("Error executing ping for " + testIp);
+            System.err.println("Error executing ping for " + testIP);
         } 
         return device;
     }
@@ -310,16 +356,16 @@ public class DeviceDiscoveryHelper {
     
     /** Execute ping of the testIP on a Windows platform.
      * 
-     * @param testIp  The IP address to base the sweep on. 
+     * @param testIP  The IP address to base the sweep on. 
      * @return If a device is found, a JSON object containing the IP address 
      * and name; null otherwise.
      */
-    private JSONObject pingWindows(String testIp) {
+    private JSONObject pingWindows(String testIP) {
         JSONObject device = null;
         
         try {
             Process process = 
-                    Runtime.getRuntime().exec("ping -n 2 -a " + testIp);
+                Runtime.getRuntime().exec(_pingWindowsCommand + testIP);
             
             BufferedReader stdOut = new BufferedReader(new
                  InputStreamReader(process.getInputStream()));
@@ -346,9 +392,9 @@ public class DeviceDiscoveryHelper {
                     int bracket = data.indexOf("[");
                     String name = data.substring(8, bracket - 1);
                     System.out.println("Device " + name + " available at " 
-                            + testIp);
+                            + testIP);
                     try {
-                        device = new JSONObject("{\"IPaddress\": " + testIp + 
+                        device = new JSONObject("{\"IPaddress\": " + testIP + 
                                 "," + "\"name\": " + name + 
                                 ", \"mac\": \"Unknown\"}");
                     } catch(JSONException e) {
@@ -359,7 +405,7 @@ public class DeviceDiscoveryHelper {
                 }
             }
         } catch(IOException e) {
-            System.err.println("Error executing ping for " + testIp);
+            System.err.println("Error executing ping for " + testIP);
         } 
         return device;
     } 
@@ -384,23 +430,23 @@ public class DeviceDiscoveryHelper {
          * @param ipAddress  The IP address to ping.
          */
         public PingLinuxRunnable(String ipAddress) {
-            testIp = ipAddress;
+            testIP = ipAddress;
         }
         
         /** Execute a ping and save info from any device found.
          */
         public void run() {
-            JSONObject device = pingLinux(testIp);
+            JSONObject device = pingLinux(testIP);
             
             // Lock ipMap?  No two devices will have same IP address, so no 
             // collisions.
             if (device != null) {
-                ipMap.put(testIp, device);
+                ipMap.put(testIP, device);
             }
         }
         
         /** The IP address to ping.  */
-        private String testIp;
+        private String testIP;
     }
     
     /** A runnable for executing a ping in a separate thread, so that
@@ -414,24 +460,33 @@ public class DeviceDiscoveryHelper {
          * @param ipAddress  The IP address to ping.
          */
         public PingWindowsRunnable(String ipAddress) {
-            testIp = ipAddress;
+            testIP = ipAddress;
         }
         
         /** Execute a ping and save info from any device found.
          */
         public void run() {
-            JSONObject device = pingWindows(testIp);
+            JSONObject device = pingWindows(testIP);
             
             // Lock ipMap?  No two devices will have same IP address, so no 
             // collisions.
             if (device != null) {
-                ipMap.put(testIp, device);
+                ipMap.put(testIP, device);
             }
         }
         
         /** The IP address to ping.  */
-        private String testIp;
+        private String testIP;
     }
     
+    /** The command to invoke the arp, the address resolution protocol. */
+    private String _arpCommand = "arp -a";
 
+    private final boolean _debugging = false;
+
+    /** Command to ping an IP address under Linux, followed by a trailing space. */
+    private String _pingLinuxCommand = "ping -c 2 ";
+
+    /** Command to ping an IP address under Windows, followed by a trailing space. */
+    private String _pingWindowsCommand = "ping -n 2 -a ";
 }
