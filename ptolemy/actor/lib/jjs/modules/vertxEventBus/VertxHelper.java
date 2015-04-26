@@ -110,12 +110,65 @@ public class VertxHelper {
         return new VertxHelper(currentObj, port, false);
     }
     
+    /** Establish a connection to the event bus, if not already connected.
+     */
+    public void connect() {
+        if (!_wsIsOpen) { 
+            try {
+                _httpClient.connectWebsocket("/eventbus/websocket", 
+                    new Handler<WebSocket>() {
+                    @Override
+                    public void handle(WebSocket websocket) {
+                        /* Uncomment this to test delays in opening the bus.
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
+                        */
+        
+                        _wsIsOpen = true;
+                        _webSocket = websocket;
+                        _currentObj.callMember("emit", "open");
+                        
+                        _webSocket.dataHandler(new DataHandler());
+                        _webSocket.endHandler(new EndHandler());
+                        _webSocket.exceptionHandler(new ExceptionHandler());
+                        
+                        // a periodic ping is needed to keep the websocket open.
+                        _periodicPing = _vertx.setPeriodic(5000, 
+                                new Handler<Long>() {
+                            @Override
+                            public void handle(Long timerID) {
+                                JsonObject json = 
+                                     new JsonObject().putString("type", "ping");
+                                try {
+                                    _sendTextFrame(json);
+                                } catch (IllegalActionException e) {
+                                    _currentObj.callMember("emit", "error");
+                                }
+                            }
+                          });
+                    }
+                });
+            
+
+                } catch(Exception e){
+                    _currentObj.callMember("emit", "error", "connect");
+                    System.out.println(e);
+                }
+            }
+    }
+    
     /** Close the internal web socket, cancel periodic ping.
      */
     public void close() {
         _vertx.cancelTimer(_periodicPing);
         if (_webSocket != null) {
             _webSocket.close();
+            _wsIsOpen = false;
+            _webSocket = null;
         }
     }
     
@@ -182,46 +235,24 @@ public class VertxHelper {
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      */
-    private VertxHelper(ScriptObjectMirror currentObj, String host, int port, boolean withEventBus) {
+    private VertxHelper(ScriptObjectMirror currentObj, String host, int port, 
+            boolean withEventBus) {
         _currentObj = currentObj;
         
-        _httpClient = _vertx.createHttpClient().setHost(host).setPort(port);
+        _httpClient = _vertx.createHttpClient().setHost(host)
+                .setPort(port);
+        _httpClient.exceptionHandler(new Handler() {
         
-        if (withEventBus) {
-            _httpClient.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
-                @Override
-                public void handle(WebSocket websocket) {
-                    /* Uncomment this to test delays in opening the bus.
-                    try {
-                	Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                	// TODO Auto-generated catch block
-                	e1.printStackTrace();
-                    }
-                    */
-
-                    _wsIsOpen = true;
-                    _webSocket = websocket;
-                    _currentObj.callMember("emit", "open");
-                    
-                    _webSocket.dataHandler(new DataHandler());
-                    _webSocket.endHandler(new EndHandler());
-                    _webSocket.exceptionHandler(new ExceptionHandler());
-                }
-            });
+            /** Intercept a java.net.ConnectException if connecting fails. */ 
+            public void handle(Object arg0) {
+                _currentObj.callMember("emit", "error", "connect");
+            }
             
-            // the periodic ping is needed to keep the websocket open.
-            _periodicPing = _vertx.setPeriodic(5000, new Handler<Long>() {
-                @Override
-                public void handle(Long timerID) {
-                    JsonObject json = new JsonObject().putString("type", "ping");
-                    try {
-                        _sendTextFrame(json);
-                    } catch (IllegalActionException e) {
-                        _currentObj.callMember("emit", "error");
-                    }
-                }
-              });
+        });
+
+        // For convenience, connect to bus straight away
+        if (withEventBus) {
+            connect();
         }
     }
     
