@@ -65,12 +65,14 @@ public class DeviceDiscoveryHelper {
         ipMap = new HashMap<String, JSONObject>();
     }
     
-    /** Discover all devices on the local area network connected to the given
-     * IP address.
+    /** Discover all devices that reply to a ping on the class-C local
+     *  area network connected to the given IP address
      * 
-     * @param The IP address whose subnet should be scanned.  E.g., for 
-     *  IP address 192.168.5.7, scan 192.168.5.1 to 192.168.5.255.
-     * @return A String containing a JSON representation of devices found.
+     *  A class-C network has a netmask of /24, or 255.255.255.0.
+     *
+     *  @param The IP address whose subnet should be scanned.  E.g., for 
+     *  IP address 192.168.5.7, scan 192.168.5.0 to 192.168.5.255.
+     *  @return A String containing a JSON representation of devices found.
      */
     public String discover(String IPAddress) {
         // FIXME: We probably want to take a broadcast address as an
@@ -92,7 +94,7 @@ public class DeviceDiscoveryHelper {
                 // Run pings concurrently, in separate threads
                 ArrayList<Thread> runnables = new ArrayList();
                 
-                for (int i = 1; i <= 255; i++) {
+                for (int i = 0; i <= 255; i++) {
                     testIP = baseIP + "." + i;                   
                     Thread thread = new Thread(new PingWindowsRunnable(testIP));
                     runnables.add(thread);
@@ -117,7 +119,7 @@ public class DeviceDiscoveryHelper {
                 // Run pings concurrently, in separate threads
                 ArrayList<Thread> runnables = new ArrayList();
                 
-                for (int i = 1; i <= 255; i++) {
+                for (int i = 0; i <= 255; i++) {
                     testIP = baseIP + "." + i;
                     Thread thread = new Thread(new PingLinuxRunnable(testIP));
                     runnables.add(thread);
