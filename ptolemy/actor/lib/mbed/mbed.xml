@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Mbed" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that are used in the mbed demos.</doc>
+
+      <entity name="Accelerometer" class="ptolemy.actor.lib.mbed.Accelerometer">
+      </entity>
+
+      <entity name="GPIOWriter" class="ptolemy.actor.lib.mbed.GPIOWriter">
+        <doc>Write to the GPIO of an embedded platform, changes the actors color</doc>
+      </entity>
+
+      <entity name="HSBtoRGB" class="ptolemy.actor.lib.mbed.HSBtoRGB">
+      </entity>
+
+      <entity name="NeoPixel_LED_Strip" class="ptolemy.actor.lib.mbed.NeoPixel_LED_Strip">
+      </entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
