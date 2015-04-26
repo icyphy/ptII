@@ -15,7 +15,7 @@ exports.VertxBus = function(options) {
     this.port = options['port'] || 8080;
     this.host = options['host'] || "localhost";
     this.eventbus = VertxHelper.getEventBus(this, this.host, this.port);
-}
+};
 util.inherits(exports.VertxBus, EventEmitter);
 
 ////////////////////
@@ -26,7 +26,7 @@ util.inherits(exports.VertxBus, EventEmitter);
 exports.VertxBusServer = function(options) {
     this.port = options['port'] || 8080;
     this.server = VertxHelper.getEventBusServer(this, this.port);
-}
+};
 util.inherits(exports.VertxBusServer, EventEmitter);
 
 ////////////////////
@@ -36,7 +36,7 @@ exports.VertxBus.prototype.publish = function(address, data) {
         throw new Error('not opened');
     }
     this.eventbus.publish(address, data);
-}
+};
 
 ////////////////////
 // Register handler at an address. 
@@ -46,7 +46,7 @@ exports.VertxBus.prototype.registerAddressListener = function(data, onReceivedFu
     }
     this.eventbus.registerHandler(data);
     this.on('received', onReceivedFunction);
-}
+};
 
 ////////////////////
 // Close the eventbus connection.
@@ -55,7 +55,15 @@ exports.VertxBus.prototype.close = function() {
         throw new Error('not opened');
     }
     this.eventbus.close();
-}
+};
+
+////////////////////
+//Establish a connection to the eventbus.  
+//This is attempted automatically upon creation.
+//If connecting fails (e.g. server is not up yet), can retry with this method.
+exports.VertxBus.prototype.connect = function() {
+	this.eventbus.connect();
+};
 
 ////////////////////
 // Close the vertx bus server.
@@ -63,7 +71,7 @@ exports.VertxBusServer.prototype.closeServer = function() {
     if (this.server != null) {
         this.server.closeServer();
     }
-}
+};
 
 ////////////////////
 // Send http response.
@@ -71,5 +79,5 @@ exports.VertxBusServer.prototype.sendHttpResponse = function(data, value) {
     if (this.server != null) {
         this.server.sendHttpResponse(data, value);
     }
-}
+};
 
