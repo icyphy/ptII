@@ -52,9 +52,9 @@ import ptolemy.kernel.util.Workspace;
 
  @author Kevin Albers
  @version $Id: GPIOWriter.java 72079 2015-04-23 03:06:41Z cxh $
- @since Ptolemy II 2.2
- @Pt.ProposedRating
- @Pt.AcceptedRating
+ @since Ptolemy II 11.0
+ @Pt.ProposedRating red (robert.bui)
+ @Pt.AcceptedRating red (robert.bui)
  */
 public class GPIOWriter extends Sink {
     /** Construct an actor with the given container and name.
@@ -123,12 +123,10 @@ public class GPIOWriter extends Sink {
         return super.postfire();
     }
    
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     
     private RectangleAttribute _GPIOState;
     
     private EditorIcon _GPIOIcon;
-
 }
