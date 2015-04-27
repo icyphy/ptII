@@ -45,7 +45,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     io
+PTPACKAGE =     mbed
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 #PTCLASSALLJAR = $(PTPACKAGE).jar

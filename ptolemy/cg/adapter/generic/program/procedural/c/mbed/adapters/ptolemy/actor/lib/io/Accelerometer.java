@@ -1,6 +1,6 @@
 /* An adapter class for ptolemy.actor.lib.gui.Display
 
- Copyright (c) 2015-2015 The Regents of the University of California.
+ Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,9 +38,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Robert Bui
  @version $Id: Accelerometer.java 71957 2015-04-13 03:03:57Z robert.bui@berkeley.edu $
- @since Ptolemy II 10.0
- @Pt.ProposedRating 
- @Pt.AcceptedRating 
+ @since Ptolemy II 11.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class Accelerometer
 extends NamedProgramCodeGeneratorAdapter {
@@ -49,7 +49,7 @@ extends NamedProgramCodeGeneratorAdapter {
      *  Construct the Accelerometer adapter.
      *  @param actor the associated actor
      */
-    public Accelerometer(ptolemy.actor.lib.io.Accelerometer actor) {
+    public Accelerometer(ptolemy.actor.lib.mbed.Accelerometer actor) {
         super(actor);
     }
     

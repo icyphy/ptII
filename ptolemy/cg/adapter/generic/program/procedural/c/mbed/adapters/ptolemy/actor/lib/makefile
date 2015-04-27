@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2014 The Regents of the University of California
+# @Copyright (c) 2015 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib
 
-DIRS =		gui io
+DIRS =		gui io mbed
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
@@ -46,11 +46,17 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	gui/gui.jar \
+	mbed/mbed.jar
 
 # Keep this list alphabetized.
 JSRCS =
-
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c) 
