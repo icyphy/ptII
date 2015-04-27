@@ -61,10 +61,7 @@ import ptolemy.kernel.util.Workspace;
  * federation and need to match the Federate Object Model (FOM) specified for
  * the Federation. The data type of the input port has to be the same type of
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM. The parameter
- * <i>useHlaPtidesEvent</i> indicates if we need to handle PTIDES events as
- * RecordToken for HLA events.
- * </p>
+ * attribute object class describes in the FOM. 
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id$
@@ -97,11 +94,6 @@ public class HlaPublisher extends TypedAtomicActor {
         classObjectHandle.setExpression("\"myObjectClass\"");
         attributeChanged(classObjectHandle);
 
-        useHLAPtidesEvent = new Parameter(this, "useHLAPtidesEvent");
-        useHLAPtidesEvent.setTypeEquals(BaseType.BOOLEAN);
-        useHLAPtidesEvent.setExpression("false");
-        useHLAPtidesEvent.setDisplayName("use HLA PTIDES event");
-        attributeChanged(useHLAPtidesEvent);
 
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
@@ -110,7 +102,6 @@ public class HlaPublisher extends TypedAtomicActor {
         attributeChanged(useCertiMessageBuffer);
 
         _hlaManager = null;
-        _useHLAPtidesEvent = false;
         _useCertiMessageBuffer = false;
     }
 
@@ -119,9 +110,6 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** The object class of the HLA attribute to publish. */
     public Parameter classObjectHandle;
-
-    /** Indicate if the event is for a PTIDES platform. */
-    public Parameter useHLAPtidesEvent;
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     public Parameter useCertiMessageBuffer;
@@ -151,10 +139,7 @@ public class HlaPublisher extends TypedAtomicActor {
         } else if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
-        } else if (attribute == useHLAPtidesEvent) {
-            _useHLAPtidesEvent = ((BooleanToken) useHLAPtidesEvent.getToken())
-                    .booleanValue();
-        }
+        } 
         super.attributeChanged(attribute);
     }
 
@@ -169,7 +154,6 @@ public class HlaPublisher extends TypedAtomicActor {
         HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
         newObject._hlaManager = _hlaManager;
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
-        newObject._useHLAPtidesEvent = _useHLAPtidesEvent;
         return newObject;
     }
 
@@ -230,12 +214,6 @@ public class HlaPublisher extends TypedAtomicActor {
         return _useCertiMessageBuffer;
     }
 
-    /** Indicate if the HLA publisher actor sends events to a PTIDES
-     *  platform.
-     */
-    public boolean useHLAPtidesEvent() throws IllegalActionException {
-        return _useHLAPtidesEvent;
-    }
 
     /**
      *  Establish the mapping between id and opaqueIdentifier for all the HLASubscribers
@@ -251,8 +229,6 @@ public class HlaPublisher extends TypedAtomicActor {
     /** A reference to the associated {@link HlaManager}. */
     private HlaManager _hlaManager;
 
-    /** Indicate if the event is for a PTIDES platform. */
-    private boolean _useHLAPtidesEvent;
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;

@@ -49,17 +49,6 @@ public class MessageProcessing {
      */
     static public Object decodeHlaValue(HlaSubscriber hs, Type type, byte[] buffer)
             throws IllegalActionException {
-        
-        // GL: FIXME: Case to handle PTIDES events.
-        if (hs.useHLAPtidesEvent()) {
-            if (!(type instanceof RecordType)) {
-                throw new IllegalActionException(
-                        "Try to decode a value for a PTIDES platform"
-                                + " which is not a RecordType");
-            }
-            Double ret = EncodingHelpers.decodeDouble(buffer);
-            return ret;
-        }
 
         // Case to handle CERTI message buffer.
         if (hs.useCertiMessageBuffer()) {
@@ -142,21 +131,7 @@ public class MessageProcessing {
         int recordMicrostep = -1;
         double sourceTimestamp = -1.0;
 
-        // GL: FIXME: HLA PTIDES event support.
-        // If we deal with an event sent from PtidesPlatform to PtidesPlatform,
-        // then unwrap the corresponding RecordToken.
-        // Be careful, only PTIDES network port are supported.
-        if (hp.useHLAPtidesEvent()) {
-            RecordToken rt = (RecordToken) tok;
-
-            recordTimestamp = ((DoubleToken) rt.get("timestamp")).doubleValue();
-            recordMicrostep = ((IntToken) rt.get("microstep")).intValue();
-            sourceTimestamp = ((DoubleToken) rt.get("sourceTimestamp"))
-                    .doubleValue();
-            t = rt.get("payload");
-        } else {
-            t = tok;
-        }
+        t = tok;
 
         // Get the corresponding type of the HLA attribute value.
         BaseType type = (BaseType) t.getType();
@@ -190,15 +165,15 @@ public class MessageProcessing {
             }
 
             try {
-                // Write the buffer in the output stream.
-                msgBuffer.send();
+            // Write the buffer in the output stream.
+            msgBuffer.send();
             } catch (IOException e) {
                 throw new IllegalActionException(
                         "Error to write CERTI message buffer"
                                 + " in ByteArrayOutputStream, reason: "
                                 + e.getMessage());
             }
-
+            
             // Write the output stream in an array of bytes.
             encodedValue = bos.toByteArray();
 
@@ -207,7 +182,7 @@ public class MessageProcessing {
             return encodedValue;
         }
 
-        // Case to handle "normal" event or HLA PTIDES event payload.
+        // Case to handle "normal" event payload.
         if (type.equals(BaseType.BOOLEAN)) {
             encodedValue = EncodingHelpers.encodeBoolean(((BooleanToken) t)
                     .booleanValue());
@@ -237,22 +212,9 @@ public class MessageProcessing {
                             + " is not handled  " );
         }
 
-        // GL: FIXME: HLA PTIDES event support.
-        // The HLA PTIDES event is only instantiated here as we need all
-        // parameters when calling the constructor.
-        if (hp.useHLAPtidesEvent()) {
-            Time currentTime = hp.getDirector().getModelTime();
-
-            HlaPtidesEvent he = new HlaPtidesEvent(recordTimestamp,
-                    recordMicrostep, sourceTimestamp, encodedValue);
-
-            // Return the HLA PTIDES event as array of bytes.
-            return he.getBuffer();
-        } else {
-            // Here we are sure that we don't deal with HLA PTIDES event or
-            // CERTI MessageBuffer, so just return the encoded value as array
+            // Here we are sure that we don't deal with HLA  event CERTI MessageBuffer, 
+            // so just return the encoded value as array
             // of bytes.
-            return encodedValue;
-        }
+            return encodedValue; 
     }
 }

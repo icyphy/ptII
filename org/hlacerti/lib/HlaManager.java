@@ -115,8 +115,15 @@ import certi.communication.MessageBuffer;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.lib.Ramp;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Instantiable;
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
@@ -1066,14 +1073,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + " encoded as CERTI MessageBuffer" + " , currentTime="
                         + _director.getModelTime().getDoubleValue());
             }
-            else if (hp.useHLAPtidesEvent()) {
-                RecordToken rt = (RecordToken) in;
-                
-                _debug(this.getDisplayName()
-                        + " - Encoded as HlaPtidesEvent"
-                        + " currentTime=" + hp.getDirector().getModelTime()
-                        + " recordTimestamp=" + ((DoubleToken) rt.get("timestamp")).doubleValue());
-            }
         }
         SuppliedAttributes suppAttributes = null;
         try {
@@ -1613,37 +1612,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             try {
                                 HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
                                 
-                                // GL: FIXME: PTIDES
-                                // This first case handle events from a PtidesPlatform
-                                // to PtidesPlatform, only network port are supported.
-                                if (_getTypeFromTab(tObj) instanceof RecordType) {
-                                    HlaPtidesEvent hpe = new HlaPtidesEvent(
-                                            theAttributes.getValue(i));
-                                    
-                                    // GL: FIXME: PTIDES: should be:
-                                    //ts = new Time(_director, he.getSourceTime());
-                                    ts = new Time(_director,
-                                            ((CertiLogicalTime) theTime)
-                                                    .getTime());
-                                    te = new TimedEvent(ts, new Object[] {
-                                        (RecordType) _getTypeFromTab(tObj),
-                                        MessageProcessing.decodeHlaValue(hs,
-                                                (RecordType) _getTypeFromTab(tObj),
-                                                hpe.getValue()),
-                                        // GL: FIXME: PTIDES: should be:
-                                        // he.getLogicalTime(),
-                                        ts.getDoubleValue(),
-                                        hpe.getMicroStep(),
-                                        // GL: FIXME: PTIDES: should be:
-                                        hpe.getSourceTime() });
-                                    //ts.getDoubleValue()});
-                                    
-                                    //  System.out.println("RAV " + "has to decode asHlaPtidesEvent");
-                                    //  System.out.println("RAV " + "logicalTime="+he.getLogicalTime());
-                                    //  System.out.println("RAV " + "srcTimeStamp="+he.getSourceTime());
-                                    //  System.out.println("RAV " + "time of RAV=" + ts.getDoubleValue());
-                                    
-                                } else {
                                     ts = new Time(_director,
                                             ((CertiLogicalTime) theTime)
                                                     .getTime());
@@ -1655,7 +1623,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             new Object[] {
                                                 (BaseType) _getTypeFromTab(tObj),value},
                                             theObject);
-                                }
+                                
                                 
                                 _fromFederationEvents.get(hs.getIdentity()).add(te);
                                 if (_debugging) {
@@ -1697,6 +1665,42 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
             _objectIdToClassHandle.put(theObject, theObjectClass);
             _doMappingSuscriber(theObject, theObjectClass);
+            /*
+            CompositeEntity container = (CompositeEntity) getContainer();
+            List<ComponentEntity> classes = container.classDefinitionList();
+            ComponentEntity classInPt = null;
+            for(ComponentEntity c: classes){
+
+                int classH = Integer.MIN_VALUE;
+                try{
+                     classH =  _rtia.getObjectClassHandle(c.getName());
+                }catch(Exception e){}
+                
+                if(theObjectClass == classH){
+                    classInPt=c;
+                }                
+            }
+            final ComponentEntity classInPtForpleasingJava =  classInPt;
+            if(classInPtForpleasingJava == null){           
+                return;
+            }
+            requestChange(new ChangeRequest(this,
+                    "do a test",true) {
+                        @Override
+                        protected void _execute() throws IllegalActionException {
+                            CompositeEntity container = (CompositeEntity) getContainer();
+
+                            try {
+                                Instantiable i = classInPtForpleasingJava.instantiate(
+                                        container,
+                                        theObjectClass+objectName+theObject);
+                                
+                            } catch (NameDuplicationException | CloneNotSupportedException ex) {
+                                ex.printStackTrace();
+                            }
+                            
+                        }
+                    });*/
         }
 
         // HLA Time Management services (callbacks).
