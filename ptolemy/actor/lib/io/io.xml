@@ -48,11 +48,7 @@
         <doc>Send the IP address of the host to the output port.</doc>
         </entity>
         
-      <entity name="GPIOWriter" class="ptolemy.actor.lib.io.GPIOWriter">
-        <doc>Write to the GPIO of an embedded platform, changes the actors color</doc>
-      </entity>
-      
-<!-- depracated
+<!-- deprecated
       <entity name="TokenReader" class="ptolemy.actor.lib.io.TokenReader">
         <doc>Reads a string from a file or URL and parses it into tokens</doc>
       </entity>
