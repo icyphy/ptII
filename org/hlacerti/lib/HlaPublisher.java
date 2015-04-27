@@ -192,8 +192,12 @@ public class HlaPublisher extends TypedAtomicActor {
        for(int i = 0 ; i < input.getWidth() ; ++i) {
         if (input.hasToken(i)) {
             Token in = input.get(i);
-            String name = input.sourcePortList().get(i).getContainer().getDisplayName();
-            _hlaManager.updateHlaAttribute(this, in,_registeredObject.get(name));
+            String actorName = input.sourcePortList().get(i).getContainer().getName();
+            String fedName = (
+                    (StringToken) _hlaManager.federateName.getToken()
+                    ).stringValue();
+            int id = _registeredObject.get(fedName+"."+actorName);
+            _hlaManager.updateHlaAttribute(this, in,id);
 
             if (_debugging) {
                 _debug(this.getDisplayName()
