@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2014 The Regents of the University of California.
+# @Copyright (c) 1998-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -70,7 +70,7 @@ ME =		ptolemy/actor/lib
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTVERTX_DIR is empty.
 #
 DIRS = 		aspect conversions gui logic hoc image test \
-		javasound jjs jopio net io xslt \
+		javasound jjs jopio mbed net io xslt \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
