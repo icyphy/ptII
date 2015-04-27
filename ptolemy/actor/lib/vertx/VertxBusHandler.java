@@ -159,7 +159,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         // send out tokens received as subscriber
         if (_buffer != null) {
             List<Token> bufferCopy = new ArrayList<Token>();
-            synchronized(_buffer) {
+            synchronized(this) {
                 if (_buffer.size() > 0) {
                     bufferCopy.addAll(_buffer);
                     _buffer.clear();
@@ -266,7 +266,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                                 if (_buffer == null) {
                                     _buffer = new ArrayList<Token>();
                                 }
-                                synchronized(_buffer) {
+                                synchronized(VertxBusHandler.this) {
                                     if (received.getField("body") != null) {
                                         String body = received.getField("body");
                                         // remove leading and trailing quotes
