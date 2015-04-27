@@ -93,18 +93,6 @@ public class NeoPixel_LED_Strip extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    @Override
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        NeoPixel_LED_Strip newObject = (NeoPixel_LED_Strip) super.clone(workspace);
-
-        return newObject;
-    }
 
     /** Initialize the actor by resetting to the first output value.
      *  @exception IllegalActionException If there is no director.

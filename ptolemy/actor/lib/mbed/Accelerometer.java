@@ -1,6 +1,6 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
- @Copyright (c) 2015-2015 The Regents of the University of California.
+ @Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -35,21 +35,23 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// K64FAccelerometer 
 
 /**
- <p>
  This actor uses three output ports to output
- the x, y, and z measurements from an accelerometer</p>
+ the x, y, and z measurements from an accelerometer.
 
+ <p>The code generator supplies the method contents, thus this 
+ class has no methods.</p>
 
  @author Robert Bui
  @version $Id: Accelerometer.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
  @since Ptolemy II 10.0
- @Pt.ProposedRating
- @Pt.AcceptedRating
+ @Pt.ProposedRating red (cxh)
+ @Pt.AcceptedRating red (cxh)
  */
 public class Accelerometer extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -90,52 +92,4 @@ public class Accelerometer extends TypedAtomicActor {
      *  given firing. The type is double.
      */
     public TypedIOPort accZ;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    
-    /** Clone the actor into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    @Override
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Accelerometer newObject = (Accelerometer) super.clone(workspace);
-
-        return newObject;
-    }
-
-    /** Initialize the actor by resetting to the first output value.
-     *  @exception IllegalActionException If there is no director.
-     */
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
-
-    /*
-     *  @exception IllegalActionException If the file cannot be opened
-     *   or created.
-     */
-    @Override
-    public void fire() throws IllegalActionException {
-        super.fire();
-    }
-   
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    
-    
-
 }

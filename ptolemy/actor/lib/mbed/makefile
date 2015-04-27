@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II I/O actors
+# Makefile for Ptolemy II Mbed chip actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id: makefile 72084 2015-04-24 01:06:10Z cxh $
 #
-# @Copyright (c) 2001-2013 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,9 +31,7 @@
 
 ME =            ptolemy/actor/lib/mbed
 
-# $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
-# in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
-DIRS =		$(PTCOMM_DIR) demo test
+DIRS =		#demo test
 
 # Root of the Java directory
 ROOT =          ../../../..
@@ -45,7 +43,7 @@ CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     io
+PTPACKAGE =     mbed
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -56,7 +54,6 @@ JSRCS = \
 	NeoPixel_LED_Strip.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	DirectoryListingIcon.xml \
 	mbed.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -69,13 +66,7 @@ MISC_FILES = test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-        doc \
-	comm \
-	'CSVReader$$1.class' \
-	'CSVReader$$ExpressionScope.class' \
-	'TokenReader$$1.class' \
-	'TokenReader$$GLBFunction.class'
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
