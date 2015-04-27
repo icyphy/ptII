@@ -65,10 +65,10 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
-//// ImportFMUAction
+//// ImportAccessorAction
 
 /**
-   An Action to Import an Internet of Things (IoT) Accessor.
+   An Action to import an Internet of Things (IoT) accessor.
    This action presents a dialog box that permits specifying a URL or local directory.
    If the URL or local directory contains a file named index.json, then it presents
    a list of the options given in that file, which it assumes are all accessors.
