@@ -34,13 +34,13 @@ import ptolemy.kernel.util.IllegalActionException;
 //// HSBtoRGB
 
 /**
- An adapter class for ptolemy.actor.lib.io.HSBtoRGB
+ An adapter class for ptolemy.actor.lib.mbed.HSBtoRGB
 
  @author Robert Bui
  @version $Id: HSBtoRGB.java 71957 2015-04-13 03:03:57Z robert.bui@berkeley.edu $
- @since Ptolemy II 10.0
- @Pt.ProposedRating 
- @Pt.AcceptedRating 
+ @since Ptolemy II 11.0
+ @Pt.ProposedRating red (robert.bui)
+ @Pt.AcceptedRating red (robert.bui)
  */
 public class HSBtoRGB
 extends NamedProgramCodeGeneratorAdapter {
