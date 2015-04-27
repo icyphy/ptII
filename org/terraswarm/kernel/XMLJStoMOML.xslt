@@ -77,24 +77,29 @@
 				<xsl:otherwise>
 				    <port name="{@name}" class="ptolemy.actor.TypedIOPort">
 		                <property name="input"/>
-		                <property name="_type" class="ptolemy.actor.TypeAttribute">
-		                	<xsl:attribute name="value">
-		                		<xsl:variable name="portType">
-		                			<xsl:choose>
-		  								<xsl:when test="@type='number'">
-		  									<!-- JavaScript number is a double. -->
-		  									<xsl:value-of select="'double'"/>
-		 	 							</xsl:when>
-		  								<xsl:otherwise>
-		  									<!-- NOTE: Assume that other than 'number', accessor types are -->
-		  									<!-- specified identically to Ptolemy types. -->
-		    								<xsl:value-of select="@type"/>
-		  								</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:value-of select="$portType"/>
-							</xsl:attribute>
-		        		</property>
+		                <xsl:choose>
+							<!-- If there is a type, then create a type attribute. -->
+							<xsl:when test="@type">
+				                <property name="_type" class="ptolemy.actor.TypeAttribute">
+		                			<xsl:attribute name="value">
+		                				<xsl:variable name="portType">
+		                					<xsl:choose>
+		  										<xsl:when test="@type='number'">
+		  											<!-- JavaScript number is a double. -->
+		  											<xsl:value-of select="'double'"/>
+		 	 									</xsl:when>
+		  										<xsl:otherwise>
+		  											<!-- NOTE: Assume that other than 'number', accessor types are -->
+		  											<!-- specified identically to Ptolemy types. -->
+		    										<xsl:value-of select="@type"/>
+		  										</xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
+										<xsl:value-of select="$portType"/>
+									</xsl:attribute>
+		        				</property>
+		        			</xsl:when>
+		        		</xsl:choose>
 					</port>
 				</xsl:otherwise>
 			</xsl:choose>
