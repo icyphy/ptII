@@ -1,6 +1,6 @@
 /* An adapter class for ptolemy.actor.lib.gui.Display
 
- Copyright (c) 2015-2015 The Regents of the University of California.
+ Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,9 +40,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Kevin Albers
  @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating 
- @Pt.AcceptedRating 
+ @since Ptolemy II 11.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class GPIOWriter
 extends NamedProgramCodeGeneratorAdapter {
@@ -51,7 +51,7 @@ extends NamedProgramCodeGeneratorAdapter {
      *  Construct the GPIOWriter adapter.
      *  @param actor the associated actor
      */
-    public GPIOWriter(ptolemy.actor.lib.io.GPIOWriter actor) {
+    public GPIOWriter(ptolemy.actor.lib.mbed.GPIOWriter actor) {
         super(actor);
     }
     
@@ -69,7 +69,7 @@ extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.actor.lib.io.GPIOWriter actor = (ptolemy.actor.lib.io.GPIOWriter) getComponent();
+        ptolemy.actor.lib.mbed.GPIOWriter actor = (ptolemy.actor.lib.mbed.GPIOWriter) getComponent();
 
         String type = getCodeGenerator().codeGenType(actor.input.getType());
         if (!getCodeGenerator().isPrimitive(type)) {

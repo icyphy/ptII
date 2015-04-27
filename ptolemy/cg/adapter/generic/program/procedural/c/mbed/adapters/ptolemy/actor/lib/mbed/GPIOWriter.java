@@ -69,7 +69,7 @@ extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.actor.lib.io.GPIOWriter actor = (ptolemy.actor.lib.io.GPIOWriter) getComponent();
+        ptolemy.actor.lib.mbed.GPIOWriter actor = (ptolemy.actor.lib.mbed.GPIOWriter) getComponent();
 
         String type = getCodeGenerator().codeGenType(actor.input.getType());
         if (!getCodeGenerator().isPrimitive(type)) {
