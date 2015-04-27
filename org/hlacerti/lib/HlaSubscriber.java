@@ -30,11 +30,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import jdk.internal.dynalink.support.Guards;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
@@ -52,8 +51,6 @@ import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -363,7 +360,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     public void register(int theObject){
 
-        _mapping.put(getOpaqueIdentifier(),theObject);
+        _mapping.putIfAbsent(getOpaqueIdentifier(),theObject);
     }
     /**
      * Return the kind of HLA Attribute the HLASuscriber is handling.
@@ -385,7 +382,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         //we should do a clear but it is written as OPTIONNAL.
         //safe way to deal with it is to create a whole new object.
         //who said java is RAM consuming ?
-        _mapping = new HashMap<String,Integer>();
+        _mapping = new ConcurrentHashMap<String,Integer>();
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -450,5 +447,6 @@ public class HlaSubscriber extends TypedAtomicActor {
      * Wsed to remeber the mapping opaqueIdentifier <-> HLA Object id
      * Filled up by register when HLAManager discovers an object.
      */
-    private static HashMap<String,Integer> _mapping = new HashMap<String,Integer>();
+    private static ConcurrentHashMap<String,Integer> _mapping 
+            = new ConcurrentHashMap<String,Integer>();
 }
