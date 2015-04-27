@@ -27,10 +27,6 @@
  */
 package ptolemy.actor.lib.jjs.modules.browser;
 
-import java.util.Map;
-
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
@@ -44,7 +40,7 @@ import org.vertx.java.core.http.HttpServerResponse;
 
 /** A helper class for the Vert.x browser API.
    
-   @author FIXME
+   @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (pd)
@@ -73,30 +69,30 @@ public class VertxBrowserHelper {
 	    HttpServer server = _vertx.createHttpServer();
             new Exception("Start of Server(" + port + ")").printStackTrace();
             server.requestHandler(new Handler<HttpServerRequest>() {
-                        public void handle(HttpServerRequest request) {		        
-                            System.err.println("Server(" + port + ").handle(HttpServerRequest " + request + "), server: " + server + " _response: " + _getResponse());
-                            HttpServerResponse response = request.response();
-                            response.putHeader("content-type", "text/plain");
-                            response.setChunked(true);
-                            response.write(_getResponse());
-                            response.end();
+        	public void handle(HttpServerRequest request) {		        
+        	    System.err.println("Server(" + port + ").handle(HttpServerRequest " + request + "), server: " + server + " _response: " + _getResponse());
+        	    HttpServerResponse response = request.response();
+        	    response.putHeader("content-type", "text/html");
+        	    response.setChunked(true);
+        	    response.write(_getResponse());
+        	    response.end();
 
-                            // Need to close the server after writing to it
-                            // otherwise subsequent firings of the accessor
-                            // will not write new material
-                            //server.close();
-                        }
-                    });
+        	    // Need to close the server after writing to it
+        	    // otherwise subsequent firings of the accessor
+        	    // will not write new material
+        	    //server.close();
+        	}
+            });
             
-	    // The second argument specifies to listen
-	    // on localhost only (interface lo0).
-	    server.listen(port, "127.0.0.1", new Handler<AsyncResult<HttpServer>>() {
-		public void handle(AsyncResult<HttpServer> asyncResult) {
-                    System.err.println("Server(" + port + ").handle(<AsyncResult> " + asyncResult + ")" + " Listen succeeded? " + asyncResult.succeeded() + " cause: " + asyncResult.cause() );
-		    // FIXME: Called when the server actually starts listening.
-		    // Probably need to have a callback back to JavaScript here.
-                }
-                    });
+            // The second argument specifies to listen
+            // on localhost only (interface lo0).
+            server.listen(port, "127.0.0.1", new Handler<AsyncResult<HttpServer>>() {
+        	public void handle(AsyncResult<HttpServer> asyncResult) {
+        	    System.err.println("Server(" + port + ").handle(<AsyncResult> " + asyncResult + ")" + " Listen succeeded? " + asyncResult.succeeded() + " cause: " + asyncResult.cause() );
+        	    // FIXME: Called when the server actually starts listening.
+        	    // Probably need to have a callback back to JavaScript here.
+        	}
+            });
 	}
 	public void setResponse(String response) {
             System.err.println("setResponse(" + response + ")");
