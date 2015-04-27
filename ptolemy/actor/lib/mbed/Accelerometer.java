@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Robert Bui
  @version $Id: Accelerometer.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating red (cxh)
  @Pt.AcceptedRating red (cxh)
  */
@@ -65,12 +65,12 @@ public class Accelerometer extends TypedAtomicActor {
     public Accelerometer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        accX = new TypedIOPort(this, "accX", false, true);
-        accX.setTypeEquals(BaseType.DOUBLE);
-        accY = new TypedIOPort(this, "accY", false, true);
-        accY.setTypeEquals(BaseType.DOUBLE);
-        accZ = new TypedIOPort(this, "accZ", false, true);
-        accZ.setTypeEquals(BaseType.DOUBLE);
+        x = new TypedIOPort(this, "x", false, true);
+        x.setTypeEquals(BaseType.DOUBLE);
+        y = new TypedIOPort(this, "y", false, true);
+        y.setTypeEquals(BaseType.DOUBLE);
+        z = new TypedIOPort(this, "z", false, true);
+        z.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,17 +79,17 @@ public class Accelerometer extends TypedAtomicActor {
      *  input will determine whether an output is produced in any
      *  given firing. The type is double.
      */
-    public TypedIOPort accX;
+    public TypedIOPort x;
 
     /** The accY output port.  If this port is connected, then its
      *  input will determine whether an output is produced in any
      *  given firing. The type is double.
      */
-    public TypedIOPort accY;
+    public TypedIOPort y;
 
     /** The accZ output port.  If this port is connected, then its
      *  input will determine whether an output is produced in any
      *  given firing. The type is double.
      */
-    public TypedIOPort accZ;
+    public TypedIOPort z;
 }

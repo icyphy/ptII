@@ -1,6 +1,6 @@
 /* An actor that writes the value of string tokens to a file, one per line.
 
- @Copyright (c) 2015-2015 The Regents of the University of California.
+ @Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -40,16 +40,17 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 //// HSBtoRGB
 
 /**
- <p>
  This actor uses three input ports (hue, saturation, brightness) and
- output R,G,B values for an LED. </p>
-
+ outputs R,G,B values for an LED.
+ 
+ <p>The code generator supplies the method contents, thus this 
+ class has no methods.</p>
 
  @author Robert Bui
  @version $Id: HSBtoRGB.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
- @since Ptolemy II 10.0
- @Pt.ProposedRating
- @Pt.AcceptedRating
+ @since Ptolemy II 11.0
+ @Pt.ProposedRating red (robert.bui)
+ @Pt.AcceptedRating red (robert.bui)
  */
 public class HSBtoRGB extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -108,39 +109,4 @@ public class HSBtoRGB extends TypedAtomicActor {
     /** The blue output port. The type is int.
      */
     public TypedIOPort b;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Initialize the actor by resetting to the first output value.
-     *  @exception IllegalActionException If there is no director.
-     */
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
-
-    /*
-     *  @exception IllegalActionException If the file cannot be opened
-     *   or created.
-     */
-    @Override
-    public void fire() throws IllegalActionException {
-        super.fire();
-    }
-   
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    
-    
-
 }
