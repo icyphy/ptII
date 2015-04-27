@@ -268,7 +268,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.mbed.adapters.ptolemy.actor.lib.gui \
-	ptolemy.cg.adapter.generic.program.procedural.c.mbed.adapters.ptolemy.actor.lib.io \
+	ptolemy.cg.adapter.generic.program.procedural.c.mbed.adapters.ptolemy.actor.lib.mbed \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.de.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.renesas.adapters.ptolemy.domains.ptides.kernel \
@@ -595,6 +595,7 @@ ALLPACKAGES = \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
 	ptolemy.actor.lib.jjs \
+	ptolemy.actor.lib.mbed \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \
