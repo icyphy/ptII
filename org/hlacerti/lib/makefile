@@ -55,7 +55,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	CertiRtig.java \
 	HlaManager.java \
-	HlaPtidesEvent.java \
 	HlaPublisher.java \
 	HlaSubscriber.java \
         MessageProcessing.java \

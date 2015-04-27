@@ -34,7 +34,7 @@
         <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init&quot;">
             <display name="Synchronization point name"/>
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -20.0]">
