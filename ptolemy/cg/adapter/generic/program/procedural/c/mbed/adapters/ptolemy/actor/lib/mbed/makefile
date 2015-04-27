@@ -57,7 +57,9 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Accelerometer.java \
-	GPIOWriter.java
+	GPIOWriter.java \
+	HSBtoRGB.java \
+	NeoPixel_LED_Strip.java
 
 OTHER_FILES_TO_BE_JARED = \
     $(JSRCS:%.java=%.c)
