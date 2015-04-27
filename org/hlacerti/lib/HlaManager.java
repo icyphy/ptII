@@ -1930,16 +1930,24 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 Object[] tObj = elt.getValue();
                 int classHandle = rtia.getObjectClassHandle(_getClassNameFromTab(tObj));
                 TypedIOPort port = _getPortFromTab(tObj);
+                HlaPublisher pub = (HlaPublisher) port.getContainer();
                 
-                List<IOPort> sender = port.sourcePortList();
-                for(IOPort s : sender){
-                    String senderName = s.getContainer().getName();
+                List<IOPort> senders = port.sourcePortList();
+                for(IOPort sender : senders){
+                    //we use the _federateName do deal with the fact we might run
+                    //several federate from differente threads (instead of processes
+                    //as it should be) then we end up with some attributes beeing
+                    //not owned because another object with the same name as already
+                    //from another tread been registered. Since _federateName 
+                    //are unique across a federation, we are good.
+                    
+                    String senderName = _federateName+"."+sender.getContainer().getName();                    
                     if(!alreadyRegistered.contains(senderName)){
                         alreadyRegistered.add(senderName);
                         int myObjectInstId = -1;
                         try {
-                            myObjectInstId = rtia.registerObjectInstance(classHandle,senderName);
-                            HlaPublisher pub = (HlaPublisher)port.getContainer();
+                            myObjectInstId = rtia.registerObjectInstance(classHandle,
+                                    senderName);                            
                             pub.register(senderName, myObjectInstId);
                         } catch (ObjectClassNotPublished e) {
                             e.printStackTrace();
