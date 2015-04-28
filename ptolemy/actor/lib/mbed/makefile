@@ -49,7 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Accelerometer.java \
-	GestureRecognition.java \ 
+	GestureRecognition.java \
 	GPIOWriter.java \
 	HSBtoRGB.java \
 	NeoPixel_LED_Strip.java 
