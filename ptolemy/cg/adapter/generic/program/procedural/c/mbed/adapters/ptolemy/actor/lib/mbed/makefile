@@ -60,7 +60,8 @@ JSRCS = \
 	GestureRecognition.java \
 	GPIOWriter.java \
 	HSBtoRGB.java \
-	NeoPixel_LED_Strip.java
+	LEDCubeUpdate.java \
+	NeoPixelLEDStrip.java
 
 OTHER_FILES_TO_BE_JARED = \
     $(JSRCS:%.java=%.c)
