@@ -370,9 +370,7 @@ $(PTIIDIST):
 	# Copy libptmatlab.so because src.ex removes it
 	cp $(PTIIHOME)/lib/libptmatlab.so $(PTIIDIST)/lib
 	ls -l $(PTIIDIST)/lib/libptmatlab.so
-	# Copy the mbed .o files because src.ex removes them
-	cp $(PTIIHOME)/ptolemy/cg/adapter/generic/program/procedural/c/mbed/lib/*.o $(PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/c/mbed/lib/
-	ls -l $(PTIIHOME)/ptolemy/cg/adapter/generic/program/procedural/c/mbed/lib/*.o
+	#
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
 	#(cd $(PTIIHOME)/bin; make)
