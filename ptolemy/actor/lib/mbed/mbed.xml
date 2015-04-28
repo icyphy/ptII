@@ -20,7 +20,10 @@
       <entity name="HSBtoRGB" class="ptolemy.actor.lib.mbed.HSBtoRGB">
       </entity>
 
-      <entity name="NeoPixel_LED_Strip" class="ptolemy.actor.lib.mbed.NeoPixel_LED_Strip">
+      <entity name="LEDCubeUpdate" class="ptolemy.actor.lib.mbed.LEDCubeUpdate">
+      </entity>
+
+      <entity name="NeoPixelLEDStrip" class="ptolemy.actor.lib.mbed.NeoPixelLEDStrip">
       </entity>
       </group>
     ?>

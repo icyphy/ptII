@@ -31,15 +31,12 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.Typeable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
 ///////////////////////////////////////////////////////////////////
-//// NeoPixel_LED_Strip 
+//// NeoPixelLEDStrip 
 
 /**
  This actor uses three input ports to light up a NeoPixel LED Strip.
@@ -48,12 +45,12 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
  class has no methods.</p>
 
  @author Robert Bui
- @version $Id: NeoPixel_LED_Strip.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
+ @version $Id: NeoPixelLEDStrip.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class NeoPixel_LED_Strip extends TypedAtomicActor {
+public class NeoPixelLEDStrip extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,7 +59,7 @@ public class NeoPixel_LED_Strip extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public NeoPixel_LED_Strip(CompositeEntity container, String name)
+    public NeoPixelLEDStrip(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         ledIndex = new TypedIOPort(this, "ledIndex", true, false);
@@ -77,12 +74,12 @@ public class NeoPixel_LED_Strip extends TypedAtomicActor {
     ////                     ports and parameters                  ////
     /** The ledIndex input port.  If this port is connected, then its
      *  input will determine whether an output is produced in any
-     *  given firing. The type is integer
+     *  given firing. The type is integer array. 
      */
     public TypedIOPort ledIndex;
 
     /** The color input port.  If this port is connected, its input will 
-     *  will determine the color of the LEDs. The type is integer.
+     *  will determine the color of the LEDs. The type is integer array.
      */
     public TypedIOPort color;
 
