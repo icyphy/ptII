@@ -87,7 +87,9 @@ public class SuppressSimultaneousEvents extends DETransformer {
 
     /** Consume one token from the input port, and output if it is the first
      *  token seen at this point in physical time.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the superclass,
+     *  while checking if the input has a token or while getting a token
+     *  from the input.
      */
     @Override
     public void fire() throws IllegalActionException {

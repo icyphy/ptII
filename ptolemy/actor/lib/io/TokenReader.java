@@ -128,7 +128,7 @@ public class TokenReader extends FileReader {
     ////                         public methods                    ////
 
     /** Not implemented entirely yet. FIXME
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by the base class.
      */
     @Override
     public void fire() throws IllegalActionException {

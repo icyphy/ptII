@@ -120,6 +120,9 @@ public final class DoubleUtilities {
 
     /**
      * Returns its argument if it is non-negative, zero if it is negative.
+     * @param value The value to be checked.
+     * @return If value is non-negative, return the value.  If the value
+     * is negative, then return zero.
      */
     static double ensureNonNegative(double value) {
         // Remove check argument and replace with conditionals

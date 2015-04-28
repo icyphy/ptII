@@ -364,7 +364,8 @@ public class ContinuousTimeDelay extends Transformer {
     }
 
     /** Schedule the next output event.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown by fireAt() or
+     *  by the superclass.
      */
     @Override
     public boolean postfire() throws IllegalActionException {

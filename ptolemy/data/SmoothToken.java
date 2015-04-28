@@ -697,6 +697,7 @@ public class SmoothToken extends DoubleToken {
      *  @param arg1 First argument.
      *  @param arg2 Second argument.
      *  @param epsilon The maximum difference.
+     *  @return true if the two arguments are within epsilon of one another.
      */
     protected final boolean _isClose(double arg1, double arg2, double epsilon) {
         if (arg1 > arg2 + epsilon || arg1 < arg2 - epsilon) {
