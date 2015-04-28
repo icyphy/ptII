@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib
 
-DIRS =		gui io mbed
+DIRS =		gui mbed
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..

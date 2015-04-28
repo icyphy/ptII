@@ -55,7 +55,6 @@ JSRCS = \
 	DirectoryListing.java \
 	ExpressionReader.java \
 	ExpressionWriter.java \
-	GPIOWriter.java \
 	LineReader.java \
 	LineWriter.java \
 	FileReader.java \

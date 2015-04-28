@@ -63,6 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	accelerometerLEDdemo.xml \
 	accelerometerNeodemo.xml \
 	cc3000test.xml \
+	completeCube.xml \
 	correctionBlock_LEDCube.xml \
 	correction_sensorGesture_cube.xml \
 	cubeDemoK64F_sizePosHue.xml \
