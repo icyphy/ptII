@@ -57,12 +57,14 @@ import ptolemy.kernel.util.Workspace;
 //// ContinuousIntegrator
 
 /**
- The integrator in the continuous domain.  The <i>derivative</i> port
+ The integrator in the continuous domain.
+
+ <p>The <i>derivative</i> port
  receives the derivative of the state of the integrator with respect
  to time. The <i>state</i> output port shows the state of the
  integrator. So an ordinary differential equation (ODE), dx/dt = f(x,
- t), can be built as follows:
- <P>
+ t), can be built as follows:</p>
+
  <pre>
             +---------------+
      dx/dt  |               |   x
@@ -75,49 +77,49 @@ import ptolemy.kernel.util.Workspace;
                |---------|
  </pre>
 
- <P> An integrator also has a port-parameter called
+ <p> An integrator also has a port-parameter called
  <i>initialState</i>. The parameter provides the initial state for
  integration during the initialization stage of execution. If during
  execution an input token is provided on the port, then the state of
  the integrator will be reset at that time to the value of the
- token. The default value of the parameter is 0.0.
+ token. The default value of the parameter is 0.0.</p>
 
- <P> An integrator also has an input port named <i>impulse</i>.  When
+ <p> An integrator also has an input port named <i>impulse</i>.  When
  present, a token at the <i>impulse</i> input port is interpreted as
  the weight of a Dirac delta function.  It causes an
  increment or decrement to the state at the time of
  the arrival of the value.  If both <i>impulse</i> and
  <i>initialState</i> have data on the same microstep,
- then <i>initialState</i> dominates.
+ then <i>initialState</i> dominates.</p>
 
- <P> Note that both <i>impulse</i> and <i>reset</i> expect to
+ <p> Note that both <i>impulse</i> and <i>reset</i> expect to
  receive discrete inputs. To preserve continuity, this means
  that those inputs should be present only when the solver
  step size is zero.
  If this assumption is violated, then this actor will throw
- an exception.
+ an exception.</p>
 
- <P> An integrator can generate an output (its current state) before
+ <p> An integrator can generate an output (its current state) before
  the derivative input is known, and hence can be used in feedback
  loops like that above without creating a causality loop.  Since
  <i>impulse</i> and <i>initialState</i> inputs affect the output
  immediately, using them in feedback loops may require inclusion
- of a TimeDelay actor.
+ of a TimeDelay actor.</p>
 
- <P> For different ODE solving methods, the functionality of an
+ <p> For different ODE solving methods, the functionality of an
  integrator may be different. The delegation and strategy design
  patterns are used in this class, the abstract ODESolver class, and
  the concrete ODE solver classes. Some solver-dependent methods of
- integrators delegate to the concrete ODE solvers.
+ integrators delegate to the concrete ODE solvers.</p>
 
- <P> An integrator can possibly have several auxiliary variables for
+ <p> An integrator can possibly have several auxiliary variables for
  the ODE solvers to use. The ODE solver class provides the number
  of variables needed for that particular solver.  The auxiliary
  variables can be set and get by setAuxVariables() and
- getAuxVariables() methods.
+ getAuxVariables() methods.</p>
 
  <p> This class is based on the CTBaseIntegrator by Jie Liu and
- Haiyang Zheng, but it has more ports and provides more functionality.
+ Haiyang Zheng, but it has more ports and provides more functionality.</p>
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$

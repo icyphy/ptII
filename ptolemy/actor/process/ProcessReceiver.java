@@ -112,6 +112,8 @@ public interface ProcessReceiver extends Receiver {
      *   a boundary port; return false otherwise.
      *  @exception InvalidStateException If thrown by the boundary
      *   detector.
+     *  @exception IllegalActionException If thrown by the boundary
+     *   detector.
      *  @see BoundaryDetector
      */
     public boolean isConnectedToBoundary() throws IllegalActionException;

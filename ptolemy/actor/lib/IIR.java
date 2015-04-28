@@ -239,7 +239,10 @@ public class IIR extends Transformer {
     }
 
     /** Return false if the input does not have a token.
-     * @exception IllegalActionException */
+     *  @return false if the input does not have a token.
+     *  @exception IllegalActionException If thrown by the
+     *  super class or while checking to see if there is a token.
+     */
     @Override
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();

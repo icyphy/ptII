@@ -51,7 +51,9 @@ import ptolemy.util.FileUtilities;
 
 /**
  This actor encodes a matrix using Hierarchical Table-Lookup Vector
- Quantization.   The matrix must be of dimensions that are amenable to this
+ Quantization.
+
+ <p>The matrix must be of dimensions that are amenable to this
  method. (i.e. 2x1, 2x2, 4x2, 4x4, etc.) Instead of performing a
  full-search vector quantization during execution, all the optimal encoding
  vectors are calculated before hand and stored in a lookup table. (This is
@@ -64,24 +66,24 @@ import ptolemy.util.FileUtilities;
  on raw pixels) is used 4 times, resulting in a 2x2 vector of codewords.
  In the second stage, codebook 1 is used twice, resulting in a 2x1 vector.
  Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
- representing 2x2 vectors) returns a single codeword for the 4x2 vector.
- <p>
- The input is an IntMatrixToken corresponding to the block to be encoded.
+ representing 2x2 vectors) returns a single codeword for the 4x2 vector.</p>
+
+ <p>The input is an IntMatrixToken corresponding to the block to be encoded.
  The values in this matrix are assumed to be between 0 and 255.  The output
  is an IntToken with value between 0 and 255.  Integers are used here because
  of the minimal byte support in Ptolemy or JAVA.
  The size of the input matrix should be the same as the parameters blockHeight
- and blockWidth.
- <p>
- The codebook is specified as a binary file that will be read during
+ and blockWidth.</p>
+ 
+ <p>The codebook is specified as a binary file that will be read during
  initialization.  This file actually contains five sets of codebooks and
  lookups tables.  The first set is for 2x1 blocks, the second is for 2x2
  blocks, etc.  (Thus the supplied codebook is only sufficient for block sizes
  up to 8x4 pixels.) In each set, the codebook precedes the lookup-tables.
  The codebook consists of all 256 codevectors, row scanned from top to bottom.
  The lookup table consists of 64K entries (one for each pair of codewords from
- the previous stage).  Each entry in the lookup table is an 8-bit codeword.
- <p>
+ the previous stage).  Each entry in the lookup table is an 8-bit codeword.</p>
+
  <pre>
  Stage 0: 2x1 block size
  codebook = 256 blocks x 2 bytes = 512 bytes
@@ -99,19 +101,19 @@ import ptolemy.util.FileUtilities;
  codebook = 256 blocks x 32 bytes = 8192 bytes
  lookup tables = 65536 entries x 1 byte = 65536 bytes
  </pre>
- <br>
- The supplied codebook was trained using images from the
- USC image archive and is suitable for most general applications.
- <br>
- For more information here are some interesting references: <br>
+ 
+ <p>The supplied codebook was trained using images from the
+ USC image archive and is suitable for most general applications.</p>
+
+ <p>For more information here are some interesting references: <br/>
  A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
- Kluwer Academic Publishers, Boston, 1992.  <br>
+ Kluwer Academic Publishers, Boston, 1992.  <br/>
  P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with
  Table Lookup Encoders," <i> International Conference on Acoustics Speech
- and Signal Processing</i>, pp. 1452-1455, 1985. <br>
+ and Signal Processing</i>, pp. 1452-1455, 1985. <br/>
  M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
  Compression of Video," <i>International Conference on Image Processing</i>,
- vol. 3, pp. 275-279, Nov. 1994. <br>
+ vol. 3, pp. 275-279, Nov. 1994</p>
 
  @author Steve Neuendorffer
  @version $Id$

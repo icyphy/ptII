@@ -38,7 +38,7 @@ import ptolemy.kernel.util.Nameable;
 //// ConditionalReceive
 
 /**
- Represents a <I>guarded communication statement</I> in which the
+ Represents a <i>guarded communication statement</i> in which the
  communication is a get().
 
  <p>Thus it represents:</p>
@@ -59,19 +59,19 @@ import ptolemy.kernel.util.Nameable;
  the controller and the thread it is running in dies. Otherwise it
  continues to try and rendezvous until it succeeds or it is notified that
  another branch has succeeded in with its rendezvous, in which case this
- branch has failed and the thread it is running in dies.
- <p>
- For rendezvous, the receiver is the key synchronization point. The
+ branch has failed and the thread it is running in dies.</p>
+
+ <p>For rendezvous, the receiver is the key synchronization point. The
  receiver with which this branch will try to rendezvous is set upon
  instantiation. It is determined from the port and channel which is
- passed in in the constructor.
- <p>
- The algorithm by which a branch determines whether or not it has
+ passed in in the constructor.</p>
+
+ <p>The algorithm by which a branch determines whether or not it has
  succeeded with its rendezvous is executed in the run method. There are
  roughly three parts to the algorithm, each of which is relevant
- to the different rendezvous scenarios.
- <br>
- <I>Case 1:</I> There is a put already waiting
+ to the different rendezvous scenarios.</p>
+
+ <p><i>Case 1:</i> There is a put already waiting
  at the rendezvous point. In this case
  the branch attempts to register itself, with the controller, as the first
  branch ready to rendezvous. If it succeeds, it performs the rendezvous,
@@ -79,9 +79,9 @@ import ptolemy.kernel.util.Nameable;
  it keeps on trying to register itself until it finally succeeds or another
  branch successfully rendezvoused in which case it fails and terminates. Note
  that a put cannot "go away" so it remains in an inner-loop trying to
- rendezvous or failing.
- <br>
- <I>Case 2:</I> There is a conditional send
+ rendezvous or failing.</p>
+
+ <p><i>Case 2:</i> There is a conditional send
  waiting. In this case it tries to register both branches with their
  controllers as the first to try. If it
  succeeds it performs the transfer, notifies the controller and returns. It
@@ -91,9 +91,9 @@ import ptolemy.kernel.util.Nameable;
  trying, and starts trying to rendezvous from the beginning. This is because
  the conditional send could "go away". If it is unable to register itself as
  the first branch to try, it again starts trying to rendezvous from the
- beginning.
- <br>
- <I>Case 3:</I> If there is neither a put or a
+ beginning.</p>
+ 
+ <p><i>Case 3:</i> If there is neither a put or a
  conditional send waiting, it sets a
  flag in the receiver that a conditional receive is trying to rendezvous. It
  then waits until a put is executed on the receiver, or until another branch
@@ -103,14 +103,13 @@ import ptolemy.kernel.util.Nameable;
  the branch which is responsible for checking that the rendezvous can proceed.
  Thus, in the case where two conditional branches are trying to rendezvous
  at a receiver, it is the responsibility of the branch arriving second to
- check that the rendezvous can proceed(see case 2).
- <p>
+ check that the rendezvous can proceed(see case 2).</p>
+
  @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Red (eal)
- <p>
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalReceive extends ConditionalBranch implements Runnable {

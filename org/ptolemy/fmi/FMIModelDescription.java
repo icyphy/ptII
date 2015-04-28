@@ -208,7 +208,8 @@ public class FMIModelDescription {
      * Create the state vector. This should only be called on fmis with a
      * fmiVersion greater than 1.5.
      *
-     * @throws IOException
+     * @exception IOException If the size of the continuousStateDerivatives
+     * is not equal to the number of reals.
      */
     public void createStateVector() throws IOException {
         // Create the state vector.

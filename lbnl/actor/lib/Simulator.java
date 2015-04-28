@@ -304,7 +304,9 @@ public class Simulator extends SDFTransformer {
     }
 
     /** Output the first token during initialize.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If there the client flag
+     *  is non-zero, or the double array returned by the server
+     *  is null.
      */
     protected void _outputInitToken() throws IllegalActionException {
         double[] dblRea = server.getDoubleArray();
