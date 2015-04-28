@@ -31,32 +31,32 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// HSBtoRGB
+//// GestureRecognition
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.HSBtoRGB
+ An adapter class for ptolemy.actor.lib.mbed.GestureRecognition
 
  @author Robert Bui
- @version $Id: HSBtoRGB.java 71957 2015-04-13 03:03:57Z robert.bui@berkeley.edu $
+ @version $Id: GestureRecognition.java 71957 2015-04-27 03:03:57Z robert.bui@berkeley.edu $
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class HSBtoRGB
+public class GestureRecognition
 extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     *  Construct the HSBtoRGB adapter.
+     *  Construct the GestureRecognition adapter.
      *  @param actor the associated actor
      */
-    public HSBtoRGB(ptolemy.actor.lib.mbed.HSBtoRGB actor) {
+    public GestureRecognition(ptolemy.actor.lib.mbed.GestureRecognition actor) {
         super(actor);
     }
     
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
-     * <code>printString</code>, or <code>printDouble</code> from HSBtoRGB.c,
+     * <code>printString</code>, or <code>printDouble</code> from GestureRecognition.c,
      * replaces macros with their values and returns the results.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an

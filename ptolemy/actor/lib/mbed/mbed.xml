@@ -10,6 +10,9 @@
       <entity name="Accelerometer" class="ptolemy.actor.lib.mbed.Accelerometer">
       </entity>
 
+      <entity name="GestureRecognition" class="ptolemy.actor.lib.mbed.GestureRecognition">
+      </entity>
+
       <entity name="GPIOWriter" class="ptolemy.actor.lib.mbed.GPIOWriter">
         <doc>Write to the GPIO of an embedded platform, changes the actors color</doc>
       </entity>
