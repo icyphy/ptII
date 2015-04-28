@@ -1,4 +1,4 @@
-/* Recognize a gesture.
+/* An actor that writes the value of string tokens to a file, one per line.
 
  @Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
@@ -35,22 +35,23 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
-import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// GestureRecognition
 
 /**
- Recognize a gesture.
-
+ This actor uses eight input ports that receives values from the five finger 
+ bend sensors and quaternion data of a dataglove and outputs information to 
+ update the color, size and position of LEDs in the mbed LED Cube Demo. 
+ 
  <p>The code generator supplies the method contents, thus this 
  class has no methods.</p>
 
- @author Christopher Brooks
- @version $Id: Accelerometer.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
+ @author Robert Bui
+ @version $Id: GestureRecognition.java 71956 2015-04-27 03:52:01Z robert.bui@berkeley.edu $
  @since Ptolemy II 11.0
- @Pt.ProposedRating red (cxh)
- @Pt.AcceptedRating red (cxh)
+ @Pt.ProposedRating red (robert.bui)
+ @Pt.AcceptedRating red (robert.bui)
  */
 public class GestureRecognition extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -64,5 +65,86 @@ public class GestureRecognition extends TypedAtomicActor {
     public GestureRecognition(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        finger1 = new TypedIOPort(this, "finger1", true, false);
+        finger1.setTypeEquals(BaseType.INT);
+        finger2 = new TypedIOPort(this, "finger2", true, false);
+        finger2.setTypeEquals(BaseType.INT); 
+        finger3 = new TypedIOPort(this, "finger3", true, false);
+        finger3.setTypeEquals(BaseType.INT); 
+        finger4 = new TypedIOPort(this, "finger4", true, false);
+        finger4.setTypeEquals(BaseType.INT); 
+        finger5 = new TypedIOPort(this, "finger5", true, false);
+        finger5.setTypeEquals(BaseType.INT); 
+        roll = new TypedIOPort(this, "roll", true, false);
+        roll.setTypeEquals(BaseType.INT); 
+        pitch = new TypedIOPort(this, "pitch", true, false);
+        pitch.setTypeEquals(BaseType.INT); 
+        yaw = new TypedIOPort(this, "yaw", true, false);
+        yaw.setTypeEquals(BaseType.INT); 
+        deltaSize = new TypedIOPort(this, "deltaSize", false, true);
+        deltaSize.setTypeEquals(BaseType.INT);
+        deltaX = new TypedIOPort(this, "deltaX", false, true);
+        deltaX.setTypeEquals(BaseType.INT);
+        deltaY = new TypedIOPort(this, "deltaY", false, true);
+        deltaY.setTypeEquals(BaseType.INT);
+        deltaZ = new TypedIOPort(this, "deltaZ", false, true);
+        deltaZ.setTypeEquals(BaseType.INT);
+        hue = new TypedIOPort(this, "hue", false, true);
+        hue.setTypeEquals(BaseType.DOUBLE);  
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+    /** The finger1 input port. The type is int.
+     */
+    public TypedIOPort finger1;
+
+    /** The finger2 input port. The type is int.
+     */
+    public TypedIOPort finger2;
+
+    /** The finger3 input port. The type is int.
+     */
+    public TypedIOPort finger3;
+
+    /** The finger4 input port. The type is int.
+     */
+    public TypedIOPort finger4;
+
+    /** The finger5 input port. The type is int.
+     */
+    public TypedIOPort finger5;
+
+    /** The roll input port. The type is int.
+     */
+    public TypedIOPort roll;
+
+    /** The pitch input port. The type is int.
+     */
+    public TypedIOPort pitch;
+
+    /** The yaw input port. The type is int.
+     */
+    public TypedIOPort yaw;
+
+    /** The deltaSize output port. The type is int.
+     */
+    public TypedIOPort deltaSize;
+
+    /** The deltaX output port. The type is int.
+     */
+    public TypedIOPort deltaX;
+
+    /** The deltaY output port. The type is int.
+     */
+    public TypedIOPort deltaY;
+
+    /** The deltaZ output port. The type is int.
+     */
+    public TypedIOPort deltaZ;
+
+    /** The hue output port. The type is double.
+     */
+    public TypedIOPort hue;
 }
