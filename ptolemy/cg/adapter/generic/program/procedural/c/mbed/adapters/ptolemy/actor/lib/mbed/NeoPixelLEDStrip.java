@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.actor.lib.gui.Display
+/* An adapter class for ptolemy.actor.lib.mbed.NeoPixelLEDStrip
 
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
@@ -31,32 +31,32 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// NeoPixel_LED_Strip 
+//// NeoPixelLEDStrip 
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.NeoPixel_LED_Strip
+ An adapter class for ptolemy.actor.lib.mbed.NeoPixelLEDStrip
 
  @author Robert Bui
- @version $Id: NeoPixel_LED_Strip.java 71957 2015-04-13 03:03:57Z robert.bui@berkeley.edu $
+ @version $Id: NeoPixelLEDStrip.java 71957 2015-04-13 03:03:57Z robert.bui@berkeley.edu $
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)
  */
-public class NeoPixel_LED_Strip
+public class NeoPixelLEDStrip
 extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     *  Construct the NeoPixel_LED_Strip adapter.
+     *  Construct the NeoPixelLEDStrip adapter.
      *  @param actor the associated actor
      */
-    public NeoPixel_LED_Strip(ptolemy.actor.lib.mbed.NeoPixel_LED_Strip actor) {
+    public NeoPixelLEDStrip(ptolemy.actor.lib.mbed.NeoPixelLEDStrip actor) {
         super(actor);
     }
     
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
-     * <code>printString</code>, or <code>printDouble</code> from NeoPixel_LED_Strip.c,
+     * <code>printString</code>, or <code>printDouble</code> from NeoPixelLEDStrip.c,
      * replaces macros with their values and returns the results.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
