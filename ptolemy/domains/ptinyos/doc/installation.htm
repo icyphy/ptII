@@ -27,7 +27,7 @@
     instructions below to install the necessary tools.
 
 <h2>Linux How-To</h2>
-Below are the steps that worked in February, 2011 with RHEL Linux and Java 1.6.
+Below are the steps that worked in April, 2015 with RHEL 6.5 and Java 1.8
 <ol>
  <li> Download the devel via svn and build.  See
  <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">http://chess.eecs.berkeley.edu/ptexternal</a>:
@@ -87,6 +87,15 @@ cd $TOSROOT/apps/Blink
 make pc
 ./build/pc/main.exe 1
   </pre>
+  If you get messages like <code>gcc: error: unrecognized command line option ‘-_fnesc-gcc=gcc’</code>,
+  then edit <code>/usr/local/bin/nescc</code> and use an older version of gcc:
+  <pre>
+# Have fun with the arguments
+# $gcc = "gcc";
+# Use gcc-4.4.7 and avoid gcc: error: unrecognized command line option ‘-_fnesc-gcc=gcc’
+$gcc = "/usr/bin/gcc";
+  </pre>
+  gcc-4.4.7 worked, gcc-4.9.2 did not, and required the above change.
   </li>
   <li> Unzip the pre-generated libraries and applications
   <pre>
