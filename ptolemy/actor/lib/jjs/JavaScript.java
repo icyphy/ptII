@@ -562,7 +562,7 @@ public class JavaScript extends TypedAtomicActor {
         	}
             } else if (proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
         	// There is no new input, but there is a locally provided one.
-        	portParameter.setToken(proxy._localInputTokens.remove(0));
+        	portParameter.setCurrentValue(proxy._localInputTokens.remove(0));
         	proxy._hasNewInput(true);
             } else {
         	proxy._hasNewInput(false);
