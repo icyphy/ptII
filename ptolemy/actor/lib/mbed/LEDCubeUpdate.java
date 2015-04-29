@@ -79,10 +79,10 @@ public class LEDCubeUpdate extends TypedAtomicActor {
         b = new TypedIOPort(this, "b", true, false);
         b.setTypeEquals(BaseType.DOUBLE); 
 
-        colors = new TypedIOPort(this, "colors", false, true);
-        colors.setTypeEquals(new ArrayType(BaseType.INT));
         indexes = new TypedIOPort(this, "indexes", false, true);
-        indexes.setTypeEquals(new ArrayType(BaseType.INT));  
+        indexes.setTypeEquals(new ArrayType(BaseType.INT));
+        colors = new TypedIOPort(this, "colors", false, true);
+        colors.setTypeEquals(new ArrayType(BaseType.INT));  
     }
 
     ///////////////////////////////////////////////////////////////////
