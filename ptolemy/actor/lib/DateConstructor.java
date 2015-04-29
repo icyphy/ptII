@@ -230,8 +230,10 @@ public class DateConstructor extends TypedAtomicActor {
         Integer timeZoneValue = _getIntValue(timeZoneOffset);
         TimeZone timeZone = TimeZone.getDefault();
         if (timeZoneValue != null) {
+            // If offset is negative, it will already have a - sign
+            // Just need to add + sign for positive offsets
             timeZone = TimeZone.getTimeZone("GMT" 
-                    + (timeZoneValue < 0 ? "-" : "+")
+                    + (timeZoneValue < 0 ? "" : "+")
                     + String.format("%04d", timeZoneValue));
         }
         

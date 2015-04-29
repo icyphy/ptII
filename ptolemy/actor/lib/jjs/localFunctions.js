@@ -103,6 +103,7 @@ var DateToken = Java.type('ptolemy.data.DateToken');
 var DoubleToken = Java.type('ptolemy.data.DoubleToken');
 var Entity = Java.type('ptolemy.kernel.Entity');
 var IntToken = Java.type('ptolemy.data.IntToken');
+var LongToken = Java.type('ptolemy.data.LongToken');
 var ObjectToken = Java.type('ptolemy.data.ObjectToken');
 var RecordToken = Java.type('ptolemy.data.RecordToken');
 var StringToken = Java.type('ptolemy.data.StringToken');
@@ -166,8 +167,11 @@ function convertToToken(value) {
     var type = typeof value;
     if (type === 'number') {
         if ((value%1) === 0) {
-            // Integer.
-            return new IntToken(value);
+        	if (value >= -2147483648 && value <= 2147483647) {
+        		// Integer.
+        		return new IntToken(value);
+        	}
+        	return new LongToken(value);
         }
         return new DoubleToken(value);
     } else if (type === 'string') {
