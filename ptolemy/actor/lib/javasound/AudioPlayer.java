@@ -43,54 +43,53 @@ import ptolemy.media.javasound.LiveSound;
 //// AudioPlayer
 
 /**
- This actor reads audio samples and plays them. Specifically,
- the input stream that this actor reads is interpreted as
- consisting of audio samples. This actor writes this stream
- of audio samples to the audio output port of the computer,
- which typically consists of the computer speaker or the
- headphones output. The audio samples that are supplied to
- this actor should be doubles in the range [-1.0, 1.0]. Thus,
- the input port of this actor is of type DoubleToken. Any input
- tokens that are outside of the valid range will be hard-clipped
- to fall within the range [-1.0, 1.0] before they are written
- to the audio output port of the computer.
- <p>
- This actor should be fired often enough to prevent underflow of
+ This actor reads audio samples and plays them. 
+
+ <p>Specifically, the input stream that this actor reads is
+ interpreted as consisting of audio samples. This actor writes this
+ stream of audio samples to the audio output port of the computer,
+ which typically consists of the computer speaker or the headphones
+ output. The audio samples that are supplied to this actor should be
+ doubles in the range [-1.0, 1.0]. Thus, the input port of this actor
+ is of type DoubleToken. Any input tokens that are outside of the
+ valid range will be hard-clipped to fall within the range [-1.0, 1.0]
+ before they are written to the audio output port of the computer.</p>
+
+ <p>This actor should be fired often enough to prevent underflow of
  the internal audio playback buffer. Underflow should be avoided,
  since it will result in audio discontinuities (heard as clicks)
- in the output. No exception will be thrown if underflow occurs.
- <p>
- The following parameters should be set accordingly. In all cases,
- an exception is thrown if an illegal parameter value is used.
- Note that these parameters may be changed while audio capture is
+ in the output. No exception will be thrown if underflow occurs.</p>
+
+ <p>The following parameters should be set accordingly. In all cases,
+ an exception is thrown if an illegal parameter value is used.  Note
+ that these parameters may be changed while audio capture is
  active. If this actor is used in conjunction with an AudioCapture
  actor, changing a parameter of this actor will cause the
  corresponding parameter value of the AudioCapture actor to
  automatically be set to the same value. This behavior is required
- because the AudioCapture and AudioPlayer actors both share access
- to the audio hardware, which is associated with a single sample rate,
- bit resolution, and number of channels.
- <p>
+ because the AudioCapture and AudioPlayer actors both share access to
+ the audio hardware, which is associated with a single sample rate,
+ bit resolution, and number of channels.</p>
+
  <ul>
  <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
  The default value is 8000. Allowable values are 8000, 11025,
  22050, 44100, and 48000 Hz. Some sound cards support 96000 Hz
- operation, but this is not supported in Java.
+ operation, but this is not supported in Java.</li>
  <li><i>bitsPerSample</i> should be set to desired bit
  resolution. The default value is 16. Allowable values are 8 and 16.
  Some sound cards support 20 and 24 bit audio, but this is not
- supported in Java.
+ supported in Java.</li>
  <li><i>channels</i> should be set to desired number of audio
  channels. Allowable values are 1 (for mono) and 2 (for stereo).
  The default value is 1. Some sound cards support more than two
- audio channels, but this is not supported in Java.
+ audio channels, but this is not supported in Java.</li>
  </ul>
- <p>
- If more than one AudioPlayer actor is used in model, the
- sounds produced by these actors will be interleaved. This
- may make sense, for example, if the actor is used in a ModalModel.
- <p>
- Note: Requires Java 2 v1.3.0 or later.
+
+ <p> If more than one AudioPlayer actor is used in model, the sounds
+ produced by these actors will be interleaved. This may make sense,
+ for example, if the actor is used in a ModalModel.</p>
+
  @author  Brian K. Vogel, Steve Neuendorffer
  @version  $Id$
  @since Ptolemy II 1.0

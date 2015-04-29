@@ -40,20 +40,26 @@ import diva.canvas.CanvasComponent;
  * @author         John Reekie
  */
 public interface EventAcceptor extends CanvasComponent {
+
     /** Test the enabled flag of this object. If true, the object
-     * is prepared to handle events with processEvent().
+     *  is prepared to handle events with processEvent().
+     *  @return true if the object is prepared to handle events
+     *  with processEvent()
      */
     public boolean isEnabled();
 
     /** Set the enabled flag of this object. If true, the object
-     * is prepared to handle events with processEvent().
+     *  is prepared to handle events with processEvent().
+     *  @param flag True if the object is prepared to handle
+     *  events with processEvent();
      */
     public void setEnabled(boolean flag);
 
     /** Dispatch an AWT event within this component.  The implementing
-     * object should test if it is enabled first, and return if not.
-     * Otherwise, it should handle the event in whatever way it thinks
-     * appropriate.
+     *  object should test if it is enabled first, and return if not.
+     *  Otherwise, it should handle the event in whatever way it thinks
+     *  appropriate.
+     *  @param the event.
      */
     public void dispatchEvent(AWTEvent event);
 }

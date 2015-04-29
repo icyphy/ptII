@@ -53,36 +53,42 @@ import ptolemy.kernel.util.NameDuplicationException;
  value that is outside of the valid range will be hard-clipped
  to fall within the range [-1.0, 1.0] before it is written
  to the audio output port of the computer.
- <p>
- The parameters are as follows:
+
+ <p>The parameters are as follows:</p>
+
  <ul>
+
  <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
- The default value is 8000. Allowable values are 8000, 11025,
- 22050, 44100, and 48000 Hz.
+ The default value is 8000. Allowable values are 8000, 11025, 22050,
+ 44100, and 48000 Hz.</li>
+
  <li><i>bytesPerSample</i> gives the resolution of audio samples.
- This is an integer that defaults to 2, meaning 16-bit samples.
+ This is an integer that defaults to 2, meaning 16-bit samples.</li>
+
  <li><i>channels</i> should be set to desired number of audio
- channels. Allowable values are 1 (for mono) and 2 (for stereo).
- The default value is 1. Some sound cards support more than two
- audio channels, but this is not supported in Java.
- FIXME: If this differs from the input dimensions?
- <li><i>transferSize</i> The number of samples that will
- be transferred to the audio driver
- together.  This is an integer with default 128.
- <li><i></i>  The requested buffer size in the audio hardware. This
- affects how far ahead of real time the model can get. There is no
- harm in making this large because this actor will overwrite previously
- queued values if necessary. This is an integer
- that defaults to 8000, representing a buffer with
- 8000 samples per channel. At an 8 kHz sample rate,
- this corresponds to one second of sound.
+ channels. Allowable values are 1 (for mono) and 2 (for stereo).  The
+ default value is 1. Some sound cards support more than two audio
+ channels, but this is not supported in Java. FIXME: If this
+ differs from the input dimensions?</li>
+
+ <li><i>transferSize</i> The number of samples that will be
+ transferred to the audio driver together.  This is an integer with
+ default 128.</li>
+
+ <li><i>sampleRate</i> The requested buffer size in the audio
+ hardware. This affects how far ahead of real time the model can
+ get. There is no harm in making this large because this actor will
+ overwrite previously queued values if necessary. This is an integer
+ that defaults to 8000, representing a buffer with 8000 samples per
+ channel. At an 8 kHz sample rate, this corresponds to one second of
+ sound.</li>
+
  </ul>
- <p>
- All of these parameters are shared by all audio actors that
- use the audio hardware, so changing them in
- one of those actors will cause it to change in all.
- <p>
- Note: Requires Java 2 v1.3.0 or later.
+
+ <p> All of these parameters are shared by all audio actors that use
+ the audio hardware, so changing them in one of those actors will
+ cause it to change in all.</p>
+
  @author  Edward A. Lee
  @version  $Id$
  @since Ptolemy II 6.1

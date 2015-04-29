@@ -133,20 +133,6 @@ BufferingProfile {
     }
 
     /**
-     * Fire the actor in exclusive firing mode.
-     * Exclusive firing method to be implemented in subclasses.
-     * @exception IllegalActionException
-     */
-    protected abstract void _fireExclusive() throws IllegalActionException;
-
-    /**
-     * Fire the actor in shared firing mode.
-     * Shared firing method to be implemented in subclasses.
-     * @exception IllegalActionException
-     */
-    protected abstract void _fireCopying() throws IllegalActionException;
-
-    /**
      * Invoke a specified number of iterations of the actor in either shared or
      * exclusive mode as indicated by the fireExclusive argument.
      * @param iterationCount The number of iterations to perform.
@@ -164,6 +150,23 @@ BufferingProfile {
         _nextIterationExclusive = false;
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Fire the actor in shared firing mode.
+     * Shared firing method to be implemented in subclasses.
+     * @exception IllegalActionException If thrown while writing to the port.
+     */
+    protected abstract void _fireCopying() throws IllegalActionException;
+
+    /**
+     * Fire the actor in exclusive firing mode.
+     * Exclusive firing method to be implemented in subclasses.
+     * @exception IllegalActionException If thrown while writing to the port.
+     */
+    protected abstract void _fireExclusive() throws IllegalActionException;
 
     //// private fields
     /**

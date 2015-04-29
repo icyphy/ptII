@@ -171,7 +171,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param stateVariableDerivatives The (output) vector of time rates of change of the state variables 
      * at <code>time</code>.
      * @return Success (0 for success, else user-defined error code).
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while setting the time, setting
+     * the continuous states, handling events or getting the derivatives.
      */
     public final int evaluateDerivatives(final Time time, final double[] stateVariables,
             final double[] inputVariables, final double[] stateVariableDerivatives)

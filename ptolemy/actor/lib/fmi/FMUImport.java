@@ -1840,10 +1840,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
 
     /**
-     * Return the input port dependency for a given output port.
+     * Return the input scalar dependency for a given FMI scalar.
      *
-     * @param port The output port for which you want the input
-     * dependency list
+     * @param scalar The FMI scalar output port for which you want the
+     * FMI input scalar dependency list.
      * @return the list of input ports that directly influence the
      * value of the given output port. If port is not an output port
      * return null.

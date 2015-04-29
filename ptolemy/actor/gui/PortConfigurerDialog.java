@@ -1097,8 +1097,8 @@ ChangeListener {
         }
 
         /** Get the value at a particular row and column.
-         * @param row
-         * @param col
+         * @param row The row.
+         * @param col The column.
          * @see javax.swing.table.TableModel#getValueAt(int, int)
          */
         @Override
@@ -1130,10 +1130,10 @@ ChangeListener {
             return getValueAt(0, c).getClass();
         }
 
-        /** Is a cell editable?
+        /** Return true if a a cell editable.
          *
-         * @param row
-         * @param col
+         * @param row The row.
+         * @param col The column.
          * @return true if editable
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
