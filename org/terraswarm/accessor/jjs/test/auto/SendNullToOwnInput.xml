@@ -55,9 +55,11 @@
             <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The count of the firing.">
             </property>
         </property>
-        <property name="input" class="ptolemy.actor.parameters.PortParameter" value="nil">
+        <property name="input" class="ptolemy.actor.parameters.PortParameter" value="42">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 190.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <port name="input" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
