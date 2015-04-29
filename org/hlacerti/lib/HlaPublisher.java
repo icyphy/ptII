@@ -203,7 +203,7 @@ public class HlaPublisher extends TypedAtomicActor {
             String fedName = (
                     (StringToken) _hlaManager.federateName.getToken()
                     ).stringValue();
-            int id = _registeredObject.get(fedName+"."+actorName);
+            int id = _registeredObject.get(fedName+"/"+actorName);
             _hlaManager.updateHlaAttribute(this, in,id);
 
             if (_debugging) {
