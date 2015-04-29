@@ -30,8 +30,6 @@ package ptolemy.actor.lib.jjs.modules.webSocket;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.VertxFactory;
 import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
@@ -43,8 +41,7 @@ import org.vertx.java.core.http.WebSocketBase;
 
 /**
    A helper class for the WebSocket module in JavaScript.
-   Creates only one Vert.x object and uses it internally.
-   The Vert.x object can create an instance of Java WebSocket.
+   The Vert.x object from its parent can create an instance of Java WebSocket.
    Each Java WebSocket belongs to one JavaScript WebSocket. 
    
    @author Hokeun Kim and Edward A. Lee
@@ -53,7 +50,7 @@ import org.vertx.java.core.http.WebSocketBase;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class WebSocketHelper {
+public class WebSocketHelper extends WebSocketHelperBase {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -200,9 +197,6 @@ public class WebSocketHelper {
         
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
-    
-    /** Instance of Vert.x Apparently we need only one. */
-    private static Vertx _vertx = VertxFactory.newVertx();
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;

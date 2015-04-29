@@ -31,18 +31,15 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.VertxFactory;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.ServerWebSocket;
 
 ///////////////////////////////////////////////////////////////////
-//// WebSocketHelper
+//// WebSocketServerHelper
 
 /**
    A helper class for the WebSocket module's Server object in JavaScript.
-   Creates only one Vert.x object and uses it internally.
-   The Vert.x object can create an instance of Java WebSocket Server.
+   The Vert.x object from its parent can create an instance of Java WebSocket Server.
    Each Java WebSocketServer belongs to one JavaScript WebSocket.Server. 
    
    @author Hokeun Kim
@@ -51,7 +48,7 @@ import org.vertx.java.core.http.ServerWebSocket;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class WebSocketServerHelper {
+public class WebSocketServerHelper extends WebSocketHelperBase {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -65,10 +62,10 @@ public class WebSocketServerHelper {
         }
     }
     
-    /** Create a WebSocketHelper instance to help a JavaScript Server instance.
+    /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
      *  @param currentObj The JavaScript Server instance for which this is a helper.
      *  @param port The port number that the server will use.
-     *  @return A new WebSocketHelper instance.
+     *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
 	    ScriptObjectMirror currentObj, int port) {
@@ -111,7 +108,7 @@ public class WebSocketServerHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
 
-    /** Private constructor for WebSocketHelper to create a web socket server.
+    /** Private constructor for WebSocketServerHelper to create a web socket server.
      *  @param currentObj The JavaScript Server instance for which this a helper.
      *  @param port The port on which to create the server.
      */
@@ -129,9 +126,6 @@ public class WebSocketServerHelper {
     
     /** The port on which the server listens. */
     private int _port;
-    
-    /** Instance of Vert.x Apparently we need only one. */
-    private static Vertx _vertx = VertxFactory.newVertx();
     
     /** The internal http server created by Vert.x */
     private HttpServer _server = null;
