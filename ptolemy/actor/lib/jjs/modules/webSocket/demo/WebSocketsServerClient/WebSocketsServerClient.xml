@@ -25,7 +25,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript Web Socket server / client.&#10;The client tries to connect to the server after the server starts listening.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 130.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 180.0]">
         </property>
     </property>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
