@@ -29,15 +29,12 @@ package ptolemy.actor.lib.jjs.modules.webSocket;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
-import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
 import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
-import org.vertx.java.core.http.HttpServer;
-import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketBase;
 
@@ -62,8 +59,6 @@ public class WebSocketHelper {
     ////                     public methods                        ////
     
     /** Close the web socket.
-     *  FIXME: Does this need to be invoked on the client or server side or both?
-     *  Demos don't use it. Not exposed in JavaScript.
      */
     public void close() {
         if (_webSocket != null) {
@@ -71,15 +66,6 @@ public class WebSocketHelper {
                 _webSocket.close();
             }
             _webSocket = null;
-        }
-    }
-    /** Close the web socket server.
-     *  FIXME: Separate the server and client.
-     */
-    public void closeServer() {
-        if (_server != null) {
-            _server.close();
-            _server = null;
         }
     }
 
@@ -93,16 +79,6 @@ public class WebSocketHelper {
     public static WebSocketHelper createClientSocket(
 	    ScriptObjectMirror currentObj, String address) {
 	return new WebSocketHelper(currentObj, address);
-    }
-    
-    /** Create a WebSocketHelper instance to help a JavaScript Server instance.
-     *  @param currentObj The JavaScript Server instance for which this is a helper.
-     *  @param port The port number that the server will use.
-     *  @return A new WebSocketHelper instance.
-     */
-    public static WebSocketHelper createServer(
-	    ScriptObjectMirror currentObj, int port) {
-        return new WebSocketHelper(currentObj, port);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -133,39 +109,6 @@ public class WebSocketHelper {
      */
     public void sendText(String msg) {
         _webSocket.writeTextFrame(msg);
-    }
-    
-    /** Create and start the server and beginning listening for
-     *  connections. If a callback function "listening" is registered,
-     *  then that callback will be called when the server begins
-     *  listening (which may be even before this returns?).
-     *  If a callback function "connection" has been registered,
-     *  then that function will be called when a connection is
-     *  requested by a remote client.
-     */
-    public void startServer() {
-        // Note that the following call apparently starts the new server
-        // in separate thread. It should not be done in the constructor
-        // because the script that starts the server needs to register
-        // callbacks before the server starts. Otherwise, there will be
-        // a race condition where the callback could be called before
-        // the server has started.
-        _server = _vertx.createHttpServer();
-        _server.websocketHandler(new Handler<ServerWebSocket>() {
-            @Override
-            public void handle(ServerWebSocket serverWebSocket) {
-                // Create the socket on this server side.
-                Object jsWebSocket = _currentObj.callMember("createServerWebSocket", serverWebSocket);
-                // Emit an event indicating that the connection is created.
-                _currentObj.callMember("emit", "connection", jsWebSocket);
-            }
-        });
-        _server.listen(_port, "localhost", new Handler<AsyncResult<HttpServer>>() {
-            @Override
-            public void handle(AsyncResult<HttpServer> arg0) {
-        	_currentObj.callMember("emit", "listening");
-            }
-        });
     }
 
     /** Return whether the web socket is opened successfully.
@@ -237,16 +180,6 @@ public class WebSocketHelper {
         });
     }
 
-    /** Private constructor for WebSocketHelper to create a web socket server.
-     *  @param currentObj The JavaScript Server instance for which this a helper.
-     *  @param port The port on which to create the server.
-     */
-    private WebSocketHelper(
-	    ScriptObjectMirror currentObj, int port) {
-        _currentObj = currentObj;
-        _port = port;
-    }
-
     /** Private constructor for WebSocketHelper for a server-side web socket.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
@@ -268,9 +201,6 @@ public class WebSocketHelper {
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
     
-    /** The port on which the server listens. */
-    private int _port;
-    
     /** Instance of Vert.x Apparently we need only one. */
     private static Vertx _vertx = VertxFactory.newVertx();
 
@@ -279,9 +209,6 @@ public class WebSocketHelper {
 
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
-    
-    /** The internal http server created by Vert.x */
-    private HttpServer _server = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////

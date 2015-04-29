@@ -2,9 +2,9 @@
 // Authors: Hokeun Kim and Edward A. Lee
 // Copyright: http://terraswarm.org/accessors/copyright.txt
 //
-// FIXME: This file defines two classes: Server and Socket. Split into two files?
 
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
+var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
 
 ////////////////////
 // Construct an instance of WebSocket Server.
@@ -31,7 +31,7 @@ var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSock
 //   to avoid Cross-Site WebSocket Hijacking attacks.
 exports.Server = function(options) {
     this.port = options['port'] || 80;
-    this.helper = WebSocketHelper.createServer(this, this.port);
+    this.helper = WebSocketServerHelper.createServer(this, this.port);
 }
 var EventEmitter = require('events').EventEmitter;
 util.inherits(exports.Server, EventEmitter);
