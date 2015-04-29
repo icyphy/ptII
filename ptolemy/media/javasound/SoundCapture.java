@@ -47,69 +47,63 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  from the computer's audio input port.
 
  <h2>Overview</h2>
- A buffer supporting the capturing of audio samples from a file or
+
+ <p>A buffer supporting the capturing of audio samples from a file or
  from the computer's audio input port. This class supports the
  real-time capture of audio from the audio input port (mic or line-in)
- as well as the capture of audio from a sound file specified as
- a URL. Single channel
- (mono) and multichannel audio (stereo) are supported. This class,
- along with SoundPlayback, intends to provide an easy to use interface
- to Java Sound, Java's audio API. Java Sound supports the capture
- of audio data, but only at the byte level, which is audio format
- specific. This class, however, provides higher level support for the
- capture of double or integer valued samples from the computer's audio
- input port or any supported sound file type. This class is therefore
- useful when it one desires to capture audio samples in an audio format
- independent way.
- <p>
- Depending on available audio
- system resources, it may be possible to run an instance of this
- class and an instance of SoundPlayback concurrently. This allows
- for the concurrent capture, signal processing, and playback of audio data.
- <p>
+ as well as the capture of audio from a sound file specified as a
+ URL. Single channel (mono) and multichannel audio (stereo) are
+ supported. This class, along with SoundPlayback, intends to provide
+ an easy to use interface to Java Sound, Java's audio API. Java Sound
+ supports the capture of audio data, but only at the byte level, which
+ is audio format specific. This class, however, provides higher level
+ support for the capture of double or integer valued samples from the
+ computer's audio input port or any supported sound file type. This
+ class is therefore useful when it one desires to capture audio
+ samples in an audio format independent way.</p>
+
+ <p>Depending on available audio system resources, it may be possible
+ to run an instance of this class and an instance of SoundPlayback
+ concurrently. This allows for the concurrent capture, signal
+ processing, and playback of audio data.</p>
+
  <h2>Usage</h2>
- Two constructors are provided. One constructor creates a sound capture
- object that captures from the line-in or microphone port.
- The operating system must be used
- to select between the microphone and line-in. This cannot be
- done using Java. If this
- constructor is used, there will be a small
- delay between the time that the audio enters the microphone or
- line-in and the time that the corresponding audio samples are
- available via getSamples() or getSamplesInt().
+
+ <p>Two constructors are provided. One constructor creates a sound
+ capture object that captures from the line-in or microphone port.
+ The operating system must be used to select between the microphone
+ and line-in. This cannot be done using Java. If this constructor is
+ used, there will be a small delay between the time that the audio
+ enters the microphone or line-in and the time that the corresponding
+ audio samples are available via getSamples() or getSamplesInt().
  This latency can be adjusted by setting the <i>bufferSize</i>
  constructor parameter. Another constructor creates a sound capture
- object that captures audio from a sound file specified as a URL.
- <p>
- After calling the appropriate constructor, startCapture()
- must be called to initialize the audio system for capture.
- The getSamples() or getSamplesInt() method should then be repeatedly
- invoked to obtain audio data in the form of a multidimensional
- array of audio sample values. getSamples() will return audio
- sample values in the range [-1, 1]. getSamplesInt() will return
- audio samples in the range
+ object that captures audio from a sound file specified as a URL.</p>
+
+ <p> After calling the appropriate constructor, startCapture() must be
+ called to initialize the audio system for capture.  The getSamples()
+ or getSamplesInt() method should then be repeatedly invoked to obtain
+ audio data in the form of a multidimensional array of audio sample
+ values. getSamples() will return audio sample values in the range
+ [-1, 1]. getSamplesInt() will return audio samples in the range
  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
- bits_per_sample is the number of bits per sample.
- For the case where
- audio is captured from the mic or line-in, it is important to
- invoke getSamples() or getSamplesInt() often enough to prevent
- overflow of
- the internal audio buffer. The size of the internal buffer is
- set in the constructor. Note that it is possible (but probably
- not useful) to interleave calls to getSamples() and
- getSamplesInt().
- Finally, after no more audio data is desired, stopCapture()
- should be called to free up audio system resources.
- <p>
+ bits_per_sample is the number of bits per sample.  For the case where
+ audio is captured from the mic or line-in, it is important to invoke
+ getSamples() or getSamplesInt() often enough to prevent overflow of
+ the internal audio buffer. The size of the internal buffer is set in
+ the constructor. Note that it is possible (but probably not useful)
+ to interleave calls to getSamples() and getSamplesInt().  Finally,
+ after no more audio data is desired, stopCapture() should be called
+ to free up audio system resources.</p>
+
  <h2>Security issues</h2>
- Applications have no restrictions on the
+
+ <p> Applications have no restrictions on the
  capturing or playback of audio. Applets, however, may only capture
  audio from a file specified as a URL on the same machine as the
  one the applet was loaded from. Applet code is not allowed to
  read or write native files. The .java.policy file must be
- modified to grant applets more privileges.
- <p>
- Note: Requires Java 2 v1.3.0 or later.
+ modified to grant applets more privileges.</p>
 
  @author Brian K. Vogel
  @version $Id$

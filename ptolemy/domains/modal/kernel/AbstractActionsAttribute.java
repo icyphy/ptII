@@ -190,9 +190,10 @@ HasTypeConstraints {
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.
      *  @return the list of channel numbers.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while evaluating 
+     *  the channel numbers.
      */
-    public List getChannelNumberList() throws IllegalActionException {
+    public List getChannelNumberList()  throws IllegalActionException {
         List list = new LinkedList();
         if (_numbers != null) {
             Iterator iterator = _numbers.iterator();

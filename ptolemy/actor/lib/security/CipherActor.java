@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Settable;
  decryption based on the Java Cryptography Extension (JCE).
  See the
  {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
- resources about JCA and JCE.
+ resources about JCA and JCE.</p>
 
  <p> Actors extending this class take in an unsigned byte array at the
  <i>input</i>, process the data based on the <i>algorithm</i> parameter
@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Settable;
  In case a provider specific instance of an algorithm is needed,
  the provider may also be specified in the <i>provider</i> parameter.
  The <i>keySize</i> parameter allows implementations of algorithms
- using various key sizes.
+ using various key sizes.</p>
 
  <p>Concrete actors derived from this base class must implement the
  {@link ptolemy.actor.lib.security.CryptographyActor#_process(byte[])} method.
@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Settable;
  created from the values of the <i>algorithm</i>, <i>padding</i> and
  <i>keySize</i> parameters. Derived classes should call _cipher.init()
  with the value of the key in their fire() method.  The_process() method
- in a derived class usually calls _cipher.doFinal().
+ in a derived class usually calls _cipher.doFinal().</p>
 
  @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
  @version $Id$
@@ -122,39 +122,40 @@ abstract public class CipherActor extends CryptographyActor {
      *  Names for modes and modes implemented vary based on the provider.
      *  Possible values include
      * <dl>
-     * <dt><code></code> (<i>The empty string</i>)
-     * <dd>Use the default setting for the algorithm.
+     * <dt> (<i>The empty string</i>)</dt>
+     * <dd>Use the default setting for the algorithm.</dd>
      *
-     * <dt><code>NONE</code>
-     * <dd>No mode, meaning that the algorithm does not use a mode.
+     * <dt><code>NONE</code></dt>
+     * <dd>No mode, meaning that the algorithm does not use a mode.</dd>
      *
-     * <dt><code>CBC</code>
+     * <dt><code>CBC</code></dt>
      * <dd>Cipher Block Chaining Mode, as defined in FIPS PUB 81.
-     * CBC is usually the mode that is used.
+     * CBC is usually the mode that is used.</dd>
      *
-     * <dt><code>CFB</code>
-     * <dd>Cipher Feedback Mode, as defined in FIPS PUB 81.
+     * <dt><code>CFB</code></dt>
+     * <dd>Cipher Feedback Mode, as defined in FIPS PUB 81.</dd>
      *
-     * <dt><code>ECB</code>
+     * <dt><code>ECB</code></dt>
      * <dd>Electronic Codebook Mode, as defined in: The National
      * Institute of Standards and Technology (NIST) Federal
      * Information Processing Standard (FIPS) PUB 81, "DES Modes of
      * Operation," U.S. Department of Commerce, Dec 1980.
      * ECM is best for encrypting small pieces of data.  If possible,
-     * use CBC instead.
-     * <dt><code>OFB</code>
-     * <dd>Output Feedback Mode, as defined in FIPS PUB 81.
+     * use CBC instead.</dd>
+     * <dt><code>OFB</code></dt>
+     * <dd>Output Feedback Mode, as defined in FIPS PUB 81.</dd>
      *
-     * <dt><code>PCBC</code>
-     * <dd>Propagating Cipher Block Chaining, as defined by Kerberos V4.
+     * <dt><code>PCBC</code></dt>
+     * <dd>Propagating Cipher Block Chaining, as defined by Kerberos V4.</dd>
      * </dl>
      *
-     *  The initial default is the empty string, which indicates that
-     *  the default setting for the algorithm should be used.
+     *  <p>The initial default is the empty string, which indicates that
+     *  the default setting for the algorithm should be used.</p>
+     *
      *  <p>
      *  See the
      *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Cipher" target="_top">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
-     *  for details.
+     *  for details.</p>
      */
     public StringParameter mode;
 
@@ -171,39 +172,39 @@ abstract public class CipherActor extends CryptographyActor {
      *  how to remove the padding, if any.
      *  </blockquote>
      *
-     *  <p>The padding is specified as a string.
-     *  Names for parameter and parameters implemented vary based on the
-     *  provider.
-     *  Possible values include
+     *  <p>The padding is specified as a string.  Names for parameter
+     *  and parameters implemented vary based on the provider.
+     *  Possible values include</p>
+     *
      * <dl>
-     * <dt><code></code> (<i>The empty string</i>)
-     * <dd>Use the default setting for the algorithm.
+     * <dt> (<i>The empty string</i>)</dt>
+     * <dd>Use the default setting for the algorithm.</dd>
      *
-     * <dt><code>NoPadding</code>
-     * <dd>No padding (do not use padding).
+     * <dt><code>NoPadding</code></dt>
+     * <dd>No padding (do not use padding).</dd>
      *
-     * <dt><code> OAEPWith<i>digest</i>And<i>mgf</i>Padding</code>
+     * <dt><code> OAEPWith<i>digest</i>And<i>mgf</i>Padding</code></dt>
      * <dd>Optimal Asymmetric Encryption Padding scheme defined in
      * PKCS #1, where <i>digest</i> should be replaced by the message
      * digest and <i>mgf</i> by the mask generation function. Example:
-     * OAEPWithMD5AndMGF1Padding.
+     * OAEPWithMD5AndMGF1Padding.</dd>
      *
-     * <dt><code>PKCS5Padding</code>
+     * <dt><code>PKCS5Padding</code></dt>
      * <dd>The padding scheme described in: RSA Laboratories, "PKCS
      * #5: Password-Based Encryption Standard," version 1.5, November
-     * 1993.
+     * 1993.</dd>
      *
-     * <dt><code>SSL3Padding</code>
+     * <dt><code>SSL3Padding</code></dt>
      * <dd>The padding scheme defined in the SSL Protocol Version 3.0,
-     * November 18, 1996, section 5.2.3.2 (CBC block cipher):
+     * November 18, 1996, section 5.2.3.2 (CBC block cipher):</dd>
      * </dl>
      *
-     *  The initial default is the empty string, which indicates that
-     *  the no padding should be used.
+     *  <p>The initial default is the empty string, which indicates that
+     *  the no padding should be used.</p>
      *  <p>
      *  See the
      *  <a href="http://download.oracle.com/javase/6/docs/technotes/guides/security/StandardNames.html#Cipher" target="_top">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
-     *  for details.
+     *  for details.</p>
      */
     public StringParameter padding;
 

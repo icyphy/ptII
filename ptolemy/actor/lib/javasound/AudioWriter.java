@@ -59,15 +59,14 @@ import ptolemy.media.javasound.SoundWriter;
  audio, tokens are written to channel 0 of the output port. For
  stereo , tokens are written to channel 0 (left) and channel 1
  (right) of the output port.
- <p>
- The following parameters should be set to specify the format
- of the file to write. In all cases, an exception is thrown if
- an illegal parameter value is used. Note that if a parameter is
- changed while audio writing is active, all data written so far will
- be saved, and the sound file will be closed. Subsequent audio
- samples will then be written to a new sound file with the new
- parameter values.
- <p>
+
+ <p> The following parameters should be set to specify the format of
+ the file to write. In all cases, an exception is thrown if an illegal
+ parameter value is used. Note that if a parameter is changed while
+ audio writing is active, all data written so far will be saved, and
+ the sound file will be closed. Subsequent audio samples will then be
+ written to a new sound file with the new parameter values.</p>
+
  <ul>
  <li><i>pathName</i> should be set to the name of the output
  file. Any existing file with the same name will be silently
@@ -79,24 +78,29 @@ import ptolemy.media.javasound.SoundWriter;
  in the directory "c:\tmp", this parameter should be set to the
  value c:\tmp\test.au. To write samples to a file with name "test.au"
  in the current directory, this parameter should be set to the value
- test.au.
+ test.au.</li>
+
  <li><i>channels</i> should be set to desired number of audio
- channels. Allowable values are 1 (for mono) and 2 (for stereo).
- The default value is 1.
- <li><i>sampleRate</i> should be set to desired sample rate,
- in Hz. The DoubleTokens read in by this actor will be
- interpreted as having this sample rate. Allowable values are
- 8000, 11025, 22050, 44100, and 48000. The default value is 8000.
+ channels. Allowable values are 1 (for mono) and 2 (for stereo).  The
+ default value is 1.</li>
+
+ <li><i>sampleRate</i> should be set to desired sample rate, in
+ Hz. The DoubleTokens read in by this actor will be interpreted as
+ having this sample rate. Allowable values are 8000, 11025, 22050,
+ 44100, and 48000. The default value is 8000.</li>
+
  <li><i>bitsPerSample</i> should be set to desired bit
- resolution. Allowable values are 8 and 16. The default value is 16.
+ resolution. Allowable values are 8 and 16. The default value is
+ 16.</li>
+
  </ul>
+
  <p>
  There are security issues involved with accessing files and
  audio resources in applets. By default, applets are not
  allowed to write files. The .java.policy file may be modified
- to grant applets more privileges.
- <p>
- Note: Requires Java 2 v1.3.0 or later.
+ to grant applets more privileges.</p>
+
  @author  Brian K. Vogel
  @version  $Id$
  @since Ptolemy II 1.0

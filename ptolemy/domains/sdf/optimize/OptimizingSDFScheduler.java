@@ -79,20 +79,16 @@ See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and
  */
 
 public class OptimizingSDFScheduler extends SDFScheduler {
-
-    /**
-     * The optimization criterion to use.
-     */
-    public OptimizationCriteria optimizationCriterion;
-
-    /**
-     * Construct an instance of an OptimizingSDFScheduler. Provide container and name as
-     * usual and an optimization criterion <i>crit</i>.
-     * @param container container
-     * @param name name
-     * @param crit optimization criterion
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an instance of an OptimizingSDFScheduler. Provide
+     *  container and name as usual and an optimization criterion
+     *  <i>crit</i>.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param crit optimization criterion
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public OptimizingSDFScheduler(OptimizingSDFDirector container, String name,
             OptimizationCriteria crit) throws IllegalActionException,
@@ -100,6 +96,14 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         super(container, name);
         optimizationCriterion = crit;
     }
+
+    /**
+     * The optimization criterion to use.
+     */
+    public OptimizationCriteria optimizationCriterion;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
@@ -198,10 +202,11 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         return result;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
     /** Create an optimal schedule for a set of actors.
-     *  FIXME: contains a lot of duplicated code from same method in SDFScheduler
-     *  Would be good to factor out common code, but I do not want to touch SDFScheduler
-     *
+     *   
      *  @param externalRates Map from external port to an Integer
      *   representing the number of tokens produced or consumed from
      *   that port during the course of an iteration.
@@ -217,6 +222,11 @@ public class OptimizingSDFScheduler extends SDFScheduler {
     private Schedule _scheduleConnectedActors(Map externalRates,
             List actorList, CompositeActor container)
                     throws NotSchedulableException {
+
+        // FIXME: contains a lot of duplicated code from same method
+        // in SDFScheduler.  Would be good to factor out common code,
+        // but the original author did not want to touch SDFScheduler.
+
         // A linked list containing all the actors that have no inputs.
         LinkedList readyToScheduleActorList = new LinkedList();
 

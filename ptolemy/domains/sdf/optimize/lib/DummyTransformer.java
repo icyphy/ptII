@@ -79,12 +79,13 @@ public class DummyTransformer extends SharedBufferTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected fields                         ////
+    ////                    protected fields                       ////
 
     /**
      * Fire the actor in shared firing mode.
      * It makes a copy of the frame buffer referred to by the reference token.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the input token is not
+     * an instance of DummyReferenceToken.
      */
     @Override
     protected void _fireCopying() throws IllegalActionException {
@@ -106,7 +107,8 @@ public class DummyTransformer extends SharedBufferTransformer {
     /**
      * Fire the actor in exclusive firing mode.
      * It directly modifies the frame buffer referred to by the reference token.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while calling hasToken()
+     * or while getting the token.
      */
     @Override
     protected void _fireExclusive() throws IllegalActionException {
