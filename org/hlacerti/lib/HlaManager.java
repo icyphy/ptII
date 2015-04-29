@@ -118,10 +118,15 @@ import certi.rti.impl.CertiRtiAmbassador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.Discard;
 import ptolemy.actor.lib.Ramp;
+import ptolemy.actor.lib.Sink;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Instantiable;
 
@@ -253,7 +258,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
-
+        _idToClasses = new HashMap<Integer, ComponentEntity>();
+        
         _hlaStartTime = null;
         _hlaTimeStep = null;
         _hlaLookAHead = null;
@@ -342,6 +348,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isCreator.setExpression("false");
         isCreator.setDisplayName("Is synchronization point creator ?");
         attributeChanged(isCreator);
+        
+        
     }
      
     ///////////////////////////////////////////////////////////////////
@@ -1120,6 +1128,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
+        /*for(Instantiable i : _newlyCreated){
+            ComponentEntity e = (ComponentEntity) i;
+            try{e.setContainer(null);}
+            catch(NameDuplicationException ex){}
+        }*/
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
         }
@@ -1443,6 +1456,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** The RTIG subprocess. */
     private CertiRtig _certiRtig;
     
+    //private LinkedList<Instantiable> _newlyCreated = new LinkedList<Instantiable>();
+    
+    /**/
+    private HashMap<Integer,ComponentEntity> _idToClasses;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
@@ -1665,40 +1682,26 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
             _objectIdToClassHandle.put(theObject, theObjectClass);
             _doMappingSuscriber(theObject, theObjectClass);
-            /*
-            CompositeEntity container = (CompositeEntity) getContainer();
-            List<ComponentEntity> classes = container.classDefinitionList();
-            ComponentEntity classInPt = null;
-            for(ComponentEntity c: classes){
-
-                int classH = Integer.MIN_VALUE;
-                try{
-                     classH =  _rtia.getObjectClassHandle(c.getName());
-                }catch(Exception e){}
-                
-                if(theObjectClass == classH){
-                    classInPt=c;
-                }                
-            }
-            final ComponentEntity classInPtForpleasingJava =  classInPt;
-            if(classInPtForpleasingJava == null){           
-                return;
-            }
+/*
             requestChange(new ChangeRequest(this,
                     "do a test",true) {
                         @Override
                         protected void _execute() throws IllegalActionException {
                             CompositeEntity container = (CompositeEntity) getContainer();
-
                             try {
                                 Instantiable i = classInPtForpleasingJava.instantiate(
                                         container,
-                                        theObjectClass+objectName+theObject);
-                                
+                                        objectName);   
+                                ComponentEntity e = (ComponentEntity) i;
+                                Sink s = new Discard(container, "myFuckingDIscard"+theObjectClass+objectName+theObject);
+                                TypedIORelation r = new TypedIORelation(container, "pipo"+theObjectClass+objectName+theObject);
+                                s.getPort("input").link(r);
+                                e.getPort("X").link(r);
+                                e.getPort("Y").link(r);
+                                _newlyCreated.add(i);
                             } catch (NameDuplicationException | CloneNotSupportedException ex) {
                                 ex.printStackTrace();
                             }
-                            
                         }
                     });*/
         }
@@ -1819,7 +1822,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
 
-
+        
         private void setUpHlaPublisher(RTIambassador rtia)throws NameNotFound,
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, AttributeNotDefined, SaveInProgress,
@@ -1941,7 +1944,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     //from another tread been registered. Since _federateName 
                     //are unique across a federation, we are good.
                     
-                    String senderName = _federateName+"."+sender.getContainer().getName();                    
+                    String senderName = _federateName+"/"+sender.getContainer().getName();                    
                     if(!alreadyRegistered.contains(senderName)){
                         alreadyRegistered.add(senderName);
                         int myObjectInstId = -1;
@@ -1966,7 +1969,28 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, AttributeNotDefined, SaveInProgress,
                 RestoreInProgress, ConcurrentAccessAttempted {
-            
+            CompositeEntity container = (CompositeEntity) getContainer();
+            List<ComponentEntity> classes = container.classDefinitionList();
+            for(ComponentEntity currentClass: classes){              
+                try{
+                    int classHandle =  rtia.getObjectClassHandle(currentClass.getName());     
+                    _idToClasses.put(classHandle, currentClass);
+                    
+                    // The attribute handle set to declare all subscribed attributes
+                    // for one object class.
+                    AttributeHandleSet _attributesLocal = RtiFactoryFactory
+                            .getRtiFactory().createAttributeHandleSet();
+                    
+                    List<HlaSubscriber> subscribers = ((CompositeActor) currentClass).entityList(HlaSubscriber.class);
+                    
+                    for (HlaSubscriber sub : subscribers) {
+                        int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
+                        _attributesLocal.add(attributeHandle);
+                    }
+                    rtia.subscribeObjectClassAttributes(classHandle,_attributesLocal);
+                } catch(Exception e){}
+            }
+ 
             // For each HlaSubscriber actors deployed in the model we declare
             // to the HLA/CERTI Federation a HLA attribute to subscribe to.
             Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
@@ -1999,55 +2023,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 elt.setValue(new Object[] { _getPortFromTab(tObj), _getTypeFromTab(tObj), 
                     _getClassNameFromTab(tObj),
                     classHandle, objAttributeHandle });
-            }
-            
-            // 2. Create a table (LinkedList of HlaSubscribers)
-            //indexed by their corresponding object class handle (no duplication).
-            HashMap<String, LinkedList<String>> classHandleHlaSubscriberTable = null;
-            classHandleHlaSubscriberTable = new HashMap<String, LinkedList<String>>();
-            
-            Iterator<Entry<String, Object[]>> it4 = _hlaAttributesSubscribedTo
-                    .entrySet().iterator();
-            
-            while (it4.hasNext()) {
-                Map.Entry<String, Object[]> elt = it4.next();
-                Object[] tObj = elt.getValue();
-                
-                // The object class name of the HLA attribute (see FOM).
-                String classHandleName = _getClassNameFromTab(tObj);
-                
-                if (classHandleHlaSubscriberTable.containsKey(classHandleName)) {
-                    classHandleHlaSubscriberTable.get(classHandleName).add(
-                            elt.getKey());
-                } else {
-                    LinkedList<String> list = new LinkedList<String>();
-                    list.add(elt.getKey());
-                    classHandleHlaSubscriberTable.put(classHandleName, list);
-                }
-            }
-            
-            // 3. Declare to the Federation the HLA attributes to subscribe to.
-            Iterator<Entry<String, LinkedList<String>>> it5 = classHandleHlaSubscriberTable
-                    .entrySet().iterator();
-            
-            while (it5.hasNext()) {
-                Map.Entry<String, LinkedList<String>> elt = it5.next();
-                LinkedList<String> hlaSubList = elt.getValue();
-                
-                int classHandle = rtia.getObjectClassHandle(elt.getKey());
-                
-                // The attribute handle set to declare all subscribed attributes
-                // for one object class.
-                AttributeHandleSet _attributesLocal = RtiFactoryFactory
-                        .getRtiFactory().createAttributeHandleSet();
-                
-                for (String s : hlaSubList) {
-                    _attributesLocal.add(_getAttributeHandleFromTab( _hlaAttributesSubscribedTo
-                            .get(s)));
-                }
-                
-                _rtia.subscribeObjectClassAttributes(classHandle,
-                        _attributesLocal);
             }
         }
     }    
