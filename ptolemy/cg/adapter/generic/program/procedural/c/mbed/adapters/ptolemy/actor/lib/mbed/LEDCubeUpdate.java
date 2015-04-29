@@ -31,7 +31,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// GestureRecognition
+//// LEDCubeUpdate
 
 /**
  An adapter class for ptolemy.actor.lib.mbed.LEDCubeUpdate
@@ -46,7 +46,7 @@ public class LEDCubeUpdate
 extends NamedProgramCodeGeneratorAdapter {
 
     /**
-     *  Construct the GestureRecognition adapter.
+     *  Construct the LEDCubeUpdate adapter.
      *  @param actor the associated actor
      */
     public LEDCubeUpdate(ptolemy.actor.lib.mbed.LEDCubeUpdate actor) {

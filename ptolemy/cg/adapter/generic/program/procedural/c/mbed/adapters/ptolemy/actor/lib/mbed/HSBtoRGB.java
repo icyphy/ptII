@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.actor.lib.gui.Display
+/* An adapter class for ptolemy.actor.lib.mbed.HSBtoRGB
 
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
