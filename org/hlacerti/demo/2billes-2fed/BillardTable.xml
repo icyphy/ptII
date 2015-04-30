@@ -1,4 +1,6 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BillardTable" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
@@ -10,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, -35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={400, 229, 724, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={400, 229, 711, 630}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[490, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0994177684628685">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.79736328125006, 170.94173380533852}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.79736328125009, 170.94173380533852}">
     </property>
     <property name="display" class="org.hlacerti.lib.HlaManager">
         <display name="display"/>
@@ -32,7 +34,7 @@
         <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init&quot;">
             <display name="Synchronization point name"/>
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -20.0]">

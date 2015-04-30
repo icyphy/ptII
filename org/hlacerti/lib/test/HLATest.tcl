@@ -103,10 +103,13 @@ if {[java::call System getenv CERTI_HOME] == ""} {
 
         list [$consumer getFullName] [$producer getFullName] \
             [$consumerListenerOutput toString] [$producerListenerOutput toString]
-    } {.MultiDataTypesConsumer .MultiDataTypesProducer {consumer start
+    }{.MultiDataTypesConsumer .MultiDataTypesProducer {consumer start
+preinitializing
+infering widths
 preinitializing
 resolving types
 initializing
+resolving types
 executing number 1
 wrapping up
 idle
@@ -122,6 +125,9 @@ idle
 Completed execution with 6 iterations
 producer end
 }}
+
+
+
 
 }
 

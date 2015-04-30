@@ -1,14 +1,16 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SingleBillardBall1" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BillardBall1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={559, 184, 647, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={559, 184, 634, 602}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[413, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[413, 496]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.1186569462983877">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{57.107421875000014, 225.26576770505596}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{57.107421875000014, 247.92162998793438}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
@@ -65,7 +67,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 270.0]">
         </property>
     </property>
-    <entity name="Ball1" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Ball" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 235.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -565,8 +567,8 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ball1.X" relation="relation"/>
-    <link port="Ball1.Y" relation="relation2"/>
+    <link port="Ball.X" relation="relation"/>
+    <link port="Ball.Y" relation="relation2"/>
     <link port="PositionX.input" relation="relation"/>
     <link port="PositionY.input" relation="relation2"/>
 </entity>

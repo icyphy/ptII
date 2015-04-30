@@ -1682,7 +1682,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     //retrieve and remove head
                                     instance = actors.poll();
                                     if(_debugging){
-                                        _debug(instance.getName() + "will do objectID " + objectHandle);
+                                        _debug(instance.getName() + " will do object " + objectHandle);
                                     }
                                 }
                                 _director.invalidateSchedule();
