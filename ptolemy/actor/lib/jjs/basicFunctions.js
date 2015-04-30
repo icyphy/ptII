@@ -5,7 +5,7 @@
 // Copyright: http://terraswarm.org/accessors/copyright.txt
 //
 // Flag that will cause debug output to the console if set to true.
-var _debug = false
+var _debug = false;
 
 ////////////////////
 // Pop up a dialog with the specified message.
@@ -86,8 +86,17 @@ function httpRequest(url, method, properties, body, timeout) {
 
 ////////////////////
 // Method for synchronously reading a URL.
-// DEPRECATED: Use the http module instead.
+// DEPRECATED: Use the http module (being developed by Marten) instead.
 function readURL(url) {
+    return readURL(url, 3000);
+}
+
+////////////////////
+// Method for synchronously reading a URL.
+// DEPRECATED: Use the http module (being developed by Marten) instead.
+// The timeout is in milliseconds.
+function readURL(url, timeout) {
+
 	if (_debug) console.log("readURL('" + url + "')");
 	var theURL = new (Java.type('java.net.URL'))(url);
 	if (actor.isRestricted && !theURL.getProtocol().toLowerCase().equals("http")) {
@@ -95,6 +104,7 @@ function readURL(url) {
     }
 	var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
 	request.setUrl(theURL);
+        request.setTimeout(timeout); // In milliseconds.
 	var response = request.execute();
 	if (!response.isSuccessful()) {
         throw "Failed to read URL: " + url
