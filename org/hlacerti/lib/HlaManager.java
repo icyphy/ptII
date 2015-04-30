@@ -258,7 +258,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
+        
         _idToClasses = new HashMap<Integer, ComponentEntity>();
+        _newlyCreated = new LinkedList<Instantiable>();
+        _freeActors = new HashMap<Integer, LinkedList<ComponentEntity>>();
         
         _hlaStartTime = null;
         _hlaTimeStep = null;
@@ -950,7 +953,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 }
 
                                 try {
-                                    _rtia.tick2();
+                                   _rtia.tick2();
                                 } catch (SpecifiedSaveLabelDoesNotExist e) {
                                     throw new IllegalActionException(this, e,
                                             "SpecifiedSaveLabelDoesNotExist ");
@@ -1127,12 +1130,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-
-        /*for(Instantiable i : _newlyCreated){
+        /*
+        for(Instantiable i : _newlyCreated){
             ComponentEntity e = (ComponentEntity) i;
             try{e.setContainer(null);}
             catch(NameDuplicationException ex){}
-        }*/
+        }
+        _newlyCreated.clear();*/
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
         }
@@ -1285,7 +1289,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         _hlaAttributesSubscribedTo.clear();
         //List<HlaSubscriber> _hlaSubscribers = ca.entityList(HlaSubscriber.class);
-        List<HlaSubscriber> _hlaSubscribers = new LinkedList<HlaSubscriber>();
+        /*List<HlaSubscriber> _hlaSubscribers = new LinkedList<HlaSubscriber>();
         List<ComponentEntity> allEntities = ca.allAtomicEntityList();
         for(ComponentEntity e : allEntities){
             if(e instanceof HlaSubscriber){
@@ -1315,7 +1319,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             // Subscriber actors present in the model.
             _fromFederationEvents.put(hs.getIdentity(),
                     new LinkedList<TimedEvent>());
-        }
+        }*/
     }
 
     /** This method is called when a time advancement phase is performed. Every
@@ -1365,39 +1369,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
     }
 
-        /**
-     * This function is used when we discover on object (HLA's id is object,
-     * the object HLA's class is theObjectClass).
-     * The function will try each HLASuscriber and map to the first free one
-     * the object we are currently registering
-     * handling
-     */
-    private  void _doMappingSuscriber(int object,int theObjectClass) {
-        Iterator<Entry<String, Object[]>> it = _hlaAttributesSubscribedTo
-                .entrySet().iterator();
-        
-        while (it.hasNext()) {
-            Map.Entry<String, Object[]> elt = it.next();
-            Object[] tObj = elt.getValue();
-            
-            //if we find a port whose object class handle match
-            //the object we are registering
-            if (_getClassHandleFromTab(tObj) == theObjectClass) {
-                TypedIOPort port = _getPortFromTab(tObj);
-                HlaSubscriber actor = (HlaSubscriber) port.getContainer();
-                
-                if(!actor.isTaken()){
-                    if(_debugging){
-                    _debug(actor.getOpaqueIdentifier()+
-                            " will let go through itself objectID="+object +
-                            "(class = "+theObjectClass+')');
-                    }
-                    actor.register(object);
-                    break;
-                }
-            }
-        } //end of it.hasNext()
-    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1456,10 +1427,20 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** The RTIG subprocess. */
     private CertiRtig _certiRtig;
     
-    //private LinkedList<Instantiable> _newlyCreated = new LinkedList<Instantiable>();
+    /**
+     * List all the newly created actors that need be destroyed when wrapping up.
+     */
+    private LinkedList<Instantiable> _newlyCreated ;
     
-    /**/
+    /** Mapping between class ID in the FOM and classes in Ptolemy to instanciate.
+     * 
+    */
     private HashMap<Integer,ComponentEntity> _idToClasses;
+    
+    /** 
+     * List all the free actors that can handle a new object whose ID is the key.
+    */
+    private HashMap<Integer,LinkedList<ComponentEntity>> _freeActors;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
@@ -1669,41 +1650,74 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  of HLA attribute that the Federate is subscribed to.
          */
         @Override
-        public void discoverObjectInstance(int theObject, int theObjectClass,
+        public void discoverObjectInstance(int objectHandle, int classHandle,
                 String objectName) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"
                         + " discoverObjectInstance() - the object "
                         + objectName + " has been discovered" + " (ID="
-                        + theObject + ", class'ID=" + theObjectClass
+                        + objectHandle + ", class'ID=" + classHandle
                         + ")");
             }
 
-            _objectIdToClassHandle.put(theObject, theObjectClass);
-            _doMappingSuscriber(theObject, theObjectClass);
-/*
-            requestChange(new ChangeRequest(this,
-                    "do a test",true) {
+            _objectIdToClassHandle.put(objectHandle, classHandle);
+           
+            final ComponentEntity classToInstantiate = _idToClasses.get(classHandle);
+            ChangeRequest request = new ChangeRequest(this,
+                    "Adding " + objectName,true) {
                         @Override
                         protected void _execute() throws IllegalActionException {
-                            CompositeEntity container = (CompositeEntity) getContainer();
+
+                            CompositeEntity container = (CompositeEntity) classToInstantiate.getContainer();                 
+                            
                             try {
-                                Instantiable i = classInPtForpleasingJava.instantiate(
-                                        container,
-                                        objectName);   
-                                ComponentEntity e = (ComponentEntity) i;
-                                Sink s = new Discard(container, "myFuckingDIscard"+theObjectClass+objectName+theObject);
-                                TypedIORelation r = new TypedIORelation(container, "pipo"+theObjectClass+objectName+theObject);
-                                s.getPort("input").link(r);
-                                e.getPort("X").link(r);
-                                e.getPort("Y").link(r);
-                                _newlyCreated.add(i);
+                                Instantiable instance ;
+                                LinkedList<ComponentEntity> actors = _freeActors.get(classHandle);
+                                
+                                if(actors.size() == 0){
+                                    instance= classToInstantiate.instantiate(container, objectName);
+                                    _newlyCreated.add(instance);
+                                } else{
+                                    //retrieve and remove head
+                                    instance = actors.poll();
+                                    if(_debugging){
+                                        _debug(instance.getName() + "will do objectID " + objectHandle);
+                                    }
+                                }
+                                _director.invalidateSchedule();
+                                
+                                CompositeActor newActor = (CompositeActor) instance;
+                                
+                                List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
+                                for(int  i = 0 ; i < subscribers.size() ; ++i){
+                                    HlaSubscriber sub = subscribers.get(i);
+                                    sub.opaqueIdentifier.setExpression("\""+objectName+"\""); ;
+                                    sub.objectHandle = objectHandle;
+                                    _hlaAttributesSubscribedTo.put(
+                                            sub.getIdentity(),
+                                            new Object[]{
+                                                sub.output, sub.output.getType(),
+                                                ((StringToken) ((Parameter) sub
+                                                        .getAttribute("classObjectHandle"))
+                                                        .getToken()).stringValue()
+                                                    ,classHandle,sub.attributeHandle
+                                            }
+                                    );
+                                    _fromFederationEvents.put(sub.getIdentity(),new LinkedList<TimedEvent>());
+                                }
+
                             } catch (NameDuplicationException | CloneNotSupportedException ex) {
                                 ex.printStackTrace();
                             }
                         }
-                    });*/
+                    };
+            request.setPersistent(false);
+            
+            if(classToInstantiate != null) {
+                requestChange(request);
+            } 
+
         }
 
         // HLA Time Management services (callbacks).
@@ -1944,7 +1958,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     //from another tread been registered. Since _federateName 
                     //are unique across a federation, we are good.
                     
-                    String senderName = _federateName+"/"+sender.getContainer().getName();                    
+                    String senderName = _federateName+" "+sender.getContainer().getName();                    
                     if(!alreadyRegistered.contains(senderName)){
                         alreadyRegistered.add(senderName);
                         int myObjectInstId = -1;
@@ -1969,11 +1983,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, AttributeNotDefined, SaveInProgress,
                 RestoreInProgress, ConcurrentAccessAttempted {
-            CompositeEntity container = (CompositeEntity) getContainer();
+
+            /** List all the classes, states to RTI we have interested in it
+             *  for each class, list all the HlaSubscriber within and subscribe
+             *  to it
+             *  Then list its instances and mark them as free
+             */
+            CompositeEntity container = (CompositeEntity) getContainer();            
             List<ComponentEntity> classes = container.classDefinitionList();
-            for(ComponentEntity currentClass: classes){              
+            for(ComponentEntity currentClass: classes){
+                
+                int classHandle =  rtia.getObjectClassHandle(currentClass.getName());     
                 try{
-                    int classHandle =  rtia.getObjectClassHandle(currentClass.getName());     
                     _idToClasses.put(classHandle, currentClass);
                     
                     // The attribute handle set to declare all subscribed attributes
@@ -1985,45 +2006,38 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     
                     for (HlaSubscriber sub : subscribers) {
                         int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
+                        sub.attributeHandle = attributeHandle;
+                        sub.classHandle = classHandle;
                         _attributesLocal.add(attributeHandle);
+                        if(_debugging){
+                            _debug("Subscribe to " + sub.getParameterName() + " for class " + currentClass.getName());
+                        }
                     }
                     rtia.subscribeObjectClassAttributes(classHandle,_attributesLocal);
-                } catch(Exception e){}
-            }
- 
-            // For each HlaSubscriber actors deployed in the model we declare
-            // to the HLA/CERTI Federation a HLA attribute to subscribe to.
-            Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
-                    .entrySet().iterator();
-            
-            while (ot.hasNext()) {
-                Map.Entry<String, Object[]> elt = ot.next();
-                Object[] tObj = elt.getValue();
-                TypedIOPort port = _getPortFromTab(tObj);
-                int classHandle = rtia.getObjectClassHandle(_getClassNameFromTab(tObj));
-                int objAttributeHandle = rtia.getAttributeHandle(
-                        ((HlaSubscriber)port.getContainer()).getParameterName(),
-                        classHandle);
+                } catch(Exception e){
+                    e.printStackTrace();
+                } 
                 
-                // Update HLA attribute information (for subscription)
-                // from HLA services. In this case, the tObj[] object as
-                // the following structure:
-                // tObj[0] => output port which will produce the event received
-                //            as updated value of a HLA attribute,
-                // tObj[1] => type of the port (e.g. of the attribute),
-                // tObj[2] => object class name of the attribute,
-                // tObj[3] => id of the object class handle,
-                // tObj[4] => id of the attribute handle.
-                
-                // tObj[0 .. 2] are extracted from the Ptolemy model.
-                // tObj[3 .. 4] are provided by the RTI (CERTI).
-                
-                // All these information are required to subscribe to/unsubscribe
-                // to a HLA attribute.
-                elt.setValue(new Object[] { _getPortFromTab(tObj), _getTypeFromTab(tObj), 
-                    _getClassNameFromTab(tObj),
-                    classHandle, objAttributeHandle });
-            }
+                /*List all instances of that class and set them up*/
+                Class javaClass = currentClass.getClass();
+                List objects = container.entityList(javaClass);
+                LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
+                _freeActors.put(classHandle, freeActorForThatClass);
+                for (int i = 0; i < objects.size(); i++) {
+
+                    CompositeActor currentActor = (CompositeActor) objects.get(i);
+                    
+                    freeActorForThatClass.add(currentActor);
+                                 
+                    List<HlaSubscriber> subscribers = currentActor.entityList(HlaSubscriber.class);                    
+                    for (HlaSubscriber sub : subscribers) {
+                        int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
+                        sub.attributeHandle = attributeHandle;
+                        sub.classHandle = classHandle;
+                    }
+                }
+                System.out.println("## classID "+ classHandle + "has " +freeActorForThatClass.size()+" actors");
+            } //end of for on classes
         }
     }    
 

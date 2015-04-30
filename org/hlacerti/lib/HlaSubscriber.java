@@ -155,6 +155,12 @@ public class HlaSubscriber extends TypedAtomicActor {
      * will refere to the same object in the federation.
      */ 
     public Parameter opaqueIdentifier;
+    
+    public int attributeHandle;
+    
+    public int classHandle;
+    
+    public int objectHandle;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -220,7 +226,8 @@ public class HlaSubscriber extends TypedAtomicActor {
         //take care of private members
         newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();        
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
-        
+        //newObject.output.setTypeEquals(output.getType());
+        //newObject.output.setWidthEquals(output,false);
         return newObject;
     }
 
@@ -275,13 +282,11 @@ public class HlaSubscriber extends TypedAtomicActor {
                 
                 //OriginatedEvent can be null if the HLAsuscriber is not used
                 //
-                Integer potentialIdentifier = _mapping.get(getOpaqueIdentifier());
-                
+                //Integer potentialIdentifier = _mapping.get(getOpaqueIdentifier());
                 //either it is NOT OriginatedEvent and we let it go
                 //either it is and it has to match the (potential) origin 
                 //and check potentialIdentifier before using it (short circuit evaluation) 
-                if(origin == -1 || 
-                        potentialIdentifier !=null && potentialIdentifier.equals(origin) == true){
+                if(origin == -1 || origin == objectHandle){
                     this.outputPortList().get(0).send(0, content);
                     
                     if (_debugging) {
@@ -335,7 +340,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      * Return true if the opaque identifier of the current HLASuscriber is already
      * binded to an object instance.
      */
-    public boolean isTaken(){
+    /*public boolean isTaken(){
         String name = null;
         try {
             name= ((StringToken) opaqueIdentifier.getToken()).stringValue();
@@ -343,7 +348,7 @@ public class HlaSubscriber extends TypedAtomicActor {
             illegalActionException.printStackTrace();
         }
         return _mapping.get(name) != null;
-    }
+    }*/
     /**
      * Return the opaque identifier of the current HLASuscriber.
     */
@@ -360,7 +365,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     public void register(int theObject){
 
-        _mapping.putIfAbsent(getOpaqueIdentifier(),theObject);
+        //_mapping.putIfAbsent(getOpaqueIdentifier(),theObject);
     }
     /**
      * Return the kind of HLA Attribute the HLASuscriber is handling.
@@ -382,7 +387,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         //we should do a clear but it is written as OPTIONNAL.
         //safe way to deal with it is to create a whole new object.
         //who said java is RAM consuming ?
-        _mapping = new ConcurrentHashMap<String,Integer>();
+        //_mapping = new ConcurrentHashMap<String,Integer>();
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -447,6 +452,4 @@ public class HlaSubscriber extends TypedAtomicActor {
      * Wsed to remeber the mapping opaqueIdentifier <-> HLA Object id
      * Filled up by register when HLAManager discovers an object.
      */
-    private static ConcurrentHashMap<String,Integer> _mapping 
-            = new ConcurrentHashMap<String,Integer>();
 }
