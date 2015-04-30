@@ -1288,38 +1288,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
 
         _hlaAttributesSubscribedTo.clear();
-        //List<HlaSubscriber> _hlaSubscribers = ca.entityList(HlaSubscriber.class);
-        /*List<HlaSubscriber> _hlaSubscribers = new LinkedList<HlaSubscriber>();
-        List<ComponentEntity> allEntities = ca.allAtomicEntityList();
-        for(ComponentEntity e : allEntities){
-            if(e instanceof HlaSubscriber){
-                _hlaSubscribers.add((HlaSubscriber) e);
-            }
-        }
-        for (HlaSubscriber hs : _hlaSubscribers) {
-            if (_hlaAttributesSubscribedTo.get(hs.getIdentity()) != null) {
-                throw new IllegalActionException(this,
-                        "A HLA attribute with the same name is already "
-                                + "registered for subscription");
-            }
-            // Only one output port is allowed per HlaSubscriber actor.
-            TypedIOPort tiop = hs.outputPortList().get(0);
-
-            _hlaAttributesSubscribedTo.put(
-                    hs.getIdentity(),
-                    new Object[] {
-                            tiop,
-                            tiop.getType(),
-                            ((StringToken) ((Parameter) hs
-                                    .getAttribute("classObjectHandle"))
-                                    .getToken()).stringValue() });
-            
-            // The events list to store updated values of HLA attribute,
-            // (received by callbacks) from the RTI, is indexed by the HLA
-            // Subscriber actors present in the model.
-            _fromFederationEvents.put(hs.getIdentity(),
-                    new LinkedList<TimedEvent>());
-        }*/
     }
 
     /** This method is called when a time advancement phase is performed. Every
@@ -1698,10 +1666,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             sub.getIdentity(),
                                             new Object[]{
                                                 sub.output, sub.output.getType(),
-                                                ((StringToken) ((Parameter) sub
-                                                        .getAttribute("classObjectHandle"))
-                                                        .getToken()).stringValue()
-                                                    ,classHandle,sub.attributeHandle
+                                                "", //empty string because it is parameter no lnger used, but
+                                                    // some functions rely on classHandle and attributeHandle
+                                                    // being at pos 3 and 4
+                                                classHandle,sub.attributeHandle 
                                             }
                                     );
                                     _fromFederationEvents.put(sub.getIdentity(),new LinkedList<TimedEvent>());
@@ -2036,7 +2004,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         sub.classHandle = classHandle;
                     }
                 }
-                System.out.println("## classID "+ classHandle + "has " +freeActorForThatClass.size()+" actors");
             } //end of for on classes
         }
     }    

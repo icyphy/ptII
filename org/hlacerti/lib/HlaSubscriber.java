@@ -99,13 +99,6 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         // The single output port of the actor.
         output = new TypedIOPort(this, "output", false, true);
-        
-        classObjectHandle = new Parameter(this, "classObjectHandle");
-        classObjectHandle.setDisplayName("Object class in FOM");
-        classObjectHandle.setTypeEquals(BaseType.STRING);
-        classObjectHandle.setExpression("\"myObjectClass\"");
-        attributeChanged(classObjectHandle);
-
 
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
@@ -132,10 +125,6 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** The object class of the HLA attribute to subscribe to. */
-    public Parameter classObjectHandle;
-
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     public Parameter useCertiMessageBuffer;
@@ -173,14 +162,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == classObjectHandle) {
-            String value = ((StringToken) classObjectHandle.getToken())
-                    .stringValue();
-            if (value.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty name !");
-            }
-        } else if (attribute == useCertiMessageBuffer) {
+        if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
         }
