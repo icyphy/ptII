@@ -54,35 +54,13 @@ import diva.util.java2d.ShapeUtilities;
  * @Pt.AcceptedRating Yellow
  */
 public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
-    /** The parent component.
-     */
-    private CanvasComponent _parent = null;
-
-    /** The parent canvas.
-     */
-    private JCanvas _canvas = null;
-
-    /** The enabled flag. If set,
-     */
-    private boolean _enabled = true;
-
-    /** The antialiasing flag. Is set,
-     */
-    private boolean _antialias = true;
-
-    /** The size of this pane, in logical coordinates
-     */
-    private Point2D _paneSize = new Point2D.Double(100.0, 100.0);
-
-    /** The transform context of this pane
-     */
-    private TransformContext _transformContext = new TransformContext(this);
 
     ///////////////////////////////////////////////////////////////////
     //// Public methods
 
     /** Dispatch an AWT event on this pane. Currently only
      * layer events are handled.
+     * @param The event
      */
     @Override
     public void dispatchEvent(AWTEvent event) {
@@ -96,6 +74,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Get the parent component, or null if there isn't one.
      * Only one of the canvas or the display parent can be non-null.
+     * @return the parent component or null.
      */
     @Override
     public final CanvasComponent getParent() {
@@ -104,12 +83,14 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Get the containing canvas, or null if there isn't one.
      * Only one of the canvas or the display parent can be non-null.
+     * @return the containing canvas or null.
      */
     public final JCanvas getCanvas() {
         return _canvas;
     }
 
-    /** Return whether or not this pane is antialiased
+    /** Return whether or not this pane is antialiased.
+     *  @return true if the pane is antialiased.   
      */
     public final boolean isAntialiasing() {
         return _antialias;
@@ -121,6 +102,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      *  tooltip string returned by one of the layers.  If all the layers
      *  return a null tooltip, then return null indicating that no
      *  tooltip should be displayed.
+     *  @param event The event
+     *  @return The tool tip or null
      */
     protected String getToolTipText(LayerEvent event) {
         if (!isEnabled()) {
@@ -147,6 +130,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     }
 
     /** Return the transform context of this pane.
+     *  @return the transform context.
      */
     @Override
     public final TransformContext getTransformContext() {
@@ -157,6 +141,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * If the pane is contained directly in a JCanvas, the
      * size is obtained from the JCanvas. Otherwise, it
      * returns the size previously set with setSize().
+     * @return the size
      */
     public Point2D getSize() {
         if (_canvas != null) {
@@ -172,6 +157,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Test the enabled flag of this pane. Note that this flag
      *  does not indicate whether the pane is actually enabled,
      *  as its canvas or one if its ancestors may not be enabled.
+     *  @return True if the pane is enabled.
      */
     @Override
     public final boolean isEnabled() {
@@ -180,6 +166,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Return an iteration of the layers, in undefined order. The
      * default implementation simply calls layersFromFront().
+     * @return The iterator.
      */
     public Iterator layers() {
         return layersFromFront();
@@ -187,11 +174,13 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Return an iteration of the layers from back to front --
      * that is, in redraw order.
+     * @return The iterator.
      */
     public abstract Iterator layersFromBack();
 
     /** Return an iteration of the layers from front to back --
      * that is, in event-processing order.
+     * @return The iterator.
      */
     public abstract Iterator layersFromFront();
 
@@ -201,6 +190,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * into the graphics context, so any layer that changes the
      * transform is obliged to return it to its prior state after
      * finishing.
+     * @param g The graphics context on which to paint.
      */
     public void paint(Graphics2D g) {
         _transformContext.push(g);
@@ -230,6 +220,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * transform of this pane is written into the graphics context, so
      * any layer that changes the transform is obliged to return it to
      * its prior state after finishing.
+     * @param g The graphics context on which to paint.
+     * @param region The object to be painted.
      */
     public void paint(Graphics2D g, Rectangle2D region) {
         _transformContext.push(g);
@@ -263,6 +255,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * pass the event to each layer that implements the EventAcceptor
      * interface, from front to back. After each layer,
      * check whether the event has been consumed, and return if so.
+     * @param event The layer event
      */
     protected void processLayerEvent(LayerEvent event) {
         if (!isEnabled()) {
@@ -307,6 +300,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * in this pane. Notify the damage region that it is passing
      * through a transform context, and then forward the
      * notification up to the parent.
+     * @param d The damage region.
      */
     @Override
     public void repaint(DamageRegion d) {
@@ -323,6 +317,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Set whether or not to use antialiasing
      * when drawing this pane.
+     * @param val True if antialiasing is used when drawing.
      */
     public void setAntialiasing(boolean val) {
         _antialias = val;
@@ -332,6 +327,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * not null and the parent is not null, throw an exception.
      * This method is not intended for general use, only by JCanvas
      * and subclasses.
+     * @param canvase The containing canvas.
      */
     public final void setCanvas(JCanvas canvas) {
         if (canvas != null && _parent != null) {
@@ -343,8 +339,9 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         this._canvas = canvas;
     }
 
-    /** Set the enabled flag of this pane. If the flag is false,
-     * then the pane will not respond to user input events.
+    /** Set the enabled flag of this pane.
+     * @param flag If false, then the pane will not respond to user
+     * input events.
      */
     @Override
     public final void setEnabled(boolean flag) {
@@ -353,6 +350,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Set the parent component of this pane. If the parent is not
      * null and the canvas is not null, throw an exception.
+     * @param parent The parent of the pane.
      */
     public final void setParent(CanvasComponent parent) {
         if (parent != null && _canvas != null) {
@@ -372,6 +370,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * pane is directly contained by a JCanvas, subsequent calls to
      * the getSize() and getPreferredSize() methods of the JCanvas
      * will return the size set here.
+     * @param width The width
+     * @param height The height
      */
     public void setSize(double width, double height) {
         setSize(new Point2D.Double(width, height));
@@ -381,6 +381,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * pane is directly contained by a JCanvas, subsequent calls to
      * the getSize() and getPreferredSize() methods of the JCanvas
      * will return the size set here.
+     * @param size The size of the pane.
      */
     public void setSize(Point2D size) {
         _paneSize = size;
@@ -395,6 +396,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * transform will affect the pane.
      * This version has a flag that can be used to avoid calling
      * the 'updateRangeModel' method
+     * @param at The transform.
      */
     public final void setTransform(AffineTransform at) {
         _transformContext.setTransform(at);
@@ -404,15 +406,19 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Translate this pane the given distance. The translation is
      * done such that it works "correctly" in the presence of scaling.
+     * @param x The x amount by which to translate.
+     * @param y The y amount by which to translate.
      */
     public void translate(double x, double y) {
         _transformContext.translate(x, y);
         repaint();
     }
 
-    /** Scale this pane the given amount. The first two arguments are
-     * the center point to scale about, the second two are the
-     * horizontal and vertical scale factors.
+    /** Scale this pane the given amount.
+     * @param xcenter The x value of the point to scale about.
+     * @param ycenter The y value of the point to scale about.
+     * @param xscale The x amount of which to scale by. 
+     * @param yscale The y amount of which to scale by. 
      */
     public void scale(double xcenter, double ycenter, double xscale,
             double yscale) {
@@ -435,6 +441,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Helper method to initialize a layer when it is added to this
      * pane. Any subclass must be sure to call this whenever it
      * creates a new layer or accepts one to add to itself.
+     * @param l The canvas layer
      */
     protected void _initNewLayer(CanvasLayer l) {
         if (l._containingPane != null) {
@@ -448,6 +455,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Helper method to tell a layer when it is been removed from
      * this pane. Any subclass must be sure to call this whenever it
      * removes a layer.
+     * @param l The canvas layer
      */
     protected void _nullifyLayer(CanvasLayer l) {
         if (l._containingPane != this) {
@@ -497,4 +505,27 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
             _horizontalRangeModel.setValue(visX);
         }
     }
+    /** The parent component.
+     */
+    private CanvasComponent _parent = null;
+
+    /** The parent canvas.
+     */
+    private JCanvas _canvas = null;
+
+    /** The enabled flag, which defaults to true.
+     */
+    private boolean _enabled = true;
+
+    /** The antialiasing flag, which defaults to true.
+     */
+    private boolean _antialias = true;
+
+    /** The size of this pane, in logical coordinates.
+     */
+    private Point2D _paneSize = new Point2D.Double(100.0, 100.0);
+
+    /** The transform context of this pane.
+     */
+    private TransformContext _transformContext = new TransformContext(this);
 }

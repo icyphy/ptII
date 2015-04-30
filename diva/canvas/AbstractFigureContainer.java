@@ -140,6 +140,8 @@ FigureContainer {
      * not be called by other methods. Implementors can assume that
      * the first figure is a child of this container, and that the
      * second is not.
+     * @param child The figure to be replaced.
+     * @param replacement The replacement figure.
      */
     protected abstract void replaceChild(Figure child, Figure replacement);
 
