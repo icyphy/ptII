@@ -164,6 +164,15 @@ import ptolemy.util.FileUtilities;
    If you leave it off, the channel number will be assumed to be zero
    (designating the first channel connected to the port).
    <p>
+   Note that get() may be called within a JavaScript callback function. In that case,
+   if the callback function is invoked during the firing of this actor, then the get()
+   will return immediately. Otherwise, the get() method will request a firing of this
+   actor at the current time and block the JavaScript thread until this actor is in
+   that firing.  This way, this actor ensures that get() reads a proper input.
+   Note that although blocking JavaScript functions is not normally done, this actor
+   has its own JavaScript engine, so no other JavaScript anywhere in the model will be
+   affected. Those JavaScript threads are not blocked.
+   <p>
    The following example script calculates the factorial of the input.</p>
    <pre>
    exports.fire = function() {
@@ -622,6 +631,15 @@ public class JavaScript extends TypedAtomicActor {
             // Mark that we are in the fire() method, enabling outputs to be
             // sent immediately.
             _inFire = true;
+            notifyAll();
+            // Allow any pending gets to complete.
+            while (_pendingGets > 0) {
+        	try {
+		    wait();
+		} catch (InterruptedException e) {
+		    throw new IllegalActionException(this, "Thread interrupted.");
+		}
+            }
             try {
                 // Handle timeout requests that match the current time.
                 if (_pendingTimeoutIDs != null) {
@@ -692,6 +710,7 @@ public class JavaScript extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         
+        _pendingGets = 0;
         _pendingTimeoutFunctions = null;
         _pendingTimeoutIDs = null;
         _timeoutCount = 0;
@@ -1174,6 +1193,9 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Map from timeout ID to pending timeout functions. */
     private Map<Integer, Runnable> _pendingTimeoutFunctions;
+    
+    /** Number of pending gets. */
+    private int _pendingGets;
 
     /** Map from timeout time to pending timeout IDs. */
     private Map<Time, List<Integer>> _pendingTimeoutIDs;
@@ -1260,13 +1282,30 @@ public class JavaScript extends TypedAtomicActor {
         	}
         	return token;
             }
-            Map<Integer,Token> tokens = _inputTokens.get(_port);
-            if (tokens != null) {
-        	Token token = tokens.get(channelIndex);
-        	if (token == null || token.isNil()) {
-        	    return null;
+            synchronized(JavaScript.this) {
+        	if (!_inFire) {
+        	    // Request a firing, then stall until it occurs.
+        	    _fireAtCurrentTime();
+        	    _pendingGets++;
+        	    while (!_inFire) {
+        		try {
+			    JavaScript.this.wait();
+			} catch (InterruptedException e) {
+			    // FIXME: Is this the right thing to do?
+			    throw new IllegalActionException(JavaScript.this, "Thread interrupted.");
+			}
+        	    }
+        	    _pendingGets--;
+        	    JavaScript.this.notifyAll();
         	}
-        	return token;
+                Map<Integer,Token> tokens = _inputTokens.get(_port);
+                if (tokens != null) {
+                    Token token = tokens.get(channelIndex);
+                    if (token == null || token.isNil()) {
+                	return null;
+                    }
+                    return token;
+                }
             }
             return null;
         }
