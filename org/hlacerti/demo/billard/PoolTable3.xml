@@ -1,0 +1,173 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PoolTable3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 144, 921, 606}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.30713479239205, 368.05515373443495}">
+    </property>
+    <property name="display" class="org.hlacerti.lib.HlaManager">
+        <display name="displayActor"/>
+        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;displayActor&quot;">
+            <display name="Federate's name"/>
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Test&quot;">
+            <display name="Federation's name"/>
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="./Test.fed">
+            <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init&quot;">
+            <display name="Synchronization point name"/>
+        </property>
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="Is synchronization point creator ?"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{316.60517241379307, 305.3318965517242}">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1600">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{211.60517241379307, 295.3318965517242}">
+        </property>
+    </property>
+    <property name="endTime" class="ptolemy.data.expr.Parameter" value="1600">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{181.60517241379307, 230.33189655172418}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-88.39482758620693, 530.3318965517242}">
+        </property>
+    </property>
+    <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 365.0]">
+        </property>
+        <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;f&quot;">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, -30.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2500000000000002">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{406.347283291458, 79.11691268844228}">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="endTime">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, -10.0}">
+            </property>
+        </property>
+        <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="f PositionX"/>
+            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+                <display name="Object class in FOM"/>
+            </property>
+            <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
+                <display name="use CERTI message buffer"/>
+            </property>
+            <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="fed">
+                <display name="Opaque identifier of the federate"/>
+            </property>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;PositionX&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 110.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="HlaSubscriber2" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="f PositionY"/>
+            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+                <display name="Object class in FOM"/>
+            </property>
+            <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
+                <display name="use CERTI message buffer"/>
+            </property>
+            <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="fed">
+                <display name="Opaque identifier of the federate"/>
+            </property>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;PositionY&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 175.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 145.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="HlaSubscriber.output" relation="relation"/>
+        <link port="HlaSubscriber2.output" relation="relation2"/>
+        <link port="Position.input" relation="relation"/>
+        <link port="Position.input" relation="relation2"/>
+    </class>
+</entity>

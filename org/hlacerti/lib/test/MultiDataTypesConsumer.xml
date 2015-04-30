@@ -1,6 +1,8 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MultiDataTypesConsumer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -8,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{43.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={11, 59, 729, 722}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[495, 612]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.5, 306.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{191.57293971238948, 197.03823285398224}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <display name="consumer"/>
@@ -67,142 +69,172 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 325.0]">
         </property>
     </property>
-    <entity name="val" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 140.0]">
+    <class name="myObjectClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 160.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
             </property>
-        </port>
-    </entity>
-    <entity name="val1" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 195.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 55.0]">
             </property>
-        </port>
-    </entity>
-    <entity name="val2" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val2&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 250.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 144, 921, 606}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+        </property>
+        <entity name="val" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="opaqueIdentifier val"/>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val&quot;">
+                <display name="Name of the parameter to receive"/>
             </property>
-        </port>
-    </entity>
-    <entity name="int" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 217, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 250.0]">
-        </property>
-    </entity>
-    <entity name="val3" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val3&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
             </property>
-        </port>
-    </entity>
-    <entity name="boolean" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 382, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 300.0]">
-        </property>
-    </entity>
-    <entity name="double" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 172, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
-        </property>
-    </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;! dlroW olleH&quot;}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 105.0]">
-        </property>
-    </entity>
-    <entity name="string" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 140.0]">
-        </property>
-    </entity>
-    <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{241.0536479334677, 172.0419773630218}">
-        </property>
-    </entity>
-    <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 235.0]">
-        </property>
-    </entity>
-    <entity name="Test4" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 295.0]">
-        </property>
-    </entity>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
+            </port>
+        </entity>
+        <entity name="val2" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="opaqueIdentifier val1"/>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{176.0, 231.0}">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                </property>
+            </port>
+        </entity>
+        <entity name="val3" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="opaqueIdentifier val2"/>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val2&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[183.5, 325.5]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+                </property>
+            </port>
+        </entity>
+        <entity name="int" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 217, 484, 208}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[347.5, 364.5]">
+            </property>
+        </entity>
+        <entity name="val4" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="opaqueIdentifier val3"/>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;val3&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 405.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+                </property>
+            </port>
+        </entity>
+        <entity name="boolean" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 382, 484, 208}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[349.0, 444.0]">
+            </property>
+        </entity>
+        <entity name="double" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 172, 484, 208}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 275.0]">
+            </property>
+        </entity>
+        <entity name="Test" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;! dlroW olleH&quot;}">
+            </property>
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 145.0]">
+            </property>
+        </entity>
+        <entity name="string" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 22, 484, 208}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 180.0]">
+            </property>
+        </entity>
+        <entity name="Test2" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 230.0]">
+            </property>
+        </entity>
+        <entity name="Test3" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[417.5, 324.5]">
+            </property>
+        </entity>
+        <entity name="Test4" class="ptolemy.actor.lib.Test">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[419.0, 404.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[255.0, 405.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[253.5, 325.5]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="{246.0, 231.0}">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[250.0, 145.0]">
+            </vertex>
+        </relation>
+        <link port="val.output" relation="relation4"/>
+        <link port="val2.output" relation="relation3"/>
+        <link port="val3.output" relation="relation2"/>
+        <link port="int.input" relation="relation2"/>
+        <link port="val4.output" relation="relation"/>
+        <link port="boolean.input" relation="relation"/>
+        <link port="double.input" relation="relation3"/>
+        <link port="Test.input" relation="relation4"/>
+        <link port="string.input" relation="relation4"/>
+        <link port="Test2.input" relation="relation3"/>
+        <link port="Test3.input" relation="relation2"/>
+        <link port="Test4.input" relation="relation"/>
+    </class>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{68.0, 65.0}">
         </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{80.0, 140.0}">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{80.0, 195.0}">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{80.0, 250.0}">
-        </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{80.0, 300.0}">
-        </vertex>
-    </relation>
-    <link port="val.output" relation="relation6"/>
-    <link port="val1.output" relation="relation3"/>
-    <link port="val2.output" relation="relation"/>
-    <link port="int.input" relation="relation"/>
-    <link port="val3.output" relation="relation5"/>
-    <link port="boolean.input" relation="relation5"/>
-    <link port="double.input" relation="relation3"/>
-    <link port="Test.input" relation="relation6"/>
-    <link port="string.input" relation="relation6"/>
-    <link port="Test2.input" relation="relation3"/>
-    <link port="Test3.input" relation="relation"/>
-    <link port="Test4.input" relation="relation5"/>
 </entity>
