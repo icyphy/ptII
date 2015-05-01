@@ -1,0 +1,371 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="completeCubeCustom" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
+        </property>
+        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.c.mbed">
+        </property>
+        <property name="variablesAsArrays" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 60.0]">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirectorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 45, 1123, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[889, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000187">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{497.40364583337293, 280.15540907130276}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="LEDCube" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[632.5, 175.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 50, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000095">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.9999999999997, 251.99999999999264}">
+        </property>
+        <port name="deltaSize" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[169.99999999999994, 115.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="deltaX" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[149.99999999999994, 150.0]">
+            </property>
+        </port>
+        <port name="deltaY" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[134.99999999999994, 190.0]">
+            </property>
+        </port>
+        <port name="deltaZ" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[119.99999999999994, 230.0]">
+            </property>
+        </port>
+        <port name="hue" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[94.99999999999994, 265.0]">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <entity name="Const3" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 450.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 335.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[64.99999999999994, 345.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <entity name="HSBtoRGB" class="ptolemy.actor.lib.mbed.HSBtoRGB">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 290.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <entity name="LEDCubeUpdate" class="ptolemy.actor.lib.mbed.LEDCubeUpdate">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 240.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <entity name="NeoPixelLEDStrip" class="ptolemy.actor.lib.mbed.NeoPixelLEDStrip">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 255.0]">
+            </property>
+            <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+                <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+                </property>
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="deltaSize" relation="relation9"/>
+        <link port="deltaX" relation="relation8"/>
+        <link port="deltaY" relation="relation7"/>
+        <link port="deltaZ" relation="relation6"/>
+        <link port="hue" relation="relation2"/>
+        <link port="Const3.output" relation="relation13"/>
+        <link port="Const.output" relation="relation12"/>
+        <link port="Const2.output" relation="relation"/>
+        <link port="HSBtoRGB.hue" relation="relation2"/>
+        <link port="HSBtoRGB.saturation" relation="relation"/>
+        <link port="HSBtoRGB.brightness" relation="relation13"/>
+        <link port="HSBtoRGB.r" relation="relation5"/>
+        <link port="HSBtoRGB.g" relation="relation4"/>
+        <link port="HSBtoRGB.b" relation="relation3"/>
+        <link port="LEDCubeUpdate.deltaSize" relation="relation9"/>
+        <link port="LEDCubeUpdate.deltaX" relation="relation8"/>
+        <link port="LEDCubeUpdate.deltaY" relation="relation7"/>
+        <link port="LEDCubeUpdate.deltaZ" relation="relation6"/>
+        <link port="LEDCubeUpdate.r" relation="relation5"/>
+        <link port="LEDCubeUpdate.g" relation="relation4"/>
+        <link port="LEDCubeUpdate.b" relation="relation3"/>
+        <link port="LEDCubeUpdate.indexes" relation="relation10"/>
+        <link port="LEDCubeUpdate.colors" relation="relation11"/>
+        <link port="NeoPixelLEDStrip.ledIndex" relation="relation10"/>
+        <link port="NeoPixelLEDStrip.color" relation="relation11"/>
+        <link port="NeoPixelLEDStrip.clear" relation="relation12"/>
+    </entity>
+    <entity name="GestureRecognition" class="ptolemy.actor.lib.mbed.GestureRecognition">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 175.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="SensorDataCalibration" class="ptolemy.actor.lib.mbed.SensorDataCalibration">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 175.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="PacketToSensorData" class="ptolemy.actor.lib.mbed.PacketToSensorData">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 175.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="CC3000Module" class="ptolemy.actor.lib.mbed.CC3000Module">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300, 325}">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <entity name="CC3000Control" class="ptolemy.actor.lib.mbed.CC3000Control">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 325.0]">
+        </property>
+        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
+            </property>
+        </property>
+    </entity>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="LEDCube.deltaSize" relation="relation17"/>
+    <link port="LEDCube.deltaX" relation="relation18"/>
+    <link port="LEDCube.deltaY" relation="relation19"/>
+    <link port="LEDCube.deltaZ" relation="relation20"/>
+    <link port="LEDCube.hue" relation="relation21"/>
+    <link port="GestureRecognition.finger1" relation="relation"/>
+    <link port="GestureRecognition.finger2" relation="relation2"/>
+    <link port="GestureRecognition.finger3" relation="relation3"/>
+    <link port="GestureRecognition.finger4" relation="relation4"/>
+    <link port="GestureRecognition.finger5" relation="relation14"/>
+    <link port="GestureRecognition.roll" relation="relation15"/>
+    <link port="GestureRecognition.pitch" relation="relation16"/>
+    <link port="GestureRecognition.yaw" relation="relation22"/>
+    <link port="GestureRecognition.deltaSize" relation="relation17"/>
+    <link port="GestureRecognition.deltaX" relation="relation18"/>
+    <link port="GestureRecognition.deltaY" relation="relation19"/>
+    <link port="GestureRecognition.deltaZ" relation="relation20"/>
+    <link port="GestureRecognition.hue" relation="relation21"/>
+    <link port="SensorDataCalibration.finger1Input" relation="relation5"/>
+    <link port="SensorDataCalibration.finger2Input" relation="relation6"/>
+    <link port="SensorDataCalibration.finger3Input" relation="relation7"/>
+    <link port="SensorDataCalibration.finger4Input" relation="relation8"/>
+    <link port="SensorDataCalibration.finger5Input" relation="relation9"/>
+    <link port="SensorDataCalibration.rollInput" relation="relation10"/>
+    <link port="SensorDataCalibration.pitchInput" relation="relation11"/>
+    <link port="SensorDataCalibration.yawInput" relation="relation12"/>
+    <link port="SensorDataCalibration.finger1Output" relation="relation"/>
+    <link port="SensorDataCalibration.finger2Output" relation="relation2"/>
+    <link port="SensorDataCalibration.finger3Output" relation="relation3"/>
+    <link port="SensorDataCalibration.finger4Output" relation="relation4"/>
+    <link port="SensorDataCalibration.finger5Output" relation="relation14"/>
+    <link port="SensorDataCalibration.rollOutput" relation="relation15"/>
+    <link port="SensorDataCalibration.pitchOutput" relation="relation16"/>
+    <link port="SensorDataCalibration.yawOutput" relation="relation22"/>
+    <link port="PacketToSensorData.dataPacket" relation="relation25"/>
+    <link port="PacketToSensorData.finger1" relation="relation5"/>
+    <link port="PacketToSensorData.finger2" relation="relation6"/>
+    <link port="PacketToSensorData.finger3" relation="relation7"/>
+    <link port="PacketToSensorData.finger4" relation="relation8"/>
+    <link port="PacketToSensorData.finger5" relation="relation9"/>
+    <link port="PacketToSensorData.roll" relation="relation10"/>
+    <link port="PacketToSensorData.pitch" relation="relation11"/>
+    <link port="PacketToSensorData.yaw" relation="relation12"/>
+    <link port="CC3000Module.packetToSend" relation="relation13"/>
+    <link port="CC3000Module.sending" relation="relation23"/>
+    <link port="CC3000Module.packetSize" relation="relation24"/>
+    <link port="CC3000Module.dataOut" relation="relation25"/>
+    <link port="CC3000Control.packetsOut" relation="relation13"/>
+    <link port="CC3000Control.sendStatus" relation="relation23"/>
+    <link port="CC3000Control.totalPackets" relation="relation24"/>
+</entity>
