@@ -1224,6 +1224,8 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /** Read the specified URL and return its contents.
+         *  To read a URL with a timeout, see
+         *  {@link #httpRequest(String, String, NativeObject, String, Integer)}.
          *  @param url The URL to read.
          *  @return The content of the URL.
          *  @exception IOException If the specified URL can't be read (that is, a response code
