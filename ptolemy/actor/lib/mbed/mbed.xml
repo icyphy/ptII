@@ -10,6 +10,12 @@
       <entity name="Accelerometer" class="ptolemy.actor.lib.mbed.Accelerometer">
       </entity>
 
+      <entity name="CC3000Control" class="ptolemy.actor.lib.mbed.CC3000Control">
+      </entity>
+
+      <entity name="CC3000Module" class="ptolemy.actor.lib.mbed.CC3000Module">
+      </entity>
+
       <entity name="GestureRecognition" class="ptolemy.actor.lib.mbed.GestureRecognition">
       </entity>
 
@@ -24,6 +30,12 @@
       </entity>
 
       <entity name="NeoPixelLEDStrip" class="ptolemy.actor.lib.mbed.NeoPixelLEDStrip">
+      </entity>
+
+      <entity name="PacketToSensorData" class="ptolemy.actor.lib.mbed.PacketToSensorData">
+      </entity>
+
+      <entity name="SensorDataCalibration" class="ptolemy.actor.lib.mbed.SensorDataCalibration">
       </entity>
       </group>
     ?>

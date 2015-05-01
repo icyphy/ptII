@@ -49,11 +49,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Accelerometer.java \
+	CC3000Control.java \
+	CC3000Module.java \
 	GestureRecognition.java \
 	GPIOWriter.java \
 	HSBtoRGB.java \
 	LEDCubeUpdate.java \
-	NeoPixelLEDStrip.java
+	NeoPixelLEDStrip.java \
+	PacketToSensorData.java \
+	SensorDataCalibration.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	mbed.xml
