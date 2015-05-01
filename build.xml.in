@@ -46,7 +46,7 @@
   <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@" />
 
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
-  <property name="javadoc.packagenames" value="diva.*,lbnl.*,org.ptolemy.*,ptolemy.*,ptserver.*" />
+  <property name="javadoc.packagenames" value="diva.*,lbnl.*,org.hlacerti.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
   <!-- junit.formatter defaults to xml and is used by checkstyle and test.  Other values: brief, failure, plain -->
   <property name="junit.formatter" value="xml" />
