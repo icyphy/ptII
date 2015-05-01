@@ -710,7 +710,11 @@ public class JavaScript extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         
-        _pendingGets = 0;
+        // Coverity complains that this reset needs to be synchronized.
+        // Probably not really necessary, but just in case:
+        synchronized(this) {
+            _pendingGets = 0;
+        }
         _pendingTimeoutFunctions = null;
         _pendingTimeoutIDs = null;
         _timeoutCount = 0;
