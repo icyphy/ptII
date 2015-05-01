@@ -1,6 +1,6 @@
 /* An implementation of a level one accessor.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,19 +41,24 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
  An implementation of a level-one accessor.
- This is a specialized JavaScript actor that hides the script
+
+ FIXME: What is a level-one accessor?
+
+ <p>This is a specialized JavaScript actor that hides the script
  from casual users by putting it in "expert" mode.
  It also sets the actor to "restricted" mode, which restricts
  the functionality of the methods methods and variables
- provided in the JavaScript context.
+ provided in the JavaScript context.</p>
 
- FIXME: This should support versioning of accessors.
+ <p>FIXME: This should support versioning of accessors.
  It should check the accessorSource for updates and replace
  itself if there is a newer version and the user agrees to
  the replacement. This will be tricky because any parameters
- and connections previously set should be preserved.
+ and connections previously set should be preserved.</p>
  
- Note:  Assumes Java 1.8
+ <p>This actor extends {@link ptolemy.actor.lib.jjs.JavaScript}
+ and thus requires Nashorn, which is present in Java-1.8 and
+ later.</p>
 
  @author Edward A. Lee
  @version $Id$
@@ -99,9 +104,6 @@ public class JSAccessor extends JavaScript {
 
     /** The source of the accessor (a URL). */
     public StringAttribute accessorSource;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
