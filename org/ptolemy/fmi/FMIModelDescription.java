@@ -566,19 +566,27 @@ public class FMIModelDescription {
 
     /**
      * Parse the ModelStructure to catch the I/O direct dependencies.
-     * @param node The node to be parsed
+     * @param node The node  to be parsed
      */
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
-        Long valueReference = Long.parseLong(attributes.getNamedItem("index")
-                .getNodeValue()) - 1;
+        Long valueReference = modelVariables.get(Integer.parseInt(attributes.getNamedItem("index")
+                .getNodeValue()) - 1).valueReference;
 
         Node dependencyNode = attributes.getNamedItem("dependencies");
-        if (dependencyNode != null
-                && dependencyNode.getNodeValue().trim().length() != 0) {
-            String[] dependencies = dependencyNode.getNodeValue().trim()
+        if (dependencyNode != null) {
+        	String[] dependencies; 
+        	if (dependencyNode.getNodeValue().trim().length() != 0){
+        		dependencies = dependencyNode.getNodeValue().trim()
                     .split(" ");
-                        
+        	}
+        	else{
+        		// The specification (FMI 2.0) says on page 61
+        		// that if the dependencies attribute of an FMU
+        		// is present but is empty, then unknown depends  
+        		// on none of the knowns. 
+        		dependencies = new String[0];
+        		}        
             for (int i = 0; i < modelVariables.size(); i++) {
                 if (modelVariables.get(i).valueReference == valueReference) {
                     modelVariables.get(i).directDependency.clear();
@@ -586,8 +594,8 @@ public class FMIModelDescription {
 
                         for (int k = 0; k < modelVariables.size(); k++) {
                             try {
-                                if (modelVariables.get(k).valueReference == (Long
-                                        .parseLong(dependencies[j]) - 1)
+                                if (modelVariables.get(k).valueReference == modelVariables
+                                		.get(Integer.parseInt(dependencies[j]) - 1).valueReference
                                         && modelVariables.get(k).causality
                                                 .equals(Causality.input)) {
                                     modelVariables.get(i).directDependency
