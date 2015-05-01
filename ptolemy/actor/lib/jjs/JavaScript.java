@@ -359,9 +359,8 @@ import ptolemy.util.FileUtilities;
 public class JavaScript extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
-     *  port. Initialize <i>init</i>
-     *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
+     *  the <i>error</i> parameter and the <i>script</i> port parameter.
+     *  Initialize <i>script</i> to a block of JavaScript.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -373,21 +372,23 @@ public class JavaScript extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Create the script parameter and input port.
-        script = new PortParameter(this, "script");
-        script.setStringMode(true);
-        ParameterPort scriptIn = script.getPort();
-        StringAttribute cardinal = new StringAttribute(scriptIn, "_cardinal");
-        cardinal.setExpression("SOUTH");
-        SingletonParameter showName = new SingletonParameter(scriptIn, "_showName");
-        showName.setExpression("true");
+        // Initialize in alphabetical order.
 
         // Create an error port.
         error = new TypedIOPort(this, "error", false, true);
         error.setTypeEquals(BaseType.STRING);
-        cardinal = new StringAttribute(error, "_cardinal");
+        StringAttribute cardinal = new StringAttribute(error, "_cardinal");
         cardinal.setExpression("SOUTH");
-        showName = new SingletonParameter(error, "_showName");
+        SingletonParameter showName = new SingletonParameter(error, "_showName");
+        showName.setExpression("true");
+
+        // Create the script parameter and input port.
+        script = new PortParameter(this, "script");
+        script.setStringMode(true);
+        ParameterPort scriptIn = script.getPort();
+        cardinal = new StringAttribute(scriptIn, "_cardinal");
+        cardinal.setExpression("SOUTH");
+        showName = new SingletonParameter(scriptIn, "_showName");
         showName.setExpression("true");
 
         // initialize the script to provide an empty template:
@@ -403,13 +404,15 @@ public class JavaScript extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** Output port on which to produce a message when an error occurs
-     *  when executing the fire() method. Note that if nothing is connected
-     *  to this port, then an error will cause this JavaScript actor to throw
-     *  an exception. Otherwise, a description of the error will be produced
-     *  on this port and the actor will continue executing. Note that any
-     *  errors that occur during loading the script or invoking the initialize()
-     *  or wrapup() functions always result in an exception, since it makes no
-     *  sense to produce an output during those phases of execution.
+     *  when executing the fire() method. Note that if nothing is
+     *  connected to this port, then an error will cause this
+     *  JavaScript actor to throw an exception. Otherwise, a
+     *  description of the error will be produced on this port and the
+     *  actor will continue executing. Note that any errors that occur
+     *  during loading the script or invoking the initialize() or
+     *  wrapup() functions always result in an exception, since it
+     *  makes no sense to produce an output during those phases of
+     *  execution.
      */
     public TypedIOPort error;
     
@@ -419,8 +422,8 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clear the timeout or interval
-     *  with the specified handle, if it has not already executed.
+    /** Clear the timeout or interval with the specified handle, if it
+     *  has not already executed.
      *  @param handle The timeout handle.
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
@@ -465,31 +468,38 @@ public class JavaScript extends TypedAtomicActor {
      *  invoke any timer tasks that match the current time, and invoke the
      *  fire function. Specifically:
      *  <ol>
-     *  <li>
-     *  First, if there is a new token on the script input port, then evaluate
-     *  the script specified on that port. Any previously defined methods
-     *  such as fire() will be replaced if the new script has a replacement,
-     *  and preserved otherwise.
-     *  If the new script has an initialize() method, that method will not be
-     *  invoked until the next time this actor is initialized.
-     *  <li>
-     *  Next, send any outputs that have been queued to be sent by calling send()
-     *  from outside any firing of this JavaScript actor.
-     *  <li>
-     *  Next, read all available inputs, recording their values for subsequent calls to get().
-     *  <li>
-     *  Next, invoke any pending timer tasks whose timing matches the current time.
-     *  <li>
-     *  After updating all the inputs, for each input port that had a new token on any channel
-     *  and for which there is a handler function bound to that port
-     *  via the addInputHandler() method, invoke that function.
-     *  Such a function will be invoked in the following order: First, invoke the functions
-     *  for each PortParameter, in the order in which the PortParameters were created.
-     *  Then invoke the functions for the ordinary input ports.
-     *  <li>
-     *  Next, if the current script has a fire() function, then invoke it.
+     *
+     *  <li> First, if there is a new token on the script input port,
+     *  then evaluate the script specified on that port. Any
+     *  previously defined methods such as fire() will be replaced if
+     *  the new script has a replacement, and preserved otherwise.  If
+     *  the new script has an initialize() method, that method will
+     *  not be invoked until the next time this actor is
+     *  initialized.</li>
+     *
+     *  <li> Next, send any outputs that have been queued to be sent
+     *  by calling send() from outside any firing of this JavaScript
+     *  actor.</li>
+     *
+     *  <li> Next, read all available inputs, recording their values
+     *  for subsequent calls to get().</li>
+     * 
+     *  <li> Next, invoke any pending timer tasks whose timing matches
+     *  the current time.</li>
+     *
+     *  <li> After updating all the inputs, for each input port that
+     *  had a new token on any channel and for which there is a
+     *  handler function bound to that port via the addInputHandler()
+     *  method, invoke that function.  Such a function will be invoked
+     *  in the following order: First, invoke the functions for each
+     *  PortParameter, in the order in which the PortParameters were
+     *  created.  Then invoke the functions for the ordinary input
+     *  ports.</li>
+     *
+     *  <li> Next, if the current script has a fire() function, then
+     *  invoke it.</li>
      *  </ol>
-     *  <p>
+     *
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
@@ -1080,8 +1090,9 @@ public class JavaScript extends TypedAtomicActor {
     protected static final Set<String> _KEYWORDS = new HashSet<String>(
             Arrays.asList(_JAVASCRIPT_KEYWORDS));
 
-    /** If set to true in the constructor of a base class, then put this actor in "restricted"
-     *  mode.  This limits the functionality as described in the class comment.
+    /** If set to true in the constructor of a base class, then put
+     *  this actor in "restricted" mode.  This limits the
+     *  functionality as described in the class comment.
      */
     protected boolean _restricted = false;
 
@@ -1126,13 +1137,14 @@ public class JavaScript extends TypedAtomicActor {
 	}
     }
     
-    /** Invoke the specified function after the specified amount of time.
-     *  Unlike the public method, this method uses the specified id.
-     *  The time will be added to the current time of the director, and fireAt()
-     *  request will be made of the director. If the director cannot fulfill the
-     *  request, this method will throw an exception. Note that if you want
-     *  real-time behavior, then the director's synchronizeToRealTime parameter
-     *  needs to be set to true.
+    /** Invoke the specified function after the specified amount of
+     *  time.  Unlike the public method, this method uses the
+     *  specified id.  The time will be added to the current time of
+     *  the director, and fireAt() request will be made of the
+     *  director. If the director cannot fulfill the request, this
+     *  method will throw an exception. Note that if you want
+     *  real-time behavior, then the director's synchronizeToRealTime
+     *  parameter needs to be set to true.
      *  @param function The function to invoke.
      *  @param milliseconds The number of milliseconds in the future to invoke it.
      *  @param id The id for the callback function.
@@ -1214,12 +1226,15 @@ public class JavaScript extends TypedAtomicActor {
     ////                        Inner Classes                      ////
 
     /** Proxy for a port or parameter.
+     *
      *  This is used to wrap ports and parameters for security
-     *  reasons.  If we expose the port or paramter to the JavaScript environment,
-     *  then the script can access all aspects of the model containing
-     *  this actor. E.g., it can call getContainer() on the object.
-     *  This wrapper provides access to the port or parameter only via a protected
-     *  method, which JavaScript cannot access.
+     *  reasons.  If we expose the port or paramter to the JavaScript
+     *  environment, then the script can access all aspects of the
+     *  model containing this actor. E.g., it can call getContainer()
+     *  on the object.
+     *
+     *  This wrapper provides access to the port or parameter only via
+     *  a protected method, which JavaScript cannot access.
      */
     public class PortOrParameterProxy {
         /** Construct a proxy.
