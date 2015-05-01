@@ -1631,13 +1631,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
             _objectIdToClassHandle.put(objectHandle, classHandle);
            
-            final ComponentEntity classToInstantiate = _idToClasses.get(classHandle);
+            final CompositeActor classToInstantiate = (CompositeActor) _idToClasses.get(classHandle);
             ChangeRequest request = new ChangeRequest(this,
                     "Adding " + objectName,true) {
                         @Override
                         protected void _execute() throws IllegalActionException {
 
-                            CompositeEntity container = (CompositeEntity) classToInstantiate.getContainer();                 
+                            CompositeActor container = (CompositeActor) classToInstantiate.getContainer();                 
                             
                             try {
                                 Instantiable instance ;
@@ -1645,6 +1645,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 
                                 if(actors.size() == 0){
                                     instance= classToInstantiate.instantiate(container, objectName);
+                                    container.notifyConnectivityChange();
                                     _newlyCreated.add(instance);
                                 } else{
                                     //retrieve and remove head
@@ -1653,7 +1654,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         _debug(instance.getName() + " will do object " + objectHandle);
                                     }
                                 }
-                                _director.invalidateSchedule();
                                 
                                 CompositeActor newActor = (CompositeActor) instance;
                                 
@@ -1674,7 +1674,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     );
                                     _fromFederationEvents.put(sub.getIdentity(),new LinkedList<TimedEvent>());
                                 }
-
                             } catch (NameDuplicationException | CloneNotSupportedException ex) {
                                 ex.printStackTrace();
                             }
