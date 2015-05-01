@@ -87,26 +87,22 @@ function httpRequest(url, method, properties, body, timeout) {
 ////////////////////
 // Method for synchronously reading a URL.
 // DEPRECATED: Use the http module (being developed by Marten) instead.
-function readURL(url) {
-    return readURLWithTimeout(url, 3000);
-}
-
-////////////////////
-// Method for synchronously reading a URL.
-// DEPRECATED: Use the http module (being developed by Marten) instead.
-// The timeout is in milliseconds.
-function readURLWithTimeout(url, timeout) {
-
-	if (_debug) console.log("readURL('" + url + "')");
-	var theURL = new (Java.type('java.net.URL'))(url);
-	if (actor.isRestricted && !theURL.getProtocol().toLowerCase().equals("http")) {
+function readURL(url, timeout) {
+    if (!timeout) {
+        timeout = 3000;
+    }
+    if (_debug) {
+        console.log("readURL('" + url + "')");
+    }
+    var theURL = new (Java.type('java.net.URL'))(url);
+    if (actor.isRestricted && !theURL.getProtocol().toLowerCase().equals("http")) {
         throw "Actor is restricted. Only HTTP requests will be honored by readURL().";
     }
-	var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
-	request.setUrl(theURL);
-        request.setTimeout(timeout); // In milliseconds.
-	var response = request.execute();
-	if (!response.isSuccessful()) {
+    var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
+    request.setUrl(theURL);
+    request.setTimeout(timeout); // In milliseconds.
+    var response = request.execute();
+    if (!response.isSuccessful()) {
         throw "Failed to read URL: " + url
                 + "\nResponse code: " + response.getResponseCode()
                 + "\nResponse message: "
