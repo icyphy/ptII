@@ -42,22 +42,26 @@ public interface Site {
     /** Get the figure to which this site is attached. Usually, this
      * will return a valid Figure, but clients must be aware that
      * certain types of site may return null.
+     * @return The figure.
      */
     public Figure getFigure();
 
     /** Get the ID of this site. Within each figure, the IDs of
      * the sites must be unique.
+     * @return The unique identifier.
      */
     public int getID();
 
     /** Get the angle of the normal to this site, in radians
      * between zero and 2pi. The direction is "out" of the site.
      * The result is meaningful only if hasNormal() returns true.
+     * @return The normal.
      */
     public double getNormal();
 
     /** Get the point location of the site, in the enclosing
      * transform context with default normal.
+     * @return The point.
      */
     public Point2D getPoint();
 
@@ -65,11 +69,15 @@ public interface Site {
      * transform context with the default normal.
      * The given context must be an enclosing
      * context of the site.
+     * @param The transformation context.
+     * @return The point.
      */
     public Point2D getPoint(TransformContext tc);
 
     /** Get the point location of the site, in the enclosing
      * transform context with the given normal.
+     * @param normal The normal
+     * @return The point.
      */
     public Point2D getPoint(double normal);
 
@@ -77,20 +85,26 @@ public interface Site {
      * transform context with the given normal.
      * The given context must be an enclosing
      * context of the site.
+     * @param tx The Transform context
+     * @param normal The normal
+     * @return The point.
      */
     public Point2D getPoint(TransformContext tc, double normal);
 
     /** Get the enclosing transform context of this site.
+     *  @return The transform context   
      */
     public TransformContext getTransformContext();
 
     /** Get the x-coordinate of the site, in the enclosing
      * transform context.
+     * @return The x-coordinate of the site.
      */
     public double getX();
 
     /** Get the y-coordinate of the site, in the enclosing
      * transform context.
+     * @return The y-coordinate of the site.
      */
     public double getY();
 
@@ -99,6 +113,7 @@ public interface Site {
      * and isNormal(). Generally, sites on the boundary of
      * a shape will return true to this method, and sites
      * in the center of an object will return false.
+     * @return true if the site has a normal.
      */
     public boolean hasNormal();
 
@@ -106,6 +121,8 @@ public interface Site {
      * The direction is that given by one of the static constants
      * NORTH, SOUTH, EAST, or WEST, defined in
      * <b>javax.swing.SwingConstants</b>
+     * @param The direction
+     * @return true if the site is normal in the given direction.
      */
     public boolean isNormal(int direction);
 
@@ -115,6 +132,7 @@ public interface Site {
      * If the site can change its normal, it can also change
      * its position. For example, a site on the perimeter of a
      * figure may move to a different position.
+     * @param normal The normal.
      */
     public void setNormal(double normal);
 
@@ -125,6 +143,8 @@ public interface Site {
      * be moved the given distance, then either do nothing, or move
      * it part of the distance. Clients are expected to check the
      * new location of the site.
+     * @param x The x distance to be translated.
+     * @param y The y distance to be translated.
      */
     public void translate(double x, double y);
 }

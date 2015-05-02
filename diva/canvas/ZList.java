@@ -57,19 +57,21 @@ public interface ZList extends FigureSet {
      * this method does <i>not</i> check if the figure is already
      * contained -- clients are therefore responsible for being
      * bug-free.
+     *  @param f The figure to be inserted.
      */
     public void add(Figure f);
 
     /** Insert a figure at the given position. To insert the figure
      *  just in front of some other figure, use getIndex() to get the
-     *  other figure's index, and pass <i>index</i> as the
-     *  first argument. To insert the figure just behind some other
-     *  figure, pass <i>index+1</i> as the first argument. To
-     *  insert so the figure displays over the top of other figures,
-     *  insert at zero.
+     *  other figure's index, and pass <i>index</i> as the first
+     *  argument. To insert the figure just behind some other figure,
+     *  pass <i>index+1</i> as the first argument. To insert so the
+     *  figure displays over the top of other figures, insert at zero.
      *
      *  <p>Clients should assume that an implementation of this method
-     *  does <i>not</i> check if the figure is already contained.
+     *  does <i>not</i> check if the figure is already contained.</p>
+     *  @param index The index at which the figure shall be inserted.
+     *  @param f The figure to be inserted.
      */
     public void add(int index, Figure f);
 
@@ -83,22 +85,30 @@ public interface ZList extends FigureSet {
      * Clients should note that, in general, a much better way
      * of making this same test is to check if the parent of the figure
      * is the same object as this list.
+     * @param f The figure
+     * @return true if the figure is contained by this list.
      */
     @Override
     public boolean contains(Figure f);
 
     /** Return the figure at the given index.
      *
+     * @param index The given index
+     * @return the Figure at the given index.
      * @exception IndexOutOfBoundsException The index is out of range.
      */
     public Figure get(int index);
 
     /** Get the bounding box of all the figures in this list.
+     *  @param the bounding box.
      */
     public Rectangle2D getBounds();
 
     /** Get the figures that are entirely contained by the given
      * region.
+     * @param region The region.
+     * @return The figures with bounding boxes that are entirely
+     * contained by given region.
      */
     public GeometricSet getContainedFigures(Rectangle2D region);
 
@@ -106,29 +116,37 @@ public interface ZList extends FigureSet {
      * region. Note that the returned set may contained figures
      * that do not actually intersect the region -- this method only
      * looks at the bounding boxes.
+     * @param region The region.
+     * @return The figures with bounding boxes that intersect the
+     * given region.
      */
     public GeometricSet getIntersectedFigures(Rectangle2D region);
 
     /** Return the index of the given figure in the Z-list. Figures
      *  with a higher index are drawn behind figures with a lower index.
      *
+     * @param f The figure.
      * @return The index of the given figure, or -1 if the figure
      * is not in this list.
      */
     public int indexOf(Figure f);
 
     /** Remove the given figure from this list.
+     * @param f The figure.
      */
     public void remove(Figure f);
 
     /** Remove the figure at the given index from this list.
      *
+     * @param index The index of the figure.
      * @exception IndexOutOfBoundsException The index is out of range.
      */
     public void remove(int index);
 
     /** Replace the figure at the given index with the passed-in
      * figure.
+     * @param index The index of the figure.
+     * @param f The figure
      */
     public void set(int index, Figure f);
 
@@ -142,13 +160,16 @@ public interface ZList extends FigureSet {
      *
      * <p> Clients should assume that an implementation of this method
      * does <i>not</i> check if the figure is already contained --
-     * clients are therefore responsible for being bug-free.
+     * clients are therefore responsible for being bug-free.</p>
      *
+     * @param index The index of the figure.
+     * @param f The figure
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex(int index, Figure f);
 
     /** Return the number of elements in this list.
+     *  @return The figure count.
      */
     public int getFigureCount();
 }
