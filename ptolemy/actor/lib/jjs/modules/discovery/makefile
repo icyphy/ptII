@@ -48,7 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	DeviceDiscoveryHelper.java
+	DiscoveryHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
@@ -65,8 +65,8 @@ MISC_FILES =	#test
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
-	'DeviceDiscoveryHelper$$PingLinuxRunnable.class' \
-	'DeviceDiscoveryHelper$$PingWindowsRunnable.class' 
+	'DiscoveryHelper$$PingLinuxRunnable.class' \
+	'DiscoveryHelper$$PingWindowsRunnable.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

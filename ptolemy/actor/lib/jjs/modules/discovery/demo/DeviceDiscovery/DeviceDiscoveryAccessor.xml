@@ -36,11 +36,15 @@
 		// track on/off event messages
 		// However, an initial list would need to be built somehow.  And, the 
 		// device needs to support that protocol.
-		ds.discover(get(hostIP));
+		ds.discoverDevices(get(hostIP));
 	}
 
 	ds.on('discovered', function(data) {
-		send(data, devices);
+		if (data == "") {
+           send('Error:  No devices found.  At minimum, the host machine should be found.', error);
+        } else {
+	   send(data, devices);
+        }
 	});
 	
 	// ]]>

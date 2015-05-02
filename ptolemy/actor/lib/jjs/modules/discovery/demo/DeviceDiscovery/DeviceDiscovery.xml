@@ -21,17 +21,17 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses an accessor to discover devices on the local area network.&#10;&#10;The host code, in DeviceDiscoveryHelper, is written in Java and interfaces&#10;to the Javascript accessor using Nashorn libraries.  &#10;&#10;The host code determines the host platform, then executes the ping and arp &#10;commands to find devices, and MAC addresses and names where available.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses an accessor to discover devices on the local area network.&#10;&#10;The host code, in DiscoveryHelper, is written in Java and interfaces&#10;to the Javascript accessor using Nashorn libraries.  &#10;&#10;The host code determines the host platform, then executes the ping and arp &#10;commands to find devices, and MAC addresses and names where available.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 25.0]">
         </property>
     </property>
     <entity name="DeviceDiscoveryAccessor" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var discovery = require(&quot;discovery&quot;);&#10;&#10;var ds = new discovery.DiscoveryService();&#10;&#10;function fire() {&#10;        // Find all devices on the same subnet as host IP address&#10;	// (Could automate host IP address discovery, too)&#10;	// This will ping all devices every time fire is called&#10;	// Some other device discovery protocols (ssdp, bonjour / zero-conf)&#10;	// track on/off event messages&#10;	// However, an initial list would need to be built somehow.  And, the &#10;	// device needs to support that protocol.&#10;	ds.discover(get(hostIP));&#10;}&#10;&#10;ds.on('discovered', function(data) {&#10;	send(data, devices);&#10;});&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var discovery = require(&quot;discovery&quot;);&#10;&#10;var ds = new discovery.DiscoveryService();&#10;&#10;function fire() {&#10;        // Find all devices on the same subnet as host IP address&#10;	// (Could automate host IP address discovery, too)&#10;	// This will ping all devices every time fire is called&#10;	// Some other device discovery protocols (ssdp, bonjour / zero-conf)&#10;	// track on/off event messages&#10;	// However, an initial list would need to be built somehow.  And, the &#10;	// device needs to support that protocol.&#10;	ds.discoverDevices(get(hostIP));&#10;}&#10;&#10;ds.on('discovered', function(data) {&#10;	if (data == &quot;&quot;) {&#10;           send('Error:  No devices found.  At minimum, the host machine should be found.', error);&#10;        } else {&#10;	   send(data, devices);&#10;        }&#10;});&#10;">
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 265.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -62,11 +62,19 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 476, 343, 230}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 476, 359, 246}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 476, 359, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 325.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -77,9 +85,13 @@
         <vertex name="vertex1" value="{120.0, 265.0}">
         </vertex>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DeviceDiscoveryAccessor.error" relation="relation2"/>
     <link port="DeviceDiscoveryAccessor.devices" relation="relation"/>
     <link port="DeviceDiscoveryAccessor.hostIP" relation="relation3"/>
     <link port="Display.input" relation="relation"/>
     <link port="IPAddress.output" relation="relation3"/>
     <link port="Display2.input" relation="relation3"/>
+    <link port="Display3.input" relation="relation2"/>
 </entity>

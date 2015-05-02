@@ -17,8 +17,8 @@
 var EventEmitter = require("events").EventEmitter;
 
 // Use a helper classs to execute the ping and arp commands on the host
-var DeviceDiscoveryHelper = Java.type
-    ('ptolemy.actor.lib.jjs.modules.discovery.DeviceDiscoveryHelper');
+var DiscoveryHelper = Java.type
+    ('ptolemy.actor.lib.jjs.modules.discovery.DiscoveryHelper');
 
 exports.DiscoveryService = DiscoveryService;
 
@@ -30,15 +30,15 @@ function DiscoveryService() {
 	EventEmitter.call(this);
 	var self = this;
 	
-	this.discover = function(IPaddress) {
+	this.discoverDevices = function(IPaddress) {
 		
-		var helper = new DeviceDiscoveryHelper();
+		var helper = new DiscoveryHelper();
 		
-		// discover() returns a string representation of a JSON array of 
+		// discoverDevices() returns a string representation of a JSON array of 
 		// devices.  Covert this to a format the Ptolemy type system likes.
-		var devices = helper.discover(IPaddress);
+		var devices = helper.discoverDevices(IPaddress);
 		var ipArray = [];
-		ipArray.push(JSON.parse(devices));
+		ipArray.push(JSON.parse(devices)); 
 		
 		self.emit('discovered', ipArray);
 	};

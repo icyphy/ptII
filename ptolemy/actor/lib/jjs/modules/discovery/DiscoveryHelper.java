@@ -39,7 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 ///////////////////////////////////////////////////////////////////
-//// DeviceDiscoveryHelper
+//// DiscoveryHelper
 
 /**
    A helper class for the device discovery Javascript host code.  
@@ -52,16 +52,16 @@ import org.json.JSONObject;
    @Pt.ProposedRating Red (ltrnc)
    @Pt.AcceptedRating Red (ltrnc)
  */
-public class DeviceDiscoveryHelper {
+public class DiscoveryHelper {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
-    /** Construct a new DeviceDiscoveryHelper.
+    /** Construct a new DiscoveryHelper.
      * 
-     * @return A new DeviceDiscoveryHelper.
+     * @return A new DiscoveryHelper.
      */
-    public DeviceDiscoveryHelper() {
+    public DiscoveryHelper() {
         ipMap = new HashMap<String, JSONObject>();
     }
     
@@ -74,7 +74,7 @@ public class DeviceDiscoveryHelper {
      *  IP address 192.168.5.7, scan 192.168.5.0 to 192.168.5.255.
      *  @return A String containing a JSON representation of devices found.
      */
-    public String discover(String IPAddress) {
+    public String discoverDevices(String IPAddress) {
         // FIXME: We probably want to take a broadcast address as an
         // input and ping that to get all the hosts.  Pinging 1
         // through 255 works for class C subnets.
@@ -82,7 +82,7 @@ public class DeviceDiscoveryHelper {
         // but may respond to a direct ping
         // https://reggle.wordpress.com/2011/09/14/broadcast-pings-do-they-work/
         if (_debugging) {
-            System.out.println("DeviceDiscoveryHelper.discover(" + IPAddress + ")");
+            System.out.println("DiscoveryHelper.discover(" + IPAddress + ")");
         }
         ipMap.clear();        
         String baseIP, testIP;
@@ -117,7 +117,7 @@ public class DeviceDiscoveryHelper {
                 
             } else {
                 if (_debugging) {
-                    System.out.println("DeviceDiscovery: Run pings concurrently, in separate threads. baseIP: " + baseIP);
+                    System.out.println("Discovery: Run pings concurrently, in separate threads. baseIP: " + baseIP);
                 }
                 // Run pings concurrently, in separate threads
                 ArrayList<Thread> runnables = new ArrayList();
@@ -140,7 +140,7 @@ public class DeviceDiscoveryHelper {
                 arpLinux();
             }
         } else {
-            System.err.println("DeviceDiscoveryHelper.discover("
+            System.err.println("DiscoveryHelper.discover("
                     + IPAddress + "): \"" + IPAddress + "\" does not have a period?");
 
             // TODO:  Return error message?  What should accessors do in case
@@ -159,7 +159,8 @@ public class DeviceDiscoveryHelper {
             JSON.append(" ]");
             return JSON.toString();
         } else {
-            System.err.println("DeviceDiscoveryHelper.discover(" + IPAddress + "): no devices found? Returning [].");
+            System.err.println("DiscoveryHelper.discover(" + IPAddress + "): "
+                    + "no devices found? Returning [].");
             return "[]";
         }
     }
@@ -187,7 +188,7 @@ public class DeviceDiscoveryHelper {
                
                while ((line = stdOut.readLine()) != null) {
                    if (_debugging) {
-                       System.out.println("DeviceDiscovery: arp returns \"" + line + "\"");
+                       System.out.println("Discovery: arp returns \"" + line + "\"");
                    }
                    StringTokenizer tokenizer = new StringTokenizer(line, " ");
                    String token, name, ip;
@@ -209,7 +210,7 @@ public class DeviceDiscoveryHelper {
                        ip = token.substring(1, token.length() - 1);
                        
                        if (_debugging) {
-                           System.out.println("DeviceDiscovery: name: " + name + ", token: " + token + " ,ip: " + ip);
+                           System.out.println("Discovery: name: " + name + ", token: " + token + " ,ip: " + ip);
                        }
                        JSONObject object;
                        for (String key : ipMap.keySet()) {
