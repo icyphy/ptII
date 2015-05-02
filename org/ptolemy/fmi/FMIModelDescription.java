@@ -570,7 +570,8 @@ public class FMIModelDescription {
      */
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
-        Long valueReference = modelVariables.get(Integer.parseInt(attributes.getNamedItem("index")
+        Long valueReference = modelVariables.get(Integer
+        		.parseInt(attributes.getNamedItem("index")
                 .getNodeValue()) - 1).valueReference;
 
         Node dependencyNode = attributes.getNamedItem("dependencies");
@@ -584,7 +585,10 @@ public class FMIModelDescription {
         		// The specification (FMI 2.0) says on page 61
         		// that if the dependencies attribute of an FMU
         		// is present but is empty, then unknown depends  
-        		// on none of the knowns. 
+        		// on none of the knowns. The empty string will cause
+        		// the directDependency to be cleared which in turn
+        		// will allow all variables which have this dependency
+        		// to be adequately define as non-dependent on any inputs.
         		dependencies = new String[0];
         		}        
             for (int i = 0; i < modelVariables.size(); i++) {
@@ -592,25 +596,23 @@ public class FMIModelDescription {
                     modelVariables.get(i).directDependency.clear();
                     for (int j = 0; j < dependencies.length; j++) {
 
-                        for (int k = 0; k < modelVariables.size(); k++) {
-                            try {
-                                if (modelVariables.get(k).valueReference == modelVariables
-                                		.get(Integer.parseInt(dependencies[j]) - 1).valueReference
-                                        && modelVariables.get(k).causality
-                                                .equals(Causality.input)) {
-                                    modelVariables.get(i).directDependency
-                                            .add(modelVariables.get(k).name);
-                                    break;
-                                }
-                            } catch (NumberFormatException ex) {
-                                NumberFormatException nfx = new NumberFormatException(
-                                        "Failed to parse \"" + dependencies[j]
-                                                + "\", which is the " + j
-                                                + " (0-based) dependency.");
-                                nfx.initCause(ex);
-                                throw nfx;
-                            }
-                        }
+						for (int k = 0; k < modelVariables.size(); k++) {
+							try {
+								if (modelVariables.get(k).valueReference == modelVariables
+										.get(Integer.parseInt(dependencies[j]) - 1).valueReference) {
+									modelVariables.get(i).directDependency
+											.add(modelVariables.get(k).name);
+									break;
+								}
+							} catch (NumberFormatException ex) {
+								NumberFormatException nfx = new NumberFormatException(
+										"Failed to parse \"" + dependencies[j]
+												+ "\", which is the " + j
+												+ " (0-based) dependency.");
+								nfx.initCause(ex);
+								throw nfx;
+							}
+						}
                     }
                 }
             }
