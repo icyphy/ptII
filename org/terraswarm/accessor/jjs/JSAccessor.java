@@ -1,4 +1,4 @@
-/* An implementation of a level one accessor.
+/* An component accessor that consists of an interface and a script.
 
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
@@ -40,9 +40,13 @@ import ptolemy.kernel.util.StringAttribute;
 //// JSAccessor
 
 /**
- An implementation of a level-one accessor.
+ An component accessor that consists of an interface and a script.
 
- FIXME: What is a level-one accessor?
+ <p>The "<a href="#VisionOfSwarmLets">Vision of Swarmlets</a>" paper
+ defines three types of accessors: Interface, Component and Composite.
+ The paper states: "A component accessor has an interface and a
+ script...  The script defines one or more functions that are invoked
+ by the swarmlet host."</p>
 
  <p>This is a specialized JavaScript actor that hides the script
  from casual users by putting it in "expert" mode.
@@ -60,9 +64,17 @@ import ptolemy.kernel.util.StringAttribute;
  and thus requires Nashorn, which is present in Java-1.8 and
  later.</p>
 
- @author Edward A. Lee
+ <h2>References</h2>
+
+ <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee,
+ Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
+ <a href="http://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
+ <i>IEEE Internet Computing, Special Issue on Building Internet
+ of Things Software</i>, 19(2):20-29, March 2015.</p>
+
+ @author Edward A. Lee, Contributor: Christopher Brooks
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (bilung)
  */
@@ -108,7 +120,8 @@ public class JSAccessor extends JavaScript {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the base class so that the name of any port added is shown.
+    /** Override the base class so that the name of any port added is
+     *  shown.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
