@@ -33,7 +33,6 @@ package org.hlacerti.lib;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypeEvent;
@@ -258,8 +257,11 @@ public class HlaSubscriber extends TypedAtomicActor {
         //take care of private members
         newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();        
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
-        //newObject.output.setTypeEquals(output.getType());
-        //newObject.output.setWidthEquals(output,false);
+        
+        newObject.attributeHandle=attributeHandle;
+        newObject.classHandle=classHandle;
+        newObject.objectHandle=Integer.MIN_VALUE;
+        
         return newObject;
     }
 
@@ -272,6 +274,8 @@ public class HlaSubscriber extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
+        //find the HlaManager by looking into container
+        //and recursively in container's container if needed
         CompositeActor ca = (CompositeActor) this.getContainer();
         List<HlaManager> hlaManagers = null;
         while(ca != null) {
