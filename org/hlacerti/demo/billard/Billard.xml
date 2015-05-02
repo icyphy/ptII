@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Autorun" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Billard" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
@@ -20,7 +20,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model will execute the billard demonstration for the Ptolemy/HLA framework.&#10;Just run it and should execute the simulation. Pooltable is the model responsible for&#10;synchronizing the federation at the begining.&#10;&#10;If Pooltable is run it is own thread, the whole is not working (dont know why).&#10;Sleep is here to ensure Billard has enough time set up before Pooltable declares &#10;that the federation is sync.&#10;&#10;The order the actors are fired is the creation order. It can be seen in the Tree tab on the left.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model will execute the billard demonstration for the Ptolemy/HLA framework.&#10;Just run it and should execute the simulation. Pooltable is the model responsible for&#10;synchronizing the federation at the begining.&#10;ThIs model will run PoolTable2.xml as displayer. it has 3 instances plugged into an XYArrayPlotter.&#10;If there were more than 3 instances of &quot;bille&quot;, the model would create new instances, but they would not be plugged into&#10;the display (yet).&#10;&#10;If Pooltable is run it is own thread, the whole is not working (dont know why).&#10;Sleep is here to ensure Billard has enough time set up before Pooltable declares &#10;that the federation is sync.&#10;&#10;The order the actors are fired is the creation order. It can be seen in the Tree tab on the left.&#10;Since Pooltable is reponsible for the federation's synchronization, it has to be the last federate started. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 100.0]">
         </property>
@@ -31,8 +31,6 @@
             </property>
             <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-        </property>
-        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute">
         </property>
         <property name="openCompositesBeforeExport" class="ptolemy.data.expr.Parameter" value="false">
         </property>
