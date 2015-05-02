@@ -83,6 +83,8 @@
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/browser/browser.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/discovery/browser.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar" />
@@ -1793,6 +1795,27 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/actor/lib/jjs/modules/discovery/discovery.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/discovery/discovery.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/discovery/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/discovery/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/discovery/*.json"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/discovery/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    
     <!-- ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar"
