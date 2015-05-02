@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../../../..
 
-DIRS = DeviceDiscovery	MoC	WebSocketClient
+DIRS = MoC	WebSocketClient
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/jjs/demo
@@ -53,7 +53,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	DeviceDiscovery/DeviceDiscovery.jar \
 	MoC/MoC.jar \
 	WebSocketClient/WebSocketClient.jar
 

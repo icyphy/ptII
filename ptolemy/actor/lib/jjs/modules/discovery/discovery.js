@@ -1,4 +1,4 @@
-/**  A device discovery library for the Javascript Rhino engine.
+/**  A device discovery library for the Javascript Nashorn engine.
  *  
  *  This library uses the "ping" and "arp" commands to discover devices 
  *  connected to the local network.  Command syntax is adjusted for OS 
@@ -18,10 +18,7 @@ var EventEmitter = require("events").EventEmitter;
 
 // Use a helper classs to execute the ping and arp commands on the host
 var DeviceDiscoveryHelper = Java.type
-    ('org.terraswarm.accessor.jjs.demo.DeviceDiscovery.DeviceDiscoveryHelper');
-
-// Create a map (just an object) to hold IP lookup results
-var ipMap = {};
+    ('ptolemy.actor.lib.jjs.modules.discovery.DeviceDiscoveryHelper');
 
 exports.DiscoveryService = DiscoveryService;
 

@@ -1,0 +1,11 @@
+{
+  "name": "discovery",
+  "version": "0.1.0",
+  "main": "discovery.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Elizabeth Latronico"
+    , "email" : "beth@berkeley.edu"}
+  ],
+  "description": "A module for discovering devices on the local area network."
+}

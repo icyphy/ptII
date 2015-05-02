@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTBROWSER_DIR is set to browser if the Vertx jars are found by configure.
 # PTVERTXEVENTBUS_DIR is set to vertxEventBus if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		$(PTBROWSER_DIR) $(PTPAHO_MQTT_DIRS) $(PTVERTXEVENTBUS_DIR) $(PTWEBSOCKET_DIR)
+DIRS = 		$(PTBROWSER_DIR) discovery $(PTPAHO_MQTT_DIRS) $(PTVERTXEVENTBUS_DIR) $(PTWEBSOCKET_DIR) 
 
 # Root of the Java directory
 ROOT =		../../../../..

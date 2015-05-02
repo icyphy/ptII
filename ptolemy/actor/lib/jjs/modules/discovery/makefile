@@ -1,9 +1,10 @@
-# Makefile for TerraSwarm Device Discovery demo.
+# Makefile for Nashorn-based Ptolemy II JavaScript modules
 #
-# @Version: $Id: makefile 69601 2014-07-30 13:51:01Z cxh $
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Version: $Id$
+#
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,55 +28,52 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = 		../../../../../..
+ME =		ptolemy/actor/lib/jjs/modules/discovery
 
-DIRS = 
+DIRS = 		demo
 
-# $(ME) is used in ptdir.mk
-ME = 		org/terraswarm/accessor/jjs/demo/DeviceDiscovery
+# Root of the Java directory
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
-
-# True source directory
-VPATH =	$(ROOT)/$(ME)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = DeviceDiscovery
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	discovery
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
+# Keep this list alphabetized.
 JSRCS = \
 	DeviceDiscoveryHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
-	DeviceDiscovery.xml \
-	DeviceDiscoveryAccessor.xml \
+	package.json \
 	discovery.js
 
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS) \
+	demo \
+	$(PTCLASSJAR) \
 	'DeviceDiscoveryHelper$$PingLinuxRunnable.class' \
-	'DeviceDiscoveryHelper$$PingWindowsRunnable.class'
+	'DeviceDiscoveryHelper$$PingWindowsRunnable.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+
 all: jclass
 install: jclass jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

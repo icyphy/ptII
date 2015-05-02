@@ -26,7 +26,7 @@
 
  */
 
-package org.terraswarm.accessor.jjs.demo.DeviceDiscovery;
+package ptolemy.actor.lib.jjs.modules.discovery;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,6 +78,9 @@ public class DeviceDiscoveryHelper {
         // FIXME: We probably want to take a broadcast address as an
         // input and ping that to get all the hosts.  Pinging 1
         // through 255 works for class C subnets.
+        // Unfortunately, some devices do not respond to broadcast pings, 
+        // but may respond to a direct ping
+        // https://reggle.wordpress.com/2011/09/14/broadcast-pings-do-they-work/
         if (_debugging) {
             System.out.println("DeviceDiscoveryHelper.discover(" + IPAddress + ")");
         }
