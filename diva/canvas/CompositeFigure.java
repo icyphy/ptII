@@ -105,6 +105,8 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Insert a figure at the given position.
+     *  @param index The index of the figure
+     *  @param f The figure to be inserted.
      */
     public void add(int index, Figure f) {
         _children.add(index, f);
@@ -151,8 +153,9 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Return the figure at the given index.
-     *
-     * @exception IndexOutOfBoundsException The index is out of range.
+     *  @param index the index of the figure.
+     *  @return The figure.
+     *  @exception IndexOutOfBoundsException The index is out of range.
      */
     public Figure get(int index) {
         return _children.get(index);
@@ -163,6 +166,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  getShape(), and most of the methods that return iterators
      *  over figures (such as figures()) do not include the background
      *  figure.
+     *  @return The background figure
      *  @see #figures()
      *  @see #setBackgroundFigure(Figure)
      */
@@ -246,6 +250,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Return the transform context of this figure.
+     *  @return The tranformation context.   
      */
     @Override
     public TransformContext getTransformContext() {
@@ -254,6 +259,8 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return the index of the given figure in the Z-list, or -1
      * if the figure is not in this list.
+     * @param f The figure
+     * @return The index of the figure
      */
     public int indexOf(Figure f) {
         return _children.indexOf(f);

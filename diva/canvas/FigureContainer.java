@@ -43,6 +43,7 @@ import diva.util.Filter;
 public interface FigureContainer extends FigureSet, VisibleComponent {
     /** Add a figure to this container. The figure should be added so
      * that it always displays above existing figures.
+     * @param f The figure to be added.
      */
     public void add(Figure f);
 
@@ -52,48 +53,58 @@ public interface FigureContainer extends FigureSet, VisibleComponent {
      * Clients should note that, in general, a much better way
      * of making this same test is to check if the parent of the figure
      * is the same object as this container.
+     * @param f The figure to be searched for
+     * @return true if the figure is contained.
      */
     @Override
     public boolean contains(Figure f);
 
-    /** Decorate a child figure, replacing the
-     * child figure with the decorator.
+    /** Decorate a child figure, replacing the child figure with the
+     * decorator.
+     * @param f The child figure.
+     * @param d The decorator.
      */
     public void decorate(Figure f, FigureDecorator d);
 
     /** Return the number of figures in this container.
+     *  @return The number of figures.
      */
     public int getFigureCount();
 
-    /** Given a rectangle, return the top-most descendent figure
-     * that hits it. Otherwise, return null. Implementors
-     * should not call their own hit() method, but only
-     * those of their children.
+    /** Given a rectangle, return the top-most descendent figure that
+     * hits it. Otherwise, return null. Implementors should not call
+     * their own hit() method, but only those of their children.
      *
-     * <P>Note that a region is given instead of a point so
-     * that "pick halo" can be implemented. The region should
-     * not have zero size, or no figure will be hit.
+     * <p>Note that a region is given instead of a point so that "pick
+     * halo" can be implemented. The region should not have zero size,
+     * or no figure will be hit.</p>
+     * @param region The rectangle
+     * @return The figure
      */
     public Figure pick(Rectangle2D region);
 
-    /** Given a rectangle, return the top-most descendent figure
-     * that hits it, and is accepted by the given filter.
-     * Otherwise, return null. Implementors
-     * should not call their own hit() method, but only
-     * those of their children.
+    /** Given a rectangle, return the top-most descendent figure that
+     * hits it, and is accepted by the given filter.  Otherwise,
+     * return null. Implementors should not call their own hit()
+     * method, but only those of their children.
      *
-     * <P>Note that a region is given instead of a point so
-     * that "pick halo" can be implemented. The region should
-     * not have zero size, or no figure will be hit.
+     * <p>Note that a region is given instead of a point so that "pick
+     * halo" can be implemented. The region should not have zero size,
+     * or no figure will be hit.</p>
+     * @param region The rectangle
+     * @param f The filter
+     * @return the Figure or null.
      */
     public Figure pick(Rectangle2D region, Filter f);
 
     /** Remove the given figure from this container.
+     *  @param f The figure to be removed
      */
     public void remove(Figure f);
 
     /** Remove a figure from the given decorator and add
      * it back into this container.
+     * @param d The decorator
      */
     public void undecorate(FigureDecorator d);
 }

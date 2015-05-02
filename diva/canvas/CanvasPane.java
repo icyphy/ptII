@@ -327,7 +327,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * not null and the parent is not null, throw an exception.
      * This method is not intended for general use, only by JCanvas
      * and subclasses.
-     * @param canvase The containing canvas.
+     * @param canvas The containing canvas.
      */
     public final void setCanvas(JCanvas canvas) {
         if (canvas != null && _parent != null) {

@@ -45,6 +45,8 @@ public interface FigureSet {
      * Clients should note that, in general, a much better way
      * of making this same test is to check if the parent of the figure
      * is the same object as this set.
+     * @param f The figure
+     * @return True if the figure is contained by the set.
      */
     boolean contains(Figure f);
 
@@ -59,12 +61,14 @@ public interface FigureSet {
     /** Return an iteration of the figures in this set, from
      * back to front. This is the order in which
      * figures should normally be painted.
+     * @return The iterator
      */
     public Iterator figuresFromBack();
 
     /** Return an iteration of the figures in this set, from back to
      * front. This is the order in which events should normally be
      * intercepted.
+     * @return The iterator
      */
     public Iterator figuresFromFront();
 }
