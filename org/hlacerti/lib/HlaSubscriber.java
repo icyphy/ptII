@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypeEvent;
+import ptolemy.actor.TypeListener;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
@@ -50,11 +52,14 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -84,7 +89,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaSubscriber extends TypedAtomicActor {
-
+    
     /** Construct a HlaSubscriber actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -98,8 +103,30 @@ public class HlaSubscriber extends TypedAtomicActor {
         super(container, name);
 
         // The single output port of the actor.
-        output = new TypedIOPort(this, "output", false, true);
-
+        output = new TypedIOPort(this, "output", false, true);        
+        typeSelector = new StringParameter(this, "type of the parameter");        
+        
+        //types available for tokens
+        typeSelector.addChoice("int");
+        typeSelector.addChoice("double");
+        typeSelector.addChoice("string");
+        typeSelector.addChoice("boolean");
+        
+        //If the user were to change the output port's type directly,
+        //we want to change on the type selector
+        //Also usefull for setting a value to typeSelector after reading the MomL file
+        output.addTypeListener(new TypeListener() {
+            @Override
+            public void typeChanged(TypeEvent event) {
+                typeSelector.setExpression(event.getNewType().toString());
+            }
+        });
+        
+        //set handle to impossible values
+        attributeHandle=Integer.MIN_VALUE;
+        classHandle=Integer.MIN_VALUE;
+        objectHandle=Integer.MIN_VALUE;
+        
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
@@ -107,7 +134,8 @@ public class HlaSubscriber extends TypedAtomicActor {
         attributeChanged(useCertiMessageBuffer);
                 
         opaqueIdentifier = new Parameter(this, "opaqueIdentifier");
-        opaqueIdentifier.setDisplayName("Opaque identifier of the federate");
+        opaqueIdentifier.setVisibility(Settable.NOT_EDITABLE);
+        opaqueIdentifier.setDisplayName("Object name provided by the RTI");
         opaqueIdentifier.setTypeEquals(BaseType.STRING);
         opaqueIdentifier.setExpression("\"opaqueIdentifier\"");
         
@@ -145,11 +173,24 @@ public class HlaSubscriber extends TypedAtomicActor {
      */ 
     public Parameter opaqueIdentifier;
     
+    /**
+     * Handle provided by the RTI for the attribute the object is publishing
+     */
     public int attributeHandle;
     
+    /*
+    * Handle provided by the RTI for the class ob the object 
+    * owning the attribute we are receiving
+    */
     public int classHandle;
     
+    /**
+     * Handle provided by the RTI for the object owning the attribute we are 
+     * publishing 
+     */
     public int objectHandle;
+    
+    StringParameter typeSelector;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -190,6 +231,18 @@ public class HlaSubscriber extends TypedAtomicActor {
                 }
                 
             } catch (IllegalActionException illegalActionException) {}
+        }else if(attribute==typeSelector){
+            String newPotentialTypeName = typeSelector.stringValue();
+            if(newPotentialTypeName == null) {
+                return;
+            }
+            
+            Type newPotentialType = BaseType.forName(newPotentialTypeName);
+            if(newPotentialType != null && ! newPotentialType.equals(output.getType())){
+                output.setTypeEquals(newPotentialType);
+            }
+            
+            
         }
         super.attributeChanged(attribute);
     }
@@ -261,13 +314,9 @@ public class HlaSubscriber extends TypedAtomicActor {
                     OriginatedEvent oe = (OriginatedEvent) te;
                     origin = oe.objectID;
                 }
-                
-                //OriginatedEvent can be null if the HLAsuscriber is not used
-                //
-                //Integer potentialIdentifier = _mapping.get(getOpaqueIdentifier());
+
                 //either it is NOT OriginatedEvent and we let it go
-                //either it is and it has to match the (potential) origin 
-                //and check potentialIdentifier before using it (short circuit evaluation) 
+                //either it is and it has to match the origin 
                 if(origin == -1 || origin == objectHandle){
                     this.outputPortList().get(0).send(0, content);
                     
@@ -366,10 +415,10 @@ public class HlaSubscriber extends TypedAtomicActor {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         
-        //we should do a clear but it is written as OPTIONNAL.
-        //safe way to deal with it is to create a whole new object.
-        //who said java is RAM consuming ?
-        //_mapping = new ConcurrentHashMap<String,Integer>();
+        //set handle to impossible values
+        attributeHandle=Integer.MIN_VALUE;
+        classHandle=Integer.MIN_VALUE;
+        objectHandle=Integer.MIN_VALUE;
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -429,9 +478,5 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
-        
-    /**
-     * Wsed to remeber the mapping opaqueIdentifier <-> HLA Object id
-     * Filled up by register when HLAManager discovers an object.
-     */
+
 }
