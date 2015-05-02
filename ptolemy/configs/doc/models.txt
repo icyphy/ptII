@@ -46,7 +46,6 @@ $CLASSPATH/org/ptolemy/ptulip/demo/robot/robot.xml
 $CLASSPATH/org/ptolemy/qss/demo/RLC/RLC.xml
 $CLASSPATH/org/ptolemy/ssm/demo/SingleRobotTargetLocalization/SingleRobotTargetLocalization.xml
 $CLASSPATH/org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml
-$CLASSPATH/org/terraswarm/accessor/jjs/demo/DeviceDiscovery/DeviceDiscovery.xml
 $CLASSPATH/org/terraswarm/accessor/jjs/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/js/demo/c4po/c4po.xml
 $CLASSPATH/org/terraswarm/accessor/js/demo/StockTick/StockTick.xml
@@ -110,6 +109,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/DeviceDiscovery.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml
