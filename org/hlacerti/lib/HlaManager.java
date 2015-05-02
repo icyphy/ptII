@@ -1660,7 +1660,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
                                 for(int  i = 0 ; i < subscribers.size() ; ++i){
                                     HlaSubscriber sub = subscribers.get(i);
-                                    sub.opaqueIdentifier.setExpression("\""+objectName+"\""); ;
+                                    sub.objectName.setExpression("\""+objectName+"\""); ;
                                     sub.objectHandle = objectHandle;
                                     _hlaAttributesSubscribedTo.put(
                                             sub.getIdentity(),
