@@ -133,18 +133,18 @@ public class HlaSubscriber extends TypedAtomicActor {
         useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
         attributeChanged(useCertiMessageBuffer);
                 
-        opaqueIdentifier = new Parameter(this, "opaqueIdentifier");
-        opaqueIdentifier.setVisibility(Settable.NOT_EDITABLE);
-        opaqueIdentifier.setDisplayName("Object name provided by the RTI");
-        opaqueIdentifier.setTypeEquals(BaseType.STRING);
-        opaqueIdentifier.setExpression("\"opaqueIdentifier\"");
+        objectName = new Parameter(this, "objectName");
+        objectName.setVisibility(Settable.NOT_EDITABLE);
+        objectName.setDisplayName("Object name provided by the RTI");
+        objectName.setTypeEquals(BaseType.STRING);
+        objectName.setExpression("\"objectName\"");
         
         parameterName = new Parameter(this, "parameterName");
         parameterName.setDisplayName("Name of the parameter to receive");
         parameterName.setTypeEquals(BaseType.STRING);
         parameterName.setExpression("\"parameterName\"");
         
-        attributeChanged(opaqueIdentifier);
+        attributeChanged(objectName);
         attributeChanged(parameterName);
         
         _reflectedAttributeValues = new LinkedList<TimedEvent>();
@@ -166,12 +166,9 @@ public class HlaSubscriber extends TypedAtomicActor {
     public Parameter parameterName;
     
    /** 
-     * Meaningless string used for a 1 <-> 1 mapping with the objectID enabling
-     * the HLASuscriber to filter not relevant tokens.
-     * Thus all HLASuscribers with the same opaqueIdentifier 
-     * will refere to the same object in the federation.
+     *  Name of the object who owns the attribute
      */ 
-    public Parameter opaqueIdentifier;
+    public Parameter objectName;
     
     /**
      * Handle provided by the RTI for the attribute the object is publishing
@@ -207,9 +204,9 @@ public class HlaSubscriber extends TypedAtomicActor {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
         }
-        else if(attribute == parameterName || attribute == opaqueIdentifier){
+        else if(attribute == parameterName || attribute == objectName){
             try {
-                StringToken opaqueName = (StringToken) opaqueIdentifier.getToken();
+                StringToken opaqueName = (StringToken) objectName.getToken();
                 StringToken paramName = (StringToken) parameterName.getToken();
                 String param = "";
                 String opaque = "";
@@ -226,7 +223,7 @@ public class HlaSubscriber extends TypedAtomicActor {
                     param = paramName.stringValue();
                 }
                 
-                if(!"opaqueIdentifier".equals(opaque) || !"parameterName".equals(param)){
+                if(!"objectName".equals(opaque) || !"parameterName".equals(param)){
                     setDisplayName(opaque + " " +param);
                 }
                 
@@ -368,24 +365,11 @@ public class HlaSubscriber extends TypedAtomicActor {
 
   
     /**
-     * Return true if the opaque identifier of the current HLASuscriber is already
-     * binded to an object instance.
-     */
-    /*public boolean isTaken(){
-        String name = null;
-        try {
-            name= ((StringToken) opaqueIdentifier.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-            illegalActionException.printStackTrace();
-        }
-        return _mapping.get(name) != null;
-    }*/
-    /**
      * Return the opaque identifier of the current HLASuscriber.
     */
     public String getOpaqueIdentifier(){
         try {
-            return ((StringToken) opaqueIdentifier.getToken()).stringValue();
+            return ((StringToken) objectName.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
         }
         return "";
