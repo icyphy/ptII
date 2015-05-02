@@ -98,6 +98,7 @@ function wrapup() {exports.wrapup();}
 //--------------------------- Exposed Java Types -----------------------------
 var ActorToken = Java.type('ptolemy.data.ActorToken');
 var ArrayToken = Java.type('ptolemy.data.ArrayToken');
+var BaseType = Java.type('ptolemy.data.type.BaseType');
 var BooleanToken = Java.type('ptolemy.data.BooleanToken');
 var DateToken = Java.type('ptolemy.data.DateToken');
 var DoubleToken = Java.type('ptolemy.data.DoubleToken');
@@ -108,6 +109,7 @@ var ObjectToken = Java.type('ptolemy.data.ObjectToken');
 var RecordToken = Java.type('ptolemy.data.RecordToken');
 var StringToken = Java.type('ptolemy.data.StringToken');
 var Token = Java.type('ptolemy.data.Token');
+
 
 //---------------------------- Utility functions -----------------------------
 ////////////////////
@@ -181,6 +183,12 @@ function convertToToken(value) {
     } else if (type === 'object') {
         if (Array.isArray(value)) {
             // Using Nashorn-specific extension here to create Java array.
+        	if (value.length < 1) {
+        		// FIXME:  Ptolemy requires a type to be specified for empty 
+        		// arrays.  Javascript does not, so there's no information as
+        		// to what the type should be.  Currently, use a string.
+        		return new ArrayToken(BaseType.STRING);
+        	}
             var TokenArray = Java.type('ptolemy.data.Token[]');
             var result = new TokenArray(value.length);
             for(var i = 0; i < value.length; i++) {

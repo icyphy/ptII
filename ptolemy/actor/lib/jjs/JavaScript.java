@@ -777,7 +777,7 @@ public class JavaScript extends TypedAtomicActor {
         // Expose the ports as JavaScript variables.
         for (TypedIOPort port : portList()) {
             // Do not convert the scriptIn port to a JavaScript variable.
-            if (port == script.getPort() || port == error) {
+            if (port == script.getPort()) {
                 continue;
             }
             if (!isValidIdentifier(port.getName())) {
