@@ -95,7 +95,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2500000000000002">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{406.347283291458, 79.11691268844228}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{406.3472832914581, 79.11691268844228}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="endTime">
@@ -105,9 +105,6 @@
         </property>
         <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
             <display name="f PositionX"/>
-            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
-                <display name="Object class in FOM"/>
-            </property>
             <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
                 <display name="use CERTI message buffer"/>
             </property>
@@ -116,6 +113,9 @@
             </property>
             <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;PositionX&quot;">
                 <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+                <display name="Object class in FOM"/>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 110.0}">
             </property>
@@ -127,9 +127,6 @@
         </entity>
         <entity name="HlaSubscriber2" class="org.hlacerti.lib.HlaSubscriber">
             <display name="f PositionY"/>
-            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
-                <display name="Object class in FOM"/>
-            </property>
             <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
                 <display name="use CERTI message buffer"/>
             </property>
@@ -138,6 +135,9 @@
             </property>
             <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;PositionY&quot;">
                 <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+                <display name="Object class in FOM"/>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 175.0}">
             </property>
@@ -158,7 +158,7 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
