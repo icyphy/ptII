@@ -109,7 +109,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/DeviceDiscovery.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/DeviceDiscovery/DeviceDiscovery.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml
