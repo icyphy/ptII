@@ -47,6 +47,9 @@
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
   <property name="javadoc.packagenames" value="diva.*,lbnl.*,org.hlacerti.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
+  <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
+  <property name="jsdoc.home" value="vendors/jsdoc" />
+
   <!-- junit.formatter defaults to xml and is used by checkstyle and test.  Other values: brief, failure, plain -->
   <property name="junit.formatter" value="xml" />
 
