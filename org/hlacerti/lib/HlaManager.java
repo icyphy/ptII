@@ -1607,19 +1607,21 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void discoverObjectInstance(int objectHandle, int classHandle,
                 String objectName) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
-            if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
-                        + " discoverObjectInstance() - the object "
-                        + objectName + " has been discovered" + " (ID="
-                        + objectHandle + ", class'ID=" + classHandle
-                        + ")");
-            }
 
             _objectIdToClassHandle.put(objectHandle, classHandle);
-           
-            final CompositeActor classToInstantiate = (CompositeActor) _classIdToPtIIClasses.get(classHandle);
+            
+            final CompositeActor classToInstantiate = 
+                    (CompositeActor) _classIdToPtIIClasses.get(classHandle);
+            
+            //Build a change request 
             ChangeRequest request = new ChangeRequest(this,
                     "Adding " + objectName,true) {
+                        /*
+                        * Sum up of the structural change :
+                        * Get the class instantiate and its container
+                        * If no free actor, instantiate one otherwise use an existing one
+                        * Map the actor (set its name, ObjectHandle and put it in _hlaAttributesSubscribedTo)                        
+                        */
                         @Override
                         protected void _execute() throws IllegalActionException {
 
@@ -1643,6 +1645,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 
                                 CompositeActor newActor = (CompositeActor) instance;
                                 
+                                // List all HlaSubscriber inside the instance and set them up
                                 List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
                                 for(int  i = 0 ; i < subscribers.size() ; ++i){
                                     HlaSubscriber sub = subscribers.get(i);
@@ -1652,7 +1655,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             sub.getIdentity(),
                                             new Object[]{
                                                 sub.output, sub.output.getType(),
-                                                "", //empty string because it is parameter no lnger used, but
+                                                "", //empty string because it is parameter no longer used, but
                                                     // some functions rely on classHandle and attributeHandle
                                                     // being at pos 3 and 4
                                                 classHandle, sub.getAttributeHandle()}
@@ -1666,10 +1669,21 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     };
             request.setPersistent(false);
             
+            String toLog = HlaManager.this.getDisplayName() + " INNER"
+                            + " discoverObjectInstance() - the object "
+                            + objectName + " has been discovered" + " (ID="
+                            + objectHandle + ", class'ID=" + classHandle
+                            + ")";
             if(classToInstantiate != null) {
+                //execute
                 requestChange(request);
-            } 
-
+            } else {
+                // No class for that ID, then we can't do anything, just log 
+                toLog +=" BUT NO CLASS TO HANDLE IT. CANT DO ANYTHING";
+            }
+            if (_debugging) {
+                _debug(toLog);
+            }
         }
 
         // HLA Time Management services (callbacks).
@@ -1970,17 +1984,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     e.printStackTrace();
                 } 
                 
-                /*List all instances of that class and set them up*/
-                Class javaClass = currentClass.getClass();
-                List objects = container.entityList(javaClass);
+                // List all instances of that class and set them up
+                List objects = container.entityList(currentClass.getClass());
                 LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
                 _freeActors.put(classHandle, freeActorForThatClass);
                 for (int i = 0; i < objects.size(); i++) {
 
                     CompositeActor currentActor = (CompositeActor) objects.get(i);
-                    
                     freeActorForThatClass.add(currentActor);
-                                 
+                    
+                    //first part of the set up for the HlaSubscriber
                     List<HlaSubscriber> subscribers = currentActor.entityList(HlaSubscriber.class);                    
                     for (HlaSubscriber sub : subscribers) {
                         int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
