@@ -1641,7 +1641,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     newActor = (CompositeActor) instance;
                                     LinkedList<IOPort> outputPortList= (LinkedList<IOPort>) newActor.outputPortList();
                                     Iterator i = outputPortList.iterator();
-                                    
+                                    container.notifyConnectivityChange();
                                     for(IOPort out : outputPortList){
                                         ComponentRelation r=null;
                                         for(IOPort recv : info.relations.get(out.getName())){
@@ -1651,7 +1651,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                 recv.link(r);
                                             }
                                         }
-                                        container.notifyConnectivityChange();
+
                                     }
                                     _newlyCreated.add(instance);
                                 } else{
