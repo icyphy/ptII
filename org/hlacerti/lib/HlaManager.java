@@ -109,8 +109,13 @@ import ptolemy.kernel.util.Workspace;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
+import java.util.HashSet;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Instantiable;
 
@@ -242,10 +247,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
-        
-        _classIdToPtIIClasses = new HashMap<Integer, ComponentEntity>();
+        _strucuralInformation = new HashMap<Integer,StructuralInformation>();
         _newlyCreated = new LinkedList<Instantiable>();
-        _freeActors = new HashMap<Integer, LinkedList<ComponentEntity>>();
         
         _hlaStartTime = null;
         _hlaTimeStep = null;
@@ -499,8 +502,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         newObject._objectIdToClassHandle = new HashMap<Integer, Integer>();
-        newObject._freeActors = new HashMap<Integer,LinkedList<ComponentEntity>>();
-        newObject._classIdToPtIIClasses = new HashMap<Integer,ComponentEntity>();
+        newObject._strucuralInformation = new HashMap<Integer,StructuralInformation>();
         newObject._newlyCreated = new LinkedList<Instantiable>();
         newObject._rtia = null;
         newObject._federateAmbassador = null;
@@ -1395,6 +1397,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * List all the free actors that can handle a new object whose ID is the key.
     */
     private HashMap<Integer,LinkedList<ComponentEntity>> _freeActors;
+    private HashMap<Integer,StructuralInformation> _strucuralInformation;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
@@ -1611,7 +1614,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _objectIdToClassHandle.put(objectHandle, classHandle);
             
             final CompositeActor classToInstantiate = 
-                    (CompositeActor) _classIdToPtIIClasses.get(classHandle);
+                    (CompositeActor) _strucuralInformation.get(classHandle).classToInstantiate;
             
             //Build a change request 
             ChangeRequest request = new ChangeRequest(this,
@@ -1626,25 +1629,40 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         protected void _execute() throws IllegalActionException {
 
                             CompositeActor container = (CompositeActor) classToInstantiate.getContainer();                 
-                            
+                            CompositeActor newActor = null;
                             try {
-                                Instantiable instance ;
-                                LinkedList<ComponentEntity> actors = _freeActors.get(classHandle);
+                                Instantiable instance = null;
+                                StructuralInformation info = _strucuralInformation.get(classHandle);
+                                LinkedList<ComponentEntity> actors = info.freeActors;
                                 
+                                //if it is a new actor, then we has to connect the ports
                                 if(actors.size() == 0){
                                     instance= classToInstantiate.instantiate(container, objectName);
-                                    container.notifyConnectivityChange();
+                                    newActor = (CompositeActor) instance;
+                                    LinkedList<IOPort> outputPortList= (LinkedList<IOPort>) newActor.outputPortList();
+                                    Iterator i = outputPortList.iterator();
+                                    
+                                    for(IOPort out : outputPortList){
+                                        ComponentRelation r=null;
+                                        for(IOPort recv : info.relations.get(out.getName())){
+                                            if(r==null) {
+                                                r = container.connect(out, recv,objectName + " " + out.getName());
+                                            } else{
+                                                recv.link(r);
+                                            }
+                                        }
+                                        container.notifyConnectivityChange();
+                                    }
                                     _newlyCreated.add(instance);
                                 } else{
                                     //retrieve and remove head
                                     instance = actors.poll();
+                                     newActor = (CompositeActor) instance;
                                     if(_debugging){
                                         _debug(instance.getName() + " will do object " + objectHandle);
                                     }
                                 }
-                                
-                                CompositeActor newActor = (CompositeActor) instance;
-                                
+
                                 // List all HlaSubscriber inside the instance and set them up
                                 List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
                                 for(int  i = 0 ; i < subscribers.size() ; ++i){
@@ -1960,9 +1978,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
             for(ComponentEntity currentClass: classes){
                 
                 int classHandle =  rtia.getObjectClassHandle(currentClass.getName());     
+                StructuralInformation infoForThatClass = new StructuralInformation();
                 try{
-                    _classIdToPtIIClasses.put(classHandle, currentClass);
-                    
+                    _strucuralInformation.put(classHandle,infoForThatClass);
+                    infoForThatClass.classToInstantiate = currentClass;
                     // The attribute handle set to declare all subscribed attributes
                     // for one object class.
                     AttributeHandleSet _attributesLocal = RtiFactoryFactory
@@ -1985,12 +2004,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 } 
                 
                 // List all instances of that class and set them up
-                List objects = container.entityList(currentClass.getClass());
+                List instancesOfCurrentClass = container.entityList(currentClass.getClass());
                 LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
-                _freeActors.put(classHandle, freeActorForThatClass);
-                for (int i = 0; i < objects.size(); i++) {
+                infoForThatClass.freeActors = freeActorForThatClass;
+                for (int i = 0; i < instancesOfCurrentClass.size(); i++) {
 
-                    CompositeActor currentActor = (CompositeActor) objects.get(i);
+                    CompositeActor currentActor = (CompositeActor) instancesOfCurrentClass.get(i);
+                    LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
+                    for(IOPort p : outputPortList){
+                        infoForThatClass.addPortSinks(p);   
+                    }
+                    
                     freeActorForThatClass.add(currentActor);
                     
                     //first part of the set up for the HlaSubscriber
