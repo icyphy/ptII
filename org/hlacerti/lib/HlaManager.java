@@ -243,7 +243,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
         
-        _idToClasses = new HashMap<Integer, ComponentEntity>();
+        _classIdToPtIIClasses = new HashMap<Integer, ComponentEntity>();
         _newlyCreated = new LinkedList<Instantiable>();
         _freeActors = new HashMap<Integer, LinkedList<ComponentEntity>>();
         
@@ -499,7 +499,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         newObject._objectIdToClassHandle = new HashMap<Integer, Integer>();
-
+        newObject._freeActors = new HashMap<Integer,LinkedList<ComponentEntity>>();
+        newObject._classIdToPtIIClasses = new HashMap<Integer,ComponentEntity>();
+        newObject._newlyCreated = new LinkedList<Instantiable>();
         newObject._rtia = null;
         newObject._federateAmbassador = null;
         newObject._federateName = _federateName;
@@ -1387,7 +1389,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** Mapping between class ID in the FOM and classes in Ptolemy to instanciate.
      * 
     */
-    private HashMap<Integer,ComponentEntity> _idToClasses;
+    private HashMap<Integer,ComponentEntity> _classIdToPtIIClasses;
     
     /** 
      * List all the free actors that can handle a new object whose ID is the key.
@@ -1615,7 +1617,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
             _objectIdToClassHandle.put(objectHandle, classHandle);
            
-            final CompositeActor classToInstantiate = (CompositeActor) _idToClasses.get(classHandle);
+            final CompositeActor classToInstantiate = (CompositeActor) _classIdToPtIIClasses.get(classHandle);
             ChangeRequest request = new ChangeRequest(this,
                     "Adding " + objectName,true) {
                         @Override
@@ -1645,7 +1647,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 for(int  i = 0 ; i < subscribers.size() ; ++i){
                                     HlaSubscriber sub = subscribers.get(i);
                                     sub.objectName.setExpression("\""+objectName+"\""); ;
-                                    sub.objectHandle = objectHandle;
+                                    sub.setObjectHandle(objectHandle);
                                     _hlaAttributesSubscribedTo.put(
                                             sub.getIdentity(),
                                             new Object[]{
@@ -1653,8 +1655,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                 "", //empty string because it is parameter no lnger used, but
                                                     // some functions rely on classHandle and attributeHandle
                                                     // being at pos 3 and 4
-                                                classHandle,sub.attributeHandle 
-                                            }
+                                                classHandle, sub.getAttributeHandle()}
                                     );
                                     _fromFederationEvents.put(sub.getIdentity(),new LinkedList<TimedEvent>());
                                 }
@@ -1946,7 +1947,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 
                 int classHandle =  rtia.getObjectClassHandle(currentClass.getName());     
                 try{
-                    _idToClasses.put(classHandle, currentClass);
+                    _classIdToPtIIClasses.put(classHandle, currentClass);
                     
                     // The attribute handle set to declare all subscribed attributes
                     // for one object class.
@@ -1957,8 +1958,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     
                     for (HlaSubscriber sub : subscribers) {
                         int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
-                        sub.attributeHandle = attributeHandle;
-                        sub.classHandle = classHandle;
+                        sub.setAttributeHandle(attributeHandle);
+                        sub.setClassHandle(classHandle);
                         _attributesLocal.add(attributeHandle);
                         if(_debugging){
                             _debug("Subscribe to " + sub.getParameterName() + " for class " + currentClass.getName());
@@ -1983,8 +1984,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     List<HlaSubscriber> subscribers = currentActor.entityList(HlaSubscriber.class);                    
                     for (HlaSubscriber sub : subscribers) {
                         int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
-                        sub.attributeHandle = attributeHandle;
-                        sub.classHandle = classHandle;
+                        sub.setAttributeHandle(attributeHandle);
+                        sub.setClassHandle(classHandle);
                     }
                 }
             } //end of for on classes

@@ -103,8 +103,8 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         // The single output port of the actor.
         output = new TypedIOPort(this, "output", false, true);        
-        typeSelector = new StringParameter(this, "type of the parameter");        
-        
+        typeSelector = new StringParameter(this, "typeSelector");        
+        typeSelector.setDisplayName("type of the parameter");
         //types available for tokens
         typeSelector.addChoice("int");
         typeSelector.addChoice("double");
@@ -122,9 +122,9 @@ public class HlaSubscriber extends TypedAtomicActor {
         });
         
         //set handle to impossible values
-        attributeHandle=Integer.MIN_VALUE;
-        classHandle=Integer.MIN_VALUE;
-        objectHandle=Integer.MIN_VALUE;
+        _attributeHandle=Integer.MIN_VALUE;
+        _classHandle=Integer.MIN_VALUE;
+        _objectHandle=Integer.MIN_VALUE;
         
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
@@ -170,23 +170,10 @@ public class HlaSubscriber extends TypedAtomicActor {
     public Parameter objectName;
     
     /**
-     * Handle provided by the RTI for the attribute the object is publishing
+     * Parameter used to set up the type of the output port. Synched with  
+     * outport port's type (changes go both way).
      */
-    public int attributeHandle;
-    
-    /*
-    * Handle provided by the RTI for the class ob the object 
-    * owning the attribute we are receiving
-    */
-    public int classHandle;
-    
-    /**
-     * Handle provided by the RTI for the object owning the attribute we are 
-     * publishing 
-     */
-    public int objectHandle;
-    
-    StringParameter typeSelector;
+    public StringParameter typeSelector;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -258,9 +245,9 @@ public class HlaSubscriber extends TypedAtomicActor {
         newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();        
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
         
-        newObject.attributeHandle=attributeHandle;
-        newObject.classHandle=classHandle;
-        newObject.objectHandle=Integer.MIN_VALUE;
+        newObject.setAttributeHandle(getAttributeHandle());
+        newObject.setClassHandle(getClassHandle());
+        newObject.setObjectHandle(Integer.MIN_VALUE);
         
         return newObject;
     }
@@ -318,7 +305,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
                 //either it is NOT OriginatedEvent and we let it go
                 //either it is and it has to match the origin 
-                if(origin == -1 || origin == objectHandle){
+                if(origin == -1 || origin == getObjectHandle()){
                     this.outputPortList().get(0).send(0, content);
                     
                     if (_debugging) {
@@ -342,6 +329,48 @@ public class HlaSubscriber extends TypedAtomicActor {
     */
     public String getIdentity(){
         return getOpaqueIdentifier() + "-" + getParameterName();
+    }
+
+    /**
+     * @return the attributeHandle
+     */
+    public int getAttributeHandle() {
+        return _attributeHandle;
+    }
+
+    /**
+     * @return the classHandle
+     */
+    public int getClassHandle() {
+        return _classHandle;
+    }
+
+    /**
+     * @return the objectHandle
+     */
+    public int getObjectHandle() {
+        return _objectHandle;
+    }
+
+    /**
+     * @param attributeHandle the attributeHandle to set
+     */
+    public void setAttributeHandle(int attributeHandle) {
+        _attributeHandle = attributeHandle;
+    }
+
+    /**
+     * @param classHandle the classHandle to set
+     */
+    public void setClassHandle(int classHandle) {
+        _classHandle = classHandle;
+    }
+
+    /**
+     * @param objectHandle the objectHandle to set
+     */
+    public void setObjectHandle(int objectHandle) {
+        _objectHandle = objectHandle;
     }
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the tokens queue. Then, program the next firing time of this actor to
@@ -404,9 +433,9 @@ public class HlaSubscriber extends TypedAtomicActor {
         super.wrapup();
         
         //set handle to impossible values
-        attributeHandle=Integer.MIN_VALUE;
-        classHandle=Integer.MIN_VALUE;
-        objectHandle=Integer.MIN_VALUE;
+        setAttributeHandle(Integer.MIN_VALUE);
+        setClassHandle(Integer.MIN_VALUE);
+        setObjectHandle(Integer.MIN_VALUE);
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -466,5 +495,21 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
-
+    
+    /**
+     * Handle provided by the RTI for the attribute the object is publishing
+     */
+    private int _attributeHandle;
+    
+    /*
+    * Handle provided by the RTI for the class ob the object 
+    * owning the attribute we are receiving
+    */
+    private int _classHandle;
+    
+    /**
+     * Handle provided by the RTI for the object owning the attribute we are 
+     * publishing 
+     */
+    private int _objectHandle;
 }
