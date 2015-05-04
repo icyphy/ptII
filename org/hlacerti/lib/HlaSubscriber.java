@@ -328,7 +328,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     * Should be unique if
     */
     public String getIdentity(){
-        return getOpaqueIdentifier() + "-" + getParameterName();
+        return getObjectName() + "-" + getParameterName();
     }
 
     /**
@@ -400,7 +400,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     /**
      * Return the opaque identifier of the current HLASuscriber.
     */
-    public String getOpaqueIdentifier(){
+    public String getObjectName(){
         try {
             return ((StringToken) objectName.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {
@@ -408,13 +408,6 @@ public class HlaSubscriber extends TypedAtomicActor {
         return "";
     }
     
-    /**
-     * Bind the current HLASuscriber's opaque identifier to object's id theObject.
-     */
-    public void register(int theObject){
-
-        //_mapping.putIfAbsent(getOpaqueIdentifier(),theObject);
-    }
     /**
      * Return the kind of HLA Attribute the HLASuscriber is handling.
      */
