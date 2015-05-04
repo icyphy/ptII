@@ -3,11 +3,13 @@
 int counter;
 int secondCounter;
 bool flag;
+double hue_val;
 /**/
 
 /***initBlock***/
 counter = 0;
 secondCounter = 0;
+hue_val = 0; 
 flag = false;
 /**/
 
@@ -28,7 +30,6 @@ int deltaSize_val = 0;
 int deltaX_val = 0;
 int deltaY_val = 0;
 int deltaZ_val = 0;
-double hue_val = 0;
 
 int fingerThreshold = 350;
 int thumbThreshold = 200;
