@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import org.mozilla.javascript.Function;
-
 import ptolemy.kernel.util.IllegalActionException;
 
 

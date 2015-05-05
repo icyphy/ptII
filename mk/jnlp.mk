@@ -566,6 +566,12 @@ FULL_10_0_JARS = \
 FULL_11_0_JARS = \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/browser/browser.jar \
+	ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/discovery/discovery.jar \
+	ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar \
 	ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar \
 	ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar \
 	ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar \
