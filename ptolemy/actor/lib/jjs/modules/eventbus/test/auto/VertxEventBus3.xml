@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0646600724153974">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.20334159168294, 238.5732421875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{320.203341591683, 238.5732421875}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -133,7 +133,9 @@
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 195.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -189,7 +191,7 @@
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 320.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.99999999999999, 315.0]">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
