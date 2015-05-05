@@ -71,7 +71,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	browser localStorage mqtt vertxEventBus webSocket #test
+MISC_FILES =	browser discovery eventbus localStorage mqtt vertxEventBus webSocket #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

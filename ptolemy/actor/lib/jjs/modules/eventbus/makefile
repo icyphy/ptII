@@ -58,7 +58,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -66,12 +66,7 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'VertxHelper$$1.class' \
-	'VertxHelper$$2.class' \
-	'VertxHelper$$3.class' \
-	'VertxHelper$$DataHandler.class' \
-	'VertxHelper$$EndHandler.class' \
-	'VertxHelper$$ExceptionHandler.class'
+	'EventBusHelper$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

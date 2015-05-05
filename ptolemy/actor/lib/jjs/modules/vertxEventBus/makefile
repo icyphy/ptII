@@ -67,6 +67,7 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	'VertxHelper$$1.class' \
+	'VertxHelper$$1$$1.class' \
 	'VertxHelper$$2.class' \
 	'VertxHelper$$3.class' \
 	'VertxHelper$$DataHandler.class' \
