@@ -598,8 +598,9 @@ public class FMIModelDescription {
 
 						for (int k = 0; k < modelVariables.size(); k++) {
 							try {
-								if (modelVariables.get(k).valueReference == modelVariables
-										.get(Integer.parseInt(dependencies[j]) - 1).valueReference) {
+								if ((modelVariables.get(k).valueReference == modelVariables
+										.get(Integer.parseInt(dependencies[j]) - 1).valueReference) 
+										&& modelVariables.get(k).causality.equals(Causality.input)) {
 									modelVariables.get(i).directDependency
 											.add(modelVariables.get(k).name);
 									break;
