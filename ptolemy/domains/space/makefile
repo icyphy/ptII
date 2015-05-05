@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/space
 
-DIRS = 		demo doc
+DIRS = 		demo doc test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -64,7 +64,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo here, we don't want make sources to run make demo
-MISC_FILES = doc
+MISC_FILES = doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES

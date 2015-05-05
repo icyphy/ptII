@@ -1,0 +1,904 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DOPCenter" class="ptolemy.domains.space.Region">
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/space/demo/DOPCenter/DOPCenter.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 175.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1276, 815}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1059, 734]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{529.5, 367.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1 ">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 40}">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+    </property>
+    <property name="display" class="ptolemy.data.expr.Parameter" value="{&quot;deskno&quot;, &quot;fnames&quot;, &quot;lname&quot;}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Space Cadet - Office Space Management - Ptolemy Style&#10;This is a model of the DOP Center Office space.&#10;When the model is run, it connects to a database &#10;and updates the view of who sits where.&#10;To run the model, you must know the database password.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 520.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you are at UC Berkeley and add a new occupant, then&#10;please send email to embeddedAdmin@embedded so that&#10;we can create a dopcenter workgroup account.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 595.0]">
+        </property>
+    </property>
+    <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
+        <property name="database" class="ptolemy.data.expr.StringParameter" value="jdbc:mysql://terra.eecs.berkeley.edu:3306/space">
+        </property>
+        <property name="passwordFile" class="ptolemy.data.expr.FileParameter" value="$HOME/.spacecadet">
+        </property>
+        <property name="userName" class="ptolemy.data.expr.StringParameter" value="spacecadet">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Room" class="ptolemy.domains.space.Room">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 300.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Occupants" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;2015-12-01&quot;, deskno = &quot;1&quot;, email = &quot;stavros@eecs.berkeley.edu&quot;, fnames = &quot;Stavros&quot;, lname = &quot;Tripakis&quot;, occupancy = &quot;2015-09-01&quot;, room = &quot;545Q&quot;, spaceid = &quot;1826&quot;, spacenotes = &quot;here sometime in fall 2015; dates unknown&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2019-09-01&quot;, deskno = &quot;2&quot;, email = &quot;marten@stdio.nl&quot;, fnames = &quot;Marten&quot;, lname = &quot;Lohstroh&quot;, occupancy = &quot;2012-03-25&quot;, room = &quot;545Q&quot;, spaceid = &quot;1827&quot;, spacenotes = &quot;Associate Specialist&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;2020-12-31&quot;, deskno = &quot;3&quot;, email = &quot;bhovers@astro.berkeley.edu&quot;, fnames = &quot;Barb&quot;, lname = &quot;Hoversten&quot;, occupancy = &quot;2013-11-01&quot;, room = &quot;545Q&quot;, spaceid = &quot;1828&quot;, spacenotes = &quot;TerraSwarm Staff&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2020-12-31&quot;, deskno = &quot;4&quot;, email = &quot;john_eidson@agilent.com&quot;, fnames = &quot;John&quot;, lname = &quot;Eidson&quot;, occupancy = &quot;2009-01-07&quot;, room = &quot;545Q&quot;, spaceid = &quot;1830&quot;, spacenotes = &quot;VIF with Agilent&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;faculty&quot;, departure = &quot;2020-12-31&quot;, deskno = &quot;5&quot;, email = &quot;eal@eecs.berkeley.edu&quot;, fnames = &quot;Edward A.&quot;, lname = &quot;Lee&quot;, occupancy = &quot;2008-08-15&quot;, room = &quot;545Q&quot;, spaceid = &quot;2296&quot;, spacenotes = &quot;faculty&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;cxh@eecs&quot;, fnames = &quot;Christopher&quot;, lname = &quot;Brooks&quot;, occupancy = &quot;&quot;, room = &quot;545Q&quot;, spaceid = &quot;2292&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lee&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Yi&#10;2: Moskewicz&#10;3: Catanzaro&#10;4: Lee&#10;5: Chong&#10;6: Hedayati&#10;7: Sundaram&#10;8: Satish&#10;9: Mazzi&#10;10: VACANT">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, 380.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Room2" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545P">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 290.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Occupants2" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-09-30&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Michele&quot;, lname = &quot;Lora&quot;, occupancy = &quot;2015-01-30&quot;, room = &quot;545P&quot;, spaceid = &quot;1822&quot;, spacenotes = &quot;email from CXH &amp; Pierluigi on 10-22-2014&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545P&quot;, spaceid = &quot;1823&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-05-31&quot;, deskno = &quot;3&quot;, email = &quot;jbfinn@berkeley.edu&quot;, fnames = &quot;John Butler&quot;, lname = &quot;Finn&quot;, occupancy = &quot;2010-09-01&quot;, room = &quot;545P&quot;, spaceid = &quot;1824&quot;, spacenotes = &quot;First year grad&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-05-31&quot;, deskno = &quot;4&quot;, email = &quot;cwlin@eecs.berkeley.edu&quot;, fnames = &quot;Chung-Wei&quot;, lname = &quot;Lin&quot;, occupancy = &quot;2009-08-25&quot;, room = &quot;545P&quot;, spaceid = &quot;1825&quot;, spacenotes = &quot;2009 fall admit. Gold. Started w/ Alberto Fall 2010&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Zhu&#10;2: Wang&#10;3: Pinto&#10;4: VACANT">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 290.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Room3" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545N">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 285.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
+            </property>
+        </port>
+    </entity>
+    <entity name="Occupants3" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2015-05-15&quot;, deskno = &quot;1&quot;, email = &quot;armin@vmars.tuwien.ac.at&quot;, fnames = &quot;Armin&quot;, lname = &quot;Wasicek&quot;, occupancy = &quot;2013-05-15&quot;, room = &quot;545N&quot;, spaceid = &quot;1818&quot;, spacenotes = &quot;2 year visitor&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2017-12-31&quot;, deskno = &quot;2&quot;, email = &quot;hokeunkim@eecs.berkeley.edu&quot;, fnames = &quot;Hokeun&quot;, lname = &quot;Kim&quot;, occupancy = &quot;2012-08-15&quot;, room = &quot;545N&quot;, spaceid = &quot;1819&quot;, spacenotes = &quot;2012 Grad Student&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visiting industrial fellow&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;3&quot;, email = &quot;AKIHITO_IWAI@denso-diam.com&quot;, fnames = &quot;Akihito&quot;, lname = &quot;Iwai&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545N&quot;, spaceid = &quot;1820&quot;, spacenotes = &quot;visiting industrial fellow&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-05-31&quot;, deskno = &quot;4&quot;, email = &quot;mzimmer88@gmail.com&quot;, fnames = &quot;Mike&quot;, lname = &quot;Zimmer&quot;, occupancy = &quot;2010-08-10&quot;, room = &quot;545N&quot;, spaceid = &quot;1821&quot;, spacenotes = &quot;Fall, 2010 Incoming Grad&quot;, sponsorlname = &quot;Lee&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Laine&#10;2: VACANT&#10;3: Matic&#10;4: Limaye">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 220.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Room4" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545M">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 275.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </entity>
+    <entity name="Occupants4" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2020-05-31&quot;, deskno = &quot;1&quot;, email = &quot;mew2ub@virginia.edu&quot;, fnames = &quot;Matthew&quot;, lname = &quot;Weber&quot;, occupancy = &quot;2013-08-05&quot;, room = &quot;545M&quot;, spaceid = &quot;1814&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2016-05-16&quot;, deskno = &quot;2&quot;, email = &quot;HeXXiiiZ &lt;hexxiiiz@gmail.com&gt;&quot;, fnames = &quot;Chris&quot;, lname = &quot;Shaver&quot;, occupancy = &quot;2010-07-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1815&quot;, spacenotes = &quot;Edward Lee's Grad Student, away during the summer, 2012&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;3&quot;, email = &quot;f.cremona@sssup.it&quot;, fnames = &quot;Fabio&quot;, lname = &quot;Cremona&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1816&quot;, spacenotes = &quot;Graduate student visitor in Edward Lee's group&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2020-09-30&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Gil&quot;, lname = &quot;Lederman&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545M&quot;, spaceid = &quot;1817&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lee&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: VACANT&#10;3: Feng&#10;4: Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 150.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <entity name="Room5" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545J">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 260.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="Occupants5" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;other&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;1&quot;, email = &quot;serenasmiley@sbcglobal.net&quot;, fnames = &quot;Serena&quot;, lname = &quot;Smiley&quot;, occupancy = &quot;2010-08-25&quot;, room = &quot;545J&quot;, spaceid = &quot;1797&quot;, spacenotes = &quot;UG student doing a project&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2017-08-31&quot;, deskno = &quot;2&quot;, email = &quot;tianshi@berkeley.edu&quot;, fnames = &quot;Tianshi&quot;, lname = &quot;Wang&quot;, occupancy = &quot;2012-08-10&quot;, room = &quot;545J&quot;, spaceid = &quot;1798&quot;, spacenotes = &quot;2012 Fall Incoming Grad&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-12-15&quot;, deskno = &quot;3&quot;, email = &quot;aadithya@berkeley.edu&quot;, fnames = &quot;Karthik&quot;, lname = &quot;Aadithya&quot;, occupancy = &quot;2009-09-08&quot;, room = &quot;545J&quot;, spaceid = &quot;3001&quot;, spacenotes = &quot;aadithya@berkeley.edu&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545J&quot;, spaceid = &quot;1800&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Prabhu&#10;3: Wu&#10;4: VACANT">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 125.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <entity name="Room6" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545K">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 270.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="Occupants6" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;2018-05-31&quot;, deskno = &quot;1&quot;, email = &quot;nebgnahz@gmail.com&quot;, fnames = &quot;Ben&quot;, lname = &quot;Zhang&quot;, occupancy = &quot;2012-08-10&quot;, room = &quot;545K&quot;, spaceid = &quot;1803&quot;, spacenotes = &quot;2012 First Year Student&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-12-31&quot;, deskno = &quot;2&quot;, email = &quot;ematsi@eecs.berkeley.edu&quot;, fnames = &quot;Eleftherios&quot;, lname = &quot;Matsikoudis&quot;, occupancy = &quot;&quot;, room = &quot;545K&quot;, spaceid = &quot;1804&quot;, spacenotes = &quot;Fall 02 admit (?) Postdoc&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;temp for summer from Penn&quot;, departure = &quot;2015-06-26&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Marcus&quot;, lname = &quot;Pan&quot;, occupancy = &quot;2015-05-25&quot;, room = &quot;545K&quot;, spaceid = &quot;1805&quot;, spacenotes = &quot;temp from Penn&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2016-05-31&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Ilge&quot;, lname = &quot;Akkaya&quot;, occupancy = &quot;2010-08-25&quot;, room = &quot;545K&quot;, spaceid = &quot;1806&quot;, spacenotes = &quot;First year student Fall 2010&quot;, sponsorlname = &quot;Lee&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Leung&#10;2: Patel&#10;3: VACANT&#10;4: VACANT">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 85.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <entity name="Room7" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545F">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 245.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="Occupants7" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2017-05-31&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Yu-Yun&quot;, lname = &quot;Dai&quot;, occupancy = &quot;2013-08-10&quot;, room = &quot;545F&quot;, spaceid = &quot;2053&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;other&quot;, departure = &quot;2020-12-31&quot;, deskno = &quot;2&quot;, email = &quot;alanmi@eecs.berkeley.edu&quot;, fnames = &quot;Alan&quot;, lname = &quot;Mishchenko&quot;, occupancy = &quot;2010-12-10&quot;, room = &quot;545F&quot;, spaceid = &quot;2987&quot;, spacenotes = &quot;Sharing with Niklas Een because of 4th floor renovation&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visitor&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;ysho.tw@gmail.com&quot;, fnames = &quot;Yen Sheng&quot;, lname = &quot;Ho&quot;, occupancy = &quot;2012-08-10&quot;, room = &quot;545F&quot;, spaceid = &quot;1785&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2016-05-31&quot;, deskno = &quot;4&quot;, email = &quot;sterin@eecs.berkeley.edu&quot;, fnames = &quot;Baruch&quot;, lname = &quot;Sterin&quot;, occupancy = &quot;2008-10-01&quot;, room = &quot;545F&quot;, spaceid = &quot;1788&quot;, spacenotes = &quot;Fall 08 admit, started as floating 545W&quot;, sponsorlname = &quot;Brayton&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 120.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <entity name="Room8" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545H">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 255.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="Occupants8" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2019-06-15&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Shromona&quot;, lname = &quot;Ghosh&quot;, occupancy = &quot;2015-01-01&quot;, room = &quot;545H&quot;, spaceid = &quot;3004&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2018-06-15&quot;, deskno = &quot;2&quot;, email = &quot;iannopollo@gmail.com&quot;, fnames = &quot;Antonio&quot;, lname = &quot;Iannopollo&quot;, occupancy = &quot;2012-08-15&quot;, room = &quot;545H&quot;, spaceid = &quot;1793&quot;, spacenotes = &quot;2012 Incoming Grad Student&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;0145-08-31&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Pierluigi&quot;, lname = &quot;Nuzzo&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545H&quot;, spaceid = &quot;1794&quot;, spacenotes = &quot;Fall 08 admit&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2019-06-15&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Baihong &quot;, lname = &quot;Jin&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545H&quot;, spaceid = &quot;1795&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Sun&#10;2: Mishchenko&#10;3: VACANT&#10;4: Ray">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 50.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <entity name="Room9" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545D">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 230.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="Room10" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545E">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 240.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="Occupants10" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;faculty&quot;, departure = &quot;&quot;, deskno = &quot;0&quot;, email = &quot;jr@eecs.berkeley.edu&quot;, fnames = &quot;Jaijeet&quot;, lname = &quot;Roychowdhury&quot;, occupancy = &quot;&quot;, room = &quot;545E&quot;, spaceid = &quot;1784&quot;, spacenotes = &quot;Faculty office&quot;, sponsorlname = &quot;Roychowdhury&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: VACANT&#10;?: Rabaey">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 55.0}">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <entity name="Occupants11" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;undergrad&quot;, departure = &quot;2020-01-01&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Frank&quot;, lname = &quot;Ong&quot;, occupancy = &quot;2012-03-11&quot;, room = &quot;545W&quot;, spaceid = &quot;1847&quot;, spacenotes = &quot;guess on departure date: semi-permanent&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;staff&quot;, departure = &quot;2020-01-01&quot;, deskno = &quot;2&quot;, email = &quot;aflynn@eecs.berkeley.edu&quot;, fnames = &quot;Anita&quot;, lname = &quot;Flynn&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1848&quot;, spacenotes = &quot;estimate on departure date as she is semi-permanent&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2016-05-31&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Patrick&quot;, lname = &quot;Virtue&quot;, occupancy = &quot;2011-01-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1849&quot;, spacenotes = &quot;Fall 2010 Admit. Confirmed 7/12&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;&quot;, deskno = &quot;4&quot;, email = &quot;&quot;, fnames = &quot;Jiang&quot;, lname = &quot;Long&quot;, occupancy = &quot;2008-08-20&quot;, room = &quot;545W&quot;, spaceid = &quot;2986&quot;, spacenotes = &quot;Fall 08 admit. Confirmed 1/11.&quot;, sponsorlname = &quot;Brayton&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-06-15&quot;, deskno = &quot;5&quot;, email = &quot;mniknami@berkeley.edu&quot;, fnames = &quot;Mehrdad&quot;, lname = &quot;Niknami&quot;, occupancy = &quot;2015-01-07&quot;, room = &quot;545W&quot;, spaceid = &quot;1851&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;vretto@berkeley.edu&quot;, fnames = &quot;Moulos&quot;, lname = &quot;Vrettos&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1852&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Tripakis&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visiting graduate student&quot;, departure = &quot;2015-10-01&quot;, deskno = &quot;7&quot;, email = &quot;David.COME@supaero.isae.fr&quot;, fnames = &quot;David&quot;, lname = &quot;Come&quot;, occupancy = &quot;2015-04-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1853&quot;, spacenotes = &quot;email 11-24: EECS-ISAE collaboration&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-06-26&quot;, deskno = &quot;8&quot;, email = &quot;mpanj@seas.upenn.edu&quot;, fnames = &quot;Marcus&quot;, lname = &quot;Pan&quot;, occupancy = &quot;2015-05-25&quot;, room = &quot;545W&quot;, spaceid = &quot;1854&quot;, spacenotes = &quot;SRC intern&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;9&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1855&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visiting professor&quot;, departure = &quot;2015-10-15&quot;, deskno = &quot;10&quot;, email = &quot;angu@txstate.edu&quot;, fnames = &quot;Anne Hee Hiong&quot;, lname = &quot;Ngu&quot;, occupancy = &quot;2015-08-31&quot;, room = &quot;545W&quot;, spaceid = &quot;1856&quot;, spacenotes = &quot;visiting prof.&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-10-29&quot;, deskno = &quot;11&quot;, email = &quot;&quot;, fnames = &quot;Shuhei&quot;, lname = &quot;Emoto&quot;, occupancy = &quot;2014-10-30&quot;, room = &quot;545W&quot;, spaceid = &quot;1857&quot;, spacenotes = &quot;IHI Visitor, VIF to swarmlab&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;12&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1858&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2017-08-31&quot;, deskno = &quot;13&quot;, email = &quot;jon.tamir@gmail.com&quot;, fnames = &quot;Jonathan&quot;, lname = &quot;Tamir&quot;, occupancy = &quot;2012-08-15&quot;, room = &quot;545W&quot;, spaceid = &quot;2294&quot;, spacenotes = &quot;2012 Incoming Grad&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2019-05-31&quot;, deskno = &quot;14&quot;, email = &quot;apechacek@berkeley.edu&quot;, fnames = &quot;Alina&quot;, lname = &quot;Pechacek&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545W&quot;, spaceid = &quot;1860&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;15&quot;, email = &quot;&quot;, fnames = &quot;Joe&quot;, lname = &quot;Corea&quot;, occupancy = &quot;&quot;, room = &quot;545W&quot;, spaceid = &quot;1864&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2016-12-31&quot;, deskno = &quot;16&quot;, email = &quot;jiangwenwen1231@gmail.com&quot;, fnames = &quot;Wenwen&quot;, lname = &quot;Jiang&quot;, occupancy = &quot;2012-08-15&quot;, room = &quot;545W&quot;, spaceid = &quot;1861&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: VACANT&#10;2: Welp&#10;3: Chai&#10;4: Lwin&#10;5: VACANT&#10;6: VACANT&#10;7: VACANT&#10;8: VACANT&#10;9: Kumar&#10;10: McKelvin Jr&#10;11: He&#10;12: Yang&#10;13: Wei&#10;14: Kitchen&#10;15: Gebis&#10;16: VACANT&#10;17: VACANT">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 515.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Room11" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545W">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 450.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Room12" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545T">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 455.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Occupants12" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;other&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;mlustig@EECS.Berkeley.EDU&quot;, fnames = &quot;Miki&quot;, lname = &quot;Lab Machine&quot;, occupancy = &quot;2011-06-30&quot;, room = &quot;545T&quot;, spaceid = &quot;1841&quot;, spacenotes = &quot;Miki's lab machine&quot;, sponsorlname = &quot;Lustiglab&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;Miki&quot;, lname = &quot;Lab1&quot;, occupancy = &quot;&quot;, room = &quot;545T&quot;, spaceid = &quot;1843&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustiglab&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545T&quot;, spaceid = &quot;3000&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Case&#10;2: Zeng&#10;3: VACANT&#10;4: VACANT">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 595.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Room13" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545S">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 460.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Occupants13" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-05-31&quot;, deskno = &quot;1&quot;, email = &quot;mfong92@berkeley.edu&quot;, fnames = &quot;Matthew&quot;, lname = &quot;Fong&quot;, occupancy = &quot;2014-02-05&quot;, room = &quot;545S&quot;, spaceid = &quot;1832&quot;, spacenotes = &quot;not always here per Ankush Desai&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2019-05-31&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;Ben &quot;, lname = &quot;Caulfield&quot;, occupancy = &quot;2014-08-20&quot;, room = &quot;545S&quot;, spaceid = &quot;1833&quot;, spacenotes = &quot;get desk key back (FR326): bcaulfield@berkeley.edu&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-01-31&quot;, deskno = &quot;3&quot;, email = &quot;&quot;, fnames = &quot;Daniel&quot;, lname = &quot;Fremont&quot;, occupancy = &quot;2013-06-24&quot;, room = &quot;545S&quot;, spaceid = &quot;2234&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;4&quot;, email = &quot;ycwu@umich.edu&quot;, fnames = &quot;Yi-Chin&quot;, lname = &quot;Wu&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545S&quot;, spaceid = &quot;1835&quot;, spacenotes = &quot;supported by UMich/ S. Lafortune/ co-advisor: Seshia&quot;, sponsorlname = &quot;Lee&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-09-08&quot;, deskno = &quot;5&quot;, email = &quot;&quot;, fnames = &quot;Daniel &quot;, lname = &quot;Bundela&quot;, occupancy = &quot;2014-09-01&quot;, room = &quot;545S&quot;, spaceid = &quot;1837&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;ankushdesai@gmail.com&quot;, departure = &quot;2017-06-15&quot;, deskno = &quot;6&quot;, email = &quot;grad&quot;, fnames = &quot;Ankush&quot;, lname = &quot;Desai&quot;, occupancy = &quot;2013-06-01&quot;, room = &quot;545S&quot;, spaceid = &quot;1838&quot;, spacenotes = &quot;2013 Grad&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2016-12-31&quot;, deskno = &quot;7&quot;, email = &quot;sinharo@gmail.com&quot;, fnames = &quot;Rohit&quot;, lname = &quot;Sinha&quot;, occupancy = &quot;2011-08-15&quot;, room = &quot;545S&quot;, spaceid = &quot;1839&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;8&quot;, email = &quot;&quot;, fnames = &quot;Nishant&quot;, lname = &quot;Totla&quot;, occupancy = &quot;&quot;, room = &quot;545S&quot;, spaceid = &quot;1840&quot;, spacenotes = &quot;move from 545L as of 2014-09-01&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;9&quot;, email = &quot;donze@imag.fr&quot;, fnames = &quot;Alex&quot;, lname = &quot;Donze&quot;, occupancy = &quot;2012-03-01&quot;, room = &quot;545S&quot;, spaceid = &quot;2291&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Seshia&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Roncken&#10;1: Liu&#10;2: Batten&#10;3: VACANT&#10;3: Aoki&#10;4: Pan&#10;5: Jha&#10;6: Li&#10;7: VACANT&#10;8: Brady&#10;9: Honicky">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 505.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="180">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Occupants14" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2015-10-27&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Saha&quot;, lname = &quot;Indranil&quot;, occupancy = &quot;2014-10-28&quot;, room = &quot;545L&quot;, spaceid = &quot;2025&quot;, spacenotes = &quot;email 10/27; in Penn for semester&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2017-05-31&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;Dorsa&quot;, lname = &quot;Sadigh&quot;, occupancy = &quot;2011-11-30&quot;, room = &quot;545L&quot;, spaceid = &quot;1808&quot;, spacenotes = &quot;also has desk elsewhere in Cory&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2016-03-31&quot;, deskno = &quot;3&quot;, email = &quot;rabe@cs.uni-saarland.de&quot;, fnames = &quot;Markus&quot;, lname = &quot;Rabe&quot;, occupancy = &quot;2015-04-01&quot;, room = &quot;545L&quot;, spaceid = &quot;1809&quot;, spacenotes = &quot;Seshia Postdoc&quot;, sponsorlname = &quot;Seshia&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;visiting Fulbright prof.&quot;, departure = &quot;2015-08-15&quot;, deskno = &quot;4&quot;, email = &quot;marjan@ru.is&quot;, fnames = &quot;Marjan&quot;, lname = &quot;Sirjani&quot;, occupancy = &quot;2015-05-15&quot;, room = &quot;545L&quot;, spaceid = &quot;1810&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Tripakis&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;temp Waller student&quot;, departure = &quot;2015-01-31&quot;, deskno = &quot;5&quot;, email = &quot;zhongjingshan@hotmail.com&quot;, fnames = &quot;Jingshan&quot;, lname = &quot;Zhong&quot;, occupancy = &quot;&quot;, room = &quot;545L&quot;, spaceid = &quot;2295&quot;, spacenotes = &quot;temp until told to move: he has an office in 550 Cory&quot;, sponsorlname = &quot;Waller&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;6&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545L&quot;, spaceid = &quot;1812&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Lickly&#10;2: VACANT&#10;2: VACANT&#10;3: Liu&#10;4: Zou&#10;5: Forbes&#10;6: VACANT&#10;7: Oh">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 575.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Room14" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545L">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 375.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Room15" class="ptolemy.domains.space.Room">
+        <property name="room" class="ptolemy.data.expr.StringParameter" value="545B">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 340.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-12.0, 0.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 0.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 0.0}">
+                </property>
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="Occupants15" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545B&quot;, spaceid = &quot;2988&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;&quot;, deskno = &quot;2&quot;, email = &quot;&quot;, fnames = &quot;&quot;, lname = &quot;&quot;, occupancy = &quot;&quot;, room = &quot;545B&quot;, spaceid = &quot;2989&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Gray&#10;?: VACANT&#10;?: VACANT&#10;?: VACANT&#10;?: Pranawahadi">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 340.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+    </entity>
+    <entity name="DatabaseQuery" class="ptolemy.actor.lib.database.DatabaseQuery">
+        <property name="query" class="ptolemy.actor.parameters.PortParameter" value="select distinct sponsorlname, count(sponsorlname) from v_spaces where trim(room) like '545_' group by sponsorlname">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="ArrayOfRecordsRecorder2" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">
+        <display name="Sponsor Key"/>
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{count_sponsorlname_ = &quot;0&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;&quot;}, {count_sponsorlname_ = &quot;5&quot;, sponsorlname = &quot;Brayton&quot;}, {count_sponsorlname_ = &quot;24&quot;, sponsorlname = &quot;Lee&quot;}, {count_sponsorlname_ = &quot;9&quot;, sponsorlname = &quot;Lustig&quot;}, {count_sponsorlname_ = &quot;2&quot;, sponsorlname = &quot;Lustiglab&quot;}, {count_sponsorlname_ = &quot;5&quot;, sponsorlname = &quot;Roychowdhury&quot;}, {count_sponsorlname_ = &quot;7&quot;, sponsorlname = &quot;Sangiovanni-Vincentelli&quot;}, {count_sponsorlname_ = &quot;11&quot;, sponsorlname = &quot;Seshia&quot;}, {count_sponsorlname_ = &quot;2&quot;, sponsorlname = &quot;Tripakis&quot;}, {count_sponsorlname_ = &quot;1&quot;, sponsorlname = &quot;Waller&quot;}}">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="ALL">
+        </property>
+        <property name="colorKey" class="ptolemy.data.expr.StringParameter" value="sponsorlname">
+        </property>
+        <property name="_configurer" class="ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">
+            <property name="parameterName" class="ptolemy.data.expr.StringParameter" value="records">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 150.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Occupants9" class="ptolemy.domains.space.Occupants">
+        <property name="records" class="ptolemy.data.expr.Parameter" value="{{bldg = &quot;Cory      &quot;, classcd = &quot;&quot;, departure = &quot;2020-12-31&quot;, deskno = &quot;1&quot;, email = &quot;&quot;, fnames = &quot;Mariya &quot;, lname = &quot;Doneva&quot;, occupancy = &quot;2015-03-02&quot;, room = &quot;545D&quot;, spaceid = &quot;2990&quot;, spacenotes = &quot;new hire&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;postdoc&quot;, departure = &quot;2015-10-31&quot;, deskno = &quot;2&quot;, email = &quot;muecker@gwdg.de&quot;, fnames = &quot;Martin&quot;, lname = &quot;Uecker&quot;, occupancy = &quot;2011-11-17&quot;, room = &quot;545D&quot;, spaceid = &quot;2997&quot;, spacenotes = &quot;&quot;, sponsorlname = &quot;Lustig&quot;}, {bldg = &quot;Cory      &quot;, classcd = &quot;grad&quot;, departure = &quot;2015-08-31&quot;, deskno = &quot;3&quot;, email = &quot;cunfuwbc@gmail.com&quot;, fnames = &quot;Bichen&quot;, lname = &quot;Wu&quot;, occupancy = &quot;2013-09-01&quot;, room = &quot;545D&quot;, spaceid = &quot;2992&quot;, spacenotes = &quot;Incoming Fall, 2013 Grad&quot;, sponsorlname = &quot;Roychowdhury&quot;}}">
+        </property>
+        <property name="iconColumns" class="ptolemy.data.expr.Parameter" value="display">
+        </property>
+        <property name="contents" class="ptolemy.data.expr.StringParameter" value="?: Gray&#10;?: VACANT&#10;?: VACANT&#10;?: VACANT&#10;?: Pranawahadi">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
+        </property>
+        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="color" class="ptolemy.actor.gui.ColorAttribute">
+        </property>
+    </relation>
+    <link port="Room.output" relation="relation10"/>
+    <link port="Occupants.input" relation="relation10"/>
+    <link port="Room2.output" relation="relation9"/>
+    <link port="Occupants2.input" relation="relation9"/>
+    <link port="Room3.output" relation="relation8"/>
+    <link port="Occupants3.input" relation="relation8"/>
+    <link port="Room4.output" relation="relation7"/>
+    <link port="Occupants4.input" relation="relation7"/>
+    <link port="Room5.output" relation="relation5"/>
+    <link port="Occupants5.input" relation="relation5"/>
+    <link port="Room6.output" relation="relation6"/>
+    <link port="Occupants6.input" relation="relation6"/>
+    <link port="Room7.output" relation="relation3"/>
+    <link port="Occupants7.input" relation="relation3"/>
+    <link port="Room8.output" relation="relation4"/>
+    <link port="Occupants8.input" relation="relation4"/>
+    <link port="Room9.output" relation="relation"/>
+    <link port="Room10.output" relation="relation2"/>
+    <link port="Occupants10.input" relation="relation2"/>
+    <link port="Occupants11.input" relation="relation14"/>
+    <link port="Room11.output" relation="relation14"/>
+    <link port="Room12.output" relation="relation12"/>
+    <link port="Occupants12.input" relation="relation12"/>
+    <link port="Room13.output" relation="relation11"/>
+    <link port="Occupants13.input" relation="relation11"/>
+    <link port="Occupants14.input" relation="relation13"/>
+    <link port="Room14.output" relation="relation13"/>
+    <link port="Room15.output" relation="relation15"/>
+    <link port="Occupants15.input" relation="relation15"/>
+    <link port="DatabaseQuery.output" relation="relation17"/>
+    <link port="ArrayOfRecordsRecorder2.input" relation="relation17"/>
+    <link port="Occupants9.input" relation="relation"/>
+</entity>
