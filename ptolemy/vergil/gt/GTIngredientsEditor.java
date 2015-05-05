@@ -662,7 +662,10 @@ public class GTIngredientsEditor extends PtolemyDialog {
     private static final Color _REGULAR_EXPRESSION_BACKGROUND = new Color(200,
             255, 255);
 
-    private static final String _REGULAR_EXPRESSION_HELP_FILE = "http://download.oracle.com/javase/tutorial/essential/regex/";
+    // Use #in_browser so that the URL is opened using the browser
+    // application.  The problem is that the Java HTML viewer cannot
+    // handle complex pages.
+    private static final String _REGULAR_EXPRESSION_HELP_FILE = "http://download.oracle.com/javase/tutorial/essential/regex/#in_browser";
 
     private static final int _ROW_HEIGHT = 45;
 
