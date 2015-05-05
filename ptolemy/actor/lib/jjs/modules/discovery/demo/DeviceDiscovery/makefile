@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	DeviceDiscovery.xml \
-	DeviceDiscoveryAccessor.xml
+	DeviceDiscoveryAccessor.xml \
+	DeviceDiscoveryNmap.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

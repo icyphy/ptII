@@ -30,13 +30,23 @@ function DiscoveryService() {
 	EventEmitter.call(this);
 	var self = this;
 	
-	this.discoverDevices = function(IPaddress) {
+	/** Discover devices on the local area network.
+	 * 
+	 * @param IPaddress The IP address of the host machine.
+	 * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
+	 */
+	this.discoverDevices = function(IPaddress, discoveryMethod) {
 		
 		var helper = new DiscoveryHelper();
 		
 		// discoverDevices() returns a string representation of a JSON array of 
 		// devices.  Covert this to a format the Ptolemy type system likes.
-		var devices = helper.discoverDevices(IPaddress);
+		var devices;
+		if (typeof discoveryMethod !== undefined) {
+			devices = helper.discoverDevices(IPaddress, discoveryMethod);
+		} else {
+			devices = helper.discoverDevices(IPaddress, "ping");
+		}
 		var ipArray = [];
 		ipArray.push(JSON.parse(devices)); 
 		
