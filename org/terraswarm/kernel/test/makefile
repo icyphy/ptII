@@ -35,7 +35,10 @@ ME =		org/terraswarm/kernel/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+# AccessorOne.java depends on JavaScript.java, which uses these
+# libraries.  If we run 'make fast', and JavaScript.class does not
+# exist, then we will need these jars in the classpath.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -83,6 +86,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	$(JTCLSH) alljtests.tcl
 
 test_jgraphical: test_auto
 

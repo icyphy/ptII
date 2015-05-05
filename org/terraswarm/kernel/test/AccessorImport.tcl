@@ -47,6 +47,8 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
 ####
 #
 test AccesorImport-1.1 {Test out importing of accessors} {
+    # This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
+
     set e1 [sdfModel 5]
     set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml} [java::null]]
     set urlSpec [$accessorFile getCanonicalPath]
@@ -137,47 +139,44 @@ test AccesorImport-1.1 {Test out importing of accessors} {
 </entity>
 }}
 
-# proc importFMU {fmuFileName} {
-#     set e1 [sdfModel 5]
-#     set fmuFile [java::call ptolemy.util.FileUtilities nameToFile $fmuFileName [java::null]]
-#     set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParameter]
-#     $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
+# This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
+proc importAccessor {accessorFileName} {
+    set e1 [sdfModel 5]
+    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile $accessorFileName [java::null]]
 
-#     # Look for fmus that are to be imported as Model Exchange fmus
-#     set modelExchange false
-#     set modelExchangeFMURegularExpressions [list {ME1.fmu$} {ME20.fmu$} {tankOpen.fmu$}]
-#     foreach regex $modelExchangeFMURegularExpressions {
-#         if [regexp $regex [$fmuFile toString]] {
-#             puts "FMUImport.tcl: [$fmuFile toString] is to be imported as a modelExchange fmu."
-#             set modelExchange true
-#         }
-#     }
+    set urlSpec [$accessorFile getCanonicalPath]
+    set changeRequestText [java::call org.terraswarm.kernel.AccessorOne accessorToMoML $urlSpec]
 
-#     java::call ptolemy.actor.lib.fmi.FMUImport importFMU $e1 $fmuFileParameter $e1 100.0 100.0 $modelExchange
+    java::call org.terraswarm.kernel.AccessorOne handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
-#     set fmuActorFileName [lindex [file split $fmuFileName] end]
-#     set fmuActorName [string range $fmuActorFileName 0 [expr {[string length $fmuActorFileName] -5}]]
-#     #puts "fmuActorFileName: $fmuActorFileName"
-#     #puts "fmuActorName: $fmuActorName"
-#     set entityList [$e1 entityList [java::call Class forName ptolemy.actor.lib.fmi.FMUImport]]
-#     set fmuActor [java::cast ptolemy.actor.lib.fmi.FMUImport [$entityList get 0]]
-#     puts [$fmuActor getFullName]
-#     #puts [$e1 exportMoML]
-#     #set moml [$fmuActor exportMoML]
-#     #return $moml
-# }
+    set accessorActorFileName [lindex [file split $accessorFileName] end]
+    set accessorActorName [string range $accessorActorFileName 0 [expr {[string length $accessorActorFileName] -5}]]
+    #puts "accessorActorFileName: $accessorActorFileName"
+    #puts "accessorActorName: $accessorActorName"
+    set entityList [$e1 entityList [java::call Class forName org.terraswarm.accessor.jjs.JSAccessor]]
+    set accessorActor [java::cast org.terraswarm.accessor.jjs.JSAccessor [$entityList get 0]]
+    #puts [$accessorActor getFullName]
+    #puts [$e1 exportMoML]
+    #set moml [$accessorActor exportMoML]
+    #return $moml
+}
 
-# ######################################################################
-# ####
-# #
+set accessorCount 0
 
-# set i 0
-# set files [glob auto/*.fmu]
-# foreach file $files {
-#     incr i
-#     test FMUImport-2.1.$i "test $file" {
-#         importFMU $file
-#         # Success is not throwing an exception
-#         list {}
-#     } {{}}
-# }
+proc importAccessors {accessorDirectory} {
+    global accessorCount
+    set files [glob $accessorDirectory/*.xml]
+    foreach file $files {
+        incr accessorCount
+        test AccessorImport-2.1.$accessorCount "test $file" {
+            #puts $file
+            importAccessor $file
+            # Success is not throwing an exception
+            list {}
+        } {{}}
+    }
+}
+
+importAccessors $PTII/org/terraswarm/kernel/test/auto/accessors
+importAccessors $PTII/org/terraswarm/accessor/jjs/test/auto/accessors
+
