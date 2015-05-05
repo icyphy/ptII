@@ -4364,11 +4364,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         /** The last token seen at the input port. */
         public Token lastInput;
 
-        /** The FMI scalar variable for this output. */
-        public FMIScalarVariable scalarVariable;
-
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
+        
+        /** The FMI scalar variable for this output. */
+        public FMIScalarVariable scalarVariable;
 
         /** The start value for this variable, or null if it is not given. */
         public Double start;
@@ -4378,16 +4378,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected static class Output {
         // FindBugs indicates that this should be a static class.
 
+        /** The set of input ports on which the output declares it depends. */
+        public Set<TypedIOPort> dependencies;
+        
+        /** The last double output seen at the input port. */
+        public double lastDoubleOutput;
+    	
         /** The FMI scalar variable for this output. */
         public FMIScalarVariable scalarVariable;
 
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
-
-        /** The set of input ports on which the output declares it depends. */
-        public Set<TypedIOPort> dependencies;
         
-        /** The last token seen at the input port. */
-        public double lastOutput;
     }
 }
