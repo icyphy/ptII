@@ -1377,11 +1377,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // Send the initial output values to the port.
                 if (_firstRound) {
                     _sendModelToPort(ooArr, port, currentTime);
-                    _outputs.get(ii).lastOutput = result;
-                } else if (_outputs.get(ii).lastOutput != result
+                    _outputs.get(ii).lastDoubleOutput = result;
+                } else if (_outputs.get(ii).lastDoubleOutput != result
                         && !_firstRound) {
                     _sendModelToPort(ooArr, port, currentTime);
-                    _outputs.get(ii).lastOutput = result;
+                    _outputs.get(ii).lastDoubleOutput = result;
                 }
             } else if (scalarVariable.type instanceof FMIStringType) {
                 throw new IllegalActionException("Type " + scalarVariable.type
