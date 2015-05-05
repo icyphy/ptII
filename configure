@@ -778,6 +778,7 @@ PTFMI_PACKAGES
 PTFMI_DIR
 PTEXCEL_PACKAGES
 PTEXCEL_DIR
+PTEVENTBUS_DIR
 PTDOCLETS_DIR
 PTDISTRIBUTED_PACKAGES
 PTDISTRIBUTED_JARS
@@ -13116,6 +13117,9 @@ PTVERTX_DIR=
 # Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTBROWSER_DIR=
 
+# Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTEVENTBUS_DIR=
+
 # Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTXEVENTBUS_DIR=
 
@@ -13158,6 +13162,7 @@ fi
 
             if test -d "$PTVERTX_JAR_DIR"; then
             PTBROWSER_DIR=browser
+	    PTEVENTBUS_DIR=eventbus
     	    PTVERTX_DIR=vertx
 	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
@@ -13185,7 +13190,7 @@ $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >
 	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTVERTX_JARS" >&5
 $as_echo "$PTVERTX_JARS" >&6; }; fi
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.eventbus ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -13923,6 +13928,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # PTDOCLETS_DIR is set to doclets and used in
 # $PTII/doc if tools.jar can be found.
+
+
+# Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # PTEXCEL_DIR is set to excel and used in
