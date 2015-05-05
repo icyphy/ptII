@@ -1120,6 +1120,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        _strucuralInformation.clear();
         /*
         for(Instantiable i : _newlyCreated){
             ComponentEntity e = (ComponentEntity) i;
@@ -1389,16 +1390,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * List all the newly created actors that need be destroyed when wrapping up.
      */
     private LinkedList<Instantiable> _newlyCreated ;
-    
-    /** Mapping between class ID in the FOM and classes in Ptolemy to instanciate.
-     * 
-    */
-    private HashMap<Integer,ComponentEntity> _classIdToPtIIClasses;
-    
-    /** 
-     * List all the free actors that can handle a new object whose ID is the key.
-    */
-    private HashMap<Integer,LinkedList<ComponentEntity>> _freeActors;
+   
+    /**
+     * Map between an Class ID given by the RTI and all we need to know
+     * about it in the model
+     */
     private HashMap<Integer,StructuralInformation> _strucuralInformation;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
@@ -2009,18 +2005,21 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 } 
                 
                 // List all instances of that class and set them up
-                List instancesOfCurrentClass = container.entityList(currentClass.getClass());
+                List possibleEntities = container.entityList(currentClass.getClass());
                 
                 LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
                 infoForThatClass.freeActors = freeActorForThatClass;
-                for (int i = 0; i < instancesOfCurrentClass.size(); i++) {
+                for (int i = 0; i < possibleEntities.size(); i++) {
                     
                     
-                    NamedObj ii = (NamedObj)instancesOfCurrentClass.get(i);
-                    if(! ii.getClassName().equals(currentClass.getName())){
+                    NamedObj currentInstance = (NamedObj)possibleEntities.get(i);
+                    String className  = currentClass.getName();
+                    String instanceName = currentInstance.getClassName();
+                    if(! (className.contains(instanceName) || 
+                            instanceName.contains(className)) ){
                         continue;
                     }
-                    CompositeActor currentActor = (CompositeActor) instancesOfCurrentClass.get(i);
+                    CompositeActor currentActor = (CompositeActor) possibleEntities.get(i);
                     LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
                     for(IOPort p : outputPortList){
                         infoForThatClass.addPortSinks(p);   
