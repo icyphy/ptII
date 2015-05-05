@@ -70,11 +70,12 @@ public class DiscoveryHelper {
      * 
      *  A class-C network has a netmask of /24, or 255.255.255.0.
      *
-     *  @param The IP address whose subnet should be scanned.  E.g., for 
-     *  IP address 192.168.5.7, scan 192.168.5.0 to 192.168.5.255.
+     *  @param IPAddress The IP address whose subnet should be scanned.  E.g., 
+     *  for IP address 192.168.5.7, scan 192.168.5.0 to 192.168.5.255.
+     *  @param discoveryMethod The discovery method to be used, e.g. nmap.
      *  @return A String containing a JSON representation of devices found.
      */
-    public String discoverDevices(String IPAddress) {
+    public String discoverDevices(String IPAddress, String discoveryMethod) {
         // FIXME: We probably want to take a broadcast address as an
         // input and ping that to get all the hosts.  Pinging 1
         // through 255 works for class C subnets.
@@ -90,54 +91,61 @@ public class DiscoveryHelper {
         if (IPAddress.lastIndexOf(".") > 0) {
             baseIP = IPAddress.substring(0, IPAddress.lastIndexOf("."));
             
-            // Select appropriate function for the OS
-            if (System.getProperty("os.name").substring(0,3)
-                    .equalsIgnoreCase("Win")) {
-                
-                // Run pings concurrently, in separate threads
-                ArrayList<Thread> runnables = new ArrayList();
-                
-                for (int i = 0; i <= 255; i++) {
-                    testIP = baseIP + "." + i;                   
-                    Thread thread = new Thread(new PingWindowsRunnable(testIP));
-                    runnables.add(thread);
-                    thread.start();
-                }
-                
-                // Wait for all threads to finish
-                for (int i = 0; i < runnables.size(); i++) {
-                    try {
-                        runnables.get(i).join();
-                    } catch(InterruptedException e){
-                        // Don't wait for it if interrupted
-                    }
-                }
-                
-                arpWindows();
-                
+            if (discoveryMethod.equalsIgnoreCase("nmap")) {
+                nmap(baseIP);
             } else {
-                if (_debugging) {
-                    System.out.println("Discovery: Run pings concurrently, in separate threads. baseIP: " + baseIP);
-                }
-                // Run pings concurrently, in separate threads
-                ArrayList<Thread> runnables = new ArrayList();
-                
-                for (int i = 0; i <= 255; i++) {
-                    testIP = baseIP + "." + i;
-                    Thread thread = new Thread(new PingLinuxRunnable(testIP));
-                    runnables.add(thread);
-                    thread.start();
-                }
-                
-                // Wait for all threads to finish
-                for (int i = 0; i < runnables.size(); i++) {
-                    try {
-                        runnables.get(i).join();
-                    } catch(InterruptedException e){
-                        // Don't wait for it if interrupted
+            
+                // Select appropriate function for the OS
+                if (System.getProperty("os.name").substring(0,3)
+                        .equalsIgnoreCase("Win")) {
+                    
+                    // Run pings concurrently, in separate threads
+                    ArrayList<Thread> runnables = new ArrayList();
+                    
+                    for (int i = 0; i <= 255; i++) {
+                        testIP = baseIP + "." + i;                   
+                        Thread thread = 
+                                new Thread(new PingWindowsRunnable(testIP));
+                        runnables.add(thread);
+                        thread.start();
                     }
+                    
+                    // Wait for all threads to finish
+                    for (int i = 0; i < runnables.size(); i++) {
+                        try {
+                            runnables.get(i).join();
+                        } catch(InterruptedException e){
+                            // Don't wait for it if interrupted
+                        }
+                    }
+                    
+                    arpWindows();
+                    
+                } else {
+                    if (_debugging) {
+                        System.out.println("Discovery: Run pings concurrently, in separate threads. baseIP: " + baseIP);
+                    }
+                    // Run pings concurrently, in separate threads
+                    ArrayList<Thread> runnables = new ArrayList();
+                    
+                    for (int i = 0; i <= 255; i++) {
+                        testIP = baseIP + "." + i;
+                        Thread thread = 
+                                new Thread(new PingLinuxRunnable(testIP));
+                        runnables.add(thread);
+                        thread.start();
+                    }
+                    
+                    // Wait for all threads to finish
+                    for (int i = 0; i < runnables.size(); i++) {
+                        try {
+                            runnables.get(i).join();
+                        } catch(InterruptedException e){
+                            // Don't wait for it if interrupted
+                        }
+                    }
+                    arpLinux();
                 }
-                arpLinux();
             }
         } else {
             System.err.println("DiscoveryHelper.discover("
@@ -210,7 +218,7 @@ public class DiscoveryHelper {
                        ip = token.substring(1, token.length() - 1);
                        
                        if (_debugging) {
-                           System.out.println("Discovery: name: " + name + ", token: " + token + " ,ip: " + ip);
+                           System.out.println("Discovery: name: " + name + ", mac: " + token + " ,ip: " + ip);
                        }
                        JSONObject object;
                        for (String key : ipMap.keySet()) {
@@ -265,7 +273,7 @@ public class DiscoveryHelper {
                        if (index != -1) {
                            // The Interface: IP entry the host machine.  Its mac
                            // is not listed.  Would need ipconfig /all to get it
-                           // TODO:  Do we want this?
+                           // TODO:  Do we want host mac?
                            if (index != 2) {
                                object.put("mac", "Host machine");                         
                            } else {
@@ -283,6 +291,44 @@ public class DiscoveryHelper {
            // If error, assume problem with MAC, since that's the only new info
            System.err.println("Arp error: MAC address is not JSON compatible.");
        }
+    }
+    
+    /** Execute the nmap command.  Nmap finds IP addresses, names and MAC 
+     *  addresses on the local area network.  The nmap program requires separate
+     *  installation on Mac and Windows; please see: https://nmap.org/
+     *  
+     *  @param baseIP The IP address of the host minus the subnet portion.
+     */
+    private void nmap(String baseIP) {
+        try {
+            Process process = 
+                Runtime.getRuntime().exec(_nmapCommand + baseIP + ".1/24");
+            
+            BufferedReader stdOut = new BufferedReader(new
+                    InputStreamReader(process.getInputStream()));
+               
+               String line;            
+          
+               // Sample nmap output:
+               // Starting Nmap 6.47 ( http://nmap.org ) at 2015-05-02 18:08 Eastern Daylight Time
+               // 
+               // Nmap scan report for EPSON3FBF20 (192.168.5.1)
+               // Host is up (0.12s latency).
+               // MAC Address: AD:19:27:3E:BE:21 (Seiko Epson)
+               // Nmap scan report for NP-2L543W046400 (192.168.5.4)
+               // Host is up (0.12s latency).
+               // MAC Address: DD:3B:5F:D0:B7:B2 (Roku)
+               // Nmap done: 256 IP addresses (5 hosts up) scanned in 13.59 seconds
+               
+               while ((line = stdOut.readLine()) != null) {
+                   // Look for "Nmap scan"                 
+                   if (line.startsWith("Nmap scan")) {
+                       readDeviceNmap(line, stdOut);   
+                   }
+               }
+        } catch(IOException e) {
+            System.err.println("Error executing " + _nmapCommand);
+        }
     }
     
     /** Execute ping of the testIP on a Linux or Mac platform.  
@@ -416,6 +462,78 @@ public class DiscoveryHelper {
         return device;
     } 
     
+    /** Read device information from a stream of Nmap output and save to ipMap.
+     * 
+     * @param line The previous line read
+     * @param stdOut The stream to read device information from.
+     */
+    private void readDeviceNmap(String line, BufferedReader stdOut) {
+        try {
+            StringTokenizer tokenizer = new StringTokenizer(line, " ");
+            String token, name = "Unknown", mac = "Unknown", ip;
+            
+            // First line has ip and sometimes name
+            for (int i = 1; i <=4; i++) {
+                token = tokenizer.nextToken();  // Nmap scan report for
+            }
+            
+            token = tokenizer.nextToken();
+            // name is present, e.g. EPSON3FBF20 (192.168.5.1)
+            if (tokenizer.hasMoreTokens()) {
+                name = token;
+                ip = tokenizer.nextToken();
+                ip = ip.substring(1, ip.length() - 1);
+            } else {
+                // name not present, e.g. 192.168.5.1
+                ip = token;
+            }
+    
+            line = stdOut.readLine();
+            
+            // Second line should say "Host is up"
+            if (line != null && line.startsWith("Host is up")) {
+                
+                // Third line, if present, has mac address.  Not always present.
+                line = stdOut.readLine();
+                if (line != null) {
+                    if (line.startsWith("MAC")) {
+                        tokenizer = new 
+                                StringTokenizer(line, " ");
+                        token = tokenizer.nextToken();
+                        token = tokenizer.nextToken();
+                        mac = tokenizer.nextToken();
+                    } else if (line.startsWith("Nmap scan")){
+                        readDeviceNmap(line, stdOut);
+                    }
+                }
+                
+                // Add to table if at least IP exists and host is up
+                try {
+                    if (_debugging) {
+                        System.out.println("Discovery: " + 
+                        "name: " + name + ", mac: " + mac + 
+                        " , ip: " + ip);
+                    }
+                    
+                    JSONObject device = 
+                        new JSONObject("{ \"IPaddress\": " + 
+                        ip + ", " + "\"name\": " + name + 
+                        ", \"mac\": Unknown }");
+                    // Have to put MAC separately due to colons in MAC
+                    device.put("mac", mac);
+                
+                    ipMap.put(ip, device);
+                } catch(JSONException e) {
+                    System.err.println("Nmap error: Can't " +
+                    "create JSON object for device at " +
+                    "IP " + ip);
+                }
+            }
+        } catch(IOException e) {
+            System.err.println("Error executing " + _nmapCommand);
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -488,7 +606,15 @@ public class DiscoveryHelper {
     /** The command to invoke the arp, the address resolution protocol. */
     private String _arpCommand = "arp -a";
 
+    /** Flag for debugging mode. */
     private final boolean _debugging = false;
+    
+    /** The command to invoke nmap, a network scanner, followed by a trailing 
+     *  space.  The nmap command is the same for all OSes.  
+     *  Note that nmap requires a separate installation on Mac and Windows.  
+     *  Please see:  https://nmap.org/
+     */
+    private String _nmapCommand = "nmap -sn ";
 
     /** Command to ping an IP address under Linux, followed by a trailing space. */
     private String _pingLinuxCommand = "ping -c 2 ";
