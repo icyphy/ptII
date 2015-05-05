@@ -650,29 +650,34 @@ public class FMIModelDescription {
     /** A data structure representing a continuous state of the FMU. */
     public static class ContinuousState {
         // FindBugs indicates that this should be a static class.
-        /** The name of the continuous state variable. */
-        public String name;
-
-        /** The start value for this variable, or null if it is not given. */
-        public Double start;
-
-        /** The nominal value for this variable, or null if it is not given. */
-        public Double nominal;
-
-        /** The list of dependent ScalarVariable elements. */
-        public LinkedList<FMIScalarVariable> dependentScalarVariables;
-
-        /** The FMI scalar variable for this state. */
-        public FMIScalarVariable scalarVariable;
 
         /** The set of input ports on which the state depends. */
         public Set<TypedIOPort> dependencies;
-
-        /** The Ptolemy state port for this state. */
-        public TypedIOPort port;
-
+        
+        /** The list of dependent ScalarVariable elements. */
+        public LinkedList<FMIScalarVariable> dependentScalarVariables;
+                
         /** The flag which indicates a change of a state. */
         public boolean hasChanged;
+        
+        /** The last double output seen. */
+        public double lastDoubleOutput;
+        
+        /** The name of the continuous state variable. */
+        public String name;
+
+        /** The nominal value for this variable, or null if it is not given. */
+        public Double nominal;
+        
+        /** The Ptolemy state port for this state. */
+        public TypedIOPort port;
+        
+        /** The FMI scalar variable for this state. */
+        public FMIScalarVariable scalarVariable;
+        
+        /** The start value for this variable, or null if it is not given. */
+        public Double start;
+
     }
 
     // /////////////////////////////////////////////////////////////////
