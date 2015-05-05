@@ -1122,7 +1122,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param milliseconds The number of milliseconds in a period.
      *  @param id The id to use for the timeout function.
      */
-    private void _runThenReschedule(final Runnable function, int milliseconds, Integer id) {
+    private void _runThenReschedule(final Runnable function, final int milliseconds, final Integer id) {
 	function.run();
         final Runnable reschedulingFunction = new Runnable() {
             @Override
