@@ -4,7 +4,7 @@
 <entity name="VertxEventBus1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 25, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 153, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -105,7 +105,7 @@
         </property>
     </entity>
     <entity name="VertxPublish" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    &#10;var Vertx = require('vertxEventBus');&#10;var bus;&#10;&#10;exports.initialize = function() {&#10;  var port = get(busHostPort);&#10;  var host = get(busHost);&#10;  bus = new Vertx.VertxBus(this, {'port':port, 'host':host});&#10;}&#10;&#10;addInputHandler(function() {&#10;  var topic = get(address);&#10;  var msg = get(message);&#10;  if (msg) {&#10;    bus.publish(topic, JSON.stringify(msg));&#10;  }&#10;}, message);&#10;&#10;	//  &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    &#10;var eventbus = require('eventbus');&#10;var bus;&#10;&#10;exports.initialize = function() {&#10;  var port = get(busHostPort);&#10;  var host = get(busHost);&#10;  bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;}&#10;&#10;addInputHandler(function() {&#10;  var topic = get(address);&#10;  var msg = get(message);&#10;  if (msg) {&#10;    bus.publish(topic, JSON.stringify(msg));&#10;  }&#10;}, message);&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;}&#10;&#10;	//  &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxPublish.xml">
         </property>
@@ -133,7 +133,9 @@
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 195.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -161,7 +163,7 @@
         </port>
     </entity>
     <entity name="VertxSubscribe" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var Vertx = require('vertxEventBus');&#10;var bus;&#10;&#10;exports.initialize = function() {&#10;    var port = get(busHostPort);&#10;    var host = get(busHost);&#10;    bus = new Vertx.VertxBus(this, {'port':port, 'host':host});&#10;    bus.registerSubscriber(get(address), &#10;        function onReceived(msg) {&#10;            // Try to parse it as JSON. If this fails, just forward the message.&#10;            try {&#10;                msg = JSON.parse(msg);&#10;            } catch (error) {}&#10;            send(msg, message);&#10;        }&#10;    );&#10;}&#10;&#10;exports.wrapup = function() {&#10;    bus.unregisterSubscriber();&#10;}&#10;  	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var eventbus = require('eventbus');&#10;var bus;&#10;var currentAddress;&#10;&#10;var onReceived = function(msg) {&#10;    send(msg, message);&#10;}&#10;&#10;exports.initialize = function() {&#10;    var port = get(busHostPort);&#10;    var host = get(busHost);&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    currentAddress = get(address);&#10;    bus.subscribe(currentAddress);&#10;    bus.on(get(address), onReceived);&#10;}&#10;&#10;addInputHandler(function() {&#10;    var topic = get(address);&#10;    if (topic != currentAddress) {&#10;        bus.unsubscribe(currentAddress);&#10;        bus.subscribe(topic);&#10;    }&#10;}, address);&#10;&#10;exports.wrapup = function() {&#10;    bus.removeAllListeners();&#10;}&#10;  	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxSubscribe.xml">
         </property>
@@ -183,13 +185,13 @@
             <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The message from the bus.">
             </property>
         </property>
-        <property name="busHost" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
+        <property name="busHost" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="busHostPort" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
         </property>
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 315.0]">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -220,13 +222,13 @@
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="{125.0, 320.0}">
         </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="Ramp.output" relation="relation2"/>
