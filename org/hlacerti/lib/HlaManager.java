@@ -110,6 +110,8 @@ import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.kernel.ComponentEntity;
@@ -1651,15 +1653,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                 recv.link(r);
                                             }
                                         }
-
+                                    }
+                                    if(_debugging){
+                                        _debug("New object will do object " + objectName);
                                     }
                                     _newlyCreated.add(instance);
                                 } else{
                                     //retrieve and remove head
                                     instance = actors.poll();
-                                     newActor = (CompositeActor) instance;
+                                    newActor = (CompositeActor) instance;
+                                    newActor.setDisplayName(objectName);
                                     if(_debugging){
-                                        _debug(instance.getName() + " will do object " + objectHandle);
+                                        _debug(instance.getName() + " will do object " + objectName);
                                     }
                                 }
 
@@ -2005,10 +2010,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 
                 // List all instances of that class and set them up
                 List instancesOfCurrentClass = container.entityList(currentClass.getClass());
+                
                 LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
                 infoForThatClass.freeActors = freeActorForThatClass;
                 for (int i = 0; i < instancesOfCurrentClass.size(); i++) {
-
+                    
+                    
+                    NamedObj ii = (NamedObj)instancesOfCurrentClass.get(i);
+                    if(! ii.getClassName().equals(currentClass.getName())){
+                        continue;
+                    }
                     CompositeActor currentActor = (CompositeActor) instancesOfCurrentClass.get(i);
                     LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
                     for(IOPort p : outputPortList){
