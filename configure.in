@@ -5907,6 +5907,9 @@ PTVERTX_DIR=
 # Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTBROWSER_DIR=
 
+# Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTEVENTBUS_DIR=
+
 # Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTXEVENTBUS_DIR=
 
@@ -5939,6 +5942,7 @@ else
         PTVERTX_JAR_DIR=$PTII/lib)
             if test -d "$PTVERTX_JAR_DIR"; then
             PTBROWSER_DIR=browser
+	    PTEVENTBUS_DIR=eventbus
     	    PTVERTX_DIR=vertx
 	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
@@ -5963,7 +5967,7 @@ else
 
         if test ! -z "$PTVERTX_DIR"; then
 	    PT_MSG_RESULT([$PTVERTX_JARS])
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.eventbus ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -6565,6 +6569,9 @@ AC_SUBST(PTDISTRIBUTED_PACKAGES)
 # PTDOCLETS_DIR is set to doclets and used in 
 # $PTII/doc if tools.jar can be found.
 AC_SUBST(PTDOCLETS_DIR)
+
+# Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+AC_SUBST(PTEVENTBUS_DIR)
 
 # PTEXCEL_DIR is set to excel and used in
 # $PTII/ptolemy/actor/lib/makefile if jxl was found

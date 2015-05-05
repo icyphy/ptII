@@ -85,6 +85,8 @@
     <include name="ptolemy/actor/lib/jjs/modules/browser/browser.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/discovery/browser.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar" />
@@ -1815,6 +1817,26 @@
       </fileset>
     </jar>
 
+    
+    <!-- ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/eventbus/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/eventbus/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/eventbus/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/eventbus/*.json"/>
+      </fileset>
+    </jar>
     
     <!-- ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar -->
     <jar defaultexcludes="yes"

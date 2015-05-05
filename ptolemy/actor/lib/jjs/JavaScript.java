@@ -922,7 +922,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IllegalActionException If the superclass throws it or the
      *   refiring request fails.
      */
-    public boolean postfire() throws IllegalActionException {
+    @Override
+	public boolean postfire() throws IllegalActionException {
 	for (IOPort input : this.inputPortList()) {
             // Skip the scriptIn input.
             if (input == script.getPort()) {
@@ -978,7 +979,8 @@ public class JavaScript extends TypedAtomicActor {
         // Create a new function that invokes the specified function and then reschedules
         // itself.
         final Runnable reschedulingFunction = new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
         	_runThenReschedule(function, milliseconds, id);
             }
         };
@@ -1123,7 +1125,8 @@ public class JavaScript extends TypedAtomicActor {
     private void _runThenReschedule(final Runnable function, int milliseconds, Integer id) {
 	function.run();
         final Runnable reschedulingFunction = new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
         	_runThenReschedule(function, milliseconds, id);
             }
         };

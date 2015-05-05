@@ -491,6 +491,9 @@ PTDISTRIBUTED_PACKAGES = @PTDISTRIBUTED_PACKAGES@
 # $PTII/doc if tools.jar can be found.
 PTDOCLETS_DIR =		@PTDOCLETS_DIR@ 	
 
+# Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTEVENTBUS_DIR =	@PTEVENTBUS_DIR@
+
 # PTEXCEL_DIR is set to excel and used in
 # $PTII/ptolemy/actor/lib/makefile if jxl was found
 PTEXCEL_DIR=	@PTEXCEL_DIR@
