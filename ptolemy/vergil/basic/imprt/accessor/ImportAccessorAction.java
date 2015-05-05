@@ -1,6 +1,6 @@
 /* Implement the Import Accessor menu choice.
 
-   Copyright (c) 2014 The Regents of the University of California.
+   Copyright (c) 2014-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -31,19 +31,14 @@ import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import org.json.JSONArray;
+import org.terraswarm.kernel.AccessorOne;
 
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -56,8 +51,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
@@ -69,12 +62,14 @@ import diva.graph.GraphController;
 
 /**
    An Action to import an Internet of Things (IoT) accessor.
-   This action presents a dialog box that permits specifying a URL or local directory.
-   If the URL or local directory contains a file named index.json, then it presents
-   a list of the options given in that file, which it assumes are all accessors.
-   To manually specify a particular accessor on the local file system, you can
-   browse to its directory, but then you have to manually type in the file name
-   of the accessor.
+   
+   <p>This action presents a dialog box that permits specifying a URL
+   or local directory.  If the URL or local directory contains a file
+   named index.json, then it presents a list of the options given in
+   that file, which it assumes are all accessors.  To manually specify
+   a particular accessor on the local file system, you can browse to
+   its directory, but then you have to manually type in the file name
+   of the accessor.</p>
 
    <p>This package is optional.  To add the "Import Accessor" menu choice
    to the GraphEditor, add the following to the configuration:</p>
@@ -159,113 +154,22 @@ public class ImportAccessorAction extends AbstractAction {
             final double x = bounds.getWidth() / 2.0;
             final double y = bounds.getHeight() / 2.0;
 
-            URL url;
-            String input = "";
-            _lastAccessorName = query.getStringValue("accessor");
-            final String urlSpec = _lastLocation + _lastAccessorName;
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("<group name=\"auto\">\n");
+            final String urlSpec = _lastLocation + query.getStringValue("accessor");
+            String changeRequest = null;
             try {
-                url = FileUtilities.nameToURL(urlSpec, null, null);
-
-                BufferedReader in = null;
-                try {
-                    in = new BufferedReader(new InputStreamReader(
-                                    url.openStream()));
-                    StringBuffer contents = new StringBuffer();
-                    while ((input = in.readLine()) != null) {
-                        contents.append(input);
-                    }
-
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    String xsltLocation = "$CLASSPATH/org/terraswarm/kernel/XMLJStoMOML.xslt";
-                    Source xslt = new StreamSource(FileUtilities.nameToFile(
-                                    xsltLocation, null));
-                    Transformer transformer = factory.newTransformer(xslt);
-                    StreamSource source = new StreamSource(new InputStreamReader(
-                                    url.openStream()));
-                    StringWriter outWriter = new StringWriter();
-                    StreamResult result = new StreamResult(outWriter);
-                    try {
-                        transformer.transform(source, result);
-                        contents = outWriter.getBuffer();
-                        buffer.append(contents);
-                    } catch (Throwable throwable) {
-                        throw new Throwable("Failed to parse \""
-                                + url
-                                + "\".",
-                                throwable);
-                    }
-                } finally {
-                    if (in != null) {
-                        in.close();
-                    }
-                }
+                changeRequest = AccessorOne.accessorToMoML(urlSpec);
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to import accessor \""
                         + urlSpec + "\".", throwable);
                 return;
             }
-            buffer.append("</group>\n");
-
-            MoMLChangeRequest request = new MoMLChangeRequest(this, context,
-                    buffer.toString()) {
-                @Override
-                protected void _postParse(MoMLParser parser) {
-                    List<NamedObj> topObjects = parser.topObjectsCreated();
-                    if (topObjects == null) {
-                        return;
-                    }
-                    for (NamedObj object : topObjects) {
-                        Location location = (Location) object
-                                .getAttribute("_location");
-                        // Set the location.
-                        if (location == null) {
-                            try {
-                                location = new Location(object, "_location");
-                            } catch (KernelException e) {
-                                // Ignore.
-                            }
-                        }
-                        if (location != null) {
-                            try {
-                                location.setLocation(new double[] { x, y });
-                            } catch (IllegalActionException e) {
-                                // Ignore.
-                            }
-                        }
-                        // Set the source.
-                        Attribute source = object
-                                .getAttribute("accessorSource");
-                        if (source instanceof StringAttribute) {
-                            try {
-                                ((StringAttribute) source)
-                                        .setExpression(urlSpec);
-                                // Have to mark persistent or the urlSpec will be assumed to be part
-                                // of the class definition and hence will not be exported to MoML.
-                                ((StringAttribute) source)
-                                        .setDerivedLevel(Integer.MAX_VALUE);
-                                ((StringAttribute) source).setPersistent(true);
-                            } catch (IllegalActionException e) {
-                                // Should not happen.
-                                throw new InternalErrorException(object, e,
-                                        "Failed to set accessorSource");
-                            }
-                        }
-                    }
-                    parser.clearTopObjectsList();
-                    super._postParse(parser);
-                }
-
-                @Override
-                protected void _preParse(MoMLParser parser) {
-                    super._preParse(parser);
-                    parser.clearTopObjectsList();
-                }
-            };
-            context.requestChange(request);
+            AccessorOne.handleAccessorMoMLChangeRequest(this,
+                    urlSpec, context, changeRequest, x, y);
         }
     }
+
+    ////////////////////////////////////////////////////////////
+    ////          private methods                           ////
 
     private void _updateComboBox(JComboBox box, Query query) {
         box.removeAllItems();
@@ -302,8 +206,8 @@ public class ImportAccessorAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables
-
+    ////                    private variables                      ////
+    
     /** The top-level window of the contents to be exported. */
     BasicGraphFrame _frame;
 
