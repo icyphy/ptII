@@ -566,40 +566,36 @@ public class FMIModelDescription {
 
     /**
      * Parse the ModelStructure to catch the I/O direct dependencies.
-     * @param node The node  to be parsed
+     * @param node The node to be parsed.
      */
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
         Long valueReference = modelVariables.get(Integer
         		.parseInt(attributes.getNamedItem("index")
                 .getNodeValue()) - 1).valueReference;
-
         Node dependencyNode = attributes.getNamedItem("dependencies");
         if (dependencyNode != null) {
         	String[] dependencies; 
+        	List <String> inputDependencies = new LinkedList<String>();
         	if (dependencyNode.getNodeValue().trim().length() != 0){
         		dependencies = dependencyNode.getNodeValue().trim()
                     .split(" ");
+        		// Create a list which contains dependent variables which are inputs.
+        		for (int j = 0; j < dependencies.length; j++) {
+        			if (modelVariables
+					.get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)){
+        				inputDependencies.add(dependencies[j]);
+        			}
+        		}
         	}
-        	else{
-        		// The specification (FMI 2.0) says on page 61
-        		// that if the dependencies attribute of an FMU
-        		// is present but is empty, then unknown depends  
-        		// on none of the knowns. The empty string will cause
-        		// the directDependency to be cleared which in turn
-        		// will allow all variables which have this dependency
-        		// to be adequately define as non-dependent on any inputs.
-        		dependencies = new String[0];
-        		}        
             for (int i = 0; i < modelVariables.size(); i++) {
                 if (modelVariables.get(i).valueReference == valueReference) {
                     modelVariables.get(i).directDependency.clear();
-                    for (int j = 0; j < dependencies.length; j++) {
-
+                    for (int j = 0; j < inputDependencies.size(); j++) {
 						for (int k = 0; k < modelVariables.size(); k++) {
 							try {
 								if ((modelVariables.get(k).valueReference == modelVariables
-										.get(Integer.parseInt(dependencies[j]) - 1).valueReference) 
+										.get(Integer.parseInt(inputDependencies.get(j)) - 1).valueReference) 
 										&& modelVariables.get(k).causality.equals(Causality.input)) {
 									modelVariables.get(i).directDependency
 											.add(modelVariables.get(k).name);
@@ -607,7 +603,7 @@ public class FMIModelDescription {
 								}
 							} catch (NumberFormatException ex) {
 								NumberFormatException nfx = new NumberFormatException(
-										"Failed to parse \"" + dependencies[j]
+										"Failed to parse \"" + inputDependencies.get(j)
 												+ "\", which is the " + j
 												+ " (0-based) dependency.");
 								nfx.initCause(ex);
