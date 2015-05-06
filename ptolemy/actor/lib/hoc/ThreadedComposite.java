@@ -109,6 +109,9 @@ import ptolemy.kernel.util.Workspace;
  inputs. The inside thread will also exit if stop() is called on this
  actor; however, in this case, which iterations are completed
  is nondeterminate (there may be inputs left unprocessed).
+ If any inside actor return false from postfire(), then the
+ inside thread will also terminate and this actor will return false
+ from postfire.
  <p>
  The parameters of this actor include all the parameters of the
  contained actor, and setting those parameters automatically
@@ -388,7 +391,7 @@ public class ThreadedComposite extends MirrorComposite {
             }
             if (actor.iterate(1) == Executable.STOP_ITERATING) {
                 result = false;
-                _debug("---- Prefire returned false: " + actor.getFullName());
+                _debug("---- Postfire returned false: " + actor.getFullName());
             }
         }
         return result;
@@ -770,7 +773,7 @@ public class ThreadedComposite extends MirrorComposite {
             // not have been consumed yet.
             _inputTokens = new LinkedList<QueuedToken>();
 
-            boolean result = _thread.isAlive();
+            boolean result = _thread.isAlive() || !_outputFrames.isEmpty();
 
             if (ThreadedComposite.this._debugging) {
                 ThreadedComposite.this._debug("Prefire returns " + result);
@@ -846,7 +849,8 @@ public class ThreadedComposite extends MirrorComposite {
                 // Give the inside thread a chance to react.
                 Thread.yield();
             }
-            return _thread.isAlive();
+            boolean isAlive = _thread.isAlive();
+            return isAlive || !_outputTimes.isEmpty();
         }
 
         /** Override the base class to post a "stop frame" on the queue
@@ -1119,7 +1123,10 @@ public class ThreadedComposite extends MirrorComposite {
                         }
                         // Iterate the contained actors.
                         if (!iterateContainedActors()) {
-                            break;
+                            // Collect the outputs so that outputs from this
+                            // final iteration are produced, then terminate this
+                            // thread.
+                            _stopRequested = true;
                         }
 
                         // If outputs are produced by the iteration, then
