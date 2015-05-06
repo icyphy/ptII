@@ -33,7 +33,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 190.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -44,7 +44,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{\&quot;hello\&quot;:\&quot;world\&quot;}&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{hello = &quot;world&quot;}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
