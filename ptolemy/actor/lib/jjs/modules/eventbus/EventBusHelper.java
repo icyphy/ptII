@@ -123,6 +123,47 @@ public class EventBusHelper {
 	bus.publish(address, message);
     }
     
+    /** Send text data to exactly one recipient on the Vertx event bus.
+     *  According to the Vert.x documentation, the recipient is choosen
+     *  in a loosely round-robin fashion. If a reply has been set via
+     *  {@link #setReply(String)}, then if an when the reply is received,
+     *  the associated JavaScript object's reply() function will be invoked.
+     *  @param address The address, (topic, channel name, stream ID,...) 
+     *  @param message A message to be published, as a string.
+     */
+    public void send(String address, String message) {
+	EventBus bus = _vertx.eventBus();
+	bus.send(address, message);
+    }
+
+    /** Send text data to exactly one recipient on the Vertx event bus
+     *  and handle the reply by invoking the specified function.
+     *  According to the Vert.x documentation, the recipient is choosen
+     *  in a loosely round-robin fashion. If a reply has been set via
+     *  {@link #setReply(String)}, then if an when the reply is received,
+     *  the associated JavaScript object's reply() function will be invoked.
+     *  @param address The address, (topic, channel name, stream ID,...) 
+     *  @param message A message to be published, as a string.
+     */
+    public void send(String address, String message, final Object replyHandler) {
+	EventBus bus = _vertx.eventBus();
+	Handler<Message> newHandler = new Handler<Message>() {
+	    public void handle(Message message) {
+		_currentObj.callMember("notifyReply", replyHandler, message.body());
+	    }
+	};
+	bus.send(address, message, newHandler);
+    }
+
+    /** Set the reply to send in response to any point-to-point
+     *  events received in the future.
+     *  @param reply A reply to send when an event is received, or null
+     *   to not send any replies.
+     */
+    public void setReply(String reply) {
+	_reply = reply;
+    }
+
     /** Subscribe to the specified address on the event bus.
      *  Whenever an event is published to this address by some
      *  client in the event bus cluster, this
@@ -134,7 +175,7 @@ public class EventBusHelper {
      *  @param address The address on the bus to subscribe to.
      *  @see #unsubscribe(String)
      */
-    public void subscribe(String address) {
+    public void subscribe(final String address) {
 	if (_subscriptions == null) {
 	    _subscriptions = new HashMap<String,Handler>();
 	}
@@ -144,6 +185,9 @@ public class EventBusHelper {
 	Handler<Message> newHandler = new Handler<Message>() {
 	    public void handle(Message message) {
                 _currentObj.callMember("notify", address, message.body());
+                if (_reply != null) {
+                    message.reply(_reply);
+                }
 	    }
 	};
 	_subscriptions.put(address, newHandler);
@@ -158,7 +202,7 @@ public class EventBusHelper {
      *  @see #subscribe(String)
      *  @see #unsubscribe()
      */
-    public void unsubscribe(String address) {
+    public void unsubscribe(final String address) {
 	if (_subscriptions != null) {
 	    EventBus bus = _vertx.eventBus();
 	    if (address == null) {
@@ -175,15 +219,20 @@ public class EventBusHelper {
 		}
 	    }
 	}
-    }    
-        
+    }
+   
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
     
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
+    
+    /** The reply to send in response to received messages, or null to send no reply. */
+    private String _reply = null;
 
-    /** Set of addresses to which the associated JavaScript object is subscribed. */
+    /** Map from addresses to which the associated JavaScript object is
+     *  subscribed to the handler function.
+     */
     private Map<String,Handler> _subscriptions;
     
     /** An unclustered Vertx instance, if it has been created. */
