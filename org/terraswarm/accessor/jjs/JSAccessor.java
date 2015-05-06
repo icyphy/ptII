@@ -27,9 +27,14 @@
  */
 package org.terraswarm.accessor.jjs;
 
+import org.terraswarm.kernel.AccessorOne;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -95,6 +100,9 @@ public class JSAccessor extends JavaScript {
         accessorSource = new StringAttribute(this, "accessorSource");
         accessorSource.setVisibility(Settable.NOT_EDITABLE);
 
+        reloadAccessor = new Parameter(this, "reloadAccessor", BooleanToken.FALSE);
+        reloadAccessor.setTypeEquals(BaseType.BOOLEAN);
+
         SingletonParameter hide = new SingletonParameter(script, "_hide");
         hide.setExpression("true");
 
@@ -116,6 +124,48 @@ public class JSAccessor extends JavaScript {
 
     /** The source of the accessor (a URL). */
     public StringAttribute accessorSource;
+
+    /** If true, then reload the accessor during preinitialize().
+     *  The default value is a boolean token with the value false,
+     *  indicating that the accessor is not reloaded during preinitialize();
+     */
+    public Parameter reloadAccessor;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+
+    /** If necessary reload the accessor.
+     *  @exception IllegalActionException If the accessor cannot be reloaded
+     *  or if thrown by the base class.
+     */
+    @Override
+    public void preinitialize() throws IllegalActionException {
+        // "Need to create a new actor and splice it in where the old
+        // actor was, all the while preserving parameter overrides and
+        // port connections. Here, having a type check at the actor
+        // level would be useful... Is the new version of the accessor
+        // a substitution instance for the old?"
+        if (((BooleanToken)reloadAccessor.getToken()).booleanValue()) {
+            try {
+                // Get the ChangeRequest
+                String changeRequest = AccessorOne.accessorToMoML(accessorSource.getExpression());
+
+                // Iterate through the ports and parameters and look for
+                // Mismatches.
+
+                // Look for ports and parameters that are not present in
+                // the new accessor.
+
+                // Here's where it gets tricky, do we delete ourselves and
+                // then recreate the actor?
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Problem reloading \"" + accessorSource.getExpression() + "\".");
+            }
+        }
+        super.preinitialize();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
