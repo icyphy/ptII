@@ -2939,7 +2939,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             dependencies.add(inputPort);
                         }
                     }
-                } else if (scalarVariable.directDependency != null) {
+                } else if (scalarVariable.directDependency != null 
+                		&& scalarVariable.directDependency.size()!=0) {
                     // No override is given in the model.
                     // Use the dependencies declared in the FMU modelDescription
                     // file.
@@ -2960,6 +2961,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         dependencies.add(inputPort);
                     }
                 }
+				// Handle the case where the directDependency is not null but is
+				// empty. The FMU should remove any dependenc on inputs. 
+				else if (scalarVariable.directDependency != null
+						&& scalarVariable.directDependency.size() == 0) {
+					dependencies = new HashSet<TypedIOPort>();
+				}
                 output.dependencies = dependencies;
                 _outputs.add(output);
             }
