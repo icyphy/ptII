@@ -1,10 +1,10 @@
 /**
- * @file consumerCPP.cc
+ * @file producerFederate.cc
  *
  * @brief This federate simulates a...
  *
- * $Id$
- * $Author$
+ * $Id: producerCPP.cc 71890 2015-04-03 18:28:43Z David.COME@supaero.isae.fr $
+ * $Author: David.COME@supaero.isae.fr $
  * $Data$
  */
 
@@ -51,25 +51,12 @@ using std::endl;
 using std::auto_ptr;
 
 /**
- * The class consumerCPPAmb realizes... So the occurrence of special federate
+ * The class producerFedAmb realizes... So the occurrence of special federate
  * services can be determined in main().
  */
-class consumerCPPAmb : public NullFederateAmbassador {
-
-private:
-
-  double val1;
-  double val2;
-
-  bool newVal1;
-  bool newVal2;
+class producerFedAmb : public NullFederateAmbassador {
 
 public:
-    
-  RTI::ObjectClassHandle myObjectID;
-  RTI::AttributeHandle val1Id;
-  RTI::AttributeHandle val2Id;
-
   /*****************************/
   /* TIME MANAGEMENT VARIABLES */
   /*****************************/
@@ -80,40 +67,11 @@ public:
   RTIfedTime _TimeStep ;   
   RTIfedTime _Lookahead ;   
   RTIfedTime _RestOfTimeStep ; 
+    
+  producerFedAmb() : NullFederateAmbassador() { }
+  virtual ~producerFedAmb() throw (RTI::FederateInternalError) {}
 
-  consumerCPPAmb() : NullFederateAmbassador(), 
-		     val1(0), newVal1(false),
-                     val2(0), newVal2(false) {
-    /* variables time management */
-    _IsTimeReg = _IsTimeConst = _TimeAdvanceGrant = false ;
-    }
-  virtual ~consumerCPPAmb() throw (RTI::FederateInternalError) {}
-
-    bool getNewVal1() const {
-        return newVal1;
-    }
-
-    void setNewVal1(bool nval) {
-	newVal1 = nval;
-    } 
-
-    double getVal1() {
-      return val1;
-    }
-
-    bool getNewVal2() const {
-        return newVal2;
-    }
-
-    void setNewVal2(bool nval) {
-	newVal2 = nval;
-    } 
-
-    double getVal2() {
-      return val2;
-    }
-
-    /*************************************************/
+      /*************************************************/
     /* Accesseurs pour les flags de gestion du temps */
     /*************************************************/
     bool Get_IsTimeReg()        { return _IsTimeReg ;} ; 
@@ -145,87 +103,6 @@ public:
     bool Get_InPause()         { return _InPause;} ; 
     void Set_InPause(bool val) {_InPause = val;} ;
 
-    /**
-     * Reflect Attribute Values. This callback informs the federate of a state
-     * update for a set of instance-attributes according to its current
-     * subscription interests.
-     * @ingroup RequiredFederateServices
-     * @param[in] theObject,
-     * @param[in] theAttributes,
-     * @param[in] theTag
-     */
-    /*void
-    reflectAttributeValues (RTI::ObjectHandle theObject,
-                            const RTI::AttributeHandleValuePairSet&
-                            theAttributes,
-                            const char *theTag)
-    throw ( RTI::ObjectNotKnown,
-            RTI::AttributeNotKnown,
-            RTI::FederateOwnsAttributes,
-            RTI::FederateInternalError) {
-        RTI::ULong length;
-
-        cout << "DEBUG: REFLECT is called ! " << endl;
-
-        for (unsigned int i=0; i<theAttributes.size(); i++) {
-            RTI::AttributeHandle handle = theAttributes.getHandle(i);
-            length = theAttributes.getValueLength(i);
-	    HLAdata<HLAfloat64BE> value;
-	    theAttributes.getValue(i, const_cast<char*>(value.data()), length);	    
-
-	    if (handle == val1Id) {
-                /*char *attrValue;
-                //attrValue = new char[length];
-                //theAttributes.getValue(i, attrValue, length);
-	        //val1 = *(reinterpret_cast<double*>(attrValue));
-                //newVal1 = true;
-                //delete[] attrValue;
-                //HLAdata<HLAfloat64BE> F64BE(attrValue,length);
-
-                val1 = (*value);
-                newVal1 = true;
-
-	    } else if (handle == val2Id) {
-                val2 = (*value);
-                newVal2 = true;
-	    }
-        }
-    }*/
-
-   
-    /*********     Callback : Reflect Attribute Values with time           ***********/
-    void reflectAttributeValues
-       (RTI::ObjectHandle theObject,
-        const RTI::AttributeHandleValuePairSet& theAttributes,
-        const RTI::FedTime& theTime,
-        const char *theTag,
-        RTI::EventRetractionHandle)
-    throw (RTI::ObjectNotKnown,
-           RTI::AttributeNotKnown,
-           RTI::FederateOwnsAttributes,
-           RTI::InvalidFederationTime, 
-           RTI::FederateInternalError) 
-    {
-    RTI::ULong length;
-
-    //cout << "DEBUG: REFLECT with TIME is called ! at Time " << &theTime << endl;
-
-        for (unsigned int i=0; i<theAttributes.size(); i++) {
-            RTI::AttributeHandle handle = theAttributes.getHandle(i);
-            length = theAttributes.getValueLength(i);
-	    HLAdata<HLAfloat64BE> value;
-	    theAttributes.getValue(i, const_cast<char*>(value.data()), length);	    
-
-	    if (handle == val1Id) {
-                val1 = (*value);
-                newVal1 = true;
-	    } else if (handle == val2Id) {
-                val2 = (*value);
-                newVal2 = true;
-	    }
-        }
- 
-}  /********* Fin de Callback : Reflect Attribute Values with time      ***********/
 
 /************************************************/
 /* HLA specific methods : TIME MANAGEMENT */
@@ -254,10 +131,11 @@ void timeAdvanceGrant(const RTI::FedTime& theTime)
                                    RTI::FederateInternalError) {
     _LocalTime = theTime ;
     _TimeAdvanceGrant =  true ;
- if (true){ 
+    if (true){ 
         cout << " >> TAG(" << _LocalTime << ") RCV == LocalTime = " << _LocalTime << " << " << endl; 
     } // Fin du if (TRACE_SIMU){ 
 } // End of timeAdvanceGrant
+
 
 /************************************************/
 /* HLA specific methods : SYNCHRONISATION */
@@ -288,27 +166,26 @@ void federationSynchronized(const char *label)
 } // End of federationSynchronized
 
 };
-
-
-
-
+  
 /**
- * main of consumerCPP.cc
+ * main of producerFed.cc
  */
 int main() {
     RTI::RTIambassador   rtiAmb;
-    consumerCPPAmb       myFedAmb;
+    producerFedAmb       myFedAmb;
 
     string federationName = "CoSimulation";
-    string federateName   = "consumerCPP";
+    string federateName   = "producerCPP";
     string fedFile        = "CoSimulation.fed";
+
+    //cout << "Initialization of federate: p3Fed" << endl; 
 
     /* create federation execution */
     try {
         rtiAmb.createFederationExecution(federationName.c_str(), 
 					 fedFile.c_str());
     } catch ( RTI::FederationExecutionAlreadyExists ) {
-        cout << "Federation already created by another federate." 
+        cout << "WARNING !! Federation already created by another federate !!" 
 	<< endl;
     } catch ( RTI::Exception &e ) {
         cerr << "RTI exception: " << e._name << " ["
@@ -332,64 +209,60 @@ int main() {
     /* Declaration Management */
 
     /* get object class handle */
-  
+    RTI::ObjectClassHandle myObjectID;
 
     try {
-        myFedAmb.myObjectID = rtiAmb.getObjectClassHandle("myObjectClass");
+        myObjectID = rtiAmb.getObjectClassHandle("myObjectClass");
     } catch ( RTI::Exception &e ) {
         cerr << "RTI exception: " << e._name << " ["
         << (e._reason ? e._reason : "undefined") << "]." << endl;
     } catch ( ... ) {
         cerr << "Error: unknown non-RTI exception." << endl;
     }
-    cout << "myObject ID:" << myFedAmb.myObjectID << endl;
-
 
     /* get attribute handle */
-
+    RTI::AttributeHandle valID;
     try {
-        myFedAmb.val1Id = rtiAmb.getAttributeHandle("val1", myFedAmb.myObjectID);
+        valID = rtiAmb.getAttributeHandle("val", myObjectID);
     } catch ( RTI::Exception &e ) {
         cerr << "RTI exception: " << e._name << " ["
         << (e._reason ? e._reason : "undefined") << "]." << endl;
     } catch ( ... ) {
         cerr << "Error: unknown non-RTI exception." << endl;
     }
-    cout << "val1Id:" << myFedAmb.val1Id << endl;
-
-    try {
-        myFedAmb.val2Id = rtiAmb.getAttributeHandle("val2", myFedAmb.myObjectID);
-    } catch ( RTI::Exception &e ) {
-        cerr << "RTI exception: " << e._name << " ["
-        << (e._reason ? e._reason : "undefined") << "]." << endl;
-    } catch ( ... ) {
-        cerr << "Error: unknown non-RTI exception." << endl;
-    }
-    cout << "val2Id:" << myFedAmb.val2Id << endl;
-
 
     /* add attribute handle to AttributeHandleSet */
     auto_ptr<RTI::AttributeHandleSet>
-    attrVAL(RTI::AttributeHandleSetFactory::create(2));
-    attrVAL->add(myFedAmb.val1Id);
-    attrVAL->add(myFedAmb.val2Id);
-
-    /* subscribe to val1 and val2 */
+    attrVAL(RTI::AttributeHandleSetFactory::create(1));
+    attrVAL->add(valID);
+    
+    /* publish to val */
     try {
-        rtiAmb.subscribeObjectClassAttributes(myFedAmb.myObjectID, *attrVAL);
+        rtiAmb.publishObjectClass(myObjectID, *attrVAL);
     } catch ( RTI::Exception &e ) {
         cerr << "RTI exception: " << e._name << " ["
         << (e._reason ? e._reason : "undefined") << "]." << endl;
     } catch ( ... ) {
         cerr << "Error: unknown non-RTI exception." << endl;
     }
-
+    
+    /* Register object */
+    RTI::ObjectHandle objInstID_val;
+    
+    try {
+        objInstID_val = rtiAmb.registerObjectInstance(myObjectID, "VAL3");
+    } catch ( RTI::Exception &e ) {
+        cerr << "RTI exception: " << e._name << " ["
+        << (e._reason ? e._reason : "undefined") << "]." << endl;
+    } catch ( ... ) {
+        cerr << "Error: unknown non-RTI exception." << endl;
+    }
 
     /* Time Management Setting */
     /* Declaration du temps local et du lookahead */
     myFedAmb.Set_LocalTime(0.0) ;
-    myFedAmb.Set_TimeStep(1.0) ;
-    myFedAmb.Set_Lookahead(0.0) ;
+    myFedAmb.Set_TimeStep(4.0) ;
+    myFedAmb.Set_Lookahead(1.0) ;
       
     /* Demande d'etre regulateur */
     rtiAmb.enableTimeRegulation(myFedAmb.Get_LocalTime(),myFedAmb.Get_Lookahead()) ;
@@ -398,7 +271,7 @@ int main() {
     rtiAmb.enableTimeConstrained() ;
 
     /* Tant que les callbacks de validation de regulateur et contraint ne sont pas la => tick2() ! */
-    while ( !myFedAmb.Get_IsTimeReg()) {
+    while ( !myFedAmb.Get_IsTimeReg() ) {
       try {
            rtiAmb.tick2();
       } catch ( RTI::Exception &e ) {
@@ -419,9 +292,7 @@ int main() {
      } 
         
     cout << " "                                                  << endl ;
-    cout << ">> Time management setting. "                       << endl ;  
-    cout << ">> Is constrained ? " << myFedAmb.Get_IsTimeConst() << endl ;
-    cout << ">> Is regulator ? " << myFedAmb.Get_IsTimeReg()     << endl ;
+    cout << ">> Time management setting: constrained=" << myFedAmb.Get_IsTimeConst() << " regulator=" << myFedAmb.Get_IsTimeReg()     << endl ;
 
     /*******************************************************/
     /* IMPORTANT : Si la gestion du temps Reg et Contraint */
@@ -430,10 +301,10 @@ int main() {
     /*******************************************************/    
     rtiAmb.enableAsynchronousDelivery() ;
 
-   bool SYNCHRO_INITIALISATION = true;
+    bool SYNCHRO_INITIALISATION = true;
     if(SYNCHRO_INITIALISATION){
         cout << " "                           << endl;
-        cout << ">> Simulating the consumerCPP." << endl;  
+        cout << ">> Simulating the producerCPP." << endl;  
 
         /* Producer is the creator : GOD MODE ! */
         if(false){
@@ -499,44 +370,50 @@ int main() {
         } // Fin du while (...)   
 
     } // Fin du if(SYNCHRO_INTIALISATION)
-
+    
     /* Object Management */
-
+    
     auto_ptr<RTI::AttributeHandleValuePairSet>
     ahvps(RTI::AttributeSetFactory::create(1));
+	    
+        cout << " "                           << endl;
 
+    HLAdata<HLAfloat64BE> value;
     double cpt = 0;
-    while (cpt <= 10) {
-
+    while (cpt < 5) {
+       (*value) = 3;
+       
         /* update attribute */
-        /* while (!myFedAmb.getNewVal1() && !myFedAmb.getNewVal2()) {
-            try {
-                rtiAmb.tick2();
-            } catch ( RTI::Exception &e ) {
-                cerr << "RTI exception: " << e._name << " ["
-                << (e._reason ? e._reason : "undefined") << "]." << endl;
-            } catch ( ... ) {
-                cerr << "Error: unknown non-RTI exception." << endl;
-            }
-
-        }*/
-
-	if (myFedAmb.getNewVal1()) {
-	    myFedAmb.setNewVal1(false);
-            cout << "Value val1 (update) received: " << myFedAmb.getVal1() << endl;
-	}
-
-        if (myFedAmb.getNewVal2()) {
-	    myFedAmb.setNewVal2(false);
-            cout << "Value val2 (update) received: " << myFedAmb.getVal2() << endl;
-	}
-	cpt += 1;
-
-                /* demande davance dans le temps */              
+        ahvps -> add(valID, const_cast<char*>(value.data()), sizeof(double));
+        
         try {
-             rtiAmb.nextEventRequest(myFedAmb.Get_LocalTime() 
-                                       + myFedAmb.Get_TimeStep());  
-	     cout << " >> NER(" << myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep() << ") SEND == RequestedTime = " << myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep() << " << " << endl; 
+	  rtiAmb.updateAttributeValues(objInstID_val, *ahvps, myFedAmb.Get_LocalTime()+myFedAmb.Get_Lookahead() ,"VAL");
+        } catch ( RTI::Exception &e ) {
+            cerr << "RTI exception: " << e._name << " ["
+            << (e._reason ? e._reason : "undefined") << "]." << endl;
+        } catch ( ... ) {
+            cerr << "Error: unknown non-RTI exception." << endl;
+        }
+        
+        ahvps -> empty ();
+
+        cout << "Federate producerCPP has updated the value val: " << cpt << endl;
+	
+ 	try {
+                rtiAmb.tick();
+        } catch ( RTI::Exception &e ) {
+            cerr << "RTI exception: " << e._name << " ["
+            << (e._reason ? e._reason : "undefined") << "]." << endl;
+        } catch ( ... ) {
+            cerr << "Error: unknown non-RTI exception." << endl;
+        }
+	sleep(1);
+        cpt += 1;
+
+        /* demande davance dans le temps */              
+        try {
+             rtiAmb.timeAdvanceRequest(myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep());  
+	     cout << " >> TAR(" << myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep() << ") SEND == RequestedTime = " << myFedAmb.Get_LocalTime() + myFedAmb.Get_TimeStep() << " << " << endl; 
 
 	} catch ( RTI::Exception &e ) {
         cerr << "RTI exception: " << e._name << " [" << (e._reason ? e._reason : "undefined") << "]." << endl;
@@ -561,21 +438,14 @@ int main() {
     }
 
     /* Declaration Management */
-
+    
+    /* unpublish */
     try {
-        rtiAmb.unsubscribeObjectClass(myFedAmb.val1Id);
+        rtiAmb.unpublishObjectClass(valID);
     } catch ( RTI::Exception &e ) {
-        cerr << "RTI exception: " << e._name << " ["
-        << (e._reason ? e._reason : "undefined") << "]." << endl;
-    } catch ( ... ) {
-        cerr << "Error: unknown non-RTI exception." << endl;
-    }
-
-   try {
-        rtiAmb.unsubscribeObjectClass(myFedAmb.val2Id);
-    } catch ( RTI::Exception &e ) {
-        cerr << "RTI exception: " << e._name << " ["
-        << (e._reason ? e._reason : "undefined") << "]." << endl;
+        cout << " " << endl;
+        /*cerr << "RTI exception: " << e._name << " ["
+	  << (e._reason ? e._reason : "undefined") << "]." << endl;*/
     } catch ( ... ) {
         cerr << "Error: unknown non-RTI exception." << endl;
     }

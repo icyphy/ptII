@@ -1,8 +1,10 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="clockDisplayer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={554, 22, 726, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={554, 22, 713, 630}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[492, 524]">
     </property>
@@ -55,42 +57,77 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 35.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
+    <class name="clock" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 110.0]">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron.&#10;(ISAE SUPAERO - ONERA)&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 145.0]">
-        </property>
-    </property>
-    <entity name="clockValue" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;clockValue&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;clock&quot;">
-            <display name="Object class in FOM"/>
-        </property>
-        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="use CERTI message buffer"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 125.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
             </property>
-        </port>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 551, 484, 208}, maximized=false}">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron.&#10;(ISAE SUPAERO - ONERA)&#10;">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 180.0]">
+            </property>
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 75.0]">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 125.0]">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 105.0]">
+            </property>
         </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="clockValue.output" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={340, 201, 921, 606}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+        </property>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 551, 484, 208}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 160.0]">
+            </property>
+        </entity>
+        <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="objectName clockValue"/>
+            <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+                <display name="type of the parameter"/>
+            </property>
+            <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+                <display name="use CERTI message buffer"/>
+            </property>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;clockValue&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 160.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="Display.input" relation="relation"/>
+        <link port="HlaSubscriber.output" relation="relation"/>
+    </class>
 </entity>

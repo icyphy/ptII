@@ -4,7 +4,7 @@
 <entity name="PoolTable2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
@@ -69,6 +69,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-1550.0, -2615.0}">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test display for model TwoBilliardBalls.xml.&#10;Actors A and B have test block set up with values from TwoBilliardBalls.xml.&#10;&#10;Do not use or copy these actors (but you can copy the Bille class)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1540.0, -2565.0]">
+        </property>
+    </property>
     <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-1670.0, -2515.0}">
         </property>
@@ -116,18 +122,18 @@
             </property>
         </port>
         <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
-            <display name="f PositionX"/>
-            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
-                <display name="Object class in FOM"/>
-            </property>
+            <display name="objectName PositionX"/>
             <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
                 <display name="use CERTI message buffer"/>
             </property>
-            <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="fed">
-                <display name="Opaque identifier of the federate"/>
-            </property>
             <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;PositionX&quot;">
                 <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+                <display name="Object class in FOM"/>
+            </property>
+            <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="fed">
+                <display name="Opaque identifier of the federate"/>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 110.0}">
             </property>
@@ -138,18 +144,18 @@
             </port>
         </entity>
         <entity name="HlaSubscriber2" class="org.hlacerti.lib.HlaSubscriber">
-            <display name="f PositionY"/>
-            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
-                <display name="Object class in FOM"/>
-            </property>
+            <display name="objectName PositionY"/>
             <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
                 <display name="use CERTI message buffer"/>
             </property>
-            <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="fed">
-                <display name="Opaque identifier of the federate"/>
-            </property>
             <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;PositionY&quot;">
                 <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+                <display name="Object class in FOM"/>
+            </property>
+            <property name="opaqueIdentifier" class="ptolemy.data.expr.Parameter" value="fed">
+                <display name="Opaque identifier of the federate"/>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 175.0}">
             </property>
@@ -193,7 +199,7 @@
         <link port="Position.input" relation="relation3"/>
     </class>
     <entity name="A" class="Bille">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1580.0, -2400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1580.0, -2375.0]">
         </property>
         <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;A&quot;">
         </property>
@@ -208,6 +214,8 @@
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
+            <configure>
+            </configure>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -242,7 +250,7 @@
         <link port="Test_1_2.input" relation="relation3"/>
     </entity>
     <entity name="B" class="Bille">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1580.0, -2300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1580.0, -2245.0]">
         </property>
         <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;B&quot;">
         </property>
@@ -259,6 +267,8 @@
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
+            <configure>
+            </configure>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -287,27 +297,6 @@
         </entity>
         <link port="Test.input" relation="relation2"/>
         <link port="Test_1_2.input" relation="relation3"/>
-    </entity>
-    <entity name="C" class="Bille">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1585.0, -2200.0]">
-        </property>
-        <property name="fed" class="ptolemy.data.expr.Parameter" value="&quot;C&quot;">
-        </property>
-        <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={741, 554, 504, 346}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-            </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Position</title>
-<xRange min="0.1" max="1599.1000000000001"/>
-<yRange min="-1.0" max="501.0"/>
-</plot>?>
-            </configure>
-        </entity>
     </entity>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
@@ -349,24 +338,16 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="A.X" relation="relation"/>
     <link port="A.Y" relation="relation4"/>
     <link port="B.X" relation="relation3"/>
     <link port="B.Y" relation="relation5"/>
-    <link port="C.X" relation="relation2"/>
-    <link port="C.Y" relation="relation6"/>
     <link port="ArrayPlotterXY.x" relation="relation"/>
     <link port="ArrayPlotterXY.x" relation="relation3"/>
-    <link port="ArrayPlotterXY.x" relation="relation2"/>
     <link port="ArrayPlotterXY.y" relation="relation4"/>
     <link port="ArrayPlotterXY.y" relation="relation5"/>
-    <link port="ArrayPlotterXY.y" relation="relation6"/>
 </entity>

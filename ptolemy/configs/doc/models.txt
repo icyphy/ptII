@@ -1,13 +1,7 @@
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
-$CLASSPATH/org/hlacerti/demo/CoSimulation/CoSimulation.xml
-$CLASSPATH/org/hlacerti/demo/CoSimulationFunctional/CoSimulationFunctional.xml
-$CLASSPATH/org/hlacerti/demo/CoSimulationNetwork1/CoSimulationNetwork1.xml
-$CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
 $CLASSPATH/org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml
-$CLASSPATH/org/hlacerti/demo/MultiProducerConsumer/MultiProducerConsumer.xml
-$CLASSPATH/org/hlacerti/demo/SimpleProducerConsumer/SimpleProducerConsumer.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml
 $CLASSPATH/org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml
 $CLASSPATH/org/ptolemy/machineImprovisation/demo/JazzImprovisation/JazzImprovisation.xml

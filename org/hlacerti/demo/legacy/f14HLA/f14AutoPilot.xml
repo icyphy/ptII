@@ -1,14 +1,16 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={745, 251, 695, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[461, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6376089663760897">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5625">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.6650390625, 115.6904296875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{225.91842022613054, -2.990734924623098}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -71,16 +73,104 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 270.0]">
         </property>
     </property>
-    <entity name="Anemo" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 85.0]">
+    <class name="myObjectClass" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, -50.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={263, 166, 1017, 634}, maximized=false}">
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 60.0}">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={359, 193, 921, 606}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+        </property>
+        <port name="stick" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 195.0}">
+            </property>
+        </port>
+        <port name="alpha" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 265.0}">
+            </property>
+        </port>
+        <port name="q" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 125.0}">
+            </property>
+        </port>
+        <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="objectName q"/>
+            <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+                <display name="type of the parameter"/>
+            </property>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;q&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 125.0}">
+            </property>
+        </entity>
+        <entity name="HlaSubscriber2" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="objectName stick"/>
+            <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+                <display name="type of the parameter"/>
+            </property>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;stick&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 195.0}">
+            </property>
+        </entity>
+        <entity name="HlaSubscriber3" class="org.hlacerti.lib.HlaSubscriber">
+            <display name="objectName alpha"/>
+            <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+                <display name="type of the parameter"/>
+            </property>
+            <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;alpha&quot;">
+                <display name="Name of the parameter to receive"/>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 265.0}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;alpha._location&quot;,x=220.0,y=265.0}, tail={id=&quot;HlaSubscriber3.output&quot;,x=90.0,y=265.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;stick._location&quot;,x=215.0,y=195.0}, tail={id=&quot;HlaSubscriber2.output&quot;,x=90.0,y=195.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;q._location&quot;,x=190.0,y=125.0}, tail={id=&quot;HlaSubscriber.output&quot;,x=90.0,y=125.0}, points={} } }">
+            </property>
+        </relation>
+        <link port="stick" relation="relation2"/>
+        <link port="alpha" relation="relation"/>
+        <link port="q" relation="relation3"/>
+        <link port="HlaSubscriber.output" relation="relation3"/>
+        <link port="HlaSubscriber2.output" relation="relation2"/>
+        <link port="HlaSubscriber3.output" relation="relation"/>
+    </class>
+    <entity name="Anemo" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 100.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={263, 166, 1004, 630}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2489501506843">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{40.4632713607595, -79.685546875}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{40.46327136075945, -79.685546875}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model represents the Anemo function that&#10;computes and broadcasts speed (IMA model).">
@@ -99,25 +189,29 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -150.0]">
             </property>
         </port>
+        <port name="q" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -80.0]">
+            </property>
+        </port>
         <port name="wS" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -150.0]">
+            <property name="multiport"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -120.0]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </port>
         <port name="qS" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-245.0, -80.0]">
+            <property name="multiport"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
-            <property name="deviceDelay" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-240.0, -50.0]">
             </property>
-        </port>
-        <port name="q" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -80.0]">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -164,33 +258,33 @@
                 </property>
             </port>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="w" relation="relation"/>
-        <link port="wS" relation="relation2"/>
-        <link port="qS" relation="relation4"/>
         <link port="q" relation="relation3"/>
-        <link port="Scale.input" relation="relation2"/>
+        <link port="wS" relation="relation5"/>
+        <link port="qS" relation="relation2"/>
+        <link port="Scale.input" relation="relation5"/>
         <link port="Scale.output" relation="relation"/>
-        <link port="Scale2.input" relation="relation4"/>
+        <link port="Scale2.input" relation="relation2"/>
         <link port="Scale2.output" relation="relation3"/>
     </entity>
     <entity name="AutoPilotDE" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 70.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={291, 162, 989, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={291, 162, 976, 602}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[755, 288]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[755, 496]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.663539445629">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2959754797441405">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{140.9999999999998, 13.8316396208226}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-157.6608040201005, -118.07828203517587}">
         </property>
         <property name="Kf" class="ptolemy.data.expr.Parameter" value="-1.746">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -378,17 +472,22 @@
         </port>
         <port name="stickS" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-370.0, -140.0]">
+            <property name="multiport"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-370.0, -140.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
         </port>
         <port name="alphaS" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-365.0, -75.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-364.0690302411796, -76.41082702232254}">
             </property>
         </port>
         <port name="qS" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-370.0, 5.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-377.1865623748556, 5.380843928833997}">
             </property>
         </port>
         <entity name="IIR" class="ptolemy.actor.lib.IIR">
@@ -600,7 +699,7 @@
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="AddS,Add,gain2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 249, 1321, 641}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 249, 1325, 643}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1321, 597]">
             </property>
@@ -621,8 +720,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0000000000000001E-7" max="11.9900001"/>
-<yRange min="-1.0258472902379814" max="1.610235644081949"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
             </configure>
         </entity>
@@ -710,26 +809,6 @@
             <vertex name="vertex1" value="[70.0, -110.0]">
             </vertex>
         </relation>
-        <relation name="relation23" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="[-275.0, -80.0]">
-            </vertex>
-        </relation>
-        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-                </property>
-            </property>
-            <vertex name="vertex1" value="[-305.0, 5.0]">
-            </vertex>
-        </relation>
-        <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-            </property>
-            <vertex name="vertex1" value="[-290.0, -140.0]">
-            </vertex>
-        </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -744,13 +823,19 @@
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="ElevCom" relation="relation9"/>
-        <link port="stickS" relation="relation24"/>
-        <link port="alphaS" relation="relation23"/>
+        <link port="stickS" relation="relation15"/>
+        <link port="alphaS" relation="relation16"/>
         <link port="qS" relation="relation12"/>
-        <link port="IIR.input" relation="relation24"/>
+        <link port="IIR.input" relation="relation15"/>
         <link port="IIR.output" relation="relation7"/>
-        <link port="IIR2.input" relation="relation23"/>
+        <link port="IIR2.input" relation="relation16"/>
         <link port="IIR2.output" relation="relation6"/>
         <link port="AddSub.plus" relation="relation13"/>
         <link port="AddSub.minus" relation="relation22"/>
@@ -798,73 +883,40 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="multiport"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
     </entity>
-    <entity name="alpha" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;alpha&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
-            <display name="Object class in FOM"/>
+    <entity name="Receiver" class="myObjectClass">
+        <display name="Aircraft AircraftSAct"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 70.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 60.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-    </entity>
-    <entity name="q" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;q&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
-            <display name="Object class in FOM"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 110.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
-    </entity>
-    <entity name="stick" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="parameterName" class="ptolemy.data.expr.Parameter" value="&quot;stick&quot;"> 
-  <display name="Name of the parameter to receive"/> </property><property name="classObjectHandle" class="ptolemy.data.expr.Parameter" value="&quot;myObjectClass&quot;">
-            <display name="Object class in FOM"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 10.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[445.0, 70.0]">
         </vertex>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Anemo.w" relation="relation2"/>
-    <link port="Anemo.wS" relation="relation4"/>
+    <link port="Anemo.w" relation="relation"/>
+    <link port="Anemo.q" relation="relation2"/>
+    <link port="Anemo.wS" relation="relation5"/>
     <link port="Anemo.qS" relation="relation6"/>
-    <link port="Anemo.q" relation="relation"/>
     <link port="AutoPilotDE.ElevCom" relation="relation3"/>
-    <link port="AutoPilotDE.stickS" relation="relation7"/>
-    <link port="AutoPilotDE.alphaS" relation="relation2"/>
-    <link port="AutoPilotDE.qS" relation="relation"/>
+    <link port="AutoPilotDE.stickS" relation="relation4"/>
+    <link port="AutoPilotDE.alphaS" relation="relation"/>
+    <link port="AutoPilotDE.qS" relation="relation2"/>
     <link port="elevCom.input" relation="relation3"/>
-    <link port="alpha.output" relation="relation4"/>
-    <link port="q.output" relation="relation6"/>
-    <link port="stick.output" relation="relation7"/>
+    <link port="Receiver.stick" relation="relation4"/>
+    <link port="Receiver.alpha" relation="relation5"/>
+    <link port="Receiver.q" relation="relation6"/>
 </entity>

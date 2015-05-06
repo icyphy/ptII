@@ -24,19 +24,19 @@
         <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
             <display name="isTimeConstrained ?"/>
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 57, 652, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 57, 639, 630}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[418, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4365935669021668">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.40185546875, 206.07705399803086}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.40185546875006, 206.07705399803086}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -78,7 +78,7 @@
         </property>
     </property>
     <entity name="val" class="org.hlacerti.lib.HlaPublisher">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 130.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -88,15 +88,17 @@
         </port>
     </entity>
     <entity name="producer1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 130.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 135}">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 145.0]">
             </property>
         </property>
         <port name="v" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[233.375, 68.59375]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 65.0]">
             </property>
         </port>
         <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -120,12 +122,8 @@
         <link port="Ramp.output" relation="relation2"/>
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[155.0, 125.0]">
-        </vertex>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="val.input" relation="relation3"/>
-    <link port="producer1.v" relation="relation3"/>
+    <link port="val.input" relation="relation"/>
+    <link port="producer1.v" relation="relation"/>
 </entity>

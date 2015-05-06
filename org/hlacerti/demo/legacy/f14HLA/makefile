@@ -2,7 +2,7 @@
 #
 # @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
 #
-# @Version: $Id: makefile 71890 2015-04-03 18:28:43Z David.COME@supaero.isae.fr $
+# @Version: $Id$
 #
 # @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
