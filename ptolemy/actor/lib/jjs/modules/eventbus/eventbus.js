@@ -6,6 +6,13 @@
 // at http://terraswarm.org/accessors.  See those accessors for the usage pattern.
 
 ////////////////////
+/**
+This module provides an interface to the Vert.x event bus, which supports a peer-to-peer publish-and-subscribe network on a local area network. Upon in invoking the VertxBus constructor in this module, the host running this module participates in the pub-sub network. The pub-sub network extends as far as multicast packets extend in the local-area network, and other participants will be automatically discovered. Hence, you can publish events on the local network or subscribe to events on the local network using this module.
+
+Events are published with an address, which is an arbitrary string that identifies the event or stream of events. This address could indicate the topic of message. A network or service using this pub-sub mechanism should develop a convention for these addresses to minimize accidental name collisions. For example, a sensor might publish sensor data using an address like 'org.terraswarm.sensor.accelerometer.onShoe'.
+
+The published data can be any JavaScript object that has a string JSON representation (using JSON.stringify()). 
+*/
 
 var EventBusHelper = Java.type('ptolemy.actor.lib.jjs.modules.eventbus.EventBusHelper');
 var events = require('events');
@@ -41,12 +48,7 @@ var events = require('events');
  *  <pre>
  *     bus.once(address, function);
  *  </pre>
- *  To unsubscribe, use
- *  <pre>
- *     bus.removeListener(address, function);
- *  </pre>
- *  where the function is the same function passed to on().
- *  To unsubscribe all listeners to the address, use
+ *  To unsubscribe to an address, use
  *  <pre>
  *     bus.unsubscribe(address);
  *  </pre>
@@ -54,6 +56,24 @@ var events = require('events');
  *  <pre>
  *     bus.unsubscribe();
  *  </pre>
+ *  In addition, this module supports point-to-point communication, which sends an event
+ *  to exactly one subscriber, chosen in a approximately round-robin fashion. To send
+ *  to exactly one subscriber, instead of '''publish''' use '''send''', as follows:
+ *  <pre>
+ *     bus.send('topic', {'hello':'world'});
+ *  </pre>
+ *  When sending a point-to-point message, it is possible to get a reply from the
+ *  recipient.  The recipient (which also uses this module) should set the reply message
+ *  as follows:
+ *  <pre>
+ *     bus.setReply('confirmed');
+ *  </pre>
+ *  where 'confirmed' can be replaced with any string.
+ *  The sender can then specify a handler to receive the reply as follows:
+ *  <pre>
+ *     bus.send('topic', {'hello':'world'}, handler);
+ *  </pre>
+ *  where handler is a function that takes one argument, the reply string.
  *  @constructor
  *  @param options A JSON record containing optional fields 'port' (an int)
  *   and 'host' (a string). These specify the network interface on the local host
@@ -74,6 +94,8 @@ function VertxBus(options) {
 util.inherits(VertxBus, events.EventEmitter);
 
 /** Notify this object of a received message from the event bus.
+ *  This function is called from the Nashorn Java helper for this module and
+ *  should not be directly invoked by the user of the module.
  *  This method assumes that the body of the message is a string
  *  in JSON format. It will throw an exception if this is not the case.
  *  @param address The address.
@@ -89,6 +111,8 @@ VertxBus.prototype.notify = function(address, body) {
 };
 
 /** Notify this object of a received reply from the event bus
+ *  This function is called from the Nashorn Java helper for this module and
+ *  should not be directly invoked by the user of the module.
  *  confirming completion of a point-to-point send.
  *  @param handler The callback function to invoke.
  *  @param message The message to send to the callback function.
