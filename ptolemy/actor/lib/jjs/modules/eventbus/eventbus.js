@@ -12,6 +12,8 @@ This module provides an interface to the Vert.x event bus, which supports a peer
 Events are published with an address, which is an arbitrary string that identifies the event or stream of events. This address could indicate the topic of message. A network or service using this pub-sub mechanism should develop a convention for these addresses to minimize accidental name collisions. For example, a sensor might publish sensor data using an address like 'org.terraswarm.sensor.accelerometer.onShoe'.
 
 The published data can be any JavaScript object that has a string JSON representation (using JSON.stringify()). 
+
+If the host has more than one network interface (e.g. WiFi and wired), then the one to use can be specified by name as an optional argument to the constructor. You can also specify the port to use, though if you do, then you are responsible for avoiding port collisions. The default network interface used is whichever one is represented by 'localhost'. The default port is an arbitrary unused port.
 */
 
 var EventBusHelper = Java.type('ptolemy.actor.lib.jjs.modules.eventbus.EventBusHelper');
