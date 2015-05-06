@@ -74,6 +74,8 @@ function VertxBus(options) {
 util.inherits(VertxBus, events.EventEmitter);
 
 /** Notify this object of a received message from the event bus.
+ *  This method assumes that the body of the message is a string
+ *  in JSON format. It will throw an exception if this is not the case.
  *  @param address The address.
  *  @param body The message body
  */
@@ -86,18 +88,66 @@ VertxBus.prototype.notify = function(address, body) {
     }
 };
 
+/** Notify this object of a received reply from the event bus
+ *  confirming completion of a point-to-point send.
+ *  @param handler The callback function to invoke.
+ *  @param message The message to send to the callback function.
+ */
+VertxBus.prototype.notifyReply = function(handler, message) {
+    handler.apply(this, [message]);
+};
+
 /** Publish the specified data on the specified address.
  *  The data is first converted to a string representation in JSON format.
  *  @param address The address (or topic) of the event bus channel.
  *   This is a string.
  *  @param data The data to publish. This can be any JavaScript object
  *   that has a JSON representation using JSON.stringify().
+ *  @see send()
  */
 VertxBus.prototype.publish = function(address, data) {
     if (typeof(data) != 'string') {
         data = JSON.stringify(data);
     }
     this.helper.publish(address, data);
+};
+
+/** Send the specified data to exactly one receiver at the specified address.
+ *  This implements a point-to-point send, vs. the broadcast realized by publish().
+ *  The data is first converted to a string representation in JSON format.
+ *  According to the Vert.x documentation, the recipient will be chosen in a
+ *  loosely round robin fashion.
+ *  @param address The address (or topic) of the event bus channel.
+ *   This is a string.
+ *  @param data The data to publish. This can be a string or any JavaScript object
+ *   that has a JSON representation using JSON.stringify().
+ *  @param handler A function to invoke with argument address and reply body
+ *   when the recipient has received the message, or null to not provide a reply handler.
+ *  @see publish()
+ */
+VertxBus.prototype.send = function(address, data, handler) {
+    if (typeof(data) != 'string') {
+        data = JSON.stringify(data);
+    }
+    if (handler == null) {
+        this.helper.send(address, data);
+    } else {
+        this.helper.send(address, data, handler);
+    }
+};
+
+/** Set the reply to send when events are received in the future via a
+ *  point-to-point send.
+ *  @param reply The reply to respond with, or null to send no reply.
+ *   this should be a string or any object that can be encoded as a
+ *   JSON string.
+ *  @see send(address, data)
+ */
+VertxBus.prototype.setReply = function(reply) {
+    if (typeof(reply) != 'string') {
+        reply = JSON.stringify(reply);
+    }
+    this.helper.setReply(reply);
 };
 
 /** Subscribe to events with the specified address.
