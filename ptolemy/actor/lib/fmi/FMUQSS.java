@@ -1547,7 +1547,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 				// Here, have a new value on the input port.
 				final Token token = input.port.get(0);
 				// Here we check whether we have an input distinct from previous one.
-				if (!token.equals(input.lastInput)) {
+				// FIXME: I had to temporary remove this check which seems to 
+				// be insufficient to determine whether we have distinct new inputs.
+				// This was leading to a non-deterministic behavior of system models.
+				// The drawback of this code is that it will always set inputs no matter whether
+				// they have the same values.
+				//if (!token.equals(input.lastInput)) {
 					// Update the model.
 					final ModelPolynomial ivMdl = _inputVariableModels[curIdx];
 					// Set model from token.
@@ -1564,7 +1569,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 								System.identityHashCode(this), curIdx,
 								ivMdl.toString()));
 					}
-				}
+				//}
                 updatedInputVarMdl = true;
 			}
 			curIdx++;
