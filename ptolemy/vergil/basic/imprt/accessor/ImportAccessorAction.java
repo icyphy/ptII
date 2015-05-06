@@ -38,7 +38,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 
 import org.json.JSONArray;
-import org.terraswarm.kernel.AccessorOne;
+import org.terraswarm.accessor.jjs.JSAccessor;
 
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -157,13 +157,13 @@ public class ImportAccessorAction extends AbstractAction {
             final String urlSpec = _lastLocation + query.getStringValue("accessor");
             String changeRequest = null;
             try {
-                changeRequest = AccessorOne.accessorToMoML(urlSpec);
+                changeRequest = JSAccessor.accessorToMoML(urlSpec);
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to import accessor \""
                         + urlSpec + "\".", throwable);
                 return;
             }
-            AccessorOne.handleAccessorMoMLChangeRequest(this,
+            JSAccessor.handleAccessorMoMLChangeRequest(this,
                     urlSpec, context, changeRequest, x, y);
         }
     }
