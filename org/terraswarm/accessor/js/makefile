@@ -57,7 +57,8 @@ JSRCS = \
 	JSAccessor.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	JSAccessorIcon.xml
+	JSAccessorIcon.xml \
+	XMLJStoMOML.xslt
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -69,7 +70,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS)
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -57,8 +57,7 @@ JSRCS = \
 	AccessorOne.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	AccessorOneIcon.xml \
-    XMLJStoMOML.xslt
+	AccessorOneIcon.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

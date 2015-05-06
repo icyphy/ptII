@@ -46,15 +46,15 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
 ######################################################################
 ####
 #
-test AccesorImport-1.1 {Test out importing of accessors} {
+test JSAccessor-1.1 {Test out importing of accessors} {
     # This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
 
     set e1 [sdfModel 5]
     set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml} [java::null]]
     set urlSpec [$accessorFile getCanonicalPath]
-    set changeRequestText [java::call org.terraswarm.kernel.AccessorOne accessorToMoML $urlSpec]
+    set changeRequestText [java::call org.terraswarm.accessor.jjs.JSAccessor accessorToMoML $urlSpec]
 
-    java::call org.terraswarm.kernel.AccessorOne handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
+    java::call org.terraswarm.accessor.jjs.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
     set accessor [$e1 getEntity {Accessor}]
     set moml [$accessor exportMoML]
@@ -145,9 +145,9 @@ proc importAccessor {accessorFileName} {
     set accessorFile [java::call ptolemy.util.FileUtilities nameToFile $accessorFileName [java::null]]
 
     set urlSpec [$accessorFile getCanonicalPath]
-    set changeRequestText [java::call org.terraswarm.kernel.AccessorOne accessorToMoML $urlSpec]
+    set changeRequestText [java::call org.terraswarm.accessor.jjs.JSAccessor accessorToMoML $urlSpec]
 
-    java::call org.terraswarm.kernel.AccessorOne handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
+    java::call org.terraswarm.accessor.jjs.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
     set accessorActorFileName [lindex [file split $accessorFileName] end]
     set accessorActorName [string range $accessorActorFileName 0 [expr {[string length $accessorActorFileName] -5}]]
@@ -168,7 +168,7 @@ proc importAccessors {accessorDirectory} {
     set files [glob $accessorDirectory/*.xml]
     foreach file $files {
         incr accessorCount
-        test AccessorImport-2.1.$accessorCount "test $file" {
+        test JSAccessor-2.1.$accessorCount "test $file" {
             #puts $file
             importAccessor $file
             # Success is not throwing an exception

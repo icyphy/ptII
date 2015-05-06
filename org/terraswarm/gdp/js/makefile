@@ -54,6 +54,8 @@ PTCLASSALLJARS = \
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	epStatUtilities.c \
+	writerTest.js \
 	simpleReader.js \
 	gcl/xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA.data \
 	gcl/xuNqb5yb3g0RBzDKKYwhyyIoIglfAygxiOjH-N8JGFA.index

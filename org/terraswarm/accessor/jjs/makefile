@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2014-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -57,7 +57,8 @@ JSRCS = \
 	JSAccessor.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	JSAccessorIcon.xml
+	JSAccessorIcon.xml \
+	XMLJSToMoML.xslt
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -69,7 +70,8 @@ MISC_FILES = test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS)
+	demo \
+	'JSAccessor$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
