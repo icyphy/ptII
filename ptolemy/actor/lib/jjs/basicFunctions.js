@@ -78,17 +78,15 @@ function error(message) {
     throw message;
 }
 
-
 /** Perform a blocking HTTP request.
  *  @param url The url for the request, method, properties, body, timeout) {
  *  @param method the request method for the url connection.
  *  @param properties An array of properties for the connection.
  *  @param body If non-empty, the body to be written to the output
  *  stream of the connection.
- *  @param timeout If specified, the connect and read timeout.
- *  Probably in milliseconds?
+ *  @param timeout If specified, the connect and read timeout in milliseconds.
  *
- *  @deprecated: Use the http module (being developed by Marten) instead.
+ *  @deprecated: Use the http module instead, which provides non-blocking requests.
  */
 function httpRequest(url, method, properties, body, timeout) {
     if (_debug) {
@@ -142,7 +140,7 @@ function httpRequest(url, method, properties, body, timeout) {
  *  @param url The url.
  *  @param timeout The timeout in milliseconds
  *
- *  @deprecated: Use the http module (being developed by Marten) instead.
+ *  @deprecated: Use the http module, which provides non-blocking functions.
  */
 function readURL(url, timeout) {
     if (!timeout) {
@@ -255,7 +253,7 @@ var _timer;
  * since other accessor hosts may not work the same way.
  *
  * @param func The callback function.
- * @param milliseconds The interval.
+ * @param milliseconds The interval in milliseconds.
  */
 function setInterval(func, milliseconds) {
     var callback = func;
@@ -294,7 +292,7 @@ function setInterval(func, milliseconds) {
  * Nevertheless, it is a good idea to do that in an accessor
  * since other accessor hosts may not work the same way.</p>
  * @param func The callback function.
- * @param milliseconds The interval.
+ * @param milliseconds The interval in milliseconds.
  */
 function setTimeout(func, milliseconds) {
     var callback = func;
