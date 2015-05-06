@@ -30,7 +30,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={570, 155, 650, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={570, 155, 637, 630}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[416, 524]">
     </property>
@@ -90,7 +90,7 @@
     <entity name="prod2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 145.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 921, 630}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
         </property>
@@ -134,12 +134,8 @@
         <link port="Ramp.output" relation="relation2"/>
         <link port="Ramp.trigger" relation="relation"/>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[160.0, 145.0]">
-        </vertex>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="val.input" relation="relation3"/>
-    <link port="prod2.v" relation="relation3"/>
+    <link port="val.input" relation="relation"/>
+    <link port="prod2.v" relation="relation"/>
 </entity>

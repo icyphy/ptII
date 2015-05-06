@@ -272,15 +272,12 @@ public class ExportModelJUnitTest {
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
 
                 // HLA Models that have links to other demos.                          
-                "org/hlacerti/demo/CoSimulation/CoSimulation.xml", // Has links to other demos.
-                "org/hlacerti/demo/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos.
-                "org/hlacerti/demo/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos.
-                "org/hlacerti/demo/f14HLA/f14HLA.xml",  // Has links to other demos.
-                "org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml", // Has links to other demos.
-                "org/hlacerti/demo/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos.
-                "org/hlacerti/demo/SimpleProducerConsumer/SimpleProducerConsumer.xml", // Has links to other demos.
-                "org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml", // Has links to other demos.
-                "org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml", // Has links to other demos.
+                "org/hlacerti/demo/legacy/CoSimulation/CoSimulation.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/legacy/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/legacy/f14HLA/f14HLA.xml",  // Has links to other demos and does not work
+                "org/hlacerti/demo/legacy/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/legacy/SimpleProducerConsumer/SimpleProducerConsumer.xml", // Has links to other demos and does not work
 
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.

@@ -31,13 +31,9 @@
 
 ME =        org/hlacerti/demo
 
-DIRS =  CoSimulation \
-        CoSimulationFunctional \
-        CoSimulationNetwork1 \
-	f14HLA \
-        MultiDataTypes \
-        MultiProducerConsumer \
-        SimpleProducerConsumer \
+DIRS =  billard \
+	MultiDataTypes \
+        SimpleProducerConsumerMulti	\
         SynchronizeToRealTime
 
 # Root of the Java directory
@@ -54,13 +50,9 @@ PTPACKAGE =     demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-        CoSimulation/CoSimulation.jar \
-        CoSimulationFunctional/CoSimulationFunctional.jar \
-        CoSimulationNetwork1/CoSimulationNetwork1.jar \
-	f14HLA \
+	billard/billard.jar \
         MultiDataTypes/MultiDataTypes.jar \
-        MultiProducerConsumer/MultiProducerConsumer.jar \
-        SimpleProducerConsumer/SimpleProducerConsumer.jar \
+	SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.jar \
         SynchronizeToRealTime/SynchronizeToRealTime.jar
 
 

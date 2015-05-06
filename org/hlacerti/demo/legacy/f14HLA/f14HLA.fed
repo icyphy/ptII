@@ -16,7 +16,7 @@
 		(Attribute stick RELIABLE TIMESTAMP)
 		(Attribute elevCom RELIABLE TIMESTAMP)
 		(Attribute alpha RELIABLE TIMESTAMP)
-        (Attribute q RELIABLE TIMESTAMP)
+       		(Attribute q RELIABLE TIMESTAMP)
 		(Attribute nz RELIABLE TIMESTAMP)
 	)
     )
