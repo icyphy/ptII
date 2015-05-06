@@ -1,0 +1,128 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="VertxEventBusHelloWorld" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 153, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates publishing on the&#10;Vertx event bus.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 0.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="synchronizeToRealTime is set to &#10;TRUE, 1 time unit in model&#10;time corresponds to 1 second.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every thirty seconds, write a string to the Vertx event bus:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[10.0, 140.00000000000003]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 265.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="30.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;Hello World&quot;}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.00000000000003]">
+        </property>
+    </entity>
+    <entity name="VertxPublish" class="org.terraswarm.accessor.jjs.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    &#10;var eventbus = require('eventbus');&#10;var bus;&#10;&#10;exports.initialize = function() {&#10;  var port = get(busHostPort);&#10;  var host = get(busHost);&#10;  bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;}&#10;&#10;addInputHandler(function() {&#10;  var topic = get(address);&#10;  var msg = get(message);&#10;  if (msg) {&#10;    bus.publish(topic, JSON.stringify(msg));&#10;  }&#10;}, message);&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;}&#10;&#10;	//  &#10;  ">
+        </property>
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxPublish.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;    This accessor publishes to a Vert.x event bus. The input can be any data type&#10;    supported by accessors that has a string representation in JSON syntax. The&#10;    published even will be a string in JSON format.&#10;    &lt;p&gt;&#10;    The busHost is the name of the network interface through which to connect to the Vert.x event bus cluster.&#10;    The busHostPort is the port to use for this.&#10;    These two inputs are examined only at initialization time.&#10;	&#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Patricia Derler, Edward A. Lee, Ben Zhang">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="busHost (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The name of the network interface to use for the Vert.x event bus. A blank string is interpreted as 'localhost'.">
+            </property>
+            <property name="busHostPort (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port for the Vert.x event bus. A value of 0 indicates a default port of 25500.">
+            </property>
+            <property name="address (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The event bus address, which is the name of the event stream.">
+            </property>
+            <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The message to the bus.">
+            </property>
+        </property>
+        <property name="busHost" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
+        </property>
+        <property name="busHostPort" class="ptolemy.actor.parameters.PortParameter" value="&quot;0&quot;">
+        </property>
+        <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;helloWorld&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 195.0]">
+        </property>
+        <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="busHostPort" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="address" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="message" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="VertxPublish.message" relation="relation"/>
+</entity>
