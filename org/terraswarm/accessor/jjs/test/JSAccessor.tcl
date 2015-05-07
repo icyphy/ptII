@@ -50,7 +50,7 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     # This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
 
     set e1 [sdfModel 5]
-    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml} [java::null]]
+    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml} [java::null]]
     set urlSpec [$accessorFile getCanonicalPath]
     set changeRequestText [java::call org.terraswarm.accessor.jjs.JSAccessor accessorToMoML $urlSpec]
 
@@ -58,14 +58,14 @@ test JSAccessor-1.1 {Test out importing of accessors} {
 
     set accessor [$e1 getEntity {Accessor}]
     set moml [$accessor exportMoML]
-    regsub {value=".*/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml"} $moml {value="$CLASSPATH/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml"} moml2
+    regsub {value=".*/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml"} $moml {value="$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml"} moml2
     # Deal with backslashes in MS-DOS-based systems.  Why we need to do this in this day and age is beyond me.
-    regsub {value=".*\\org\\terraswarm\\kernel\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml"} moml3
+    regsub {value=".*\\org\\terraswarm\\accessor/jjs\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml"} moml3
     list $moml3
 } {{<entity name="Accessor" class="org.terraswarm.accessor.jjs.JSAccessor">
     <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get(stringInput);&#10;	  send(stringValue, stringOutput);&#10;	  var numericValue = get(numericInput);&#10;	  send(numericValue, numericOutput);&#10;	  stringValue = get(stringInputWithoutValue);&#10;	  send(stringValue, stringOutputWithoutValue);&#10;	  send(stringValue == null, inputIsAbsent);&#10;	}&#10;	// &#10;  ">
     </property>
-    <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml">
+    <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml">
     </property>
     <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
         <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
@@ -177,6 +177,5 @@ proc importAccessors {accessorDirectory} {
     }
 }
 
-importAccessors $PTII/org/terraswarm/kernel/test/auto/accessors
 importAccessors $PTII/org/terraswarm/accessor/jjs/test/auto/accessors
 
