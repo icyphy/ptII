@@ -63,6 +63,7 @@ JSRCS = \
 	JSAccessor.java
 
 OTHER_FILES_TO_BE_JARED = \
+	JSAccessorIcon.xml \
 	XMLJSToMoML.xslt
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -74,7 +75,13 @@ install: jclass jars
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
-MISC_FILES = $(DIRS)
+MISC_FILES = test
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	demo \
+	'JSAccessor$$1.class'
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
