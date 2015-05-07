@@ -1,9 +1,9 @@
-# Makefile for TerraSwarm Stock Tick demo.
+# Makefile for TerraSwarm demos
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70389 2014-10-22 22:25:44Z cxh $
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,12 +30,12 @@
 ##########################################################################
 
 # Root of Ptolemy II directory
-ROOT = ../../../../../..
+ROOT = ../../../..
 
-DIRS = 
+DIRS = MoC StockTick WebSocketClient c4po
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/jjs/demo/StockTick
+ME =  org/terraswarm/accessor/demo
 
 CLASSPATH =	$(ROOT)
 
@@ -47,15 +47,20 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = StockTick
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = demo
+#PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	MoC/MoC.jar \
+	StockTick/StockTick.jar \
+	WebSocketClient/WebSocketClient.jar \
+	c4po/c4po.jar
 
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = \
-	StockTick.xml \
-	StockTickAccessor.xml \
-	StockTickMOML.xml
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

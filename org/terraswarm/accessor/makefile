@@ -29,8 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# PTJJS_DIR is set by configure to jjs if Nashorn (present in Java 1.8) is found.
-DIRS = $(PTJJS_DIR)
+DIRS = demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -40,7 +39,10 @@ JSRCS =
 # $(ME) is used in ptdir.mk
 ME =		org/terraswarm/accessor
 
-CLASSPATH =	$(ROOT)
+# AccessorOne.java depends on JavaScript.java, which uses these
+# libraries.  If we run 'make fast', and JavaScript.class does not
+# exist, then we will need these jars in the classpath.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
@@ -57,9 +59,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =
 
-JSRCS =
+JSRCS = \
+	JSAccessor.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	XMLJSToMoML.xslt
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

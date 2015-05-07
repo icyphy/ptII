@@ -1103,11 +1103,13 @@ if test "$PRE_JDK17" = "yes" ; then
     done
 fi
 
-# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+# Set to jjs if Nashorn (present in Java 1.8) is found.
 PTJJS_DIR=
+# Set to accessor and used in org/terraswarm/makefile if Nashorn is found.
+PTACCESSOR_DIR=
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
-    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessor/jjs/ org/terraswarm/kernel/"
+    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessor/ org/terraswarm/kernel/"
     AC_MSG_WARN([A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
     The following packages will not be compiled:
         $pre1_8packages])
@@ -1116,7 +1118,8 @@ if test "$PRE_JDK18" = "yes" ; then
 	updateExcludes $package
     done
 else
-        # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn is found.
+        # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
+        PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
 fi
 
@@ -6436,6 +6439,9 @@ AC_SUBST(ORACLE_OJDBC_JAR)
 # Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
 AC_SUBST(PSDF_DIR)
+
+# Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
+AC_SUBST(PTACCESSOR_DIR)
 
 # Set to ptango if jetty and javax.servlet jar files are found.
 # Used in org/ptolemy/makefile.
