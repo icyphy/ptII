@@ -1,6 +1,6 @@
-# Makefile for TerraSwarm demos
+# Makefile for TerraSwarm MoC demo.
 #
-# @Version: $Id: makefile 70389 2014-10-22 22:25:44Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California.
@@ -32,10 +32,10 @@
 # Root of Ptolemy II directory
 ROOT = ../../../../..
 
-DIRS = MoC StockTick WebSocketClient c4po
+DIRS = 
 
 # $(ME) is used in ptdir.mk
-ME =  org/terraswarm/accessor/jjs/demo
+ME = org/terraswarm/accessor/demo/MoC
 
 CLASSPATH =	$(ROOT)
 
@@ -47,20 +47,15 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = demo
-#PTCLASSJAR = $(PTPACKAGE).jar
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	MoC/MoC.jar \
-	StockTick/StockTick.jar \
-	WebSocketClient/WebSocketClient.jar \
-	c4po/c4po.jar
+PTPACKAGE = MoC
+PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	MoC.xml \
+	MoC2.xml \
+	MoC3.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

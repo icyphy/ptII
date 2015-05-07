@@ -27,7 +27,7 @@
 
  */
 
-package org.terraswarm.accessor.jjs.test.junit;
+package org.terraswarm.accessor.test.junit;
 
 import ptolemy.util.test.junit.JUnitTclTestBase;
 
@@ -36,7 +36,7 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
 /**
  * Run the auto/ and Tcl tests under JUnit.
  * <pre>
- * (cd /Users/cxh/ptII/ptolemy/actor/lib/js/test/junit; java -classpath /Users/cxh/ptII:/Users/cxh/ptII/lib/ptjacl.jar:/Users/cxh/ptII/lib/junit-4.8.2.jar:/Users/cxh/ptII/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore org.terraswarm.accessor.jjs.test.junit.JUnitTclTest)
+ * (cd /Users/cxh/ptII/org/terraswarm/accessor/test/junit; java -classpath /Users/cxh/ptII:/Users/cxh/ptII/lib/ptjacl.jar:/Users/cxh/ptII/lib/junit-4.8.2.jar:/Users/cxh/ptII/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore org.terraswarm.accessor.test.junit.JUnitTclTest)
  * </pre>
  *
  * <p> A copy of this file appears in each test/junit subdirectory

@@ -1,9 +1,9 @@
-# Makefile for TerraSwarm WebSocketClient demo.
+# Makefile for TerraSwarm c4po demo
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2014-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,12 +30,12 @@
 ##########################################################################
 
 # Root of Ptolemy II directory
-ROOT = ../../../../../..
+ROOT = ../../../../..
 
 DIRS = 
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/jjs/demo/WebSocketClient
+ME = org/terraswarm/accessor/demo/c4po
 
 CLASSPATH =	$(ROOT)
 
@@ -47,14 +47,15 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = WebSocketClient
+PTPACKAGE = c4po
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	NodeServer.js \
-	WebSocketClientAndNodeServer.xml
+	BluetoothDistance.xml \
+	BluetoothMOML.xml \
+	c4po.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

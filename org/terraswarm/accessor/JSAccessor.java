@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package org.terraswarm.accessor.jjs;
+package org.terraswarm.accessor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -189,7 +189,7 @@ public class JSAccessor extends JavaScript {
                     contents.append(input);
                 }
                 TransformerFactory factory = TransformerFactory.newInstance();
-                String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/jjs/XMLJSToMoML.xslt";
+                String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
                 Source xslt = new StreamSource(FileUtilities.nameToFile(
                                 xsltLocation, null));
                 Transformer transformer = factory.newTransformer(xslt);

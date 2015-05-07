@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CallbackWithSuppress" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HandlerWithSuppress" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -60,13 +60,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 190.0}">
         </property>
     </entity>
-    <entity name="CallbackWithSuppress" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(&#10;        function() {&#10;          send(true, produce);&#10;        },&#10;        1000);&#10;    }&#10;	exports.fire = function() {&#10;	  var isSuppressed = get(suppress);&#10;	  var toProduce = get(produce);&#10;	  if (toProduce) {&#10;        count = count + 1;&#10;        if (!isSuppressed) {&#10;          send(count, output);&#10;        }&#10;      }&#10;	}&#10;	// &#10;  ">
+    <entity name="HandlerWithSuppress" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    var handleTimeout = function() {&#10;      send(true, produce);&#10;    };&#10;	var inputHandler = function() {&#10;      count = count + 1;&#10;      if (!get(suppress)) {&#10;        send(count, output);&#10;      }&#10;    };&#10;	addInputHandler(inputHandler, produce);&#10;	exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(handleTimeout, 1000);&#10;    }&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/accessor/jjs/test/auto/accessors/CallbackWithSuppress.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor produces outputs periodically, at one second intervals,&#10;as long as the most recently received suppress input is not true.&#10;The output is a count of the firing, starting with 1.&#10;	&#10;  ">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor produces outputs periodically, at one second intervals,&#10;as long as the most recently received suppress input is not true.&#10;The output is a count of the periods, starting with 1.&#10;	&#10;  ">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
@@ -120,6 +120,6 @@
     <link port="Display.input" relation="relation4"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation4"/>
-    <link port="CallbackWithSuppress.suppress" relation="relation"/>
-    <link port="CallbackWithSuppress.output" relation="relation4"/>
+    <link port="HandlerWithSuppress.suppress" relation="relation"/>
+    <link port="HandlerWithSuppress.output" relation="relation4"/>
 </entity>

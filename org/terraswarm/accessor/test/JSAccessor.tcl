@@ -43,6 +43,13 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
     source [file join $PTII util testsuite models.tcl]
 } {}
 
+# The list of filters is static, so we reset it in case there
+# filters were already added.
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+java::call ptolemy.moml.MoMLParser addMoMLFilters \
+    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+
 ######################################################################
 ####
 #
@@ -50,22 +57,22 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     # This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
 
     set e1 [sdfModel 5]
-    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml} [java::null]]
+    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml} [java::null]]
     set urlSpec [$accessorFile getCanonicalPath]
-    set changeRequestText [java::call org.terraswarm.accessor.jjs.JSAccessor accessorToMoML $urlSpec]
+    set changeRequestText [java::call org.terraswarm.accessor.JSAccessor accessorToMoML $urlSpec]
 
-    java::call org.terraswarm.accessor.jjs.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
+    java::call org.terraswarm.accessor.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
     set accessor [$e1 getEntity {Accessor}]
     set moml [$accessor exportMoML]
-    regsub {value=".*/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml"} $moml {value="$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml"} moml2
+    regsub {value=".*/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} $moml {value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} moml2
     # Deal with backslashes in MS-DOS-based systems.  Why we need to do this in this day and age is beyond me.
-    regsub {value=".*\\org\\terraswarm\\accessor/jjs\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml"} moml3
+    regsub {value=".*\\org\\terraswarm\\accessor\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} moml3
     list $moml3
-} {{<entity name="Accessor" class="org.terraswarm.accessor.jjs.JSAccessor">
+} {{<entity name="Accessor" class="org.terraswarm.accessor.JSAccessor">
     <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get(stringInput);&#10;	  send(stringValue, stringOutput);&#10;	  var numericValue = get(numericInput);&#10;	  send(numericValue, numericOutput);&#10;	  stringValue = get(stringInputWithoutValue);&#10;	  send(stringValue, stringOutputWithoutValue);&#10;	  send(stringValue == null, inputIsAbsent);&#10;	}&#10;	// &#10;  ">
     </property>
-    <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/jjs/test/auto/accessors/Accessor1.xml">
+    <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
     </property>
     <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
         <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
@@ -145,16 +152,16 @@ proc importAccessor {accessorFileName} {
     set accessorFile [java::call ptolemy.util.FileUtilities nameToFile $accessorFileName [java::null]]
 
     set urlSpec [$accessorFile getCanonicalPath]
-    set changeRequestText [java::call org.terraswarm.accessor.jjs.JSAccessor accessorToMoML $urlSpec]
+    set changeRequestText [java::call org.terraswarm.accessor.JSAccessor accessorToMoML $urlSpec]
 
-    java::call org.terraswarm.accessor.jjs.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
+    java::call org.terraswarm.accessor.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
     set accessorActorFileName [lindex [file split $accessorFileName] end]
     set accessorActorName [string range $accessorActorFileName 0 [expr {[string length $accessorActorFileName] -5}]]
     #puts "accessorActorFileName: $accessorActorFileName"
     #puts "accessorActorName: $accessorActorName"
-    set entityList [$e1 entityList [java::call Class forName org.terraswarm.accessor.jjs.JSAccessor]]
-    set accessorActor [java::cast org.terraswarm.accessor.jjs.JSAccessor [$entityList get 0]]
+    set entityList [$e1 entityList [java::call Class forName org.terraswarm.accessor.JSAccessor]]
+    set accessorActor [java::cast org.terraswarm.accessor.JSAccessor [$entityList get 0]]
     #puts [$accessorActor getFullName]
     #puts [$e1 exportMoML]
     #set moml [$accessorActor exportMoML]
@@ -177,5 +184,5 @@ proc importAccessors {accessorDirectory} {
     }
 }
 
-importAccessors $PTII/org/terraswarm/accessor/jjs/test/auto/accessors
+importAccessors $PTII/org/terraswarm/accessor/test/auto/accessors
 

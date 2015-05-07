@@ -380,6 +380,9 @@ MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 # Location of Matlab's engine libraries (libeng.so, libmx.so) (64 bit)
 MATLAB_64LIBDIR =	@MATLAB_64LIBDIR@
 
+# Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
+PTACCESSOR_DIR =	@PTACCESSOR_DIR@
+
 # Set to ptango if jetty and javax.servlet jar files are found.
 # Used in org/ptolemy/makefile.
 PTANGO_DIR = @PTANGO_DIR@
