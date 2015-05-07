@@ -1,5 +1,7 @@
 [
-  "CallbackWithSuppress.xml",
-  "HandlerWithSuppress.xml",
-  "SendNullToOwnInput.xml"
+    "Accessor1.xml",
+    "Accessor2.xml",
+    "CallbackWithSuppress.xml",
+    "HandlerWithSuppress.xml",
+    "SendNullToOwnInput.xml"
 ]

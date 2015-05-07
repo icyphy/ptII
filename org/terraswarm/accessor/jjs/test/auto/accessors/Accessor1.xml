@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
+    "http://www.terraswarm.org/accessors/Accessor_1.dtd">
+<class name="Accessor1" extends="org.terraswarm.JSAccessor">
+  <version>0.1</version>
+  <author>Edward A. Lee</author>
+  <input
+    name="stringInput"
+    value="Foo"
+    type="string"
+    description="String input."/>
+  <input
+    name="numericInput"
+    value="0"
+    type="number"
+    description="Numeric input."/>
+  <input
+    name="stringInputWithoutValue"
+    type="string"
+    description="String input without a value attribute."/>
+  <output
+    name="stringOutput"
+    type="string"
+    description="String output."/>       
+  <output
+    name="numericOutput"
+    type="number"
+    description="Numeric output."/>       
+  <output
+    name="stringOutputWithoutValue"
+    type="string"
+    description="String output for input without a value field."/>       
+  <output
+    name="inputIsAbsent"
+    type="boolean"
+    description="Output used to indicate that an input is missing."/>       
+  <documentation type="text/html">
+    <![CDATA[
+This is a test accessor used to test Import-->Accessor.
+It also tests handling of absent inputs and sending null to an output.
+	]]>
+  </documentation>
+  <script type="text/javascript">
+    // <![CDATA[
+	function fire() {
+	  var stringValue = get(stringInput);
+	  send(stringValue, stringOutput);
+	  var numericValue = get(numericInput);
+	  send(numericValue, numericOutput);
+	  stringValue = get(stringInputWithoutValue);
+	  send(stringValue, stringOutputWithoutValue);
+	  send(stringValue == null, inputIsAbsent);
+	}
+	// ]]>
+  </script>
+</class>
