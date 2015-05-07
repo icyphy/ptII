@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../../../..
 
-DIRS = MoC	WebSocketClient
+DIRS = MoC StockTick WebSocketClient c4po
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/jjs/demo
@@ -54,7 +54,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	MoC/MoC.jar \
-	WebSocketClient/WebSocketClient.jar
+	StockTick/StockTick.jar \
+	WebSocketClient/WebSocketClient.jar \
+	c4po/c4po.jar
 
 JSRCS = 
 

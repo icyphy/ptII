@@ -35,7 +35,7 @@ ROOT = ../../../../../..
 DIRS = 
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/js/demo/c4po
+ME = org/terraswarm/accessor/jjs/demo/c4po
 
 CLASSPATH =	$(ROOT)
 
