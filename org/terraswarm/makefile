@@ -30,7 +30,7 @@
 ##########################################################################
 
 # PTGDP_DIR is set by configure in $PTII/mk/ptII.mk if jna is found.
-DIRS = $(PTACCESSOR_DIR) kernel $(PTGDP_DIR) lib #demo
+DIRS = $(PTACCESSOR_DIR)  $(PTGDP_DIR) #demo
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -47,13 +47,11 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	terraswarm
-#PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	kernel/kernel.jar \
-	lib/lib.jar
+#PTCLASSALLJARS =
 
 all: suball
 install: subinstall
