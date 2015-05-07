@@ -43,8 +43,6 @@ $CLASSPATH/org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml
 $CLASSPATH/org/terraswarm/accessor/jjs/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/js/demo/c4po/c4po.xml
 $CLASSPATH/org/terraswarm/accessor/js/demo/StockTick/StockTick.xml
-$CLASSPATH/org/terraswarm/demo/c4po/c4po.xml
-$CLASSPATH/org/terraswarm/demo/StockTick/StockTick.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
