@@ -29,9 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# PTJAVASCRIPT is set by configure to js if js.jar is found.
 # PTJJS_DIR is set by configure to jjs if Nashorn (present in Java 1.8) is found.
-DIRS = $(PTJAVASCRIPT_DIR) $(PTJJS_DIR)
+DIRS = $(PTJJS_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../../..
