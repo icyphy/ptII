@@ -1560,7 +1560,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 					// Update time.
 					ivMdl.tMdl = currentTime;
 					// Save the last token seen at this port
-					_inputs.get(curIdx).lastInput = token;
+					// _inputs.get(curIdx).lastInput = token;
 					// Set the hasChanged flag to true.
 					_inputs.get(curIdx).hasChanged = true;
 					if (_debugging) {
