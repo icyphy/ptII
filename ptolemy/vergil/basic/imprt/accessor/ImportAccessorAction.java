@@ -38,7 +38,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 
 import org.json.JSONArray;
-import org.terraswarm.accessor.jjs.JSAccessor;
+import org.terraswarm.accessor.JSAccessor;
 
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
