@@ -596,9 +596,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTANGO_JAR_FILES) \
 	org/hlacerti/hlacerti.jar \
 	org/terraswarm/accessor/jjs/demo/demo.jar \
-	org/terraswarm/accessor/js/demo/demo.jar \
-	org/terraswarm/terraswarm.jar \
-	org/terraswarm/demo/demo.jar \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/ptango/demo/demo.jar \
 	org/ptolemy/qss/qss.jar \
