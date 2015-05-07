@@ -814,6 +814,7 @@ PTBACKTRACK_DIR
 PTANGO_PACKAGES
 PTANGO_JARS
 PTANGO_DIR
+PTACCESSOR_DIR
 PSDF_DIR
 ORACLE_OJDBC_JAR
 OPENCV_JAR
@@ -4452,11 +4453,13 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.7 i
     done
 fi
 
-# Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+# Set to jjs if Nashorn (present in Java 1.8) is found.
 PTJJS_DIR=
+# Set to accessor and used in org/terraswarm/makefile if Nashorn is found.
+PTACCESSOR_DIR=
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
-    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessor/jjs/ org/terraswarm/kernel/"
+    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessor/ org/terraswarm/kernel/"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
     The following packages will not be compiled:
         $pre1_8packages" >&5
@@ -4468,7 +4471,8 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
 	updateExcludes $package
     done
 else
-        # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn is found.
+        # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
+        PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
 fi
 
@@ -13795,6 +13799,9 @@ ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's
 
 # Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
+
+
+# Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
 
 
 # Set to ptango if jetty and javax.servlet jar files are found.
