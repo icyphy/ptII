@@ -37,7 +37,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 125}">
         </property>
     </entity>
-    <entity name="BluetoothDistance" class="org.terraswarm.kernel.AccessorOne">
+    <entity name="BluetoothDistance" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// &#10;function fire() {&#10;     var strength = get(rssi);&#10; var power = get(txPower);&#10; var result = -1.0;&#10; var ratio;&#10; 	  if (strength != 0) { 		ratio = strength*1.0/power; 	  	if (ratio &lt; 1.0) { 	    	result = Math.pow(ratio,10); 	  	} 	  	else { 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;     	  	} 	 }send(result, distance);&#10;}&#10;// ">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">

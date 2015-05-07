@@ -2,7 +2,7 @@
 <!--  Script from: 
 http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing
 -->
-<class name="BluetoothDistance" extends="org.terraswarm.kernel.JavaScript">
+<class name="BluetoothDistance" extends="ptolemy.actor.lib.jjs.JavaScript">
   <input
     name="rssi"
     value="-59"
