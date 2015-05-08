@@ -3285,6 +3285,8 @@ update_moog:
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ \
+		$(PTEXTERNAL_NIGHTLY)/builds
 	# 
 	@echo "Create links for latest tars and logs"
 	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
