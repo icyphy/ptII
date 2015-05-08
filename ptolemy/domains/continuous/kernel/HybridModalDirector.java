@@ -570,8 +570,26 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
             } else if (actor instanceof CompositeActor) {
                 // Delegate to the director.
                 Director director = actor.getDirector();
-                if (director instanceof ContinuousDirector) {
-                    ((ContinuousDirector) director).rollBackToCommittedState();
+                // On May 5, 2015, in Ptolemy Hackers, Stefan
+                // Resmerita wrote: "When rolling back the refinement
+                // of a state, this method delegates to the director
+                // of the refinement only if that one is a
+                // ContinuousDirector. Thus, models where the
+                // refinement director is a HybridModalDirector may
+                // not work.
+
+                // "This is illustrated in the attached example, which
+                // is a modified BouncingBall model where the
+                // refinement of the original "free" state has been
+                // moved one level down in FSM hierarchy.
+
+                // "At first sight, it would make sense to delegate
+                // rollback to a ContinuousStatefulComponent rather
+                // than a ContinuousDirector, but I'm unsure about
+                // possible side effects... "
+
+                if (director instanceof ContinuousStatefulComponent) {
+                    ((ContinuousStatefulComponent) director).rollBackToCommittedState(); 
                 }
             }
         }
