@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0558352825063892">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.84774174671685, 265.63416524805444}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.8477417467168, 265.63416524805444}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -86,7 +86,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <entity name="VertxPublish" class="org.terraswarm.accessor.jjs.JSAccessor">
+    <entity name="VertxPublish" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    &#10;var eventbus = require('eventbus');&#10;var bus;&#10;&#10;exports.initialize = function() {&#10;  var port = get(busHostPort);&#10;  var host = get(busHost);&#10;  bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;}&#10;&#10;addInputHandler(function() {&#10;  var topic = get(address);&#10;  var msg = get(message);&#10;  if (msg) {&#10;    bus.publish(topic, JSON.stringify(msg));&#10;  }&#10;}, message);&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;}&#10;&#10;	//  &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxPublish.xml">
@@ -144,7 +144,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="VertxSubscribe" class="org.terraswarm.accessor.jjs.JSAccessor">
+    <entity name="VertxSubscribe" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var eventbus = require('eventbus');&#10;var bus;&#10;var currentAddress;&#10;&#10;var onReceived = function(msg) {&#10;    send(msg, message);&#10;}&#10;&#10;exports.initialize = function() {&#10;    var port = get(busHostPort);&#10;    var host = get(busHost);&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    currentAddress = get(address);&#10;    bus.subscribe(currentAddress);&#10;    bus.on(get(address), onReceived);&#10;}&#10;&#10;addInputHandler(function() {&#10;    var topic = get(address);&#10;    if (topic != currentAddress) {&#10;        bus.unsubscribe(currentAddress);&#10;        bus.subscribe(topic);&#10;    }&#10;}, address);&#10;&#10;exports.wrapup = function() {&#10;    bus.removeAllListeners();&#10;}&#10;  	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxSubscribe.xml">
@@ -229,16 +229,12 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
         <port name="feedback" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
