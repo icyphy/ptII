@@ -222,6 +222,10 @@ public class ClassChanges extends MoMLFilterSimple {
         }
 
         // Location
+        _classChanges.put("org.terraswarm.accessor.jjs.JSAccessor",
+                "org.terraswarm.accessor.JSAccessor");
+
+        // Location
         _classChanges.put("ptolemy.moml.Location",
                 "ptolemy.kernel.util.Location");
 
