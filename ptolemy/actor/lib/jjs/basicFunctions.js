@@ -100,9 +100,10 @@ function httpRequest(url, method, properties, body, timeout) {
         })(arguments) + ")");
     }
     var theURL = new (Java.type('java.net.URL'))(url);
+    var protocol = theURL.getProtocol().toLowerCase();
     if (actor.isRestricted
-            && !theURL.getProtocol().toLowerCase().equals("http")) {
-        throw "Actor is restricted. Only HTTP requests will be honored by httpRequest().";
+            && !(protocol.equals("http") || protocol.equals("https"))) {
+        throw "Actor is restricted. Only HTTP(S) requests will be honored by httpRequest().";
     }
     var connection = theURL.openConnection();
 
