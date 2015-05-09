@@ -54,7 +54,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	NodeServer.js \
-	WebSocketClientAndNodeServer.xml
+	WebSocketClient.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
