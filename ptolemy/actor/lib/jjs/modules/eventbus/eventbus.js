@@ -66,16 +66,16 @@ var events = require('events');
  *  </pre>
  *  When sending a point-to-point message, it is possible to get a reply from the
  *  recipient.  The recipient (which also uses this module) should set the reply message
- *  as follows:
+ *  as in the following example:
  *  <pre>
  *     bus.setReply('confirmed');
  *  </pre>
- *  where 'confirmed' can be replaced with any string.
+ *  where 'confirmed' can be replaced with any string or value that has a JSON string representation.
  *  The sender can then specify a handler to receive the reply as follows:
  *  <pre>
  *     bus.send('topic', {'hello':'world'}, handler);
  *  </pre>
- *  where handler is a function that takes one argument, the reply string.
+ *  where handler is a function that takes one argument, the reply message.
  *  @constructor
  *  @param options A JSON record containing optional fields 'port' (an int)
  *   and 'host' (a string). These specify the network interface on the local host
@@ -105,11 +105,11 @@ util.inherits(VertxBus, events.EventEmitter);
  */
 VertxBus.prototype.notify = function(address, body) {
     try {
-        var converted = JSON.parse(body);
-        this.emit(address, converted);
+        body = JSON.parse(body);
     } catch (exception) {
         throw('Failed to parse JSON: ' + body + '\nException: ' + exception);
     }
+    this.emit(address, body);
 };
 
 /** Notify this object of a received reply from the event bus
@@ -120,6 +120,13 @@ VertxBus.prototype.notify = function(address, body) {
  *  @param message The message to send to the callback function.
  */
 VertxBus.prototype.notifyReply = function(handler, message) {
+    try {
+        message = JSON.parse(message);
+    } catch (exception) {
+        // Assume that the message is a string.
+        // We can ignore the exception, because the message
+        // will be passed as a string.
+    }
     handler.apply(this, [message]);
 };
 
