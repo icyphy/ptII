@@ -106,14 +106,14 @@ public class EventBusHelper {
 	    // e.g. under IPv6.
 	    Map<Integer,Vertx> instances = _vertxInstances.get(clusterHostname);
 	    if (instances == null) {
-		_vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
+		_createVertx(clusterPort, clusterHostname);
 		instances = new HashMap<Integer,Vertx>();
 		instances.put(clusterPort, _vertx);
 		_vertxInstances.put(clusterHostname, instances);
 	    } else {
 		Vertx instance = instances.get(clusterPort);
 		if (instance == null) {
-		    _vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
+		    _createVertx(clusterPort, clusterHostname);
 		    instances.put(clusterPort, _vertx);
 		} else {
 		    _vertx = instance;
@@ -121,7 +121,7 @@ public class EventBusHelper {
 	    }
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
@@ -231,7 +231,31 @@ public class EventBusHelper {
 	    }
 	}
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
    
+    /** Create the Vertx instance we will use.
+     *  @param clusterPort The port to listen for cluster information.
+     *  @param clusterHostname The network interface to use for the cluster.
+     */
+    private void _createVertx(int clusterPort, String clusterHostname) {
+	_vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
+	
+	/** FIXME: Some example code includes the following, but I can't find VertxOptions:
+	VertxOptions options = new VertxOptions();
+	Vertx.clusteredVertx(options, res -> {
+	  if (res.succeeded()) {
+	    Vertx vertx = res.result();
+	    EventBus eventBus = vertx.eventBus();
+	    System.out.println("We now have a clustered event bus: " + eventBus);
+	  } else {
+	    System.out.println("Failed: " + res.cause());
+	  }
+	});
+	*/
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
     
