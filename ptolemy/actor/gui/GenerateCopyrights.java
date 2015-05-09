@@ -196,7 +196,7 @@ public class GenerateCopyrights {
                 "lib/hazelcast-3.2.3-license.htm");
 
         _addIfPresent(copyrightsMap, "org.vertx.java.core.Vertx",
-                "lib/vertx-2.1.4-license.htm");
+                "lib/vertx-2.1.5-license.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
