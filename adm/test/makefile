@@ -109,7 +109,7 @@ $(JAVAFILENAMES): $(ROOT)/$(PTIITXTFILES)
 	@egrep "\.java$$" $(TXTFILENAMES) > $(JAVAFILENAMES)
 
 missingMakefiles: $(JAVAFILENAMES)
-	(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | egrep "cannot access") | awk '{print substr($$4, 1, length($$4) - 1) }' | 2>&1 egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni)"; rm -f /tmp/missingMakefiles.sh
+	(cd $(ROOT); cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | awk '{print "ls " $$1 "/makefile"}' > /tmp/missingMakefiles.sh; sh /tmp/missingMakefiles.sh 2>&1 | egrep "cannot access") | awk '{print substr($$4, 1, length($$4) - 1) }' | 2>&1 egrep -v "(Entering directory|Leaving directory|/jsoriginal/|ptolemy/apps|\./vendors|ptolemy/backtrack/test|jni/test/jni|ptinyos/demo/*/output/makefile)"; rm -f /tmp/missingMakefiles.sh
 
 missingDocPackages: $(JAVAFILENAMES)
 	@cat $(JAVAFILENAMES) | xargs -n 1 dirname | sort | uniq | sed 's@/@.@g' | sed 's/^\.\.//' > /tmp/missingDocPackages.p
