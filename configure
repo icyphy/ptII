@@ -4459,7 +4459,7 @@ PTJJS_DIR=
 PTACCESSOR_DIR=
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
-    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessor/ org/terraswarm/kernel/"
+    pre1_8packages="org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ org/terraswarm/accessor/"
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 is the first JVM in your path.
     The following packages will not be compiled:
         $pre1_8packages" >&5
@@ -4474,6 +4474,8 @@ else
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
+        # org.terraswarm.accessor depends on jjs/JavaScript.java so we
+        # list org.terraswarm.accessor with jjs/JavaScript
 fi
 
 #####################################################################
@@ -8622,7 +8624,7 @@ $as_echo "$PTSOCKETIO_JAR" >&6; }; fi
 	          updateClasspath "$PTSOCKETIO_JAR"
 	          PTJAVASCRIPT_DIR=js
 	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js org.terraswarm.kernel org.terraswarm.accessor"
+	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js"
               fi
 	   fi
        fi
@@ -13194,7 +13196,9 @@ $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >
 	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTVERTX_JARS" >&5
 $as_echo "$PTVERTX_JARS" >&6; }; fi
-	    PTVERTX_PACKAGES="ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+            # org.terraswarm.accessor depends on jjs/JavaScript.java so we
+            # list org.terraswarm.accessor with jjs/JavaScript
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -13202,6 +13206,8 @@ fi
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/discovery/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/eventbus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
