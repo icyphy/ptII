@@ -639,9 +639,9 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/com/cureos/cureos.jar"
                   targetdir="$INSTALL_PATH/com/cureos"/>
 
-            <file src="../dists/ptII11.0.devel/jar_dist/org/terraswarm/terraswarm.jar"
-                  targetdir="$INSTALL_PATH/org/terraswarm"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/org/terraswarm/demo/demo.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/org/terraswarm/accessor/accessor.jar"
+                  targetdir="$INSTALL_PATH/org/terraswarm/accessor"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/org/terraswarm/accessor/demo/demo.jar"
                   targetdir="$INSTALL_PATH/org/terraswarm/demo"/>
 
 
