@@ -51,7 +51,7 @@
         </property>
       </property>
       <!-- Create a PortParameter for each input. -->
-      <!-- NOTE: We ignore the type, if any, and infer the type from the value. -->
+      <!-- NOTE: We (mostly) ignore the type, if any, and infer the type from the value. -->
       <xsl:for-each select="input">
         <xsl:choose>
           <!-- If there is a value, then make a PortParameter. Otherwise, make a port. -->
@@ -69,6 +69,12 @@
               <xsl:attribute name="value">
                 <xsl:value-of select="$defaultValue"/>
               </xsl:attribute>
+              <!-- If the type is JSON, explicitly declare the type to be general. -->
+              <xsl:choose>
+                <xsl:when test="@type='JSON'">
+                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="general"/>
+                </xsl:when>
+              </xsl:choose>
             </property>
           </xsl:when>
           <xsl:otherwise>
