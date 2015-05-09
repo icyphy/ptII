@@ -61,10 +61,9 @@
               <!-- FIXME: Put in string mode. -->
               <xsl:variable name="defaultValue">
                 <xsl:choose>
+                  <!-- If the type is string, surround with quotation marks. -->
                   <xsl:when test="@type='string'">"<xsl:value-of select="@value"/>"</xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="@value"/>
-                  </xsl:otherwise>
+                  <xsl:otherwise><xsl:value-of select="@value"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
               <xsl:attribute name="value">
@@ -76,7 +75,7 @@
             <port name="{@name}" class="ptolemy.actor.TypedIOPort">
               <property name="input"/>
               <xsl:choose>
-                <!-- If there is a type, then create a type attribute. -->
+                <!-- If there is a type, then create a type attribute, -->
                 <xsl:when test="@type">
                   <property name="_type" class="ptolemy.actor.TypeAttribute">
                     <xsl:attribute name="value">
@@ -85,6 +84,10 @@
                           <xsl:when test="@type='number'">
                             <!-- JavaScript number is a double. -->
                             <xsl:value-of select="'double'"/>
+                          </xsl:when>
+                          <xsl:when test="@type='JSON'">
+                            <!-- (Nearly) any Ptolemy II token can be converted to JSON. -->
+                            <xsl:value-of select="'general'"/>
                           </xsl:when>
                           <xsl:otherwise>
                             <!-- NOTE: Assume that other than 'number', accessor types are -->
@@ -113,6 +116,10 @@
                   <xsl:when test="@type='number'">
                     <!-- JavaScript number is a double. -->
                     <xsl:value-of select="'double'"/>
+                  </xsl:when>
+                  <xsl:when test="@type='JSON'">
+                    <!-- JavaScript JSON is a general. -->
+                    <xsl:value-of select="'general'"/>
                   </xsl:when>
                   <xsl:when test="@type">
                     <!-- A type is given. -->
