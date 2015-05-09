@@ -48,10 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	consumer.xml \
-	producer.xml \
-	SimpleProducerConsumer.xml \
-	SimpleProducerConsumer.fed
+	SimpleProducerConsumerMulti.xml \
+	consumerMulti.xml \
+	producerP1.xml \
+	producerP2.xml \
+	producerP3.xml
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
