@@ -280,6 +280,7 @@ ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/verification/SystemGeneratedTempFolder*
 ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
 ptserver/test/junit/PtolemyServer.log
+replay_pid*.log
 updateMoMLFiles.xml
 vendors/jogl
 socket.cfg
