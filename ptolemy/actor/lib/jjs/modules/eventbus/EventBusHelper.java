@@ -47,41 +47,52 @@ import org.vertx.java.core.eventbus.Message;
  *  passed in as a constructor argument and is expected to implement the
  *  event emitter pattern, for example by inheriting from EventEmitter
  *  class of the events module using util.inherits().
- *  <p>
- *  This class follows the instructions for "Embedding Vert.x core"
+ *
+ *  <p>For information about the Vert.x event bus, see
+ *  <a href="http://vertx.io/core_manual_java.html#the-event-bus">http://vertx.io/core_manual_java.html#the-event-bus</a>.</p>
+ *
+ *  <p>This class follows the instructions for "Embedding Vert.x core"
  *  at <a href="http://vertx.io/embedding_manual.html">http://vertx.io/embedding_manual.html</a>.
  *  It states there that "Please note this feature is intended for power users only,"
  *  but we will not be using Vert.x to run verticles or modules, so this seems
  *  appropriate. We are using it only for the event bus and networking
- *  infrastructure.
-   
-   @author Patricia Derler and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 11.0
-   @Pt.ProposedRating Yellow (pd)
-   @Pt.AcceptedRating Red (pd)
+ *  infrastructure.</p>
+ *  
+ *  @author Patricia Derler and Edward A. Lee
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ *  @Pt.ProposedRating Yellow (pd)
+ *  @Pt.AcceptedRating Red (pd)
  */
 public class EventBusHelper {
         
     /** Create a EventBusHelper for the specified publish or subscribe
      *  client for the event bus using the specified port and hostname
      *  for cluster connections.
-     *  If the hostname is null, then this will use
-     *  an unclustered instance of Vertx whose event bus will not
-     *  communicate with any other instances of Vertx.  The hostname
-     *  is something like "localhost" or
-     *  "10.0.0.4", and it specifies a local network device over
-     *  which to listen for cluster connections (e.g. wifi or
-     *  ethernet). The port is the port to listen over.
-     *  The default for Vertx is 25500.
-     *  @param jsObject The JavaScript object that will subscribe to the event bus.
-     *  @param clusterHost The port over which to listen for cluster connections.
-     *  @param clusterHost The host interface over which to listen for cluster connections,
-     *   or null to create an unclustered EventBusHelper.
+     *
+     *  <p>If the clusterHostname is null, then this will use an
+     *  unclustered instance of Vertx whose event bus will not
+     *  communicate with any other instances of Vertx.  The
+     *  clusterHostname is something like "localhost" or "10.0.0.4",
+     *  and it specifies a local network device over which to listen
+     *  for cluster connections (e.g. WiFi or Ethernet).</p>
+     *
+     *  <p>The clusterPort is the tcp/ip port to which to listem for
+     *  cluster connections.  The default for clusterPort for Vertx is
+     *  25500.  If clusterHostname is null, then the default
+     *  clusterPort value is used.</p>
+     *
+     *  @param jsObject The JavaScript object that will subscribe to
+     *  the event bus.
+     *  @param clusterPort The port over which to listen for cluster
+     *  connections.
+     *  @param clusterHostname The host interface over which to listen
+     *   for cluster connections, or null to create an unclustered
+     *   EventBusHelper.
      */
-    public EventBusHelper(ScriptObjectMirror jsObject, int clusterPort, String clusterHost) {
+    public EventBusHelper(ScriptObjectMirror jsObject, int clusterPort, String clusterHostname) {
 	_currentObj = jsObject;
-	if (clusterHost == null) {
+	if (clusterHostname == null) {
 	    if (_unclusteredVertxInstance == null) {
 		_unclusteredVertxInstance = VertxFactory.newVertx();
 	    }
@@ -93,16 +104,16 @@ public class EventBusHelper {
 	    // FIXME: How to ensure that "localhost" and "127.0.0.1" return
 	    // the same helper? localhost could resolve to something else,
 	    // e.g. under IPv6.
-	    Map<Integer,Vertx> instances = _vertxInstances.get(clusterHost);
+	    Map<Integer,Vertx> instances = _vertxInstances.get(clusterHostname);
 	    if (instances == null) {
-		_vertx = VertxFactory.newVertx(clusterPort, clusterHost);
+		_vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
 		instances = new HashMap<Integer,Vertx>();
 		instances.put(clusterPort, _vertx);
-		_vertxInstances.put(clusterHost, instances);
+		_vertxInstances.put(clusterHostname, instances);
 	    } else {
 		Vertx instance = instances.get(clusterPort);
 		if (instance == null) {
-		    _vertx = VertxFactory.newVertx(clusterPort, clusterHost);
+		    _vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
 		    instances.put(clusterPort, _vertx);
 		} else {
 		    _vertx = instance;
