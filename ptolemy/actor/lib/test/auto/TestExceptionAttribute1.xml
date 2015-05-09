@@ -27,7 +27,7 @@
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value=" was initialized and should have handled an exception but did not see any.&#10;  in .TestExceptionAttribute1.TestExceptionAttribute">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 175.0]">
         </property>

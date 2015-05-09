@@ -70,7 +70,7 @@
             </property>
         </port>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+            <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
         </entity>
     </entity>

@@ -25,7 +25,7 @@
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
         <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A model error.&#10;  in .ThrowModelError.composite actor.composite actor.ThrowModelError">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 70.0]">
         </property>
