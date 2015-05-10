@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Sources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+      <entity name="Spontaneous Sources" class="ptolemy.moml.EntityLibrary">
+
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock"/>
+        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock"/>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent"/>
+
+      </entity>
+
+      <entity name="Triggered Sources" class="ptolemy.moml.EntityLibrary">
+
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+          <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" value="value"/>
+            <property name="displayWidth" value="40"/>
+          </property>
+        </entity>
+
+        <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
+          <doc>Output the current date.</doc>
+        </entity>
+
+        <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
+          <doc>Output the current microstep.</doc>
+        </entity>
+
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        </entity>
+
+        <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+          <doc>Produce strings from an interactive shell on the screen</doc>
+        </entity>
+
+        <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        </entity>
+
+        <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+          <doc>Create a sequence of tokens with increasing value</doc>
+        </entity>
+
+        <entity name="Sequence" class="ptolemy.actor.lib.Sequence"/>
+        
+        <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
+
+        <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+          <doc>Create a constant sequence with a string value.</doc>
+          <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" value="value"/>
+            <property name="displayWidth" value="80"/>
+            <property name="displayHeight" value="10"/>
+          </property>
+        </entity>
+
+        <entity name="TriggeredDiscreteClock" class="ptolemy.actor.lib.TriggeredClock"/>
+        
+        <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave"/>
+
+      </entity>
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+

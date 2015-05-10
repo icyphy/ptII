@@ -1,0 +1,112 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Sadly, this is a copy of $PTII/ptolemy/domains/sr/lib/srentities.xml -->
+
+
+
+<entity name="Periodic" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Synchronous-reactive actors</doc>
+
+<entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+    <property name="outputType">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="boolean" value="boolean"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="complex" value="complex"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="double" value="double"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="fix" value="fix"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="int" value="int"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="long" value="long"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="string" value="string"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+</entity>
+
+<entity name="Current" class="ptolemy.domains.sr.lib.Current">
+</entity>
+
+<entity name="Default" class="ptolemy.actor.lib.Default">
+</entity>
+
+<entity name="EnabledComposite" class="ptolemy.domains.sr.lib.EnabledComposite">
+</entity>
+
+<entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
+</entity>
+
+<entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+</entity>
+
+<entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialValue">
+      </property>
+      <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+      </property>
+   </property>
+</entity>
+
+<entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
+</entity>
+
+<entity name="BinaryNonStrictLogicGate" class="ptolemy.domains.sr.lib.BinaryNonStrictLogicGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml"/>
+</entity>
+
+<entity name="NonStrictLogicGate" class="ptolemy.domains.sr.lib.NonStrictLogicGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml"/>
+</entity>
+
+<entity name="NonStrictAndGate" class="ptolemy.domains.sr.lib.NonStrictAndGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml">
+	     <property name="logic" value="and"/>
+     </input>
+</entity>
+
+<entity name="NonStrictOrGate" class="ptolemy.domains.sr.lib.NonStrictOrGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml">
+	     <property name="logic" value="or"/>
+     </input>
+</entity>
+
+<entity name="NonStrictXorGate" class="ptolemy.domains.sr.lib.NonStrictXorGate">
+	<!-- Icon is the same as LogicGate. -->
+     <input source="ptolemy/actor/lib/logic/LogicGate_Icon.xml">
+	     <property name="logic" value="xor"/>
+     </input>
+</entity>
+
+<entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
+</entity>
+
+<entity name="Pre" class="ptolemy.domains.sr.lib.Pre">
+</entity>
+
+<entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
+</entity>
+<entity name="When" class="ptolemy.domains.sr.lib.When">
+</entity>
+
+<entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+

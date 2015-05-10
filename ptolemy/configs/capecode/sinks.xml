@@ -1,0 +1,62 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Sinks" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+        <!-- Copied from ptolemy/actor/lib/genericsinks.xml-->
+        <!-- Copied from ptolemy/actor/lib/sequencesinks.xml-->
+
+        <entity name="Timed Sinks" class="ptolemy.moml.EntityLibrary">
+          <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay"/>
+          <entity name="TimedMonitorValue" class="ptolemy.actor.lib.gui.TimedMonitorValue">
+            <doc>Monitor and display values</doc>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+            <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" value="value"/>
+            <property name="displayWidth" value="displayWidth"/>
+            </property>
+          </entity>
+          <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
+          <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
+        </entity>
+
+        <entity name="Triggered Sinks" class="ptolemy.moml.EntityLibrary">
+
+           <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter"/>
+           <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY"/>
+           <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
+           <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+           <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
+
+           <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+             <doc>Monitor and display values</doc>
+             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+             <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+             <property name="attributeName" value="value"/>
+             <property name="displayWidth" value="displayWidth"/>
+             </property>
+           </entity>
+
+           <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+             </property>
+             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+             </property>
+             </property>
+           </entity>
+
+           <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
+           <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
+         </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+ 
+
+

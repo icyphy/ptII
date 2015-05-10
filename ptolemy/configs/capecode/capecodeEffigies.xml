@@ -1,0 +1,22 @@
+<group>
+    <!-- Use a custom graph editor with a DE director already in it. -->
+    <entity name="Accessor Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="Accessor Director"
+                  class="ptolemy.domains.de.kernel.DEDirector">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+        </property>
+      </entity>
+    </entity>
+
+    <!-- We need an FSM editor, but do not want it to appear in the -->
+    <!-- File->New menu. -->
+    <entity name="Modal Model"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.modal.modal.ModalModel">
+	<input source="ptolemy/configs/modalController.xml"/>
+      </entity>
+    </entity>
+</group>

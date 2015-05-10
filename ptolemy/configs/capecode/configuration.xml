@@ -1,0 +1,185 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <!-- The contents of <doc>...</doc> are reported by vergil -help. -->
+  <doc>Configuration for CapeCode, the IoT Accessor Tool.</doc>
+
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/capecode/intro.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.data.expr.FileParameter"
+            value="$CLASSPATH/ptolemy/configs/capecode/docs.htm"/>
+
+  <property name="_classesToRemove" 
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;}">
+    <doc>An array of Strings, where each element names a class to be removed by the MoMLFilter.</doc>
+  </property>
+
+  <!-- Add support for exporting PDFs. -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_exportPDFActionClassName"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.export.itextpdf.ExportPDFAction"/>
+
+  <!-- Add support for exporting HTML. -->
+  <!-- Used in BasicGraphFrame.java -->
+  <input source="ptolemy/vergil/basic/export/html/htmlExportConfiguration.xml"/>
+
+  <!-- Add support for importing Functional Mock-up Units (FMUs). -->
+  <!-- Used in BasicGraphFrame.java -->
+  <property name="_importActionClassNames"
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy.vergil.basic.imprt.accessor.ImportAccessorAction&quot;}"/>
+
+  <!-- Use the KIELER graph layout algorithms. -->
+  <!--  Used in BasicGraphFrame.java-->
+  <property name="_layoutGraphAction"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.basic.layout.kieler.KielerLayoutAction"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
+  </entity>
+
+  <!-- The state refinements for modal models. -->
+  <input source="ptolemy/configs/capecode/capecodeRefinements.xml"/>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <input source="ptolemy/configs/capecode/capecodeEffigies.xml"/>
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/modalTableauFactory.xml"/>
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main default library is normally the following. Override below. -->
+  <!-- input source="ptolemy/configs/basicLibrary.xml"-->
+
+  <!-- Main actor library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Override utilities library. -->
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+
+      <!-- Note that regardless of the order here, classes get listed before entities. -->
+      <!-- input source="ptolemy/domains/qss/kernel/CyPhyComposite.xml" / -->
+      <!-- input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" / -->
+      <!-- input source="ptolemy/domains/qss/kernel/CyPhyCompositeClass.xml" / -->
+      <!-- input source="ptolemy/domains/sr/kernel/PeriodicCompositeClass.xml" / -->
+
+      <input source="ptolemy/configs/utilityModalModel.xml"/>
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+      <!-- Override default background color so that CapeCode looks different. -->
+      <!-- properties have classes here so that doc/test/docManager.tcl can expand the configuration. -->
+      <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.73,0.83,0.83,1.0}">
+            <display name="Background Color"/>
+        </property>
+      </property>
+      <configure>
+        <?moml
+          <group>
+	  <input source="ptolemy/actor/lib/jjs/js.xml"/>
+          <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
+	  <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
+          <input source="ptolemy/data/unit/unitSystems.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Custom actor library. -->
+    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+          <!-- Libraries are mostly customized to make them spartan. -->
+          <input source="ptolemy/configs/capecode/sources.xml"/>
+          <input source="ptolemy/configs/capecode/sinks.xml"/>
+          <input source="ptolemy/configs/capecode/de.xml"/>
+          <input source="ptolemy/actor/lib/array.xml"/>
+          <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+          <input source="ptolemy/actor/lib/datastores.xml"/>
+          <input source="ptolemy/domains/de/lib/dedateentities.xml"/>
+          <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+          <input source="ptolemy/configs/capecode/hoc.xml"/>
+          <input source="ptolemy/configs/capecode/io.xml"/>
+          <input source="ptolemy/actor/lib/logic/logic.xml"/>
+          <input source="ptolemy/actor/lib/math.xml"/>
+          <input source="ptolemy/actor/lib/matrix.xml"/>
+          <input source="ptolemy/actor/lib/random.xml"/>
+          <input source="ptolemy/actor/lib/realtime.xml"/>
+          <input source="ptolemy/actor/lib/test.xml"/>
+          <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+          <input source="ptolemy/actor/lib/string/string.xml"/>
+
+          <!-- input source="ptolemy/domains/qss/lib/qssentities.xml"/ -->
+
+         </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="Experimental Libraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/actor/lib/aspect/aspect.xml"/>
+            <input source="ptolemy/configs/cosimulation.xml"/>
+            <input source="ptolemy/actor/lib/database/database.xml"/>
+            <input source="ptolemy/configs/capecode/gr.xml"/>
+            <input source="ptolemy/actor/lib/image/image.xml"/>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
+            <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
+	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
+            <input source="ptolemy/actor/lib/mail/mail.xml"/>
+
+            <!-- openmodelica actors not really working -->
+	    <!-- input source="ptolemy/domains/openmodelica/lib/openmodelicaentities.xml"/ -->
+
+            <input source="org/ptolemy/optimization/optimization.xml"/>
+	    <input source="org/ptolemy/ptango/lib/ptango.xml"/>
+            <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
+
+            <!-- FIXME:  would provide a composite pre-populated with a director, rather than providing the director. -->
+            <input source="ptolemy/domains/wireless/wireless.xml"/>
+
+            <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+  </entity>
+</entity>
