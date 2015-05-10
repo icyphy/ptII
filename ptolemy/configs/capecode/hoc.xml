@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HigherOrderActors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Higher-Order Computation Infrastructure.</doc>
+      <entity name="Case" class="ptolemy.actor.lib.hoc.Case"/> 
+
+      <entity name="ExecuteActor" class="ptolemy.actor.lib.hoc.ExecuteActor"/>
+
+      <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
+        <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.IterateOverArray$IterateComposite">
+          <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 55.0]">
+            </property>
+          </property>
+        </entity>
+      </entity>
+
+      <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference"/>
+      <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/>
+      <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+          <property name="echos" value="1"/>
+          <property name="echoBoxColor" value="{0.0, 1.0, 0.0, 1.0}"/>
+        </property>
+        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory"/>
+        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
+        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
+        <entity name="ThreadedCompositeInside" class="ptolemy.actor.lib.hoc.MirrorComposite$MirrorCompositeContents">
+          <property name="annotation" class="ptolemy.kernel.util.Attribute">
+           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+           </property>
+           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
+           </property>
+           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+              <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+           </property>
+           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+           </property>
+           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
+           </property>
+          </property>
+        </entity>
+      </entity>
+            
+      <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference"/>
+
+      </group>
+      ?>
+    </configure>
+  </entity>
