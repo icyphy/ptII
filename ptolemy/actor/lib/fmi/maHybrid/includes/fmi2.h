@@ -34,6 +34,7 @@ typedef struct {
     fmi2FMUstate lastFMUstate;
     fmi2Boolean canGetAndSetFMUstate;
     fmi2Boolean canGetMaxStepSize;
+    fmi2Boolean handleIntegerTime;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
@@ -70,7 +71,7 @@ typedef struct {
     ****************************************************/
     fmi2SetRealInputDerivativesTYPE  *setRealInputDerivatives;
     fmi2GetRealOutputDerivativesTYPE *getRealOutputDerivatives;
-    fmi2DoStepTYPE                   *doStep;
+    fmi2DoStepTYPE                   *doStep;    
     fmi2CancelStepTYPE               *cancelStep;
     fmi2GetStatusTYPE                *getStatus;
     fmi2GetRealStatusTYPE            *getRealStatus;
@@ -90,6 +91,23 @@ typedef struct {
     fmi2GetEventIndicatorsTYPE            *getEventIndicators;
     fmi2GetContinuousStatesTYPE           *getContinuousStates;
     fmi2GetNominalsOfContinuousStatesTYPE *getNominalsOfContinuousStates;
+    /***************************************************
+    Functions for FMI2 for Hybrid Co-Simulation
+    ****************************************************/
+    fmi2HybridDoStepTYPE                  *doHybridStep;
+    fmi2HybridGetMaxStepSizeTYPE          *getHybridMaxStepSize;
+    fmi2RequiredTimeResolutionTYPE        *getTimeResolution;
+    fmi2SetTimeResolutionTYPE             *setTimeResolution;
+    fmi2HybridSetupExperimentTYPE         *setupHybridExperiment;
+    fmi2GetHybridRealTYPE                 *getHybridReal;
+    fmi2GetHybridIntegerTYPE              *getHybridInteger;
+    fmi2GetHybridBooleanTYPE              *getHybridBoolean;
+    fmi2GetHybridStringTYPE               *getHybridString;
+    fmi2SetHybridRealTYPE                 *setHybridReal;
+    fmi2SetHybridIntegerTYPE              *setHybridInteger;
+    fmi2SetHybridBooleanTYPE              *setHybridBoolean;
+    fmi2SetHybridStringTYPE               *setHybridString;
+
 } FMU;
 
 typedef enum {

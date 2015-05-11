@@ -7,12 +7,8 @@
  * Revision history
  *  07.03.2014 initial version released in FMU SDK 2.0.0
  *
- * Based on sim_support.c by Adrian Tirea
+ * Author: Adrian Tirea
  * Copyright QTronic GmbH. All rights reserved.
-
- * File: ptolemy/actor/lib/fmi/ma2/shared/sim_support.c
- * Ptolemy version Authors: Fabian Stahnke, Fabio Cremona, Christopher Brooks
- * $Id$
  * -------------------------------------------------------------------------*/
 
 /* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
@@ -22,17 +18,6 @@
 #ifdef __linux__
 /* Needed for strdup and mkdtemp under RHEL 6.1 */
 #define __USE_BSD
-
-/* Needed for strdup and mkdtemp under Gentoo.
- * see http://polarhome.com/service/man/?qf=STRDUP&af=0&tf=2&of=Gentoo
- * If you change this file, then please change
- * ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
- * On 01/27/2015 Marten wrote: Doubtful whether this is still true after 
- * the -std=gnu99 flag was turned on. Moreover, glibc 2.20, the
- * _BSD_SOURCE macro is deprecated, see:
- * http://man7.org/linux/man-pages/man7/feature_test_macros.7.html.
- */
-#define _BSD_SOURCE
 #endif
 
 #include <stdlib.h>
@@ -245,7 +230,6 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     fmu->terminate                 = (fmi2TerminateTYPE *)             getAdr(&s, h, "fmi2Terminate");
     fmu->reset                     = (fmi2ResetTYPE *)                 getAdr(&s, h, "fmi2Reset");
     fmu->getReal                   = (fmi2GetRealTYPE *)               getAdr(&s, h, "fmi2GetReal");
-    fmu->getMaxStepSize            = (fmi2GetMaxStepSizeTYPE *)        getAdr(&s, h, "fmi2GetMaxStepSize");
     fmu->getInteger                = (fmi2GetIntegerTYPE *)            getAdr(&s, h, "fmi2GetInteger");
     fmu->getBoolean                = (fmi2GetBooleanTYPE *)            getAdr(&s, h, "fmi2GetBoolean");
     fmu->getString                 = (fmi2GetStringTYPE *)             getAdr(&s, h, "fmi2GetString");
@@ -264,12 +248,27 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     fmu->setRealInputDerivatives   = (fmi2SetRealInputDerivativesTYPE *) getAdr(&s, h, "fmi2SetRealInputDerivatives");
     fmu->getRealOutputDerivatives  = (fmi2GetRealOutputDerivativesTYPE *) getAdr(&s, h, "fmi2GetRealOutputDerivatives");
     fmu->doStep                    = (fmi2DoStepTYPE *)                getAdr(&s, h, "fmi2DoStep");
+    fmu->getMaxStepSize            = (fmi2GetMaxStepSizeTYPE *)        getAdr(&s, h, "fmi2GetMaxStepSize");
     fmu->cancelStep                = (fmi2CancelStepTYPE *)            getAdr(&s, h, "fmi2CancelStep");
     fmu->getStatus                 = (fmi2GetStatusTYPE *)             getAdr(&s, h, "fmi2GetStatus");
     fmu->getRealStatus             = (fmi2GetRealStatusTYPE *)         getAdr(&s, h, "fmi2GetRealStatus");
     fmu->getIntegerStatus          = (fmi2GetIntegerStatusTYPE *)      getAdr(&s, h, "fmi2GetIntegerStatus");
     fmu->getBooleanStatus          = (fmi2GetBooleanStatusTYPE *)      getAdr(&s, h, "fmi2GetBooleanStatus");
     fmu->getStringStatus           = (fmi2GetStringStatusTYPE *)       getAdr(&s, h, "fmi2GetStringStatus");
+    /* Methods for Hybrid Co-Simulation */
+    fmu->doHybridStep              = (fmi2HybridDoStepTYPE *)          getAdr(&s, h, "fmi2HybridDoStep");
+    fmu->getHybridMaxStepSize      = (fmi2HybridGetMaxStepSizeTYPE *)  getAdr(&s, h, "fmi2HybridGetMaxStepSize");
+    fmu->getTimeResolution         = (fmi2RequiredTimeResolutionTYPE *) getAdr(&s, h, "fmi2RequiredTimeResolution");
+    fmu->setTimeResolution         = (fmi2SetTimeResolutionTYPE *)     getAdr(&s, h, "fmi2SetTimeResolution");
+    fmu->setupHybridExperiment     = (fmi2HybridSetupExperimentTYPE *) getAdr(&s, h, "fmi2HybridSetupExperiment");
+    fmu->getHybridReal             = (fmi2GetHybridRealTYPE *)         getAdr(&s, h, "fmi2GetHybridReal");
+    fmu->getHybridInteger          = (fmi2GetHybridIntegerTYPE *)      getAdr(&s, h, "fmi2GetHybridInteger");
+    fmu->getHybridBoolean          = (fmi2GetHybridBooleanTYPE *)      getAdr(&s, h, "fmi2GetHybridBoolean");
+    fmu->getHybridString           = (fmi2GetHybridStringTYPE *)       getAdr(&s, h, "fmi2GetHybridString");
+    fmu->setHybridReal             = (fmi2SetHybridRealTYPE *)         getAdr(&s, h, "fmi2SetHybridReal");
+    fmu->setHybridInteger          = (fmi2SetHybridIntegerTYPE *)      getAdr(&s, h, "fmi2SetHybridInteger");
+    fmu->setHybridBoolean          = (fmi2SetHybridBooleanTYPE *)      getAdr(&s, h, "fmi2SetHybridBoolean");
+    fmu->setHybridString           = (fmi2SetHybridStringTYPE *)       getAdr(&s, h, "fmi2SetHybridString");
 #else // FMI for Model Exchange
     fmu->enterEventMode            = (fmi2EnterEventModeTYPE *)        getAdr(&s, h, "fmi2EnterEventMode");
     fmu->newDiscreteStates         = (fmi2NewDiscreteStatesTYPE *)     getAdr(&s, h, "fmi2NewDiscreteStates");
@@ -382,7 +381,7 @@ static void doubleToCommaString(char* buffer, double r){
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
 // otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
-void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, FILE* file, char separator, boolean header) {
+void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int resolution, FILE* file, char separator, boolean header) {
 
     char buffer[32];
 
@@ -392,7 +391,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
     }
     else {
         if (separator==',') {
-            fprintf(file, "%.16g", time);
+            fprintf(file, "%.d E%d", time, resolution);
         }
         else {
             // separator is e.g. ';' or '\t'
@@ -411,6 +410,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
         fmi2Boolean b;
         fmi2String s;
         fmi2ValueReference vr;
+        fmi2Integer hv;
 
         FMU *fmu = &fmus[j];
         int n = getScalarVariableSize(fmu->modelDescription);
@@ -441,28 +441,49 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
                 vr = getValueReference(sv);
                 switch (getElementType(getTypeSpec(sv))) {
                     case elm_Real:
-                        fmu->getReal(c, &vr, 1, &r);
-                        if (separator == ',') {
+                        fmu->getHybridReal(c, &vr, 1, &r, &hv);
+                        if (hv == 0)
                             fprintf(file, ",%.16g", r);
-                        }
-                        else {
-                            // separator is e.g. ';' or '\t'
-                            doubleToCommaString(buffer, r);
-                            fprintf(file, "%c%s", separator, buffer);
-                        }
+                        if (hv == 1)
+                            fprintf(file, ",absent");
+                        if (hv == 2)
+                            fprintf(file, ",unknown");
                         break;
                     case elm_Integer:
+                        fmu->getHybridInteger(c, &vr, 1, &i, &hv);
+                        if (hv == 0)
+                            fprintf(file, ",%d", i);
+                        if (hv == 1)
+                            fprintf(file, ",absent");
+                        if (hv == 2)
+                            fprintf(file, ",unknown");
+                        break;
                     case elm_Enumeration:
-                        fmu->getInteger(c, &vr, 1, &i);
-                        fprintf(file, "%c%d", separator, i);
+                        fmu->getHybridInteger(c, &vr, 1, &i, &hv);
+                        if (hv == 0)
+                            fprintf(file, ",%d", i);
+                        if (hv == 1)
+                            fprintf(file, ",absent");
+                        if (hv == 2)
+                            fprintf(file, ",unknown");
                         break;
                     case elm_Boolean:
-                        fmu->getBoolean(c, &vr, 1, &b);
-                        fprintf(file, "%c%d", separator, b);
+                        fmu->getHybridBoolean(c, &vr, 1, &b, &hv);
+                        if (hv == 0)
+                            fprintf(file, ",%d", b);
+                        if (hv == 1)
+                            fprintf(file, ",absent");
+                        if (hv == 2)
+                            fprintf(file, ",unknown");
                         break;
                     case elm_String:
-                        fmu->getString(c, &vr, 1, &s);
-                        fprintf(file, "%c%s", separator, s);
+                        fmu->getHybridString(c, &vr, 1, &s, &hv);
+                        if (hv == 0)
+                            fprintf(file, ",%s", s);
+                        if (hv == 1)
+                            fprintf(file, ",absent");
+                        if (hv == 2)
+                            fprintf(file, ",unknown");
                         break;
                     default:
                         fprintf(file, "%cNoValueForType=%d", separator, getElementType(getTypeSpec(sv)));
@@ -470,6 +491,8 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
             }
         } // for fmus variables
     } // for fmus
+
+    
 
     // terminate this row
     fprintf(file, "\n");
@@ -591,87 +614,17 @@ int error(const char* message){
     return 0;
 }
 
-// TODO: Implement log categories
-void parseArgumentsLegacy(int argc, char *argv[], char **fmuFileNames, double *tEnd, double *h,
-                   int *loggingOn, char *csv_separator, int *nCategories, char **logCategories[]) {
-
-   int option = 0;
-   int i;
-
-   while ((option = getopt(argc, argv, "t:h:ls:f:")) != -1) {
-       switch(option) {
-           case 't' :
-               if (sscanf(optarg,"%lf", tEnd) != 1) {
-                   printf("error: The given stepsize (%s) is not a number\n", optarg);
-                   exit(EXIT_FAILURE);
-               }
-               break;
-           case 'h' :
-               if (sscanf(optarg,"%lf", h) != 1) {
-                   printf("error: The given stepsize (%s) is not a number\n", optarg);
-                   exit(EXIT_FAILURE);
-               }
-               break;
-           case 'l' : *loggingOn = 1;
-               break;
-           case 's' :
-               if (strlen(optarg) != 1) {
-                   printf("error: The given CSV separator char (%s) is not valid\n", optarg);
-                   exit(EXIT_FAILURE);
-               } else {
-                   switch (*optarg) {
-                       case 'c': *csv_separator = ','; break; // comma
-                       case 's': *csv_separator = ';'; break; // semicolon
-                       default:  *csv_separator = *optarg; break; // any other char
-               }
-               break;
-           }
-       }
-   }
-   // number of positional arguments (arguments without a dash)
-   int posArgs = argc - optind;
-
-   // parse FMU files
-   if (posArgs > 0) {
-       for (i = 0; i < posArgs; i++) {
-           if (strstr(argv[optind], ".fmu") || strstr(argv[optind], ".FMU")) {
-               // save fmu file path and name to array
-               fmuFileNames[i] = argv[optind];
-               // set optind to next element after current fmu file
-               optind++;
-           }
-           else {
-               break;
-           }
-       }
-   } else {
-       printf("Error: No FMU file specified.\n");
-       printHelp(argv[0]);
-       exit(EXIT_FAILURE);
-   }
-
-   *nCategories = argc - optind;
-   // parse log categories
-   if (*nCategories > 0) {
-       *logCategories = (char **)calloc(sizeof(char *), *nCategories);
-       for (i = 0; i < *nCategories; i++) {
-           (*logCategories)[i] = argv[optind];
-           optind++;
-       }
-   }
-}
-
-void parseArguments(int argc, char *argv[], double *tEnd, double *h,
+void parseArguments(int argc, char *argv[], int *tEnd, int *h,
         int *loggingOn, char *csv_separator, int *nCategories, /*const*/ fmi2String *logCategories[]) {
     // parse command line arguments
     if (argc > 1) {
-        if (sscanf(argv[1],"%lf", tEnd) != 1) {
+        if (sscanf(argv[1],"%d", tEnd) != 1) {
             printf("error: The given end time (%s) is not a number\n", argv[1]);
             exit(EXIT_FAILURE);
         }
     }
     if (argc > 2) {
-        if (sscanf(argv[2],"%lf", h) != 1) {
+        if (sscanf(argv[2],"%d", h) != 1) {
             printf("error: The given stepsize (%s) is not a number\n", argv[2]);
             exit(EXIT_FAILURE);
         }
