@@ -55,7 +55,7 @@ const char *XmlParser::attNames[SIZEOF_ATT] = {
     "canSerializeFMUstate", "providesDirectionalDerivative","canHandleVariableCommunicationStepSize", "canInterpolateInputs", "maxOutputDerivativeOrder",
     "canRunAsynchronuously",
     "canGetMaxStepSize",              // Attribute for getMaxStepSize() as proposed in the EMSOFT paper of EECS Berkeley
-
+    "handleIntegerTime",              // Attribute for Hybrid CoSimulation
     // not conform with the FMI 2.0 doc. // Todo : remove then used models become mature.
     // FIXME: Watch out! These values are not added to the attribute enums in the header files. Values have to be added BEFORE this block!
     "xmlns:xsi",                       // Dymola examples from 2014 FD01

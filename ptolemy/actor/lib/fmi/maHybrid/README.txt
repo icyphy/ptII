@@ -3,27 +3,18 @@ Documentation:
 
 This is an implementation of the Master Algorithm (MA) that was defined in
 
-	/*
-	 *  David Broman, Christopher Brooks, Lev Greenberg, Edward A.
-	 *  Lee, Michael Masin, Stavros Tripakis, Michael Wetter.
-	 *  "Determinate Composition of FMUs for Co-Simulation". 13th International
-	 *  Conference on Embedded Software (EMSOFT), Montreal, 29, September, 2013.
-	 *  http://chess.eecs.berkeley.edu/pubs/1002.html
-	 */
 
 Author: Fabio Cremona 
 	
-Date: 11/15/2014
+Date: 04/08/2015
 
 Notes:
-	This is an extension to FMI2.0 of the original work by Fabian Stahnke for FMI2.0RC1
+	This is an implementation of a Master Algorithm (MA) for the simulation of Hybrid Systems.
+	This MA works as a laboratory for the definition of the semantics and the API for the future
+	FMI for Hybrid CoSimulation.
+	The API implemented here is still under development.
+	This is used just as a laboratory to proof concepts.
 
-The entry point to the master algorithm is defined in main2.c.
 
-How to compile:
-	$ make
-	
-How to run:
-	$ make run 		/* example #1, inc20pt -> scale20pt -> out20pt */
 
 

@@ -60,7 +60,9 @@ typedef enum {
     att_canSerializeFMUstate, att_providesDirectionalDerivative, att_canHandleVariableCommunicationStepSize, att_canInterpolateInputs, att_maxOutputDerivativeOrder,
     att_canRunAsynchronuously,
     // additional attribute for getMaxStepSize() as proposed in the EMSOFT paper
-    att_canGetMaxStepSize
+    att_canGetMaxStepSize,
+    // additional attributes for Hybrid CoSimulation
+    att_canHandleIntegerTime
 } Att;
 
 // Enumerated values names used in ModelDescription.xml
