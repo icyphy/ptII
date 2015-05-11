@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="c4po" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 58, 928, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 58, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Calculate the distance of C4PO from a Bluetooth beacon&#10;using the received signal strength and transmisson power of the beacon&#10;(a calibration constant transmitted with beacon packets).&#10;&#10;Based on:  http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing">
@@ -37,8 +37,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 125}">
         </property>
     </entity>
-    <entity name="BluetoothDistance" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// &#10;function fire() {&#10;     var strength = get(rssi);&#10; var power = get(txPower);&#10; var result = -1.0;&#10; var ratio;&#10; 	  if (strength != 0) { 		ratio = strength*1.0/power; 	  	if (ratio &lt; 1.0) { 	    	result = Math.pow(ratio,10); 	  	} 	  	else { 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;     	  	} 	 }send(result, distance);&#10;}&#10;// ">
+    <entity name="BluetoothDistance" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// &#10;function fire() {&#10;     var strength = get(rssi);&#10; var power = get(txPower);&#10; var result = -1.0;&#10; var ratio;&#10; 	  if (strength != 0) { 		ratio = strength*1.0/power; 	  	if (ratio &lt; 1.0) { 	    	result = Math.pow(ratio,10); 	  	} 	  	else { 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;     	  	} 	 }send(result, distance);&#10;}&#10;// ">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -84,7 +84,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 246}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 343, 230}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
         </property>

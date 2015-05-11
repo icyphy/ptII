@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-165.0, -395.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1398, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1398, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1164, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1164, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7146573580832696">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{588.3799191650804, 106.92563418728855}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{588.3799191650804, 104.12709027337155}">
     </property>
     <property name="ID" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -139,8 +139,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="Team" class="org.terraswarm.kernel.AccessorOne">
-            <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
             </property>
             <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
             </property>
@@ -251,8 +251,8 @@
         <link port="ArrayToElements.output" relation="relation3"/>
         <link port="ArrayToElements.output" relation="relation5"/>
     </class>
-    <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+    <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
         </property>
@@ -605,76 +605,60 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="setobserverPosition" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="observerPosition">
             </property>
             <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
         </entity>
         <entity name="z_m_equation" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((x-observerPosition(0))^2 + (y-observerPosition(1))^2)">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="z_m_noise" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2.0">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="setz_m" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="z_m">
             </property>
             <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
         </entity>
     </entity>
     <entity name="Team0" class="KVRead">
@@ -799,8 +783,8 @@
         <link port="ParticleVisualization.inputY" relation="relation33"/>
         <link port="ParticleVisualization.inputY" relation="relation35"/>
     </entity>
-    <entity name="RangeSensor" class="org.terraswarm.kernel.AccessorOne">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;        &#10;        function fire() {&#10;        var sigma = get(noiseSigma);&#10;        var store = get(storeLocation);&#10;        var intruder = get(intruderKey);&#10;        var url = store + '/get?id=' + intruder;&#10;        var intruderPosition = JSON.parse(readURL(url));&#10;		&#10;        var intruderX = intruderPosition[0];&#10;        var intruderY = intruderPosition[1];&#10;        var robotPosition = JSON.parse(get(currentPosition));&#10;        var robotX = robotPosition[0];&#10;        var robotY = robotPosition[1];&#10;        &#10;        var gaussianEstimate = ((Math.random()-0.5)*2.0)+((Math.random()-0.5)*2.0)+((Math.random()-0.5)*2.0);&#10;        var noiseSample = gaussianEstimate*Math.sqrt(sigma);&#10;        &#10;		var result = Math.sqrt((intruderX - robotX)*(intruderX - robotX) + (intruderY - robotY)*(intruderY - robotY)) + noiseSample;&#10;		send(result, rangeMeasurement);&#10;        &#10;        }&#10;	// &#10;  ">
+    <entity name="RangeSensor" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;        &#10;        function fire() {&#10;        var sigma = get(noiseSigma);&#10;        var store = get(storeLocation);&#10;        var intruder = get(intruderKey);&#10;        var url = store + '/get?id=' + intruder;&#10;        var intruderPosition = JSON.parse(readURL(url));&#10;		&#10;        var intruderX = intruderPosition[0];&#10;        var intruderY = intruderPosition[1];&#10;        var robotPosition = JSON.parse(get(currentPosition));&#10;        var robotX = robotPosition[0];&#10;        var robotY = robotPosition[1];&#10;        &#10;        var gaussianEstimate = ((Math.random()-0.5)*2.0)+((Math.random()-0.5)*2.0)+((Math.random()-0.5)*2.0);&#10;        var noiseSample = gaussianEstimate*Math.sqrt(sigma);&#10;        &#10;		var result = Math.sqrt((intruderX - robotX)*(intruderX - robotX) + (intruderY - robotY)*(intruderY - robotY)) + noiseSample;&#10;		send(result, rangeMeasurement);&#10;        &#10;        }&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://eecs.berkeley.edu/~ilgea/RangeSensor.xml">
         </property>
