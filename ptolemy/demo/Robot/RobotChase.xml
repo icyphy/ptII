@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RobotChase" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-165.0, -395.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1398, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1398, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1164, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1164, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7146573580832695">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{588.3799191650803, 106.92563418728844}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{588.3799191650803, 104.12709027337132}">
     </property>
     <property name="ID" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -139,8 +139,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="Team" class="org.terraswarm.kernel.AccessorOne">
-            <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
             </property>
             <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
             </property>
@@ -251,8 +251,8 @@
         <link port="ArrayToElements.output" relation="relation3"/>
         <link port="ArrayToElements.output" relation="relation5"/>
     </class>
-    <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+    <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
         </property>
@@ -280,7 +280,7 @@
         </property>
         <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
         </property>
-        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[40.21850589202997,3.959625787123712]&quot;">
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[34.24361040013099,7.262859377105762]&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{780.0, -225.0}">
         </property>
@@ -579,8 +579,8 @@
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-56.48882429441257" max="51.0"/>
-<yRange min="0.0" max="21.59377236576609"/>
+<xRange min="-1059.4853475983339" max="51.0"/>
+<yRange min="-408.48004374914757" max="83.51365669770293"/>
 <default marks="dots"/>
 </plot>?>
         </configure>

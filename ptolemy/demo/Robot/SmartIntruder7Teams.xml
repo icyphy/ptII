@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmartIntruder7Teams" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-66.53225708007812, -29.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1581, 748}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 748}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1347, 638]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 638]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{672.375, 301.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{584.25, 301.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -179,8 +179,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
-            <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url); &#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;                                              if ( valueFromStore != &quot;&quot;) {&#10;    		send(valueFromStore, result); }&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url); &#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;                                              if ( valueFromStore != &quot;&quot;) {&#10;    		send(valueFromStore, result); }&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
             </property>
             <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
             </property>
@@ -707,8 +707,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1143.4677429199219, 95.5]">
         </property>
     </entity>
-    <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+    <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
         </property>
@@ -785,7 +785,7 @@
     <entity name="InstanceOfKVtoArray" class="KVtoArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[73.46774291992188, 90.5]">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
@@ -795,7 +795,7 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(2)">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
@@ -805,7 +805,7 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(3)">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
@@ -815,7 +815,7 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(0)">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
@@ -851,7 +851,7 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(4)">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
@@ -861,7 +861,7 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(5)">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
@@ -871,7 +871,7 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(6)">
         </property>
-        <entity name="KeyValueStore" class="org.terraswarm.kernel.AccessorOne">
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>

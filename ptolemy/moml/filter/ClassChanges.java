@@ -221,8 +221,12 @@ public class ClassChanges extends MoMLFilterSimple {
             throwable.printStackTrace();
         }
 
-        // Location
+        // JSAccessor
         _classChanges.put("org.terraswarm.accessor.jjs.JSAccessor",
+                "org.terraswarm.accessor.JSAccessor");
+
+        // AccessorOne
+        _classChanges.put("org.terraswarm.kernel.AccessorOne",
                 "org.terraswarm.accessor.JSAccessor");
 
         // Location

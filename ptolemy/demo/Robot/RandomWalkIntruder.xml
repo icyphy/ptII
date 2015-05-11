@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RandomWalkIntruder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -287,8 +287,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 240.0}">
         </property>
     </entity>
-    <entity name="KeyValueStore2" class="org.terraswarm.kernel.AccessorOne">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    try {&#10;        if (toRemove) {&#10;            if (theKey != &quot;&quot;) {&#10;                produce = readURL(url);&#10;                url = store + '/delete?id=' + theKey;&#10;                readURL(url);&#10;                if (produce != &quot;&quot;) {&#10;                    send(produce, result);&#10;                }&#10;            }&#10;        } else {&#10;            // toRemove == false. If there is a value, use it to set.&#10;            if (theValue != &quot;&quot;) {&#10;                // FIXME: Escape theValue to make a valid URL.&#10;                url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;                readURL(url);&#10;                send(theValue, result);&#10;            } else {&#10;                var valueFromStore = decodeURIComponent(readURL(url));&#10;                send(valueFromStore, result);&#10;            }&#10;        }&#10;    } catch (exception) {&#10;        send(exception.toString(), error);&#10;    }&#10;}&#10;    // &#10;  ">
+    <entity name="KeyValueStore2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    try {&#10;        if (toRemove) {&#10;            if (theKey != &quot;&quot;) {&#10;                produce = readURL(url);&#10;                url = store + '/delete?id=' + theKey;&#10;                readURL(url);&#10;                if (produce != &quot;&quot;) {&#10;                    send(produce, result);&#10;                }&#10;            }&#10;        } else {&#10;            // toRemove == false. If there is a value, use it to set.&#10;            if (theValue != &quot;&quot;) {&#10;                // FIXME: Escape theValue to make a valid URL.&#10;                url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;                readURL(url);&#10;                send(theValue, result);&#10;            } else {&#10;                var valueFromStore = decodeURIComponent(readURL(url));&#10;                send(valueFromStore, result);&#10;            }&#10;        }&#10;    } catch (exception) {&#10;        send(exception.toString(), error);&#10;    }&#10;}&#10;    // &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
         </property>
@@ -299,6 +299,8 @@
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
             </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="Error accessing the key-value store or producing the output.">
+            </property>
             <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="key (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
@@ -308,8 +310,6 @@
             <property name="value (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
             </property>
             <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
-            </property>
-            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="Error accessing the key-value store or producing the output.">
             </property>
         </property>
         <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
@@ -322,6 +322,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 220.0}">
         </property>
+        <port name="error" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -355,26 +360,21 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
-        <port name="error" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
     </entity>
     <entity name="Errors" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={933, 234, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 300.0}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore2.value&quot;,x=355.0,y=220.0}, tail={id=&quot;TokenToJSON.output&quot;,x=200.0,y=240.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TokenToJSON.output&quot;,x=200.0,y=240.0}, tail={id=&quot;KeyValueStore2.value&quot;,x=355.0,y=220.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore2.error&quot;,x=355.0,y=220.0}, tail={id=&quot;Errors.input&quot;,x=465.0,y=230.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore2.error&quot;,x=355.0,y=220.0}, tail={id=&quot;Errors.input&quot;,x=465.0,y=300.0}, points={355.0,300.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -384,7 +384,7 @@
     <link port="Intruder.robotPosition" relation="relation"/>
     <link port="TokenToJSON.input" relation="relation"/>
     <link port="TokenToJSON.output" relation="relation2"/>
-    <link port="KeyValueStore2.value" relation="relation2"/>
     <link port="KeyValueStore2.error" relation="relation3"/>
+    <link port="KeyValueStore2.value" relation="relation2"/>
     <link port="Errors.input" relation="relation3"/>
 </entity>

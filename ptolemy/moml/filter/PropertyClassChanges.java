@@ -686,5 +686,15 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         //         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.python.PythonScript",
         //                 PythonActorAttributeClassChanges);
 
+        // JSAccessor
+        HashMap jsAccessorClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        jsAccessorClassChanges.put("script",
+                "ptolemy.actor.parameters.PortParameter");
+
+        _actorsWithPropertyClassChanges.put(
+                "org.terraswarm.accessor.JSAccessor",
+                jsAccessorClassChanges);
     }
 }
