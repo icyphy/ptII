@@ -73,6 +73,7 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         generatorPackageList.setExpression("generic.program.procedural.fmimahybrid");
+        _pathToSupportFiles = "ptolemy/actor/lib/fmi/maHybrid/";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,94 +98,94 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    @Override
-    protected int _generateCode(StringBuffer code) throws KernelException {
-
-        // Hint:  Look at ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
-
-        code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMAHybridCodeGenerator.java _generateCode"));
-
-        // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/maHybrid.
-
-        String directory = codeDirectory.stringValue();
-        if (!directory.endsWith("/")) {
-            directory += "/";
-        }
-
-        String directoryFmi = directory + "fmi/";
-
-        if (new File(directoryFmi).mkdirs()) {
-            if (!_includes.contains("-I " + directoryFmi)) {
-                _includes.add("-I " + directoryFmi);
-            }
-        }
-
-        String directoryFmiShared = directoryFmi + "shared/";
-
-        if (new File(directoryFmiShared).mkdirs()) {
-            if (!_includes.contains("-I " + directoryFmiShared)) {
-                _includes.add("-I " + directoryFmiShared);
-            }
-        }
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/", directoryFmi,
-                "fmusdk-license.htm");
-
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/shared/", directoryFmiShared,
-                "sim_support.c");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/shared/", directoryFmiShared,
-                "sim_support.h");
-
-        String directoryFmiIncludes = directoryFmi + "includes/";
-        if (new File(directoryFmiIncludes).mkdirs()) {
-            if (!_includes.contains("-I " + directoryFmiIncludes)) {
-                _includes.add("-I " + directoryFmiIncludes);
-            }
-        }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/maHybrid/includes/",
-                directoryFmiIncludes, new String[] { "fmi2.h",
-                        "fmi2FunctionTypes.h", "fmi2Functions.h",
-                        "fmi2TypesPlatform.h" });
-
-        String directoryFmiParser = directoryFmi + "parser/";
-        if (new File(directoryFmiParser).mkdirs()) {
-            if (!_includes.contains("-I " + directoryFmiParser)) {
-                _includes.add("-I " + directoryFmiParser);
-            }
-        }
-        _copyCFilesTosrc(
-                "ptolemy/actor/lib/fmi/maHybrid/parser/",
-                directoryFmiParser,
-                new String[] { "XmlElement.cpp", "XmlElement.h",
-                        "XmlParserCApi.cpp", "XmlParserCApi.h",
-                        "XmlParser.cpp", "XmlParserException.h", "XmlParser.h" });
-
-        String directoryFmiParserLibxml = directoryFmi + "parser/libxml/";
-        if (new File(directoryFmiParserLibxml).mkdirs()) {
-            if (!_includes.contains("-I " + directoryFmiParserLibxml)) {
-                _includes.add("-I " + directoryFmiParserLibxml);
-            }
-        }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/maHybrid/parser/libxml/",
-                directoryFmiParserLibxml, new String[] { "dict.h",
-                        "encoding.h", "entities.h", "globals.h", "hash.h",
-                        "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
-                        "threads.h", "tree.h", "valid.h", "xlink.h",
-                        "xmlautomata.h", "xmlerror.h", "xmlexports.h",
-                        "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h",
-                        "xmlschemas.h", "xmlstring.h", "xmlversion.h" });
-        if (_executeCommands == null) {
-            _executeCommands = new StreamExec();
-        }
-
-        // Writing the Makefile
-        CompositeActor container = (CompositeActor) getContainer();
-        _writeMakefile(container, directory);
-
-        // Hopefully, we can skip the XML parsing because we have
-        // already parsed the modelDescription.xml file.
-
-        return super._generateCode(code);
-    }
+//    @Override
+//    protected int _generateCode(StringBuffer code) throws KernelException {
+//
+//        // Hint:  Look at ptolemy/cg/kernel/generic/program/procedural/c/CCodeGenerator.java
+//
+//        code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMAHybridCodeGenerator.java _generateCode"));
+//
+//        // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/maHybrid.
+//
+//        String directory = codeDirectory.stringValue();
+//        if (!directory.endsWith("/")) {
+//            directory += "/";
+//        }
+//
+//        String directoryFmi = directory + "fmi/";
+//
+//        if (new File(directoryFmi).mkdirs()) {
+//            if (!_includes.contains("-I " + directoryFmi)) {
+//                _includes.add("-I " + directoryFmi);
+//            }
+//        }
+//
+//        String directoryFmiShared = directoryFmi + "shared/";
+//
+//        if (new File(directoryFmiShared).mkdirs()) {
+//            if (!_includes.contains("-I " + directoryFmiShared)) {
+//                _includes.add("-I " + directoryFmiShared);
+//            }
+//        }
+//        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/", directoryFmi,
+//                "fmusdk-license.htm");
+//
+//        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/shared/", directoryFmiShared,
+//                "sim_support.c");
+//        _copyCFileTosrc("ptolemy/actor/lib/fmi/maHybrid/shared/", directoryFmiShared,
+//                "sim_support.h");
+//
+//        String directoryFmiIncludes = directoryFmi + "includes/";
+//        if (new File(directoryFmiIncludes).mkdirs()) {
+//            if (!_includes.contains("-I " + directoryFmiIncludes)) {
+//                _includes.add("-I " + directoryFmiIncludes);
+//            }
+//        }
+//        _copyCFilesTosrc("ptolemy/actor/lib/fmi/maHybrid/includes/",
+//                directoryFmiIncludes, new String[] { "fmi2.h",
+//                        "fmi2FunctionTypes.h", "fmi2Functions.h",
+//                        "fmi2TypesPlatform.h" });
+//
+//        String directoryFmiParser = directoryFmi + "parser/";
+//        if (new File(directoryFmiParser).mkdirs()) {
+//            if (!_includes.contains("-I " + directoryFmiParser)) {
+//                _includes.add("-I " + directoryFmiParser);
+//            }
+//        }
+//        _copyCFilesTosrc(
+//                "ptolemy/actor/lib/fmi/maHybrid/parser/",
+//                directoryFmiParser,
+//                new String[] { "XmlElement.cpp", "XmlElement.h",
+//                        "XmlParserCApi.cpp", "XmlParserCApi.h",
+//                        "XmlParser.cpp", "XmlParserException.h", "XmlParser.h" });
+//
+//        String directoryFmiParserLibxml = directoryFmi + "parser/libxml/";
+//        if (new File(directoryFmiParserLibxml).mkdirs()) {
+//            if (!_includes.contains("-I " + directoryFmiParserLibxml)) {
+//                _includes.add("-I " + directoryFmiParserLibxml);
+//            }
+//        }
+//        _copyCFilesTosrc("ptolemy/actor/lib/fmi/maHybrid/parser/libxml/",
+//                directoryFmiParserLibxml, new String[] { "dict.h",
+//                        "encoding.h", "entities.h", "globals.h", "hash.h",
+//                        "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
+//                        "threads.h", "tree.h", "valid.h", "xlink.h",
+//                        "xmlautomata.h", "xmlerror.h", "xmlexports.h",
+//                        "xmlIO.h", "xmlmemory.h", "xmlreader.h", "xmlregexp.h",
+//                        "xmlschemas.h", "xmlstring.h", "xmlversion.h" });
+//        if (_executeCommands == null) {
+//            _executeCommands = new StreamExec();
+//        }
+//
+//        // Writing the Makefile
+//        CompositeActor container = (CompositeActor) getContainer();
+//        _writeMakefile(container, directory);
+//
+//        // Hopefully, we can skip the XML parsing because we have
+//        // already parsed the modelDescription.xml file.
+//
+//        return super._generateCode(code);
+//    }
 
 //    /** Return the filter class to find adapters. All
 //     *  adapters have to extend this class.

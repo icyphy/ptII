@@ -72,6 +72,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
         //super(container, name, "c");
         super(container, name, "c", "c");
         generatorPackageList.setExpression("generic.program.procedural.fmima");
+        _pathToSupportFiles = "ptolemy/actor/lib/fmi/ma2/";
     }
 
     /** Return a formatted comment containing the specified string. In
@@ -138,7 +139,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
         code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
 
         // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/ma.
-
+        
         String directory = codeDirectory.stringValue();
         if (!directory.endsWith("/")) {
             directory += "/";
@@ -159,12 +160,12 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiShared);
             }
         }
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/", directoryFmi,
+        _copyCFileTosrc(_pathToSupportFiles, directoryFmi,
                 "fmusdk-license.htm");
 
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
+        _copyCFileTosrc(_pathToSupportFiles + "shared/", directoryFmiShared,
                 "sim_support.c");
-        _copyCFileTosrc("ptolemy/actor/lib/fmi/ma2/shared/", directoryFmiShared,
+        _copyCFileTosrc(_pathToSupportFiles + "shared/", directoryFmiShared,
                 "sim_support.h");
 
         String directoryFmiIncludes = directoryFmi + "includes/";
@@ -173,7 +174,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiIncludes);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma2/includes/",
+        _copyCFilesTosrc(_pathToSupportFiles + "includes/",
                 directoryFmiIncludes, new String[] { "fmi2.h",
                         "fmi2FunctionTypes.h", "fmi2Functions.h",
                         "fmi2TypesPlatform.h" });
@@ -185,7 +186,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc(
-                "ptolemy/actor/lib/fmi/ma2/parser/",
+        		_pathToSupportFiles + "parser/",
                 directoryFmiParser,
                 new String[] { "XmlElement.cpp", "XmlElement.h",
                         "XmlParserCApi.cpp", "XmlParserCApi.h",
@@ -197,7 +198,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
                 _includes.add("-I " + directoryFmiParserLibxml);
             }
         }
-        _copyCFilesTosrc("ptolemy/actor/lib/fmi/ma2/parser/libxml/",
+        _copyCFilesTosrc(_pathToSupportFiles + "parser/libxml/",
                 directoryFmiParserLibxml, new String[] { "dict.h",
                         "encoding.h", "entities.h", "globals.h", "hash.h",
                         "list.h", "parser.h", "relaxng.h", "SAX2.h", "SAX.h",
@@ -256,4 +257,15 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
 
         super._writeMakefile(container, currentDirectory);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line character so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    
+    protected String _pathToSupportFiles;
+    
 }
