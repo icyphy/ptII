@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="HybridAdder"
+  guid="{e0916457-fa70-457a-a7e6-b2724eeb9ca8}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="HybridAdder"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+
+  <ScalarVariable name="y0" valueReference="0" description="output" causality="output">
+  <Real />
+  </ScalarVariable>
+
+  <ScalarVariable name="u0" valueReference="1" description="first input" causality="input">
+  <Real />
+  </ScalarVariable>
+
+  <ScalarVariable name="u1" valueReference="2" description="second input" causality="input">
+  <Real />
+  </ScalarVariable>
+
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" dependencies="2 3"/>
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
