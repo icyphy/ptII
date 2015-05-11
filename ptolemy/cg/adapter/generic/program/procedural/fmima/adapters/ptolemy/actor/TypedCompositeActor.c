@@ -273,7 +273,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 
 	// output solution for time t0
 	outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator, TRUE);
-	outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator, FALSE);
 
 	// Simulation loop
 	while (time < tEnd) {
@@ -282,6 +281,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 		for (int i = 0; i < NUMBER_OF_EDGES; i++) {
 			setValue(&connections[i]);
 		}
+		outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator, FALSE);
 
 		// Compute the maximum step size
 		// (I) Predictable FMUs
@@ -371,7 +371,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
 		}
 
 		time += stepSize;
-		outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator,FALSE);
 		nSteps++;
 		stepSize = h;
 	}
