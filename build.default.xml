@@ -146,9 +146,9 @@
     <pathelement location="lib/org-openide-util.jar" />
     <pathelement location="lib/org.eclipse.paho.client.mqttv3.jar" />
     <pathelement location="lib/netty-all-4.0.21.Final.jar" />
-    <pathelement location="lib/vertx-core-2.1.4.jar" />
-    <pathelement location="lib/vertx-hazelcast-2.1.4.jar" />
-    <pathelement location="lib/vertx-platform-2.1.4.jar" />
+    <pathelement location="lib/vertx-core-2.1.5.jar" />
+    <pathelement location="lib/vertx-hazelcast-2.1.5.jar" />
+    <pathelement location="lib/vertx-platform-2.1.5.jar" />
     <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
   </path>
 
