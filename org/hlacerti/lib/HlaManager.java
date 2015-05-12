@@ -1516,7 +1516,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             this.inPause = false;
 
             setUpHlaPublisher(rtia);
-            setUpHLASubscriber(rtia);
+            setUpSubscription(rtia);
         }
 
         /** Initialize Federate's timing properties provided by the user.
@@ -1979,7 +1979,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
          * Configure the different HLASubscribers (ie will make them suscribe
          * to what they should)
         */
-        private void setUpHLASubscriber(RTIambassador rtia)throws NameNotFound,
+        private void setUpSubscription (RTIambassador rtia)throws NameNotFound,
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, AttributeNotDefined, SaveInProgress,
                 RestoreInProgress, ConcurrentAccessAttempted {
@@ -1988,23 +1988,30 @@ public class HlaManager extends AbstractInitializableAttribute implements
              *  for each class, list all the HlaSubscriber within and subscribe
              *  to it
              *  Then list its instances and mark them as free
+             *  and set up their Subscriber too.
              */
-            CompositeEntity container = (CompositeEntity) getContainer();            
+            CompositeEntity container = (CompositeEntity) getContainer();
             List<ComponentEntity> classes = container.classDefinitionList();
             for(ComponentEntity currentClass: classes){
-                
-                int classHandle =  rtia.getObjectClassHandle(currentClass.getName());     
-                StructuralInformation infoForThatClass = new StructuralInformation();
+
+                int classHandle = Integer.MIN_VALUE;
                 try{
+                    classHandle = rtia.getObjectClassHandle(currentClass.getName());
+                }catch(Exception e){
+                    //found a class that is not in the fed file, just skip it.
+                    continue;
+                }
+                
+                try{
+                    StructuralInformation infoForThatClass = new StructuralInformation();                    
                     _strucuralInformation.put(classHandle,infoForThatClass);
                     infoForThatClass.classToInstantiate = currentClass;
                     // The attribute handle set to declare all subscribed attributes
-                    // for one object class.
+                    // for one class.
                     AttributeHandleSet _attributesLocal = RtiFactoryFactory
                             .getRtiFactory().createAttributeHandleSet();
                     
                     List<HlaSubscriber> subscribers = ((CompositeActor) currentClass).entityList(HlaSubscriber.class);
-                    
                     for (HlaSubscriber sub : subscribers) {
                         int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
                         sub.setAttributeHandle(attributeHandle);
@@ -2015,43 +2022,52 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         }
                     }
                     rtia.subscribeObjectClassAttributes(classHandle,_attributesLocal);
-                } catch(Exception e){
+                    
+                    LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
+                    infoForThatClass.freeActors = freeActorForThatClass;
+                    
+                    // currentClass.getClass() will yield a the java class TypedCompositeActor
+                    // thus calling entityList on that will give several 
+                    //actor which are a TypedCompositeActor but not a instance 
+                    //of the class. We discard elements with the test in the loop.                    
+                    List possibleEntities = container.entityList(currentClass.getClass());                   
+                    for (int i = 0; i < possibleEntities.size(); i++) {
+
+                        //discard actors whose Moml-Class does not match the name of
+                        //the class 
+                        NamedObj currentInstance = (NamedObj)possibleEntities.get(i);
+                        String className  = currentClass.getName();
+                        String instanceName = currentInstance.getClassName();
+                        if(! (className.contains(instanceName) ||
+                                instanceName.contains(className)) ){
+                            continue;
+                        }
+                        
+                        //get its output port and put it to the structural info 
+                        CompositeActor currentActor = (CompositeActor) possibleEntities.get(i);
+                        LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
+                        for(IOPort p : outputPortList){
+                            infoForThatClass.addPortSinks(p);
+                        }
+                        
+                        //mark that actor as free
+                        freeActorForThatClass.add(currentActor);
+                        
+                        //first part of the set up for the HlaSubscriber
+                        subscribers.clear();
+                        subscribers = currentActor.entityList(HlaSubscriber.class);
+                        for (HlaSubscriber sub : subscribers) {
+                            int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
+                            sub.setAttributeHandle(attributeHandle);
+                            sub.setClassHandle(classHandle);
+                        }
+                    } //end of "for on instances"
+                } //end of try
+                catch(Exception e){
                     e.printStackTrace();
-                } 
-                
-                // List all instances of that class and set them up
-                List possibleEntities = container.entityList(currentClass.getClass());
-                
-                LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
-                infoForThatClass.freeActors = freeActorForThatClass;
-                for (int i = 0; i < possibleEntities.size(); i++) {
-                    
-                    
-                    NamedObj currentInstance = (NamedObj)possibleEntities.get(i);
-                    String className  = currentClass.getName();
-                    String instanceName = currentInstance.getClassName();
-                    if(! (className.contains(instanceName) || 
-                            instanceName.contains(className)) ){
-                        continue;
-                    }
-                    CompositeActor currentActor = (CompositeActor) possibleEntities.get(i);
-                    LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
-                    for(IOPort p : outputPortList){
-                        infoForThatClass.addPortSinks(p);   
-                    }
-                    
-                    freeActorForThatClass.add(currentActor);
-                    
-                    //first part of the set up for the HlaSubscriber
-                    List<HlaSubscriber> subscribers = currentActor.entityList(HlaSubscriber.class);                    
-                    for (HlaSubscriber sub : subscribers) {
-                        int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
-                        sub.setAttributeHandle(attributeHandle);
-                        sub.setClassHandle(classHandle);
-                    }
                 }
-            } //end of for on classes
-        }
-    }    
+            } //end of "for on classes"
+        } //end of function setUpSubscription
+    } //end of inner class    
 
 }
