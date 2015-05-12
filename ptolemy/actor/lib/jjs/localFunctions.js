@@ -16,19 +16,31 @@
 var exports = {
     fire: function() {},
     initialize: function() {},
+    setup: function() {},
     wrapup: function() {}
 };
 
-////////////////////
-// Add a handler function to call when the specified port receives a new input.
-// Return a handle to use in removeInputHandler(). If there are additional arguments
-// beyond the first two, then those arguments will be passed to the function
-// when it is invoked.
-// Note with this implementation, it is not necessary to
-// call removeInputHandler() in the actor's wrapup() function.
-// Nevertheless, it is a good idea to do that in an accessor
-// since other accessor hosts may not work the same way.
+/** Add a handler function to call when the specified port receives a new input.
+ *  Return a handle to use in removeInputHandler(). If there are additional arguments
+ *  beyond the first two, then those arguments will be passed to the function
+ *  when it is invoked. The handler can retrieve the input input value by invoking get().
+ *  Note with this implementation, it is not necessary to
+ *  call removeInputHandler() in the actor's wrapup() function.
+ *  Nevertheless, it is a good idea to do that in an accessor
+ *  since other accessor hosts may not work the same way.
+ *  @param func The function to invoke when the port receives an input.
+ *  @param port The port name (a string).
+ */
 function addInputHandler(func, port) {
+    // For backward compatibility, allow the port to be directly
+    // a reference to the proxy.
+    var proxy = port;
+    if (typeof port === 'string') {
+        proxy = actor.getPortOrParameterProxy(port);
+    }
+    if (!proxy) {
+        throw('No such input: ' + port);
+    }
     var callback = func;
     // If there are arguments to the callback, create a new function.
     // Get an array of arguments excluding the first two.
@@ -38,7 +50,7 @@ function addInputHandler(func, port) {
             func.apply(this, tail);
         };
     }
-    var id = port.addInputHandler(callback);
+    var id = proxy.addInputHandler(callback);
     return id;
 }
 
@@ -49,12 +61,23 @@ function addInputHandler(func, port) {
 // as expected.
 function fire() {exports.fire();}
 
-////////////////////
-// Function to get data from an input port.
+/** Get data from an input port.
+ *  @param port The port name (a string).
+ *  @param channel The channel number, where null is equivalent to 0.
+ */
 function get(port, channel) {
+    // For backward compatibility, allow the port to be directly
+    // a reference to the proxy.
+    var proxy = port;
+    if (typeof port === 'string') {
+        proxy = actor.getPortOrParameterProxy(port);
+    }
+    if (!proxy) {
+        throw('No such input: ' + port);
+    }
     // Give channel a default value of 0.
     channel = (typeof channel !== 'undefined') ? channel : 0;
-    var result = port.get(channel);
+    var result = proxy.get(channel);
     return convertFromToken(result);
 }
 
@@ -65,28 +88,70 @@ function get(port, channel) {
 // as expected.
 function initialize() {exports.initialize();}
 
-////////////////////
-// Remove the input handler for the specified port
-// with the specified handle. See addInputHandler().
+/** Remove the input handler for the specified port
+ *  with the specified handle.
+ *  @param handle The handle.
+ *  @param port The port name (a string).
+ *  @see #addInputHandler()
+ */
 function removeInputHandler(handle, port) {
-    port.removeInputHandler(handle);
+    // For backward compatibility, allow the port to be directly
+    // a reference to the proxy.
+    var proxy = port;
+    if (typeof port === 'string') {
+        proxy = actor.getPortOrParameterProxy(port);
+    }
+    if (!proxy) {
+        throw('No such input: ' + port);
+    }
+    proxy.removeInputHandler(handle);
 }
 
-////////////////////
-// Function to send data to an output port.
+/** Send data to an output port.
+ *  @param value The value to send.
+ *  @param port The port name (a string).
+ *  @param channel The channel number, where null is equivalent to 0.
+ */
 function send(value, port, channel) {
+    // For backward compatibility, allow the port to be directly
+    // a reference to the proxy.
+    var proxy = port;
+    if (typeof port === 'string') {
+        proxy = actor.getPortOrParameterProxy(port);
+    }
+    if (!proxy) {
+        throw('No such output: ' + port);
+    }
     // Give channel a default value of 0.
     channel = (typeof channel !== 'undefined') ? channel : 0;
     var token = convertToToken(value);
-    port.send(channel, token);
+    proxy.send(channel, token);
+}
+
+/** Set the value of a parameter.
+ *  @param value The value to set.
+ *  @param parameter The parameter name (a string).
+ */
+function set(value, parameter) {
+    // For backward compatibility, allow the port to be directly
+    // a reference to the proxy.
+    var proxy = parameter;
+    if (typeof parameter === 'string') {
+        proxy = actor.getPortOrParameterProxy(parameter);
+    }
+    if (!proxy) {
+        throw('No such input: ' + parameter);
+    }
+    var token = convertToToken(value);
+    proxy.set(token);
 }
 
 ////////////////////
-// Function to set the value of a parameter.
-function set(value, parameter) {
-    var token = convertToToken(value);
-    parameter.set(token);
-}
+// Default setup function, which invokes exports.setup().
+// Note that if the script simply defines a top-level setup() function instead
+// of exports.setup(), that function will overwrite this one and will still work
+// as expected.
+function setup() {exports.setup();}
 
 ////////////////////
 // Default wrapup function, which invokes exports.wrapup().
@@ -112,10 +177,12 @@ var Token = Java.type('ptolemy.data.Token');
 
 
 //---------------------------- Utility functions -----------------------------
-////////////////////
-// Convert the specified argument from a Ptolemy II Token
-// to a JavaScript type if there is a lossless conversion.
-// Otherwise, just return the value.
+/** Convert the specified argument from a Ptolemy II Token
+ *  to a JavaScript type if there is a lossless conversion.
+ *  This is a utility function, not intended for script writers to use.
+ *  Otherwise, just return the value.
+ *  @param value The token to convert.
+ */
 function convertFromToken(value) {
     // If the value is not a Token, just return it.
     if (!(value instanceof Token)) {
@@ -151,8 +218,10 @@ function convertFromToken(value) {
     return value;
 }
 
-////////////////////
-// Convert the specified argument to a Ptolemy II Token.
+/** Convert the specified argument to a Ptolemy II Token.
+ *  This is a utility function, not intended for script writers to use.
+ *  @param value The JavaScript value to convert.
+ */
 function convertToToken(value) {
     // NOTE: This is better done in JavaScript than in Java
     // because while the Nashorn interface to Java objects
@@ -234,5 +303,3 @@ function convertToToken(value) {
     // If all else fails, wrap the value in an ObjectToken.
     return new ObjectToken(value);
 }
-        
-

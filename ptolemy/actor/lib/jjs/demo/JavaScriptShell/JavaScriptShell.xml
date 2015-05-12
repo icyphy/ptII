@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2300307980173282">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.56854820251465, 298.23082657783266}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.5685482025147, 298.23082657783266}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.">
@@ -76,7 +76,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;    var result = eval.call(this, 'readURL(&quot;http://ptolemy.org&quot;);');&#10;    if (result == null) {&#10;      result = &quot;null&quot;;&#10;    }&#10;    send(result, output, 0);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;    var result = eval.call(this, 'readURL(&quot;http://ptolemy.org&quot;);');&#10;    if (result == null) {&#10;      result = &quot;null&quot;;&#10;    }&#10;    send(result, 'output', 0);&#10;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 195.0}">
         </property>
@@ -132,8 +132,8 @@
     <link port="StringReplace.output" relation="relation"/>
     <link port="EscapeQuotes.stringToEdit" relation="relation5"/>
     <link port="EscapeQuotes.output" relation="relation2"/>
-    <link port="JavaScript.script" relation="relation"/>
     <link port="JavaScript.error" relation="relation9"/>
+    <link port="JavaScript.script" relation="relation"/>
     <link port="JavaScript.output" relation="relation3"/>
     <link port="SingleEvent.output" relation="relation7"/>
     <link port="Merge.input" relation="relation7"/>

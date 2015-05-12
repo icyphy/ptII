@@ -27,7 +27,10 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import java.util.Map;
+
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -79,6 +82,37 @@ public class RestrictedJavaScriptInterface {
     public void error(String message) {
 	_actor.error(message);
     }
+    
+    /** Create a new input port if it does not already exist.
+     *  Leave the type unspecified so that it will be inferred.
+     *  @param name The name of the port.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void input(String name)
+	    throws IllegalActionException, NameDuplicationException {
+	_actor.input(name, null);
+    }
+
+    /** Create a new input port if it does not already exist.
+     *  The options argument can specify a "type", a "description",
+     *  and/or a "value".
+     *  If a type is given, set the type as specified. Otherwise,
+     *  leave the type unspecified so that it will be inferred.
+     *  If a description is given, then create, append to, or modify the
+     *  DocAttribute named "documentation" contained by this actor to
+     *  include documentation of this output.
+     *  If a value is given, then create a PortParameter instead of
+     *  an ordinary port and set its default value.
+     *  @param name The name of the port.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void input(String name, Map options)
+	    throws IllegalActionException, NameDuplicationException {
+	_actor.input(name, options);
+    }
 
     /** Return true.
      *  A restricted JavaScript actor limits the capabilities available
@@ -96,6 +130,34 @@ public class RestrictedJavaScriptInterface {
      */
     public void log(String message) {
 	_actor.log(message);
+    }
+
+    /** Create a new output port if it does not already exist.
+     *  Set the type to general.
+     *  @param name The name of the port.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void output(String name)
+	    throws IllegalActionException, NameDuplicationException {
+	_actor.output(name, null);
+    }
+
+    /** Create a new output port if it does not already exist.
+     *  The options argument can specify a "type" and/or a "description".
+     *  If a type is given, set the type as specified. Otherwise,
+     *  set the type to general.
+     *  If a description is given, then create, append to, or modify the
+     *  DocAttribute named "documentation" contained by this actor to
+     *  include documentation of this output.
+     *  @param name The name of the port.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void output(String name, Map<String,String> options)
+	    throws IllegalActionException, NameDuplicationException {
+	_actor.output(name, options);
     }
 
     /** Invoke the specified function after the specified interval and
