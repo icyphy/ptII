@@ -55,7 +55,9 @@ public class StructuralInformation {
     public HashMap<String,HashSet<IOPort>> relations;
     
     public void addPortSinks(IOPort port){
-        relations.putIfAbsent(port.getName(),new HashSet<IOPort>());        
+        if(!relations.containsKey(port.getName())){
+            relations.put(port.getName(), new HashSet<IOPort>());
+        }       
         relations.get(port.getName()).addAll(port.sinkPortList());
     }
 }
