@@ -109,7 +109,6 @@ import ptolemy.kernel.util.Workspace;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
-import java.util.concurrent.ConcurrentHashMap;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
@@ -236,7 +235,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _lastProposedTime = null;
+//        _lastProposedTime = null;
         _rtia = null;
         _federateAmbassador = null;
         _registeredObject = new HashMap<String,Integer>();
@@ -245,7 +244,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
         _strucuralInformation = new HashMap<Integer,StructuralInformation>();
-        _newlyCreated = new LinkedList<Instantiable>();
         
         _hlaStartTime = null;
         _hlaTimeStep = null;
@@ -500,7 +498,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         newObject._objectIdToClassHandle = new HashMap<Integer, Integer>();
         newObject._strucuralInformation = new HashMap<Integer,StructuralInformation>();
-        newObject._newlyCreated = new LinkedList<Instantiable>();
         newObject._registeredObject = new HashMap<String,Integer>();
         newObject._rtia = null;
         newObject._federateAmbassador = null;
@@ -824,7 +821,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // GL: FIXME: Comment this until the clarification with NERA and TARA
         // and the use of TICK is made.
         
-        if (_lastProposedTime != null) {
+/*        if (_lastProposedTime != null) {
             if (_lastProposedTime.compareTo(proposedTime) == 0) {
                 
                 // Even if we avoid the multiple calls of the HLA Time management
@@ -842,7 +839,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 return _lastProposedTime;
             }
         }
-         
+*/         
 
         // If the HLA Time Management is required, ask to the HLA/CERTI
         // Federation (the RTI) the authorization to advance its time.
@@ -1038,7 +1035,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         }
 
-        _lastProposedTime = breakpoint;
+        //_lastProposedTime = breakpoint;
         return breakpoint;
     }
 
@@ -1119,13 +1116,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         super.wrapup();
         _strucuralInformation.clear();
         _registeredObject.clear();
-        /*
-        for(Instantiable i : _newlyCreated){
-            ComponentEntity e = (ComponentEntity) i;
-            try{e.setContainer(null);}
-            catch(NameDuplicationException ex){}
-        }
-        _newlyCreated.clear();*/
+
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
         }
@@ -1376,32 +1367,27 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** Records the last proposed time to avoid multiple HLA time advancement
      *  requests at the same time.
      */
-    private Time _lastProposedTime;
+//    private Time _lastProposedTime;
 
     /** A reference to the enclosing director. */
     private DEDirector _director;
 
     /** The RTIG subprocess. */
     private CertiRtig _certiRtig;
-    
-    /**
-     * List all the newly created actors that need be destroyed when wrapping up.
-     */
-    private LinkedList<Instantiable> _newlyCreated ;
-   
+       
     /**
      * Map between an Class ID given by the RTI and all we need to know
      * about it in the model
      */
     private HashMap<Integer,StructuralInformation> _strucuralInformation;
     
-        /** Shared HashMap between all HlaPublishers for remembering with
+    /** Shared HashMap for  HlaPublishers in this model 
+     * for remembering with
      * what id an actor as been registered (as an object instance)
      * in the federation 
      */
     private HashMap<String,Integer> _registeredObject;
     
-    // LinkedList<String> alreadyRegistered;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
@@ -1652,6 +1638,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 if(actors.size() == 0){
                                     instance= classToInstantiate.instantiate(container, objectName);
                                     newActor = (CompositeActor) instance;
+                                    
                                     LinkedList<IOPort> outputPortList= (LinkedList<IOPort>) newActor.outputPortList();
                                     Iterator i = outputPortList.iterator();
                                     container.notifyConnectivityChange();
@@ -1668,7 +1655,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     if(_debugging){
                                         _debug("New object will do object " + objectName);
                                     }
-                                    _newlyCreated.add(instance);
+
                                 } else{
                                     //retrieve and remove head
                                     instance = actors.poll();
