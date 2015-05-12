@@ -1605,8 +1605,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  of HLA attribute that the Federate is subscribed to.
          */
         @Override
-        public void discoverObjectInstance(int objectHandle, int classHandle,
-                String objectName) throws CouldNotDiscover,
+        public void discoverObjectInstance(int objectHandle, final int classHandle,
+                final String objectName) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
 
             _objectIdToClassHandle.put(objectHandle, classHandle);
