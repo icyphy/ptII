@@ -201,7 +201,6 @@
     <exclude name="jni/test/jni/testTrois/" />
     <exclude name="lib/" />
     <exclude name="mk/" />
-    <exclude name="org/hlacert/" />
     <exclude name="org/ptolemy/fmi/" />
     <exclude name="org/ptolemy/terraswarm/gdp" />
     <exclude name="ptdb/" />
