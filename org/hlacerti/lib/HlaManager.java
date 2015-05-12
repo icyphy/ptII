@@ -109,15 +109,10 @@ import ptolemy.kernel.util.Workspace;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
-import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.ConcurrentHashMap;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Instantiable;
 
@@ -241,10 +236,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        //_lastProposedTime = null;
+        _lastProposedTime = null;
         _rtia = null;
         _federateAmbassador = null;
-
+        _registeredObject = new HashMap<String,Integer>();
         _hlaAttributesToPublish = new HashMap<String, Object[]>();
         _hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
@@ -506,6 +501,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._objectIdToClassHandle = new HashMap<Integer, Integer>();
         newObject._strucuralInformation = new HashMap<Integer,StructuralInformation>();
         newObject._newlyCreated = new LinkedList<Instantiable>();
+        newObject._registeredObject = new HashMap<String,Integer>();
         newObject._rtia = null;
         newObject._federateAmbassador = null;
         newObject._federateName = _federateName;
@@ -827,26 +823,26 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // GL: FIXME: Comment this until the clarification with NERA and TARA
         // and the use of TICK is made.
-        /*
-         if (_lastProposedTime != null) {
-         if (_lastProposedTime.compareTo(proposedTime) == 0) {
-
-         // Even if we avoid the multiple calls of the HLA Time management
-         // service for optimization, it could be possible to have events
-         // from the Federation in the Federate's priority timestamp queue,
-         // so we tick() to get these events (if they exist).
-         try {
-         _rtia.tick();
-         } catch (ConcurrentAccessAttempted e) {
-         throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
-         } catch (RTIinternalError e) {
-         throw new IllegalActionException(this, e, "RTIinternalError ");
-         }
-
-         return _lastProposedTime;
-         }
-         }
-         */
+        
+        if (_lastProposedTime != null) {
+            if (_lastProposedTime.compareTo(proposedTime) == 0) {
+                
+                // Even if we avoid the multiple calls of the HLA Time management
+                // service for optimization, it could be possible to have events
+                // from the Federation in the Federate's priority timestamp queue,
+                // so we tick() to get these events (if they exist).
+                try {
+                    _rtia.tick();
+                } catch (ConcurrentAccessAttempted e) {
+                    throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
+                } catch (RTIinternalError e) {
+                    throw new IllegalActionException(this, e, "RTIinternalError ");
+                }
+                
+                return _lastProposedTime;
+            }
+        }
+         
 
         // If the HLA Time Management is required, ask to the HLA/CERTI
         // Federation (the RTI) the authorization to advance its time.
@@ -1042,7 +1038,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         }
 
-        //_lastProposedTime = breakpoint;
+        _lastProposedTime = breakpoint;
         return breakpoint;
     }
 
@@ -1054,7 +1050,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  @throws IllegalActionException If a CERTI exception is raised then
      *  displayed it to the user.
      */
-    void updateHlaAttribute(HlaPublisher hp, Token in,int objectID)
+    void updateHlaAttribute(HlaPublisher hp, Token in,String senderName)
             throws IllegalActionException {
         Time currentTime = _director.getModelTime();
 
@@ -1094,7 +1090,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         CertiLogicalTime ct = new CertiLogicalTime(currentTime.getDoubleValue()
                 + _hlaLookAHead);
         try {
-            _rtia.updateAttributeValues(objectID, suppAttributes, tag,
+            int id = _registeredObject.get(_federateName+" "+senderName);
+            _rtia.updateAttributeValues(id, suppAttributes, tag,
                     ct);
         } catch (Exception e) {
             throw new IllegalActionException(this, e, e.getMessage());
@@ -1121,6 +1118,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _strucuralInformation.clear();
+        _registeredObject.clear();
         /*
         for(Instantiable i : _newlyCreated){
             ComponentEntity e = (ComponentEntity) i;
@@ -1378,7 +1376,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** Records the last proposed time to avoid multiple HLA time advancement
      *  requests at the same time.
      */
-    //private Time _lastProposedTime;
+    private Time _lastProposedTime;
 
     /** A reference to the enclosing director. */
     private DEDirector _director;
@@ -1396,6 +1394,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * about it in the model
      */
     private HashMap<Integer,StructuralInformation> _strucuralInformation;
+    
+        /** Shared HashMap between all HlaPublishers for remembering with
+     * what id an actor as been registered (as an object instance)
+     * in the federation 
+     */
+    private HashMap<String,Integer> _registeredObject;
+    
+    // LinkedList<String> alreadyRegistered;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
@@ -1605,10 +1611,19 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  of HLA attribute that the Federate is subscribed to.
          */
         @Override
-        public void discoverObjectInstance(int objectHandle, final int classHandle,
-                final String objectName) throws CouldNotDiscover,
+        public void discoverObjectInstance(int objectHandle_, int classHandle_,
+                 String objectName_) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
 
+            /*
+             * Use final members to please Java 7 because these members are
+             * in the request change class, which is nested. That implies members
+             * have to be final ... 
+            */
+            final int classHandle = classHandle_;
+            final String objectName = objectName_;
+            final int objectHandle = objectHandle_;
+            
             _objectIdToClassHandle.put(objectHandle, classHandle);
             
             final CompositeActor classToInstantiate = 
@@ -1866,8 +1881,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
             // 2. Create a table of HlaPublishers indexed by their corresponding
             // classHandle (no duplication).
-            HashMap<String, LinkedList<String>> classHandleHlaPublisherTable = null;
-            classHandleHlaPublisherTable = new HashMap<String, LinkedList<String>>();
+            HashMap<String, LinkedList<String>> classHandleHlaPublisherTable =
+                    new HashMap<String, LinkedList<String>>();
 
             Iterator<Entry<String, Object[]>> it2 = _hlaAttributesToPublish
                     .entrySet().iterator();
@@ -1924,7 +1939,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             
             Iterator<Entry<String, Object[]>> it5 = _hlaAttributesToPublish
                     .entrySet().iterator();
-            LinkedList<String> alreadyRegistered = new LinkedList<String>();
+
             while (it5.hasNext()) {
                 
                 Map.Entry<String, Object[]> elt = it5.next();
@@ -1944,13 +1959,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     //are unique across a federation, we are good.
                     
                     String senderName = _federateName+" "+sender.getContainer().getName();                    
-                    if(!alreadyRegistered.contains(senderName)){
-                        alreadyRegistered.add(senderName);
+
+                    if(!_registeredObject.containsKey(senderName)){
                         int myObjectInstId = -1;
                         try {
                             myObjectInstId = rtia.registerObjectInstance(classHandle,
                                     senderName);                            
-                            pub.register(senderName, myObjectInstId);
+                            _registeredObject.put(senderName,myObjectInstId);
                         } catch (ObjectClassNotPublished e) {
                             e.printStackTrace();
                         } catch (ObjectAlreadyRegistered e) {

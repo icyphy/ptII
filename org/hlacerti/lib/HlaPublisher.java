@@ -32,6 +32,8 @@ package org.hlacerti.lib;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
@@ -71,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaPublisher extends TypedAtomicActor {
-
+    
     /** Construct the HlaPublisher actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -192,19 +194,7 @@ public class HlaPublisher extends TypedAtomicActor {
        for(int i = 0 ; i < input.getWidth() ; ++i) {
         if (input.hasToken(i)) {
             Token in = input.get(i);
-            String actorName = input.sourcePortList().get(i).getContainer().getName();
-            
-            //federateName is part of the key because  we might run
-            //several federates from different threads (instead of processes
-            //as it should be) then we end up with some attributes beeing
-            //not owned because another object with the same name as already
-            //from another tread been registered. Since _federateName
-            //are unique across a federation, this gives some uniqueness to the key.
-            String fedName = (
-                    (StringToken) _hlaManager.federateName.getToken()
-                    ).stringValue();
-            int id = _registeredObject.get(fedName+" "+actorName);
-            _hlaManager.updateHlaAttribute(this, in,id);
+            _hlaManager.updateHlaAttribute(this, in,input.sourcePortList().get(i).getContainer().getName());
 
             if (_debugging) {
                 _debug(this.getDisplayName()
@@ -225,16 +215,6 @@ public class HlaPublisher extends TypedAtomicActor {
         return _useCertiMessageBuffer;
     }
 
-
-    /**
-     *  Establish the mapping between id and opaqueIdentifier for all the HLASubscribers
-     * @param id : the object's id given by the RTIG
-     * @param identifier : the identifier we map to the above id 
-     * (it is federateName+"."+opaqueIdentifier)
-     */
-    public void register(String identifier,Integer id) {        
-        _registeredObject.putIfAbsent(identifier, id);
-    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -245,10 +225,4 @@ public class HlaPublisher extends TypedAtomicActor {
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
     
-    /** Shared HashMap between all HlaPublishers for remembering with
-     * what id an actor as been registered (as an object instance)
-     * in the federation 
-     */
-    private static ConcurrentHashMap<String,Integer> _registeredObject 
-            = new ConcurrentHashMap();
 }
