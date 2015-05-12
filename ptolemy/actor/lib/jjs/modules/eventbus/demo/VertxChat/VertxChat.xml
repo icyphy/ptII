@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0558352825063892">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.84774174671674, 265.63416524805444}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.8477417467166, 265.63416524805444}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -214,11 +214,6 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="message" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
-            </property>
-        </port>
         <port name="broadcast" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -238,6 +233,11 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="message" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
         <port name="reply" class="ptolemy.actor.TypedIOPort">

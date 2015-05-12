@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import io.socket.SocketIO;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,15 +59,21 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// JavaScript
@@ -213,7 +217,7 @@ import ptolemy.util.FileUtilities;
    and not to the global object.  To explicitly refer
    to the global object, use the syntax "this.JSON".</p>
    <p>
-   In addition, the symbol "actor" is defined to be the instance of
+   In addition, the symbols "actor" and "accessor" are defined to be the instance of
    this actor. In JavaScript, you can invoke methods on it.
    For example, the JavaScript</p>
    <pre>
@@ -336,7 +340,7 @@ import ptolemy.util.FileUtilities;
    Subclasses of this actor may put it in "restricted" mode, which
    limits the functionality as follows:</p>
    <ul>
-   <li> The "actor" variable (referring to this instance of the actor) does not get created.</li>
+   <li> The "actor" variable (referring to this instance of the actor) provides limited capabilities.</li>
    <li> The localHostAddress() function throws an error.</li>
    <li> The readURL and httpRequest function only support the HTTP protocol (in particular,
    they do not support the "file" protocol, and hence cannot access local files).</li>
@@ -422,6 +426,40 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in an attribute, and if the attribute is the
+     *  script parameter, and the script parameter possibly contains a
+     *  'setup' function, then evaluate that function. This means that as
+     *  soon as this script parameter is set, any ports that are created
+     *  in setup will appear. Note that the JavaScript engine that evaluates
+     *  setup is discarded, and a new one is created when the model executes.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If evaluating the script fails.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+	if (attribute == script) {
+	    // Since it is fairly expensive to do all this, only do it if
+	    // there is some possibility that the script contains a setup() function.
+	    String scriptValue = ((StringToken)script.getToken()).stringValue();
+	    if (scriptValue.contains("setup")) {
+		try {
+		    _createEngineAndEvaluateSetup();
+		} catch (Exception e) {
+		    // Turn exceptions into warnings.
+		    // Otherwise, Vergil may refuse to instantiate the actor
+		    // and novice users will loose data.
+		    try {
+			// FIXME: For some reason, this gets invoked twice!
+			MessageHandler.warning("Failed to evaluate script.", e);
+		    } catch (CancelException e1) {
+			throw new IllegalActionException(this, e, "Cancelled");
+		    }
+		}
+	    }
+	} else {
+	    super.attributeChanged(attribute);
+	}
+    }
+    
     /** Clear the timeout or interval with the specified handle, if it
      *  has not already executed.
      *  @param handle The timeout handle.
@@ -449,6 +487,7 @@ public class JavaScript extends TypedAtomicActor {
         newObject._pendingTimeoutFunctions = null;
         newObject._pendingTimeoutIDs = null;
         newObject._proxies = null;
+        newObject._proxiesByName = null;
         return newObject;
     }
 
@@ -710,6 +749,17 @@ public class JavaScript extends TypedAtomicActor {
 	return _engine;
     }
 
+    /** Get the proxy for a port or parameter with the specified name.
+     *  This is an object on which JavaScript can directly invoke methods.
+     *  @return The proxy for the specified name, or null if there is none.
+     */
+    public PortOrParameterProxy getPortOrParameterProxy(String name) {
+	if (_proxiesByName != null) {
+	    return _proxiesByName.get(name);
+	}
+	return null;
+    }
+
     /** Create a new JavaScript engine, load the default functions, and
      *  register the ports so that send() and get() can work.
      *  @exception IllegalActionException If a port name is either a
@@ -725,60 +775,16 @@ public class JavaScript extends TypedAtomicActor {
         synchronized(this) {
             _pendingGets = 0;
         }
-        _pendingTimeoutFunctions = null;
-        _pendingTimeoutIDs = null;
-        _timeoutCount = 0;
-        _proxies = new HashMap<NamedObj,PortOrParameterProxy>();
         
-        // Create a script engine.
-        // This is private to this class, so each instance of JavaScript
-        // has its own completely isolated script engine.
-        // If this later creates a performance problem, we may want to
-        // provide an option to share a script engine. But then all accesses
-        // to the engine will have to be synchronized to ensure that there
-        // never is more than one thread trying to evaluate a script.
-        // Note that an engine is recreated on each run. This ensures
-        // that the JS context does not remember data from one run to the next.
-        ScriptEngineManager factory = new ScriptEngineManager();
-        // Create a Nashorn script engine
-        _engine = factory.getEngineByName("nashorn");
-        if (_engine == null) {
-            // Coverity Scan is happier if we check for null here.
-            throw new IllegalActionException(this, "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Is Nashorn present in JDK 1.8 and later.");
-        }
-        try {
-            if (_debugging) {
-                _debug("** Instantiated engine. Loading local and basic functions.");
-                // Set a global variable for debugging.
-                _engine.put("_debug", true);
-            } else {
-                _engine.put("_debug", false);
-            }
-            _engine.eval(FileUtilities.openForReading(
-        	    "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js",
-        	    null, null));
-        } catch (ScriptException | IOException e) {
-            throw new IllegalActionException(this, e, "Failed to load localFunctions.js");
-        }
-        try {
-            _engine.eval(FileUtilities.openForReading(
-        	    "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js",
-        	    null, null));
-        } catch (ScriptException | IOException e) {
-            throw new IllegalActionException(this, e, "Failed to load basicFunctions.js");
-        }
-        // Define the actor variable if not in restricted mode.
-        if (!_restricted) {
-            _engine.put("actor", this);
-        } else {
-            _engine.put("actor", new RestrictedJavaScriptInterface(this));
-        }
-
-        // Expose the ports as JavaScript variables.
+        // Expose any ports that are not already exposed as JavaScript variables.
         for (TypedIOPort port : portList()) {
             // Do not convert the scriptIn port to a JavaScript variable.
             if (port == script.getPort()) {
                 continue;
+            }
+            // Do not expose ports that are already exposed.
+            if (_proxies.get(port) != null) {
+        	continue;
             }
             if (!isValidIdentifier(port.getName())) {
         	throw new IllegalActionException(this,
@@ -792,6 +798,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             PortOrParameterProxy proxy = new PortOrParameterProxy(port);
             _proxies.put(port, proxy);
+            _proxiesByName.put(port.getName(), proxy);
             _engine.put(port.getName(), proxy);
         }
 
@@ -801,6 +808,10 @@ public class JavaScript extends TypedAtomicActor {
             // Do not convert the script parameter to a JavaScript variable.
             if (parameter == script) {
                 continue;
+            }
+            // Do not expose parameters that are already exposed.
+            if (_proxies.get(parameter) != null) {
+        	continue;
             }
             // Do not create a proxy for a PortParameter. There is already
             // a proxy for the port.
@@ -819,19 +830,10 @@ public class JavaScript extends TypedAtomicActor {
             }
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
+            _proxiesByName.put(parameter.getName(), proxy);
             // NOTE: If a parameter has the same name as a port,
             // then this will shadow the port.
             _engine.put(parameter.getName(), proxy);
-        }
-
-        _executing = true;
-
-        // Evaluate the script.
-        String scriptValue = script.getValueAsString();
-        try {
-            _engine.eval(scriptValue);
-        } catch (ScriptException ex) {
-            throw new IllegalActionException(this, ex, "Failed to evaluate script during initialize.");
         }
 
         // Invoke the initialize function.
@@ -850,6 +852,81 @@ public class JavaScript extends TypedAtomicActor {
         		"Failure executing the initialize function.");
             }
         }
+    }
+    
+    /** Create a new input port if it does not already exist.
+     *  This port will have an undeclared type and no description.
+     *  @param name The name of the port.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void input(String name)
+	    throws IllegalActionException, NameDuplicationException {
+	input(name, null);
+    }
+    
+    /** Create a new input port if it does not already exist.
+     *  The options argument can specify a "type", a "description",
+     *  and/or a "value".
+     *  If a type is given, set the type as specified. Otherwise,
+     *  leave the type unspecified so that it will be inferred.
+     *  If a description is given, then create, append to, or modify the
+     *  DocAttribute named "documentation" contained by this actor to
+     *  include documentation of this output.
+     *  If a value is given, then create a PortParameter instead of
+     *  an ordinary port and set its default value.
+     *  @param name The name of the port.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void input(String name, Map options)
+	    throws IllegalActionException, NameDuplicationException {
+	// FIXME: Should check whether the model is running a use a change
+	// request if so.
+	if (name == null) {
+	    throw new IllegalActionException(this, "Must specify a name to create an input.");
+	}
+	TypedIOPort port = (TypedIOPort) getPort(name);
+	if (port == null) {
+	    Object value = options.get("value");
+	    if (value == null) {
+		port = (TypedIOPort) newPort(name);
+	    } else {
+		PortParameter parameter = new PortParameter(this, name);
+		// Convert value to a Ptolemy Token.
+		Object token;
+		try {
+		    token = ((Invocable)_engine).invokeFunction("convertToToken", value);
+		} catch (Exception e) {
+		    throw new IllegalActionException(this, e,
+			    "Cannot convert value to a Ptolemy Token: " + value);
+		}
+		if (token instanceof Token) {
+		    parameter.setToken((Token) token);
+		} else {
+		    throw new IllegalActionException(this, "Unsupported value: " + value);
+		}
+	    }
+	} else {
+	    if (port == script.getPort()) {
+		throw new NameDuplicationException(this,
+			"Name is reserved: " + name);
+	    }
+	}
+	if (options != null) { 
+	    Object type = options.get("type");
+	    if (type instanceof String) {
+		port.setTypeEquals(_typeAccessorToPtolemy((String)type));
+	    } else if (type != null) {
+		throw new IllegalActionException(this, "Unsupported type: " + type);
+	    }
+	    Object description = options.get("description");
+	    if (description != null) {
+		_setDescription(port, description.toString());
+	    }
+	}
+	port.setInput(true);
     }
 
     /** Return true if the specified string is a JavaScript keyword.
@@ -917,6 +994,85 @@ public class JavaScript extends TypedAtomicActor {
 	}
     }
     
+    /** Create a new output port if it does not already exist.
+     *  Set the type to general.
+     *  @param name The name of the port.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void output(String name)
+	    throws IllegalActionException, NameDuplicationException {
+	output(name, null);
+    }
+    
+    /** Create a new output port if it does not already exist.
+     *  The options argument can specify a "type" and/or a "description".
+     *  If a type is given, set the type as specified. Otherwise,
+     *  set the type to general.
+     *  If a description is given, then create, append to, or modify the
+     *  DocAttribute named "documentation" contained by this actor to
+     *  include documentation of this output.
+     *  @param name The name of the port.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word.
+     */
+    public void output(String name, Map<String,String> options)
+	    throws IllegalActionException, NameDuplicationException {
+	// FIXME: Should check whether the model is running a use a change
+	// request if so.
+	if (name == null) {
+	    throw new IllegalActionException(this, "Must specify a name to create an output.");
+	}
+	TypedIOPort port = (TypedIOPort) getPort(name);
+	if (port == null) {
+	    port = (TypedIOPort) newPort(name);
+	} else {
+	    if (port == script.getPort()) {
+		throw new NameDuplicationException(this,
+			"Name is reserved: " + name);
+	    }
+	}
+	if (options != null) { 
+	    String type = options.get("type");
+	    if (type == null) {
+		port.setTypeEquals(BaseType.GENERAL);
+	    } else {
+		port.setTypeEquals(_typeAccessorToPtolemy(type));
+	    }
+	    String description = options.get("description");
+	    if (description != null) {
+		_setDescription(port, description);
+	    }
+	} else {
+	    port.setTypeEquals(BaseType.GENERAL);
+	}
+	port.setOutput(true);
+    }
+
+    /** Set the description of a port.
+     *  @param port The port.
+     *  @param description The description.
+     */
+    private void _setDescription(TypedIOPort port, String description) {
+	// Use a change request so as to not create dependencies on vergil here.
+	StringBuffer moml = new StringBuffer(
+		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
+	moml.append("<property name=\"");
+	moml.append(port.getName());
+	if (port instanceof ParameterPort) {
+	    moml.append(" (port-parameter)");
+	} else {
+	    moml.append(" (port)");
+	}
+	moml.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+	moml.append(StringUtilities.escapeString(description));
+	moml.append("\"></property></property>");
+	MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml.toString());
+	requestChange(request);
+    }
+
     /** If there are any pending self-produced inputs, then request a firing
      *  at the current time.
      *  @throws IllegalActionException If the superclass throws it or the
@@ -937,7 +1093,32 @@ public class JavaScript extends TypedAtomicActor {
 	}
 	return super.postfire();
     }
+
+    /** Create a new JavaScript engine, load the default functions,
+     *  and evaluate the script parameter.
+     *  @exception IllegalActionException If a port name is either a
+     *   a JavaScript keyword or not a valid identifier, if loading the
+     *   default JavaScript files fails, or if the superclass throws it.
+     */
+    @Override
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
         
+        _executing = true;
+        
+        _pendingTimeoutFunctions = null;
+        _pendingTimeoutIDs = null;
+        _timeoutCount = 0;
+        
+        _createEngineAndEvaluateSetup();
+        synchronized (this) {
+            // Clear any queued output tokens.
+            if (_outputTokens != null) {
+                _outputTokens.clear();
+            }
+        }
+    }
+
     /** Utility method to read a string from an input stream.
      *  @param stream The stream.
      *  @return The string.
@@ -1013,13 +1194,6 @@ public class JavaScript extends TypedAtomicActor {
         // Synchronize so that this invocation is atomic w.r.t. any callbacks.
         synchronized (this) {
             try {
-        	// If there are open sockets, disconnect.
-        	if (_openSockets != null && _openSockets.size() > 0) {
-        	    for (SocketIO socket : _openSockets) {
-        		socket.disconnect();
-        	    }
-        	    _openSockets.clear();
-        	}
         	// Invoke the wrapup function.
         	try {
         	    ((Invocable)_engine).invokeFunction("wrapup");
@@ -1099,8 +1273,141 @@ public class JavaScript extends TypedAtomicActor {
     protected boolean _restricted = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        Private Methodsmm                  ////
+    ////                        Private Methods                    ////
     
+    /** Create a script engine, evaluate basic function definitions,
+     *  define the 'actor' variable, evaluate the script, and invoke the
+     *  setup method if it exists.
+     *  @throws IllegalActionException If an error occurs.
+     */
+    private void _createEngineAndEvaluateSetup() throws IllegalActionException {
+	// Create a script engine.
+        // This is private to this class, so each instance of JavaScript
+        // has its own completely isolated script engine.
+        // If this later creates a performance problem, we may want to
+        // provide an option to share a script engine. But then all accesses
+        // to the engine will have to be synchronized to ensure that there
+        // never is more than one thread trying to evaluate a script.
+        // Note that an engine is recreated on each run. This ensures
+        // that the JS context does not remember data from one run to the next.
+        ScriptEngineManager factory = new ScriptEngineManager();
+        // Create a Nashorn script engine
+        _engine = factory.getEngineByName("nashorn");
+        if (_engine == null) {
+            // Coverity Scan is happier if we check for null here.
+            throw new IllegalActionException(this, "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Is Nashorn present in JDK 1.8 and later.");
+        }
+        try {
+            if (_debugging) {
+                _debug("** Instantiated engine. Loading local and basic functions.");
+                // Set a global variable for debugging.
+                _engine.put("_debug", true);
+            } else {
+                _engine.put("_debug", false);
+            }
+            _engine.eval(FileUtilities.openForReading(
+        	    "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js",
+        	    null, null));
+        } catch (ScriptException | IOException e) {
+            throw new IllegalActionException(this, e, "Failed to load localFunctions.js");
+        }
+        try {
+            _engine.eval(FileUtilities.openForReading(
+        	    "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js",
+        	    null, null));
+        } catch (ScriptException | IOException e) {
+            throw new IllegalActionException(this, e, "Failed to load basicFunctions.js");
+        }
+        // Define the actor and accessor variables.
+        if (!_restricted) {
+            _engine.put("accessor", this);
+            _engine.put("actor", this);
+        } else {
+            RestrictedJavaScriptInterface restrictedInterface
+            	    = new RestrictedJavaScriptInterface(this);
+            _engine.put("accessor", restrictedInterface);
+            _engine.put("actor", restrictedInterface);
+        }
+        
+        // Expose the ports as JavaScript variables.
+        // Note that additional ports may need to be exposed in initialize(),
+        // if they are created by a setup() function call.
+        _proxies = new HashMap<NamedObj,PortOrParameterProxy>();
+        _proxiesByName = new HashMap<String,PortOrParameterProxy>();
+        for (TypedIOPort port : portList()) {
+            // Do not convert the scriptIn port to a JavaScript variable.
+            if (port == script.getPort()) {
+                continue;
+            }
+            if (!isValidIdentifier(port.getName())) {
+        	throw new IllegalActionException(this,
+        		"Port name is not a valid JavaScript identifier: "
+        		+ port.getName());
+            }
+            if (isJavaScriptKeyword(port.getName())) {
+        	throw new IllegalActionException(this,
+        		"Port name is a JavaScript keyword: "
+        		+ port.getName());
+            }
+            PortOrParameterProxy proxy = new PortOrParameterProxy(port);
+            _proxies.put(port, proxy);
+            _proxiesByName.put(port.getName(), proxy);
+            _engine.put(port.getName(), proxy);
+        }
+
+        // Expose the parameters as JavaScript variables.
+        // Note that additional parameters may need to be exposed in initialize(),
+        // if they are created by a setup() function call.
+        List<Variable> attributes = attributeList(Variable.class);
+        for (Variable parameter : attributes) {
+            // Do not convert the script parameter to a JavaScript variable.
+            if (parameter == script) {
+                continue;
+            }
+            // Do not expose parameters that are already exposed.
+            if (_proxies.get(parameter) != null) {
+        	continue;
+            }
+            if (!isValidIdentifier(parameter.getName())) {
+        	throw new IllegalActionException(this,
+        		"Parameter name is not a valid JavaScript identifier: "
+        		+ parameter.getName());
+            }
+            if (isJavaScriptKeyword(parameter.getName())) {
+        	throw new IllegalActionException(this,
+        		"Parameter name is a JavaScript keyword: "
+        		+ parameter.getName());
+            }
+            PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
+            _proxies.put(parameter, proxy);
+            _proxiesByName.put(parameter.getName(), proxy);
+            // NOTE: If a parameter has the same name as a port,
+            // then this will shadow the port.
+            _engine.put(parameter.getName(), proxy);
+        }
+
+        // Evaluate the script.
+        String scriptValue = script.getValueAsString();
+        try {
+            _engine.eval(scriptValue);
+        } catch (ScriptException ex) {
+            throw new IllegalActionException(this, ex, "Failed to evaluate script during initialize.");
+        }
+
+        // Invoke the setup function.
+        // Synchronize to ensure that this is atomic w.r.t. any callbacks.
+        // Note that the callbacks might be invoked after a model has terminated
+        // execution.
+        synchronized (this) {
+            try {
+        	((Invocable)_engine).invokeFunction("setup");
+            } catch (ScriptException | NoSuchMethodException e) {
+        	throw new IllegalActionException(this, e, 
+        		"Failure executing the setup function.");
+            }
+        }
+    }
+
     /** Fire me again at the current model time, one microstep later.
      *  Unlike calling the director's fireAtCurrentTime() method, this
      *  method is not affected by the current real time.
@@ -1186,6 +1493,26 @@ public class JavaScript extends TypedAtomicActor {
         }
         ids.add(id);
     }
+    
+    /** Convert an accessor type definition into a Ptolemy type.
+     *  @param type The type designation.
+     * 	@return A Ptolemy type.
+     *  @throws IllegalActionException If the type is not supported.
+     */
+    private Type _typeAccessorToPtolemy(String type) throws IllegalActionException {
+	if (type.equals("number")) {
+	    return(BaseType.DOUBLE);
+	} else if (type.equals("JSON")) {
+	    return(BaseType.GENERAL);
+	} else if (type.equals("string")) {
+	    return(BaseType.STRING);
+	} else if (type.equals("boolean")) {
+	    return(BaseType.BOOLEAN);
+	} else {
+	    throw new IllegalActionException(this, "Unsupported type: " + type);
+	}
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
@@ -1200,9 +1527,6 @@ public class JavaScript extends TypedAtomicActor {
      */
     private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens
     	= new HashMap<IOPort, HashMap<Integer, Token>>();
-
-    /** List of open sockets. */
-    private List<SocketIO> _openSockets;
 
     /** Buffer for output tokens that are produced in a call to send
      *  while the actor is not firing. This makes sure that actors can
@@ -1222,6 +1546,9 @@ public class JavaScript extends TypedAtomicActor {
     /** Map of proxies for ports and parameters. */
     private HashMap<NamedObj,PortOrParameterProxy> _proxies;
     
+    /** Map of proxies for ports and parameters by name */
+    private HashMap<String,PortOrParameterProxy> _proxiesByName;
+
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
 
@@ -1488,115 +1815,5 @@ public class JavaScript extends TypedAtomicActor {
 
         /** The port that is proxied, or null if it's a parameter. */
         protected TypedIOPort _port;
-    }
-
-    /** Container class for built-in methods.
-     */
-    public static class PtolemyJavaScript { // extends ScriptableObject {
-	// FindBugs suggests making this class static.
-        
-	// FIXME: These are not converted from Rhino yet.
-
-        /** Return the class name.
-         *  @return the class name.
-         */
-        public String getClassName() {
-            return getClass().getName();
-        }
-
-        /** Make the specified HTTP request. For example, to perform the equivalent of
-         *  readURL, you can do:
-         *  <pre>
-         *    httpRequest("http://ptolemy.org", "GET", null, "", 1000);
-         *  </pre>
-         *  which specifies a URL to read, the method for the read, no properties, no
-         *  text to send, and a timeout of one second.
-         *  @param url The URL to which to make the request.
-         *  @param method One of OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, or CONNECT.
-         *  @param properties The HTTP property to set for the connection, or null to not
-         *   give any. For example: ['Content-Type':'application/x-www-form-urlencoded']
-         *  @param body The body of the request, or null if none.
-         *  @param timeout The timeout for a connection or a read, in milliseconds, or 0 to have no timeout.
-         *  @return The response to the request.
-         *  @exception IOException If the request fails.
-         */
-        /*
-        public String httpRequest(String url, String method,
-                NativeObject properties, String body, Integer timeout)
-                        throws IOException {
-            // FIXME: Should have a version that takes a callback function for the response,
-            // and where the response gives access to the return stream.  See Node.js http object.
-            StringBuffer response = new StringBuffer();
-            OutputStreamWriter writer = null;
-            BufferedReader reader = null;
-            String line = "";
-
-            URL theURL = new URL(url);
-            // If the actor is restricted, support only HTTP protocols.
-            // FIXME: Should this also apply the usual browser same-source restriction?
-            // Same as what?
-            if (!theURL.getProtocol().equalsIgnoreCase("http")) {
-                throw new SecurityException(
-                        "Only HTTP requests are honored by httpRequest().");
-            }
-            HttpURLConnection connection = (HttpURLConnection) theURL
-                    .openConnection();
-
-            // Set all fields in the request header.
-            if (properties != null) {
-                Set<Object> keys = properties.keySet();
-                if (keys != null && !keys.isEmpty()) {
-                    for (Object key : keys) {
-                        if (key instanceof String) {
-                            Object value = properties.get(key);
-                            if (value != null) {
-                                connection.setRequestProperty((String) key,
-                                        value.toString());
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Specify request method (GET, POST, PUT...)
-            connection.setRequestMethod(method);
-
-            // If a timeout has been specified, set it.
-            if (timeout >= 0) {
-                connection.setConnectTimeout(timeout);
-                connection.setReadTimeout(timeout);
-            }
-
-            // Send body if applicable.
-            if (body != null && !body.equals("")) {
-                connection.setDoOutput(true);
-                writer = new OutputStreamWriter(connection.getOutputStream());
-                writer.write(body);
-                writer.flush();
-            }
-
-            // Wait for response.
-            reader = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
-
-            // Read response.
-            String lineBreak = System.getProperty("line.separator");
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-                if (!line.endsWith(lineBreak)) {
-                    response.append(lineBreak);
-                }
-            }
-
-            if (writer != null) {
-                writer.close();
-            }
-            reader.close();
-
-            // Return response.
-            return response.toString();
-        }
-        */
-
     }
 }

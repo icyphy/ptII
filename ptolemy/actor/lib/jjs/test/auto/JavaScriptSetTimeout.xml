@@ -45,7 +45,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout = setTimeout(function() {&#10;    send('hello', output);&#10;}, 100);&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var timeout;&#10;exports.initialize = function() {&#10;    timeout = setTimeout(function() {&#10;        send('hello', output);&#10;    }, 100);&#10;};&#10;exports.wrapup = function() {&#10;    clearTimeout(timeout);&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
