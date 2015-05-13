@@ -72,6 +72,8 @@ import ptolemy.gui.CloseListener;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+import ptolemy.gui.SettableQueryChooser;
+import ptolemy.kernel.attributes.Actionable;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
@@ -85,6 +87,7 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.XmlException;
@@ -146,6 +149,24 @@ ValueListener, ChangeListener, CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Create an entry box with a button for the specified action.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultValue The default entry value.
+     *  @param actionable The specification for the action name and action.
+     *  @return The component.
+     */
+    public ActionableEntry addActionable(String name, String label,
+            String defaultValue, Actionable actionable) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+
+        ActionableEntry colorChooser = new ActionableEntry(this, name,
+        	defaultValue, actionable);
+        _addPair(name, lbl, colorChooser, colorChooser);
+        return colorChooser;
+    }
 
     /** Add a new entry to this query that represents the given attribute.
      *  The name of the entry will be set to the name of the attribute,
@@ -258,6 +279,13 @@ ValueListener, ChangeListener, CloseListener {
                     } else if (attribute instanceof ColorAttribute) {
                         component = addColorChooser(name, displayName,
                                 attribute.getExpression());
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                        _addSubmitAction(component, attribute.getName(),
+                                attribute);
+                    } else if (attribute instanceof Actionable) {
+                        component = addActionable(name, displayName,
+                                attribute.getExpression(), (Actionable)attribute);
                         attachParameter(attribute, name);
                         foundStyle = true;
                         _addSubmitAction(component, attribute.getName(),
@@ -1204,6 +1232,73 @@ ValueListener, ChangeListener, CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** Panel containing an entry box and button that performs the action specified
+     *  by an Actionable.
+     */
+    public static class ActionableEntry extends Box implements ActionListener, SettableQueryChooser {
+        /** Create a panel containing an entry box and a color chooser.
+         *  @param owner The owner query
+         *  @param name The name of the query
+         *  @param defaultValue  The initial default color of the color chooser.
+         *  @param actionable The specification for the action.
+         */
+        public ActionableEntry(Query owner, String name, String defaultValue, Actionable actionable) {
+            super(BoxLayout.X_AXIS);
+            _actionable = actionable;
+            _owner = owner;
+            _entryBox = new JTextField(defaultValue, _owner.getTextWidth());
+
+            _button = new JButton(actionable.actionName());
+            _button.addActionListener(this);
+            add(_entryBox);
+            add(_button);
+
+            // Add the listener last so that there is no notification
+            // of the first value.
+            _entryBox.addActionListener(new QueryActionListener(_owner, name));
+
+            // Add a listener for loss of focus.  When the entry gains
+            // and then loses focus, listeners are notified of an update,
+            // but only if the value has changed since the last notification.
+            // FIXME: Unfortunately, Java calls this listener some random
+            // time after the window has been closed.  It is not even a
+            // a queued event when the window is closed.  Thus, we have
+            // a subtle bug where if you enter a value in a line, do not
+            // hit return, and then click on the X to close the window,
+            // the value is restored to the original, and then sometime
+            // later, the focus is lost and the entered value becomes
+            // the value of the parameter.  I don't know of any workaround.
+            _entryBox.addFocusListener(new QueryFocusListener(_owner, name));
+        }
+
+        /** Perform the specified action. */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+		_actionable.performAction();
+	    } catch (Exception e1) {
+		MessageHandler.error("Action failed.", e1);
+	    }
+        }
+
+        /** Return the contents of the entry box. */
+	@Override
+	public String getQueryValue() {
+	    return _entryBox.getText();
+	}
+
+	/** Set the contents of the entry box. */
+	@Override
+	public void setQueryValue(String value) {
+	    _entryBox.setText(value);
+	}
+
+        private Actionable _actionable;
+        private JButton _button;
+        private JTextField _entryBox;
+        private Query _owner;
+    }
 
     /** Panel containing an entry box and button that opens another query
      *  to edit the parameters of a specified parameter.
