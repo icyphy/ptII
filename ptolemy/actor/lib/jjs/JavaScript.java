@@ -79,26 +79,43 @@ import ptolemy.util.StringUtilities;
 //// JavaScript
 
 /**
-   Execute a script in JavaScript that can read inputs and parameters,
-   perform calculations, and write outputs. The script may be provided
+   An actor whose functionality is given in JavaScript.
+   The script defines one or more functions that configure this actor
+   with ports and documentation information, initialize the actor,
+   perform runtime functions such as reacting to inputs and producing outputs,
+   and perform finalization (wrapup) functions. The script may be provided
    as the textual value of the <i>script</i> parameter, or as an input
    on the <i>script</i> port. You can add to the script or modify
    function definitions on each firing.
    <p>
    To use this actor, add input and output ports, parameters (if you like),
-   and specify a script. The names of the ports and parameters are required to be valid
-   JavaScript identifiers and are not permitted to be JavaScript keywords.</p>
+   and specify a script. The names of the ports and parameters are currently
+   required to be valid JavaScript identifiers and are not permitted to be
+   JavaScript keywords, but this constraint will be relaxed in the future.
+   </p>
    <p>
    The script may also reference parameters in the scope of this actor
    using usual Ptolemy II $ syntax.  E.g., ${foo} in the script will be
    replaced with the value of foo before the script is evaluated.
    However, this use of parameters will retrieve the value of the parameter
-   only when the script is read (during initialize()), so updates to the
+   only when the script is read, so updates to the
    parameter value will not be noticed.
    </p>
    <p>
    Your script can define zero or more of the following functions:</p>
    <ul>
+   <li> <b>exports.setup</b>. This function is invoked when the script parameter
+   is first set and whenever the script parameter is updated. This function can
+   be used to configure this actor with input and output ports.  For example,
+   <pre>
+     exports.setup = function() {
+         actor.input('foo', {'type':'string'});
+     }
+   </pre>
+   will create an input port named "foo" (if one does not already exist), and set
+   its type to "string", possibly overriding any previously set data type.
+   The methods that are particularly useful to use in setup are input, output,
+   author, description, and version.
    <li> <b>exports.initialize</b>. This function is invoked each time this actor
    is initialized. This function should not read inputs or produce outputs.</li>
    <li> <b>exports.fire</b>. This function is invoked each time this actor fires.
@@ -408,7 +425,7 @@ public class JavaScript extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** Output port on which to produce a message when an error occurs
-     *  when executing the fire() method. Note that if nothing is
+     *  when executing this actor. Note that if nothing is
      *  connected to this port, then an error will cause this
      *  JavaScript actor to throw an exception. Otherwise, a
      *  description of the error will be produced on this port and the
@@ -420,7 +437,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public TypedIOPort error;
     
-    /** The script to execute when this actor fires. */
+    /** The script defining the behavior of this actor. */
     public PortParameter script;
 
     ///////////////////////////////////////////////////////////////////
@@ -460,6 +477,21 @@ public class JavaScript extends TypedAtomicActor {
 	}
     }
     
+    /** Specify author information to appear in the documentation for this actor.
+     *  @param author Author information to appear in documentation.
+     */
+    public void author(String author) {
+	// Use a change request so as to not create dependencies on vergil here.
+	StringBuffer moml = new StringBuffer(
+		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
+	moml.append(
+		"<property name=\"author\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+	moml.append(StringUtilities.escapeForXML(author));
+	moml.append("\"></property></property>");
+	MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml.toString());
+	requestChange(request);
+    }
+
     /** Clear the timeout or interval with the specified handle, if it
      *  has not already executed.
      *  @param handle The timeout handle.
@@ -489,6 +521,22 @@ public class JavaScript extends TypedAtomicActor {
         newObject._proxies = null;
         newObject._proxiesByName = null;
         return newObject;
+    }
+
+    /** Specify a description to appear in the documentation for this actor.
+     *  The recommended format for documentation is HTML or Markdown.
+     *  @param description A description to appear in documentation.
+     */
+    public void description(String description) {
+	// Use a change request so as to not create dependencies on vergil here.
+	StringBuffer moml = new StringBuffer(
+		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
+	moml.append(
+		"<property name=\"description\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+	moml.append(StringUtilities.escapeForXML(description));
+	moml.append("\"></property></property>");
+	MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml.toString());
+	requestChange(request);
     }
 
     /** If debugging is turned on, then send the specified message to the
@@ -889,23 +937,28 @@ public class JavaScript extends TypedAtomicActor {
 	}
 	TypedIOPort port = (TypedIOPort) getPort(name);
 	if (port == null) {
-	    Object value = options.get("value");
-	    if (value == null) {
+	    if (options == null) {
+		// No options given. Use defaults.
 		port = (TypedIOPort) newPort(name);
 	    } else {
-		PortParameter parameter = new PortParameter(this, name);
-		// Convert value to a Ptolemy Token.
-		Object token;
-		try {
-		    token = ((Invocable)_engine).invokeFunction("convertToToken", value);
-		} catch (Exception e) {
-		    throw new IllegalActionException(this, e,
-			    "Cannot convert value to a Ptolemy Token: " + value);
-		}
-		if (token instanceof Token) {
-		    parameter.setToken((Token) token);
+		Object value = options.get("value");
+		if (value == null) {
+		    port = (TypedIOPort) newPort(name);
 		} else {
-		    throw new IllegalActionException(this, "Unsupported value: " + value);
+		    PortParameter parameter = new PortParameter(this, name);
+		    // Convert value to a Ptolemy Token.
+		    Object token;
+		    try {
+			token = ((Invocable)_engine).invokeFunction("convertToToken", value);
+		    } catch (Exception e) {
+			throw new IllegalActionException(this, e,
+				"Cannot convert value to a Ptolemy Token: " + value);
+		    }
+		    if (token instanceof Token) {
+			parameter.setToken((Token) token);
+		    } else {
+			throw new IllegalActionException(this, "Unsupported value: " + value);
+		    }
 		}
 	    }
 	} else {
@@ -923,7 +976,7 @@ public class JavaScript extends TypedAtomicActor {
 	    }
 	    Object description = options.get("description");
 	    if (description != null) {
-		_setDescription(port, description.toString());
+		_setPortDescription(port, description.toString());
 	    }
 	}
 	port.setInput(true);
@@ -1043,34 +1096,12 @@ public class JavaScript extends TypedAtomicActor {
 	    }
 	    String description = options.get("description");
 	    if (description != null) {
-		_setDescription(port, description);
+		_setPortDescription(port, description);
 	    }
 	} else {
 	    port.setTypeEquals(BaseType.GENERAL);
 	}
 	port.setOutput(true);
-    }
-
-    /** Set the description of a port.
-     *  @param port The port.
-     *  @param description The description.
-     */
-    private void _setDescription(TypedIOPort port, String description) {
-	// Use a change request so as to not create dependencies on vergil here.
-	StringBuffer moml = new StringBuffer(
-		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
-	moml.append("<property name=\"");
-	moml.append(port.getName());
-	if (port instanceof ParameterPort) {
-	    moml.append(" (port-parameter)");
-	} else {
-	    moml.append(" (port)");
-	}
-	moml.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
-	moml.append(StringUtilities.escapeString(description));
-	moml.append("\"></property></property>");
-	MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml.toString());
-	requestChange(request);
     }
 
     /** If there are any pending self-produced inputs, then request a firing
@@ -1186,6 +1217,21 @@ public class JavaScript extends TypedAtomicActor {
         return id;
     }
 
+    /** Specify version information to appear in the documentation for this actor.
+     *  @param version Version information to appear in documentation.
+     */
+    public void version(String version) {
+	// Use a change request so as to not create dependencies on vergil here.
+	StringBuffer moml = new StringBuffer(
+		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
+	moml.append(
+		"<property name=\"version\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+	moml.append(StringUtilities.escapeForXML(version));
+	moml.append("\"></property></property>");
+	MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml.toString());
+	requestChange(request);
+    }
+
     /** Execute the wrapup function, if it is defined, and exit the context for this thread.
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -1235,6 +1281,28 @@ public class JavaScript extends TypedAtomicActor {
 	return null;
     }
     
+    /** Set the description of a port.
+     *  @param port The port.
+     *  @param description The description.
+     */
+    protected void _setPortDescription(TypedIOPort port, String description) {
+	// Use a change request so as to not create dependencies on vergil here.
+	StringBuffer moml = new StringBuffer(
+		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
+	moml.append("<property name=\"");
+	moml.append(port.getName());
+	if (port instanceof ParameterPort) {
+	    moml.append(" (port-parameter)");
+	} else {
+	    moml.append(" (port)");
+	}
+	moml.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
+	moml.append(StringUtilities.escapeForXML(description));
+	moml.append("\"></property></property>");
+	MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml.toString());
+	requestChange(request);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 

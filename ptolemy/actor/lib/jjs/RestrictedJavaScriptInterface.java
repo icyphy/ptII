@@ -60,6 +60,13 @@ public class RestrictedJavaScriptInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Specify author information to appear in the documentation for this actor.
+     *  @param author Author information to appear in documentation.
+     */
+    public void author(String author) {
+        _actor.author(author);
+    }
+
     /** Clear the interval with the specified handle, if it has not already executed.
      *  @param handle The interval handle.
      *  @see #setInterval(Runnable, int)
@@ -74,6 +81,14 @@ public class RestrictedJavaScriptInterface {
      */
     public void clearTimeout(Integer handle) {
         _actor.clearTimeout(handle);
+    }
+
+    /** Specify a description to appear in the documentation for this actor.
+     *  The recommended format for documentation is HTML or Markdown.
+     *  @param description A description to appear in documentation.
+     */
+    public void description(String description) {
+        _actor.description(description);
     }
 
     /** Delegate to the associated JavaScript actor to report an error.
@@ -190,6 +205,13 @@ public class RestrictedJavaScriptInterface {
      */
     public int setTimeout(final Runnable function, int millisecond) throws IllegalActionException {
 	return _actor.setTimeout(function, millisecond);
+    }
+    
+    /** Specify version information to appear in the documentation for this actor.
+     *  @param version Version information to appear in documentation.
+     */
+    public void version(String version) {
+	_actor.version(version);
     }
     
     ///////////////////////////////////////////////////////////////////
