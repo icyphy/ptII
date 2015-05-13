@@ -1,0 +1,162 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BluetoothDevice" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 141, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    </property>
+    <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 45.0}">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <entity name="powerloss" class="ptolemy.domains.wireless.lib.PowerLossChannel">
+        <property name="name" class="ptolemy.data.expr.NameParameter" value="powerloss">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 40.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 195.0}">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="discoverable">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 195.0}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={620, 327, 359, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="BluetoothDevice2" class="ptolemy.domains.wireless.lib.bluetooth.BluetoothDevice">
+        <property name="wirelessInputChannelName" class="ptolemy.data.expr.StringParameter" value="powerloss">
+        </property>
+        <property name="wirelessOutputChannelName" class="ptolemy.data.expr.StringParameter" value="powerloss">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent4" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="StringConst4" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="BluetoothDevice" class="ptolemy.domains.wireless.lib.bluetooth.BluetoothDevice">
+        <property name="wirelessInputChannelName" class="ptolemy.data.expr.StringParameter" value="powerloss">
+        </property>
+        <property name="wirelessOutputChannelName" class="ptolemy.data.expr.StringParameter" value="powerloss">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 50.0}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/wireless/lib/bluetooth/_bticon.gif">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-42.0, -31.0]">
+                </property>
+            </property>
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Hello, World&quot;">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 330}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 350.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent2.output&quot;,x=75.0,y=195.0}, tail={id=&quot;StringConst2.trigger&quot;,x=200.0,y=195.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display2.input&quot;,x=520.0,y=260.0}, tail={id=&quot;BluetoothDevice2.Wired Output&quot;,x=390.0,y=260.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst2.output&quot;,x=200.0,y=195.0}, tail={id=&quot;BluetoothDevice2.Wired Input&quot;,x=390.0,y=260.0}, points={265.0,195.0,265.0,250.0} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent4.output&quot;,x=75.0,y=260.0}, tail={id=&quot;StringConst4.trigger&quot;,x=190.0,y=260.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BluetoothDevice2.Wired Input - Detail&quot;,x=390.0,y=260.0}, tail={id=&quot;StringConst4.output&quot;,x=190.0,y=260.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent2.output" relation="relation2"/>
+    <link port="StringConst2.output" relation="relation6"/>
+    <link port="StringConst2.trigger" relation="relation2"/>
+    <link port="Display2.input" relation="relation3"/>
+    <link port="BluetoothDevice2.Wired Input" relation="relation6"/>
+    <link port="BluetoothDevice2.Wired Input - Detail" relation="relation10"/>
+    <link port="BluetoothDevice2.Wired Input - Data" relation="relation"/>
+    <link port="BluetoothDevice2.Wired Output" relation="relation3"/>
+    <link port="SingleEvent4.output" relation="relation9"/>
+    <link port="StringConst4.output" relation="relation10"/>
+    <link port="StringConst4.trigger" relation="relation9"/>
+    <link port="StringConst.output" relation="relation"/>
+    <link port="StringConst.trigger" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation4"/>
+</entity>
