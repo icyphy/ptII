@@ -107,7 +107,8 @@ VertxBus.prototype.notify = function(address, body) {
     try {
         body = JSON.parse(body);
     } catch (exception) {
-        throw('Failed to parse JSON: ' + body + '\nException: ' + exception);
+        // NOTE: It might be better to just emit this and interpret as a string?
+        throw 'Failed to parse JSON: ' + body + '\nException: ' + exception;
     }
     this.emit(address, body);
 };
