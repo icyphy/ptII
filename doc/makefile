@@ -502,7 +502,8 @@ VIPTOSPACKAGES = \
 # Packages used by VisualSense
 VISUALSENSEPACKAGES = \
 	ptolemy.domains.wireless.kernel \
-	ptolemy.domains.wireless.lib
+	ptolemy.domains.wireless.lib \
+	ptolemy.domains.wireless.bluetooth
 
 # All the VisualSense generated documentation
 VISUALSENSE_DOCS = \
