@@ -15,7 +15,7 @@
       <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
         <property name="description" class="ptolemy.kernel.util.StringAttribute">
           <xsl:attribute name="value">
-            <xsl:value-of select="documentation"/>
+            <xsl:value-of select="description"/>
           </xsl:attribute>
         </property>
         <!-- Get documentation for each input. -->
