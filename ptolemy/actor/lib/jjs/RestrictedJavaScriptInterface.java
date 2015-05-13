@@ -29,6 +29,7 @@ package ptolemy.actor.lib.jjs;
 
 import java.util.Map;
 
+import ptolemy.actor.lib.jjs.JavaScript.PortOrParameterProxy;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -96,6 +97,14 @@ public class RestrictedJavaScriptInterface {
      */
     public void error(String message) {
 	_actor.error(message);
+    }
+    
+    /** Get the proxy for a port or parameter with the specified name.
+     *  This is an object on which JavaScript can directly invoke methods.
+     *  @return The proxy for the specified name, or null if there is none.
+     */
+    public PortOrParameterProxy getPortOrParameterProxy(String name) {
+	return _actor.getPortOrParameterProxy(name);
     }
     
     /** Create a new input port if it does not already exist.
