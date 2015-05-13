@@ -150,10 +150,11 @@ AC_MSG_CHECKING([if \$PTII ('$PTII') and the current directory are the same"])
 canonicalPTII=`cd "$PTII"; pwd`
 if test "$canonicalPTII" != "`pwd`" ; then
     currentDirectory="`pwd`"
-    AC_MSG_WARN([Perhaps $PTII is set to a directory other
-    than the current directory?
-    'cd "$PTII"; pwd' yields "$canonicalPTII", which is not the
-    same as 'pwd', which is "$currentDirectory".])  
+    FINAL_WARNING="Perhaps $PTII is set to a directory other \
+    than the current directory? \
+    'cd \"$PTII\"; pwd' yields \"$canonicalPTII\", which is not the \
+    same as 'pwd', which is \"$currentDirectory\""
+    AC_MSG_WARN([$FINAL_WARNING])
 fi
 
 AC_MSG_CHECKING([if \$PTII ('$PTII') contains "cygdrive"])
@@ -6180,6 +6181,19 @@ fi
 
 # Packages to exclude from Ant targets that call javadoc
 ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's@<exclude name="@@g' | sed 's@" */>@@g' | sed 's@/@.@g' | awk '{for (i=1;i <= NF; i++) { if ($i !~ /\*\*/) {printf("%s*,", $i)}}}'`
+
+
+# Warnings about $PTII being set incorrectly
+if test ! -f confdefs.h; then
+   AC_MSG_WARN([confdefs.h was not found.  Typically, this
+    could happen if \$PTII ($PTII) is not the same as the
+    current directory (`pwd`)])
+fi
+
+if test ! -z "$FINAL_WARNING"; then
+   echo "CRITICAL WARNING: $FINAL_WARNING"
+   echo "Please fix the above before attempting to build."
+fi   
 
 
 # Keep these substitutions alphabetical, with a description
