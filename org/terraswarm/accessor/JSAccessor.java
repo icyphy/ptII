@@ -34,6 +34,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.List;
 
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -57,7 +58,9 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// JSAccessor
@@ -145,67 +148,72 @@ public class JSAccessor extends JavaScript {
     ////                         public methods                    ////
 
 
-    /** Generate MoML for an Accessor.
+    /** Generate MoML for an Accessor. This produces only the body MoML.
+     *  It must be wrapped in an <entity></entity> or <class></class>
+     *  element to be instantiable, or in a <group></group> to be used
+     *  to update an accessor. 
      *  The accessor is read in from a url, processed with 
      *  XSLT and MoML is returned.
-     *  @param urlSpec A string naming the url of the accessor.
+     *  @param url The URL of the accessor.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
      *  @exception IOException If the urlSpec cannot be converted, opened
      *  read, parsed or closed.
      *  @exception TransformerConfigurationException If a factory cannot
      *  be created from the xslt file.
+     *  @throws IllegalActionException If no source file is specified.
      */
     public static String accessorToMoML(final String urlSpec)
-            throws IOException, TransformerConfigurationException {
+            throws IOException, TransformerConfigurationException, IllegalActionException {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
         // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
-        URL url;
-        String input = "";
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<group name=\"auto\">\n");
+	if (urlSpec == null || urlSpec.trim().equals("")) {
+	    throw new IllegalActionException("No source file specified.");
+	}
 
-            url = FileUtilities.nameToURL(urlSpec, null, null);
-
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(new InputStreamReader(
-                                url.openStream()));
-                StringBuffer contents = new StringBuffer();
-                while ((input = in.readLine()) != null) {
-                    contents.append(input);
-                }
-                TransformerFactory factory = TransformerFactory.newInstance();
-                String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
-                Source xslt = new StreamSource(FileUtilities.nameToFile(
-                                xsltLocation, null));
-                Transformer transformer = factory.newTransformer(xslt);
-                StreamSource source = new StreamSource(new InputStreamReader(
-                                url.openStream()));
-                StringWriter outWriter = new StringWriter();
-                StreamResult result = new StreamResult(outWriter);
-                try {
-                    transformer.transform(source, result);
-                    contents = outWriter.getBuffer();
-                    buffer.append(contents);
-                } catch (Throwable throwable) {
-                    IOException ioException = new IOException("Failed to parse \""
-                            + url
-                            + "\".");
-                    ioException.initCause(throwable);
-                    throw ioException;
-                }
-            } finally {
-                if (in != null) {
-                    in.close();
-                }
+        final URL url = FileUtilities.nameToURL(urlSpec, null, null);
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(
+        	    url.openStream()));
+            StringBuffer contents = new StringBuffer();
+            String input;
+            while ((input = in.readLine()) != null) {
+        	contents.append(input);
             }
-        buffer.append("</group>\n");
-
-        return buffer.toString();
+            TransformerFactory factory = TransformerFactory.newInstance();
+            String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
+            Source xslt = new StreamSource(FileUtilities.nameToFile(
+        	    xsltLocation, null));
+            Transformer transformer = factory.newTransformer(xslt);
+            StreamSource source = new StreamSource(new InputStreamReader(
+        	    url.openStream()));
+            StringWriter outWriter = new StringWriter();
+            // NOTE: Could target a DOMResult here instead, which would give
+            // much more flexibility.
+            StreamResult result = new StreamResult(outWriter);
+            try {
+        	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
+        	transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+        	contents = outWriter.getBuffer();
+        	transformer.transform(source, result);
+        	contents = outWriter.getBuffer();
+            } catch (Throwable throwable) {
+        	IOException ioException = new IOException("Failed to parse \""
+        		+ url
+        		+ "\".");
+        	ioException.initCause(throwable);
+        	throw ioException;
+            }
+            return contents.toString();
+        } finally {
+            if (in != null) {
+        	in.close();
+            }
+        }
     }
 
     /** Handle an accessor-specific MoMLChangeRequest.
@@ -214,6 +222,7 @@ public class JSAccessor extends JavaScript {
      *  attributes are updated.
      *
      *  @param originator The originator of the change request.
+     *  @param urlSpec The URL string specification.
      *  @param context The context in which the FMU actor is created.
      *  @param changeRequest The text of the change request,
      *  typically generated by {@link #accessorToMoML(String)}.
@@ -260,8 +269,7 @@ public class JSAccessor extends JavaScript {
                                 .getAttribute("accessorSource");
                         if (source instanceof StringAttribute) {
                             try {
-                                ((StringAttribute) source)
-                                        .setExpression(urlSpec);
+                                ((StringAttribute) source).setExpression(urlSpec);
                                 // Have to mark persistent or the urlSpec will be assumed to be part
                                 // of the class definition and hence will not be exported to MoML.
                                 ((StringAttribute) source)
@@ -330,10 +338,30 @@ public class JSAccessor extends JavaScript {
 	/** Reload the accessor. */
 	@Override
 	public void performAction() throws Exception {
-	    // TODO Finish this.
-	    String moml = JSAccessor.accessorToMoML(accessorSource.getExpression());
-
-	    System.out.println(moml);
+	    try {
+		MessageHandler.warning("Warning: Overridden parameter values will be lost. Proceed?");
+	    } catch (CancelException e) {
+		return;
+	    }
+	    StringBuffer moml = new StringBuffer("<group>");
+	    moml.append(JSAccessor.accessorToMoML(accessorSource.getExpression()));
+	    moml.append("</group>");
+	    final NamedObj container = getContainer();
+	    MoMLChangeRequest request = new MoMLChangeRequest(container, container, moml.toString()) {
+		// Wrap this to give a more useful error message.
+		protected void _execute() throws Exception {
+		    try {
+			super._execute();
+		    } catch (Exception e) {
+			// FIXME: Can we undo?
+			throw new IllegalActionException(container, e,
+				"Failed to reload accessor. Perhaps changes are two extensive."
+				+ " Try re-importing the accessor.");
+		    }
+		}
+	    };
+	    request.setUndoable(true);
+	    container.requestChange(request);
 	}
     }
 }

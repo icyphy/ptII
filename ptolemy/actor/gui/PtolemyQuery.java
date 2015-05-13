@@ -162,10 +162,10 @@ ValueListener, ChangeListener, CloseListener {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
-        ActionableEntry colorChooser = new ActionableEntry(this, name,
+        ActionableEntry actionButton = new ActionableEntry(this, name,
         	defaultValue, actionable);
-        _addPair(name, lbl, colorChooser, colorChooser);
-        return colorChooser;
+        _addPair(name, lbl, actionButton, actionButton);
+        return actionButton;
     }
 
     /** Add a new entry to this query that represents the given attribute.
