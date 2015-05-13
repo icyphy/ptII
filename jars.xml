@@ -2416,23 +2416,13 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/tm/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/tm/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/tm/lib/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/wireless/lib/bluetooth/*.class"/>
+        <include name="ptolemy/domains/wireless/lib/bluetooth/*.gif"/>
 	<include name="ptolemy/domains/wireless/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/lib/*.xml"/>
       </fileset>
     </jar>
@@ -4314,15 +4304,11 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/domains/wireless/lib/*.xml"/>
+	<include name="ptolemy/domains/wireless/lib/bluetooth/*.class"/>
+        <include name="ptolemy/domains/wireless/lib/bluetooth/*.gif"/>
       </fileset>
     </jar>
 

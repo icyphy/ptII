@@ -1,10 +1,10 @@
-# Makefile for Wireless domain actors library
+# Makefile for Wireless domain Bluetooth actors library
 #
-# @Authors: Christopher Hylands Brooks
+# @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
 #
-# @Copyright (c) 2003-2008 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/wireless/lib
+ME =		ptolemy/domains/wireless/lib/bluetooth
 
-DIRS = 		bluetooth test network tinyOS
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,65 +43,40 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-#PTCLASSJAR =	$(PTPACKAGE).jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	bluetooth
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	bluetooth/bluetooth.jar
+#PTCLASSALLJARS =
 
-# We are not shipping network
-#		network/network.jar
-#		tinyOS/tinyOS.jar
-
-# PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-    CollisionDetector.java \
-	DelayChannel.java \
-	ErasureChannel.java \
-	GetProperties.java \
-	GraphicalLocator.java \
-	LimitedRangeChannel.java \
-	LinkVisualizer.java \
-	Locator.java \
-	NodeRandomizer.java \
-	PowerLossChannel.java \
-	SetProperties.java \
-	TerrainProperty.java \
-	TransmitPropertyTransformer.java \
-	Triangulator.java \
-	WiredToWireless.java \
-	WirelessToWired.java
+	BluetoothCommand.java \
+	BluetoothDevice.java \
+	BluetoothResponse.java \
+	BluetoothResponseToken.java \
+	BluetoothStatus.java \
+	BluetoothStatusToken.java \
+	BluetoothToken.java
 
 OTHER_FILES_TO_BE_JARED = \
-	channels.xml \
-	wirelessentities.xml \
-	LinkVisualizerIcon.xml
+	_bticon.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	test
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	network \
-	tinyOS \
-	'CollisionDetector$$1.class' \
-	'CollisionDetector$$Reception.class' \
-	'DelayChannel$$1.class' \
-	'DelayChannel$$Reception.class' \
-	'LinkVisualizer$$1.class' \
-	'LinkVisualizer$$2.class' \
-	'LinkVisualizer$$_LinkVisualizerThread.class' \
-	'NodeRandomizer$$1.class' \
-	'TerrainProperty$$1.class'
+	'BluetoothDevice$$1.class' \
+	'BluetoothDevice$$States.class' \
+	'BluetoothResponseToken$$1.class' \
+	'BluetoothStatusToken$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
