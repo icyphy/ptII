@@ -50,6 +50,7 @@ PTPACKAGE = 	attributes
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	Actionable.java \
 	FileAttribute.java \
 	FileOrURLAccessor.java \
 	RequireVersion.java \
