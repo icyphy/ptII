@@ -2741,14 +2741,12 @@ $as_echo_n "checking if \$PTII ('$PTII') and the current directory are the same\
 canonicalPTII=`cd "$PTII"; pwd`
 if test "$canonicalPTII" != "`pwd`" ; then
     currentDirectory="`pwd`"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Perhaps $PTII is set to a directory other
-    than the current directory?
-    'cd \"$PTII\"; pwd' yields \"$canonicalPTII\", which is not the
-    same as 'pwd', which is \"$currentDirectory\"." >&5
-$as_echo "$as_me: WARNING: Perhaps $PTII is set to a directory other
-    than the current directory?
-    'cd \"$PTII\"; pwd' yields \"$canonicalPTII\", which is not the
-    same as 'pwd', which is \"$currentDirectory\"." >&2;}
+    FINAL_WARNING="Perhaps $PTII is set to a directory other \
+    than the current directory? \
+    'cd \"$PTII\"; pwd' yields \"$canonicalPTII\", which is not the \
+    same as 'pwd', which is \"$currentDirectory\""
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $FINAL_WARNING" >&5
+$as_echo "$as_me: WARNING: $FINAL_WARNING" >&2;}
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking if \$PTII ('$PTII') contains \"cygdrive\"" >&5
@@ -13541,6 +13539,22 @@ fi
 
 # Packages to exclude from Ant targets that call javadoc
 ANT_JAVADOC_EXCLUDEPACKAGENAMES=`echo "$ANT_ALWAYS_EXCLUDE $ANT_EXCLUDE"| sed 's@<exclude name="@@g' | sed 's@" */>@@g' | sed 's@/@.@g' | awk '{for (i=1;i <= NF; i++) { if ($i !~ /\*\*/) {printf("%s*,", $i)}}}'`
+
+
+# Warnings about $PTII being set incorrectly
+if test ! -f confdefs.h; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: confdefs.h was not found.  Typically, this
+    could happen if \$PTII ($PTII) is not the same as the
+    current directory (\`pwd\`)" >&5
+$as_echo "$as_me: WARNING: confdefs.h was not found.  Typically, this
+    could happen if \$PTII ($PTII) is not the same as the
+    current directory (\`pwd\`)" >&2;}
+fi
+
+if test ! -z "$FINAL_WARNING"; then
+   echo "CRITICAL WARNING: $FINAL_WARNING"
+   echo "Please fix the above before attempting to build."
+fi
 
 
 # Keep these substitutions alphabetical, with a description
