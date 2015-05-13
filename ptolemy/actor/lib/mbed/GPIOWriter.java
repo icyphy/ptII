@@ -29,6 +29,7 @@ package ptolemy.actor.lib.mbed;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -116,7 +117,16 @@ public class GPIOWriter extends Sink {
     public boolean postfire() throws IllegalActionException {
         if(input.hasToken(0)){
             if(((BooleanToken) input.get(0)).booleanValue() == true)
-                _GPIOState.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
+
+                if(((IntToken)BoardPortNumber.getToken()).intValue() == 0){
+                    _GPIOState.fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");
+                }
+                else if(((IntToken) BoardPortNumber.getToken()).intValue() == 1){
+                    _GPIOState.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
+                }
+                else{
+                    _GPIOState.fillColor.setToken("{0.0, 0.0, 1.0, 1.0}");
+                }
             else
                 _GPIOState.fillColor.setToken("{0.0, 0.0, 0.0, 1.0}");
         }
