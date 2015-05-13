@@ -43,18 +43,16 @@ import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.Actionable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -117,11 +115,9 @@ public class JSAccessor extends JavaScript {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        accessorSource = new StringAttribute(this, "accessorSource");
-        accessorSource.setVisibility(Settable.NOT_EDITABLE);
-
-        reloadAccessor = new Parameter(this, "reloadAccessor", BooleanToken.FALSE);
-        reloadAccessor.setTypeEquals(BaseType.BOOLEAN);
+        accessorSource = new ActionableAttribute(this, "accessorSource");
+        // Make the source editable so that you can update from another site.
+        // accessorSource.setVisibility(Settable.NOT_EDITABLE);
 
         SingletonParameter hide = new SingletonParameter(script, "_hide");
         hide.setExpression("true");
@@ -144,12 +140,6 @@ public class JSAccessor extends JavaScript {
 
     /** The source of the accessor (a URL). */
     public StringAttribute accessorSource;
-
-    /** If true, then reload the accessor during preinitialize().
-     *  The default value is a boolean token with the value false,
-     *  indicating that the accessor is not reloaded during preinitialize();
-     */
-    public Parameter reloadAccessor;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -297,38 +287,6 @@ public class JSAccessor extends JavaScript {
         context.requestChange(request);
     }
 
-    /** If necessary reload the accessor.
-     *  @exception IllegalActionException If the accessor cannot be reloaded
-     *  or if thrown by the base class.
-     */
-    @Override
-    public void preinitialize() throws IllegalActionException {
-        // "Need to create a new actor and splice it in where the old
-        // actor was, all the while preserving parameter overrides and
-        // port connections. Here, having a type check at the actor
-        // level would be useful... Is the new version of the accessor
-        // a substitution instance for the old?"
-        if (((BooleanToken)reloadAccessor.getToken()).booleanValue()) {
-            try {
-                // Get the ChangeRequest
-                String changeRequest = JSAccessor.accessorToMoML(accessorSource.getExpression());
-
-                // Iterate through the ports and parameters and look for
-                // Mismatches.
-
-                // Look for ports and parameters that are not present in
-                // the new accessor.
-
-                // Here's where it gets tricky, do we delete ourselves and
-                // then recreate the actor?
-            } catch (Throwable throwable) {
-                throw new IllegalActionException(this, throwable,
-                        "Problem reloading \"" + accessorSource.getExpression() + "\".");
-            }
-        }
-        super.preinitialize();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -343,5 +301,39 @@ public class JSAccessor extends JavaScript {
         super._addPort(port);
         SingletonParameter showName = new SingletonParameter(port, "_showName");
         showName.setExpression("true");
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Attribute with an associate named action.
+     */
+    public class ActionableAttribute extends StringAttribute implements Actionable {
+
+	/** Create a new actionable attribute.
+	 *  @param container The container.
+	 *  @param name The name.
+	 *  @throws IllegalActionException If the base class throws it.
+	 *  @throws NameDuplicationException If the base class throws it.
+	 */
+	public ActionableAttribute(NamedObj container, String name)
+		throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+	/** Return "Reload". */
+	@Override
+	public String actionName() {
+	    return "Reload";
+	}
+
+	/** Reload the accessor. */
+	@Override
+	public void performAction() throws Exception {
+	    // TODO Finish this.
+	    String moml = JSAccessor.accessorToMoML(accessorSource.getExpression());
+
+	    System.out.println(moml);
+	}
     }
 }
