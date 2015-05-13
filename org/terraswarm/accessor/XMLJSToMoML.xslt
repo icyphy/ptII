@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- XSL transformer to convert level one accessors into MoML for Ptolemy II -->
+<!-- The result needs to be wrapped in an <entity></entity> or <class></class> to be used. -->
+<!-- May also need to add the xml version spec, as above. -->
 <!-- Authors: Patricia Derler and Edward A. Lee. -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
   <xsl:template match="/class">
-    <entity name="{@name}" class="org.terraswarm.accessor.jjs.JSAccessor">
+    <!-- entity name="{@name}" class="org.terraswarm.accessor.jjs.JSAccessor"-->
       <!-- Convert the script into a value for the script parameter. -->
       <property name="script">
         <!-- Convert the body of the <script>...</script> element into the value of the "value" attribute. -->
@@ -144,6 +146,6 @@
           </property>
         </port>
       </xsl:for-each>
-    </entity>
+    <!--  /entity-->
   </xsl:template>
 </xsl:stylesheet>

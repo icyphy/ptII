@@ -32,7 +32,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
@@ -44,15 +43,11 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.gui.Top;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import diva.graph.GraphController;
@@ -155,16 +150,28 @@ public class ImportAccessorAction extends AbstractAction {
             final double y = bounds.getHeight() / 2.0;
 
             final String urlSpec = _lastLocation + query.getStringValue("accessor");
-            String changeRequest = null;
+            // Wrap in a group element that will rename the instance if there is a
+            // naming conflict.
+            StringBuffer moml = new StringBuffer("<group name=\"auto\">\n");
+            // Wrap the transformed MoML in <entity></entity>
+            // First get the file name only.
+            String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
+            String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+            String instanceNameRoot = StringUtilities.sanitizeName(fileNameWithoutExtension);
+            moml.append("<entity name=\"");
+            moml.append(instanceNameRoot);
+            moml.append("\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">");
             try {
-                changeRequest = JSAccessor.accessorToMoML(urlSpec);
+                moml.append(JSAccessor.accessorToMoML(urlSpec));
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to import accessor \""
                         + urlSpec + "\".", throwable);
                 return;
             }
+            moml.append("</entity></group>");
+            
             JSAccessor.handleAccessorMoMLChangeRequest(this,
-                    urlSpec, context, changeRequest, x, y);
+                    urlSpec, context, moml.toString(), x, y);
         }
     }
 
