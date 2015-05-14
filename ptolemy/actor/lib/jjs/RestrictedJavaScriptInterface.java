@@ -92,6 +92,16 @@ public class RestrictedJavaScriptInterface {
         _actor.description(description);
     }
 
+    /** Specify a description to appear in the documentation for this actor.
+     *  The recommended format for documentation is HTML or Markdown.
+     *  @param description A description to appear in documentation.
+     *  @param type The type, which should be one of "text/html" (the default if null
+     *   is given), "text/markdown",  or "text/plain".
+     */
+    public void description(String description, String type) {
+        _actor.description(description, type);
+    }
+
     /** Delegate to the associated JavaScript actor to report an error.
      *  @param message The message
      */
