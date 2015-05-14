@@ -7,15 +7,15 @@
 
 // define class name and unique id
 #define MODEL_IDENTIFIER fourInputsFourOutputsME20
-#define MODEL_GUID "5d012dd2-3205-4c98-8b96-671350b2d73c"
+#define MODEL_GUID "{5d012dd2-3205-4c98-8b96-671350b2d73c}"
 
 // define model size
-#define NUMBER_OF_REALS 6
+#define NUMBER_OF_REALS 8
 #define NUMBER_OF_INTEGERS 0
 #define NUMBER_OF_BOOLEANS 0
 #define NUMBER_OF_STRINGS 0
-#define NUMBER_OF_STATES 2
-#define NUMBER_OF_EVENT_INDICATORS 1
+#define NUMBER_OF_STATES 0
+#define NUMBER_OF_EVENT_INDICATORS 0
 
 // include fmu header files, typedefs and macros
 #include "fmuTemplate.h"
