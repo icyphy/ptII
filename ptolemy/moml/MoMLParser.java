@@ -163,6 +163,12 @@ import com.microstar.xml.XmlParser;
  forced to be created with unique name, rather than possibly matching
  a pre-existing item.
  <p>
+ If the group name is "doNotOverwriteOverrides", then parameter values
+ will be set only if either the parameter did not previously exist or
+ it has not been overridden. This is a rather specialized attribute
+ used to update a component or model without losing previously set
+ parameter values. 
+ <p>
  The parse methods throw a variety of exceptions if the parsed
  data does not represent a valid MoML file or if the stream
  cannot be read for some reason.
@@ -1072,6 +1078,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } catch (EmptyStackException ex) {
                     _namespace = _DEFAULT_NAMESPACE;
                 }
+                // If we are closing the outermost group that indicated
+                // doNotOverwriteOverrides, then reset so that we can start
+                // overwritting overrides again.
+                if (_groupCount <= _overwriteOverrides) {
+                    _overwriteOverrides = 0;
+                }
+                _groupCount--;
 
                 try {
                     _linkRequests = (List) _linkRequestStack.pop();
@@ -1874,6 +1887,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _attributes = new HashMap();
         _configureNesting = 0;
         _containers = new Stack();
+        _groupCount = 0;
         _linkRequests = null;
         _linkRequestStack = new Stack();
         _deleteRequests = null;
@@ -1885,6 +1899,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _namespace = _DEFAULT_NAMESPACE;
         _namespaces = new Stack();
         _namespaceTranslations = new Stack();
+        _overwriteOverrides = 0;
         _skipRendition = false;
         _skipElementIsNew = false;
         _ifElementStack.clear();
@@ -2848,19 +2863,29 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //////////////////////////////////////////////////////////////
                 //// group
             } else if (elementName.equals("group")) {
+        	_groupCount++;
                 String groupName = (String) _attributes.get("name");
 
                 if (groupName != null) {
-                    // Defining a namespace.
-                    _namespaces.push(_namespace);
-                    _namespaceTranslations.push(_namespaceTranslationTable);
-                    _namespacesPushed = true;
-
-                    if (groupName.equals("auto")) {
-                        _namespace = _AUTO_NAMESPACE;
-                        _namespaceTranslationTable = new HashMap();
+                    if (groupName.equals("doNotOverwriteOverrides")
+                	    && _overwriteOverrides <= 0) {
+                	// E.g., if the top-level <group> has name
+                	// "doNotOverwriteOverrides", then this will be
+                	// set to 1, and any nested groups will not
+                	// affect it.
+                	_overwriteOverrides = _groupCount;
                     } else {
-                        _namespace = groupName;
+                	// Defining a namespace.
+                	_namespaces.push(_namespace);
+                	_namespaceTranslations.push(_namespaceTranslationTable);
+                	_namespacesPushed = true;
+
+                	if (groupName.equals("auto")) {
+                	    _namespace = _AUTO_NAMESPACE;
+                	    _namespaceTranslationTable = new HashMap();
+                	} else {
+                	    _namespace = groupName;
+                	}
                     }
                 } else {
                     _namespaces.push(_DEFAULT_NAMESPACE);
@@ -5954,20 +5979,25 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     Settable settable = (Settable) property;
                     //String previousValue = settable.getExpression();
 
-                    // NOTE: It is not correct to do nothing even
-                    // if the value is not changed.  If the value of
-                    // of an instance parameter is explicitly set,
-                    // and that value happens to be the same as the
-                    // value in the base class, then it should keep
-                    // that value even if the base class later changes.
-                    // if (!value.equals(previousValue)) {
-                    settable.setExpression(value);
+                    // If we are within a group named "doNotOverwriteOverrides",
+                    // then set the expression only if either the parameter did not
+                    // previously exist or its value has not been overridden.
+                    if (_overwriteOverrides <= 0 || !previouslyExisted || !property.isOverridden()) {
+                	// NOTE: It is not correct to do nothing even
+                	// if the value is not changed.  If the value of
+                	// of an instance parameter is explicitly set,
+                	// and that value happens to be the same as the
+                	// value in the base class, then it should keep
+                	// that value even if the base class later changes.
+                	// if (!value.equals(previousValue)) {
+                	settable.setExpression(value);
+                	
+                	// Propagate. This has the side effect of marking
+                	// the object overridden.
+                	property.propagateValue();
 
-                    // Propagate. This has the side effect of marking
-                    // the object overridden.
-                    property.propagateValue();
-
-                    _paramsToParse.add(settable);
+                	_paramsToParse.add(settable);
+                    }
                 }
             }
 
@@ -7458,6 +7488,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  time we read an attribute.
      */
     private static MoMLParser _filterMoMLParser = null;
+    
+    /** Count of nested group elements. */
+    private int _groupCount = 0;
 
     /** IconLoader used to load icons. */
     private static IconLoader _iconLoader;
@@ -7494,6 +7527,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The original context set by setContext().
     private NamedObj _originalContext = null;
+    
+    /** Positive if we are within a group named "doNotOverwriteOverrides".
+     *  The value indicates the group count at which this was set.
+     */
+    private int _overwriteOverrides = 0;
 
     // A set of settable parameters specified in property tags.
     private Set<Settable> _paramsToParse = new HashSet<Settable>();

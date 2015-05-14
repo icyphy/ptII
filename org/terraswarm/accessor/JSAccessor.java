@@ -58,9 +58,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// JSAccessor
@@ -338,12 +336,14 @@ public class JSAccessor extends JavaScript {
 	/** Reload the accessor. */
 	@Override
 	public void performAction() throws Exception {
+	    /* No longer need the following, since we don't overwrite overrides.
 	    try {
 		MessageHandler.warning("Warning: Overridden parameter values will be lost. Proceed?");
 	    } catch (CancelException e) {
 		return;
 	    }
-	    StringBuffer moml = new StringBuffer("<group>");
+	    */
+	    StringBuffer moml = new StringBuffer("<group name=\"doNotOverwriteOverrides\">");
 	    moml.append(JSAccessor.accessorToMoML(accessorSource.getExpression()));
 	    moml.append("</group>");
 	    final NamedObj container = getContainer();
