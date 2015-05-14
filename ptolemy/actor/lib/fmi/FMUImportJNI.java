@@ -76,6 +76,7 @@ import ptolemy.actor.continuous.ContinuousStepSizeController;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.PeriodicDirector;
 import ptolemy.actor.util.Time;
+import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -1225,18 +1226,25 @@ public class FMUImportJNI extends TypedAtomicActor implements Advanceable,
         // FIXME: Need to decide where this library should reside?
         // The library currently resides in ptolemy/actor/lib/fmi/
         if (_fmiModelDescription.modelExchange) {
-            try {
-                final String jniLibPath = _jniPathSharedLibrary();
-                System.load(jniLibPath);
-            } catch (UnsatisfiedLinkError linkerException) {
-                throw new IllegalActionException(this,
-                        "Native code library with path " + _jniLibPath
-                                + " failed to load.\n" + linkerException);
-            } catch (IOException linkerException) {
-                throw new IllegalActionException(this,
-                        "Native code library with path " + _jniLibPath
-                                + " failed to load.\n" + linkerException);
-            }
+            // try {
+            //     final String jniLibPath = _jniPathSharedLibrary();
+            //     System.load(jniLibPath);
+            // } catch (UnsatisfiedLinkError linkerException) {
+            //     throw new IllegalActionException(this,
+            //             "Native code library with path " + _jniLibPath
+            //                     + " failed to load.\n" + linkerException);
+            // } catch (IOException linkerException) {
+            //     throw new IllegalActionException(this,
+            //             "Native code library with path " + _jniLibPath
+            //                     + " failed to load.\n" + linkerException);
+            // }
+
+	    // Load the "FMUImportJNI" native interface. Use a classpath-relative
+	    // pathname without the shared library suffix (which is selected
+	    // and appended by {@link UtilityFunctions#loadLibrary}) for
+	    // portability.
+	    UtilityFunctions.loadLibrary("ptolemy/actor/lib/fmi/jni/FMUImportJNI");
+
         } else {
             try {
                 _nativeLibrary = _fmiModelDescription.getNativeLibrary();
