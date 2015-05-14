@@ -143,10 +143,14 @@ EOF3
 
 mkdir $fmuName/src/sources
 
-cp $fmiTemplateDirectory/sources/{build_fmu,build_fmu.bat,fmu.mk} $fmuName/src/sources
+cp $fmiTemplateDirectory/sources/build_fmu $fmuName/src/sources
+cp $fmiTemplateDirectory/sources/build_fmu.bat $fmuName/src/sources
+cp $fmiTemplateDirectory/sources/fmu.mk $fmuName/src/sources
 cp $fmiTemplateDirectory/sources/fmuTemplate_$fmiVersion.c $fmuName/src/sources/fmuTemplate.c
 cp $fmiTemplateDirectory/sources/fmuTemplate_$fmiVersion.h $fmuName/src/sources/fmuTemplate.h
-cp $fmiSourceDirectory/{fmi2FunctionTypes.h,fmi2Functions.h,fmi2TypesPlatform.h} $fmuName/src/sources
+cp $fmiSourceDirectory/fmi2FunctionTypes.h $fmuName/src/sources
+cp $fmiSourceDirectory/fmi2Functions.h $fmuName/src/sources
+cp $fmiSourceDirectory/fmi2TypesPlatform.h $fmuName/src/sources
 sed -e "s/@@GIUD@@/$GUID/" \
     -e "s/@@fmuName@@/$fmuName/" < $fmiSourceDirectory/fmuName.c > $fmuName/src/sources/$fmuName.c
 

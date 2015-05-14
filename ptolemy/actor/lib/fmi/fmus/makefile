@@ -78,7 +78,7 @@ FMUS_PRE_2_0_ME = heaterFlowResistance pumpConstantSpeed tankOpen
 FMUSDK2_FMUS_2_0_ME = bouncingBallME20 dqME20 helloWorldME2 incME20 valuesME20 vanDerPolME20
 
 # New Model Exchange FMUS should be added here.
-FMUS_2_0_ME = helloWorldME2
+FMUS_2_0_ME = fourInputsFourOutputs helloWorldME2 
 
 FMUS_ME =	$(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
 
