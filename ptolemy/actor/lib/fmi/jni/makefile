@@ -1,10 +1,10 @@
-# Makefile for Functional Mock-up Interface actors
+# Makefile for Functional Mock-up Interface actor using JNI instead of JNA
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 72323 2015-05-14 01:02:27Z cxh $
 #
-# @Copyright (c) 2011-2014 The Regents of the University of California.
+# @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,14 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/fmi
+ME =		ptolemy/actor/lib/fmi/jni
 
-# PTFMIPP_DIR is set by configure in $PTII/mk/ptII.mk
-# PTJNI_DIR is set to jni in $PTII/mk/ptII.mk by configure if the C compiler is found.
-DIRS = 		fmus $(PTFMIPP_DIR) demo doc $(PTJNI_DIR) ma ma2 maHybrid test
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
@@ -45,41 +43,56 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fmi
+PTPACKAGE = 	jni
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	FMUImport.java \
-	FMUImportJNI.java \
-	FMUQSS.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	fmi.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.
-MISC_FILES = test doc fmus fmipp ma ma2 maHybrid
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc \
-	'FMUImport$$1.class' \
-	'FMUImport$$Input.class' \
-	'FMUImport$$Output.class' \
-	'FMUQSS$$1.class' \
-	'FMUQSS$$Input.class' \
-	'FMUQSS$$Output.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+FMUIMPORTJNI=FMUImportJNI
+
+SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(FMUIMPORTJNI).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+JNISRCS= jniTofmu.c
+
+KRUFT=$(SHARED_LIBRARY)
+
+
+all: jclass $(SHARED_LIBRARY)
 install: jclass jars
+
+jclass: $(SHARED_LIBRARY)
+
+jni: $(SHARED_LIBRARY)
+
+#jniTofmu.c has the definition of runNativeFMU in it, so we don't need to run this.
+#$(JNISRCS): $(FMUIMPORTJNI).h
+#	javah -classpath $(CLASSPATH) -o $(FMUIMPORTJNI).h ptolemy.actor.lib.fmi.$(FMUIMPORTJNI)
+
+$(SHARED_LIBRARY): $(JNISRCS)
+	$(PTCC) $(PTJNI_NO_CYGWIN) \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
+		$(PTJNI_SHAREDLIBRARY_CFLAG) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
+		-shared -o $@ \
+		$(JNISRCS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

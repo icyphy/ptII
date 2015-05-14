@@ -1,4 +1,4 @@
-/* Instantiate a Functional Mock-up Unit (FMU).
+/* Instantiate a Functional Mock-up Unit (FMU) using JNI instead of JNA
 
    Copyright (c) 2011-2015 The Regents of the University of California.
    All rights reserved.
@@ -25,6 +25,9 @@
    COPYRIGHTENDKEY
 
  */
+
+// FIXME: This is in the actor.lib.fmu package because FMUImport has
+// protected static methods that we want to use.
 package ptolemy.actor.lib.fmi;
 
 import java.io.File;
@@ -113,6 +116,18 @@ import com.sun.jna.ptr.IntByReference;
  * Invoke a Functional Mock-up Interface (FMI) Functional Mock-up Unit
  * (FMU) using JNI instead of JNA.
  *
+ * <p>FIXME: This file is an outdated copy of FMUImport.java.
+ * Eventually, we will restructure FMUImport and FMUQSSImport to use this
+ * file.</p>
+ * 
+ * <p>Note: jniTofmu.c (as well as FMUImportJNI.java) are again very
+ * restricted.  They are currently just set-up for FMUs for
+ * model-exchange 2.0. They mostly act on real variables (input or
+ * outputs).  So an FMU which has integer inputs, will not work
+ * properly.</p>
+ *
+ * <p>FIXME: This is in the actor.lib.fmu package because FMUImport has
+ * protected static methods that we want to use.</p>
  * <p>
  * Read in a <code>.fmu</code> file named by the <i>fmuFile</i> parameter. The
  * <code>.fmu</code> file is a zipped file that contains a file named
@@ -188,9 +203,9 @@ import com.sun.jna.ptr.IntByReference;
  * (via fmiGetFMUState and fmiSetFMUState), then it can be used with the
  * ContinuousDirector.
  *
- * @author Christopher Brooks, Michael Wetter, Edward A. Lee
+ * @author Thierry Nouidoui, Christopher Brooks, Based on FMUImport by Christopher Brooks, Thierry Nouidoui Michael Wetter, Edward A. Lee
  * @version $Id: FMUImport.java 71814 2015-03-25 19:26:16Z tsnouidui@lbl.gov $
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 12.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
