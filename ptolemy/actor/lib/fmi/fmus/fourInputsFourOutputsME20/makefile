@@ -30,7 +30,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-FMU_NAME = fourInputsFourOutputs
+FMU_NAME = fourInputsFourOutputsME20
 
 include ../fmus.mk
-
