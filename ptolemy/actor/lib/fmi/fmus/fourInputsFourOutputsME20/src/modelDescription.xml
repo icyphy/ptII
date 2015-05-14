@@ -7,7 +7,7 @@
     numberOfEventIndicators="0"
     >
   <ModelExchange
-      modelIdentifier="fourInputsFourOutputs"
+      modelIdentifier="fourInputsFourOutputsME20"
       canBeInstantiatedOnlyOncePerProcess="true"
       canGetAndSetFMUstate="true"
       providesDirectionalDerivative="true"/>    
@@ -16,15 +16,15 @@
     <!-- Index for next variable = 1 -->
     <ScalarVariable
 	name="u"
-	valueReference="352321536"
+	valueReference="0"
 	causality="input">
-      <Real
+      <Real declaredType="Modelica.Blocks.Interfaces.RealInput"
           start="0.0"/>
     </ScalarVariable>
     <!-- Index for next variable = 2 -->
     <ScalarVariable
 	name="u2"
-	valueReference="352321537"
+	valueReference="1"
 	causality="input">
       <Real
           start="0.0"/>
@@ -32,7 +32,7 @@
     <!-- Index for next variable = 3 -->
     <ScalarVariable
 	name="u3"
-	valueReference="352321538"
+	valueReference="2"
 	causality="input">
       <Real
           start="0.0"/>
@@ -40,7 +40,7 @@
     <!-- Index for next variable = 4 -->
     <ScalarVariable
 	name="u4"
-	valueReference="352321539"
+	valueReference="3"
 	causality="input">
       <Real
           start="0.0"/>
@@ -48,28 +48,28 @@
     <!-- Index for next variable = 5 -->
     <ScalarVariable
 	name="y"
-	valueReference="335544320"
+	valueReference="4"
 	causality="output">
       <Real/>
     </ScalarVariable>
     <!-- Index for next variable = 6 -->
     <ScalarVariable
 	name="y1"
-	valueReference="335544321"
+	valueReference="5"
 	causality="output">
       <Real/>
     </ScalarVariable>
     <!-- Index for next variable = 7 -->
     <ScalarVariable
 	name="y2"
-	valueReference="335544322"
+	valueReference="6"
 	causality="output">
       <Real/>
     </ScalarVariable>
     <!-- Index for next variable = 8 -->
     <ScalarVariable
 	name="y3"
-	valueReference="335544323"
+	valueReference="7"
 	causality="output">
       <Real/>
     </ScalarVariable>

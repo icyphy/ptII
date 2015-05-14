@@ -438,17 +438,25 @@ fmi2Status fmi2GetString (fmi2Component c, const fmi2ValueReference vr[], size_t
 fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
-    if (invalidState(comp, "fmi2SetReal", MASK_fmi2SetReal))
+    if (invalidState(comp, "fmi2SetReal", MASK_fmi2SetReal)) {
+        fprintf(stderr, "fmi2SetReal: invalid state\n");
         return fmi2Error;
-    if (nvr > 0 && nullPointer(comp, "fmi2SetReal", "vr[]", vr))
+    }
+    if (nvr > 0 && nullPointer(comp, "fmi2SetReal", "vr[]", vr)) {
+        fprintf(stderr, "fmi2SetReal: nvr (%d) >0, however vr[] is null?\n", (int)nvr);
         return fmi2Error;
-    if (nvr > 0 && nullPointer(comp, "fmi2SetReal", "value[]", value))
+    }
+    if (nvr > 0 && nullPointer(comp, "fmi2SetReal", "value[]", value)) {
+        fprintf(stderr, "fmi2SetReal: nvr (%d) >0, however value is null?\n", (int)nvr);
         return fmi2Error;
+    }
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetReal: nvr = %d", nvr)
     // no check whether setting the value is allowed in the current state
     for (i = 0; i < nvr; i++) {
-        if (vrOutOfRange(comp, "fmi2SetReal", vr[i], NUMBER_OF_REALS))
+        if (vrOutOfRange(comp, "fmi2SetReal", vr[i], NUMBER_OF_REALS)) {
+            fprintf(stderr, "fmi2SetReal: vr[%d] = %d, which is out of range, NUMBER_OF_REALS is %d.\n", i, vr[i], NUMBER_OF_REALS);
             return fmi2Error;
+        }
         FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetReal: #r%d# = %.16g", vr[i], value[i])
         comp->r[vr[i]] = value[i];
     }
