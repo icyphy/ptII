@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  description="TBD"
+  fmiVersion="2.0"
+  guid="{1c2682c9-f991-4483-a975-7a73ededcd51}"
+  modelName="fourInputsFourOutputs"
+  numberOfEventIndicators="42"
+   >
+    
+  <CoSimulation
+    modelIdentifier="stairsA"
+    canHandleVariableCommunicationStepSize="true"
+    canHandleEvents="true"
+    canProvideMaxStepSize="true"/>
+    
+<ModelVariables>
+  <ScalarVariable
+     name="level"
+     valueReference="0"
+     description="level"
+     causality="output">
+    <Real/>
+  </ScalarVariable>
+</ModelVariables>
+</fmiModelDescription>
+
