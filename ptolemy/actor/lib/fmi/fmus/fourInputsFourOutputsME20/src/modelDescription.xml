@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+    description="Four inputs and four outputs, used for performance testing"
+    fmiVersion="2.0"
+    guid="{5d012dd2-3205-4c98-8b96-671350b2d73c}"
+    modelName="fourInputsFourOutputsME20"
+    numberOfEventIndicators="0"
+    >
+  <ModelExchange
+      modelIdentifier="fourInputsFourOutputs"
+      canBeInstantiatedOnlyOncePerProcess="true"
+      canGetAndSetFMUstate="true"
+      providesDirectionalDerivative="true"/>    
+
+  <ModelVariables>
+    <!-- Index for next variable = 1 -->
+    <ScalarVariable
+	name="u"
+	valueReference="352321536"
+	causality="input">
+      <Real
+          start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 2 -->
+    <ScalarVariable
+	name="u2"
+	valueReference="352321537"
+	causality="input">
+      <Real
+          start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 3 -->
+    <ScalarVariable
+	name="u3"
+	valueReference="352321538"
+	causality="input">
+      <Real
+          start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 4 -->
+    <ScalarVariable
+	name="u4"
+	valueReference="352321539"
+	causality="input">
+      <Real
+          start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 5 -->
+    <ScalarVariable
+	name="y"
+	valueReference="335544320"
+	causality="output">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 6 -->
+    <ScalarVariable
+	name="y1"
+	valueReference="335544321"
+	causality="output">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 7 -->
+    <ScalarVariable
+	name="y2"
+	valueReference="335544322"
+	causality="output">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 8 -->
+    <ScalarVariable
+	name="y3"
+	valueReference="335544323"
+	causality="output">
+      <Real/>
+    </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="5"
+	       dependencies="2"
+	       dependenciesKind="dependent"/>
+      <Unknown index="6"
+	       dependencies="3"
+	       dependenciesKind="dependent"/>
+      <Unknown index="7"
+	       dependencies="4"
+	       dependenciesKind="dependent"/>
+      <Unknown index="8"
+	       dependencies="1"
+	       dependenciesKind="dependent"/>
+    </Outputs>
+    <InitialUnknowns>
+      <Unknown index="5"
+	       dependencies="2"
+	       dependenciesKind="dependent"/>
+      <Unknown index="6"
+	       dependencies="3"
+	       dependenciesKind="dependent"/>
+      <Unknown index="7"
+	       dependencies="4"
+	       dependenciesKind="dependent"/>
+      <Unknown index="8"
+	       dependencies="1"
+	       dependenciesKind="dependent"/>
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>
+
