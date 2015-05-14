@@ -44,6 +44,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
@@ -58,7 +59,9 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// JSAccessor
@@ -212,6 +215,27 @@ public class JSAccessor extends JavaScript {
         	in.close();
             }
         }
+    }
+
+    /** React to a change in an attribute, and if the attribute is the
+     *  script parameter, FIXME.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If evaluating the script fails.
+     */
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+	super.attributeChanged(attribute);
+	if (attribute == script) {
+	    // Force the script to be marked not overridden.
+	    // In other words, each time you set the value of the script,
+	    // the new value will be assumed to be that specified by the class
+	    // of which this accessor is an instance.  This means that each time
+	    // you perform an Update on the accessor, the script will be reloaded,
+	    // even if you have overridden it.  This should be OK, since the script
+	    // is visible only in expert mode.  Failing to do this results in
+	    // an Update NOT updating the script ever, which is definitely not what
+	    // we want.
+	    attribute.setDerivedLevel(Integer.MAX_VALUE);
+	}
     }
 
     /** Handle an accessor-specific MoMLChangeRequest.
