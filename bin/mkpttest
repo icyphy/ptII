@@ -459,4 +459,9 @@ public class JUnitTclTest extends JUnitTclTestBase {
 EoF4
 fi
 
+if [ ! -f junit/package.html -a -f $PTII/adm/bin/mkpackagehtml ]; then
+    echo "Creating junit/package.html and junit/README.txt"
+    (cd $PTII; $PTII/adm/bin/mkpackagehtml $directoryname/junit)
+fi
+
 echo "$0: Next: run $0 -r $directoryname"
