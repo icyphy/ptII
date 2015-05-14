@@ -716,6 +716,9 @@ PTJMODELICA_DIR =	@PTJMODELICA_DIR@
 # PTJMODELICA_PACKAGES is used in doc/makefile
 PTJMODELICA_PACKAGES =	@PTJMODELICA_PACKAGES@
 
+# Set to jni if we can compile Java Native Interface code and used in ptolemy/actor/lib/fmi/makefile
+PTJNI_DIR =		@PTJNI_DIR@
+
 # JNI architecture, used to compile C files
 PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 

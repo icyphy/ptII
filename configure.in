@@ -4204,6 +4204,7 @@ fi
 #       Ptolemy II can interface to user provided native code using JNI
 #	Ptolemy II can interface to Matlab using JNI
 #--------------------------------------------------------------------
+# Set to jni if we can compile Java Native Interface code and used in ptolemy/actor/lib/fmi/makefile
 PTJNI_DIR=
 
 if test ! -d "$PTII/ptolemy/matlab/" -a ! -d "$PTII/lbnl/lib/matlab/" ; then
@@ -6766,6 +6767,9 @@ AC_SUBST(PTJMODELICA_DIR)
 
 # PTJMODELICA_PACKAGES is used in doc/makefile
 AC_SUBST(PTJMODELICA_PACKAGES)
+
+# Set to jni if we can compile Java Native Interface code and used in ptolemy/actor/lib/fmi/makefile
+AC_SUBST(PTJNI_DIR)
 
 # JNI architecture, used to compile C files
 AC_SUBST(PTJNI_ARCHITECTURE)
