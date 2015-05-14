@@ -36,7 +36,6 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -248,7 +247,8 @@ public class DocAttribute extends SingletonAttribute {
                         // FIXME: Using a StringParameter here is a really poor choice.
                         // It will try to parse anything with a dollar sign.
                         // But fixing this in a backward compatible way appears to be hard.
-                        new StringParameter(this, name);
+                        // new StringParameter(this, name);
+                	new StringAttribute(this, name);
                     } catch (KernelException e) {
                         throw new InternalErrorException(e);
                     }
