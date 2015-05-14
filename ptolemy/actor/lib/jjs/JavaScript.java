@@ -524,10 +524,21 @@ public class JavaScript extends TypedAtomicActor {
     }
 
     /** Specify a description to appear in the documentation for this actor.
-     *  The recommended format for documentation is HTML or Markdown.
+     *  The assume format for documentation is HTML.
      *  @param description A description to appear in documentation.
      */
     public void description(String description) {
+	description(description, null);
+    }
+
+    /** Specify a description to appear in the documentation for this actor.
+     *  The recommended format for documentation is HTML, Markdown, or plain text.
+     *  @param description A description to appear in documentation.
+     *  @param type The type, which should be one of "text/html" (the default if null
+     *   is given), "text/markdown",  or "text/plain".
+     */
+    public void description(String description, String type) {
+	// FIXME: The type is currently ignored.
 	// Use a change request so as to not create dependencies on vergil here.
 	StringBuffer moml = new StringBuffer(
 		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
@@ -930,7 +941,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public void input(String name, Map options)
 	    throws IllegalActionException, NameDuplicationException {
-	// FIXME: Should check whether the model is running a use a change
+	// FIXME: Should check whether the model is running an use a change
 	// request if so.
 	if (name == null) {
 	    throw new IllegalActionException(this, "Must specify a name to create an input.");
@@ -959,6 +970,7 @@ public class JavaScript extends TypedAtomicActor {
 		    } else {
 			throw new IllegalActionException(this, "Unsupported value: " + value);
 		    }
+		    port = parameter.getPort();
 		}
 	    }
 	} else {

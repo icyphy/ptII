@@ -44,7 +44,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
@@ -59,9 +58,8 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.CancelException;
 import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// JSAccessor
@@ -184,32 +182,55 @@ public class JSAccessor extends JavaScript {
             String input;
             while ((input = in.readLine()) != null) {
         	contents.append(input);
+        	contents.append("\n");
             }
-            TransformerFactory factory = TransformerFactory.newInstance();
-            String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
-            Source xslt = new StreamSource(FileUtilities.nameToFile(
-        	    xsltLocation, null));
-            Transformer transformer = factory.newTransformer(xslt);
-            StreamSource source = new StreamSource(new InputStreamReader(
-        	    url.openStream()));
-            StringWriter outWriter = new StringWriter();
-            // NOTE: Could target a DOMResult here instead, which would give
-            // much more flexibility.
-            StreamResult result = new StreamResult(outWriter);
-            try {
-        	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
-        	transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-        	contents = outWriter.getBuffer();
-        	transformer.transform(source, result);
-        	contents = outWriter.getBuffer();
-            } catch (Throwable throwable) {
-        	IOException ioException = new IOException("Failed to parse \""
-        		+ url
-        		+ "\".");
-        	ioException.initCause(throwable);
-        	throw ioException;
+            
+            // If the spec is a JavaScript file, then do not use XSLT, but just
+            // instantiate JSAccessor with the script parameter.
+            String extension = urlSpec.substring(urlSpec.lastIndexOf('.') + 1, urlSpec.length());
+            extension = extension.toLowerCase().trim();
+            if (extension == null || extension.equals("")) {
+        	throw new IllegalActionException("Can't tell file type from extension: " + urlSpec);
             }
-            return contents.toString();
+            if (extension.equals("js")) {
+        	// JavaScript specification.
+        	StringBuffer result = new StringBuffer("<property name=\"script\" value=\"");
+        	// Since $ causes the expression parser to try to substitute a variable, we need
+        	// to escape it.
+        	String escaped = contents.toString().replace("$", "$$");
+        	result.append(StringUtilities.escapeForXML(escaped));
+        	result.append("\"/>");
+        	return result.toString();
+            } else if (extension.equals("xml")) {
+        	// XML specification.
+        	TransformerFactory factory = TransformerFactory.newInstance();
+        	String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
+        	Source xslt = new StreamSource(FileUtilities.nameToFile(
+        		xsltLocation, null));
+        	Transformer transformer = factory.newTransformer(xslt);
+        	StreamSource source = new StreamSource(new InputStreamReader(
+        		url.openStream()));
+        	StringWriter outWriter = new StringWriter();
+        	// NOTE: Could target a DOMResult here instead, which would give
+        	// much more flexibility.
+        	StreamResult result = new StreamResult(outWriter);
+        	try {
+        	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
+        	    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+        	    contents = outWriter.getBuffer();
+        	    transformer.transform(source, result);
+        	    contents = outWriter.getBuffer();
+        	} catch (Throwable throwable) {
+        	    IOException ioException = new IOException("Failed to parse \""
+        		    + url
+        		    + "\".");
+        	    ioException.initCause(throwable);
+        	    throw ioException;
+        	}
+                return contents.toString();
+            } else {
+        	throw new IllegalActionException("Unrecognized file extension: " + extension);
+            }
         } finally {
             if (in != null) {
         	in.close();
