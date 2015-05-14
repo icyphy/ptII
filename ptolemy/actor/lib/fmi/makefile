@@ -31,7 +31,7 @@
 
 # This directory contains polymorphic actors.
 
-ME =		ptolemy/actor/lib/fmi
+ME =		
 
 # PTFMIPP_DIR is set by configure in $PTII/mk/ptII.mk
 DIRS = 		fmus $(PTFMIPP_DIR) demo doc ma ma2 maHybrid test
@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	FMUImport.java \
+	FMUImportJNI.java \
 	FMUQSS.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -81,5 +82,29 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
+FMUIMPORTJNI=FMUImportJNI
+
+SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(FMUIMPORTJNI).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+JNISRCS=$(FMUIMPORTJNI).h
+
+KRUFT=$(JNISRCS) $(SHARED_LIBRARY)
+
+jni: $(SHARED_LIBRARY)
+
+$(JNISRCS):
+	javah -classpath $(CLASSPATH) -o $(FMUIMPORTJNI).h ptolemy.actor.lib.fmi.$(FMUIMPORTJNI)
+
+$(SHARED_LIBRARY): $(JNISRCS)
+	$(PTCC) $(PTJNI_NO_CYGWIN) \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
+		$(PTJNI_SHAREDLIBRARY_CFLAG) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
+		-shared -o $@ \
+		$(JNISRCS)
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
