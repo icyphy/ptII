@@ -89,10 +89,12 @@ jni: $(PTLIB)
 
 $(PTLIB): $(JNISRCS)
 	$(PTCC) $(PTJNI_NO_CYGWIN) \
+	 	-I../fmus/template/fmiv20/ \
 		"-I$(PTJAVA_HOME)/../include" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		$(PTJNI_SHAREDLIBRARY_CFLAG) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
 		-shared -o $@ \
+		-Wall -O3 \
 		$(JNISRCS)
 
 # Get the rest of the rules
