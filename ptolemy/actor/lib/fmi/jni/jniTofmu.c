@@ -1,31 +1,31 @@
 /*
-  @Copyright (c) 2015 The Regents of the University of California.
-  All rights reserved.
+ @Copyright (c) 2015 The Regents of the University of California.
+ All rights reserved.
 
-  Permission is hereby granted, without written agreement and without
-  license or royalty fees, to use, copy, modify, and distribute this
-  software and its documentation for any purpose, provided that the
-  above copyright notice and the following two paragraphs appear in all
-  copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-  SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-  ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-  PT_COPYRIGHT_VERSION_2
-  COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 /* jniTofmu.c */
 
 #include <jni.h>
@@ -41,47 +41,47 @@
 #include <stdint.h>
 
 typedef fmiComponent (*importFunctionInstantiate)(fmiString, fmiType, fmiString,
-	fmiString, const fmiCallbackFunctions*, fmiBoolean, fmiBoolean);
+        fmiString, const fmiCallbackFunctions*, fmiBoolean, fmiBoolean);
 typedef fmiStatus (*importFunctionSetupExperiment)(fmiComponent, fmiBoolean,
-	fmiReal, fmiReal, fmiBoolean, fmiReal);
+        fmiReal, fmiReal, fmiBoolean, fmiReal);
 typedef fmiStatus (*importFunctionSetTime)(fmiComponent, fmiReal);
 typedef fmiStatus (*importFunctionEnterInitializationMode)(fmiComponent);
 typedef fmiStatus (*importFunctionExitInitializationMode)(fmiComponent);
 typedef fmiStatus (*importFunctionNewDiscreteStates)(fmiComponent,
-	fmiEventInfo*);
+        fmiEventInfo*);
 typedef fmiStatus (*importFunctionEnterContinuousTimeMode)(fmiComponent);
 typedef fmiStatus (*importFunctionCompletedIntegratorStep)(fmiComponent,
-	fmiBoolean, fmiBoolean*, fmiBoolean*);
+        fmiBoolean, fmiBoolean*, fmiBoolean*);
 typedef fmiStatus (*importSetContinuousStates)(fmiComponent, const fmiReal[],
-	size_t);
+        size_t);
 typedef fmiStatus (*importGetDerivatives)(fmiComponent, fmiReal[], size_t);
 typedef fmiStatus (*importGetContinuousStates)(fmiComponent, fmiReal[], size_t);
 typedef fmiStatus (*importGetReal)(fmiComponent, const fmiValueReference[],
-	size_t, fmiReal[]);
+        size_t, fmiReal[]);
 typedef fmiStatus (*importSetReal)(fmiComponent, const fmiValueReference[],
-	size_t, const fmiReal[]);
+        size_t, const fmiReal[]);
 typedef fmiStatus (*importTerminate)(fmiComponent); // Unused FMI Function.
 typedef void (*importFreeInstance)(fmiComponent);   //  Unused FMI Function.
-typedef fmiStatus (*importGetDirectionalDerivative)(fmiComponent, 
-	const fmiValueReference[], size_t, const fmiValueReference[], 
-	size_t, fmiReal[], fmiReal[]);
+typedef fmiStatus (*importGetDirectionalDerivative)(fmiComponent,
+        const fmiValueReference[], size_t, const fmiValueReference[], size_t,
+        fmiReal[], fmiReal[]);
 
 typedef struct idfFmu_t {
     // FMU parameters
     int index;								// FMU instance index
     int nx;                          		// number of state variables
     double *x;                       		// continuous states
-    double *xdot;              	            // the corresponding derivatives in same order
-    fmiEventInfo eventInfo;                 // updated by calls to initialize and eventUpdate
+    double *xdot;              	  // the corresponding derivatives in same order
+    fmiEventInfo eventInfo;    // updated by calls to initialize and eventUpdate
     fmiBoolean stepEvent;					// flag for stepEvent
     fmiBoolean terminateSimulation;			// flag to terminate simulation
     const char* guid;                		// global unique id of the fmu
-    fmiCallbackFunctions callbacks;  	    // called by the model during simulation
+    fmiCallbackFunctions callbacks;  	// called by the model during simulation
     fmiStatus fmiFlag;               		// return code of the fmu functions
     fmiReal startTime;              		// start time
     fmiReal stopTime;                		// end time
     double prevTime;						// last simulation time
-    fmiBoolean toleranceDefined;            // true if model description define tolerance
+    fmiBoolean toleranceDefined;   // true if model description define tolerance
     fmiReal tolerance;           			// used in setting up the experiment
     fmiBoolean visible;   					// no simulator user interface
     const char *instanceName;        		// instance name
@@ -178,7 +178,7 @@ static const char* fmiStatusToString(fmiStatus status) {
     case fmiFatal:
         return "fatal";
 #ifdef FMI_COSIMULATION
-    case fmiPending: return "fmiPending";
+        case fmiPending: return "fmiPending";
 #endif
     default:
         return "?";
@@ -208,27 +208,27 @@ static void wrapup(int idx) {
     if (fmuInstances[idx]->wrapup == fmiTrue) {
         /*
 
-          printf(
-          "This is the number of compute derivatives calls: %d, the total time in ns %llu, "
-          "and the average time in ns: %f\n", ncallsCompDerivs - 1,
-          sumTimeComputeDerivatives,
-          (double) (sumTimeComputeDerivatives / ncallsCompDerivs));
+         printf(
+         "This is the number of compute derivatives calls: %d, the total time in ns %llu, "
+         "and the average time in ns: %f\n", ncallsCompDerivs - 1,
+         sumTimeComputeDerivatives,
+         (double) (sumTimeComputeDerivatives / ncallsCompDerivs));
 
-          if (ncallsSetInputs > 0) {
-          printf(
-          "This is the number of setReal() calls: %d, the total time in ns %llu, "
-          "and the average time in ns: %f\n", ncallsSetInputs - 1,
-          sumTimeElapsedSetInputs,
-          (double) (sumTimeElapsedSetInputs / ncallsSetInputs));
-          }
-          if (ncallsGetOutputs > 0) {
-          printf(
-          "This is the number of getReal() calls: %d, the total time in ns %llu, "
-          "and the average time in ns: %f\n",
-          ncallsGetOutputs - 1, sumTimeElapsedGetOutputs,
-          (double) (sumTimeElapsedGetOutputs / ncallsGetOutputs));
-          }
-        */
+         if (ncallsSetInputs > 0) {
+         printf(
+         "This is the number of setReal() calls: %d, the total time in ns %llu, "
+         "and the average time in ns: %f\n", ncallsSetInputs - 1,
+         sumTimeElapsedSetInputs,
+         (double) (sumTimeElapsedSetInputs / ncallsSetInputs));
+         }
+         if (ncallsGetOutputs > 0) {
+         printf(
+         "This is the number of getReal() calls: %d, the total time in ns %llu, "
+         "and the average time in ns: %f\n",
+         ncallsGetOutputs - 1, sumTimeElapsedGetOutputs,
+         (double) (sumTimeElapsedGetOutputs / ncallsGetOutputs));
+         }
+         */
         if (fmuInstances[idx]->c != NULL) {
             //FIXME: what should we use to release the FMU?
             //free(fmuInstances[idx]->c);
@@ -239,7 +239,7 @@ static void wrapup(int idx) {
             // and free on Linux to release the FMU.
             // freeInstance seems to be sensitive the the license which 
             // was used to export the FMUs.
-            fmuInstances[idx]->freeInstance (fmuInstances[idx]->c);
+            fmuInstances[idx]->freeInstance(fmuInstances[idx]->c);
             fmuInstances[idx]->c = NULL;
         }
         if (fmuInstances[idx]->x != NULL) {
@@ -250,9 +250,9 @@ static void wrapup(int idx) {
             free(fmuInstances[idx]->xdot);
             fmuInstances[idx]->xdot = NULL;
         }
-        if (fmuInstances[idx]->handle != NULL){
+        if (fmuInstances[idx]->handle != NULL) {
             // Free library
-            freeLib (idx);
+            freeLib(idx);
         }
         insNum = 0;
         fmuLocCoun = 0;
@@ -278,8 +278,10 @@ static int error(const char* message) {
 ///
 ///\param message The error message.
 ////////////////////////////////////////////////////////////////////////////////////
-static int errorWithStatus(const char* message, int status, char * fileName, int lineNumber) {
-    printf("%s (Status: %s), %s, line %d\n", message, fmiStatusToString(status), fileName, lineNumber);
+static int errorWithStatus(const char* message, int status, char * fileName,
+        int lineNumber) {
+    printf("%s (Status: %s), %s, line %d\n", message, fmiStatusToString(status),
+            fileName, lineNumber);
     return 0;
 }
 
@@ -293,7 +295,7 @@ static int errorWithStatus(const char* message, int status, char * fileName, int
 ///\param message The FMU logging message.
 ////////////////////////////////////////////////////////////////////////////////////
 static void fmuLogger(void *componentEnvironment, fmiString instance,
-	fmiStatus status, fmiString category, fmiString message, ...) {
+        fmiStatus status, fmiString category, fmiString message, ...) {
     char msg[MAX_MSG_SIZE];
     char* copy;
     va_list argp;
@@ -492,7 +494,6 @@ static fmiStatus jgetDerivatives(int idx, jdoubleArray x_get) {
     return fmuInstances[idx]->fmiFlag;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////
 /// Galculate the second derivative with respect to dependent iputs
 ///
@@ -501,17 +502,19 @@ static fmiStatus jgetDerivatives(int idx, jdoubleArray x_get) {
 ///\param tmp_xx_refs The FMU dependent value references.
 ///\param x_dot_get_ref The FMU state derivative.
 ////////////////////////////////////////////////////////////////////////////////////
-static double jcalcJac(int idx, int n_xx, double tmp_xx [], jlong tmp_xx_refs [], jlong x_dot_get_ref) {
+static double jcalcJac(int idx, int n_xx, double tmp_xx[], jlong tmp_xx_refs[],
+        jlong x_dot_get_ref) {
     double sum = 0.0;
     int i;
-    fmiReal* xx_dot = (fmiReal *) calloc(n_xx, sizeof(fmiReal));	
-    fmiValueReference vKnownRef [1];
-    const fmiValueReference vUnknownRef[1] =  {(fmiValueReference) x_dot_get_ref};
-    fmiReal dvKnown[1]  = {1.0}; 
-    fmiReal dvUnknown[1]; 
+    fmiReal* xx_dot = (fmiReal *) calloc(n_xx, sizeof(fmiReal));
+    fmiValueReference vKnownRef[1];
+    const fmiValueReference vUnknownRef[1] =
+            { (fmiValueReference) x_dot_get_ref };
+    fmiReal dvKnown[1] = { 1.0 };
+    fmiReal dvUnknown[1];
     for (i = 0; i < n_xx; i++) {
         xx_dot[i] = (fmiReal) tmp_xx[i];
-        vKnownRef[0] =  (fmiValueReference) tmp_xx_refs[i];
+        vKnownRef[0] = (fmiValueReference) tmp_xx_refs[i];
         // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
         // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wron calling
         // order. Dassault Systems was informed and will fix this in Dymola 2016.
@@ -519,15 +522,19 @@ static double jcalcJac(int idx, int n_xx, double tmp_xx [], jlong tmp_xx_refs []
         //fmuInstances[idx]->fmiFlag = fmuInstances[idx]->getDirectionalDerivative(fmuInstances[idx]->c, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
         // The correct calling order should be:
         //fmuInstances[idx]->fmiFlag = fmuInstances[idx]->getDirectionalDerivative(fmuInstances[idx]->c, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
-        fmuInstances[idx]->fmiFlag = fmuInstances[idx]->getDirectionalDerivative(fmuInstances[idx]->c, vKnownRef, 1, vUnknownRef, 1, dvKnown, dvUnknown);
+        fmuInstances[idx]->fmiFlag =
+                fmuInstances[idx]->getDirectionalDerivative(
+                        fmuInstances[idx]->c, vKnownRef, 1, vUnknownRef, 1,
+                        dvKnown, dvUnknown);
         if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-            error("could not retrieve directional state derivatives for FMU instance.");
+            error(
+                    "could not retrieve directional state derivatives for FMU instance.");
             return -1;
         }
-        sum = sum + dvUnknown [0] * xx_dot[i];
+        sum = sum + dvUnknown[0] * xx_dot[i];
     }
     // Free the allocated arrays.
-    free (xx_dot);
+    free(xx_dot);
     return sum;
 }
 
@@ -538,40 +545,47 @@ static double jcalcJac(int idx, int n_xx, double tmp_xx [], jlong tmp_xx_refs []
 ///\param x_get The FMU continuous state derivatives values.
 ////////////////////////////////////////////////////////////////////////////////////
 
-static fmiStatus jgetDirectionalDerivative(int idx, jlong x_dot_get_ref, 
-	jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs, 
-	jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs, 
-	jdoubleArray xdot_dot_get) {
+static fmiStatus jgetDirectionalDerivative(int idx, jlong x_dot_get_ref,
+        jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs,
+        jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs,
+        jdoubleArray xdot_dot_get) {
     int n_uu, n_xx, n_xxdot;
     double jac_uu, jac_xx;
-    jdouble *tmp_xdot_dot_get = (*fmuInstances[idx]->env)->GetDoubleArrayElements(
-            fmuInstances[idx]->env, xdot_dot_get, 0);
+    jdouble *tmp_xdot_dot_get =
+            (*fmuInstances[idx]->env)->GetDoubleArrayElements(
+                    fmuInstances[idx]->env, xdot_dot_get, 0);
 
     // get the dependent state
-    jdouble *tmp_xx_xdot_get = (*fmuInstances[idx]->env)->GetDoubleArrayElements(
-            fmuInstances[idx]->env, xx_xdot_get, 0);
+    jdouble *tmp_xx_xdot_get =
+            (*fmuInstances[idx]->env)->GetDoubleArrayElements(
+                    fmuInstances[idx]->env, xx_xdot_get, 0);
 
     // get the dependent inputs derivatives
-    jdouble *tmp_uu_xdot_get = (*fmuInstances[idx]->env)->GetDoubleArrayElements(
-            fmuInstances[idx]->env, uu_xdot_get, 0);
+    jdouble *tmp_uu_xdot_get =
+            (*fmuInstances[idx]->env)->GetDoubleArrayElements(
+                    fmuInstances[idx]->env, uu_xdot_get, 0);
 
     // get the value reference of dependent states derivatives
-    jlong *tmp_xx_xdot_get_refs = (*fmuInstances[idx]->env)->GetLongArrayElements(
-            fmuInstances[idx]->env, xx_xdot_get_refs, 0);
+    jlong *tmp_xx_xdot_get_refs =
+            (*fmuInstances[idx]->env)->GetLongArrayElements(
+                    fmuInstances[idx]->env, xx_xdot_get_refs, 0);
 
     // get the value references of dependent inputs
-    jlong *tmp_uu_xdot_get_refs = (*fmuInstances[idx]->env)->GetLongArrayElements(
-            fmuInstances[idx]->env, uu_xdot_get_refs, 0);
+    jlong *tmp_uu_xdot_get_refs =
+            (*fmuInstances[idx]->env)->GetLongArrayElements(
+                    fmuInstances[idx]->env, uu_xdot_get_refs, 0);
 
     // Get the dependent inputs and set them
     n_uu = (int) (*fmuInstances[idx]->env)->GetArrayLength(
             fmuInstances[idx]->env, uu_xdot_get);
-    jac_uu = jcalcJac (idx, n_uu, tmp_uu_xdot_get, tmp_uu_xdot_get_refs, x_dot_get_ref);
+    jac_uu = jcalcJac(idx, n_uu, tmp_uu_xdot_get, tmp_uu_xdot_get_refs,
+            x_dot_get_ref);
 
     // Get the dependent states and set them
     n_xx = (int) (*fmuInstances[idx]->env)->GetArrayLength(
             fmuInstances[idx]->env, xx_xdot_get);
-    jac_xx = jcalcJac (idx, n_xx, tmp_xx_xdot_get, tmp_xx_xdot_get_refs, x_dot_get_ref);
+    jac_xx = jcalcJac(idx, n_xx, tmp_xx_xdot_get, tmp_xx_xdot_get_refs,
+            x_dot_get_ref);
 
     // Get the second derivative
     tmp_xdot_dot_get[0] = jac_uu + jac_xx;
@@ -584,18 +598,17 @@ static fmiStatus jgetDirectionalDerivative(int idx, jlong x_dot_get_ref,
     (*fmuInstances[idx]->env)->ReleaseDoubleArrayElements(
             fmuInstances[idx]->env, uu_xdot_get, tmp_uu_xdot_get, 0);
 
-    (*fmuInstances[idx]->env)->ReleaseLongArrayElements(
-            fmuInstances[idx]->env, xx_xdot_get_refs, tmp_xx_xdot_get_refs, 0);
+    (*fmuInstances[idx]->env)->ReleaseLongArrayElements(fmuInstances[idx]->env,
+            xx_xdot_get_refs, tmp_xx_xdot_get_refs, 0);
 
-    (*fmuInstances[idx]->env)->ReleaseLongArrayElements(
-            fmuInstances[idx]->env, uu_xdot_get_refs, tmp_uu_xdot_get_refs, 0);
+    (*fmuInstances[idx]->env)->ReleaseLongArrayElements(fmuInstances[idx]->env,
+            uu_xdot_get_refs, tmp_uu_xdot_get_refs, 0);
 
-    (*fmuInstances[idx]->env)->ReleaseDoubleArrayElements(fmuInstances[idx]->env,
-            xdot_dot_get, tmp_xdot_dot_get, 0);
+    (*fmuInstances[idx]->env)->ReleaseDoubleArrayElements(
+            fmuInstances[idx]->env, xdot_dot_get, tmp_xdot_dot_get, 0);
 
     return fmuInstances[idx]->fmiFlag;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////
 /// Get FMU outputs
@@ -667,11 +680,11 @@ static fmiStatus jgetReal(int idx, jdoubleArray x_get, jdoubleArray x_get_ref) {
 static void* getAdr(int idx, const char* name) {
     void* fp;
     char *buf;
-    buf = (char*)malloc(strlen(name)+4);
-    sprintf (buf, "%s%s", "fmi2", name);
+    buf = (char*) malloc(strlen(name) + 4);
+    sprintf(buf, "%s%s", "fmi2", name);
 #ifdef _MSC_VER	
     fp = GetProcAddress(fmuInstances[idx]->handle, buf);
-    if (!fp){
+    if (!fp) {
         //FIXME: Free the buffer causes the code to crash?
         // free (buf);
         buf = (char*)malloc(strlen(name)+3);
@@ -686,14 +699,15 @@ static void* getAdr(int idx, const char* name) {
     }
 #else
     fp = dlsym(fmuInstances[idx]->handle, buf);
-    if (!fp){
+    if (!fp) {
         //FIXME: Free the buffer causes the code to crash?
         // free (buf);
-        buf = (char*)malloc(strlen(name)+3);
-        sprintf (buf, "%s%s", "fmi", name);
+        buf = (char*) malloc(strlen(name) + 3);
+        sprintf(buf, "%s%s", "fmi", name);
         fp = dlsym(fmuInstances[idx]->handle, buf);
         if (!fp) {
-            printf("Error: Function %s not found in FMI functions library\n", buf);
+            printf("Error: Function %s not found in FMI functions library\n",
+                    buf);
         }
         // FIXME: Free the buffer causes the code to crash?
         // free (buf);
@@ -726,7 +740,6 @@ static int loadLib(int idx) {
     }
     return 0;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 /// FMU native function to interface with JAVA
@@ -773,14 +786,15 @@ static int loadLib(int idx) {
 /// \return 0 if succes.
 //////////////////////////////////////////////////////////////////////////////
 JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
-	jobject obj, jint idx, jint flag, jstring instance,
-	jstring pathlib, jstring pathres, jdouble tStart, jdouble tEnd,
-	jdouble time, jint toleranceDefined, jdouble tolerance, jint visible,
-	jint loggingOn, jstring uid, jdoubleArray xdot_get, jdoubleArray x_get,
-	jdoubleArray x_set, jdoubleArray invals, jlongArray invalrefs,
-	jdoubleArray outvals, jlongArray outvalrefs, jlong x_dot_get_ref, 
-	jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs, 
-	jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs, jdoubleArray xdot_dot_get)
+        jobject obj, jint idx, jint flag, jstring instance, jstring pathlib,
+        jstring pathres, jdouble tStart, jdouble tEnd, jdouble time,
+        jint toleranceDefined, jdouble tolerance, jint visible, jint loggingOn,
+        jstring uid, jdoubleArray xdot_get, jdoubleArray x_get,
+        jdoubleArray x_set, jdoubleArray invals, jlongArray invalrefs,
+        jdoubleArray outvals, jlongArray outvalrefs, jlong x_dot_get_ref,
+        jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs,
+        jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs,
+        jdoubleArray xdot_dot_get)
 
 {
     if (flag == 0) {
@@ -830,19 +844,18 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
 
         // get the instance name
         fmuInstances[_c->index]->instanceName =
-            (*fmuInstances[_c->index]->env)->GetStringUTFChars(
-                    fmuInstances[_c->index]->env, instance,
-                    NULL);
+                (*fmuInstances[_c->index]->env)->GetStringUTFChars(
+                        fmuInstances[_c->index]->env, instance, NULL);
 
         // get the library path
         fmuInstances[_c->index]->fmuNativeLibraryLocation =
-            (*fmuInstances[_c->index]->env)->GetStringUTFChars(
-                    fmuInstances[_c->index]->env, pathlib, NULL);
+                (*fmuInstances[_c->index]->env)->GetStringUTFChars(
+                        fmuInstances[_c->index]->env, pathlib, NULL);
 
         // get the path to resource
         fmuInstances[_c->index]->fmuResourceLocation =
-            (*fmuInstances[_c->index]->env)->GetStringUTFChars(
-                    fmuInstances[_c->index]->env, pathres, NULL);
+                (*fmuInstances[_c->index]->env)->GetStringUTFChars(
+                        fmuInstances[_c->index]->env, pathres, NULL);
 
         // get the guid
         fmuInstances[_c->index]->guid = (*env)->GetStringUTFChars(env, uid,
@@ -852,16 +865,17 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         fmuInstances[_c->index]->wrapup = fmiTrue;
 
         // load shared library
-        if (loadLib (_c->index)!=0) return error("unable to load shared libraries\n");
+        if (loadLib(_c->index) != 0)
+            return error("unable to load shared libraries\n");
 
         // get fmiInstantiate
         fmuInstances[_c->index]->instantiate =
-            (importFunctionInstantiate) getAdr(_c->index, "Instantiate");
+                (importFunctionInstantiate) getAdr(_c->index, "Instantiate");
 
         // get fmiSetupExperiment
         fmuInstances[_c->index]->setupExperiment =
-            (importFunctionSetupExperiment) getAdr(_c->index,
-                    "SetupExperiment");
+                (importFunctionSetupExperiment) getAdr(_c->index,
+                        "SetupExperiment");
 
         // get fmiSetTime
         fmuInstances[_c->index]->setTime = (importFunctionSetTime) getAdr(
@@ -869,33 +883,33 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
 
         // get fmiEnterInitializationMode
         fmuInstances[_c->index]->enterInitialization =
-            (importFunctionEnterInitializationMode) getAdr(_c->index,
-                    "EnterInitializationMode");
+                (importFunctionEnterInitializationMode) getAdr(_c->index,
+                        "EnterInitializationMode");
 
         // get fmiExitInitializationMode
         fmuInstances[_c->index]->exitInitialization =
-            (importFunctionExitInitializationMode) getAdr(_c->index,
-                    "ExitInitializationMode");
+                (importFunctionExitInitializationMode) getAdr(_c->index,
+                        "ExitInitializationMode");
 
         // get fmiSetTime
         fmuInstances[_c->index]->newDiscreteStates =
-            (importFunctionNewDiscreteStates) getAdr(_c->index,
-                    "NewDiscreteStates");
+                (importFunctionNewDiscreteStates) getAdr(_c->index,
+                        "NewDiscreteStates");
 
         // get fmiEnterContinuousTimeMode
         fmuInstances[_c->index]->enterContinuousTimeMode =
-            (importFunctionEnterContinuousTimeMode) getAdr(_c->index,
-                    "EnterContinuousTimeMode");
+                (importFunctionEnterContinuousTimeMode) getAdr(_c->index,
+                        "EnterContinuousTimeMode");
 
         // get fmiCompletedIntegratorStep
         fmuInstances[_c->index]->completedIntegratorStep =
-            (importFunctionCompletedIntegratorStep) getAdr(_c->index,
-                    "CompletedIntegratorStep");
+                (importFunctionCompletedIntegratorStep) getAdr(_c->index,
+                        "CompletedIntegratorStep");
 
         // get fmiSetContinuousStates
         fmuInstances[_c->index]->setContinuousStates =
-            (importSetContinuousStates) getAdr(_c->index,
-                    "SetContinuousStates");
+                (importSetContinuousStates) getAdr(_c->index,
+                        "SetContinuousStates");
 
         // get fmiGetDerivatives
         fmuInstances[_c->index]->getDerivatives = (importGetDerivatives) getAdr(
@@ -903,8 +917,8 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
 
         // get fmiGetContinuousStates
         fmuInstances[_c->index]->getContinuousStates =
-            (importGetContinuousStates) getAdr(_c->index,
-                    "GetContinuousStates");
+                (importGetContinuousStates) getAdr(_c->index,
+                        "GetContinuousStates");
 
         // get fmiGetReal
         fmuInstances[_c->index]->getReal = (importGetReal) getAdr(_c->index,
@@ -916,13 +930,17 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
 
         // FIXME: Terminate and free are causing code to crash?
         // get fmiTerminate
-        fmuInstances[_c->index]->terminate = (importTerminate) getAdr(_c->index, "Terminate");
+        fmuInstances[_c->index]->terminate = (importTerminate) getAdr(_c->index,
+                "Terminate");
 
         // get fmiFreeInstance
-        fmuInstances[_c->index]->freeInstance = (importFreeInstance) getAdr(_c->index, "FreeInstance");
+        fmuInstances[_c->index]->freeInstance = (importFreeInstance) getAdr(
+                _c->index, "FreeInstance");
 
         // get fmiGetDirectionalDerivative
-        fmuInstances[_c->index]->getDirectionalDerivative = (importGetDirectionalDerivative) getAdr(_c->index, "GetDirectionalDerivative");
+        fmuInstances[_c->index]->getDirectionalDerivative =
+                (importGetDirectionalDerivative) getAdr(_c->index,
+                        "GetDirectionalDerivative");
 
         // instantiate
         fmuInstances[_c->index]->c = fmuInstances[_c->index]->instantiate(
@@ -963,25 +981,26 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
 
         // setup the experiment, set the start time
         fmuInstances[_c->index]->fmiFlag =
-            fmuInstances[_c->index]->setupExperiment(
-                    fmuInstances[_c->index]->c,
-                    fmuInstances[_c->index]->toleranceDefined,
-                    fmuInstances[_c->index]->tolerance,
-                    fmuInstances[_c->index]->startTime,
-                    fmiTrue, fmuInstances[_c->index]->stopTime);
+                fmuInstances[_c->index]->setupExperiment(
+                        fmuInstances[_c->index]->c,
+                        fmuInstances[_c->index]->toleranceDefined,
+                        fmuInstances[_c->index]->tolerance,
+                        fmuInstances[_c->index]->startTime,
+                        fmiTrue, fmuInstances[_c->index]->stopTime);
         if (fmuInstances[_c->index]->fmiFlag > fmiWarning) {
-            return errorWithStatus("Could not initialize model; failed FMI setup experiment.",
+            return errorWithStatus(
+                    "Could not initialize model; failed FMI setup experiment.",
                     fmuInstances[_c->index]->fmiFlag,
                     __FILE__, __LINE__);
         }
         // increase the counter
         insNum++;
         /*
-          clock_gettime(CLOCK_MONOTONIC, &end);
-          uint64_t timeElapsed = timespecDiff(&end, &start);
-          printf("This is the time in ns spent to instantiate the FMU: %llu\n",
-          timeElapsed);
-        */
+         clock_gettime(CLOCK_MONOTONIC, &end);
+         uint64_t timeElapsed = timespecDiff(&end, &start);
+         printf("This is the time in ns spent to instantiate the FMU: %llu\n",
+         timeElapsed);
+         */
         return _c->index;
     }
     // enter initialization
@@ -1006,7 +1025,8 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         fmuInstances[idx]->fmiFlag = fmuInstances[idx]->enterInitialization(
                 fmuInstances[idx]->c);
         if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-            return errorWithStatus("Could not initialize model; failed FMI enter initialization mode",
+            return errorWithStatus(
+                    "Could not initialize model; failed FMI enter initialization mode",
                     fmuInstances[idx]->fmiFlag,
                     __FILE__, __LINE__);
         }
@@ -1014,103 +1034,99 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         fmuInstances[idx]->fmiFlag = fmuInstances[idx]->exitInitialization(
                 fmuInstances[idx]->c);
         if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-            return errorWithStatus("Could not initialize model; failed FMI exit initialization mode",
+            return errorWithStatus(
+                    "Could not initialize model; failed FMI exit initialization mode",
                     fmuInstances[idx]->fmiFlag,
                     __FILE__, __LINE__);
         }
         /*
-          clock_gettime(CLOCK_MONOTONIC, &end);
-          uint64_t timeElapsed = timespecDiff(&end, &start);
-          printf(
-          "This is the time in ns spent to terminate initialization of the FMU: %llu\n",
-          timeElapsed);
-        */
+         clock_gettime(CLOCK_MONOTONIC, &end);
+         uint64_t timeElapsed = timespecDiff(&end, &start);
+         printf(
+         "This is the time in ns spent to terminate initialization of the FMU: %llu\n",
+         timeElapsed);
+         */
         return 0;
     }
     // enter event mode.
-    else if (flag == 2)
-	{
-            if (fmuInstances[idx]->prevTime != time) {
-                fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
-                        fmuInstances[idx]->c, time);
-                fmuInstances[idx]->prevTime = time;
-            }
+    else if (flag == 2) {
+        if (fmuInstances[idx]->prevTime != time) {
+            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
+                    fmuInstances[idx]->c, time);
+            fmuInstances[idx]->prevTime = time;
+        }
 
-            // no event iteration is assumed.
-            fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded = fmiFalse;
-            fmuInstances[idx]->eventInfo.terminateSimulation = fmiFalse;
+        // no event iteration is assumed.
+        fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded = fmiFalse;
+        fmuInstances[idx]->eventInfo.terminateSimulation = fmiFalse;
 
-            // one call of fmiNewDiscreteStates is required according to the specification
-            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->newDiscreteStates(
-                    fmuInstances[idx]->c, &(fmuInstances[idx]->eventInfo));
-            if (fmuInstances[idx]->fmiFlag > fmiWarning)
-                return error("could not set a new discrete state");
+        // one call of fmiNewDiscreteStates is required according to the specification
+        fmuInstances[idx]->fmiFlag = fmuInstances[idx]->newDiscreteStates(
+                fmuInstances[idx]->c, &(fmuInstances[idx]->eventInfo));
+        if (fmuInstances[idx]->fmiFlag > fmiWarning)
+            return error("could not set a new discrete state");
 
-            if (fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded) {
-                return error("need to do an event iteration at first invocation");
-            }
+        if (fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded) {
+            return error("need to do an event iteration at first invocation");
+        }
 
-            if (fmuInstances[idx]->eventInfo.terminateSimulation) {
-                return error("model requested termination at first invocation");
-            }
+        if (fmuInstances[idx]->eventInfo.terminateSimulation) {
+            return error("model requested termination at first invocation");
+        }
 
-	}
+    }
 
     // enter continuous mode.
-    else if (flag == 3)
-	{
-            if (fmuInstances[idx]->prevTime != time) {
-                fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
-                        fmuInstances[idx]->c, time);
-                fmuInstances[idx]->prevTime = time;
-            }
+    else if (flag == 3) {
+        if (fmuInstances[idx]->prevTime != time) {
+            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
+                    fmuInstances[idx]->c, time);
+            fmuInstances[idx]->prevTime = time;
+        }
 
-            // enter continuous mode
-            fmuInstances[idx]->enterContinuousTimeMode(fmuInstances[idx]->c);
-            return 0;
-	}
+        // enter continuous mode
+        fmuInstances[idx]->enterContinuousTimeMode(fmuInstances[idx]->c);
+        return 0;
+    }
 
     // get continuous states.
-    else if (flag == 4)
-	{
-            if (fmuInstances[idx]->prevTime != time) {
-                fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
-                        fmuInstances[idx]->c, time);
-                fmuInstances[idx]->prevTime = time;
-            }
+    else if (flag == 4) {
+        if (fmuInstances[idx]->prevTime != time) {
+            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
+                    fmuInstances[idx]->c, time);
+            fmuInstances[idx]->prevTime = time;
+        }
 
-            // get continuous states.
-            fmuInstances[idx]->fmiFlag = jgetContinuousStates(idx, x_get);
-            return 0;
-	}
+        // get continuous states.
+        fmuInstances[idx]->fmiFlag = jgetContinuousStates(idx, x_get);
+        return 0;
+    }
 
     // get derivatives.
-    else if (flag == 5)
-	{
-            if (fmuInstances[idx]->prevTime != time) {
-                fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
-                        fmuInstances[idx]->c, time);
-                fmuInstances[idx]->prevTime = time;
-            }
+    else if (flag == 5) {
+        if (fmuInstances[idx]->prevTime != time) {
+            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
+                    fmuInstances[idx]->c, time);
+            fmuInstances[idx]->prevTime = time;
+        }
 
-            // get the derivatives
-            fmuInstances[idx]->fmiFlag = jgetDerivatives(idx, xdot_get);
-            return 0;
-	}
+        // get the derivatives
+        fmuInstances[idx]->fmiFlag = jgetDerivatives(idx, xdot_get);
+        return 0;
+    }
 
     // set continuous states.
-    else if (flag == 6)
-	{
-            if (fmuInstances[idx]->prevTime != time) {
-                fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
-                        fmuInstances[idx]->c, time);
-                fmuInstances[idx]->prevTime = time;
-            }
+    else if (flag == 6) {
+        if (fmuInstances[idx]->prevTime != time) {
+            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
+                    fmuInstances[idx]->c, time);
+            fmuInstances[idx]->prevTime = time;
+        }
 
-            // set the continuous states.
-            fmuInstances[idx]->fmiFlag = jsetContinuousStates(idx, x_set);
-            return 0;
-	}
+        // set the continuous states.
+        fmuInstances[idx]->fmiFlag = jsetContinuousStates(idx, x_set);
+        return 0;
+    }
 
     // set single inputs
     else if (flag == 7) {
@@ -1126,23 +1142,23 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
                 fmuInstances[idx]->prevTime = time;
             }
             if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-                return errorWithStatus("While setting single outputs, could not set time.",
+                return errorWithStatus(
+                        "While setting single outputs, could not set time.",
                         fmuInstances[idx]->fmiFlag,
                         __FILE__, __LINE__);
             }
 
             // set the inputs if any
             if (invals != NULL && invalrefs != NULL) {
-                fmuInstances[idx]->fmiFlag = jsetReal(idx, invals,
-                        invalrefs);
+                fmuInstances[idx]->fmiFlag = jsetReal(idx, invals, invalrefs);
             }
             /*
-            // Code below can be used to measure execution time.
-            clock_gettime(CLOCK_MONOTONIC, &end);
-            uint64_t timeElapsed = timespecDiff(&end, &start);
-            sumTimeElapsedSetInputs=sumTimeElapsedSetInputs + timeElapsed;
-            */
-        } 
+             // Code below can be used to measure execution time.
+             clock_gettime(CLOCK_MONOTONIC, &end);
+             uint64_t timeElapsed = timespecDiff(&end, &start);
+             sumTimeElapsedSetInputs=sumTimeElapsedSetInputs + timeElapsed;
+             */
+        }
         return 0;
     }
     // get single outputs
@@ -1160,23 +1176,23 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
                 fmuInstances[idx]->prevTime = time;
             }
             if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-                return errorWithStatus("While setting single outputs, could not set time.",
+                return errorWithStatus(
+                        "While setting single outputs, could not set time.",
                         fmuInstances[idx]->fmiFlag,
                         __FILE__, __LINE__);
             }
 
             // get the outputs if any
             if (outvals != NULL && outvalrefs != NULL) {
-                fmuInstances[idx]->fmiFlag = jgetReal(idx, outvals,
-                        outvalrefs);
+                fmuInstances[idx]->fmiFlag = jgetReal(idx, outvals, outvalrefs);
             }
             /*
-            // Code below can be used to measure execution time.
-            clock_gettime(CLOCK_MONOTONIC, &end);
-            uint64_t timeElapsed = timespecDiff(&end, &start);
-            sumTimeElapsedGetOutputs=sumTimeElapsedGetOutputs + timeElapsed;
-            */
-        } 
+             // Code below can be used to measure execution time.
+             clock_gettime(CLOCK_MONOTONIC, &end);
+             uint64_t timeElapsed = timespecDiff(&end, &start);
+             sumTimeElapsedGetOutputs=sumTimeElapsedGetOutputs + timeElapsed;
+             */
+        }
     }
     // set complete integrator
     else if (flag == 9) {
@@ -1187,18 +1203,16 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         // ncallsCompDerivs++;
 
         // check for step event, e.g. dynamic state selection
-        fmuInstances[idx]->fmiFlag =
-            fmuInstances[idx]->completedIntegratorStep(
-                    fmuInstances[idx]->c, fmiTrue,
-                    &(fmuInstances[idx]->stepEvent),
-                    &(fmuInstances[idx]->terminateSimulation));
+        fmuInstances[idx]->fmiFlag = fmuInstances[idx]->completedIntegratorStep(
+                fmuInstances[idx]->c, fmiTrue, &(fmuInstances[idx]->stepEvent),
+                &(fmuInstances[idx]->terminateSimulation));
 
         /*
-        // Code below can be used to measure execution time.
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        uint64_t timeElapsed = timespecDiff(&end, &start);
-        sumTimeComputeDerivatives=sumTimeComputeDerivatives + timeElapsed;
-        */
+         // Code below can be used to measure execution time.
+         clock_gettime(CLOCK_MONOTONIC, &end);
+         uint64_t timeElapsed = timespecDiff(&end, &start);
+         sumTimeComputeDerivatives=sumTimeComputeDerivatives + timeElapsed;
+         */
 
         if (fmuInstances[idx]->fmiFlag > fmiWarning) {
             return errorWithStatus("Could not complete integrator step.",
@@ -1216,16 +1230,14 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
     // call end of the simulation
     else if (flag == -1) {
         /*
-          printf ("The end of the simulation flag was received for FMU instance ---%s.\n",
-          fmuInstances[idx]->instanceName);
-        */
+         printf ("The end of the simulation flag was received for FMU instance ---%s.\n",
+         fmuInstances[idx]->instanceName);
+         */
         // Release strings
-        (*fmuInstances[idx]->env)->ReleaseStringUTFChars(
-                fmuInstances[idx]->env, pathlib,
-                fmuInstances[idx]->fmuNativeLibraryLocation);
-        (*fmuInstances[idx]->env)->ReleaseStringUTFChars(
-                fmuInstances[idx]->env, instance,
-                fmuInstances[idx]->instanceName);
+        (*fmuInstances[idx]->env)->ReleaseStringUTFChars(fmuInstances[idx]->env,
+                pathlib, fmuInstances[idx]->fmuNativeLibraryLocation);
+        (*fmuInstances[idx]->env)->ReleaseStringUTFChars(fmuInstances[idx]->env,
+                instance, fmuInstances[idx]->instanceName);
         wrapup(idx);
         return 0;
     }
@@ -1237,15 +1249,16 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         // ncallsGetOutputs++;
         // get the outputs if any
         if (xx_xdot_get != NULL || uu_xdot_get != NULL) {
-            fmuInstances[idx]->fmiFlag = jgetDirectionalDerivative(idx, x_dot_get_ref, xx_xdot_get,
-                    xx_xdot_get_refs, uu_xdot_get, uu_xdot_get_refs, xdot_dot_get);
+            fmuInstances[idx]->fmiFlag = jgetDirectionalDerivative(idx,
+                    x_dot_get_ref, xx_xdot_get, xx_xdot_get_refs, uu_xdot_get,
+                    uu_xdot_get_refs, xdot_dot_get);
         }
         /*
-        // Code below can be used to measure execution time.
-        clock_gettime(CLOCK_MONOTONIC, &end);
-        uint64_t timeElapsed = timespecDiff(&end, &start);
-        sumTimeElapsedGetOutputs=sumTimeElapsedGetOutputs + timeElapsed;
-        */
+         // Code below can be used to measure execution time.
+         clock_gettime(CLOCK_MONOTONIC, &end);
+         uint64_t timeElapsed = timespecDiff(&end, &start);
+         sumTimeElapsedGetOutputs=sumTimeElapsedGetOutputs + timeElapsed;
+         */
         return 0;
     }
     return 0;
