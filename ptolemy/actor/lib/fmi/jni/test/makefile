@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : mkpttest 72056 2015-04-21 14:33:21Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -35,7 +35,8 @@ ME =		ptolemy/actor/lib/fmi/jni/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
+# JNA_JAR is set by $PTII/configure in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
