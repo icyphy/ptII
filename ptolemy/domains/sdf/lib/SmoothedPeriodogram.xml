@@ -60,11 +60,11 @@ radians per second, centered at zero frequency.</text></svg></configure>
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
-        <property name="order (parameter)" class="ptolemy.data.expr.StringParameter" value="The order of the FFT used.">
+        <property name="order (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The order of the FFT used.">
         </property>
-        <property name="numberOfInputs (parameter)" class="ptolemy.data.expr.StringParameter" value="The number of inputs to read.">
+        <property name="numberOfInputs (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The number of inputs to read.">
         </property>
-        <property name="numberOfLags (parameter)" class="ptolemy.data.expr.StringParameter" value="The number of autocorrelation lags to calculate.">
+        <property name="numberOfLags (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The number of autocorrelation lags to calculate.">
         </property>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">

@@ -34,7 +34,7 @@
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
-        <property name="order (parameter)" class="ptolemy.data.expr.StringParameter" value="The order of the FFT.">
+        <property name="order (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The order of the FFT.">
         </property>
     </property>
     <port name="input" class="ptolemy.actor.TypedIOPort">

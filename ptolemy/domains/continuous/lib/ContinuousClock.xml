@@ -151,17 +151,17 @@
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
-        <property name="stopTime (parameter)" class="ptolemy.data.expr.StringParameter" value="The time at which to stop producing outputs.">
+        <property name="stopTime (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The time at which to stop producing outputs.">
         </property>
-        <property name="stopTimeIsLocal (parameter)" class="ptolemy.data.expr.StringParameter" value="Whether the stop time is local or global time (which matters only if you are within a modal model).">
+        <property name="stopTimeIsLocal (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Whether the stop time is local or global time (which matters only if you are within a modal model).">
         </property>
-        <property name="period (parameter)" class="ptolemy.data.expr.StringParameter" value="The period with which the waveform is repeated.">
+        <property name="period (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The period with which the waveform is repeated.">
         </property>
-        <property name="offsets (parameter)" class="ptolemy.data.expr.StringParameter" value="The offset within the period at which the given value is produced.">
+        <property name="offsets (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The offset within the period at which the given value is produced.">
         </property>
-        <property name="values (parameter)" class="ptolemy.data.expr.StringParameter" value="The values to produce.">
+        <property name="values (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The values to produce.">
         </property>
-        <property name="defaultValue (parameter)" class="ptolemy.data.expr.StringParameter" value="The value before the first output (absent if empty)">
+        <property name="defaultValue (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value before the first output (absent if empty)">
         </property>
     </property>
     <port name="output" class="ptolemy.actor.TypedIOPort">

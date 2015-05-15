@@ -166,15 +166,15 @@
         </property>
         <property name="since" class="ptolemy.kernel.util.StringAttribute" value="10.0">
         </property>
-        <property name="I (parameter)" class="ptolemy.data.expr.StringParameter" value="The moment of inertia in kg*meters^2. The default value is a reasonable value for a small motor with no connected load.">
+        <property name="I (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The moment of inertia in kg*meters^2. The default value is a reasonable value for a small motor with no connected load.">
         </property>
-        <property name="kb (parameter)" class="ptolemy.data.expr.StringParameter" value="The back electromagnetic force constant in volts/RPM.">
+        <property name="kb (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The back electromagnetic force constant in volts/RPM.">
         </property>
-        <property name="kT (parameter)" class="ptolemy.data.expr.StringParameter" value="The torque constant of the motor (an emperical quantity) in newton*meters/amps.">
+        <property name="kT (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The torque constant of the motor (an emperical quantity) in newton*meters/amps.">
         </property>
-        <property name="R (parameter)" class="ptolemy.data.expr.StringParameter" value="The winding resistance of the motor in ohms.">
+        <property name="R (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The winding resistance of the motor in ohms.">
         </property>
-        <property name="L (parameter)" class="ptolemy.data.expr.StringParameter" value="The winding inductance in henrys.">
+        <property name="L (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The winding inductance in henrys.">
         </property>
         <property name="voltage (port)" class="ptolemy.kernel.util.StringAttribute" value="The input voltage.">
         </property>
@@ -184,7 +184,7 @@
         </property>
         <property name="current (port)" class="ptolemy.kernel.util.StringAttribute" value="The current that flows through the motor.">
         </property>
-        <property name="Title (parameter)" class="ptolemy.data.expr.StringParameter" value="">
+        <property name="Title (parameter)" class="ptolemy.kernel.util.StringAttribute" value="">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
