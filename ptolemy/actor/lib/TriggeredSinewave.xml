@@ -136,11 +136,11 @@
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Yuhong Xiong">
         </property>
-        <property name="magnitude (parameter)" class="ptolemy.data.expr.StringParameter" value="The magnitude of the sine wave.">
+        <property name="magnitude (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The magnitude of the sine wave.">
         </property>
-        <property name="frequency (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The frequency of the sine wave (cycles/second, assuming time is in seconds).">
+        <property name="frequency (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The frequency of the sine wave (cycles/second, assuming time is in seconds).">
         </property>
-        <property name="phase (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The phase of the sine wave in radians (zero gives a sine function, pi/2 gives a cosine).">
+        <property name="phase (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The phase of the sine wave in radians (zero gives a sine function, pi/2 gives a cosine).">
         </property>
         <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="The trigger input, which defines when outputs are produced.">
         </property>

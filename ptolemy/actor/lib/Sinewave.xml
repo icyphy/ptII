@@ -53,11 +53,11 @@
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
-        <property name="samplingFrequency (parameter)" class="ptolemy.data.expr.StringParameter" value="The sampling frequency in cycles per second (Hertz), a double with default 8000.0.">
+        <property name="samplingFrequency (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The sampling frequency in cycles per second (Hertz), a double with default 8000.0.">
         </property>
-        <property name="frequency (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The sinusoid frequency in cycles per second (Hertz), a double with default 440.0.">
+        <property name="frequency (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The sinusoid frequency in cycles per second (Hertz), a double with default 440.0.">
         </property>
-        <property name="phase (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The sinusoid phase in radians, a double with default 0.0.">
+        <property name="phase (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The sinusoid phase in radians, a double with default 0.0.">
         </property>
         <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output (a uniformly sampled sinusoidal signal).">
         </property>

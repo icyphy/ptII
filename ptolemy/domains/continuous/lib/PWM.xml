@@ -128,11 +128,11 @@
         </property>
         <property name="since" class="ptolemy.kernel.util.StringAttribute" value="10.0">
         </property>
-        <property name="outputLevel (parameter)" class="ptolemy.data.expr.StringParameter" value="The value of the output when it is high.">
+        <property name="outputLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the output when it is high.">
         </property>
-        <property name="frequency (parameter)" class="ptolemy.data.expr.StringParameter" value="The frequency with which to repeat the cycle (in Hz).">
+        <property name="frequency (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The frequency with which to repeat the cycle (in Hz).">
         </property>
-        <property name="dutyCycle (port-parameter)" class="ptolemy.data.expr.StringParameter" value="The fraction of time to hold the output high.">
+        <property name="dutyCycle (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The fraction of time to hold the output high.">
         </property>
         <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output.">
         </property>

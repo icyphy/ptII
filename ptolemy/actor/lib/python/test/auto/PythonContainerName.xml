@@ -78,7 +78,7 @@
                 </property>
                 <property name="version" class="ptolemy.kernel.util.StringAttribute" value="2">
                 </property>
-                <property name="terminator (parameter)" class="ptolemy.data.expr.StringParameter" value="a single character string, e.g. &quot;&gt;&quot;">
+                <property name="terminator (parameter)" class="ptolemy.kernel.util.StringAttribute" value="a single character string, e.g. &quot;&gt;&quot;">
                 </property>
                 <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="name of the container of this actor">
                 </property>
