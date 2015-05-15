@@ -18,7 +18,7 @@
 	name="u"
 	valueReference="0"
 	causality="input">
-      <Real declaredType="Modelica.Blocks.Interfaces.RealInput"
+      <Real
           start="0.0"/>
     </ScalarVariable>
     <!-- Index for next variable = 2 -->
