@@ -63,6 +63,7 @@ static fmi2Boolean invalidState(ModelInstance *comp, const char *f, int statesEx
     if (!comp)
         return fmi2True;
     if (!(comp->state & statesExpected)) {
+        fprintf(stderr, "invalidState: state is: %d, expected: %d (Key: modelError: %d, continuousTimeMode: %d, initializationMode: %d)\n", comp->state, statesExpected, 1<<10, 1<<4, 1<<2);
         comp->state = modelError;
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "%s: Illegal call sequence.", f)
         return fmi2True;
@@ -199,8 +200,9 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fm
 
     // ignore arguments: stopTimeDefined, stopTime
     ModelInstance *comp = (ModelInstance *)c;
-    if (invalidState(comp, "fmi2SetupExperiment", MASK_fmi2SetupExperiment))
+    if (invalidState(comp, "fmi2SetupExperiment", MASK_fmi2SetupExperiment)) {
         return fmi2Error;
+    }
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetupExperiment: toleranceDefined=%d tolerance=%g",
         toleranceDefined, tolerance)
 
@@ -210,8 +212,10 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fm
 
 fmi2Status fmi2EnterInitializationMode(fmi2Component c) {
     ModelInstance *comp = (ModelInstance *)c;
-    if (invalidState(comp, "fmi2EnterInitializationMode", MASK_fmi2EnterInitializationMode))
+    if (invalidState(comp, "fmi2EnterInitializationMode", MASK_fmi2EnterInitializationMode)) {
+        fprintf(stderr, "fmi2EnterInitializationModel: invalid state\n");
         return fmi2Error;
+    }
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2EnterInitializationMode")
 
     comp->state = modelInitializationMode;
@@ -837,8 +841,9 @@ fmi2Status fmi2CompletedIntegratorStep(fmi2Component c, fmi2Boolean noSetFMUStat
 /* Providing independent variables and re-initialization of caching */
 fmi2Status fmi2SetTime(fmi2Component c, fmi2Real time) {
     ModelInstance *comp = (ModelInstance *)c;
-    if (invalidState(comp, "fmi2SetTime", MASK_fmi2SetTime))
+    if (invalidState(comp, "fmi2SetTime", MASK_fmi2SetTime)) {
         return fmi2Error;
+    }
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetTime: time=%.16g", time)
     comp->time = time;
     return fmi2OK;

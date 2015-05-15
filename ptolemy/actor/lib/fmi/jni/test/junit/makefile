@@ -3,7 +3,7 @@
 #
 # @Authors: Christopher Brooks
 #
-# @Version: : mkpttest 72056 2015-04-21 14:33:21Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -37,7 +37,8 @@ ME =		ptolemy/actor/lib/fmi/jni/test/junit
 ROOT =		../../../../../../..
 
 # JUNIT_JAR is searched for by /home/cxh/ptII/configure and set in /home/cxh/ptII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)
+# JNA_JAR is set by $PTII/configure in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

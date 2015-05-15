@@ -274,6 +274,16 @@ static int error(const char* message) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
+/// Print error message
+///
+///\param message The error message.
+////////////////////////////////////////////////////////////////////////////////////
+static int errorWithStatus(const char* message, int status, char * fileName, int lineNumber) {
+    printf("%s (Status: %s), %s, line %d\n", message, fmiStatusToString(status), fileName, lineNumber);
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 /// Print FMU logging
 ///
 ///\param componentEnvironment The FMU component environment.
@@ -960,8 +970,9 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
                     fmuInstances[_c->index]->startTime,
                     fmiTrue, fmuInstances[_c->index]->stopTime);
         if (fmuInstances[_c->index]->fmiFlag > fmiWarning) {
-            return error(
-                    "could not initialize model; failed FMI setup experiment");
+            return errorWithStatus("Could not initialize model; failed FMI setup experiment.",
+                    fmuInstances[_c->index]->fmiFlag,
+                    __FILE__, __LINE__);
         }
         // increase the counter
         insNum++;
@@ -980,25 +991,32 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         // struct timespec start, end;
         // clock_gettime(CLOCK_MONOTONIC, &start);
         // set time
-        if (fmuInstances[idx]->prevTime != time) {
-            fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime(
-                    fmuInstances[idx]->c, time);
-            fmuInstances[idx]->prevTime = time;
-        }
+        /* if (fmuInstances[idx]->prevTime != time) { */
+        /*     fmuInstances[idx]->fmiFlag = fmuInstances[idx]->setTime( */
+        /*             fmuInstances[idx]->c, time); */
+        /*     if (fmuInstances[idx]->fmiFlag > fmiWarning) { */
+        /*         return errorWithStatus("Could not initialize model; failed to set the time.", */
+        /*                 fmuInstances[idx]->fmiFlag, */
+        /*                 __FILE__, __LINE__); */
+        /*     } */
+        /*     fmuInstances[idx]->prevTime = time; */
+        /* } */
 
         // initialize
         fmuInstances[idx]->fmiFlag = fmuInstances[idx]->enterInitialization(
                 fmuInstances[idx]->c);
         if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-            return error(
-                    "could not initialize model; failed FMI enter initialization mode");
+            return errorWithStatus("Could not initialize model; failed FMI enter initialization mode",
+                    fmuInstances[idx]->fmiFlag,
+                    __FILE__, __LINE__);
         }
 
         fmuInstances[idx]->fmiFlag = fmuInstances[idx]->exitInitialization(
                 fmuInstances[idx]->c);
         if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-            return error(
-                    "could not initialize model; failed FMI exit initialization mode");
+            return errorWithStatus("Could not initialize model; failed FMI exit initialization mode",
+                    fmuInstances[idx]->fmiFlag,
+                    __FILE__, __LINE__);
         }
         /*
           clock_gettime(CLOCK_MONOTONIC, &end);
@@ -1108,7 +1126,9 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
                 fmuInstances[idx]->prevTime = time;
             }
             if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-                return error("could not set time");
+                return errorWithStatus("While setting single outputs, could not set time.",
+                        fmuInstances[idx]->fmiFlag,
+                        __FILE__, __LINE__);
             }
 
             // set the inputs if any
@@ -1140,7 +1160,9 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
                 fmuInstances[idx]->prevTime = time;
             }
             if (fmuInstances[idx]->fmiFlag > fmiWarning) {
-                return error("could not set time");
+                return errorWithStatus("While setting single outputs, could not set time.",
+                        fmuInstances[idx]->fmiFlag,
+                        __FILE__, __LINE__);
             }
 
             // get the outputs if any
@@ -1178,8 +1200,11 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
         sumTimeComputeDerivatives=sumTimeComputeDerivatives + timeElapsed;
         */
 
-        if (fmuInstances[idx]->fmiFlag > fmiWarning)
-            return error("could not complete integrator step");
+        if (fmuInstances[idx]->fmiFlag > fmiWarning) {
+            return errorWithStatus("Could not complete integrator step.",
+                    fmuInstances[idx]->fmiFlag,
+                    __FILE__, __LINE__);
+        }
 
         if (fmuInstances[idx]->terminateSimulation) {
             wrapup(idx);
