@@ -127,12 +127,12 @@ test DocAttribute-4.1 {refreshParametersAndPorts} {
 test DocAttribute-4.2 {refreshParametersAndPorts with documentation} {
     # Uses 4.1 above
     set myParameter [java::cast \
-			 {ptolemy.data.expr.StringParameter} \
+			 {ptolemy.kernel.util.StringAttribute} \
 			 [$docAttribute4_1 getAttribute {myParameter1_4_1 (parameter)}]]
     $myParameter setExpression {docs for myParameter}
 
     set myPortParameter [java::cast \
-			     {ptolemy.data.expr.StringParameter} \
+			     {ptolemy.kernel.util.StringAttribute} \
 			     [$docAttribute4_1 getAttribute {myPortParameter1_4_1 (port-parameter)}]]
     $myPortParameter setExpression {docs for myPortParameter}
 
