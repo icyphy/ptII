@@ -198,13 +198,14 @@ public class Director extends FMIMACodeGeneratorAdapter {
 			for (TypedIOPort input : actor.inputPortList()) {
 				Node sink = port2Node.get(input);				
 				List<TypedIOPort> connected_ports = input.connectedPortList();
-				for (TypedIOPort output : connected_ports) {					
-					Node source = port2Node.get(output);					
-					graph.addEdge(source, sink);
+				for (TypedIOPort output : connected_ports) {
+					if (output.isOutput()) {
+						Node source = port2Node.get(output);					
+						graph.addEdge(source, sink);
+					}
 				}
 			}
 		}
-		
 		actors = ((CompositeActor) adapter.getComponent().getContainer())
 				.deepEntityList().iterator();
 		
