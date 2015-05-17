@@ -279,9 +279,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 							+ "];\n"
 							+ "connections["
 							+ connectionIndex
-							+ "].sourcePort = getValueReference(getScalarVariable(fmus["
-							+ fmuSourceName + "].modelDescription, "
-							+ sourceScalar.valueReference + "));\n"
+							+ "].sourcePort = " + sourceScalar.valueReference + ";\n"
 							+ "connections[" + connectionIndex
 							+ "].sourceType = " + sourceType + ";\n"
 							+ "connections[" + connectionIndex
@@ -289,9 +287,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
 					code.append("connections["
 							+ connectionIndex
-							+ "].sinkPort = getValueReference(getScalarVariable(fmus["
-							+ fmuSinkName + "].modelDescription, "
-							+ sinkScalar.valueReference + "));\n");
+							+ "].sinkPort = " + sinkScalar.valueReference + ";\n");
 
 					code.append("connections[" + connectionIndex
 							+ "].sinkType = " + sinkType + ";\n");
