@@ -837,24 +837,15 @@ public class JavaScript extends TypedAtomicActor {
         
         // Expose any ports that are not already exposed as JavaScript variables.
         for (TypedIOPort port : portList()) {
-            // Do not convert the scriptIn port to a JavaScript variable.
-            if (port == script.getPort()) {
+            // Do not convert the script or error ports to a JavaScript variable.
+            if (port == script.getPort() || port == error) {
                 continue;
             }
             // Do not expose ports that are already exposed.
             if (_proxies.get(port) != null) {
         	continue;
             }
-            if (!isValidIdentifier(port.getName())) {
-        	throw new IllegalActionException(this,
-        		"Port name is not a valid JavaScript identifier: "
-        		+ port.getName());
-            }
-            if (isJavaScriptKeyword(port.getName())) {
-        	throw new IllegalActionException(this,
-        		"Port name is a JavaScript keyword: "
-        		+ port.getName());
-            }
+            _checkValidity(port.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(port);
             _proxies.put(port, proxy);
             _proxiesByName.put(port.getName(), proxy);
@@ -877,16 +868,7 @@ public class JavaScript extends TypedAtomicActor {
             if (parameter instanceof PortParameter) {
                 continue;
             }
-            if (!isValidIdentifier(parameter.getName())) {
-        	throw new IllegalActionException(this,
-        		"Parameter name is not a valid JavaScript identifier: "
-        		+ parameter.getName());
-            }
-            if (isJavaScriptKeyword(parameter.getName())) {
-        	throw new IllegalActionException(this,
-        		"Parameter name is a JavaScript keyword: "
-        		+ parameter.getName());
-            }
+            _checkValidity(parameter.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
             _proxiesByName.put(parameter.getName(), proxy);
@@ -912,7 +894,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Create a new input port if it does not already exist.
      *  This port will have an undeclared type and no description.
      *  @param name The name of the port.
@@ -1280,6 +1262,26 @@ public class JavaScript extends TypedAtomicActor {
         SingletonParameter showName = new SingletonParameter(port, "_showName");
         showName.setExpression("true");
     }
+    
+    /** Check the validity of a name. This implementation throws an exception
+     *  if either the name is not a valid JavaScript identifier or it is a
+     *  JavaScript keyword.
+     *  @param name The name to check.
+     *  @throws IllegalActionException If the name is either not a valid
+     *   identifier or is a keyword.
+     */
+    protected void _checkValidity(String name) throws IllegalActionException {
+	if (!isValidIdentifier(name)) {
+	throw new IllegalActionException(this,
+		"Port name is not a valid JavaScript identifier: "
+		+ name);
+	}
+	if (isJavaScriptKeyword(name)) {
+	throw new IllegalActionException(this,
+		"Port name is a JavaScript keyword: "
+		+ name);
+	}
+    }
 
     /** Return null, because the default type constraints, where output
      *  types are greater than or equal to all input types, make no sense
@@ -1377,6 +1379,21 @@ public class JavaScript extends TypedAtomicActor {
             // Coverity Scan is happier if we check for null here.
             throw new IllegalActionException(this, "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Is Nashorn present in JDK 1.8 and later.");
         }
+        /* FIXME: The following should intercept errors, but if doesn't!
+         * Perhaps Thread.setUncaughtExceptionHandler()? How to get the thread?
+         * or Thread.setDefaultUncaughtExceptionHandler().
+         * This should be a top-level Ptolemy II thing...
+        ScriptContext context = _engine.getContext();
+        context.setErrorWriter(new StringWriter() {
+            @Override
+            public void close() throws IOException {
+        	super.close();
+        	// FIXME: Request a firing that can then throw an exception so
+        	// error port is handled correctly.
+        	MessageHandler.error(toString());
+            }
+        });
+        */
         try {
             if (_debugging) {
                 _debug("** Instantiated engine. Loading local and basic functions.");
@@ -1415,20 +1432,11 @@ public class JavaScript extends TypedAtomicActor {
         _proxies = new HashMap<NamedObj,PortOrParameterProxy>();
         _proxiesByName = new HashMap<String,PortOrParameterProxy>();
         for (TypedIOPort port : portList()) {
-            // Do not convert the scriptIn port to a JavaScript variable.
-            if (port == script.getPort()) {
+            // Do not convert the script or error ports to a JavaScript variable.
+            if (port == script.getPort() || port == error) {
                 continue;
             }
-            if (!isValidIdentifier(port.getName())) {
-        	throw new IllegalActionException(this,
-        		"Port name is not a valid JavaScript identifier: "
-        		+ port.getName());
-            }
-            if (isJavaScriptKeyword(port.getName())) {
-        	throw new IllegalActionException(this,
-        		"Port name is a JavaScript keyword: "
-        		+ port.getName());
-            }
+            _checkValidity(port.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(port);
             _proxies.put(port, proxy);
             _proxiesByName.put(port.getName(), proxy);
@@ -1448,16 +1456,12 @@ public class JavaScript extends TypedAtomicActor {
             if (_proxies.get(parameter) != null) {
         	continue;
             }
-            if (!isValidIdentifier(parameter.getName())) {
-        	throw new IllegalActionException(this,
-        		"Parameter name is not a valid JavaScript identifier: "
-        		+ parameter.getName());
+            // Do not create a proxy for a PortParameter. There is already
+            // a proxy for the port.
+            if (parameter instanceof PortParameter) {
+                continue;
             }
-            if (isJavaScriptKeyword(parameter.getName())) {
-        	throw new IllegalActionException(this,
-        		"Parameter name is a JavaScript keyword: "
-        		+ parameter.getName());
-            }
+            _checkValidity(parameter.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
             _proxiesByName.put(parameter.getName(), proxy);
