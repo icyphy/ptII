@@ -95,8 +95,8 @@ import ptolemy.kernel.util.StringAttribute;
  * it will be output if toString() is called, along with the status. The resulting String will be comma delimited, with the format Status,Data.
  * <p>
  *@author Phillip Azar
- *@version 
- *@since
+ *@version $Id$
+ *@since Ptolemy II 11.0
  *@Pt.ProposedRating
  *@Pt.AcceptedRating 
  *
