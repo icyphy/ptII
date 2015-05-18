@@ -11,5 +11,13 @@ ant clean
 
 VERSION=`egrep ^PTVERSION $PTII/makefile | awk '{print $NF}'`.`date +%Y%M%d`
 
-curl --form project=Ptolemy\ II --form token=Z11RGxhJDN81JVxPjgszbw --form email=cxh@eecs.berkeley.edu  --form file=@reports/myproject.tgz --form version=$VERSION --form description=nightly http://scan5.coverity.com/cgi-bin/upload.py
 
+# Old:
+#curl --form project=Ptolemy\ II --form token=Z11RGxhJDN81JVxPjgszbw --form email=cxh@eecs.berkeley.edu  --form file=@reports/myproject.tgz --form version=$VERSION --form description=nightly http://scan5.coverity.com/cgi-bin/upload.py
+
+curl --form token=Z11RGxhJDN81JVxPjgszbw \
+  --form email=cxh@eecs.berkeley.edu \
+  --form file=@reports/myproject.tgz \
+  --form version="$VERSION" \
+  --form description="nightly" \
+  https://scan.coverity.com/builds?project=Ptolemy+II
