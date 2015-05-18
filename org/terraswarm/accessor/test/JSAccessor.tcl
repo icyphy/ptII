@@ -72,10 +72,10 @@ test JSAccessor-1.1 {Test out importing of accessors} {
 } {{<entity name="Accessor" class="org.terraswarm.accessor.JSAccessor">
     <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get(stringInput);&#10;	  send(stringValue, stringOutput);&#10;	  var numericValue = get(numericInput);&#10;	  send(numericValue, numericOutput);&#10;	  stringValue = get(stringInputWithoutValue);&#10;	  send(stringValue, stringOutputWithoutValue);&#10;	  send(stringValue == null, inputIsAbsent);&#10;	}&#10;	// &#10;  ">
     </property>
-    <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
+    <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
     </property>
     <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>

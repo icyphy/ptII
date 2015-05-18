@@ -227,7 +227,20 @@ public class JSAccessor extends JavaScript {
         	    ioException.initCause(throwable);
         	    throw ioException;
         	}
-                return contents.toString();
+
+                // Wrap in a group element that will rename the instance if there is a
+                // naming conflict.
+                StringBuffer moml = new StringBuffer("<group name=\"auto\">\n");
+                // Wrap the transformed MoML in <entity></entity>
+                // First get the file name only.
+                String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
+                String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+                String instanceNameRoot = StringUtilities.sanitizeName(fileNameWithoutExtension);
+                moml.append("<entity name=\""  + instanceNameRoot
+                        + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
+                        + contents.toString()
+                        + "</entity></group>");
+                return moml.toString();
             } else {
         	throw new IllegalActionException("Unrecognized file extension: " + extension);
             }
