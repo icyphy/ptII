@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  send('Server received a message: ' + data, output);&#10;}&#10;&#10;function onListening() {&#10;  send('Server started listening...', output);&#10;  send(true, started);&#10;}&#10;// React to a connection established.&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', output);&#10;  ws.on('message', onMessage);&#10;}&#10;// The web socket server, once created.&#10;var server = null;&#10;// Start an HTTP server and begin listening for connection requests.&#10;// If there already is a server, do nothing.&#10;exports.initialize = function() {&#10;  if (server == null) {&#10;    server = new WebSocket.Server({port:8082});&#10;    server.on('listening', onListening);&#10;    server.on('connection', onConnection);&#10;    server.startServer();&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var readCnt = 0;&#10;&#10;function onMessage(data, flags) {&#10;  if (flags.binary) {&#10;    data = WebSocket.binToStr(data);&#10;  }&#10;  send('Server received a message: ' + data, output);&#10;}&#10;&#10;function onListening() {&#10;  send('Server started listening...', output);&#10;  send(true, 'started');&#10;}&#10;// React to a connection established.&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', output);&#10;  ws.on('message', onMessage);&#10;}&#10;// The web socket server, once created.&#10;var server = null;&#10;// Start an HTTP server and begin listening for connection requests.&#10;// If there already is a server, do nothing.&#10;exports.initialize = function() {&#10;  if (server == null) {&#10;    server = new WebSocket.Server({port:8082});&#10;    server.on('listening', onListening);&#10;    server.on('connection', onConnection);&#10;    server.startServer();&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -79,7 +79,7 @@
         </property>
     </entity>
     <entity name="WSClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var opened = false;&#10;&#10;function onOpen() {&#10;  opened = true;&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;exports.initialize = function() {&#10;  if (ws == null) {&#10;   ws = new WebSocket.Socket('ws://localhost:8082');&#10;   ws.on('open', onOpen);&#10;  }&#10;}&#10;exports.fire = function() {&#10;  if (opened) {&#10;    count ++;&#10;    ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;function onOpen() {&#10;  console.log('Connection to socket is open.');&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;  if (ws == null) {&#10;   ws = new WebSocket.Client('localhost', 8082);&#10;   ws.on('open', onOpen);&#10;  }&#10;}&#10;&#10;exports.fire = function() {&#10;  count ++;&#10;  ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  ws.close();&#10;  ws = null;&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -105,7 +105,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={418, 460, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={202, 143, 499, 208}, maximized=true}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
