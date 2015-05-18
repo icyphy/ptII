@@ -210,7 +210,7 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args)
             throws Exception {
-        this(basePath, args, new /*Graphical*/MessageHandler(),
+        this(basePath, args, MessageHandler.getMessageHandler(),
                 new SimpleErrorHandler());
     }
 

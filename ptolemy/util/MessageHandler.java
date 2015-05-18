@@ -56,7 +56,8 @@ import java.util.Locale;
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */
-public class MessageHandler {
+public class MessageHandler implements Thread.UncaughtExceptionHandler {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -184,6 +185,15 @@ public class MessageHandler {
         }
 
         return throwableType;
+    }
+
+    /** Handle uncaught exceptions in a standard way.
+     *  @param thread The thread throwing the exception.
+     *  @param exception The exception.
+     */
+    @Override
+    public void uncaughtException(Thread thread, Throwable exception) {
+	_error("UNCAUGHT EXCEPTION: " + exception.getMessage(), exception);
     }
 
     /** Defer to the set message handler to
@@ -418,6 +428,15 @@ public class MessageHandler {
         return false;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         Protected Constructor             ////
+
+    /** Protected constructor. We want only one of these.
+     */
+    protected MessageHandler() {
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The message handler.
