@@ -256,6 +256,9 @@ public class JSAccessor extends JavaScript {
 	    // an Update NOT updating the script ever, which is definitely not what
 	    // we want.
 	    attribute.setDerivedLevel(Integer.MAX_VALUE);
+	    // The above will have the side effect that a script will not be saved
+	    // when you save the model. Force it to be saved.
+	    attribute.setPersistent(true);
 	}
     }
 
