@@ -38,6 +38,11 @@ function addInputHandler(func, port) {
     if (typeof port === 'string') {
         proxy = actor.getPortOrParameterProxy(port);
     }
+    if (!func) {
+        func = nullHandlerFunction;
+    } else if (typeof func !== 'function') {
+        throw('First argument of addInputHandler is required to be a function. Provided: ' + func);
+    }
     if (!proxy) {
         throw('No such input: ' + port);
     }
@@ -53,6 +58,11 @@ function addInputHandler(func, port) {
     var id = proxy.addInputHandler(callback);
     return id;
 }
+
+/** Default empty function to use if the function argument to
+ *  addInputHandler is null.
+ */
+function nullHandlerFunction() {}
 
 ////////////////////
 // Default fire function, which invokes exports.fire().
