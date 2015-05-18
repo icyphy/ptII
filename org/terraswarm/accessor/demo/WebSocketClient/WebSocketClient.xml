@@ -13,7 +13,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for WebSocketClient accesor. The WebSocketClient can be imported from &#10;http://www.terraswarm.org/accessors/.&#10;&#10;NOTE: The server should be running separately for this demo. You can run the server by,&#10;prompt &gt; node NodeServer.js&#10;before running this demo and NodeServer.js exists in the same demo directory.&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for WebSocketClient accesor. The WebSocketClient can be imported from &#10;http://www.terraswarm.org/accessors/.&#10;&#10;NOTE: The server should be running separately for this demo. You can run the server with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 250.0]">
         </property>
@@ -26,13 +26,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 425.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1323, 254, 1220, 852}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 955, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 742]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.0, 361.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
@@ -40,123 +40,101 @@
         </property>
     </entity>
     <entity name="MessageFromServer" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 620, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={804, 525, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 145.0]">
         </property>
     </entity>
-    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="Message ID: ">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 130.0]">
-        </property>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
         </property>
     </entity>
-    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 145.0]">
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 120.0]">
         </property>
+        <port name="messageID" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
-    <entity name="WebSocketClient" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var opened = false;&#10;  var dataQueue = [];&#10;  var dataQueueIsLocked = false;&#10;  function sendDataInQueue() {&#10;    while (dataQueueIsLocked);&#10;    dataQueueIsLocked = true;&#10;    if (opened) {&#10;      var queueLength = dataQueue.length;&#10;      for (var i = 0; i &lt; queueLength; i++) {&#10;        ws.send(dataQueue[i]);&#10;      }&#10;      dataQueue = [];&#10;    }&#10;    dataQueueIsLocked = false;&#10;  }&#10;  function onOpen() {&#10;    console.log('Status: Connection established');&#10;    opened = true;&#10;    sendDataInQueue();&#10;  }&#10;  function onClose(message) {&#10;    if (!message) {&#10;      message = '';&#10;    }&#10;    console.log('Status: Connection closed. ' + message);&#10;    opened = false;&#10;  }&#10;  function onError() {&#10;    console.log('Status: Connection error occurred.');&#10;    opened = false;&#10;  }&#10;  function onMessage(received, flags) {&#10;    if (flags.binary) {&#10;      received = WebSocket.binToStr(received);&#10;    }&#10;    send(received, message);&#10;  }&#10;  var ws = null;&#10;  var inputQueue = [];&#10;  function inputHandler() {&#10;    inputQueue.push(get(data));&#10;  }&#10;  function initialize() {&#10;    inputQueue = [];&#10;    addInputHandler(inputHandler, data);&#10;    if (ws == null) {&#10;      ws = new WebSocket.Socket(get(url));&#10;      ws.on('open', onOpen);&#10;      ws.on('message', onMessage);&#10;      ws.on('close', onClose);&#10;      ws.on('error', onError);&#10;    }&#10;  }&#10;  function wrapup() {&#10;    if (ws != null) {&#10;      ws.close();&#10;    }&#10;    opened = false;&#10;  }&#10;  function fire() {&#10;    if (get(enable)) {&#10;      var queueLength = inputQueue.length;&#10;      for (var i = 0; i &lt; queueLength; i++) {&#10;        dataQueue.push(inputQueue[i]);&#10;      }&#10;      inputQueue = [];&#10;    }&#10;    sendDataInQueue();&#10;  }&#10;  // &#10;  ">
+    <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var client = null;&#10;&#10;  exports.initialize = function() {&#10;    client = new WebSocket.Client(get('server'), get('port'));&#10;    client.on('open', onOpen);&#10;    client.on('message', onMessage);&#10;    client.on('close', onClose);&#10;    client.on('error', onError);&#10;  }&#10;&#10;  function onOpen() {&#10;    console.log('Status: Connection established');&#10;  }&#10;  &#10;  function onClose(message) {&#10;    console.log('Status: Connection closed: ' + message);&#10;  }&#10;  &#10;  function onError(message) {&#10;    console.error(message);&#10;    throw(message);&#10;  }&#10;  &#10;  function onMessage(message) {&#10;    console.log('Received from web socket: ' + message);&#10;    send(message, 'received');&#10;  }&#10;  &#10;  function inputHandler() {&#10;    var data = get('toSend');&#10;    if (data) {&#10;      console.log(&quot;Sending to socket: &quot; + data);&#10;      client.send(data);&#10;    }&#10;  }&#10;  addInputHandler(inputHandler, 'toSend');&#10;&#10;  function wrapup() {&#10;    if (client != null) {&#10;      client.close();&#10;    }&#10;  }&#10;    // &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/WebSocketClient.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/WebSocketClient.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor, when initialized, connects to the web socket server,&#10;when fired, sends the data on the data port,&#10;and when wrapped up, closes the connection.&#10;This accessor generates output on the message port when a message is received from the server.&#10;  &#10;  ">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor sends and/or receives messages from a web socket&#10;at the specified URL. In initialize(), it connects to the web socket server.&#10;Whenever an input is received on the 'toSend' input, the message is sent to&#10;the socket.&#10;Whenever a message is received from the socket, that message is&#10;produced on the 'received' output.&#10;When wrapup() is invoked, this accessor closes the connection.&#10;The data can be any type that has a JSON representation.&#10;For incomming messages, this accessor assumes that the message is&#10;a string in UTF-8 that encodes a JSON object.&#10;  &#10;  ">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
             </property>
             <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
-            <property name="url (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The url of the web socket server.">
+            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
             </property>
-            <property name="data (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The data to be sent to the web socket server during the next firing.">
+            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
             </property>
-            <property name="enable (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="When this is set true, this accessor sends the data on firing.">
+            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The data to be sent to the web socket server.">
             </property>
-            <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The message received from the web socket server">
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The message received from the web socket server.">
             </property>
         </property>
-        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="&quot;ws://localhost:8080&quot;">
+        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
         </property>
-        <property name="data" class="ptolemy.actor.parameters.PortParameter" value="&quot;Message ID: 4&quot;">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8080">
         </property>
-        <property name="enable" class="ptolemy.actor.parameters.PortParameter" value="true">
+        <property name="toSend" class="ptolemy.actor.parameters.PortParameter" value="{messageID = 4}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 130.0]">
         </property>
-        <port name="error" class="ptolemy.actor.TypedIOPort">
+        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-        <port name="url" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="data" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="enable" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="message" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[160.0, 130.0]">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DiscreteClock.output" relation="relation6"/>
-    <link port="MessageFromServer.input" relation="relation2"/>
-    <link port="StringConst.output" relation="relation4"/>
-    <link port="StringConst.trigger" relation="relation6"/>
-    <link port="Ramp.output" relation="relation5"/>
-    <link port="Ramp.trigger" relation="relation6"/>
-    <link port="AddSubtract.plus" relation="relation4"/>
-    <link port="AddSubtract.plus" relation="relation5"/>
-    <link port="AddSubtract.output" relation="relation"/>
-    <link port="WebSocketClient.data" relation="relation"/>
-    <link port="WebSocketClient.message" relation="relation2"/>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="MessageFromServer.input" relation="relation4"/>
+    <link port="Ramp.output" relation="relation3"/>
+    <link port="Ramp.trigger" relation="relation2"/>
+    <link port="RecordAssembler.output" relation="relation5"/>
+    <link port="RecordAssembler.messageID" relation="relation3"/>
+    <link port="WebSocketClient.toSend" relation="relation5"/>
+    <link port="WebSocketClient.received" relation="relation4"/>
 </entity>
