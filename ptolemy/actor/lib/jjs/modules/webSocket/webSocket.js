@@ -1,10 +1,74 @@
 // Module supporting web sockets.
 // Authors: Hokeun Kim and Edward A. Lee
 // Copyright: http://terraswarm.org/accessors/copyright.txt
-//
 
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
+var EventEmitter = require('events').EventEmitter;
+
+/** Construct an instance of a socket client that can send or receive messages
+ *  to a server at the specified host and port.
+ *  The returned object subclasses EventEmitter.
+ *  You can register handlers for events 'open', 'message', 'close', or 'error'.
+ *  For example,
+ *  <pre>
+ *    var WebSocket = require('webSocket');
+ *    var client = new WebSocket.Client('localhost', 8080);
+ *    client.on('message', onMessage);
+ *    function onMessage(message) {
+ *      print('Received from web socket: ' + message);
+ *    }
+ *  </pre>
+ *  @param host The IP address or host name for the host.
+ *  @param port The port on which the host is listening.
+ */
+exports.Client = function(host, port) {
+    this.helper = WebSocketHelper.createClientSocket(this, host, port);
+}
+util.inherits(exports.Client, EventEmitter);
+
+/** Send data over the web socket.
+ *  The data can be anything that has a JSON representation.
+ *  If the socket has not yet been successfully opened, then queue
+ *  data to be sent later, when the socket is opened.
+ *  @param data The data to send.
+ */
+exports.Client.prototype.send = function(data) {
+    if (typeof data != 'string') {
+        data = JSON.stringify(data);
+    }
+    this.helper.sendText(data);
+}
+
+/** Close the current connection with the server.
+ *  If there is data that was passed to send() but has not yet
+ *  been successfully sent (because the socket was not open),
+ *  then throw an exception.
+ */
+exports.Client.prototype.close = function() {
+    this.helper.close();
+}
+
+/** Notify this object of a received message from the socket.
+ *  This function attempts to parse the message as JSON and then
+ *  emits a "message" event with the message as an argument.
+ *  This function is called by the Java helper used by this particular
+ *  implementation and should not be normally called by the user.
+ *  FIXME: Any way to hide it?
+ *  @param message The incoming message.
+ */
+exports.Client.prototype.notifyIncoming = function(message) {
+    try {
+        message = JSON.parse(message);
+    } catch (exception) {
+        // Assume that the message is a string.
+        // We can ignore the exception, because the message
+        // will be passed as a string.
+    }
+    this.emit("message", message);
+};
+
+// FIXME: Code below needs help.
 
 ////////////////////
 // Construct an instance of WebSocket Server.
@@ -33,7 +97,6 @@ exports.Server = function(options) {
     this.port = options['port'] || 80;
     this.helper = WebSocketServerHelper.createServer(this, this.port);
 }
-var EventEmitter = require('events').EventEmitter;
 util.inherits(exports.Server, EventEmitter);
 
 // Method to start the server. 
@@ -50,10 +113,9 @@ exports.Server.prototype.close = function() {
     this.helper.closeServer();
 }
 
-// FIXME: Should create one base class, Socket, and two derived classes,
-// ClientSocket and ServerSocket. The constructor arguments are different.
 
-////////////////////
+// FIXME: Below is probably obsolete
+
 // Construct an instance of a socket with the specified URL.
 // If the second argument is non-null, then create a socket on the server
 // and ignore the url argument.
@@ -71,37 +133,35 @@ exports.Socket = function(url, serverWebSocket) {
 }
 util.inherits(exports.Socket, EventEmitter);
 
-////////////////////
-// Send text or binary data to the server. 
+/** Notify this object of a received message from the socket.
+ *  This function attempts to parse the message as JSON and then
+ *  emits a "message" event with the message as an argument.
+ *  @param message The incoming message.
+ */
+exports.Socket.prototype.notifyIncoming = function(message) {
+    try {
+        message = JSON.parse(message);
+    } catch (exception) {
+        // Assume that the message is a string.
+        // We can ignore the exception, because the message
+        // will be passed as a string.
+    }
+    this.emit("message", message);
+};
+
+/** Send data over the web socket.
+ *  The data can be anything that has a JSON representation.
+ *  @param data The data to send.
+ */
 exports.Socket.prototype.send = function(data) {
-    if (!this.helper.isOpen()) {
-        throw new Error('cannot send, because the socket is not opened');
+    if (typeof data != 'string') {
+        data = JSON.stringify(data);
     }
-    if (typeof data == 'string') {
-        this.helper.sendText(data);
-    }
-    else {
-        var JavaByteArray = Java.type("byte[]");
-        javaData = new JavaByteArray(data.length);
-        for (var i = 0; i < data.length; i++) {
-            javaData[i] = data[i];
-        }
-        this.helper.sendBinary(javaData);
-    }
+    this.helper.sendText(data);
 }
 
 ////////////////////
 // Close the current connection with the server.
 exports.Socket.prototype.close = function() {
     this.helper.close();
-}
-
-////////////////////
-// Convert data fromat from binary array to string.
-exports.binToStr = function(data) {
-   var result = "";
-  for (var i = 0; i < data.length; i++) {
-    result += String.fromCharCode(data[i]);
-  }
-  return result;
 }

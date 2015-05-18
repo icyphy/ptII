@@ -27,6 +27,9 @@
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.Handler;
@@ -57,25 +60,28 @@ public class WebSocketHelper extends WebSocketHelperBase {
     
     /** Close the web socket.
      */
-    public void close() {
+    public synchronized void close() {
         if (_webSocket != null) {
             if (_wsIsOpen) {
                 _webSocket.close();
             }
             _webSocket = null;
         }
+        if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+	    _currentObj.callMember("emit", "error", "Unsent messages remain that were queued before the socket opened.");
+        }
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
      *  Socket instance for the client side of the socket.
      *  @param currentObj The JavaScript instance of the Socket.
-     *  @param address address The URL of the WebSocket host and the port number. 
-     *   (e.g. 'ws://localhost:8000'). If no port number is given, then 80 is used.
+     *  @param host IP address or host name of the host.
+     *  @param port The port number that the host listens on.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(
-	    ScriptObjectMirror currentObj, String address) {
-	return new WebSocketHelper(currentObj, address);
+	    ScriptObjectMirror currentObj, String host, int port) {
+	return new WebSocketHelper(currentObj, host, port);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -94,24 +100,36 @@ public class WebSocketHelper extends WebSocketHelperBase {
      * 
      * @param msg A binary message to be sent.
      */
-    public void sendBinary(byte[] msg) {
+    public synchronized void sendBinary(byte[] msg) {
         Buffer buffer = new Buffer(msg);
-        _webSocket.writeBinaryFrame(buffer);
+        if (isOpen()) {
+            _webSocket.writeBinaryFrame(buffer);
+        } else {
+            if (_pendingOutputs == null) {
+        	_pendingOutputs = new LinkedList();
+            }
+            _pendingOutputs.add(buffer);
+        }
     }
     
-    /**
-     * Send text data through the internal web socket.
-     * 
-     * @param msg A text message to be sent.
+    /** Send text data through the web socket.
+     *  @param msg A text message to be sent.
      */
-    public void sendText(String msg) {
-        _webSocket.writeTextFrame(msg);
+    public synchronized void sendText(String msg) {
+        if (isOpen()) {
+            _webSocket.writeTextFrame(msg);
+        } else {
+            if (_pendingOutputs == null) {
+        	_pendingOutputs = new LinkedList();
+            }
+            _pendingOutputs.add(msg);
+        }
     }
 
     /** Return whether the web socket is opened successfully.
      *  @return True if the socket is open.
      */
-    public boolean isOpen() {
+    public synchronized boolean isOpen() {
 	if (_webSocket == null) {
 	    return false;
 	}
@@ -124,55 +142,48 @@ public class WebSocketHelper extends WebSocketHelperBase {
     /** Private constructor for WebSocketHelper to open a client-side web socket.
      *  Open an internal web socket using Vert.x.
      *  @param currentObj The JavaScript instance of Socket that this helps.
-     *  @param address The URL of the WebSocket host with an optional port number
-     *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
+     *  @param host The IP address or host name of the host.
+     *  @param port The port number of the host.
      */
     private WebSocketHelper(
-	    ScriptObjectMirror currentObj, String address) {
+	    ScriptObjectMirror currentObj, String host, int port) {
         _currentObj = currentObj;
 
         HttpClient client = _vertx.createHttpClient();
-        // Parse the address.
-        // FIXME: Use utilities for this. Perhaps on the JavaScript side?
-        // So far, Java.net.URL raises an exception when protocol name is ws such as ws://localhost:8000.
-        // io.netty doesn't work either.
-        // Couldn't find a JavaScript side library for parsing URL, 
-        // except for using the document object which is not available in node.js.
-        if (address.length() > 0 && address.charAt(address.length() - 1) == '/') {
-            address = address.substring(0, address.length() - 1);
-        }
-        int begin = address.indexOf("://");
-        if (begin < 0) {
-            throw new RuntimeException("Invalid host name in URI: " + address);
-        }
-        int sep = address.lastIndexOf(':');
-        String host = address.substring(begin + 3, sep);
         client.setHost(host);
-        
-        if (sep > 0) {
-            try {
-        	client.setPort(Integer.parseInt(address.substring(sep + 1)));
-            } catch (NumberFormatException e) {
-        	throw new RuntimeException("Invalid port in URI: " + address);
-            }
-        } else {
-            client.setPort(80);
-        }
+        client.setPort(port);
         client.exceptionHandler(new HttpClientExceptionHandler());
+        // FIXME: Provide a timeout. Use setTimeout() of the client.
+        // FIXME: Why does Vertx require the URI here in addition to setHost() and setPort() above? Seems lame.
+        String address = "ws://" + host + ":" + port;
         client.connectWebsocket(address, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
-                _wsIsOpen = true;
-                _webSocket = websocket;
-                
-                _webSocket.dataHandler(new DataHandler());
-                _webSocket.endHandler(new EndHandler());
-                _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-                
-                // Socket.io uses the name "connect" for this event, but WS uses "open",
-                // so we just emit both events.
-                _currentObj.callMember("emit", "connect");
-                _currentObj.callMember("emit", "open");
+        	synchronized(WebSocketHelper.this) {
+        	    _wsIsOpen = true;
+        	    _webSocket = websocket;
+
+        	    _webSocket.dataHandler(new DataHandler());
+        	    _webSocket.endHandler(new EndHandler());
+        	    _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+
+        	    // Socket.io uses the name "connect" for this event, but WS uses "open",
+        	    // so we just emit both events.
+        	    _currentObj.callMember("emit", "connect");
+        	    _currentObj.callMember("emit", "open");
+        	    
+        	    // Send any pending messages.
+        	    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+        		for (Object message : _pendingOutputs) {
+        		    if (message instanceof String) {
+        			_webSocket.writeTextFrame((String)message);
+        		    } else {
+        			_webSocket.writeBinaryFrame((Buffer)message);
+        		    }
+        		}
+        		_pendingOutputs.clear();
+        	    }
+        	}
             }
         });
     }
@@ -197,6 +208,9 @@ public class WebSocketHelper extends WebSocketHelperBase {
         
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
+    
+    /** Pending outputs received before the socket is opened. */
+    private List _pendingOutputs;
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
@@ -211,17 +225,11 @@ public class WebSocketHelper extends WebSocketHelperBase {
      */
     private class DataHandler implements Handler<Buffer> {
         @Override
-        public void handle(Buffer buff) {
-            byte[] bytes = buff.getBytes();
-            Integer[] objBytes = new Integer[bytes.length];
-            for (int i = 0; i < bytes.length; i++) {
-                objBytes[i] = (int)bytes[i];
+        public void handle(Buffer buffer) {
+            synchronized(WebSocketHelper.this) {
+        	// This assumes the input is a string encoded in UTF-8.
+        	_currentObj.callMember("notifyIncoming", buffer.toString());
             }
-            
-            // Properties of the data.
-            // FIXME: What are these properties? Pass string directly?
-            Object jsArgs = _currentObj.eval(" var properties = {binary: true}; properties");
-            _currentObj.callMember("emit", "message", objBytes, jsArgs);
         }
     }
 
@@ -230,8 +238,13 @@ public class WebSocketHelper extends WebSocketHelperBase {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-            _currentObj.callMember("emit", "close");
-            _wsIsOpen = false;
+            synchronized(WebSocketHelper.this) {
+        	_currentObj.callMember("emit", "close");
+                _wsIsOpen = false;
+                if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+                    _currentObj.callMember("emit", "error", "Unsent data remains in the queue.");
+                }
+            }
         }
     }
 
@@ -239,9 +252,11 @@ public class WebSocketHelper extends WebSocketHelperBase {
      */
     private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
-        public void handle(Throwable arg0) {
-            _currentObj.callMember("emit", "error");
-            _wsIsOpen = false;
+        public void handle(Throwable throwable) {
+            synchronized(WebSocketHelper.this) {
+        	_currentObj.callMember("emit", "error", throwable.getMessage());
+        	_wsIsOpen = false;
+            }
         }
     }
 
@@ -250,9 +265,10 @@ public class WebSocketHelper extends WebSocketHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-            Object jsArgs = _currentObj.eval("\'" + arg0.getMessage() + "\'");
-            _currentObj.callMember("emit", "close", jsArgs);
-            _wsIsOpen = false;
+            synchronized(WebSocketHelper.this) {
+        	_currentObj.callMember("emit", "close", arg0.getMessage());
+        	_wsIsOpen = false;
+            }
         }
     }
 }
