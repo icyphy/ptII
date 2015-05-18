@@ -150,28 +150,21 @@ public class ImportAccessorAction extends AbstractAction {
             final double y = bounds.getHeight() / 2.0;
 
             final String urlSpec = _lastLocation + query.getStringValue("accessor");
-            // Wrap in a group element that will rename the instance if there is a
-            // naming conflict.
-            StringBuffer moml = new StringBuffer("<group name=\"auto\">\n");
-            // Wrap the transformed MoML in <entity></entity>
-            // First get the file name only.
-            String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
-            String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-            String instanceNameRoot = StringUtilities.sanitizeName(fileNameWithoutExtension);
-            moml.append("<entity name=\"");
-            moml.append(instanceNameRoot);
-            moml.append("\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">");
+
+            // Do not add any code that modifies the MoML here,
+            // instead edit org/terraswarm/accessor/JSAccessor.java so
+            // that we can properly test the code.
+            String moml = "";
             try {
-                moml.append(JSAccessor.accessorToMoML(urlSpec));
+               moml = JSAccessor.accessorToMoML(urlSpec);
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to import accessor \""
                         + urlSpec + "\".", throwable);
                 return;
             }
-            moml.append("</entity></group>");
             
             JSAccessor.handleAccessorMoMLChangeRequest(this,
-                    urlSpec, context, moml.toString(), x, y);
+                    urlSpec, context, moml, x, y);
         }
     }
 
