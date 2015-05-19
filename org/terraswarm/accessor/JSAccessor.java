@@ -288,6 +288,44 @@ public class JSAccessor extends JavaScript {
         context.requestChange(request);
     }
 
+    /** Reload an accessor.
+     *  @exception IllegalActionException If no source file is specified.
+     *  @exception IOException If the urlSpec cannot be converted, opened
+     *  read, parsed or closed.
+     *  @exception TransformerConfigurationException If a factory cannot
+     *  be created from the xslt file.
+     */
+    public void reload() throws IllegalActionException, IOException, TransformerConfigurationException {
+        // This method is a separate method so that we can test it.
+        
+        /* No longer need the following, since we don't overwrite overrides.
+           try {
+           MessageHandler.warning("Warning: Overridden parameter values will be lost. Proceed?");
+           } catch (CancelException e) {
+           return;
+           }
+        */
+        String moml = "<group name=\"doNotOverwriteOverrides\">"
+            + JSAccessor._accessorToMoML(accessorSource.getExpression())
+            + "</group>";
+        final NamedObj context = this;
+        MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
+		// Wrap this to give a more useful error message.
+		protected void _execute() throws Exception {
+		    try {
+			super._execute();
+		    } catch (Exception e) {
+			// FIXME: Can we undo?
+			throw new IllegalActionException(context, e,
+				"Failed to reload accessor. Perhaps changes are too extensive."
+				+ " Try re-importing the accessor.");
+		    }
+		}
+	    };
+        request.setUndoable(true);
+        requestChange(request);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -317,7 +355,7 @@ public class JSAccessor extends JavaScript {
      *  read, parsed or closed.
      *  @exception TransformerConfigurationException If a factory cannot
      *  be created from the xslt file.
-     *  @throws IllegalActionException If no source file is specified.
+     *  @exception IllegalActionException If no source file is specified.
      */
     private static String _accessorToMoML(final String urlSpec)
             throws IOException, TransformerConfigurationException, IllegalActionException {
@@ -422,32 +460,7 @@ public class JSAccessor extends JavaScript {
 	/** Reload the accessor. */
 	@Override
 	public void performAction() throws Exception {
-	    /* No longer need the following, since we don't overwrite overrides.
-	    try {
-		MessageHandler.warning("Warning: Overridden parameter values will be lost. Proceed?");
-	    } catch (CancelException e) {
-		return;
-	    }
-	    */
-	    StringBuffer moml = new StringBuffer("<group name=\"doNotOverwriteOverrides\">");
-	    moml.append(JSAccessor._accessorToMoML(accessorSource.getExpression()));
-	    moml.append("</group>");
-	    final NamedObj container = getContainer();
-	    MoMLChangeRequest request = new MoMLChangeRequest(container, container, moml.toString()) {
-		// Wrap this to give a more useful error message.
-		protected void _execute() throws Exception {
-		    try {
-			super._execute();
-		    } catch (Exception e) {
-			// FIXME: Can we undo?
-			throw new IllegalActionException(container, e,
-				"Failed to reload accessor. Perhaps changes are two extensive."
-				+ " Try re-importing the accessor.");
-		    }
-		}
-	    };
-	    request.setUndoable(true);
-	    container.requestChange(request);
+            reload();
 	}
     }
 }

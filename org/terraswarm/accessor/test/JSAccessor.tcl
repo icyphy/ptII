@@ -75,7 +75,7 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
     </property>
     <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-        <property name="description" class="ptolemy.kernel.util.StringAttribute">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
@@ -162,6 +162,8 @@ proc importAccessor {accessorFileName} {
     #puts "accessorActorName: $accessorActorName"
     set entityList [$e1 entityList [java::call Class forName org.terraswarm.accessor.JSAccessor]]
     set accessorActor [java::cast org.terraswarm.accessor.JSAccessor [$entityList get 0]]
+    $accessorActor reload
+    $accessorActor reload
     #puts [$accessorActor getFullName]
     #puts [$e1 exportMoML]
     #set moml [$accessorActor exportMoML]
