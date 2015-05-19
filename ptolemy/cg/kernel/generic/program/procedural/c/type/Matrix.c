@@ -432,3 +432,20 @@ Token* matrixToArray(Token* thisToken) {
 }
 /**/
 
+/*** Matrix_zero() ***/
+// Matrix_zero: Return a matrix like the specified
+// but with zeros of the same type.
+Token* Matrix_zero(Token* token, ...) {
+        Token *result;
+        Token *element;
+        int i;
+
+        result = $new(Matrix(thisToken->payload.Matrix->row, thisToken->payload.Matrix->column, 0));
+        for (i = 0; i < token->payload.Matrix->column; i++) {
+            for (j = 0; j < token->payload.Matrix->row; j++) {
+                element = Matrix_get(token, i, j);
+                Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j)->type][FUNC_zero](element));
+        }
+        return result;
+}
+/**/

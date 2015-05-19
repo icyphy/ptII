@@ -1061,7 +1061,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
-                    System.out.println("Warning, failed to find "
+                    System.out.println("Warning, failed to find java "
                             + typesArray[i] + "_" + element);
                     //                     typeStreams[i].append("#define " + typesArray[i] + "_"
                     //                             + functionsArray[j] + " MISSING " + _eol);

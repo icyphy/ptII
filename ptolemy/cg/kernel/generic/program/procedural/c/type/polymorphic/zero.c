@@ -40,6 +40,12 @@ long long zero_Long() {
 }
 /**/
 
+/*** zero_Matrix() ***/
+Token* zero_Matrix(Token *a) {
+        return $Matrix_zero(a);
+}
+/**/
+
 /*** zero_String() ***/
 char* zero_String() {
         return "";

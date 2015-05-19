@@ -405,3 +405,24 @@ Token matrixToArray(Token thisToken) {
     return result;
 }
 /**/
+
+/***Matrix_zero***/
+
+// Matrix_zero: Return a Matrix like the specified
+// Matrix but with zeros of the same type.
+static Token Matrix_zero(Token thisToken, Token... tokens) {
+    Token result;
+    Token element;
+    int i, j;
+
+    result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
+
+    for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
+            element = Matrix_get(thisToken, i, j);
+            Matrix_set(result, i, j, $tokenFunc(element::zero()));
+        }
+    }
+    return result;
+}
+/**/
