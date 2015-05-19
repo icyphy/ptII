@@ -2881,6 +2881,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
                 output.scalarVariable = scalarVariable;
                 output.port = port;
+                output.inputStateDependentScalarVariables = scalarVariable.inputStateDependentScalarVariables;
 
                 // Next, we need to find the dependencies that the
                 // FMU XML file says the port depends on. By default, an
@@ -4387,6 +4388,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The set of input ports on which the output declares it depends. */
         public Set<TypedIOPort> dependencies;
+
+        /** The list of dependent ScalarVariable elements. */
+        public List<FMIScalarVariable> inputStateDependentScalarVariables;
         
         /** The last double output seen at the input port. */
         public double lastDoubleOutput;
