@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.ptolemy.fmi.type.FMIBooleanType;
@@ -534,21 +536,27 @@ public class FMIScalarVariable {
 
     /** The input ports on which an output has a direct dependence. */
     public Set<String> directDependency;
-
+    
     /** The Model Description for this variable. */
     public FMIModelDescription fmiModelDescription;
+    
+    /** The boolean attribute for variable value changed. */
+    public boolean hasChanged = true;
 
     /** The value of the initial xml attribute. */
     public Initial initial;
+
+    /** The input and state variables on which an output has a direct dependence. */
+    public List<FMIScalarVariable> inputStateDependentScalarVariables = new LinkedList<FMIScalarVariable>();
+
+    /** The boolean attribute for state variable. */
+    public boolean isState = false;
 
     /** The value of the name xml attribute. */
     public String name;
 
     /** The value of the type xml attribute. */
     public FMIType type;
-
-    /** The boolean attribute for state variable. */
-    public boolean isState = false;
 
     /** The value of the valueReference xml attribute.
      *  In FMI 1.0, a valueReference is typically 32-bits
