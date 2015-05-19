@@ -6,6 +6,12 @@ var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSock
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
 var EventEmitter = require('events').EventEmitter;
 
+// This file contains first the code for a Client and then for a Server side
+// of a web socket.
+
+///////////////////////////////////////////////////////////////////////////////
+//// Client
+
 /** Construct an instance of a socket client that can send or receive messages
  *  to a server at the specified host and port.
  *  The returned object subclasses EventEmitter.
@@ -19,11 +25,14 @@ var EventEmitter = require('events').EventEmitter;
  *      print('Received from web socket: ' + message);
  *    }
  *  </pre>
- *  @param host The IP address or host name for the host.
- *  @param port The port on which the host is listening.
+ *  @param options A JSON object with fields 'host' and 'port' that give the
+ *   IP address or host name for the host and the port on which the host is listening.
+ *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
  */
-exports.Client = function(host, port) {
-    this.helper = WebSocketHelper.createClientSocket(this, host, port);
+exports.Client = function(options) {
+    this.port = options['port'] || 80;
+    this.host = options['host'] || 'localhost';
+    this.helper = WebSocketHelper.createClientSocket(this, this.host, this.port);
 }
 util.inherits(exports.Client, EventEmitter);
 
@@ -68,7 +77,8 @@ exports.Client.prototype.notifyIncoming = function(message) {
     this.emit("message", message);
 };
 
-// FIXME: Code below needs help.
+///////////////////////////////////////////////////////////////////////////////
+//// Client
 
 ////////////////////
 // Construct an instance of WebSocket Server.
