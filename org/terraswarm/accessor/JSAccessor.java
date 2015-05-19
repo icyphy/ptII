@@ -147,12 +147,13 @@ public class JSAccessor extends JavaScript {
     ////                         public methods                    ////
 
 
-    /** Generate MoML for an Accessor. This produces only the body MoML.
-     *  It must be wrapped in an <entity></entity> or <class></class>
-     *  element to be instantiable, or in a <group></group> to be used
-     *  to update an accessor. 
-     *  The accessor is read in from a url, processed with 
-     *  XSLT and MoML is returned.
+    /** Generate MoML for an Accessor. 
+     *  <p>The MoML is wrapped in &lt;entity&gt;&lt;/entity&gt; and 
+     *  suitable for handleAccessorMoMLChangeRequest().</p>
+     *
+     *  <p>The accessor is read in from a url, processed with 
+     *  XSLT and MoML is returned.</p>
+     *
      *  @param url The URL of the accessor.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
@@ -169,86 +170,19 @@ public class JSAccessor extends JavaScript {
         // testing the reimportation of accessors.  See
         // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
-	if (urlSpec == null || urlSpec.trim().equals("")) {
-	    throw new IllegalActionException("No source file specified.");
-	}
+        // First get the file name only.
+        String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
+        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        String instanceNameRoot = StringUtilities.sanitizeName(fileNameWithoutExtension);
 
-        final URL url = FileUtilities.nameToURL(urlSpec, null, null);
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(
-        	    url.openStream()));
-            StringBuffer contents = new StringBuffer();
-            String input;
-            while ((input = in.readLine()) != null) {
-        	contents.append(input);
-        	contents.append("\n");
-            }
-            
-            // If the spec is a JavaScript file, then do not use XSLT, but just
-            // instantiate JSAccessor with the script parameter.
-            String extension = urlSpec.substring(urlSpec.lastIndexOf('.') + 1, urlSpec.length());
-            extension = extension.toLowerCase().trim();
-            if (extension == null || extension.equals("")) {
-        	throw new IllegalActionException("Can't tell file type from extension: " + urlSpec);
-            }
-            if (extension.equals("js")) {
-        	// JavaScript specification.
-        	StringBuffer result = new StringBuffer("<property name=\"script\" value=\"");
-        	// Since $ causes the expression parser to try to substitute a variable, we need
-        	// to escape it.
-        	String escaped = contents.toString().replace("$", "$$");
-        	result.append(StringUtilities.escapeForXML(escaped));
-        	result.append("\"/>");
-        	return result.toString();
-            } else if (extension.equals("xml")) {
-        	// XML specification.
-        	TransformerFactory factory = TransformerFactory.newInstance();
-        	String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
-        	Source xslt = new StreamSource(FileUtilities.nameToFile(
-        		xsltLocation, null));
-        	Transformer transformer = factory.newTransformer(xslt);
-        	StreamSource source = new StreamSource(new InputStreamReader(
-        		url.openStream()));
-        	StringWriter outWriter = new StringWriter();
-        	// NOTE: Could target a DOMResult here instead, which would give
-        	// much more flexibility.
-        	StreamResult result = new StreamResult(outWriter);
-        	try {
-        	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
-        	    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-        	    contents = outWriter.getBuffer();
-        	    transformer.transform(source, result);
-        	    contents = outWriter.getBuffer();
-        	} catch (Throwable throwable) {
-        	    IOException ioException = new IOException("Failed to parse \""
-        		    + url
-        		    + "\".");
-        	    ioException.initCause(throwable);
-        	    throw ioException;
-        	}
-
-                // Wrap in a group element that will rename the instance if there is a
-                // naming conflict.
-                StringBuffer moml = new StringBuffer("<group name=\"auto\">\n");
-                // Wrap the transformed MoML in <entity></entity>
-                // First get the file name only.
-                String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
-                String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-                String instanceNameRoot = StringUtilities.sanitizeName(fileNameWithoutExtension);
-                moml.append("<entity name=\""  + instanceNameRoot
-                        + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
-                        + contents.toString()
-                        + "</entity></group>");
-                return moml.toString();
-            } else {
-        	throw new IllegalActionException("Unrecognized file extension: " + extension);
-            }
-        } finally {
-            if (in != null) {
-        	in.close();
-            }
-        }
+        // Wrap in a group element that will rename the instance if there is a
+        // naming conflict.
+        // Wrap the transformed MoML in <entity></entity>
+        return "<group name=\"auto\">\n"
+            + "<entity name=\""  + instanceNameRoot
+            + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
+            + _accessorToMoML(urlSpec)
+            + "</entity></group>";
     }
 
     /** React to a change in an attribute, and if the attribute is the
@@ -370,6 +304,97 @@ public class JSAccessor extends JavaScript {
         showName.setExpression("true");
     }
     
+    /** Generate MoML for an Accessor. This produces only the body MoML.
+     *  It must be wrapped in an <entity></entity> or <class></class>
+     *  element to be instantiable, or in a <group></group> to be used
+     *  to update an accessor. 
+     *  The accessor is read in from a url, processed with 
+     *  XSLT and MoML is returned.
+     *  @param url The URL of the accessor.
+     *  @return MoML of the accessor, which is typically passed to
+     *  handleAccessorMoMLChangeRequest().
+     *  @exception IOException If the urlSpec cannot be converted, opened
+     *  read, parsed or closed.
+     *  @exception TransformerConfigurationException If a factory cannot
+     *  be created from the xslt file.
+     *  @throws IllegalActionException If no source file is specified.
+     */
+    private static String _accessorToMoML(final String urlSpec)
+            throws IOException, TransformerConfigurationException, IllegalActionException {
+
+        // This method is a separate method so that we can use it for
+        // testing the reimportation of accessors.  See
+        // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
+
+	if (urlSpec == null || urlSpec.trim().equals("")) {
+	    throw new IllegalActionException("No source file specified.");
+	}
+
+        final URL url = FileUtilities.nameToURL(urlSpec, null, null);
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(
+        	    url.openStream()));
+            StringBuffer contents = new StringBuffer();
+            String input;
+            while ((input = in.readLine()) != null) {
+        	contents.append(input);
+        	contents.append("\n");
+            }
+            
+            // If the spec is a JavaScript file, then do not use XSLT, but just
+            // instantiate JSAccessor with the script parameter.
+            String extension = urlSpec.substring(urlSpec.lastIndexOf('.') + 1, urlSpec.length());
+            extension = extension.toLowerCase().trim();
+            if (extension == null || extension.equals("")) {
+        	throw new IllegalActionException("Can't tell file type from extension: " + urlSpec);
+            }
+            if (extension.equals("js")) {
+        	// JavaScript specification.
+        	StringBuffer result = new StringBuffer("<property name=\"script\" value=\"");
+        	// Since $ causes the expression parser to try to substitute a variable, we need
+        	// to escape it.
+        	String escaped = contents.toString().replace("$", "$$");
+        	result.append(StringUtilities.escapeForXML(escaped));
+        	result.append("\"/>");
+        	return result.toString();
+            } else if (extension.equals("xml")) {
+        	// XML specification.
+        	TransformerFactory factory = TransformerFactory.newInstance();
+        	String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
+        	Source xslt = new StreamSource(FileUtilities.nameToFile(
+        		xsltLocation, null));
+        	Transformer transformer = factory.newTransformer(xslt);
+        	StreamSource source = new StreamSource(new InputStreamReader(
+        		url.openStream()));
+        	StringWriter outWriter = new StringWriter();
+        	// NOTE: Could target a DOMResult here instead, which would give
+        	// much more flexibility.
+        	StreamResult result = new StreamResult(outWriter);
+        	try {
+        	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
+        	    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+        	    contents = outWriter.getBuffer();
+        	    transformer.transform(source, result);
+        	    contents = outWriter.getBuffer();
+        	} catch (Throwable throwable) {
+        	    IOException ioException = new IOException("Failed to parse \""
+        		    + url
+        		    + "\".");
+        	    ioException.initCause(throwable);
+        	    throw ioException;
+        	}
+                return contents.toString();
+            } else {
+        	throw new IllegalActionException("Unrecognized file extension: " + extension);
+            }
+        } finally {
+            if (in != null) {
+        	in.close();
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -405,7 +430,7 @@ public class JSAccessor extends JavaScript {
 	    }
 	    */
 	    StringBuffer moml = new StringBuffer("<group name=\"doNotOverwriteOverrides\">");
-	    moml.append(JSAccessor.accessorToMoML(accessorSource.getExpression()));
+	    moml.append(JSAccessor._accessorToMoML(accessorSource.getExpression()));
 	    moml.append("</group>");
 	    final NamedObj container = getContainer();
 	    MoMLChangeRequest request = new MoMLChangeRequest(container, container, moml.toString()) {
