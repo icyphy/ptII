@@ -1461,14 +1461,15 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Initialize.
         final int stateCt = _qssSolver.getStateCount();
-
+        List<Boolean> needQuantizationEvents = new LinkedList<Boolean>();
+        
         if (_debugging) {
             _debugToStdOut(String.format(
                     "FMUQSS._triggerQuantEvts() on id{%d} at time %s",
                     System.identityHashCode(this), currentTime.toString()));
         }
-        
-        // Loop over states that need to be requantized.
+
+        // Loop over states that need to be re-quantized.
         int qIdx = -1;
         // final int order = _qssSolver.getStateModelOrder();
         while (true) {
@@ -1486,13 +1487,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 }
             }
 
-            // Requantize the state.
+            // Re-quantize the state.
             _qssSolver.triggerQuantizationEvent(qIdx);
 
             // Export to rest of simulation.
             // TODO: Convert this to export models, not just values.
             final TypedIOPort outPort = _fmiModelDescription.continuousStates
                     .get(qIdx).port;
+            needQuantizationEvents.add(true);
             
             _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
                         outPort, currentTime);
@@ -1506,6 +1508,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
 
         }
+        // Check if any state variable had a quantization event, if true
+        // then update the continuous states in the FMU before updating the outputs.
+        final double[] stateVariables = new double[stateCt];
+        if (_firstRound || needQuantizationEvents.contains(true) ) {
+            // In the first round we assume that all states have changed
+            for (int i = 0; i < stateCt; i++) {
+                stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
+            }
+           // Update {stateVariable} to the FMU.
+            _fmiSetContinuousStates(stateVariables);
+        } 
 
         // A quantization-event implies other FMU outputs change.
         // Produce outputs to all outputs that are not states.
