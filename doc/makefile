@@ -666,6 +666,7 @@ ALLPACKAGES = \
 
 # All the Vergil "full"  generated documentation
 FULL_DOCS = \
+	codeDoc/js/index.html \
 	codeDoc/tree.html \
 	codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDoc/ptolemy/actor/lib/RampIdx.xml
@@ -690,14 +691,16 @@ KRUFT = \
 
 
 all: suball whatsnew.htm whatsnewVergil.htm
-	@echo "   To build the javadoc and actor indexes for the full version,"
+	@echo "   To build the javadoc, javascrpt and actor indexes for the full version,"
 	@echo "   run \"make docs\""
-	@echo "   To build the javadoc and actor indexes for all versions,"
+	@echo "   To build the javadoc, javascript and actor indexes for all versions,"
 	@echo "   run \"make install\""
+	@echo "   To build the javascript,"
+	@echo "   run \"make jsdocs\""
 
 # Building the jar files also builds javadoc, PtDoclet and actor indices
-install: all jars codeDoc.jar codeDocBcvtb.jar \
-		codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar
+install: all codeDoc/js/index.html jars codeDoc.jar codeDocBcvtb.jar \
+		codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar 
 
 # Build with all common packages
 all_packages:
@@ -710,6 +713,18 @@ all_packages:
 	  PTJOYSTICK_PACKAGES=ptolemy.actor.lib.joystick \
 	  PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime \
 	  codeDoc/tree.html
+
+jsdoc: codeDoc/js/index.html
+codeDoc/js/index.html:
+	-if [ -d $(ROOT)/vendors/jsdoc -a -f $(ROOT)/build.xml ]; then \
+		echo "About to run ant jsdoc"; \
+		(cd $(ROOT); ant jsdoc); \
+		echo "The output appears in $(PTII)/doc/codeDoc/js/index.html"; \
+        else \
+		echo "Either $(ROOT)/vendors/jsdoc or $(ROOT)/build.xml do not exist."; \
+		echo "To set up $(ROOT)/vendors/jsdoc: "; \
+		echo "  cd $PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git"; \
+	fi
 
 #############################################################################
 # Make derived versions of .htm files for Vergil
