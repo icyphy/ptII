@@ -162,6 +162,9 @@ public class FMIModelDescription {
 
     /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
+    
+    /** The list of ScalarVariable elements name. */
+    public List<String> modelVariablesNames = new LinkedList<String>();
 
     /** The list of continuous states. */
     public List<ContinuousState> continuousStates = new LinkedList<ContinuousState>();
@@ -575,8 +578,9 @@ public class FMIModelDescription {
                 .getNodeValue()) - 1).valueReference;
         Node dependencyNode = attributes.getNamedItem("dependencies");
         if (dependencyNode != null) {
-        	String[] dependencies; 
+        	String[] dependencies = null; 
         	List <String> inputDependencies = new LinkedList<String>();
+        	List <String> inputStateDependencies = new LinkedList<String>();
         	if (dependencyNode.getNodeValue().trim().length() != 0){
         		dependencies = dependencyNode.getNodeValue().trim()
                     .split(" ");
@@ -586,8 +590,16 @@ public class FMIModelDescription {
 					.get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)){
         				inputDependencies.add(dependencies[j]);
         			}
+        			// Create a list which contains dependent variables which are inputs or states.
+                    if (modelVariables
+                            .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input) ||
+                            modelVariables
+                            .get(Integer.parseInt(dependencies[j]) - 1).isState){
+                        inputStateDependencies.add(dependencies[j]);
+                            }
         		}
         	}
+        	// Create the list of dependent variables which are just inputs.
             for (int i = 0; i < modelVariables.size(); i++) {
                 if (modelVariables.get(i).valueReference == valueReference) {
                     modelVariables.get(i).directDependency.clear();
@@ -611,6 +623,30 @@ public class FMIModelDescription {
 							}
 						}
                     }
+                    
+                 // Create the list of dependent variables which are just inputs and states.
+                    for (int j = 0; j < inputStateDependencies.size(); j++) {
+                        for (int k = 0; k < modelVariables.size(); k++) {
+                            try {
+                                if ((modelVariables.get(k).valueReference == modelVariables
+                                        .get(Integer.parseInt(inputStateDependencies.get(j)) - 1).valueReference) &&
+                                        (modelVariables.get(k).isState || modelVariables.get(k).causality.equals(Causality.input))) 
+                                         {
+                                    modelVariables.get(i).inputStateDependentScalarVariables
+                                            .add(modelVariables.get(k));
+                                    break;
+                                }
+                            } catch (NumberFormatException ex) {
+                                NumberFormatException nfx = new NumberFormatException(
+                                        "Failed to parse \"" + inputStateDependencies.get(j)
+                                                + "\", which is the " + j
+                                                + " (0-based) dependency.");
+                                nfx.initCause(ex);
+                                throw nfx;
+                            }
+                        }
+                    }
+       
                 }
             }
         }
