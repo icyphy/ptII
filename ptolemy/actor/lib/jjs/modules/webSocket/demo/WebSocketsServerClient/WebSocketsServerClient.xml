@@ -79,7 +79,7 @@
         </property>
     </entity>
     <entity name="WSClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;function onOpen() {&#10;  console.log('Connection to socket is open.');&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;  if (ws == null) {&#10;   ws = new WebSocket.Client('localhost', 8082);&#10;   ws.on('open', onOpen);&#10;  }&#10;}&#10;&#10;exports.fire = function() {&#10;  count ++;&#10;  ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  ws.close();&#10;  ws = null;&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;function onOpen() {&#10;  console.log('Connection to socket is open.');&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;  if (ws == null) {&#10;   ws = new WebSocket.Client({'host':'localhost', 'port':8082});&#10;   ws.on('open', onOpen);&#10;  }&#10;}&#10;&#10;exports.fire = function() {&#10;  count ++;&#10;  ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  ws.close();&#10;  ws = null;&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -105,7 +105,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={715, 526, 1498, 770}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 130, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>

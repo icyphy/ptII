@@ -38,9 +38,9 @@ import org.vertx.java.core.http.ServerWebSocket;
 //// WebSocketServerHelper
 
 /**
-   A helper class for the WebSocket module's Server object in JavaScript.
-   The Vert.x object from its parent can create an instance of Java WebSocket Server.
-   Each Java WebSocketServer belongs to one JavaScript WebSocket.Server. 
+   A helper class for the webSocket module's Server object in JavaScript.
+   See the documentation of that module for instructions.
+   This uses Vert.x for the implementation.
    
    @author Hokeun Kim
    @version $Id$
