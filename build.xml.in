@@ -590,7 +590,7 @@ For example:
       <arg value="--verbose" />
       <arg value="--recurse" />
       <arg value="-d" />
-      <arg value="doc/js" />
+      <arg value="doc/codeDoc/js" />
       <arg value="ptolemy/actor/lib/jjs"/>
       <arg value="ptolemy/actor/lib/vertx/demo"/>
       <arg value="org/terraswarm/accessor"/>
