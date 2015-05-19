@@ -36,10 +36,13 @@ import org.ptolemy.fmi.type.FMIBooleanType;
 import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
+
+import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
@@ -161,15 +164,17 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
                     .next();
 
-            //for (TypedIOPort input : actor.inputPortList()) {
-            //	connectionsCount++;
-            //}
-            connectionsCount += actor.inputPortList().size();
-
-            //for (TypedIOPort output : actor.outputPortList()) {
-            //}
+            for (TypedIOPort input : actor.inputPortList()) {
+            	List<TypedIOPort> connected_ports = input.connectedPortList();
+            	for (TypedIOPort output : connected_ports) {
+            		if (output.isOutput()) {
+            			connectionsCount++;
+            		}
+            	}
+            }
         }
 
+        
         codeStream.append("#define NUMBER_OF_FMUS " + actorList.size() + "\n");
         codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
         codeStream
