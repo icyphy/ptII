@@ -64,12 +64,15 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
     
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
      *  @param currentObj The JavaScript Server instance for which this is a helper.
+     *  @param hostInterface The host interface to use, in case there the host has more
+     *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
+     *   the argument is null, then "localhost" will be used.
      *  @param port The port number that the server will use.
      *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
-	    ScriptObjectMirror currentObj, int port) {
-        return new WebSocketServerHelper(currentObj, port);
+	    ScriptObjectMirror currentObj, String hostInterface, int port) {
+        return new WebSocketServerHelper(currentObj, hostInterface, port);
     }
     
     /** Create and start the server and beginning listening for
@@ -92,12 +95,10 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
             @Override
             public void handle(ServerWebSocket serverWebSocket) {
                 // Create the socket on this server side.
-                Object jsWebSocket = _currentObj.callMember("createServerWebSocket", serverWebSocket);
-                // Emit an event indicating that the connection is created.
-                _currentObj.callMember("emit", "connection", jsWebSocket);
+                _currentObj.callMember("socketCreated", serverWebSocket);
             }
         });
-        _server.listen(_port, "localhost", new Handler<AsyncResult<HttpServer>>() {
+        _server.listen(_port, _hostInterface, new Handler<AsyncResult<HttpServer>>() {
             @Override
             public void handle(AsyncResult<HttpServer> arg0) {
         	_currentObj.callMember("emit", "listening");
@@ -110,11 +111,18 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
 
     /** Private constructor for WebSocketServerHelper to create a web socket server.
      *  @param currentObj The JavaScript Server instance for which this a helper.
+     *  @param hostInterface The host interface to use, in case there the host has more
+     *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
+     *   the argument is null, then "localhost" will be used.
      *  @param port The port on which to create the server.
      */
     private WebSocketServerHelper(
-	    ScriptObjectMirror currentObj, int port) {
+	    ScriptObjectMirror currentObj, String hostInterface, int port) {
         _currentObj = currentObj;
+        _hostInterface = hostInterface;
+        if (hostInterface == null) {
+            _hostInterface = "localhost";
+        }
         _port = port;
     }
 
@@ -123,6 +131,9 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
         
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
+    
+    /** The host interface. */
+    private String _hostInterface;
     
     /** The port on which the server listens. */
     private int _port;

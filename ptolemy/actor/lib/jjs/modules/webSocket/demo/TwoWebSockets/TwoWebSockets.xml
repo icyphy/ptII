@@ -36,6 +36,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 295.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows a single client connecting to two external web servers&#10;implemented with some other technology (Node.js in this case).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -125.0]">
+        </property>
+    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var ws1 = null;&#10;var ws2 = null;&#10;var count1 = 0;&#10;var count2 = 0;&#10;&#10;exports.initialize = function() {&#10;  if (ws1 == null) {&#10;    ws1 = new WebSocket.Client({'host':'localhost', 'port':8080});&#10;    ws1.on('open', onOpen1);&#10;    ws1.on('message', onMessage1);&#10;  }&#10;  if (ws2 == null) {&#10;    ws2 = new WebSocket.Client({'host':'localhost', 'port':1984}); &#10;    ws2.on('open', onOpen2);  &#10;    ws2.on('message', onMessage2);&#10;  }&#10;  count1 = 0;&#10;  count2 = 0;&#10;}&#10;&#10;function onOpen1() {&#10;  console.log('Connection to server 1 opened.');&#10;}&#10;&#10;function onOpen2() {&#10;  console.log('Connection to server 1 opened.');&#10;}&#10;&#10;function onMessage1(data) {&#10;  send('Socket 1 received: ' + data, 'output');;&#10;}&#10;&#10;function onMessage2(data) {&#10;  send('Socket 2 received: ' + data, 'output');;&#10;}&#10;&#10;function onInput() {&#10;  count1++;&#10;  count2++;&#10;  ws1.send('Hi, I am ws1. Count: ' + count1);&#10;  ws2.send('Hi, I am ws2. Count: ' + count2);&#10;}&#10;&#10;addInputHandler(onInput, 'trigger');&#10;&#10;exports.wrapup = function() {&#10;  if (ws1 == null) {&#10;    ws1.close();&#10;    ws1 = null;&#10;  }&#10;  if (ws2 == null) {&#10;    ws2.close();&#10;    ws2 = null;&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">

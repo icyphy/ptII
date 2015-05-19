@@ -78,68 +78,90 @@ exports.Client.prototype.notifyIncoming = function(message) {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-//// Client
+//// Server
 
-////////////////////
-// Construct an instance of WebSocket Server.
-// After invoking this constructor (using new), the user script should set up listeners
-// and then invoke the startServer() function on this Server.
-// This will create an HTTP server on the local host.
-// A typical usage pattern looks like this:
-//     var server = new WebSocket.Server({port:8082});
-//     server.on('listening', onListening);
-//     server.on('connection', onConnection);
-//     server.startServer();
-// where onListening is a handler for an event that this Server emits
-// when it is listening for connections, and onConnection is a handler
-// for an event that this Server emits when a client requests a websocket
-// connection.
-// 
-// This subclasses EventEmitter.
-// The options argument is an object containing the following (optional)
-// fields:
-// - port: The port on which to listen for connections (default is 80, the default HTTP port).
-// - FIXME: What other options are supported? Why isn't this just a port argument?
-// - FIXME: Should provide a mechanism to validate the "Origin" header during the
-//   connection establishment process on the serverside (against the expected origins)
-//   to avoid Cross-Site WebSocket Hijacking attacks.
+/** Construct an instance of WebSocket Server.
+ *  After invoking this constructor (using new), the user script should set up listeners
+ *  and then invoke the startServer() function on this Server.
+ *  This will create an HTTP server on the local host.
+ *  The options argument is a JSON object containing the following optional fields:
+ *  <ul>
+ *  <li> hostInterface: The IP address or name of the local interface for the server
+ *       to listen on.  This defaults to "localhost", but if the host machine has more
+ *       than one network interface, e.g. an Ethernet and WiFi interface, then you may
+ *       need to specifically specify the IP address of that interface here.
+ *  <li> port: The port on which to listen for connections (the default is 80,
+ *       which is the default HTTP port).
+ *  </ul>
+ *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
+ *  A typical usage pattern looks like this:
+ *  <pre>
+ *     var server = new WebSocket.Server({port:8082});
+ *     server.on('listening', onListening);
+ *     server.on('connection', onConnection);
+ *     server.startServer();
+ *  </pre>
+ *  where onListening is a handler for an event that this Server emits
+ *  when it is listening for connections, and onConnection is a handler
+ *  for an event that this Server emits when a client requests a websocket
+ *  connection and the socket has been successfully established.
+ *  When the 'connection' event is emitted, it will be passed a Socket object,
+ *  and the onConnection handler can register a listener for 'message' events
+ *  on that Socket object, as follows:
+ *  <pre>
+ *     server.on('connection', function(socket) {
+ *        socket.on('message', function(message) {
+ *            console.log(message);
+ *            socket.send('Reply message');
+ *        });
+ *     });
+ *  </pre>
+ *  The Socket object also has a close() function that allows the server to close
+ *  the connection.
+ *  <p>
+ *  FIXME: Should provide a mechanism to validate the "Origin" header during the
+ *    connection establishment process on the serverside (against the expected origins)
+ *    to avoid Cross-Site WebSocket Hijacking attacks.
+ */
 exports.Server = function(options) {
     this.port = options['port'] || 80;
-    this.helper = WebSocketServerHelper.createServer(this, this.port);
+    this.hostInterface = options['hostInterface'] || 'localhost';
+    this.helper = WebSocketServerHelper.createServer(this, this.hostInterface, this.port);
 }
 util.inherits(exports.Server, EventEmitter);
 
-// Method to start the server. 
+/** Start the server. */
 exports.Server.prototype.startServer = function() {
     this.helper.startServer();
 }
 
-// Method to create a server web socket with the given Java ServerWebSocket object.
-exports.Server.prototype.createServerWebSocket = function(serverWebSocket) {
-    return new exports.Socket("", serverWebSocket);
-}
-
+/** Stop the server. */
 exports.Server.prototype.close = function() {
     this.helper.closeServer();
 }
 
+/** Notify that a handshake was successful and a websocket has been created.
+ *  This is called by the helper class is not meant to be called by the JavaScript
+ *  programmer. When this is called, the Server will a new Socket object
+ *  and emit a 'connection' event with that Socket as an argument.
+ *  The 'connection' handler can then register for 'message' events from the
+ *  Socket or issue replies to the Socket using send(). It can also close() the
+ *  Socket.
+ *  @param serverWebSocket The Java ServerWebSocket object.
+ */
+exports.Server.prototype.socketCreated = function(serverWebSocket) {
+    var socket = new exports.Socket(serverWebSocket);
+    this.emit('connection', socket);
+}
 
-// FIXME: Below is probably obsolete
-
-// Construct an instance of a socket with the specified URL.
-// If the second argument is non-null, then create a socket on the server
-// and ignore the url argument.
-// Otherwise, create a socket on the client.
-// FIXME: What is the second argument? Java expects a WebSocketBase. How to create that?
-// This subclasses EventEmitter.
-exports.Socket = function(url, serverWebSocket) {
-    if (serverWebSocket != null) {
-        this.helper = WebSocketHelper.createServerSocket(this, serverWebSocket);;
-    } else {
-        this.helper = WebSocketHelper.createClientSocket(this, url);
-    }
-    // Note that additional functions will be added via the prototype below.
-    this.address = url;
+/** Construct (using new) a Socket object for the server side of a new connection.
+ *  This is called by the socketCreated function above whenever a new connection is
+ *  established at the request of a client. It should not normally be called by
+ *  the JavaScript programmer. The returned Socket is an event emitter that emits
+ *  'message' events.
+ */
+exports.Socket = function(serverWebSocket) {
+    this.helper = WebSocketHelper.createServerSocket(this, serverWebSocket);;
 }
 util.inherits(exports.Socket, EventEmitter);
 
@@ -170,8 +192,9 @@ exports.Socket.prototype.send = function(data) {
     this.helper.sendText(data);
 }
 
-////////////////////
-// Close the current connection with the server.
+/** Close the socket. Normally, this would be called on the client side,
+ *  not on the server side. But the server can also close the connection.
+ */
 exports.Socket.prototype.close = function() {
     this.helper.close();
 }
