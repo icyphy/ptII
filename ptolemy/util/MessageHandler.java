@@ -58,6 +58,15 @@ import java.util.Locale;
  */
 public class MessageHandler implements Thread.UncaughtExceptionHandler {
     
+    /** Create a MessageHandler.
+     */
+    public MessageHandler() {
+        // Note that kepler/loader/src/org/kepler/ExecutionEngine.java
+        // invokes new MessageHandler().
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -428,15 +437,6 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         return false;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         Protected Constructor             ////
-
-    /** Protected constructor. We want only one of these.
-     */
-    protected MessageHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(this);
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The message handler.
