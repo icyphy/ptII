@@ -584,7 +584,7 @@ For example:
     <echo>Invoke jsdoc to generate documentation for .js files.
     To set this up:
        cd $PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git    
-    The output appears in doc/js/index.html
+    The output appears in doc/codeDoc/js/index.html
     </echo>
     <exec executable="${jsdoc.home}/jsdoc">
       <arg value="--verbose" />
