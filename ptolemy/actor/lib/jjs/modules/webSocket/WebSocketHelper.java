@@ -94,23 +94,6 @@ public class WebSocketHelper extends WebSocketHelperBase {
 	    ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
         return new WebSocketHelper(currentObj, serverWebSocket);
     }
-
-    /**
-     * Send binary data through the internal web socket.
-     * 
-     * @param msg A binary message to be sent.
-     */
-    public synchronized void sendBinary(byte[] msg) {
-        Buffer buffer = new Buffer(msg);
-        if (isOpen()) {
-            _webSocket.writeBinaryFrame(buffer);
-        } else {
-            if (_pendingOutputs == null) {
-        	_pendingOutputs = new LinkedList();
-            }
-            _pendingOutputs.add(buffer);
-        }
-    }
     
     /** Send text data through the web socket.
      *  @param msg A text message to be sent.
