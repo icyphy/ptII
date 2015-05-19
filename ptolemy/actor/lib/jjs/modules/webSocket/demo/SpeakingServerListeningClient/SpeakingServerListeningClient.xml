@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.9999999999996, 252.00000000000006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript Web Socket to show full duplex communication between server&#10;and client. Once the connection is established, the clinet starts listening to the server&#10;and the server sends a message to the client.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript Web Socket to show full duplex communication between server&#10;and client. Once the connection is established, the client starts listening to the server&#10;and the server sends a message to the client.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 255.0]">
         </property>
