@@ -16,13 +16,13 @@
     description="Output without a type."/>       
   <output
     name="quasiTypelessOutput"/>
-    <!--  Leave out the description to test documentation. -->
-  <documentation type="text/html">
+    <!--  Leave out the description to test description element. -->
+  <description type="text/html">
     <![CDATA[
 This is a test accessor used to test Import-->Accessor.
 It checks that inputs and outputs without types are handled correctly.
 	]]>
-  </documentation>
+  </description>
   <script type="text/javascript">
     // <![CDATA[
 	function fire() {

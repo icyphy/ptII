@@ -16,12 +16,12 @@
     type="string"
     description="A JSON object containing the IP address and (when available)
      name and mac address of devices on the local area network." />        
-  <documentation type="text/html">
+  <description type="text/html">
     <![CDATA[
 	This accessor discovers devices on the local area network.
 	See: http://www.terraswarm.org/testbeds/wiki/Main/DiscoverEthernetMACs
 	]]>
-  </documentation>
+  </description>
   <requires name="discovery"/>
   <script type="text/javascript">
     // <![CDATA[

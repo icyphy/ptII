@@ -26,12 +26,12 @@ type="number"/>
     name="rangeMeasurement"
     type="number"
     description="Distance between robot and intruder."/>    
-  <documentation type="text/html">
+  <description type="text/html">
     <![CDATA[
 This accessor uses the current position of the robot and the intruder position stored in 
 a key value store to compute the distance between robot and intruder.
 	]]>
-  </documentation>
+  </description>
   <script type="text/javascript">
     // <![CDATA[
         

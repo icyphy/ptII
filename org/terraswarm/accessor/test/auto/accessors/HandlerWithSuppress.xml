@@ -16,13 +16,13 @@
     name="output"
     type="number"
     description="The count of the firing."/>       
-  <documentation type="text/html">
+  <description type="text/html">
     <![CDATA[
 This accessor produces outputs periodically, at one second intervals,
 as long as the most recently received suppress input is not true.
 The output is a count of the periods, starting with 1.
 	]]>
-  </documentation>
+  </description>
   <script type="text/javascript">
     // <![CDATA[
     var count;
