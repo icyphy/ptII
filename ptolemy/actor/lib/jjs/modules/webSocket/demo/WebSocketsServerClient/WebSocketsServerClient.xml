@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, -90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={575, 75, 865, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={186, 66, 865, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[631, 524]">
     </property>
@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;var readCnt = 0;&#10;&#10;function onMessage(data) {&#10;  send('Server received a message: ' + data, output);&#10;}&#10;&#10;function onListening() {&#10;  send('Server started listening...', output);&#10;  send(true, 'started');&#10;}&#10;// React to a connection established.&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', output);&#10;  ws.on('message', onMessage);&#10;}&#10;// The web socket server, once created.&#10;var server = null;&#10;// Start an HTTP server and begin listening for connection requests.&#10;// If there already is a server, do nothing.&#10;exports.initialize = function() {&#10;  if (server == null) {&#10;    server = new WebSocket.Server({port:8082});&#10;    server.on('listening', onListening);&#10;    server.on('connection', onConnection);&#10;    server.startServer();&#10;  }&#10;}&#10;exports.wrapup = function() {&#10;  if (server != null) {&#10;    server.close();&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;// The web socket server, once created.&#10;var server = null;&#10;// Start an HTTP server and begin listening for connection requests.&#10;// If there already is a server, do nothing.&#10;exports.initialize = function() {&#10;  if (server == null) {&#10;    server = new WebSocket.Server({port:8082});&#10;    server.on('listening', onListening);&#10;    server.on('connection', onConnection);&#10;    server.startServer();&#10;  }&#10;}&#10;exports.wrapup = function() {&#10;  if (server != null) {&#10;    server.close();&#10;  }&#10;}&#10;function onListening() {&#10;  send('Server started listening...', 'output');&#10;  send(true, 'started');&#10;}&#10;// React to a connection established.&#10;function onConnection(ws) {&#10;  send('A client is connected to the server.', 'output');&#10;  ws.on('message', function(message) {&#10;    send('Server received a message: ' + message, 'output');&#10;  });&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
