@@ -27,6 +27,11 @@
                   causality="parameter" variability="fixed" initial="exact">
   <Real start="1"/>
   </ScalarVariable>
+
+  <ScalarVariable name="resolution" valueReference="0" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
+    <Integer start="0"/>
+  </ScalarVariable>
+  
 </ModelVariables>
 
 <ModelStructure>

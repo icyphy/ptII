@@ -376,7 +376,6 @@ fmi2Status fmi2GetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
 }
 
 fmi2Status fmi2GetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Real value[], fmi2Integer hybridValue[]) {
-    // printf("[fmi2GetHybridReal]\n");
 #if NUMBER_OF_REALS > 0
     int i;
 #endif
@@ -388,7 +387,6 @@ fmi2Status fmi2GetHybridReal (fmi2Component c, const fmi2ValueReference vr[], si
     if (nvr > 0 && nullPointer(comp, "fmi2GetHybridReal", "value[]", value))
         return fmi2Error;
     calculateValues(comp);
-    comp->isDirtyValues = 0;
 #if NUMBER_OF_REALS > 0
     for (i = 0; i < nvr; i++) {
         if (vrOutOfRange(comp, "fmi2GetHybridReal", vr[i], NUMBER_OF_REALS))
@@ -1002,9 +1000,6 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     if (comp->eventInfo.nextEventTimeDefined && (comp->time  == comp->eventInfo.nextEventTime)) {
         FILTERED_LOG(comp, fmi2OK, LOG_EVENT, "fmi2HybridDoStep: time event detected at %g", comp->time)
         timeEvent = 1;
-    }
-    if (timeEvent == 0) {
-        i(n_) = 0;
     }
     if (stateEvent || timeEvent) {
         eventUpdate(comp, &comp->eventInfo, timeEvent, h);

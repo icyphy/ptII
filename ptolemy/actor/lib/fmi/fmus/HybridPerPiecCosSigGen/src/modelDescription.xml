@@ -23,26 +23,31 @@
   <ScalarVariable name="y0" valueReference="0" description="constant output" causality="output">
      <Real />
   </ScalarVariable>
+
   <ScalarVariable name="value_h" valueReference="1" description="Output high level value"
                   causality="parameter" variability="fixed" initial="exact">
   <Real start="1"/>
   </ScalarVariable>
+
   <ScalarVariable name="value_l" valueReference="2" description="Outuput low level value"
                   causality="parameter" variability="fixed" initial="exact">
   <Real start="0"/>
   </ScalarVariable>
+
   <ScalarVariable name="period" valueReference="0" description="Period"
                   causality="parameter" variability="fixed" initial="exact">
   <Integer start="1"/>
   </ScalarVariable>
-  <ScalarVariable name="n" valueReference="1" description="micro tick" causality="local">
-     <Integer />
+
+  <ScalarVariable name="resolution" valueReference="1" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
+    <Integer start="0"/>
   </ScalarVariable>
+
 </ModelVariables>
 
 <ModelStructure>
   <Outputs>
-    <Unknown index="1" />
+    <Unknown index="1" dependencies=""/>
   </Outputs>
 </ModelStructure>
 

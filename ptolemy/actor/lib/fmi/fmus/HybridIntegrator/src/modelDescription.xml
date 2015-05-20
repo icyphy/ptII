@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="HybridIntegrator"
+  guid="{f3be8b0a-1979-4b29-a7a6-12914577dc0a}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="HybridIntegrator"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="y0" valueReference="0" description="output" causality="output">
+     <Real />
+  </ScalarVariable>
+  <ScalarVariable name="der" valueReference="1" description="input" causality="input">
+     <Real />
+  </ScalarVariable>
+  <ScalarVariable name="Initial Value" valueReference="2" description="Initial Value"
+                  causality="parameter" variability="fixed" initial="exact">
+     <Real start="0"/>
+  </ScalarVariable>
+
+  <ScalarVariable name="resolution" valueReference="0" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
+    <Integer start="0"/>
+  </ScalarVariable>
+
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" dependencies=""/>
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>

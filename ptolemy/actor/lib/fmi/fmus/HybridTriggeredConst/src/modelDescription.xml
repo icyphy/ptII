@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="HybridTriggeredConst"
+  guid="{1ff5bcbd-a863-48d6-a07b-ce4eddfcf4ae}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="HybridTriggeredConst"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+
+  <ScalarVariable name="y0" valueReference="0" description="constant output" causality="output">
+     <Real />
+  </ScalarVariable>
+
+  <ScalarVariable name="value" valueReference="1" description="Output high level value"
+                  causality="parameter" variability="fixed" initial="exact">
+  <Real start="1"/>
+  </ScalarVariable>
+
+  <ScalarVariable name="trigger" valueReference="2" description="Trigger" causality="input">
+  <Real start="0"/>
+  </ScalarVariable>
+
+  <ScalarVariable name="resolution" valueReference="0" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
+    <Integer start="0"/>
+  </ScalarVariable>
+  
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" dependencies="3"/>
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
