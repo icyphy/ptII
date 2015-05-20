@@ -51,6 +51,7 @@ JSRCS =
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
+	AccessorAuto.tcl \
 	JSAccessor.tcl
 
 # Graphical Java tests.
@@ -85,7 +86,8 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+# We don't run test_auto here because AccessorAuto.tcl does what test_auto does and more.
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
 	$(JTCLSH) alljtests.tcl
 
 test_jgraphical: test_auto

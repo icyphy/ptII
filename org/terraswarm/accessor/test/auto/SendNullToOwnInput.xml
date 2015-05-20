@@ -39,7 +39,7 @@
     <entity name="SendNullToOwnInput" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = get(input);&#10;       send(value, output);&#10;       send(null, input);&#10;   }&#10;}&#10;setTimeout(null, 0);&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/SendNullToOwnInput.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/SendNullToOwnInput.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor sends a null to its own input, then forwards the value to the output.&#10;	&#10;  ">

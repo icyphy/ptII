@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="renderHTML.xsl"?>
+<!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
+    "http://www.terraswarm.org/accessors/Accessor_1.dtd">
+<class name="StockTick" extends="org.terraswarm.JSAccessor">
+  <version>0.1 $Date: 2015-05-14 13:43:08 -0700 (Thu, 14 May 2015) $</version>
+  <author>Edward A. Lee</author>
+  <input
+    name="symbol"
+    value="YHOO"
+    type="string"
+    description="The stock symbol."/>
+  <output
+    name="price"
+    type="number"
+    description="The most recent stock price (bid)."/>       
+  <description type="text/html">
+    <![CDATA[
+This accessor, when fired, reads the most recent bid price for the specified stock symbol from a Yahoo server.
+	]]>
+  </description>
+  <script type="text/javascript">
+    // <![CDATA[
+	exports.fire = function() {
+	  var stock = get('symbol');
+	  var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22"
+		+ stock
+		+ "%22)%0A%09%09&env=http%3A%2F%2Fdatatables.org%2Falltables.env&format=json";
+	  var record = readURL(url);
+	  var json = JSON.parse(record);
+	  var tick = parseFloat(json.query.results.quote.LastTradePriceOnly);
+	  send(tick, 'price');
+	}
+	// ]]>
+  </script>
+</class>

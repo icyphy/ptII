@@ -63,7 +63,7 @@
     <entity name="HandlerWithSuppress" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    var handleTimeout = function() {&#10;      send(true, produce);&#10;    };&#10;	var inputHandler = function() {&#10;      count = count + 1;&#10;      if (!get(suppress)) {&#10;        send(count, output);&#10;      }&#10;    };&#10;	addInputHandler(inputHandler, produce);&#10;	exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(handleTimeout, 1000);&#10;    }&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor produces outputs periodically, at one second intervals,&#10;as long as the most recently received suppress input is not true.&#10;The output is a count of the periods, starting with 1.&#10;	&#10;  ">

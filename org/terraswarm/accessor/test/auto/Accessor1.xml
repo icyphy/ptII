@@ -27,7 +27,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{478.695652173913, 236.78598845108698}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Import the accessor from: /ptII/org/terraswarm/kernel/test/auto/accessors">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Import the accessor from $PTII/org/terraswarm/accessor/test/auto/accessors">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
         </property>
@@ -95,7 +95,7 @@
     <entity name="Accessor3" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get(stringInput);&#10;	  send(stringValue, stringOutput);&#10;	  var numericValue = get(numericInput);&#10;	  send(numericValue, numericOutput);&#10;	  stringValue = get(stringInputWithoutValue);&#10;	  send(stringValue, stringOutputWithoutValue);&#10;	  send(stringValue == null, inputIsAbsent);&#10;	}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/Accessor1.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
@@ -170,7 +170,7 @@
     <entity name="Accessor2" class="org.terraswarm.accessor.jjs.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get(stringInput);&#10;	  send(stringValue, stringOutput);&#10;	  var numericValue = get(numericInput);&#10;	  send(numericValue, numericOutput);&#10;	  stringValue = get(stringInputWithoutValue);&#10;	  send(stringValue, stringOutputWithoutValue);&#10;	  send(stringValue == null, inputIsAbsent);&#10;	}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/ptII/org/terraswarm/kernel/test/auto/accessors/Accessor1.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/Accessor1.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
