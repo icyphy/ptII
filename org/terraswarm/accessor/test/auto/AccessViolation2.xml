@@ -26,11 +26,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 150}">
         </property>
     </entity>
-    <entity name="StockTick" class="org.terraswarm.accessor.jjs.JSAccessor">
+    <entity name="StockTick" class="org.terraswarm.accessor.JSAccessor">
         <display name="Modified&#10;StockTick&#10;Accessor"/>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stock = get(symbol);&#10;	  var url = &quot;file://foo&quot;;&#10;	  var record = readURL(url);&#10;	  var json = JSON.parse(record);&#10;	  var tick = parseFloat(json.query.results.quote.BidRealtime);&#10;	  send(tick, price);&#10;	}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stock = get('symbol');&#10;	  var url = &quot;file://foo&quot;;&#10;	  var record = readURL(url);&#10;	  var json = JSON.parse(record);&#10;	  var tick = parseFloat(json.query.results.quote.LastTradePriceOnly);&#10;	  send(tick, 'price');&#10;	}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/StockTick.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/AccessViolation.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor, when fired, reads the most recent bid price for the specified stock symbol from a Yahoo server.&#10;	&#10;  ">
@@ -38,6 +38,8 @@
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
             <property name="symbol (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The stock symbol.">
             </property>

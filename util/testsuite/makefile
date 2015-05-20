@@ -48,6 +48,7 @@ JSRCS = \
 	WatchDog.java
 
 TCL_SRCS = \
+	AccessorAuto.tcl \
 	CGC.tcl \
 	CCGAuto.tcl \
 	JavaCGAuto.tcl \

@@ -26,11 +26,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 150}">
         </property>
     </entity>
-    <entity name="StockTick" class="org.terraswarm.accessor.jjs.JSAccessor">
+    <entity name="HttpRequest" class="org.terraswarm.accessor.jjs.JSAccessor">
         <display name="Modified&#10;StockTick&#10;Accessor"/>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stock = get(symbol);&#10;	  var url = &quot;http://ptolemy.org&quot;;&#10;	  var result = httpRequest(url,'GET',null,null,1000);&#10;	  send(result, price);&#10;	}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/StockTick.xml">
+        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/HttpRequest.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor, when fired, reads the most recent bid price for the specified stock symbol from a Yahoo server.&#10;	&#10;  ">
@@ -85,8 +85,8 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation"/>
-    <link port="StockTick.symbol" relation="relation"/>
-    <link port="StockTick.price" relation="relation2"/>
+    <link port="HttpRequest.symbol" relation="relation"/>
+    <link port="HttpRequest.price" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
     <link port="StringSubstring.input" relation="relation2"/>
     <link port="StringSubstring.output" relation="relation3"/>

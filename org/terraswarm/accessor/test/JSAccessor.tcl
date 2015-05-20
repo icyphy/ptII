@@ -161,9 +161,10 @@ proc importAccessor {accessorFileName} {
     #puts "accessorActorFileName: $accessorActorFileName"
     #puts "accessorActorName: $accessorActorName"
     set entityList [$e1 entityList [java::call Class forName org.terraswarm.accessor.JSAccessor]]
-    set accessorActor [java::cast org.terraswarm.accessor.JSAccessor [$entityList get 0]]
-    $accessorActor reload
-    $accessorActor reload
+    for {set i 0} {$i < [$entityList size]} {incr i} {
+        set accessor [java::cast org.terraswarm.accessor.JSAccessor [$entityList get $i]]
+        $accessor reload
+    }
     #puts [$accessorActor getFullName]
     #puts [$e1 exportMoML]
     #set moml [$accessorActor exportMoML]
