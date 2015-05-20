@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="HybridSequenceCheck"
+  guid="{187457f1-90b3-4a50-af06-d4d7c7897050}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="HybridSequenceCheck"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+
+  <ScalarVariable name="y0" valueReference="0" description="output" causality="output">
+  <Boolean />
+  </ScalarVariable>
+
+  <ScalarVariable name="u0" valueReference="0" description="input" causality="input">
+  <Real />
+  </ScalarVariable>
+
+  <ScalarVariable name="sequence" valueReference="0" description="temporal sequence"
+                  causality="parameter" variability="fixed" initial="exact">
+  <String start=""/>
+  </ScalarVariable>
+  
+  <ScalarVariable name="resolution" valueReference="0" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
+    <Integer start="0"/>
+  </ScalarVariable>
+  
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" dependencies=""/>
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>

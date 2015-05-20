@@ -9,7 +9,7 @@
 
 // Define model size.
 #define NUMBER_OF_REALS 2
-#define NUMBER_OF_INTEGERS 0
+#define NUMBER_OF_INTEGERS 1
 #define NUMBER_OF_BOOLEANS 0
 #define NUMBER_OF_STRINGS 0
 #define NUMBER_OF_STATES 1
@@ -17,6 +17,7 @@
 
 // Include fmu header files, typedefs and macros.
 #include "fmuTemplate.h"
+#include <limits.h>
 
 // Define all model variables and their value references
 // conventions used here:
@@ -25,6 +26,7 @@
 // - if k is the vr of a real state, then k+1 is the vr of its derivative
 #define output_ 0
 #define value_ 1
+#define resolution_ 0 
 #define STATES { output_ }
 
 #define present_ 0
@@ -45,6 +47,8 @@ void setStartValues(ModelInstance *comp) {
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode) {
+        hr(output_) = present_;
+        r(output_) = r(value_);
     }
 }
 
@@ -52,9 +56,8 @@ void calculateValues(ModelInstance *comp) {
 fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
     switch (vr)
     {
-        case output_: 
-            hr(output_) = present_;
-            return r(value_);
+        case output_:             
+            return r(output_);
         case value_:
             return r(value_);
         default:
@@ -72,7 +75,8 @@ Functions for FMI2 for Hybrid Co-Simulation
 ****************************************************/
 
 fmi2Status fmi2RequiredTimeResolution (fmi2Component c, fmi2Integer *value) {
-    *value = -6;
+    ModelInstance *comp = (ModelInstance *)c;
+    *value = i(resolution_);
     return fmi2OK;
 }
 
@@ -85,7 +89,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 }
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
-    *value = 1;
+    *value = LONG_MAX;
     return fmi2OK;
 }
 

@@ -9,7 +9,7 @@
 
 // Define model size.
 #define NUMBER_OF_REALS 3
-#define NUMBER_OF_INTEGERS 0
+#define NUMBER_OF_INTEGERS 1
 #define NUMBER_OF_BOOLEANS 0
 #define NUMBER_OF_STRINGS 0
 #define NUMBER_OF_STATES 1
@@ -17,6 +17,7 @@
 
 // Include fmu header files, typedefs and macros.
 #include "fmuTemplate.h"
+#include <limits.h>
 
 // Define all model variables and their value references
 // conventions used here:
@@ -26,6 +27,7 @@
 #define output_ 0
 #define input_ 1
 #define gain_ 2
+#define resolution_ 0
 
 #define present_ 0
 #define absent_ 1
@@ -49,6 +51,22 @@ void setStartValues(ModelInstance *comp) {
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode) {
+        if (hr(input_) == present_) {
+            hr(output_) = present_;
+            r(output_) = r(gain_) * r(input_);
+        }
+        if (hr(input_) == absent_) {
+            hr(output_) = absent_;
+        }
+    }
+    else {
+        if (hr(input_) == present_) {
+            hr(output_) = present_;
+            r(output_) = r(gain_) * r(input_);
+        }
+        if (hr(input_) == absent_) {
+            hr(output_) = absent_;
+        }
     }
 }
 
@@ -59,15 +77,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
         case input_:
             return r(input_);
         case output_:
-            if (hr(input_) == present_) {
-                comp->hr[vr] = present_;
-                r(output_) = r(gain_) * r(input_);
-                return r(output_);
-            }
-            if (hr(input_) == absent_) {
-                comp->hr[vr] = absent_;
-            }
-            return 0;
+            return r(output_);
         case gain_:
             return r(gain_);
         default:
@@ -85,7 +95,8 @@ Functions for FMI2 for Hybrid Co-Simulation
 ****************************************************/
 
 fmi2Status fmi2RequiredTimeResolution (fmi2Component c, fmi2Integer *value) {
-    *value = -6;
+    ModelInstance *comp = (ModelInstance *)c;
+    *value = i(resolution_);
     return fmi2OK;
 }
 
@@ -98,7 +109,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 }
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
-    *value = 1;
+    *value = LONG_MAX;
     return fmi2OK;
 }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="HybridModalModelDiscContr"
+  guid="{4bbc5dc1-a42d-4b7e-89fa-73b2c31f5858}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="HybridModalModelDiscContr"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+  <ScalarVariable name="y0" valueReference="0" description="output" causality="output">
+     <Real />
+  </ScalarVariable>
+
+  <ScalarVariable name="u0" valueReference="1" description="input" causality="input">
+     <Real />
+  </ScalarVariable>
+  <ScalarVariable name="value_a" valueReference="2" description="output value for a"
+                  causality="parameter" variability="fixed" initial="exact">
+  <Real start="0"/>
+  </ScalarVariable>
+
+  <ScalarVariable name="value_b" valueReference="3" description="output value for b"
+                  causality="parameter" variability="fixed" initial="exact">
+  <Real start="1"/>
+  </ScalarVariable>
+
+  <ScalarVariable name="resolution" valueReference="0" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
+    <Integer start="0"/>
+  </ScalarVariable>
+
+</ModelVariables>
+
+<ModelStructure>
+  <Outputs>
+    <Unknown index="1" />
+  </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>

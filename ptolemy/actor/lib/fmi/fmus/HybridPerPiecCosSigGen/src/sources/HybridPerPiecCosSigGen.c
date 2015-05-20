@@ -9,7 +9,7 @@
 
 // Define model size.
 #define NUMBER_OF_REALS 3
-#define NUMBER_OF_INTEGERS 2
+#define NUMBER_OF_INTEGERS 3
 #define NUMBER_OF_BOOLEANS 0
 #define NUMBER_OF_STRINGS 0
 #define NUMBER_OF_STATES 1
@@ -27,7 +27,8 @@
 #define value_b_ 1
 #define value_a_ 2
 #define period_ 0
-#define n_ 1
+#define resolution_ 1
+#define n_ 2
 #define STATES { output_ }
 
 #define present_ 0
@@ -43,16 +44,15 @@ void setStartValues(ModelInstance *comp) {
     hr(output_) = present_;
     hr(value_b_) = present_;
     hr(value_a_) = present_;
-    hr(period_) = present_;
+    hi(period_) = present_;
+    hi(n_) = present_;
 }
 
 // called by fmi2GetReal, fmi2GetInteger, fmi2GetBoolean, fmi2GetString, fmi2ExitInitialization
 // if setStartValues or environment set new values through fmi2SetXXX.
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
-    // printf("[DEBUG][fmi2GetHybridReal][calculateValues]\n");
     if (comp->state == modelInitializationMode) {
-        // printf("[modelInitializationMode]\n" );
         i(n_) = 0;
         comp->eventInfo.nextEventTimeDefined   = fmi2True;
         comp->eventInfo.nextEventTime          = i(period_) + comp->time;
@@ -62,7 +62,6 @@ void calculateValues(ModelInstance *comp) {
         fmi2Integer k = t / i(period_);
         fmi2Integer r = t % i(period_);
         fmi2Boolean is_even = !(fmi2Boolean)(k % 2);
-        // printf("[fmi2GetHybridReal][calculateValues] stepMode\n");
 
         if ( t > (k * i(period_))  && t < ((k + 1) * i(period_)) ) {
             if (is_even) {
@@ -101,7 +100,6 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
-    // printf(" - [eventUpdate]\n");
 
     if ( h == 0 ) {
         i (n_) = i(n_) + 1;
@@ -115,32 +113,13 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, l
     }
 }
 
-// void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
-//     printf(" - [eventUpdate]\n");
-//     if ((comp->time % i(period_)) == 0) {
-//         if (i(state_) == 0){
-//             eventInfo->nextEventTimeDefined   = fmi2True;
-//             eventInfo->nextEventTime          = comp->time;
-//             printf(" => Next event time: %ld, state_: %ld\n", eventInfo->nextEventTime, i(state_));
-//             i(state_) = 1;
-//             i(n_) = 0;
-//         }
-//         else if (i(state_) == 1) {
-//             eventInfo->nextEventTimeDefined   = fmi2True;
-//             eventInfo->nextEventTime          = i(period_) + comp->time;
-//             printf(" => Next event time: %ld, state_: %ld\n", eventInfo->nextEventTime, i(state_));
-//             i(state_) = 0;
-//             i(n_) = i(n_) + 1;
-//         }
-
-//     }
-// }
 /***************************************************
 Functions for FMI2 for Hybrid Co-Simulation
 ****************************************************/
 
 fmi2Status fmi2RequiredTimeResolution (fmi2Component c, fmi2Integer *value) {
-    *value = -6;
+    ModelInstance *comp = (ModelInstance *)c;
+    *value = i(resolution_);
     return fmi2OK;
 }
 
