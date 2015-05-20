@@ -142,13 +142,13 @@ import ptolemy.util.StringUtilities;
    </pre>
    Your script may also register <b>input handler</b> functions by invoking
    <pre>
-      addInputHandler(function, port);
+      var handle = addInputHandler(function, port);
    </pre>
    The specified function will be invoked whenever the port receives a new input.
    Note that the fire() function, if defined, will also be invoked (after the
    specified function) and will see
    the same input. If the specified function is null, then only the fire() function
-   will be invoked.
+   will be invoked. The returned handle can be used to call removeInputHandler().
    </p><p>
    Usually, you will need to explicitly set the types
    of the output ports. Alternatively, you can enable backward
@@ -1671,7 +1671,7 @@ public class JavaScript extends TypedAtomicActor {
          *  @throws IllegalActionException If this proxy is not for an input port.
          *  @see #removeInputHandler(Integer)
          */
-        public void addInputHandler(final Runnable function) throws IllegalActionException {
+        public int addInputHandler(final Runnable function) throws IllegalActionException {
             if (_inputHandlers == null) {
         	_inputHandlers = new LinkedList<Runnable>();
             }
@@ -1680,7 +1680,7 @@ public class JavaScript extends TypedAtomicActor {
         	    TypedIOPort port = ((PortParameter)_parameter).getPort();
         	    if (port != null) {
         		_inputHandlers.add(function);
-        		return;
+        		return _inputHandlers.size() - 1;
         	    }
         	}
         	throw new IllegalActionException(JavaScript.this,
@@ -1688,6 +1688,7 @@ public class JavaScript extends TypedAtomicActor {
         			+ ((_port == null)?_parameter.getName():_port.getName()));
             }
             _inputHandlers.add(function);
+	    return _inputHandlers.size() - 1;
         }
         
         /** Get the current value of the input port or a parameter.
@@ -1765,9 +1766,11 @@ public class JavaScript extends TypedAtomicActor {
          *  @see #addInputHandler(Runnable)
          */
         public void removeInputHandler(Integer handle) {
-            int n = handle.intValue();
-            if (_inputHandlers != null && n < _inputHandlers.size()) {
-        	_inputHandlers.remove(n);
+            if (handle != null) {
+        	int n = handle.intValue();
+        	if (_inputHandlers != null && n < _inputHandlers.size()) {
+        	    _inputHandlers.remove(n);
+        	}
             }
         }
 
