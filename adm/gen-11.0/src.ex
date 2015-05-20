@@ -283,6 +283,7 @@ ptserver/test/junit/PtolemyServer.log
 replay_pid*.log
 updateMoMLFiles.xml
 vendors/jogl
+vendors/jsdoc
 socket.cfg
 devel
 htmlchek*
