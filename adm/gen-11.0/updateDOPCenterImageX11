@@ -11,6 +11,9 @@ echo "Starting Xvfb"
 Xvfb :7 -screen 0 1024x768x24 &
 export DISPLAY=localhost:7.0
 
+echo "Be sure that everything is built"
+cd $PTII; ./configure; ant
+
 echo "Loading DOPCenter model, running it and exporting"
 
 chmod 0400 $HOME/.spacecadet
