@@ -1,0 +1,167 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="WebSocketServer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A web socket server that issues a response constructed from the incoming message.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 955, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
+    </property>
+    <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;    &#10;  var server = null;&#10;  var socketID = 0;&#10;&#10;  exports.initialize = function() {&#10;    if (!server) {&#10;      server = new WebSocket.Server({'port':get('port')});&#10;      server.on('listening', onListening);&#10;      server.on('connection', onConnection);&#10;      server.start();&#10;    }&#10;    socketID = 0;&#10;  }&#10;&#10;  function onListening() {&#10;    console.log('Server: Listening for socket connection requests.');&#10;  }&#10;  &#10;  function onConnection(socket) {&#10;    var id = socketID++;&#10;    console.log('Server: new socket established with ID: ' + id);&#10;    send({'socketID':id, 'status':'open'}, 'connection');&#10;    socket.on('message', function(message) {&#10;      send({'socketID':id, 'message':message}, 'received');&#10;    });&#10;    // For each new connection, add an input handler.&#10;    var handler = addInputHandler(function() {&#10;      var data = get('toSend');&#10;      if (data) {&#10;        if (data.socketID &amp;&amp; data.message) {&#10;          // data has the right form for a point-to-point send.&#10;          if (data.socketID == id) {&#10;            // id matches this socket.&#10;            console.log(&quot;Sending to socket id &quot; + id + &quot; message: &quot; + data.message);&#10;            socket.send(data.message);&#10;          }&#10;        } else {&#10;          // No socketID or message, so this is a broadcast message.&#10;          console.log(&quot;Broadcasting to socket id &quot; + id + &quot; message: &quot; + data);&#10;          socket.send(data);&#10;        }&#10;      }&#10;    }, 'toSend');&#10;    &#10;    socket.on('close', function(message) {&#10;      send({'socketID':id, 'status':'closed'}, 'connection');&#10;      removeInputHandler(handler, 'toSend');&#10;    });&#10;  }&#10;  &#10;  function wrapup() {&#10;    if (server != null) {&#10;      server.close();&#10;      server = null;&#10;    }&#10;  }&#10;    // &#10;  ">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/WebSocketServer.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor starts a server that listens for web socket connection requests on the specified&#10;hostInterface and port.  The hostInterface is needed only if the host machine has more than one&#10;network interface (e.g. Ethernet and WiFi) and 'localhost' does not resolve to the desired interface.&#10;When a connection request comes in, the connection is established, and a &lt;i&gt;connection&lt;/i&gt; output&#10;is produced.  When a message arrives on such a connection, a &lt;i&gt;received&lt;/i&gt; output is produced.&#10;When an input arrives on &lt;i&gt;toSend&lt;/i&gt;, then a message is sent to one or all of the open socket connections.&#10;When wrapup() is invoked, this accessor closes the server and all connections.&#10;The messages can be any type that has a JSON representation.&#10;For incomming messages, this accessor assumes that the message is&#10;a string in UTF-8 that encodes a JSON object.&#10;  &#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim and Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="hostInterface (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the network interface to listen for connections on.">
+            </property>
+            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port to listen for connections on.">
+            </property>
+            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The data to be sent on one or more open sockets. If this is a JSON object with 'socketID' field and a 'message' field, then send the value of the message field to the socket identified by the socketID field. If the input has any other form, then the message is broadcast to all open socket connections.">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="A message received a client in the form of a JSON object with two fields, a 'socketID', which is a unique ID for this client connection, and a 'message' field, which is the message received from the client.">
+            </property>
+            <property name="connection (port)" class="ptolemy.kernel.util.StringAttribute" value="An output produced when a new socket connection request has come in and the connection has been established. The output is a JSON object with two fields, a 'socketID', which is a unique ID for this client connection, and a 'status' field, which is the string 'open'.">
+            </property>
+        </property>
+        <property name="hostInterface" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8080">
+        </property>
+        <property name="toSend" class="ptolemy.actor.parameters.PortParameter" value="{message = &quot;Received: [object Object]&quot;, socketID = 0}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 145.0}">
+        </property>
+        <port name="hostInterface" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <entity name="MessageFromClient" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={827, 145, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 155.0}">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  actor.input('received');&#10;  actor.output('response');&#10;}&#10;var handler = addInputHandler(function() {&#10;  var data = get('received');&#10;  var response = {'socketID':data.socketID, 'message': 'Received: ' + data.message};&#10;  send(response, 'response');&#10;}, 'received');&#10;&#10;exports.wrapup = function() {&#10;  removeInputHandler(handler, 'received');&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 155.0}">
+        </property>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 155.0}">
+        </property>
+    </entity>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;WebSocketServer.connection&quot;,x=325.0,y=145.0}, tail={id=&quot;MessageFromClient.input&quot;,x=485.0,y=155.0,index=2}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{440.0, 100.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JavaScript.received&quot;,x=65.0,y=155.0}, tail={id=&quot;relation.vertex1&quot;,x=440.0,y=100.0}, points={0.0,155.0,0.0,100.0} },{ head={id=&quot;WebSocketServer.received&quot;,x=325.0,y=145.0}, tail={id=&quot;relation.vertex1&quot;,x=440.0,y=100.0}, points={420.0,135.0,420.0,100.0} },{ head={id=&quot;MessageFromClient.input&quot;,x=485.0,y=155.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=440.0,y=100.0}, points={440.0,150.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JavaScript.response&quot;,x=65.0,y=155.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=165.0,y=155.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="WebSocketServer.toSend" relation="relation3"/>
+    <link port="WebSocketServer.received" relation="relation"/>
+    <link port="WebSocketServer.connection" relation="relation6"/>
+    <link port="MessageFromClient.input" relation="relation"/>
+    <link port="MessageFromClient.input" relation="relation6"/>
+    <link port="JavaScript.received" relation="relation"/>
+    <link port="JavaScript.response" relation="relation2"/>
+    <link port="MicrostepDelay.input" relation="relation2"/>
+    <link port="MicrostepDelay.output" relation="relation3"/>
+</entity>

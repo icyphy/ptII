@@ -82,7 +82,7 @@ exports.Client.prototype.notifyIncoming = function(message) {
 
 /** Construct an instance of WebSocket Server.
  *  After invoking this constructor (using new), the user script should set up listeners
- *  and then invoke the startServer() function on this Server.
+ *  and then invoke the start() function on this Server.
  *  This will create an HTTP server on the local host.
  *  The options argument is a JSON object containing the following optional fields:
  *  <ul>
@@ -99,7 +99,7 @@ exports.Client.prototype.notifyIncoming = function(message) {
  *     var server = new WebSocket.Server({port:8082});
  *     server.on('listening', onListening);
  *     server.on('connection', onConnection);
- *     server.startServer();
+ *     server.start();
  *  </pre>
  *  where onListening is a handler for an event that this Server emits
  *  when it is listening for connections, and onConnection is a handler
@@ -131,7 +131,7 @@ exports.Server = function(options) {
 util.inherits(exports.Server, EventEmitter);
 
 /** Start the server. */
-exports.Server.prototype.startServer = function() {
+exports.Server.prototype.start = function() {
     this.helper.startServer();
 }
 

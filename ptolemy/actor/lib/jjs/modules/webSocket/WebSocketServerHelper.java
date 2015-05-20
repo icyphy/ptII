@@ -42,7 +42,7 @@ import org.vertx.java.core.http.ServerWebSocket;
    See the documentation of that module for instructions.
    This uses Vert.x for the implementation.
    
-   @author Hokeun Kim
+   @author Hokeun Kim and Edward A. Lee
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
@@ -55,7 +55,7 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
 
     /** Close the web socket server.
      */
-    public void closeServer() {
+    public synchronized void closeServer() {
         if (_server != null) {
             _server.close();
             _server = null;
@@ -76,14 +76,11 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
     }
     
     /** Create and start the server and beginning listening for
-     *  connections. If a callback function "listening" is registered,
-     *  then that callback will be called when the server begins
-     *  listening (which may be even before this returns?).
-     *  If a callback function "connection" has been registered,
-     *  then that function will be called when a connection is
-     *  requested by a remote client.
+     *  connections. When a new connection request is received and
+     *  a socket has been opened, emit the 'connection' event with the
+     *  socket as an argument.
      */
-    public void startServer() {
+    public synchronized void startServer() {
         // Note that the following call apparently starts the new server
         // in separate thread. It should not be done in the constructor
         // because the script that starts the server needs to register
@@ -94,14 +91,22 @@ public class WebSocketServerHelper extends WebSocketHelperBase {
         _server.websocketHandler(new Handler<ServerWebSocket>() {
             @Override
             public void handle(ServerWebSocket serverWebSocket) {
-                // Create the socket on this server side.
-                _currentObj.callMember("socketCreated", serverWebSocket);
+        	synchronized(WebSocketServerHelper.this) {
+        	    // FIXME: Create error handler, close handler, etc. on this socket.
+
+        	    // Notify of a new connection.
+        	    // This will have the side effect of creating a new JS Socket
+        	    // object, which is an event emitter.
+        	    _currentObj.callMember("socketCreated", serverWebSocket);
+        	}
             }
         });
         _server.listen(_port, _hostInterface, new Handler<AsyncResult<HttpServer>>() {
             @Override
             public void handle(AsyncResult<HttpServer> arg0) {
-        	_currentObj.callMember("emit", "listening");
+        	synchronized(WebSocketServerHelper.this) {
+        	    _currentObj.callMember("emit", "listening");
+        	}
             }
         });
     }
