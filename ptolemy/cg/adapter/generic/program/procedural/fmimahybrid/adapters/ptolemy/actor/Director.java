@@ -206,7 +206,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 				}
 			}
 		}
-		System.out.println("========\n" + graph);
+
 		actors = ((CompositeActor) adapter.getComponent().getContainer())
 				.deepEntityList().iterator();
 		
@@ -219,8 +219,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 		//	throw new IllegalActionException(adapter.getComponent(), "The GRAPH is empty");
 		//}
 		
-		
-
+				
 		// If diagram contains cycles, throw an exception
 		if (graph.isAcyclic() == false) {
                     throw new IllegalActionException(adapter.getComponent(),

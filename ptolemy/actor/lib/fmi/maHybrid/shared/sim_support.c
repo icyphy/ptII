@@ -469,8 +469,12 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int
                         break;
                     case elm_Boolean:
                         fmu->getHybridBoolean(c, &vr, 1, &b, &hv);
-                        if (hv == 0)
-                            fprintf(file, ",%d", b);
+                        if (hv == 0) {
+                            if (b == fmi2True)
+                                fprintf(file, ",TRUE");
+                            else if (b == fmi2False)
+                                fprintf(file, ",FALSE");
+                        }
                         if (hv == 1)
                             fprintf(file, ",absent");
                         if (hv == 2)
