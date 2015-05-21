@@ -1,0 +1,49 @@
+// Module to access audio hardware on the host.
+// Authors: FIXME
+// Copyright: http://terraswarm.org/accessors/copyright.txt
+
+// Reference to the Java class documented at:
+//    http://terra.eecs.berkeley.edu:8080/job/ptII/javadoc/ptolemy/media/javasound/LiveSound.html
+var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
+
+// This file contains a template for a CommonJS module.
+// It is to be completed by you.
+
+/** Construct an instance of an Audio class. This should be instantiated in your
+ *  JavaScript code as
+ *  <pre>
+ *     var Audio = require("audio");
+ *     var player = new Audio.Player;
+ *  </pre>
+ *  An instance of the class implements the following functions:
+ *  (FIXME: replace with your design)
+ *  <ul>
+ *  <li> '''play'''(): Play the specified array.
+ *  <li> '''stop'''(): Stop playback and free the audio resources.
+ *  </ul>
+ *  @param options A JSON object with fields 'FIXME' and 'FIXME' that give the
+ *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
+ *   defaults.
+ */
+exports.Player = function(options) {
+    // Provide default values for options using the following common JavaScript idiom.
+    options = options || {};
+    this.foo = options['foo'] || 80;
+    
+    LiveSound.setSampleRate(8000);
+    // Start playback.
+    LiveSound.startPlayback(this);
+}
+
+/** Play audio data.
+ *  @param data An array of numbers in the range -1 to 1 to be played.
+ */
+exports.Player.prototype.play = function(data) {
+    // NOTE: Convert array into 2-D array required by LiveSound.
+    LiveSound.putSamples(this, [data]);
+}
+
+/** Stop the player and free audio resources. */
+exports.Player.prototype.stop = function() {
+    LiveSound.stopPlayback(this);
+}
