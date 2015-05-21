@@ -34,7 +34,7 @@
   </ScalarVariable>
 
   <ScalarVariable name="resolution" valueReference="0" description="timing resolution" causality="parameter" variability="fixed" initial="exact">
-    <Integer start="0"/>
+    <Integer start="-6"/>
   </ScalarVariable>
 
 </ModelVariables>
