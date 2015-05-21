@@ -27,14 +27,15 @@
  */
 package ptolemy.actor.lib.jjs.modules.httpClient;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
+import org.vertx.java.core.http.HttpClientRequest;
+import org.vertx.java.core.http.HttpClientResponse;
 
 import ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelperBase;
 
@@ -61,10 +62,16 @@ public class HttpClientHelper extends WebSocketHelperBase { // FIXME: rename thi
      *  @return A new HttpClientHelper instance.
      */
     public static HttpClientHelper createHttpClient(
-            ScriptObjectMirror currentObj, HashMap<String, Object> options) {
+            ScriptObjectMirror currentObj, Map<String, Object> options) {
         return new HttpClientHelper(currentObj, options);
     }
 
+    /** End a request. */
+    public void end() {
+	if (_request != null) {
+	    _request.end();
+	}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
@@ -75,40 +82,92 @@ public class HttpClientHelper extends WebSocketHelperBase { // FIXME: rename thi
      *  @param address The URL of the WebSocket host with an optional port number
      *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
      */
-    private HttpClientHelper(ScriptObjectMirror currentObj, HashMap<String, Object> options) {
+    private HttpClientHelper(ScriptObjectMirror currentObj, Map<String, Object> options) {
         _currentObj = currentObj;
-
-        String host = "localhost"; // test (String)options.get("host")
-        int port = 80; // (Integer)options.get("port")
         HttpClient client = _vertx.createHttpClient();
-        client.setHost(host); 
-        client.setPort(port); 
+        // FIXME: Why does Vert.x require setHost and setPort and also a URI?
+        client.setHost((String) options.get("host")); 
+        client.setPort((int) options.get("port")); 
         client.exceptionHandler(new HttpClientExceptionHandler());
         // FIXME: Provide a timeout. Use setTimeout() of the client.
         
-        // FIXME: Why does Vertx require the URI here in addition to setHost() and setPort() above? Seems lame.
-        // FIXME: also get the protocol from options
-        String address = "http://" + host + ":" + port;
+        // FIXME: Support https.
+        String uri = options.get("protocol")
+        	+ "://"
+        	+ options.get("host")
+        	+ ":"
+        	+ options.get("port")
+        	+ options.get("path");
+        
+        _request = client.request(
+        	(String)options.get("method"),
+        	uri,
+        	new HttpClientResponseHandler());
    
+        // Handler the headers.
+        Map headers = (Map)options.get("headers");
+        if (!headers.isEmpty()) {
+            for (Object key : headers.keySet()) {
+        	Object value = headers.get(key);
+        	if (value instanceof String) {
+        	    _request.putHeader((String)key, (String)value);
+        	} else if (value instanceof Iterable) {
+        	    _request.putHeader((String)key, (Iterable<String>)value);
+        	}
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
         
-    /** The current instance of the JavaScript module. */
+    /** The current instance of the ClientRequest JavaScript object. */
     private ScriptObjectMirror _currentObj;
-
     
-    /** The event handler that is triggered when an error occurs in the web socket connection.
+    /** The request built in the constructor. */
+    private HttpClientRequest _request;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     inner classes                         ////
+
+    /** The event handler that is triggered when an error occurs in the HTTP connection.
      */
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
             synchronized(HttpClientHelper.this) {
-            _currentObj.callMember("emit", "error", throwable.getMessage());
-            //_wsIsOpen = false;
+        	_currentObj.callMember("emit", "error", throwable.getMessage());
             }
         }
     }
     
+    /** The event handler that is triggered when a response arrives from the server.
+     */
+    private class HttpClientResponseHandler implements Handler<HttpClientResponse> {
+        @Override
+        public void handle(HttpClientResponse response) {
+            // The response is not yet complete. Provide a handler to handle when it
+            // is complete. Note that large response could fill up memory here, since
+            // we do not chunk the response!
+            HttpClientBodyHandler bodyHandler = new HttpClientBodyHandler(response);
+            response.bodyHandler(bodyHandler);
+        }
+    }
+    
+    /** The body handler that is triggered when a complete response body
+     *  has arrived from the server.
+     */
+    private class HttpClientBodyHandler implements Handler<Buffer> {
+	public HttpClientBodyHandler(HttpClientResponse response) {
+	    _response = response;
+	}
+        @Override
+        public void handle(Buffer body) {
+            synchronized(HttpClientHelper.this) {
+        	// FIXME: This assumes the body is a string encoded in UTF-8.
+        	_currentObj.callMember("_response", _response, body.toString());
+            }
+        }
+        private HttpClientResponse _response;
+    }
 }
