@@ -8,7 +8,7 @@
 var HttpClientHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper');
 var HashMap = Java.type('java.util.HashMap');
 var EventEmitter = require('events').EventEmitter;
-var url = require('url');
+//var url = require('url');
 
 exports.request = function(options, cb) {
   return new ClientRequest(options, cb);
@@ -36,14 +36,14 @@ function ClientRequest(options, cb) {
   var self = this;
   var jOptions = new HashMap();
   
-  if (util.isString(options)) {
-    options = url.parse(options);
-  } else {
+//  if (util.isString(options)) {
+//    options = url.parse(options);
+//  } else {
     options = util._extend({}, options);
-  }
+//  }
 
   var agent = options.agent;
-  var defaultAgent = options._defaultAgent || Agent.globalAgent;
+  var defaultAgent = options._defaultAgent; // FIXME: should we have a global agent? || Agent.globalAgent;
 //  if (agent === false) {
 //    agent = new defaultAgent.constructor();
 //  } else if (util.isNullOrUndefined(agent) && !options.createConnection) {
@@ -51,7 +51,7 @@ function ClientRequest(options, cb) {
 //  }
 //  self.agent = agent;
 
-  var protocol = options.protocol || defaultAgent.protocol;
+  var protocol = options.protocol; // || defaultAgent.protocol;
 //  var expectedProtocol = defaultAgent.protocol;
 //  if (self.agent && self.agent.protocol)
 //    expectedProtocol = self.agent.protocol;
@@ -126,7 +126,7 @@ function ClientRequest(options, cb) {
   // This is where the helper kicks in and Vert.x takes over
   // FIXME: why bother passing options separately?
   // It looks like ScriptMirrorObject should have access to this info
-  this.helper = HttpClientHelper.createClientRequest(this, jOptions);
+  this.helper = HttpClientHelper.createHttpClient(this, jOptions);
 
 }
 
