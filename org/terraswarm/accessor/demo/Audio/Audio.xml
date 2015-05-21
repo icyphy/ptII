@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870580209385436">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5861417341923, 384.7361195495162}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5861417341924, 384.73611954951616}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At the right is an instance of the AudioPlayer accessor.&#10;In its original (incomplete) form for this exercise, it has no&#10;input port. It just plays a fixed sinusoidal sound when it is&#10;initialized. You should augment the accessor definition to&#10;endow it with an input, and then plug in in place of the &#10;Plotter below to generate a chirp signal.">
