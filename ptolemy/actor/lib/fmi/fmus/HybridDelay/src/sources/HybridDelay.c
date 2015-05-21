@@ -28,8 +28,8 @@
 #define input_ 1
 #define status_ 2
 #define delay_ 0
-#define bs_ 1
-#define resolution_ 2
+#define resolution_ 1
+#define bs_ 2
 #define STATES { output_ }
 
 #define present_ 0

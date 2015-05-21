@@ -304,8 +304,7 @@ fmi2Boolean loggingOn, char separator) {
     FILE* file;
     int legacyFmuIndex = 0;
     bool isLegacyFmu = false;
-    // Determine the simulation resolution
-    setTimingResolutions(fmus, &resolution, &scaleFactor);
+
     // Open result file
     if (!(file = fopen(RESULT_FILE, "w"))) {
         printf("could not write %s because:\n", RESULT_FILE);
@@ -326,6 +325,10 @@ fmi2Boolean loggingOn, char separator) {
     for (int i = 0; i < NUMBER_OF_FMUS; i++) {
         localTime[i] = 0;
     }
+
+    // Determine the simulation resolution
+    setTimingResolutions(fmus, &resolution, &scaleFactor);
+
     // output solution for time t0
     outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, 0, file, separator, TRUE);
     // Simulation loop
