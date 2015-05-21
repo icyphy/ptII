@@ -1,0 +1,11 @@
+{
+  "name": "httpClient",
+  "version": "0.0.1",
+  "main": "httpClient.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Marten Lohstroh"
+    , "email" : "marten@eecs.berkeley.edu"}
+  ],
+  "description": "Client library for the HTTP protocol."
+}

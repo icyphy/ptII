@@ -666,7 +666,7 @@ public class JavaScript extends TypedAtomicActor {
         // Update port parameters.
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
             if (portParameter == script) {
-        	continue;
+                continue;
             }
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
             if (portParameter.update()) {
@@ -1292,7 +1292,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
-	return null;
+        return null;
     }
     
     /** Set the description of a port.
