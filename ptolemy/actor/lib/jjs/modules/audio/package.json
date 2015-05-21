@@ -1,0 +1,11 @@
+{
+  "name": "audio",
+  "version": "0.1.0",
+  "main": "audio.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Edward A. Lee"
+    , "email" : "eal@eecs.berkeley.edu"}
+  ],
+  "description": "A module for accessing audio hardware on the host."
+}

@@ -1,0 +1,180 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Audio" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 490.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 945, 676}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 566]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870580209385436">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5861417341923, 384.7361195495162}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At the right is an instance of the AudioPlayer accessor.&#10;In its original (incomplete) form for this exercise, it has no&#10;input port. It just plays a fixed sinusoidal sound when it is&#10;initialized. You should augment the accessor definition to&#10;endow it with an input, and then plug in in place of the &#10;Plotter below to generate a chirp signal.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 155.0]">
+        </property>
+    </property>
+    <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 285.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-50.0">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The composition semantics in this model is DE (discrete events),&#10;where components send each other time-stamped events.&#10;The parameters of the Clock and Ramp actors control the frequency&#10;of the sinusoidal signal that is generated.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 470.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Extra credit: Replace the lower Ramp with some other accessor, such&#10;as StockTick, to control the frequency of the signal based on stock prices.&#10;Alternatively, use accessors to create a web socket connection to another&#10;machine to control the frequency from another machine.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 550.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Template for Accessor Exercise">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 125.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Download the&#10;accessor source,&#10;store on your&#10;local disk,&#10;change the&#10;accessorSource&#10;parameter of&#10;the accessor&#10;to point to your&#10;local copy, and&#10;click Reload.&#10;Now you can&#10;modify the&#10;accessor design.&#10;Click Reload&#10;for each update.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 135.0]">
+        </property>
+    </property>
+    <entity name="AudioPlayer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor to play an audio signal.&#10;// FIXME: This accessor is a placeholder.&#10;// It just plays 2 seconds of fixed audio in initialize().&#10;// You should update it to accept an input and play that.&#10;&#10;// Set up the accessor.&#10;exports.setup = function() {&#10;    accessor.author('FIXME');&#10;    accessor.version('0.1 $$Date$$');&#10;    // FIXME: Define your inputs and outputs here.&#10;};&#10;&#10;var player = null;&#10;var audio = require(&quot;audio&quot;);&#10;&#10;exports.initialize = function() {&#10;    var sinusoid = new Array(128);&#10;    // As a test, produce about 2 seconds of sound in 128-sample chunks.&#10;    var n = 0;&#10;    player = new audio.Player();&#10;    for (var j = 0; j &lt; 128; j++) {&#10;        for (var i = 0; i &lt; 128; i++) {&#10;            sinusoid[i] = Math.sin(2 * Math.PI * 440 * n++/ 8000);&#10;        }&#10;        player.play(sinusoid);&#10;    }&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (player != null) {&#10;        player.stop();&#10;        player = null;&#10;    }&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/AudioPlayer.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 180.0]">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="FIXME">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
+            </property>
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0/8000.0">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 315}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sin(2*PI*f*n/8000)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 335.0]">
+        </property>
+        <port name="n" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="f" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 410.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="220">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 420.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={817, 513, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 335.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Chirp Signal</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="-1.0" max="1.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation"/>
+    <link port="Expression.output" relation="relation5"/>
+    <link port="Expression.n" relation="relation2"/>
+    <link port="Expression.f" relation="relation4"/>
+    <link port="DiscreteClock2.output" relation="relation3"/>
+    <link port="Ramp2.output" relation="relation4"/>
+    <link port="Ramp2.trigger" relation="relation3"/>
+    <link port="TimedPlotter.input" relation="relation5"/>
+</entity>
