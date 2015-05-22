@@ -54,8 +54,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	StockTick.xml \
-	StockTickAccessor.xml \
-	StockTickMOML.xml
+	StockTickWithDate.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
