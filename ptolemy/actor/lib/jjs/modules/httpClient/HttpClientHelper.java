@@ -37,7 +37,7 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.HttpClientRequest;
 import org.vertx.java.core.http.HttpClientResponse;
 
-import ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelperBase;
+import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// HttpClientHelper
@@ -45,13 +45,13 @@ import ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelperBase;
 /**
    A helper class for the HttpClient module in JavaScript.
    
-   @author Marten Lohstroh
+   @author Marten Lohstroh, Edward A. Lee
    @version $Id: HttpClientHelper.java 71938 2015-04-08 21:55:19Z hokeunkim $
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
  */
-public class HttpClientHelper extends WebSocketHelperBase { // FIXME: rename this class to VertxHelperBase
+public class HttpClientHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -104,7 +104,7 @@ public class HttpClientHelper extends WebSocketHelperBase { // FIXME: rename thi
         	uri,
         	new HttpClientResponseHandler());
    
-        // Handler the headers.
+        // Handle the headers.
         Map headers = (Map)options.get("headers");
         if (!headers.isEmpty()) {
             for (Object key : headers.keySet()) {
@@ -120,7 +120,7 @@ public class HttpClientHelper extends WebSocketHelperBase { // FIXME: rename thi
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-        
+
     /** The current instance of the ClientRequest JavaScript object. */
     private ScriptObjectMirror _currentObj;
     

@@ -1,4 +1,4 @@
-/* AnExecute a script in JavaScript.
+/* Embedding of a Vert.x core.
 
    Copyright (c) 2014 The Regents of the University of California.
    All rights reserved.
@@ -25,30 +25,30 @@
    COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.lib.jjs.modules.webSocket;
+package ptolemy.actor.lib.jjs.modules;
 
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
 
 ///////////////////////////////////////////////////////////////////
-//// WebSocketHelper
+//// VertxHelperBase
 
 /**
-   A base class for WebSocketHelper and WebSocketServerHelper.
-   Creates only one Vert.x object and uses it internally.
+   A base class for helper classes that use an embedded Vert.x core.
+   Creates only one static Vert.x core that is accessible to its subclasses. 
    
    @author Hokeun Kim
-   @version $Id$
+   @version $Id: WebSocketHelperBase.java 72160 2015-04-29 09:58:26Z hokeunkim $
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class WebSocketHelperBase {
+public class VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                        ////
     
-    /** Instance of Vert.x Apparently we need only one. */
+    /** Global instance of Vert.x core. */
     protected  static Vertx _vertx = VertxFactory.newVertx();
 
 }

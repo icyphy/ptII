@@ -39,6 +39,8 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketBase;
 
+import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
 
@@ -53,7 +55,7 @@ import org.vertx.java.core.http.WebSocketBase;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class WebSocketHelper extends WebSocketHelperBase {
+public class WebSocketHelper extends VertxHelperBase {
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
