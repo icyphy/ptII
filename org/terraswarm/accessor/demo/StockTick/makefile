@@ -53,8 +53,7 @@ PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	StockTick.xml \
-	StockTickWithDate.xml
+	StockTick.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
