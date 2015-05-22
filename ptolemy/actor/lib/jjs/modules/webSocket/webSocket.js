@@ -30,6 +30,7 @@ var EventEmitter = require('events').EventEmitter;
  *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
  */
 exports.Client = function(options) {
+    options = options || {};
     this.port = options['port'] || 80;
     this.host = options['host'] || 'localhost';
     this.helper = WebSocketHelper.createClientSocket(this, this.host, this.port);
