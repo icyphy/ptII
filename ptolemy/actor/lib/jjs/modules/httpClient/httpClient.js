@@ -18,20 +18,22 @@ var EventEmitter = require('events').EventEmitter;
  *  defined here. This function returns an instance of ClientRequest, also defined here.
  *  The options argument is a JSON object with the following optional fields:
  *  <ul>
+ *  <li> headers: A JSON object containing request headers. By default this is an empty object.
+ *       Items may have a value that is an array of values, for headers with more than one value.
  *  <li> host: A string giving the domain name or IP address of the server to issue the request to.
  *       This defaults to 'localhost'.</li>
- *  <li> port: Port of remote server. Defaults to 80.
+ *  <li> keepAlive: A boolean that specified whether to keep sockets around in a pool
+ *       to be used by other requests in the future. This defaults to false.
  *  <li> method: A string specifying the HTTP request method. This defaults to 'GET', but can
  *       also be 'PUT', 'POST', 'DELETE', etc.
  *  <li> path: Request path as a string. This defaults to '/'. This can include a
- *       query string, e.g. '/index.html?page=12'. An exception is thrown if the request
+ *       query string, e.g. '/index.html?page=12', or the query string can be specified
+ *       as a separate field (see below). An exception is thrown if the request
  *       path contains illegal characters. Currently, only spaces are rejected but that
  *       may change in the future.
+ *  <li> port: Port of remote server. Defaults to 80.
  *  <li> protocol: The protocol. This is a string that defaults to 'http'.
- *  <li> headers: A JSON object containing request headers. By default this is an empty object.
- *       Items may have a value that is an array of values, for headers with more than one value.
- *  <li> keepAlive: A boolean that specified whether to keep sockets around in a pool
- *       to be used by other requests in the future. This defaults to false.
+ *  <li> query: A query string to be appended to the path, such as '?page=12'.
  *  </ul>
  *  Alternatively, the options argument may be given as a URL (a string), in which case
  *  an HTTP GET will be issued to that URL.
@@ -116,7 +118,7 @@ function ClientRequest(options, reponseCallback) {
     'path':'/',
     'headers':{},
     'keepAlive':false,
-    'keepAliveMsecs':1000
+    'query':''
   };
     
   if (util.isString(options)) {
@@ -132,7 +134,8 @@ function ClientRequest(options, reponseCallback) {
         'host':url.getHost(),
         'path':url.getPath(),
         'protocol':url.getProtocol(),
-        'port':port
+        'port':port,
+        'query':url.getQuery()
     };
   }
   // Fill in default values.
@@ -147,6 +150,8 @@ function ClientRequest(options, reponseCallback) {
   self.on('error', function(message) {
     console.error(message);
   });
+  
+  console.log("Making an HTTP request: " + JSON.stringify(options));
 
   this.helper = HttpClientHelper.createHttpClient(this, options);
 }
