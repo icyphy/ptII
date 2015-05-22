@@ -21,11 +21,8 @@ var EventEmitter = require('events').EventEmitter;
  *  <li> host: A string giving the domain name or IP address of the server to issue the request to.
  *       This defaults to 'localhost'.</li>
  *  <li> port: Port of remote server. Defaults to 80.
- *  <li> localAddress: A string giving a name or IP address for the local network interface to use
- *       for network connections. This defaults to 'localhost', but on machines with more than one
- *       network interface (e.g. WiFi and Ethernet), you may need to specify which one to use.
  *  <li> method: A string specifying the HTTP request method. This defaults to 'GET', but can
- *       also be 'PUT', 'POST', or 'DELETE'.
+ *       also be 'PUT', 'POST', 'DELETE', etc.
  *  <li> path: Request path as a string. This defaults to '/'. This can include a
  *       query string, e.g. '/index.html?page=12'. An exception is thrown if the request
  *       path contains illegal characters. Currently, only spaces are rejected but that
@@ -35,9 +32,6 @@ var EventEmitter = require('events').EventEmitter;
  *       Items may have a value that is an array of values, for headers with more than one value.
  *  <li> keepAlive: A boolean that specified whether to keep sockets around in a pool
  *       to be used by other requests in the future. This defaults to false.
- *  <li> keepAliveMsecs: When using HTTP KeepAlive, this is an integer that specifies
- *       how often (in milliseconds) to send a TCP KeepAlive packet over sockets being kept alive.
- *       This defaults 1000 and is only relevant if keepAlive is set to true.
  *  </ul>
  *  Alternatively, the options argument may be given as a URL (a string), in which case
  *  an HTTP GET will be issued to that URL.
@@ -47,6 +41,16 @@ var EventEmitter = require('events').EventEmitter;
 exports.request = function(options, responseCallback) {
   return new ClientRequest(options, responseCallback);
 };
+
+// NOTE: Perhaps options should include a localAddress: A string giving a name or 
+// IP address for the local network interface to use
+// for network connections. This defaults to 'localhost', but on machines with more than one
+//  network interface (e.g. WiFi and Ethernet), you may need to specify which one to use.
+
+// NOTE: Node has keepAliveMsecs, but I don't see anything like it in Vert.x
+// When using HTTP KeepAlive, this is an integer that specifies
+// how often (in milliseconds) to send a TCP KeepAlive packet over sockets being kept alive.
+// This defaults 1000 and is only relevant if keepAlive is set to true.
 
 // NOTE: The following options are supported by http.request() in Node.js, but not here,
 // or at least not tested (yet):
@@ -141,7 +145,7 @@ function ClientRequest(options, reponseCallback) {
   }
   
   self.on('error', function(message) {
-    throw(message);
+    console.error(message);
   });
 
   this.helper = HttpClientHelper.createHttpClient(this, options);
@@ -168,12 +172,11 @@ ClientRequest.prototype.write = function(data, encoding) {
 ClientRequest.prototype._response = function(response, body) {
     var code = response.statusCode();
     if (code >= 400) {
-        // An error occurred.
+        // An error occurred. Emit both an error event and a response event.
         this.emit('error', 'Received response code ' + code + ". " + response.statusMessage());
-    } else {
-        var message = new IncomingMessage(response, body);
-        this.emit('response', message);
     }
+    var message = new IncomingMessage(response, body);
+    this.emit('response', message);
 }
 
 // NOTE: The following events are produce by IncomingMessage in Node.js
@@ -191,7 +194,9 @@ ClientRequest.prototype._response = function(response, body) {
  *  <ul>
  *  <li> statusCode: an integer indicating the status of the response. </li>
  *  <li> statusMessage: a string with the status message of the response. </li>
+ *  <li> body: a string with the body of the response. </li>
  *  </ul>
+ *  FIXME: At this time, only UTF-8-encoded string bodies are supported.
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */
 IncomingMessage = function(response, body) {

@@ -89,6 +89,9 @@ public class HttpClientHelper extends VertxHelperBase {
         client.setHost((String) options.get("host")); 
         client.setPort((int) options.get("port")); 
         client.exceptionHandler(new HttpClientExceptionHandler());
+        if ((boolean)options.get("keepAlive")) {
+            client.setKeepAlive(true);
+        }
         // FIXME: Provide a timeout. Use setTimeout() of the client.
         
         // FIXME: Support https.
