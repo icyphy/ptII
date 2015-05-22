@@ -94,13 +94,18 @@ public class HttpClientHelper extends VertxHelperBase {
         }
         // FIXME: Provide a timeout. Use setTimeout() of the client.
         
-        // FIXME: Support https.
+        String query = options.get("query").toString().trim();
+        if(!query.equals("") && !query.startsWith("?")) {
+            query = "?" + query;
+        }
+        
         String uri = options.get("protocol")
         	+ "://"
         	+ options.get("host")
         	+ ":"
         	+ options.get("port")
-        	+ options.get("path");
+        	+ options.get("path")
+        	+ query;
         
         _request = client.request(
         	(String)options.get("method"),
