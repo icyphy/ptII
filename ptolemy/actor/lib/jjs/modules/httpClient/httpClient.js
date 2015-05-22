@@ -71,6 +71,19 @@ exports.get = function(options, reponseCallback) {
   return request;
 };
 
+// NOTE: The following events are produce by ClientRequest in Node.js
+// From: http.ClientRequest 
+// Event: 'response'
+// Event: 'socket'
+// Event: 'connect'
+// Event: 'upgrade'
+// Event: 'continue'
+// From stream.Writeable
+// Event: 'finish'
+// Event: 'pipe'
+// Event: 'unpipe'
+// Event: 'error'
+
 /** The class returned by the request function.
  *  This class provides the following functions:
  *  <ul>
@@ -162,6 +175,14 @@ ClientRequest.prototype._response = function(response, body) {
         this.emit('response', message);
     }
 }
+
+// NOTE: The following events are produce by IncomingMessage in Node.js
+// From stream.Readable
+// Event: 'readable'
+// Event: 'data'
+// Event: 'end'
+// Event: 'close'
+// Event: 'error'
 
 /** Incoming message class.  This should not be constructed by the user,
  *  but rather is constructed by the _response function above.
