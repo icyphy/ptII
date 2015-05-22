@@ -18,24 +18,24 @@ var EventEmitter = require('events').EventEmitter;
  *  defined here. This function returns an instance of ClientRequest, also defined here.
  *  The options argument is a JSON object with the following optional fields:
  *  <ul>
- *  <li> '''host''': A string giving the domain name or IP address of the server to issue the request to.
+ *  <li> host: A string giving the domain name or IP address of the server to issue the request to.
  *       This defaults to 'localhost'.</li>
- *  <li> '''port''': Port of remote server. Defaults to 80.
- *  <li> '''localAddress''': A string giving a name or IP address for the local network interface to use
+ *  <li> port: Port of remote server. Defaults to 80.
+ *  <li> localAddress: A string giving a name or IP address for the local network interface to use
  *       for network connections. This defaults to 'localhost', but on machines with more than one
  *       network interface (e.g. WiFi and Ethernet), you may need to specify which one to use.
- *  <li> '''method''': A string specifying the HTTP request method. This defaults to 'GET', but can
+ *  <li> method: A string specifying the HTTP request method. This defaults to 'GET', but can
  *       also be 'PUT', 'POST', or 'DELETE'.
- *  <li> '''path''': Request path as a string. This defaults to '/'. This can include a
+ *  <li> path: Request path as a string. This defaults to '/'. This can include a
  *       query string, e.g. '/index.html?page=12'. An exception is thrown if the request
  *       path contains illegal characters. Currently, only spaces are rejected but that
  *       may change in the future.
- *  <li> '''protocol''': The protocol. This is a string that defaults to 'http'.
- *  <li> '''headers''': A JSON object containing request headers. By default this is an empty object.
+ *  <li> protocol: The protocol. This is a string that defaults to 'http'.
+ *  <li> headers: A JSON object containing request headers. By default this is an empty object.
  *       Items may have a value that is an array of values, for headers with more than one value.
- *  <li> '''keepAlive''': A boolean that specified whether to keep sockets around in a pool
+ *  <li> keepAlive: A boolean that specified whether to keep sockets around in a pool
  *       to be used by other requests in the future. This defaults to false.
- *  <li> '''keepAliveMsecs''': When using HTTP KeepAlive, this is an integer that specifies
+ *  <li> keepAliveMsecs: When using HTTP KeepAlive, this is an integer that specifies
  *       how often (in milliseconds) to send a TCP KeepAlive packet over sockets being kept alive.
  *       This defaults 1000 and is only relevant if keepAlive is set to true.
  *  </ul>
@@ -87,8 +87,8 @@ exports.get = function(options, reponseCallback) {
 /** The class returned by the request function.
  *  This class provides the following functions:
  *  <ul>
- *  <li> '''end'''(): Call this to end the request. </li>
- *  <li> '''write'''(''data'', ''encoding''): Write data (e.g. for a POST request). </li>
+ *  <li> end(): Call this to end the request. </li>
+ *  <li> write(''data'', ''encoding''): Write data (e.g. for a POST request). </li>
  *  </ul>
  *  See the documentation of the request function for an explanation of the arguments.
  *  This is an event emitter that emits the following events:
@@ -189,8 +189,8 @@ ClientRequest.prototype._response = function(response, body) {
  *  An instance of this class will be passed to the callback passed to the
  *  request() or get() functions. The instance contains:
  *  <ul>
- *  <li> '''statusCode''': an integer indicating the status of the response. </li>
- *  <li> '''statusMessage''': a string with the status message of the response. </li>
+ *  <li> statusCode: an integer indicating the status of the response. </li>
+ *  <li> statusMessage: a string with the status message of the response. </li>
  *  </ul>
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */
