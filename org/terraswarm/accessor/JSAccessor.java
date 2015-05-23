@@ -368,7 +368,7 @@ public class JSAccessor extends JavaScript {
 	    throw new IllegalActionException("No source file specified.");
 	}
 
-        final URL url = FileUtilities.nameToURL(urlSpec, null, null);
+        final URL url = FileUtilities.nameToURL(urlSpec.trim(), null, null);
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
