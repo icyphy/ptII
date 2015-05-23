@@ -165,6 +165,13 @@ import ptolemy.util.StringUtilities;
    <p>
    The context in which your functions run provide the following global functions:</p>
    <ul>
+   <li> addInputHandler(function, input): Specify a function to invoke when the input
+        with name input (a string) receives a new input value. Note that after that
+        function is invoked, the accessor's fire() function will also be invoked,
+        if it is defined. If the specified function is null, then only the fire()
+        function will be invoked. If the input argument is null or omitted, then
+        the specified function will be invoked when any new input arrives to the
+        accessor. This function returns a handle that can be used to call removeInputHandler().</li>
    <li> alert(string): pop up a dialog with the specified message.</li>
    <li> clearInterval(int): clear an interval with the specified handle.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
@@ -174,8 +181,10 @@ import ptolemy.util.StringUtilities;
    <li> localHostAddress(): If not in restricted mode, return the local host IP address as a string. </li>
    <li> print(string): print the specified string to the console (standard out).</li>
    <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
+   <li> removeInputHandler(handle, input): Remove the callback function with the specified handle
+        (returned by addInputHandler()) for the specified input (a string). </li>
    <li> require(string): load and return a CommonJS module by name. See
-   <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
+        <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
    <li> send(value, port, n): send a value to an output port on channel n</li>
    <li> set(value, parameter): set the value of a parameter of this JavaScript actor. </li>
    <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
@@ -443,6 +452,19 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add an input handler to be invoked when there is a new token on
+     *  any input port.
+     *  @param handle The handler handle.
+     *  @see #removeInputHandler(Integer)
+     */
+    public int addInputHandler(final Runnable function) throws IllegalActionException {
+        if (_genericInputHandlers == null) {
+            _genericInputHandlers = new LinkedList<Runnable>();
+        }
+        _genericInputHandlers.add(function);
+        return _genericInputHandlers.size() - 1;
+    }
+
     /** React to a change in an attribute, and if the attribute is the
      *  script parameter, and the script parameter possibly contains a
      *  'setup' function, then evaluate that function. This means that as
@@ -454,22 +476,17 @@ public class JavaScript extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
 	if (attribute == script) {
-	    // Since it is fairly expensive to do all this, only do it if
-	    // there is some possibility that the script contains a setup() function.
-	    String scriptValue = ((StringToken)script.getToken()).stringValue();
-	    if (scriptValue.contains("setup")) {
+	    try {
+		_createEngineAndEvaluateSetup();
+	    } catch (Exception e) {
+		// Turn exceptions into warnings.
+		// Otherwise, Vergil may refuse to instantiate the actor
+		// and novice users will loose data.
 		try {
-		    _createEngineAndEvaluateSetup();
-		} catch (Exception e) {
-		    // Turn exceptions into warnings.
-		    // Otherwise, Vergil may refuse to instantiate the actor
-		    // and novice users will loose data.
-		    try {
-			// FIXME: For some reason, this gets invoked twice!
-			MessageHandler.warning("Failed to evaluate script.", e);
-		    } catch (CancelException e1) {
-			throw new IllegalActionException(this, e, "Cancelled");
-		    }
+		    // FIXME: For some reason, this gets invoked twice!
+		    MessageHandler.warning("Failed to evaluate script.", e);
+		} catch (CancelException e1) {
+		    throw new IllegalActionException(this, e, "Cancelled");
 		}
 	    }
 	} else {
@@ -520,6 +537,7 @@ public class JavaScript extends TypedAtomicActor {
         newObject._pendingTimeoutIDs = null;
         newObject._proxies = null;
         newObject._proxiesByName = null;
+        newObject._genericInputHandlers = null;
         return newObject;
     }
 
@@ -664,6 +682,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         // Update port parameters.
+        boolean foundNewInput = false;
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
             if (portParameter == script) {
                 continue;
@@ -671,6 +690,7 @@ public class JavaScript extends TypedAtomicActor {
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
             if (portParameter.update()) {
         	proxy._hasNewInput(true);
+        	foundNewInput = true;
         	if (_debugging) {
         	    _debug("Received new input on " 
         		    + portParameter.getName()
@@ -681,6 +701,7 @@ public class JavaScript extends TypedAtomicActor {
         	// There is no new input, but there is a locally provided one.
         	portParameter.setCurrentValue(proxy._localInputTokens.remove(0));
         	proxy._hasNewInput(true);
+        	foundNewInput = true;
             } else {
         	proxy._hasNewInput(false);
             }
@@ -728,11 +749,14 @@ public class JavaScript extends TypedAtomicActor {
             _inputTokens.put(input, tokens);
             if (hasInput) {
         	proxy._hasNewInput(true);
+        	foundNewInput = true;
             } else {
         	proxy._hasNewInput(false);
             }
         }
-        // Invoke any timeout callbacks whose timeout matches current time.
+        // Invoke any timeout callbacks whose timeout matches current time,
+        // followed by specific input handlers, followed by generic input handlers,
+        // followed by the fire function.
         // Synchronize to ensure that this function invocation is atomic
         // w.r.t. to any callbacks.
         synchronized (this) {
@@ -778,6 +802,18 @@ public class JavaScript extends TypedAtomicActor {
                         continue;
                     }
                     _proxies.get(input).invokeHandlers();
+                }
+                
+                // Invoke generic input handlers.
+                if (foundNewInput && _genericInputHandlers != null && _genericInputHandlers.size() > 0) {
+                    for (Runnable function : _genericInputHandlers) {
+                	if (function != null) {
+                	    function.run();
+                	    if (_debugging) {
+                		_debug("Invoked generic input handler function.");
+                	    }
+                	}
+                    }
                 }
 
         	// Invoke the fire function.
@@ -1167,6 +1203,19 @@ public class JavaScript extends TypedAtomicActor {
         return response.toString();
     }
     
+    /** Remove the input handler with the specified handle, if it exists.
+     *  @param handle The handler handle.
+     *  @see #addInputHandler(Runnable)
+     */
+    public void removeInputHandler(Integer handle) {
+        if (handle != null) {
+            int n = handle.intValue();
+            if (_genericInputHandlers != null && n < _genericInputHandlers.size()) {
+        	_genericInputHandlers.remove(n);
+            }
+        }
+    }
+
     /** Invoke the specified function after the specified amount of time and again
      *  at multiples of that time.
      *  The time will be added to the current time of the director, and fireAt()
@@ -1277,9 +1326,14 @@ public class JavaScript extends TypedAtomicActor {
 		+ name);
 	}
 	if (isJavaScriptKeyword(name)) {
-	throw new IllegalActionException(this,
-		"Port name is a JavaScript keyword: "
-		+ name);
+	    try {
+		MessageHandler.warning(
+			"Port name is a JavaScript keyword: "
+			+ name);
+	    } catch (CancelException e) {
+		throw new IllegalActionException(this,
+			"Cancelled.");
+	    }
 	}
     }
 
@@ -1363,6 +1417,10 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IllegalActionException If an error occurs.
      */
     private void _createEngineAndEvaluateSetup() throws IllegalActionException {
+	
+	// Reset state so that there isn't spillover from previous scripts.
+	_genericInputHandlers = null;
+	
 	// Create a script engine.
         // This is private to this class, so each instance of JavaScript
         // has its own completely isolated script engine.
@@ -1600,6 +1658,9 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
+
+    /** A list of generic input handlers, in the order in which they are invoked. */
+    private List<Runnable> _genericInputHandlers;
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
