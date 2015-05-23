@@ -9,13 +9,13 @@ var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
 // This file contains a template for a CommonJS module.
 // It is to be completed by you.
 
-/** Construct an instance of an Audio class. This should be instantiated in your
+/** Construct an instance of an Audio object type. This should be instantiated in your
  *  JavaScript code as
  *  <pre>
  *     var Audio = require("audio");
  *     var player = new Audio.Player;
  *  </pre>
- *  An instance of the class implements the following functions:
+ *  An instance of this object type implements the following functions:
  *  (FIXME: replace with your design)
  *  <ul>
  *  <li> '''play'''(): Play the specified array.
