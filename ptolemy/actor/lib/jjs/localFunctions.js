@@ -43,7 +43,7 @@ function addInputHandler(func, port) {
     } else if (typeof func !== 'function') {
         throw('First argument of addInputHandler is required to be a function. Provided: ' + func);
     }
-    if (!proxy) {
+    if (!proxy && port) {
         throw('No such input: ' + port);
     }
     var callback = func;
@@ -55,8 +55,14 @@ function addInputHandler(func, port) {
             func.apply(this, tail);
         };
     }
-    var id = proxy.addInputHandler(callback);
-    return id;
+    if (proxy) {
+        var id = proxy.addInputHandler(callback);
+        return id;
+    } else {
+        // Add generic input handler.
+        var id = actor.addInputHandler(callback);
+        return id;
+    }
 }
 
 /** Default empty function to use if the function argument to
@@ -112,9 +118,10 @@ function removeInputHandler(handle, port) {
         proxy = actor.getPortOrParameterProxy(port);
     }
     if (!proxy) {
-        throw('No such input: ' + port);
+        actor.removeInputHandler(handle);
+    } else {
+        proxy.removeInputHandler(handle);
     }
-    proxy.removeInputHandler(handle);
 }
 
 /** Send data to an output port.
