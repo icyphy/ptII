@@ -90,6 +90,7 @@ JSRCS = \
 	Torus3D.java \
 	Translate2D.java \
 	Translate3D.java \
+	ViewLayers3D.java \
 	ViewScreen3D.java \
 	ViewScreen2D.java
 
@@ -132,6 +133,7 @@ OPTIONAL_FILES = \
 	'MouseInput3D$$1.class' \
 	'MouseInput3D$$React.class' \
 	'ViewScreen$$MouseRotateView.class' \
+	'ViewLayers3D$MouseRotateView.class' \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
