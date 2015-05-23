@@ -9,17 +9,17 @@ var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
 // This file contains a template for a CommonJS module.
 // It is to be completed by you.
 
-/** Construct an instance of an Audio object type. This should be instantiated in your
+/** Construct an instance of an Player object type. This should be instantiated in your
  *  JavaScript code as
  *  <pre>
- *     var Audio = require("audio");
- *     var player = new Audio.Player;
+ *     var audio = require("audio");
+ *     var player = new audio.Player();
  *  </pre>
  *  An instance of this object type implements the following functions:
  *  (FIXME: replace with your design)
  *  <ul>
- *  <li> '''play'''(): Play the specified array.
- *  <li> '''stop'''(): Stop playback and free the audio resources.
+ *  <li> play(data): Play the specified array.
+ *  <li> stop(): Stop playback and free the audio resources.
  *  </ul>
  *  @param options A JSON object with fields 'FIXME' and 'FIXME' that give the
  *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
