@@ -515,7 +515,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
      */
-    public void clearTimeout(Integer handle) {
+    public synchronized void clearTimeout(Integer handle) {
         // NOTE: The handle for this timeout remains in the
         // _pendingTimeoutIDs map, but it is more efficient to remove
         // it from that map when the firing occurs.
@@ -779,19 +779,24 @@ public class JavaScript extends TypedAtomicActor {
                     Time currentTime = getDirector().getModelTime();
                     List<Integer> ids = _pendingTimeoutIDs.get(currentTime);
                     if (ids != null) {
-                        for (Integer id : ids) {
-                            Runnable function = _pendingTimeoutFunctions.get(id);
-                            if (function != null) {
-                        	// Remove the id before firing the function because it may
-                        	// reschedule itself using the same id.
-                                _pendingTimeoutFunctions.remove(id);
-                                function.run();
-                                if (_debugging) {
-                                    _debug("Invoked timeout function.");
-                                }
-                            }
-                        }
-                        _pendingTimeoutIDs.remove(currentTime);
+                	// Copy the list, because setInterval reschedules a firing
+                	// and will cause a concurrent modification exception otherwise.
+                	List<Integer> copy = new LinkedList<Integer>(ids);
+                	if (ids != null) {
+                	    for (Integer id : copy) {
+                		Runnable function = _pendingTimeoutFunctions.get(id);
+                		if (function != null) {
+                		    // Remove the id before firing the function because it may
+                		    // reschedule itself using the same id.
+                		    _pendingTimeoutFunctions.remove(id);
+                		    function.run();
+                		    if (_debugging) {
+                			_debug("Invoked timeout function.");
+                		    }
+                		}
+                	    }
+                	    _pendingTimeoutIDs.remove(currentTime);
+                	}
                     }
                 }
                 
@@ -1162,7 +1167,7 @@ public class JavaScript extends TypedAtomicActor {
      *   default JavaScript files fails, or if the superclass throws it.
      */
     @Override
-    public void preinitialize() throws IllegalActionException {
+    public synchronized void preinitialize() throws IllegalActionException {
         super.preinitialize();
         
         _executing = true;
@@ -1235,7 +1240,7 @@ public class JavaScript extends TypedAtomicActor {
         // itself.
         final Runnable reschedulingFunction = new Runnable() {
             @Override
-			public void run() {
+            public void run() {
         	_runThenReschedule(function, milliseconds, id);
             }
         };
@@ -1575,7 +1580,7 @@ public class JavaScript extends TypedAtomicActor {
 	function.run();
         final Runnable reschedulingFunction = new Runnable() {
             @Override
-			public void run() {
+            public void run() {
         	_runThenReschedule(function, milliseconds, id);
             }
         };
@@ -1603,7 +1608,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @return A unique ID for this callback.
      *  @throws IllegalActionException If the director cannot respect the request.
      */
-    private void _setTimeout(final Runnable function, int milliseconds, Integer id)
+    private synchronized void _setTimeout(final Runnable function, int milliseconds, Integer id)
 	    throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
         final Time callbackTime = currentTime.add(milliseconds * 0.001);
