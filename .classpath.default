@@ -59,9 +59,9 @@
         <classpathentry kind="lib" path="lib/smackx.jar"/>
         <classpathentry kind="lib" path="lib/socketio.jar"/>
         <classpathentry kind="lib" path="lib/sootclasses.jar"/>
-        <classpathentry kind="lib" path="lib/vertx-core-2.1.4.jar"/>
-        <classpathentry kind="lib" path="lib/vertx-hazelcast-2.1.4.jar"/>
-        <classpathentry kind="lib" path="lib/vertx-platform-2.1.4.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-core-2.1.5.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-hazelcast-2.1.5.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-platform-2.1.5.jar"/>
 
 
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
