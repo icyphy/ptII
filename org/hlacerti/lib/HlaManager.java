@@ -248,7 +248,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _hlaStartTime = null;
         _hlaTimeStep = null;
         _hlaLookAHead = null;
-
+                
         // HLA Federation management parameters.
         federateName = new Parameter(this, "federateName");
         federateName.setDisplayName("Federate's name");
@@ -333,8 +333,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isCreator.setExpression("false");
         isCreator.setDisplayName("Is synchronization point creator ?");
         attributeChanged(isCreator);
-        
-        
+       
     }
      
     ///////////////////////////////////////////////////////////////////
@@ -505,6 +504,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._federationName = _federationName;
         newObject._isTimeConstrained = _isTimeConstrained;
         newObject._isTimeRegulator = _isTimeRegulator;
+        
         try {
             newObject._hlaStartTime = ((DoubleToken) hlaStartTime.getToken())
                     .doubleValue();
@@ -709,17 +709,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 }
             }
 
-            // Satisfied synchronization point.
-            try {
-                _rtia.synchronizationPointAchieved(_synchronizationPointName);
-                if (_debugging) {
-                    _debug(this.getDisplayName()
-                            + " initialize() - Synchronisation point "
-                            + _synchronizationPointName + " satisfied !");
+                // Satisfied synchronization point.
+                try {
+                    _rtia.synchronizationPointAchieved(_synchronizationPointName);
+                    if (_debugging) {
+                        _debug(this.getDisplayName()
+                                + " initialize() - Synchronisation point "
+                                + _synchronizationPointName + " satisfied !");
+                    }
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e, e.getMessage());
                 }
-            } catch (RTIexception e) {
-                throw new IllegalActionException(this, e, e.getMessage());
-            }
 
             // Wait federation synchronization.
             while (_federateAmbassador.inPause) {
@@ -736,14 +736,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         } // End block for synchronization point.
 
-        // GL: FIXME: need to test deeper then remove this call.
-        // tick() one time to avoid missing callbacks before the start of the
-        // simulation.
+        //Put it back unti we review the synchronization algorithm
         try {
             _rtia.tick();
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
-        }
+    }
     }
 
     /** Launch the HLA/CERTI RTIG process as subprocess. The RTIG has to be
@@ -1116,7 +1114,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         super.wrapup();
         _strucuralInformation.clear();
         _registeredObject.clear();
-
+        
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
         }
@@ -1612,6 +1610,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
             
             _objectIdToClassHandle.put(objectHandle, classHandle);
             
+            //if we discover it means we registered
+            // it meands there is a class to instanciate and then classToInstantiate is not null
             final CompositeActor classToInstantiate = 
                     (CompositeActor) _strucuralInformation.get(classHandle).classToInstantiate;
             
@@ -1640,14 +1640,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     newActor = (CompositeActor) instance;
                                     
                                     LinkedList<IOPort> outputPortList= (LinkedList<IOPort>) newActor.outputPortList();
-                                    Iterator i = outputPortList.iterator();
+
                                     container.notifyConnectivityChange();
+                                   
                                     for(IOPort out : outputPortList){
                                         ComponentRelation r=null;
                                         for(IOPort recv : info.relations.get(out.getName())){
                                             if(r==null) {
+                                                //connect output port to new relation
                                                 r = container.connect(out, recv,objectName + " " + out.getName());
                                             } else{
+                                                //connect destination to relation
                                                 recv.link(r);
                                             }
                                         }
@@ -1665,7 +1668,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         _debug(instance.getName() + " will do object " + objectName);
                                     }
                                 }
-
+                                
+                                //if the actor as an attribute called temp block
+                                //then set it up to the actual name
+                                {
+                                    Attribute name = newActor.getAttribute("federateName");
+                                    if(name != null){
+                                        Parameter p = (Parameter) name;
+                                        p.setTypeEquals(BaseType.STRING);
+                                        p.setExpression("\""+objectName+"\"");
+                                    }
+                                }
+                                
                                 // List all HlaSubscriber inside the instance and set them up
                                 List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
                                 for(int  i = 0 ; i < subscribers.size() ; ++i){
@@ -1678,7 +1692,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                 sub.output, sub.output.getType(),
                                                 "", //empty string because it is parameter no longer used, but
                                                     // some functions rely on classHandle and attributeHandle
-                                                    // being at pos 3 and 4
+                                                    // being at index 3 and 4
                                                 classHandle, sub.getAttributeHandle()}
                                     );
                                     _fromFederationEvents.put(sub.getIdentity(),new LinkedList<TimedEvent>());
@@ -1689,20 +1703,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         }
                     };
             request.setPersistent(false);
-            
-            String toLog = HlaManager.this.getDisplayName() + " INNER"
-                            + " discoverObjectInstance() - the object "
-                            + objectName + " has been discovered" + " (ID="
-                            + objectHandle + ", class'ID=" + classHandle
-                            + ")";
-            if(classToInstantiate != null) {
-                //execute
-                requestChange(request);
-            } else {
-                // No class for that ID, then we can't do anything, just log 
-                toLog +=" BUT NO CLASS TO HANDLE IT. CANT DO ANYTHING";
-            }
+            requestChange(request);
+
             if (_debugging) {
+                String toLog = HlaManager.this.getDisplayName() + " INNER"
+                        + " discoverObjectInstance() - the object "
+                        + objectName + " has been discovered" + " (ID="
+                        + objectHandle + ", class'ID=" + classHandle
+                        + ")";
                 _debug(toLog);
             }
         }
