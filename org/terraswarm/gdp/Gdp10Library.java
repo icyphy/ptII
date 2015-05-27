@@ -20,7 +20,7 @@ import org.terraswarm.gdp.EP_STAT.ByValue;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public interface Gdp10Library extends Library {
-	public static final String JNA_LIBRARY_NAME = "gdp.1.0";
+	public static final String JNA_LIBRARY_NAME = "gdp.0.2";
 	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(Gdp10Library.JNA_LIBRARY_NAME);
 	public static final Gdp10Library INSTANCE = (Gdp10Library)Native.loadLibrary(Gdp10Library.JNA_LIBRARY_NAME, Gdp10Library.class);
 	/**
