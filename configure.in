@@ -3201,9 +3201,9 @@ if test ! -d "$PTJSOUP_USER_DIR"; then
 else
     AC_MSG_CHECKING([for JSoup, used when exporting html pages. ])
     AC_ARG_WITH(jsoup, [  --with-jsoup=JAR       use jsoup.jar from JAR,
-                          defaults to \$PTII/lib/jsoup-1.7.3.jar],
+                          defaults to \$PTII/lib/jsoup-1.8.2.jar],
         PTJSOUP_JAR=$withval,
-	PTJSOUP_JAR=$PTII/lib/jsoup-1.7.3.jar)
+	PTJSOUP_JAR=$PTII/lib/jsoup-1.8.2.jar)
 
     if test  -f "$PTJSOUP_JAR"; then
 	PT_MSG_RESULT([$PTJSOUP_JAR])
@@ -3215,7 +3215,7 @@ else
         updateExcludes "ptolemy/vergil/basic/export/html/"
         AC_MSG_WARN([Failed to find the JSoup jar files necessary to
     to compile the export html facility.
-    Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar.])
+    Typically, JSoup is found at $PTII/lib/jsoup-1.8.2.jar.])
     fi
 fi
 
