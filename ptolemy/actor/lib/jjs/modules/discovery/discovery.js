@@ -11,7 +11,9 @@
  *  Accessors overview: https://www.terraswarm.org/accessors/
  *  Device discovery overview:  http://www.terraswarm.org/testbeds/wiki/Main/DiscoverEthernetMACs
  *
- *  Author: Elizabeth Latronico
+ *  @module discovery
+ *  @author Elizabeth Latronico
+ *  @copyright http://terraswarm.org/accessors/copyright.txt
  */
 
 var EventEmitter = require("events").EventEmitter;
