@@ -114,6 +114,9 @@ public class HttpClientHelper extends VertxHelperBase {
         	+ options.get("path")
         	+ query;
         
+        if (options.get("protocol").equals("https")) {
+            client.setSSL(true);
+        }
         _request = client.request(
         	(String)options.get("method"),
         	uri,
