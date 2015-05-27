@@ -86,6 +86,7 @@ public class HttpClientHelper extends VertxHelperBase {
         _currentObj = currentObj;
         HttpClient client = _vertx.createHttpClient();
         // FIXME: Why does Vert.x require setHost and setPort and also a URI?
+        // FIXME: Provide some methods that handle safe type conversion instead of casting.
         client.setHost((String) options.get("host")); 
         client.setPort((int) options.get("port")); 
         client.exceptionHandler(new HttpClientExceptionHandler());
@@ -94,7 +95,13 @@ public class HttpClientHelper extends VertxHelperBase {
         }
         // FIXME: Provide a timeout. Use setTimeout() of the client.
         
-        String query = options.get("query").toString().trim();
+        String query = (String)options.get("query");
+        if (query != null) { 
+            query.toString().trim();
+        } else {
+            query = "";
+        }
+        
         if(!query.equals("") && !query.startsWith("?")) {
             query = "?" + query;
         }
