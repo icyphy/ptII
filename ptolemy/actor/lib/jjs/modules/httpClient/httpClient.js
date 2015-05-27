@@ -7,7 +7,7 @@
 
 // Java types used.
 var HttpClientHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper');
-var URL = Java.type('java.net.URL');
+var URL = Java.type('java.net.URL'); // FIXME: eventually, have a url module for this
 
 var EventEmitter = require('events').EventEmitter;
 
@@ -46,6 +46,10 @@ exports.request = function(options, responseCallback) {
 // IP address for the local network interface to use
 // for network connections. This defaults to 'localhost', but on machines with more than one
 //  network interface (e.g. WiFi and Ethernet), you may need to specify which one to use.
+// Marten, 05/21/2015: I'm not sure if I understand the problem (or solution) here.
+// Depending on the IP address, the host's routing table will
+// determine which device will be used. The name 'localhost' does not signify a 
+// network interface but a hostname.
 
 // NOTE: Node has keepAliveMsecs, but I don't see anything like it in Vert.x
 // When using HTTP KeepAlive, this is an integer that specifies
@@ -75,7 +79,7 @@ exports.get = function(options, reponseCallback) {
   return request;
 };
 
-// NOTE: The following events are produce by ClientRequest in Node.js
+// NOTE: The following events are produced by ClientRequest in Node.js
 // From: http.ClientRequest 
 // Event: 'response'
 // Event: 'socket'
