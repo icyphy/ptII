@@ -1,7 +1,10 @@
-// Module to access audio hardware on the host.
-// Authors: FIXME
-// Copyright: http://terraswarm.org/accessors/copyright.txt
-
+/**
+ * Module to access audio hardware on the host.
+ * @module audio
+ * @author FIXME
+ * @copyright http://terraswarm.org/accessors/copyright.txt
+ */
+ 
 // Reference to the Java class documented at:
 //    http://terra.eecs.berkeley.edu:8080/job/ptII/javadoc/ptolemy/media/javasound/LiveSound.html
 var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
