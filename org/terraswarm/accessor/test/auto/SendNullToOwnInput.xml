@@ -12,12 +12,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every five seconds, suppress the output for five seconds.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 163, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
@@ -27,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0, 1.0, 2.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-8">
         </property>
@@ -36,10 +30,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
         </property>
     </entity>
-    <entity name="SendNullToOwnInput" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = get(input);&#10;       send(value, output);&#10;       send(null, input);&#10;   }&#10;}&#10;setTimeout(null, 0);&#10;	// &#10;  ">
+    <entity name="SendNullToOwnInput" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Request a firing at time 0.&#10;    setTimeout(null, 0);&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 3) {&#10;       var value = get(input);&#10;       send(value, 'output');&#10;       send(count, 'input');&#10;   }&#10;}&#10;&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/SendNullToOwnInput.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/SendNullToOwnInput.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor sends a null to its own input, then forwards the value to the output.&#10;	&#10;  ">
@@ -55,7 +49,7 @@
             <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The count of the firing.">
             </property>
         </property>
-        <property name="input" class="ptolemy.actor.parameters.PortParameter" value="42">
+        <property name="input" class="ptolemy.actor.parameters.PortParameter" value="3">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 190.0]">
         </property>
