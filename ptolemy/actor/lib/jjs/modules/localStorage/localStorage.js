@@ -1,9 +1,11 @@
-// Module supporting persistent local key-value storage.
-// Has the same interface as the node-persist (https://github.com/simonlast/node-persist),
-// except for values(callback) and fine-grained control functions (e.g. persist()).
-// Authors: Hokeun Kim
-// Copyright: http://terraswarm.org/accessors/copyright.txt
-//
+/**
+ * Module supporting persistent local key-value storage.
+ * Has the same interface as the node-persist (https://github.com/simonlast/node-persist),
+ * except for values(callback) and fine-grained control functions (e.g. persist()).
+ * @module localStorage
+ * @authors Hokeun Kim
+ * @copyright http://terraswarm.org/accessors/copyright.txt
+ */
 var LocalStorageHelper = Java.type('ptolemy.actor.lib.jjs.modules.localStorage.LocalStorageHelper');
 
 ////////////////////

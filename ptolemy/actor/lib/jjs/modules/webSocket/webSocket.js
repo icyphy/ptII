@@ -1,6 +1,9 @@
-// Module supporting web sockets.
-// Authors: Hokeun Kim and Edward A. Lee
-// Copyright: http://terraswarm.org/accessors/copyright.txt
+/**
+ * Module supporting web sockets.
+ * @module webSocket
+ * @authors: Hokeun Kim and Edward A. Lee
+ * @copyright: http://terraswarm.org/accessors/copyright.txt
+ */
 
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');

@@ -1,7 +1,14 @@
-// Module to use the default browser as a display.
+/**
+ * Module to use the default browser as a display and a GUI.
+ * NOTE: This is very incomplete! Just a placeholder for now.
+ * @module browser
+ * @authors Edward A. Lee
+ * @copyright http://terraswarm.org/accessors/copyright.txt
+ */
 
-////////////////////
-// Display the specified HTML text.
+/** Display the specified HTML text.
+ *  @param html The HTML to display.
+ */
 module.exports.display = function(html) {
     // FIXME: Probably should provide an initialize() function to start the
     // server.

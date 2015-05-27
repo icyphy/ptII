@@ -1,10 +1,8 @@
 /**
  * Module for HTTP clients.
- * @module http
+ * @module httpClient
  * @author Marten Lohstroh and Edward A. Lee
  * @copyright http://terraswarm.org/accessors/copyright.txt
- *
- * This module provides a Nashorn implementation of a subset of the Node.js http module.
  */
 
 // Java types used.

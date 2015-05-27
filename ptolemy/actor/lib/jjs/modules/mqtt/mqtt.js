@@ -1,7 +1,9 @@
-// Module supporting the MQTT protocol.
-// Authors: Hokeun Kim
-// Copyright: http://terraswarm.org/accessors/copyright.txt
-//
+/**
+ * Module supporting the MQTT protocol.
+ * @module mqtt
+ * @author Hokeun Kim
+ * @copyright http://terraswarm.org/accessors/copyright.txt
+ */
 
 module.exports.createClient = function(port, host, opts)
 {

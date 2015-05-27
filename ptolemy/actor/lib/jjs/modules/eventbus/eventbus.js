@@ -1,19 +1,38 @@
-// Module supporting publishing and subscribing on the Vert.x event bus.
-// Authors: Patricia Derler and Edward A. Lee
-// Copyright: http://terraswarm.org/accessors/copyright.txt
-//
-// This module is used by the accessors VertxPublish and VertxSubscribe
-// at http://terraswarm.org/accessors.  See those accessors for the usage pattern.
+/**
+ * Module supporting publishing and subscribing on the Vert.x event bus.
+ * This module provides an interface to the Vert.x event bus, which
+ * supports a peer-to-peer publish-and-subscribe network on a local
+ * area network. Upon in invoking the VertxBus constructor in this module,
+ * the host running this module participates in the pub-sub network.
+ * The pub-sub network extends as far as multicast packets extend
+ * in the local-area network, and other participants will be automatically
+ * discovered. Hence, you can publish events on the local network or
+ * subscribe to events on the local network using this module.
+ * <p>
+ * Events are published with an address, which is an arbitrary string
+ * that identifies the event or stream of events. This address could
+ * indicate the topic of message. A network or service using this pub-sub
+ * mechanism should develop a convention for these addresses to minimize
+ * accidental name collisions. For example, a sensor might publish
+ * sensor data using an address like 'org.terraswarm.sensor.accelerometer.onShoe'.
+ * <p>
+ * The published data can be any JavaScript object that has a string
+ * JSON representation (using JSON.stringify()). 
+ * <p>
+ * If the host has more than one network interface (e.g. WiFi and wired),
+ * then the one to use can be specified by name as an optional argument
+ * to the constructor. You can also specify the port to use, though if
+ * you do, then you are responsible for avoiding port collisions.
+ * The default network interface used is whichever one is represented by
+ * 'localhost'. The default port is an arbitrary unused port.
+ *
+ * @module eventbus
+ * @author Patricia Derler and Edward A. Lee
+ * @copyright http://terraswarm.org/accessors/copyright.txt
+ */
 
 ////////////////////
 /**
-This module provides an interface to the Vert.x event bus, which supports a peer-to-peer publish-and-subscribe network on a local area network. Upon in invoking the VertxBus constructor in this module, the host running this module participates in the pub-sub network. The pub-sub network extends as far as multicast packets extend in the local-area network, and other participants will be automatically discovered. Hence, you can publish events on the local network or subscribe to events on the local network using this module.
-
-Events are published with an address, which is an arbitrary string that identifies the event or stream of events. This address could indicate the topic of message. A network or service using this pub-sub mechanism should develop a convention for these addresses to minimize accidental name collisions. For example, a sensor might publish sensor data using an address like 'org.terraswarm.sensor.accelerometer.onShoe'.
-
-The published data can be any JavaScript object that has a string JSON representation (using JSON.stringify()). 
-
-If the host has more than one network interface (e.g. WiFi and wired), then the one to use can be specified by name as an optional argument to the constructor. You can also specify the port to use, though if you do, then you are responsible for avoiding port collisions. The default network interface used is whichever one is represented by 'localhost'. The default port is an arbitrary unused port.
 */
 
 var EventBusHelper = Java.type('ptolemy.actor.lib.jjs.modules.eventbus.EventBusHelper');
@@ -80,7 +99,7 @@ var events = require('events');
  *  @param options A JSON record containing optional fields 'port' (an int)
  *   and 'host' (a string). These specify the network interface on the local host
  *   to use to connect to the Vert.x event bus cluster. This defaults to
- *   {'host':'localhost', 'port':0}, where a port value of 0 means "find
+ *   \{'host':'localhost', 'port':0\}, where a port value of 0 means "find
  *   an open port and use that. If no options parameter is given, then use
  *   the defaults.
  */
