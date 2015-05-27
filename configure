@@ -1729,7 +1729,7 @@ Optional Packages:
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
                            used for running the test scripts
   --with-jsoup=JAR       use jsoup.jar from JAR,
-                          defaults to \$PTII/lib/jsoup-1.7.3.jar
+                          defaults to \$PTII/lib/jsoup-1.8.2.jar
   --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
                           defaults to \$PTII/lib/junit-4.8.2.jar
   --with-junitparams=JARFILE       use JUnitParams Testing Framework from JARFILE,
@@ -9069,7 +9069,7 @@ $as_echo_n "checking for JSoup, used when exporting html pages. ... " >&6; }
 if test "${with_jsoup+set}" = set; then :
   withval=$with_jsoup; PTJSOUP_JAR=$withval
 else
-  PTJSOUP_JAR=$PTII/lib/jsoup-1.7.3.jar
+  PTJSOUP_JAR=$PTII/lib/jsoup-1.8.2.jar
 fi
 
 
@@ -9085,10 +9085,10 @@ $as_echo "$PTJSOUP_JAR" >&6; }; fi
         updateExcludes "ptolemy/vergil/basic/export/html/"
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the JSoup jar files necessary to
     to compile the export html facility.
-    Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar." >&5
+    Typically, JSoup is found at $PTII/lib/jsoup-1.8.2.jar." >&5
 $as_echo "$as_me: WARNING: Failed to find the JSoup jar files necessary to
     to compile the export html facility.
-    Typically, JSoup is found at $PTII/lib/jsoup-1.7.3.jar." >&2;}
+    Typically, JSoup is found at $PTII/lib/jsoup-1.8.2.jar." >&2;}
     fi
 fi
 
