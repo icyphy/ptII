@@ -8,8 +8,32 @@
 <h1>License for jsoup HTML parser </h1>
 <p>jsoup is used by org/ptolemy/ptango for HTML parsing and validation.</p>
 
-<p>jsoup-1.7.3 was downloaded from <a href="http://jsoup.org#in_browser" target="_top">http://jsoup.org</a> on 02/16/2014.</p>
+<p>jsoup-1.8.2 was downloaded from <a href="http://jsoup.org#in_browser" target="_top">http://jsoup.org</a> on 05/26/2015.</p>
 
+<p>To update jsoup:</p>
+<ol>
+  <li>Download the most recent jsoup-x.y.z.jar from <a href="http://jsoup.org#inbrowser" target="_top">http://jsoup.org</a></li>
+  <li>Edit <code>$PTII/configure.in</code> and run:
+    <pre>
+      cd $PTII
+      autoconf
+      ./configure
+      ant clean
+      ant
+    </pre>
+  </li>
+  <li> Edit <code>$PTII/.classpath.default</code> and update the version number of jsoup</li>
+  <li> Check in your changes.
+    <pre>
+      cd $PTII
+      svn delete --force lib/jsoup-old.old.old.jar
+      svn commit -m "Updated jsoup to jsoup-x.y.z.jar" configure.in lib/jsoup-old.old.old.jar lib/jsoup-x.y.z.jar lib/jsoup-license.htm .classpath.default
+      autoconf
+      svn commit -m "configure.in changed." configure
+    </pre>
+  </li>
+</ol>
+    
 <p>jsoup is licensed under the MIT license found at
 <a href="http://http://jsoup.org/license" target="_top">http://jsoup.org/license#in_browser</a>.  
 </p>
