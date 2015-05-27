@@ -155,34 +155,14 @@ public class WriterTest {
         _debug("GDP Initialized.");
 
         PointerByReference gclhByReference = new PointerByReference();
-        if (xname == null) {
-            // create a new GCL handle
-            _debug("About to create a new handle.");
-
-            // Was: estat = gdp_gcl_create(NULL, &gclh);
-            // gdp.h declared: extern EP_STAT gdp_gcl_create(gcl_name_t, gdp_gcl_t **);
-            //estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer)null, gclh);
-            estat = Gdp10Library.INSTANCE.gdp_gcl_create((ByteBuffer) null,
-                    gclhByReference);
-            gclh = gclhByReference.getValue();
-            _debug("Handle created: " + estat);
-            _debug("2 gclh: " + gclh);
-        } else {
-            _debug("About to parse " + xname);
-            Gdp10Library.INSTANCE.gdp_gcl_parse_name(xname, gcliname);
-            if (append) {
-                _debug("About to call gdp_gcl_open()");
-                //estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
-                estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname,
-                        Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclhByReference);
-                gclh = gclhByReference.getValue();
-            } else {
-                _debug("About to call gdp_gcl_create()");
-                estat = Gdp10Library.INSTANCE.gdp_gcl_create(gcliname,
-                        gclhByReference);
-                gclh = gclhByReference.getValue();
-            }
-        }
+        // writer-test.c requires a log_name
+        _debug("About to parse " + xname);
+        Gdp10Library.INSTANCE.gdp_parse_name(xname, gcliname);
+        _debug("About to call gdp_gcl_open()");
+        //estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
+        estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname,
+                Gdp10Library.gdp_iomode_t.GDP_MODE_AO, (PointerByReference) null, gclhByReference);
+        gclh = gclhByReference.getValue();
         _debug("About to check error code after either creating a new handle, gdp_gcl_open() or gdp_gcl_create()");
         // EP_STAT_CHECK(estat, goto fail0);
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
@@ -247,7 +227,7 @@ public class WriterTest {
                 _debug("gclh: " + gclh);
                 _debug("datum: " + datum);
                 GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-                estat = Gdp10Library.INSTANCE.gdp_gcl_publish(gclhByReference, datum);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_append(gclhByReference, datum);
                 if (!GdpUtilities.EP_STAT_ISOK(estat)) {
                     _fail1(estat, gclhByReference);
                     gclh = gclhByReference.getValue();

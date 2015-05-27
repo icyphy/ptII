@@ -30,6 +30,7 @@ package org.terraswarm.gdp.apps;
 
 import java.nio.ByteBuffer;
 
+import org.terraswarm.gdp.EP_TIME_SPEC;
 import org.terraswarm.gdp.EP_STAT;
 import org.terraswarm.gdp.Gdp10Library;
 import org.terraswarm.gdp.GdpUtilities;
@@ -172,7 +173,8 @@ public class ReaderTest {
         for (;;) {
             // Was: gdp_event_t *gev = gdp_event_next(true);
             PointerByReference gev = Gdp10Library.INSTANCE
-                    .gdp_event_next(true ? (byte) 1 : (byte) 0);
+                // .gdp_event_next(true ? (byte) 1 : (byte) 0);
+                .gdp_event_next((PointerByReference)null, new EP_TIME_SPEC());
             switch (Gdp10Library.INSTANCE.gdp_event_gettype(gev)) {
             case GdpUtilities.GDP_EVENT_DATA:
                 System.out.print(" >>> ");
@@ -321,7 +323,7 @@ public class ReaderTest {
                 + multiread + ", numrecs: " + numrecs + ", subscribe: "
                 + subscribe + " name: " + argv[argv.length - 1]);
         // Was estat = gdp_gcl_parse_name(argv[0], gclname);
-        estat = Gdp10Library.INSTANCE.gdp_gcl_parse_name(argv[argv.length - 1],
+        estat = Gdp10Library.INSTANCE.gdp_parse_name(argv[argv.length - 1],
                 gclname);
 
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
@@ -330,14 +332,14 @@ public class ReaderTest {
             System.exit(1);
         }
 
-        Gdp10Library.INSTANCE.gdp_gcl_printable_name(gclname, gclpname);
+        Gdp10Library.INSTANCE.gdp_printable_name(gclname, gclpname);
 
         System.out.println("Reading GCL " + gclpname);
 
         // Was: estat = gdp_gcl_open(gclname, GDP_MODE_RO, &gclh);
         PointerByReference gclhByReference = new PointerByReference();
         estat = Gdp10Library.INSTANCE.gdp_gcl_open(gclname,
-                Gdp10Library.gdp_iomode_t.GDP_MODE_RO, gclhByReference);
+                Gdp10Library.gdp_iomode_t.GDP_MODE_RO, (PointerByReference) null, gclhByReference);
         gclh = gclhByReference.getValue();
 
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {

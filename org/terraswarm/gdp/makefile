@@ -54,10 +54,11 @@ PTCLASSALLJARS =
 JSRCS = \
 	EP_DBG.java \
 	EP_STAT.java \
-	ep_stat_to_string.java \
 	EP_TIME_SPEC.java \
 	Gdp10Library.java \
-	GdpUtilities.java
+	GdpUtilities.java \
+	ep_malloc_functions.java \
+	ep_stat_to_string.java
 
 OTHER_FILES_TO_BE_JARED = \
 	gdp.patch
@@ -106,8 +107,10 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 KRUFT = .cpp *.c *.choices _jnaerator.macros.cpp _jnaerator.rawParsed.cpp _jnaerator.normalizedParsed.cpp
 
-
-JNAERATOR_JAR = jnaerator-0.12-20140626.234513-58-shaded.jar
+# See https://code.google.com/p/jnaerator/
+# Be sure to get the -shaded.jar and avoid a message about
+#    Exception in thread "main" java.lang.NoClassDefFoundError: com/ochafik/lang/jnaerator/parser/Visitor
+JNAERATOR_JAR = jnaerator-0.12-shaded.jar
 
 all: jclass
 install: jclass jars
@@ -201,7 +204,7 @@ $(LIBEVENT_SRC):
 	@if [ ! -d $(LIBEVENT_SRC) ]; then \
 		echo "Github is too stupid to handle wget, so you will need to go to http://libevent.org, download it and then run"; \
 		echo " cd src; tar -zxf ~/Downloads/$(LIBEVENT).tar.gz; cd .."; \
-		echo "Then rerun make."
+		echo "Then rerun make."; \
 		exit 2; \
 	else \
 		echo "$(LIBEVENT_SRC) exists!"; \
@@ -224,9 +227,8 @@ $(GDP_SRC):
 #	cd src/gdp; patch -p1 < ../../gdp.patch
 #	cd src/gdp; $(MAKE)
 
-jnaerator-0.12-20140626.234513-58-shaded.jar:
-	wget --no-check-certificate https://oss.sonatype.org/content/groups/public/com/nativelibs4java/jnaerator/0.12-SNAPSHOT/jnaerator-0.12-20140626.234513-58-shaded.jar
-
+$(JNAERATOR_JAR):
+	wget 'http://search.maven.org/remotecontent?filepath=com/nativelibs4java/jnaerator/0.12/$(JNAERATOR_JAR)' -O $@
 
 # jnaerator-0.11-shaded.jar does not generate getFieldOrder(), which is needed in more recent versions of JNA.
 #
