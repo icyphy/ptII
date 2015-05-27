@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.ParseError;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
@@ -228,11 +229,17 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
             _document = htmlParser.parseInput(lineBuffer.toString(), "");
 
-            if (htmlParser.getErrors() != null
-                    && !htmlParser.getErrors().isEmpty()) {
+            List<ParseError> errors = htmlParser.getErrors();
+            if (errors != null && !errors.isEmpty()) {
+        	StringBuffer messages = new StringBuffer();
+        	for (ParseError error : errors) {
+        	    messages.append(error.toString());
+        	    // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
+        	}
                 throw new IllegalActionException(this, "Template file '"
                         + template.getValueAsString()
-                        + "' contains HTML syntax errors.");
+                        + "' contains HTML syntax errors:\n"
+                        + messages);
             }
 
             // Set the page title
@@ -287,15 +294,21 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
                     // Check that each fragment is valid html
                     // Wrap fragment in minimal document and try to parse
-                    String testFragment = "<!DOCTYPE html><html><head><body>"
+                    String testFragment = "<!DOCTYPE html><html><head></head><body>"
                             + htmlText.toString() + " </body></html>";
                     htmlParser.parseInput(testFragment, "");
 
-                    if (htmlParser.getErrors() != null
-                            && !htmlParser.getErrors().isEmpty()) {
+                    errors = htmlParser.getErrors();
+                    if (errors != null && !errors.isEmpty()) {
+                	StringBuffer messages = new StringBuffer();
+                	for (ParseError error : errors) {
+                	    messages.append(error.toString());
+                	    // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
+                	}
                         throw new IllegalActionException(this, "Input '"
                                 + htmlText.toString()
-                                + "' contains HTML syntax errors.");
+                                + "' contains HTML syntax errors:\n"
+                                + messages);
                     }
 
                     // We previously checked that there is exactly one element
