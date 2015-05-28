@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 89, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 89, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0204057544617542">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.46972656249994, 379.04223517404085}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.4697265624999, 379.04223517404097}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for the UDPSocket accesor. The UDPSocket can be imported from &#10;http://www.terraswarm.org/accessors/.&#10;&#10;IMPORTANT: This accessor is written in pure JavaScript, not in xml. So you should import&#10;UDPSocket.js.&#10;&#10;NOTE: This socket listens on the specified port and outputs any packet received on that port.&#10;The received packets will appear in the display ReceivedUDPPackets. To send UDP packets to&#10;the port to which this accessor is listening , there is a Node.js program which sends one packet&#10;each execution in the same demo directory, namely, UDPPacketGen.js.&#10;You can run this program as follows:&#10;     &gt; node UDPPacketGen.js&#10;after running this demo.">
@@ -36,14 +36,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 505.0]">
         </property>
     </property>
+    <entity name="ReceivedUDPPackets" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 234, 1016, 612}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1016, 568]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 200.0]">
+        </property>
+    </entity>
     <entity name="UDPSocket" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;// Set up the accessor. In an XML specification, this information would&#10;// be provided in XML syntax.&#10;exports.setup = function() {&#10;    accessor.author('Hokeun Kim');&#10;    accessor.version('0.1 $$Date$$');&#10;    accessor.input('port', {&#10;        'value': 22000,&#10;        'type':'number',&#10;        'description':'The port number.'&#10;    });&#10;    accessor.output('received', {&#10;        'type':'string',&#10;        'description':'The received string.'&#10;    });&#10;    accessor.description(&#10;        'This accessor listens to the UDP port.',&#10;        'text/html'&#10;    );&#10;};&#10;&#10;// Define the functionality.&#10;function onMessage(message) {&#10;    console.log('Received from web socket: ' + message);&#10;    send(message, 'received');&#10;}&#10;&#10;var socket = null;&#10;&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    socket = UDPSocket.createSocket();&#10;    socket.on('message', onMessage);&#10;    var port = get('port');&#10;    socket.bind(port);&#10;}&#10;&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    socket.close();&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;// Set up the accessor. In an XML specification, this information would&#10;// be provided in XML syntax.&#10;exports.setup = function() {&#10;    accessor.author('Hokeun Kim');&#10;    accessor.version('0.1 $$Date$$');&#10;    accessor.input('port', {&#10;        'value': 8084,&#10;        'type':'number',&#10;        'description':'The port number.'&#10;    });&#10;    accessor.output('received', {&#10;        'type':'string',&#10;        'description':'The received string.'&#10;    });&#10;    accessor.description(&#10;        'This accessor listens to the UDP port.',&#10;        'text/html'&#10;    );&#10;};&#10;&#10;// Define the functionality.&#10;function onMessage(message) {&#10;    console.log('Received a UDP packet: ' + message);&#10;    send(message, 'received');&#10;}&#10;&#10;var socket = null;&#10;&#10;exports.initialize = function() {&#10;    socket = UDPSocket.createSocket();&#10;    socket.on('message', onMessage);&#10;    var port = get('port');&#10;    socket.bind(port);&#10;}&#10;&#10;exports.wrapup = function() {&#10;    socket.close();&#10;}&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/Users/hokeunkim/Development/TerraSwarm/accessors/web/UDPSocket.js">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/UDPSocket.js">
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8084">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 200.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor listens to the UDP port.">
@@ -68,18 +76,12 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
-    </entity>
-    <entity name="ReceivedUDPPackets" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={393, 139, 1016, 612}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1016, 568]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 200.0]">
-        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="UDPSocket.received" relation="relation"/>
     <link port="ReceivedUDPPackets.input" relation="relation"/>
+    <link port="UDPSocket.received" relation="relation"/>
 </entity>
