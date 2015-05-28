@@ -33,7 +33,9 @@ Service.prototype.callService = function(request, callback, failedCallback) {
   var serviceCallId = 'call_service:' + this.name + ':' + (++this.ros.idCounter);
 
   if (callback || failedCallback) {
-    this.ros.once(serviceCallId, function(message) {
+    // this.ros.once(serviceCallId, function(message) {
+    this.ros.once('message', function(message) {
+      console.log(message);
       if (message.result !== undefined && message.result === false) {
         if (typeof failedCallback === 'function') {
           failedCallback(message.values);
