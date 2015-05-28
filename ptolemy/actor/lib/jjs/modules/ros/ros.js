@@ -34,6 +34,14 @@ exports.Ros = function(options) {
     this.host = options['host'] || 'localhost';
     this.idCounter = 0;
     this.socket = new WebSocket.Client(options);
+    var thiz = this;
+    this.socket.on('open', function(message) {
+        thiz.emit('connection', message);
+    });
+    this.socket.on('error', function(message) {
+        thiz.emit('error', message);
+    });
+
 }
 util.inherits(exports.Ros, EventEmitter);
 
