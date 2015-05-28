@@ -120,7 +120,8 @@ function ClientRequest(options, reponseCallback) {
     'path':'/',
     'headers':{},
     'keepAlive':false,
-    'query':''
+    'query':'',
+    'trustAll':false
   };
     
   if (util.isString(options)) {
