@@ -1,0 +1,16 @@
+{
+  "name": "ros",
+  "homepage": "https://www.robotwebtools.org",
+  "description": "The standard ROS Javascript Library, Modified for Nashorn",
+  "version": "0.16.0-SNAPSHOT",
+  "license": "BSD",
+  "main": "ros.js",
+  "keywords": [
+    "ROS",
+    "ros",
+    "roslib",
+    "roslibjs",
+    "robot"
+  ],
+  "author": "Robot Webtools Team <robot-web-tools@googlegroups.com> (http://robotwebtools.org), Modified by Edward A. Lee, eal@eecs.berkeley.edu"
+}
