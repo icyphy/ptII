@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={378, 191, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={426, 246, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var roslib = require('ros');&#10;exports.setup = function() {&#10;  accessor.output('output');&#10;}&#10;exports.initialize = function() {&#10;  var ros = new roslib.Ros({&#10;    url : 'ws://localhost:9090'&#10;  });&#10;  ros.on('error', function(message) {console.error(message);});&#10;  ros.getTopics(function(topics) {&#10;    send(topics, 'output');&#10;  });&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var roslib = require('ros');&#10;exports.setup = function() {&#10;  accessor.output('output');&#10;}&#10;exports.initialize = function() {&#10;  var ros = new roslib.Ros({&#10;    'host' : 'localhost',&#10;    'port' : 9090&#10;  });&#10;  ros.on('error', function(message) {console.error(message);});&#10;  ros.on('connection', function(message) {console.log(&quot;Connection established: &quot; + message);});&#10;  ros.getTopics(function(topics) {&#10;    send(topics, 'output');&#10;  });&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
