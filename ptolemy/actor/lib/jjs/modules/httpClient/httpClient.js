@@ -152,6 +152,7 @@ function ClientRequest(options, reponseCallback) {
   
   self.on('error', function(message) {
     console.error(message);
+    //send(message, 'error'); // FIXME
   });
   
   console.log("Making an HTTP request: " + JSON.stringify(options));

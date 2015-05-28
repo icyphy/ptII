@@ -34,6 +34,7 @@ exports.Player = function(options) {
     this.foo = options['foo'] || 80;
     
     LiveSound.setSampleRate(8000);
+    LiveSound.setBufferSize(8196);
     // Start playback.
     LiveSound.startPlayback(this);
 }
