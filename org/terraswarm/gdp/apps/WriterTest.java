@@ -226,8 +226,8 @@ public class WriterTest {
                 _debug("About to call gdp_gcl_publish()");
                 _debug("gclh: " + gclh);
                 _debug("datum: " + datum);
-                GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-                estat = Gdp10Library.INSTANCE.gdp_gcl_append(gclhByReference, datum);
+                //GdpUtilities.gdp_datum_print(datum/*, stdout*/);
+                estat = Gdp10Library.INSTANCE.gdp_gcl_append(gclhByReference.getValue(), datum);
                 if (!GdpUtilities.EP_STAT_ISOK(estat)) {
                     _fail1(estat, gclhByReference);
                     gclh = gclhByReference.getValue();
@@ -235,8 +235,8 @@ public class WriterTest {
                 // Instead of calling the gdp_datum_print() method in C, we implement our own.
                 //gdp_datum_print(datum, stdout);
                 _debug("About to call gdp_datum_print()");
-                GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-
+                //GdpUtilities.gdp_datum_print(datum/*, stdout*/);
+                //Gdp10Library.INSTANCE.gdp_datum_print_to_stdout(datum, 0);
             }
         } finally {
             if (bufferedReader != null) {
