@@ -28,6 +28,8 @@
 
 package ptolemy.actor.lib.jjs.modules.udpSocket;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.AsyncResultHandler;
 import org.vertx.java.core.Handler;
@@ -35,6 +37,7 @@ import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.datagram.DatagramPacket;
 import org.vertx.java.core.datagram.DatagramSocket;
 import org.vertx.java.core.datagram.InternetProtocolFamily;
+
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 
 
@@ -66,6 +69,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                    _socket.dataHandler(new Handler<DatagramPacket>() {
                         public void handle(DatagramPacket packet) {
                             // Do something with the packet
+                            _currentObj.callMember("notifyIncoming", packet.data().toString());
                         }
                     });
                 } else {
@@ -83,9 +87,9 @@ public class UDPSocketHelper extends VertxHelperBase {
     
     /** Create the UDP socket.
      */
-    public static UDPSocketHelper createSocket()
+    public static UDPSocketHelper createSocket(ScriptObjectMirror currentObj)
     {
-        return new UDPSocketHelper();
+        return new UDPSocketHelper(currentObj);
     }
 
     /** Send a UDP message.
@@ -102,13 +106,19 @@ public class UDPSocketHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                  ////
-    private UDPSocketHelper()
+    private UDPSocketHelper(ScriptObjectMirror currentObj)
     {
+        _currentObj = currentObj;
         _socket = _vertx.createDatagramSocket(InternetProtocolFamily.IPv4);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
+
+    /** The current instance of the Vert.x UDP socket. */
     private DatagramSocket _socket;
+    
+    /** The current instance of the JavaScript module. */
+    private ScriptObjectMirror _currentObj;
 
 }
