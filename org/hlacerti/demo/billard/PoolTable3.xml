@@ -4,13 +4,13 @@
 <entity name="PoolTable3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={336, 144, 921, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.75936481446604, 351.6422871018624}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{673.259364814466, 487.1422871018624}">
     </property>
     <property name="display" class="org.hlacerti.lib.HlaManager">
         <display name="displayActor"/>
@@ -26,8 +26,11 @@
         <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init&quot;">
             <display name="Synchronization point name"/>
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
+        </property>
+        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="0.01">
+            <display name="HLA time unit"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 295.0]">
         </property>
@@ -92,15 +95,11 @@
         </property>
         <port name="X" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 50.0]">
             </property>
         </port>
         <port name="Y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 295.0]">
             </property>
         </port>
@@ -196,21 +195,22 @@
         </configure>
     </entity>
     <entity name="InstanceOfBille" class="Bille">
-        <display name="billiard Bille1"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 400.0]">
         </property>
         <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 274, 504, 346}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={852, 373, 504, 346}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
+            <configure>
+            </configure>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Position</title>
-<xRange min="0.1" max="233.1"/>
-<yRange min="-1.0" max="400.0"/>
+<xRange min="0.01" max="1599.01"/>
+<yRange min="-1.0" max="501.0"/>
 </plot>?>
             </configure>
         </entity>

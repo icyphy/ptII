@@ -4,7 +4,7 @@
 <entity name="Autorun" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
@@ -71,22 +71,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
         </property>
     </entity>
-    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="100L">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
-        </property>
-    </entity>
     <entity name="PoolTable" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="PoolTable3.xml">
         </property>
-        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
         </property>
         <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
@@ -96,11 +86,29 @@
         </property>
         <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="PoolTable2" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Synchro.xml">
+        </property>
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        </property>
+        <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 330.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 448.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 415.0]">
         </property>
     </entity>
 </entity>

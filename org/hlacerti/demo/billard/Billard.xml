@@ -50,7 +50,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author : David Come">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 325.0]">
         </property>
     </property>
     <entity name="BIllard" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -71,22 +71,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
         </property>
     </entity>
-    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="100L">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
-        </property>
-    </entity>
     <entity name="PoolTable" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="PoolTable2.xml">
         </property>
-        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
         </property>
         <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
@@ -96,11 +86,21 @@
         </property>
         <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Synchro.xml">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="10L">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 340.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 448.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 425.0]">
         </property>
     </entity>
 </entity>
