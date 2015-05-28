@@ -584,6 +584,8 @@ public class FMUFile {
             Element element = (Element) scalarVariables.item(i);
             fmiModelDescription.modelVariables.add(new FMIScalarVariable(
                     fmiModelDescription, element));
+            fmiModelDescription.modelVariablesNames
+                    .add(fmiModelDescription.modelVariables.get(i).name);
         }
 
         /*
@@ -593,33 +595,6 @@ public class FMUFile {
             fmiModelDescription.cosimulationCapabilities = new FMICoSimulationCapabilities(
                     capabilitiesElement);
         }*/
-
-        if (fmiVersion >= 2.0) {
-            // By default each output has direct dependency from all input ports
-            fmiModelDescription.addDefaultInputDependencies();
-
-            // This section might be used to retrieve the information of the
-            // directDependency between inputs and outputs
-            // NodeList is not a list, it only has getLength() and item(). #fail.
-            NodeList structure = document
-                    .getElementsByTagName("ModelStructure");
-            if (structure.getLength() == 1) {
-                NodeList listOffOutputs = document
-                        .getElementsByTagName("Outputs");
-                Node current = null;
-
-                for (int i = 0; i < listOffOutputs.getLength(); i++) {
-                    NodeList unknowVariables = listOffOutputs.item(i)
-                            .getChildNodes();
-                    for (int j = 0; j < unknowVariables.getLength(); j++) {
-                        current = unknowVariables.item(j);
-                        if (current.getNodeName().equalsIgnoreCase("Unknown")) {
-                            fmiModelDescription.parseDependenciese(current);
-                        }
-                    }
-                }
-            }
-        }
 
         if (fmiVersion > 1.5) {
             NodeList structure = document
@@ -661,10 +636,41 @@ public class FMUFile {
                 new Exception("Warning: ModelStructure element is missing.")
                 .printStackTrace();
             }
-
+        }
+        // Moved code so fmiModelDescription.parseDependenciese
+        // can retrieve correct inputStateDepentScalarVariables
+        // information an create the appropriate vector of input and state
+        // dependent variables.
+        if(fmiVersion > 1.5) {
             fmiModelDescription.createStateVector();
         }
+        
+        if (fmiVersion >= 2.0) {
+            // By default each output has direct dependency from all input ports
+            fmiModelDescription.addDefaultInputDependencies();
 
+            // This section might be used to retrieve the information of the
+            // directDependency between inputs and outputs
+            // NodeList is not a list, it only has getLength() and item(). #fail.
+            NodeList structure = document
+                    .getElementsByTagName("ModelStructure");
+            if (structure.getLength() == 1) {
+                NodeList listOffOutputs = document
+                        .getElementsByTagName("Outputs");
+                Node current = null;
+
+                for (int i = 0; i < listOffOutputs.getLength(); i++) {
+                    NodeList unknowVariables = listOffOutputs.item(i)
+                            .getChildNodes();
+                    for (int j = 0; j < unknowVariables.getLength(); j++) {
+                        current = unknowVariables.item(j);
+                        if (current.getNodeName().equalsIgnoreCase("Unknown")) {
+                            fmiModelDescription.parseDependenciese(current);
+                        }
+                    }
+                }
+            }
+        }
         return fmiModelDescription;
     }
 
