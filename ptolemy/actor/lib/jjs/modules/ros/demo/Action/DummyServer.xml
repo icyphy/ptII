@@ -7,6 +7,8 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 50.0}">
         </property>
     </property>
@@ -19,11 +21,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={667, 22, 632, 325}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[632, 281]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 120.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 140.0]">
         </property>
     </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -55,11 +57,11 @@
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
         </property>
-        <property name="toSend" class="ptolemy.actor.parameters.PortParameter" value="">
+        <property name="toSend" class="ptolemy.actor.parameters.PortParameter" value="{topics = &quot;topics list here&quot;}">
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
         </property>
         <port name="hostInterface" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -93,16 +95,27 @@
             </property>
         </port>
     </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{values = &quot;topics list here&quot;}}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 155}">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;WebSocketServer.received&quot;,x=115.0,y=125.0}, tail={id=&quot;Display.input&quot;,x=250.0,y=120.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;WebSocketServer.received&quot;,x=240.0,y=145.0}, tail={id=&quot;Display.input&quot;,x=375.0,y=140.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=250.0,y=120.0,index=2}, tail={id=&quot;WebSocketServer.connection&quot;,x=115.0,y=125.0}, points={205.0,120.0,205.0,135.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=375.0,y=140.0,index=2}, tail={id=&quot;WebSocketServer.connection&quot;,x=240.0,y=145.0}, points={330.0,140.0,330.0,155.0} } }">
         </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display.input" relation="relation2"/>
     <link port="Display.input" relation="relation"/>
+    <link port="WebSocketServer.toSend" relation="relation3"/>
     <link port="WebSocketServer.received" relation="relation2"/>
     <link port="WebSocketServer.connection" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
 </entity>

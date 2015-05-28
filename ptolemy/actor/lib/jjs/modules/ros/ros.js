@@ -41,7 +41,12 @@ exports.Ros = function(options) {
     this.socket.on('error', function(message) {
         thiz.emit('error', message);
     });
-
+    this.socket.on('message', function(message) {
+        // FIXME: Doesn't match the documentation above.
+        // FIXME: The emit below doesn't seem to work. Just log the response.
+        console.log("INCOMING from ROS: " + message.toString());
+        thiz.emit('message', message);
+    });
 }
 util.inherits(exports.Ros, EventEmitter);
 
@@ -72,7 +77,11 @@ exports.Ros.prototype.getTopics = function(callback) {
 
   var request = new ServiceRequest();
 
-  topicsClient.callService(request, function(result) {
-    callback(result.topics);
-  });
+  topicsClient.callService(request,
+    function(result) {
+        callback(result.topics);
+    },
+    function(message) {
+        ros.emit('error', message);
+    });
 };
