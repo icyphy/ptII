@@ -1852,14 +1852,28 @@ public class JavaScript extends TypedAtomicActor {
         	throw new IllegalActionException(JavaScript.this,
         		"Cannot call send on a parameter: " + _parameter.getName() + ". Use set().");
             }
-            if (!_executing) {
-        	// This is probably being called in a callback, but the model
-        	// execution has ended.
-        	throw new InternalErrorException("Attempt to send "
-        		+ data + " to " + _port.getName()
-        		+ ", but the model is not executing.");
+            // If we are wrapping up, then just exit.  Do not try to
+            // get the lock because a vertx thread might be trying to
+            // send while the actor has already obtained the lock in
+            // wrapup() and may be calling WebSocketHelper.close().
+            // See
+            // https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/Deadlock
+            if (getManager().getState() == ptolemy.actor.Manager.WRAPPING_UP) {
+                System.err.println("JavaScript.send(): wrapping up, so we are not sending token " + data);
+                return;
             }
+
             synchronized (JavaScript.this) {
+                // FindBugs Inconsistent synchronization: _executing
+                // should be accessed within a synchronized block
+                // everywhere.
+                if (!_executing) {
+                    // This is probably being called in a callback, but the model
+                    // execution has ended.
+                    throw new InternalErrorException("Attempt to send "
+                            + data + " to " + _port.getName()
+                            + ", but the model is not executing.");
+                }
         	if (!_port.isOutput()) {
         	    if (!_port.isInput()) {
         		throw new IllegalActionException(JavaScript.this,

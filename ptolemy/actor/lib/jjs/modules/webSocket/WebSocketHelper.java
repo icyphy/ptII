@@ -63,9 +63,15 @@ public class WebSocketHelper extends VertxHelperBase {
     /** Close the web socket.
      */
     public synchronized void close() {
+        new Exception("WebSocketHelper.close()").printStackTrace();
         if (_webSocket != null) {
             if (_wsIsOpen) {
-                _webSocket.close();
+                try {
+                    _webSocket.close();
+                } catch (IllegalStateException ex) {
+                    // Ignore this, it is likely that Vert.x already closed this for us.
+                    // See https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/Deadlock
+                }
             }
             _webSocket = null;
         }
