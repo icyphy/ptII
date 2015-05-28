@@ -334,6 +334,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isCreator.setDisplayName("Is synchronization point creator ?");
         attributeChanged(isCreator);
        
+        hlaTimeUnit = new Parameter(this, "hlaTimeUnit");
+        hlaTimeUnit.setTypeEquals(BaseType.DOUBLE);
+        hlaTimeUnit.setExpression("1.0");
+        hlaTimeUnit.setDisplayName("HLA time unit");
+        attributeChanged(hlaTimeUnit);
     }
      
     ///////////////////////////////////////////////////////////////////
@@ -394,6 +399,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  an BooleanToken. */
     public Parameter isCreator;
 
+    /**
+     * Double value for representing how much is a unit of time in the simulation.
+     * Has an impact on TAR/NER/RAV/UAV.     * 
+     */
+    public Parameter hlaTimeUnit;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -477,7 +487,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
         } else if (attribute == isCreator) {
             _isCreator = ((BooleanToken) isCreator.getToken()).booleanValue();
 
-        } else {
+        } else if(attribute == hlaTimeUnit){
+            _hlaTimeUnitValue = ((DoubleToken) hlaTimeUnit.getToken()).doubleValue();
+        }
+        else {
             super.attributeChanged(attribute);
         }
     }
@@ -504,6 +517,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._federationName = _federationName;
         newObject._isTimeConstrained = _isTimeConstrained;
         newObject._isTimeRegulator = _isTimeRegulator;
+        newObject._hlaTimeUnitValue = _hlaTimeUnitValue;
         
         try {
             newObject._hlaStartTime = ((DoubleToken) hlaStartTime.getToken())
@@ -845,7 +859,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             synchronized (this) {
                 // Build a representation of the proposedTime in HLA/CERTI.
                 CertiLogicalTime certiProposedTime = new CertiLogicalTime(
-                        proposedTime.getDoubleValue());
+                        proposedTime.getDoubleValue()/_hlaTimeUnitValue);
 
                 // Call the corresponding HLA Time Management service.
                 try {
@@ -1019,10 +1033,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // (timeAdvanceGrant()) and its value is the proposedTime or
                 // less, so we have a breakpoint time.
                 try {
-                    breakpoint = new Time(
-                            _director,
-                            ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA)
-                                    .getTime());
+                    double timeValue = (1/_hlaTimeUnitValue) * 
+                                        ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA).getTime();
+                    breakpoint = new Time(_director,timeValue);
                 } catch (IllegalActionException e) {
                     throw new IllegalActionException(this, e,
                             "The breakpoint time is not a valid Ptolemy time");
@@ -1082,7 +1095,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
         // To avoid CERTI exception when calling UAV service, in the case of NER or TAR
         // with lookahead > 0, we add the lookahead value to the event's timestamp.
-        CertiLogicalTime ct = new CertiLogicalTime(currentTime.getDoubleValue()
+        CertiLogicalTime ct = new CertiLogicalTime( (1/_hlaTimeUnitValue)*currentTime.getDoubleValue()
                 + _hlaLookAHead);
         try {
             int id = _registeredObject.get(_federateName+" "+senderName);
@@ -1379,13 +1392,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
      */
     private HashMap<Integer,StructuralInformation> _strucuralInformation;
     
-    /** Shared HashMap for  HlaPublishers in this model 
-     * for remembering with
-     * what id an actor as been registered (as an object instance)
-     * in the federation 
+    /** 
+     * Shared HashMap for  HlaPublishers in this model 
+     * for remembering with what id an actor as been registered 
+     * (as an object instance) in the federation 
      */
     private HashMap<String,Integer> _registeredObject;
     
+    /** 
+     * Tha actual value for hlaTimeUnit parameter.
+     */
+    private double _hlaTimeUnitValue;
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
@@ -1555,9 +1572,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             try {
                                 HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
                                 
-                                    ts = new Time(_director,
-                                            ((CertiLogicalTime) theTime)
-                                                    .getTime());
+                                double timeValue =  _hlaTimeUnitValue * 
+                                        ((CertiLogicalTime) theTime).getTime();
+                                    ts = new Time(_director,timeValue);
                                     value = MessageProcessing.decodeHlaValue(hs,
                                             (BaseType) _getTypeFromTab(tObj),
                                             theAttributes.getValue(i));
@@ -1757,7 +1774,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void timeAdvanceGrant(LogicalTime theTime)
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
-            logicalTimeHLA = theTime;
+            
+            logicalTimeHLA = new CertiLogicalTime(
+                     _hlaTimeUnitValue*((CertiLogicalTime) theTime).getTime());
             timeAdvanceGrant = true;
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"

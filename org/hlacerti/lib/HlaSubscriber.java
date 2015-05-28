@@ -328,7 +328,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     * Should be unique if
     */
     public String getIdentity(){
-        return getObjectName() + "-" + getParameterName();
+        return _getObjectName() + "-" + getParameterName();
     }
 
     /**
@@ -394,19 +394,8 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     public boolean useCertiMessageBuffer() throws IllegalActionException {
         return _useCertiMessageBuffer;
-    }
-
-  
-    /**
-     * Return the opaque identifier of the current HLASuscriber.
-    */
-    public String getObjectName(){
-        try {
-            return ((StringToken) objectName.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-        }
-        return "";
-    }
+    }   
+    
     
     /**
      * Return the kind of HLA Attribute the HLASuscriber is handling.
@@ -478,7 +467,20 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         return value;
     }
-  
+    ///////////////////////////////////////////////////////////////////
+    ////                         private method                    ////
+
+   /**
+     * Return the object name used in the HLA Federation
+     */
+    private String _getObjectName(){
+        try {
+            return ((StringToken) objectName.getToken()).stringValue();
+        } catch (IllegalActionException illegalActionException) {
+        }
+        return "";
+    }
+        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
