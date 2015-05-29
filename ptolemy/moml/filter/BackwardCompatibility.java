@@ -117,6 +117,7 @@ public class BackwardCompatibility {
         _filterList.add(new AddMissingParameter());
         _filterList.add(new AddIcon());
         _filterList.add(new ClassChanges());
+        _filterList.add(new DocAttributeChanges());
         //_filterList.add(new UpdateAnnotations());
         _filterList.add(new HideAnnotationNames());
         _filterList.add(new MultiportToSinglePort());
