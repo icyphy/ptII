@@ -108,6 +108,9 @@ public class UDPSocketHelper extends VertxHelperBase {
     ////                     private constructors                  ////
     private UDPSocketHelper(ScriptObjectMirror currentObj)
     {
+        // Need to call super(currentObject) here and avoid 
+        // "UDPSocketHelper.java:110: error: constructor VertxHelperBase in class VertxHelperBase cannot be applied to given types;"
+        super(currentObj);
         _currentObj = currentObj;
         _socket = _vertx.createDatagramSocket(InternetProtocolFamily.IPv4);
     }
