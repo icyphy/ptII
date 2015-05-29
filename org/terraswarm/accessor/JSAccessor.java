@@ -436,7 +436,7 @@ public class JSAccessor extends JavaScript {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Attribute with an associate named action.
+    /** Attribute with an associated named action.
      */
     public class ActionableAttribute extends StringAttribute implements Actionable {
 
