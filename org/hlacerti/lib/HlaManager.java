@@ -1684,7 +1684,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 //if the actor as an attribute called temp block
                                 //then set it up to the actual name
                                 {
-                                    Attribute name = newActor.getAttribute("federateName");
+                                    Attribute name = newActor.getAttribute("objectName");
                                     if(name != null){
                                         Parameter p = (Parameter) name;
                                         p.setTypeEquals(BaseType.STRING);
