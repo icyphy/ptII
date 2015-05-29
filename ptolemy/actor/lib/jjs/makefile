@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	HelperBase.java \
 	JavaScript.java \
 	RestrictedJavaScriptInterface.java
 

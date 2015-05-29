@@ -234,6 +234,18 @@ public class RestrictedJavaScriptInterface {
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                        Protected Methods                  ////
+    
+    /** Return the actor that this wraps. This is protected so that
+     *  instances of HelperBase can retrieve it (for the purposes of
+     *  synchronization), but not public so that JavaScript cannot gain
+     *  access to it.
+     */
+    protected JavaScript _getActor() {
+	return _actor;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
 
     /** The actor to which this is providing an interface. */
