@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2012 The Regents of the University of California.
+# @Copyright (c) 1998-2014 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -56,6 +56,7 @@ JSRCS = \
 	ClassChanges.java \
 	DiscardDoubles.java \
 	DiscardDoublesArray.java \
+	DocAttributeChanges.java \
 	GRColorChanges.java \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
