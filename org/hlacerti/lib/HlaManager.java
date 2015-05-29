@@ -749,13 +749,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 }
             }
         } // End block for synchronization point.
-
-        //Put it back unti we review the synchronization algorithm
-        try {
-            _rtia.tick();
-        } catch (RTIexception e) {
-            throw new IllegalActionException(this, e, e.getMessage());
-    }
     }
 
     /** Launch the HLA/CERTI RTIG process as subprocess. The RTIG has to be
@@ -1657,9 +1650,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     newActor = (CompositeActor) instance;
                                     
                                     LinkedList<IOPort> outputPortList= (LinkedList<IOPort>) newActor.outputPortList();
-
+                                    
                                     container.notifyConnectivityChange();
-                                   
+                                    _director.preinitialize(newActor);
+                                    _director.initialize(newActor);
+                                    
                                     for(IOPort out : outputPortList){
                                         ComponentRelation r=null;
                                         for(IOPort recv : info.relations.get(out.getName())){
@@ -1719,6 +1714,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             }
                         }
                     };
+            setDeferringChangeRequests(false);
             request.setPersistent(false);
             requestChange(request);
 
