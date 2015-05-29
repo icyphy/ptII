@@ -38,9 +38,8 @@ import org.vertx.java.core.http.HttpClientRequest;
 import org.vertx.java.core.http.HttpClientResponse;
 
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
-import ptolemy.actor.lib.jjs.JSUtils;
 
-///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// HttpClientHelper
 
 /**
@@ -69,9 +68,9 @@ public class HttpClientHelper extends VertxHelperBase {
 
     /** End a request. */
     public void end() {
-        if (_request != null) {
-            _request.end();
-        }
+	if (_request != null) {
+	    _request.end();
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,99 +82,53 @@ public class HttpClientHelper extends VertxHelperBase {
      *  @param address The URL of the WebSocket host with an optional port number
      *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
      */
-    private HttpClientHelper(ScriptObjectMirror currentObj,
-            Map<String, Object> options) {
-        _currentObj = currentObj;
+    private HttpClientHelper(ScriptObjectMirror currentObj, Map<String, Object> options) {
+        super(currentObj);
         HttpClient client = _vertx.createHttpClient();
         // FIXME: Why does Vert.x require setHost and setPort and also a URI?
-
-        Object obj;
-        if ((obj = JSUtils.castSafely(options.get("host"), String.class, false)) != null) {
-            client.setHost((String) obj);
-        }
-
-        if ((obj = JSUtils
-                .castSafely(options.get("port"), Integer.class, false)) != null) {
-            client.setPort((int) obj);
-        }
-
+        client.setHost((String) options.get("host")); 
+        client.setPort((int) options.get("port")); 
         client.exceptionHandler(new HttpClientExceptionHandler());
-
-        if ((obj = JSUtils.castSafely(options.get("keepAlive"), Boolean.class,
-                false)) != null) {
-            client.setKeepAlive((boolean) obj);
+        if ((boolean)options.get("keepAlive")) {
+            client.setKeepAlive(true);
         }
-
-        // FIXME: Add timeout to the options in httpClient.js
-        if ((obj = JSUtils.castSafely(options.get("timeout"), Integer.class,
-                false)) != null) {
-            client.setConnectTimeout((int) obj);
+        // FIXME: Provide a timeout. Use setTimeout() of the client.
+        
+        String query = options.get("query").toString().trim();
+        if(!query.equals("") && !query.startsWith("?")) {
+            query = "?" + query;
         }
-
-        String query = "";
-        if ((obj = JSUtils
-                .castSafely(options.get("query"), String.class, false)) != null) {
-            query = (String) obj;
-
-            if (!query.startsWith("?")) {
-                query = "?" + query;
-            }
-        }
-
-        String protocol = "http"; // NOTE: http is the default protocol
-        if ((obj = JSUtils.castSafely(options.get("protocol"), String.class,
-                false)) != null) {
-            protocol = (String) obj;
-        }
-
-        String path = "";
-        if ((obj = JSUtils.castSafely(options.get("path"), String.class, false)) != null) {
-            path = (String) obj;
-        }
-
-        String uri = protocol + "://" + client.getHost() + ":"
-                + client.getPort() + path + query;
-
-        if (protocol.equals("https")) {
-            client.setSSL(true);
-        }
-
-        if ((obj = JSUtils.castSafely(options.get("trustAll"), Boolean.class,
-                false)) != null) {
-            if ((boolean) obj == true) {
-                client.setTrustAll(true);
-            }
-        }
-
-        String method = "GET"; // NOTE: GET is the default method
-        if ((obj = JSUtils.castSafely(options.get("method"), String.class,
-                false)) != null) {
-            method = (String) obj;
-        }
-
-        _request = client.request(method, uri, new HttpClientResponseHandler());
-
+        
+        String uri = options.get("protocol")
+        	+ "://"
+        	+ options.get("host")
+        	+ ":"
+        	+ options.get("port")
+        	+ options.get("path")
+        	+ query;
+        
+        _request = client.request(
+        	(String)options.get("method"),
+        	uri,
+        	new HttpClientResponseHandler());
+   
         // Handle the headers.
-
-        if ((obj = JSUtils.castSafely(options.get("headers"), Map.class, false)) != null) {
-            Map<String, Object> headers = (Map<String, Object>) obj;
+        Map headers = (Map)options.get("headers");
+        if (!headers.isEmpty()) {
             for (Object key : headers.keySet()) {
-                Object value = headers.get(key);
-                if (value instanceof String) {
-                    _request.putHeader((String) key, (String) value);
-                } else if (value instanceof Iterable) {
-                    _request.putHeader((String) key, (Iterable<String>) value);
-                }
+        	Object value = headers.get(key);
+        	if (value instanceof String) {
+        	    _request.putHeader((String)key, (String)value);
+        	} else if (value instanceof Iterable) {
+        	    _request.putHeader((String)key, (Iterable<String>)value);
+        	}
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-
-    /** The current instance of the ClientRequest JavaScript object. */
-    private ScriptObjectMirror _currentObj;
-
+    
     /** The request built in the constructor. */
     private HttpClientRequest _request;
 
@@ -187,43 +140,39 @@ public class HttpClientHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
-            synchronized (HttpClientHelper.this) {
-                _currentObj.callMember("emit", "error", throwable.getMessage());
+            synchronized(_actor) {
+        	_currentObj.callMember("emit", "error", throwable.getMessage());
             }
         }
     }
-
+    
     /** The event handler that is triggered when a response arrives from the server.
      */
-    private class HttpClientResponseHandler implements
-            Handler<HttpClientResponse> {
+    private class HttpClientResponseHandler implements Handler<HttpClientResponse> {
         @Override
         public void handle(HttpClientResponse response) {
             // The response is not yet complete. Provide a handler to handle when it
             // is complete. Note that large response could fill up memory here, since
             // we do not chunk the response!
-            HttpClientBodyHandler bodyHandler = new HttpClientBodyHandler(
-                    response);
+            HttpClientBodyHandler bodyHandler = new HttpClientBodyHandler(response);
             response.bodyHandler(bodyHandler);
         }
     }
-
+    
     /** The body handler that is triggered when a complete response body
      *  has arrived from the server.
      */
     private class HttpClientBodyHandler implements Handler<Buffer> {
-        public HttpClientBodyHandler(HttpClientResponse response) {
-            _response = response;
-        }
-
+	public HttpClientBodyHandler(HttpClientResponse response) {
+	    _response = response;
+	}
         @Override
         public void handle(Buffer body) {
-            synchronized (HttpClientHelper.this) {
-                // FIXME: This assumes the body is a string encoded in UTF-8.
-                _currentObj.callMember("_response", _response, body.toString());
+            synchronized(_actor) {
+        	// FIXME: This assumes the body is a string encoded in UTF-8.
+        	_currentObj.callMember("_response", _response, body.toString());
             }
         }
-
         private HttpClientResponse _response;
     }
 }

@@ -57,11 +57,13 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** Close the web socket server.
      */
-    public synchronized void closeServer() {
-        if (_server != null) {
-            _server.close();
-            _server = null;
-        }
+    public void closeServer() {
+	synchronized(_actor) {
+	    if (_server != null) {
+		_server.close();
+		_server = null;
+	    }
+	}
     }
     
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
@@ -82,35 +84,37 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  a socket has been opened, emit the 'connection' event with the
      *  socket as an argument.
      */
-    public synchronized void startServer() {
-        // Note that the following call apparently starts the new server
-        // in separate thread. It should not be done in the constructor
-        // because the script that starts the server needs to register
-        // callbacks before the server starts. Otherwise, there will be
-        // a race condition where the callback could be called before
-        // the server has started.
-        _server = _vertx.createHttpServer();
-        _server.websocketHandler(new Handler<ServerWebSocket>() {
-            @Override
-            public void handle(ServerWebSocket serverWebSocket) {
-        	synchronized(WebSocketServerHelper.this) {
-        	    // FIXME: Create error handler, close handler, etc. on this socket.
+    public void startServer() {
+	synchronized(_actor) {
+	    // Note that the following call apparently starts the new server
+	    // in separate thread. It should not be done in the constructor
+	    // because the script that starts the server needs to register
+	    // callbacks before the server starts. Otherwise, there will be
+	    // a race condition where the callback could be called before
+	    // the server has started.
+	    _server = _vertx.createHttpServer();
+	    _server.websocketHandler(new Handler<ServerWebSocket>() {
+		@Override
+		public void handle(ServerWebSocket serverWebSocket) {
+		    synchronized(_actor) {
+			// FIXME: Create error handler, close handler, etc. on this socket.
 
-        	    // Notify of a new connection.
-        	    // This will have the side effect of creating a new JS Socket
-        	    // object, which is an event emitter.
-        	    _currentObj.callMember("socketCreated", serverWebSocket);
-        	}
-            }
-        });
-        _server.listen(_port, _hostInterface, new Handler<AsyncResult<HttpServer>>() {
-            @Override
-            public void handle(AsyncResult<HttpServer> arg0) {
-        	synchronized(WebSocketServerHelper.this) {
-        	    _currentObj.callMember("emit", "listening");
-        	}
-            }
-        });
+			// Notify of a new connection.
+			// This will have the side effect of creating a new JS Socket
+			// object, which is an event emitter.
+			_currentObj.callMember("socketCreated", serverWebSocket);
+		    }
+		}
+	    });
+	    _server.listen(_port, _hostInterface, new Handler<AsyncResult<HttpServer>>() {
+		@Override
+		public void handle(AsyncResult<HttpServer> arg0) {
+		    synchronized(_actor) {
+			_currentObj.callMember("emit", "listening");
+		    }
+		}
+	    });
+	}
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -125,7 +129,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
      */
     private WebSocketServerHelper(
 	    ScriptObjectMirror currentObj, String hostInterface, int port) {
-        _currentObj = currentObj;
+        super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
             _hostInterface = "localhost";
@@ -136,9 +140,6 @@ public class WebSocketServerHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
         
-    /** The current instance of the JavaScript module. */
-    private ScriptObjectMirror _currentObj;
-    
     /** The host interface. */
     private String _hostInterface;
     

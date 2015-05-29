@@ -163,6 +163,7 @@ exports.Server.prototype.socketCreated = function(serverWebSocket) {
  *  established at the request of a client. It should not normally be called by
  *  the JavaScript programmer. The returned Socket is an event emitter that emits
  *  'message' events.
+ *  @param serverWebSocket FIXME: What is this parameter????
  */
 exports.Socket = function(serverWebSocket) {
     this.helper = WebSocketHelper.createServerSocket(this, serverWebSocket);;

@@ -688,6 +688,7 @@ public class JavaScript extends TypedAtomicActor {
                 continue;
             }
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
+            // FIXME: This could be null if the port has been deleted, but not the parameter.
             if (portParameter.update()) {
         	proxy._hasNewInput(true);
         	foundNewInput = true;

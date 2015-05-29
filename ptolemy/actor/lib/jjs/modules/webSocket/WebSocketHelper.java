@@ -62,22 +62,18 @@ public class WebSocketHelper extends VertxHelperBase {
     
     /** Close the web socket.
      */
-    public synchronized void close() {
-        new Exception("WebSocketHelper.close()").printStackTrace();
-        if (_webSocket != null) {
-            if (_wsIsOpen) {
-                try {
-                    _webSocket.close();
-                } catch (IllegalStateException ex) {
-                    // Ignore this, it is likely that Vert.x already closed this for us.
-                    // See https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/Deadlock
-                }
-            }
-            _webSocket = null;
-        }
-        if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-	    _currentObj.callMember("emit", "error", "Unsent messages remain that were queued before the socket opened.");
-        }
+    public void close() {
+	synchronized(_actor) {
+	    if (_webSocket != null) {
+		if (_wsIsOpen) {
+		    _webSocket.close();
+		}
+		_webSocket = null;
+	    }
+	    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+		_currentObj.callMember("emit", "error", "Unsent messages remain that were queued before the socket opened.");
+	    }
+	}
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -106,25 +102,29 @@ public class WebSocketHelper extends VertxHelperBase {
     /** Send text data through the web socket.
      *  @param msg A text message to be sent.
      */
-    public synchronized void sendText(String msg) {
-        if (isOpen()) {
-            _webSocket.writeTextFrame(msg);
-        } else {
-            if (_pendingOutputs == null) {
-        	_pendingOutputs = new LinkedList();
-            }
-            _pendingOutputs.add(msg);
-        }
+    public void sendText(String msg) {
+	synchronized(_actor) {
+	    if (isOpen()) {
+		_webSocket.writeTextFrame(msg);
+	    } else {
+		if (_pendingOutputs == null) {
+		    _pendingOutputs = new LinkedList();
+		}
+		_pendingOutputs.add(msg);
+	    }
+	}
     }
 
     /** Return whether the web socket is opened successfully.
      *  @return True if the socket is open.
      */
-    public synchronized boolean isOpen() {
-	if (_webSocket == null) {
-	    return false;
+    public boolean isOpen() {
+	synchronized(_actor) {
+	    if (_webSocket == null) {
+		return false;
+	    }
+	    return _wsIsOpen;
 	}
-	return _wsIsOpen;
     }
         
     ///////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     private WebSocketHelper(
 	    ScriptObjectMirror currentObj, String host, int port) {
-        _currentObj = currentObj;
+        super(currentObj);
 
         HttpClient client = _vertx.createHttpClient();
         client.setHost(host);
@@ -150,7 +150,7 @@ public class WebSocketHelper extends VertxHelperBase {
         client.connectWebsocket(address, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
-        	synchronized(WebSocketHelper.this) {
+        	synchronized(_actor) {
         	    _wsIsOpen = true;
         	    _webSocket = websocket;
 
@@ -184,7 +184,7 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
      */
     private WebSocketHelper(ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
-        _currentObj = currentObj;
+        super(currentObj);
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
         _wsIsOpen = true;
@@ -196,9 +196,6 @@ public class WebSocketHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-        
-    /** The current instance of the JavaScript module. */
-    private ScriptObjectMirror _currentObj;
     
     /** Pending outputs received before the socket is opened. */
     private List _pendingOutputs;
@@ -217,7 +214,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class DataHandler implements Handler<Buffer> {
         @Override
         public void handle(Buffer buffer) {
-            synchronized(WebSocketHelper.this) {
+            synchronized(_actor) {
         	// This assumes the input is a string encoded in UTF-8.
         	_currentObj.callMember("notifyIncoming", buffer.toString());
             }
@@ -229,7 +226,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-            synchronized(WebSocketHelper.this) {
+            synchronized(_actor) {
         	_currentObj.callMember("emit", "close");
                 _wsIsOpen = false;
                 if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
@@ -244,7 +241,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
-            synchronized(WebSocketHelper.this) {
+            synchronized(_actor) {
         	_currentObj.callMember("emit", "error", throwable.getMessage());
         	_wsIsOpen = false;
             }
@@ -256,7 +253,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-            synchronized(WebSocketHelper.this) {
+            synchronized(_actor) {
         	_currentObj.callMember("emit", "close", arg0.getMessage());
         	_wsIsOpen = false;
             }

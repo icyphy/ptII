@@ -27,8 +27,12 @@
  */
 package ptolemy.actor.lib.jjs.modules;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
+
+import ptolemy.actor.lib.jjs.HelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// VertxHelperBase
@@ -43,7 +47,14 @@ import org.vertx.java.core.VertxFactory;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class VertxHelperBase {
+public class VertxHelperBase extends HelperBase {
+
+    /** Construct a helper for the specified JavaScript object.
+     *  @param currentObj The JavaScript object that this is helping.
+     */
+    public VertxHelperBase(ScriptObjectMirror currentObj) {
+	super(currentObj);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                        ////
