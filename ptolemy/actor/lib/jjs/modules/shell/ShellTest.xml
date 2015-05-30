@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ShellTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 45}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 56, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <entity name="JSAccessor" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;var shell = require('shell/shell');&#10;&#10;exports.setup = function() {&#10;    accessor.author('Armin Wasicek');&#10;	accessor.input('stdin', {&#10;		'type': 'string',&#10;		'description': 'some input'&#10;	});&#10;	accessor.output('stdout', {&#10;		'type': 'string',&#10;		'description': 'some output'&#10;	});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;	print('init');&#10;	&#10;	var sh = new shell.Shell({'cmd' : './proc.py'});&#10;	&#10;	addInputHandler(function() {&#10;	    var data = get('stdin');&#10;	    if (data) {&#10;	      console.log(&quot;Got: &quot; + data);&#10;		  sh.write(data);&#10;	    }&#10;	}, 'stdin');&#10;	&#10;&#10;	sh.on('message', function(data) {&#10;		if(data)  {&#10;			send(data.toString(), 'stdout');&#10;		}		&#10;	});&#10;&#10;	sh.start();&#10;}	&#10;&#10;	&#10;exports.wrapup = function() {&#10;	print('wrap');&#10;	&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/Users/armin/Source/gmtk/shelljs/ShellAccessor.js ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 150.0]">
+        </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Armin Wasicek">
+            </property>
+            <property name="stdin (port)" class="ptolemy.kernel.util.StringAttribute" value="some input">
+            </property>
+            <property name="stdout (port)" class="ptolemy.kernel.util.StringAttribute" value="some output">
+            </property>
+        </property>
+        <port name="stdin" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stdout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 296, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JSAccessor.stdin" relation="relation2"/>
+    <link port="JSAccessor.stdout" relation="relation3"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const.trigger" relation="relation"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="PoissonClock.output" relation="relation"/>
+</entity>
