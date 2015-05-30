@@ -42,7 +42,6 @@ public class ShellHelper  {
      */
     public synchronized void write(String s) throws IOException  {
         if(out!=null && p.isAlive())  {
-            System.out.println(s);
             out.write(s);
             out.newLine();  
             out.flush();
@@ -63,9 +62,9 @@ public class ShellHelper  {
         in.close();
         out.close(); 
         if(th.isAlive())  {
-            running=false;
+            _reader_th_running=false;
         }
-        running=false;
+        _reader_th_running=false;
         try {
             th.join(10);
         } catch (InterruptedException e) {
@@ -116,21 +115,20 @@ public class ShellHelper  {
                 @Override
                 public void run() {
                     do {
-                        String l = "";
+                        String l = null;
                         try {
                             l = in.readLine();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         if(l!=null)  {
-                            //System.out.println(l);
                             _currentObj.callMember("emit", "message", l);    
                         }
                         else  {
-                            running = false;
+                            _reader_th_running = false;
                         }
                     }
-                    while(running);                        
+                    while(_reader_th_running);                        
                 }
             });
         th.start();
@@ -160,7 +158,7 @@ public class ShellHelper  {
     private Thread th;
     
     /** Controls the reader thread. */
-    private boolean running = true;
+    private boolean _reader_th_running = true;
     
     /** A copy of the command that's invoked. */
     private String cmd;
