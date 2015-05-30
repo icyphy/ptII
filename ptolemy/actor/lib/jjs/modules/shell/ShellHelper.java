@@ -14,11 +14,25 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 ///////////////////////////////////////////////////////////////////
 ////ShellHelper
 
+/**
+ A helper class for the shell accessor module. It provides functionality
+ to invoke a command and control <i>stdin</i> and <i>stdout</i>. It forks 
+ off a process that executes the specified command. A reader thread listens 
+ to outputs asynchronously and forward out puts via the EventEmitter subsystem 
+ to the <i>shell.js</i> module in Nashorn. 
+ 
+ @author Armin Wasicek
+ @since Ptolemy II 10.0
+ */
 public class ShellHelper  {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    /** Factory method to create a new shell.
+     *  @param currentObj The JavaScript instance invoking the shell.
+     *  @param String The commandto be executed.
+     */
     public static ShellHelper createShell(ScriptObjectMirror currentObj, String cmd) {
         return new ShellHelper(currentObj, cmd);
     }
@@ -35,11 +49,16 @@ public class ShellHelper  {
         }
     }   
     
+    /** Starts the process and the reader thread. Call 
+     *   this after initialization and all callbacks have
+     *   been installed. 
+     */
     public void start()  {
         startProcess();
         startReader();
     }
     
+    /** Kills the process and the reader thread. */
     public void wrapup() throws IOException {
         in.close();
         out.close(); 
@@ -145,6 +164,4 @@ public class ShellHelper  {
     
     /** A copy of the command that's invoked. */
     private String cmd;
-
-
 }
