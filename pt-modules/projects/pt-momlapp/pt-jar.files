@@ -10,6 +10,7 @@
 /ptolemy/moml/filter/AddMissingParameter.java
 /ptolemy/moml/filter/BackwardCompatibility.java
 /ptolemy/moml/filter/ClassChanges.java
+/ptolemy/moml/filter/DocAttributeChanges.java
 /ptolemy/moml/filter/GRColorChanges.java
 /ptolemy/moml/filter/HideAnnotationNames.java
 /ptolemy/moml/filter/MultiportToSinglePort.java
