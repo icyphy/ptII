@@ -148,7 +148,7 @@ LIBEVENT_H_FILES = \
 # Rebuild the jar file
 # We define gdp_datum_t and gdp_datum as void * so that JNAerator does not generate gdp_datum.java, which would refer to pthreads.
 jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
-	java -jar $(JNAERATOR_JAR) -runtime JNA -Dgdp_datum_t="void *" -Dgdp_datum="void *" -library gdp.1.0 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
+	java -jar $(JNAERATOR_JAR) -runtime JNA -Dgdp_datum_t="void *" -Dgdp_datum="void *" -library gdp.0.2 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
 	echo "Fixing $$file"; \
