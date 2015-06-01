@@ -75,27 +75,27 @@ public class GdpUtilities {
         // See http://www.terraswarm.org/swarmos/wiki/Main/GDPJavaInterface#ReaderTestDoesNotExit
 
         //(((c).code >> _EP_STAT_SEVSHIFT) & ((1UL << _EP_STAT_SEVBITS) - 1))
-        int EP_STAT_SEVERITY = (code >>> Gdp10Library._EP_STAT_SEVSHIFT)
-                & ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1);
-        //BigInteger big = BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT).and(
-        //        BigInteger.valueOf(((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)));
+        int EP_STAT_SEVERITY = (code >>> Gdp02Library._EP_STAT_SEVSHIFT)
+                & ((1 << Gdp02Library._EP_STAT_SEVBITS) - 1);
+        //BigInteger big = BigInteger.valueOf(code).shiftRight(Gdp02Library._EP_STAT_SEVSHIFT).and(
+        //        BigInteger.valueOf(((1 << Gdp02Library._EP_STAT_SEVBITS) - 1)));
         //         System.out.println("EP_STAT_ISOK(): code: " + code + " " + Long.toHexString(code)
-        //                 + ", (code >> Gdp10Library._EP_STAT_SEVSHIFT): " + (code >> Gdp10Library._EP_STAT_SEVSHIFT) + " " + Long.toHexString((code >> Gdp10Library._EP_STAT_SEVSHIFT))
-        //                 + ", (code >>> Gdp10Library._EP_STAT_SEVSHIFT): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> Gdp10Library._EP_STAT_SEVSHIFT))
-        //                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT + 1): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+1)))
-        //                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT +2): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+2)))
+        //                 + ", (code >> Gdp02Library._EP_STAT_SEVSHIFT): " + (code >> Gdp02Library._EP_STAT_SEVSHIFT) + " " + Long.toHexString((code >> Gdp02Library._EP_STAT_SEVSHIFT))
+        //                 + ", (code >>> Gdp02Library._EP_STAT_SEVSHIFT): " + (code >>> Gdp02Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> Gdp02Library._EP_STAT_SEVSHIFT))
+        //                 + ", (code >>> (Gdp02Library._EP_STAT_SEVSHIFT + 1): " + (code >>> Gdp02Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp02Library._EP_STAT_SEVSHIFT+1)))
+        //                 + ", (code >>> (Gdp02Library._EP_STAT_SEVSHIFT +2): " + (code >>> Gdp02Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp02Library._EP_STAT_SEVSHIFT+2)))
 
-        //                 + ", (code >>> (Gdp10Library._EP_STAT_SEVSHIFT +3): " + (code >>> Gdp10Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp10Library._EP_STAT_SEVSHIFT+3)))
+        //                 + ", (code >>> (Gdp02Library._EP_STAT_SEVSHIFT +3): " + (code >>> Gdp02Library._EP_STAT_SEVSHIFT)  + " " + Long.toHexString((code >>> (Gdp02Library._EP_STAT_SEVSHIFT+3)))
 
-        //                 + ", ((1 << Gdp10Library._EP_STAT_SEVBITS)): " + ((1 << Gdp10Library._EP_STAT_SEVBITS))
-        //                 + ", ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1): " + ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)
-        //                 //+ ", BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT): " + BigInteger.valueOf(code).shiftRight(Gdp10Library._EP_STAT_SEVSHIFT)
-        //                 //+ ", BigInteger.valueOf(((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)): " + BigInteger.valueOf(((1 << Gdp10Library._EP_STAT_SEVBITS) - 1))
+        //                 + ", ((1 << Gdp02Library._EP_STAT_SEVBITS)): " + ((1 << Gdp02Library._EP_STAT_SEVBITS))
+        //                 + ", ((1 << Gdp02Library._EP_STAT_SEVBITS) - 1): " + ((1 << Gdp02Library._EP_STAT_SEVBITS) - 1)
+        //                 //+ ", BigInteger.valueOf(code).shiftRight(Gdp02Library._EP_STAT_SEVSHIFT): " + BigInteger.valueOf(code).shiftRight(Gdp02Library._EP_STAT_SEVSHIFT)
+        //                 //+ ", BigInteger.valueOf(((1 << Gdp02Library._EP_STAT_SEVBITS) - 1)): " + BigInteger.valueOf(((1 << Gdp02Library._EP_STAT_SEVBITS) - 1))
         //                 + ", EP_STAT_SEVERITY: " + EP_STAT_SEVERITY + " " + Long.toHexString(EP_STAT_SEV_WARN)
         //                 //+ ", EP_STAT_SEVERITY as big: " + big
         //                 + ", EP_STAT_SEV_WARN: " + EP_STAT_SEV_WARN + " " + Long.toHexString(EP_STAT_SEV_WARN)
         //                 + "EP_STAT_SEVERITY < EP_STAT_SEV_WARN: " + (EP_STAT_SEVERITY < EP_STAT_SEV_WARN));
-        return EP_STAT_SEVERITY < Gdp10Library.EP_STAT_SEV_WARN;
+        return EP_STAT_SEVERITY < Gdp02Library.EP_STAT_SEV_WARN;
     }
 
     /** Create a new status code.
@@ -122,9 +122,9 @@ public class GdpUtilities {
     public static EP_STAT EP_STAT_NEW(int s, int r, int m, int d) {
         // We use the same parameter names as are in the original C
         // code for ease of maintenance.
-        int code = ((((s) & ((1 << Gdp10Library._EP_STAT_SEVBITS) - 1)) << Gdp10Library._EP_STAT_SEVSHIFT)
-                | (((r) & ((1 << Gdp10Library._EP_STAT_REGBITS) - 1)) << Gdp10Library._EP_STAT_REGSHIFT)
-                | (((m) & ((1 << Gdp10Library._EP_STAT_MODBITS) - 1)) << Gdp10Library._EP_STAT_MODSHIFT) | (((d) & ((1 << Gdp10Library._EP_STAT_DETBITS) - 1))));
+        int code = ((((s) & ((1 << Gdp02Library._EP_STAT_SEVBITS) - 1)) << Gdp02Library._EP_STAT_SEVSHIFT)
+                | (((r) & ((1 << Gdp02Library._EP_STAT_REGBITS) - 1)) << Gdp02Library._EP_STAT_REGSHIFT)
+                | (((m) & ((1 << Gdp02Library._EP_STAT_MODBITS) - 1)) << Gdp02Library._EP_STAT_MODSHIFT) | (((d) & ((1 << Gdp02Library._EP_STAT_DETBITS) - 1))));
 
         return new EP_STAT((int)code);
     }
@@ -142,14 +142,14 @@ public class GdpUtilities {
             System.out.print("null datum");
         }
         System.out.print("GDP record "
-                + Gdp10Library.INSTANCE.gdp_datum_getrecno(datum) + ", ");
-        PointerByReference dbuf = Gdp10Library.INSTANCE.gdp_datum_getbuf(datum);
+                + Gdp02Library.INSTANCE.gdp_datum_getrecno(datum) + ", ");
+        PointerByReference dbuf = Gdp02Library.INSTANCE.gdp_datum_getbuf(datum);
         if (dbuf == null) {
             System.out.print("no data");
         } else {
             // In gdp_api.c, gdp_datum_print() calls:
             // l = gdp_buf_getlength(datum->dbuf);
-            length = Gdp10Library.INSTANCE.gdp_buf_getlength(dbuf);
+            length = Gdp02Library.INSTANCE.gdp_buf_getlength(dbuf);
             System.out.print("len " + length);
 
             // The comment below is out of date (5/27/15)
@@ -164,19 +164,19 @@ public class GdpUtilities {
             // // JNA on that class.
 
             //d = Event2Library.INSTANCE.evbuffer_pullup(new evbuffer(datum.dbuf.getValue()), new NativeLong(length.longValue()));
-            d = Gdp10Library.INSTANCE.gdp_buf_getptr(dbuf, new NativeSizeT(
+            d = Gdp02Library.INSTANCE.gdp_buf_getptr(dbuf, new NativeSizeT(
                     length.longValue()));
         }
-        //Gdp10Library.INSTANCE.gdp_buf_getts(dbuf, new NativeSizeT(length.longValue()));
+        //Gdp02Library.INSTANCE.gdp_buf_getts(dbuf, new NativeSizeT(length.longValue()));
         EP_TIME_SPEC ts = new EP_TIME_SPEC();
-        Gdp10Library.INSTANCE.gdp_datum_getts(datum, ts);
+        Gdp02Library.INSTANCE.gdp_datum_getts(datum, ts);
 
         if (ts.tv_sec != Long.MIN_VALUE) {
             // Was: ep_time_print(&datum->ts, fp, true);
 
             //final int TBUF_SIZE = 128;
             //ByteBuffer tbuf = ByteBuffer.allocate(TBUF_SIZE);
-            //Gdp10Library.INSTANCE.ep_time_format(ts, tbuf, new NativeSizeT(TBUF_SIZE), (byte)1 /*human*/);
+            //Gdp02Library.INSTANCE.ep_time_format(ts, tbuf, new NativeSizeT(TBUF_SIZE), (byte)1 /*human*/);
             //System.out.println("ts: " + ts + "tbuf: " + tbuf);
 
             Date myDate = new Date(ts.tv_sec * 1000);
@@ -222,7 +222,7 @@ public class GdpUtilities {
 
     /** The ok status code. */
     public static final EP_STAT EP_STAT_OK = EP_STAT_NEW(
-            Gdp10Library.EP_STAT_SEV_OK, 0, 0, 0);
+            Gdp02Library.EP_STAT_SEV_OK, 0, 0, 0);
 
     /** Normal error. */
     public static final int EP_STAT_SEV_ERROR = 5;

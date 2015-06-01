@@ -32,7 +32,7 @@ import java.nio.ByteBuffer;
 
 import org.terraswarm.gdp.EP_TIME_SPEC;
 import org.terraswarm.gdp.EP_STAT;
-import org.terraswarm.gdp.Gdp10Library;
+import org.terraswarm.gdp.Gdp02Library;
 import org.terraswarm.gdp.GdpUtilities;
 
 import com.sun.jna.Native;
@@ -73,14 +73,14 @@ public class ReaderTest {
         EP_STAT estat;
         long /*gdp_recno_t*/recno = firstrec;
         // Was: gdp_datum_t *datum = gdp_datum_new();
-        PointerByReference datum = Gdp10Library.INSTANCE.gdp_datum_new();
+        PointerByReference datum = Gdp02Library.INSTANCE.gdp_datum_new();
 
         if (recno <= 0) {
             recno = 1;
         }
         for (;;) {
             // Was: estat = gdp_gcl_read(gclh, recno, datum);
-            estat = Gdp10Library.INSTANCE.gdp_gcl_read(gclh, recno, datum);
+            estat = Gdp02Library.INSTANCE.gdp_gcl_read(gclh, recno, datum);
             // Was: EP_STAT_CHECK(estat, break);
             if (!GdpUtilities.EP_STAT_ISOK(estat)) {
                 break;
@@ -91,12 +91,12 @@ public class ReaderTest {
             _debug("datum: " + datum);
             // Was: gdp_datum_print(datum, stdout);
             //GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-            _debug("dlen: " + Gdp10Library.INSTANCE.gdp_datum_getdlen(datum));
+            _debug("dlen: " + Gdp02Library.INSTANCE.gdp_datum_getdlen(datum));
             recno++;
 
             // flush any left over data
             // Was: if (gdp_buf_reset(gdp_datum_getbuf(datum)) < 0)
-            if (Gdp10Library.INSTANCE.gdp_buf_reset(Gdp10Library.INSTANCE
+            if (Gdp02Library.INSTANCE.gdp_buf_reset(Gdp02Library.INSTANCE
                     .gdp_datum_getbuf(datum)) < 0) {
                 //char nbuf[40];
                 //strerror_r(errno, nbuf, sizeof nbuf);
@@ -150,13 +150,13 @@ public class ReaderTest {
         if (subscribe) {
             // Was: estat = gdp_gcl_subscribe(gclh, firstrec, numrecs, NULL, NULL, NULL);
             //PointerByReference gclhByReference = new PointerByReference(gclh);
-            estat = Gdp10Library.INSTANCE.gdp_gcl_subscribe(gclh, firstrec,
+            estat = Gdp02Library.INSTANCE.gdp_gcl_subscribe(gclh, firstrec,
                     numrecs, null, null, null);
             //gclh = gclhByReference.getValue();
         } else {
             // Was: estat = gdp_gcl_multiread(gclh, firstrec, numrecs, NULL, NULL);
             //PointerByReference gclhByReference = new PointerByReference();
-            estat = Gdp10Library.INSTANCE.gdp_gcl_multiread(gclh, firstrec,
+            estat = Gdp02Library.INSTANCE.gdp_gcl_multiread(gclh, firstrec,
                     numrecs, null, null);
             //gclh = gclhByReference.getValue();
         }
@@ -175,19 +175,19 @@ public class ReaderTest {
 
         for (;;) {
             // Was: gdp_event_t *gev = gdp_event_next(true);
-            PointerByReference gev = Gdp10Library.INSTANCE
+            PointerByReference gev = Gdp02Library.INSTANCE
                 // .gdp_event_next(true ? (byte) 1 : (byte) 0);
                 .gdp_event_next((PointerByReference)null, new EP_TIME_SPEC());
-            switch (Gdp10Library.INSTANCE.gdp_event_gettype(gev)) {
+            switch (Gdp02Library.INSTANCE.gdp_event_gettype(gev)) {
             case GdpUtilities.GDP_EVENT_DATA:
                 System.out.print(" >>> ");
                 _debug("gclh: " + gclh);
                 _debug("datum: " +
-                        Gdp10Library.INSTANCE
+                        Gdp02Library.INSTANCE
                         .gdp_event_getdatum(gev));
 
                 // Was: gdp_datum_print(gdp_event_getdatum(gev), stdout);
-                //GdpUtilities.gdp_datum_print(Gdp10Library.INSTANCE
+                //GdpUtilities.gdp_datum_print(Gdp02Library.INSTANCE
                 //        .gdp_event_getdatum(gev)/*, stdout*/);
                 break;
             case GdpUtilities.GDP_EVENT_EOS:
@@ -196,11 +196,11 @@ public class ReaderTest {
                 return estat;
             default:
                 System.err.print("Unknown event type"
-                        + Gdp10Library.INSTANCE.gdp_event_gettype(gev));
+                        + Gdp02Library.INSTANCE.gdp_event_gettype(gev));
                 //sleep(1);
                 break;
             }
-            Gdp10Library.INSTANCE.gdp_event_free(gev);
+            Gdp02Library.INSTANCE.gdp_event_free(gev);
         }
 
         // should never get here
@@ -282,7 +282,7 @@ public class ReaderTest {
             if (argv[i].equals("-D")) {
                 // Was: ep_dbg_set(optarg);
                 argc--;
-                Gdp10Library.INSTANCE.ep_dbg_set(argv[i + 1]);
+                Gdp02Library.INSTANCE.ep_dbg_set(argv[i + 1]);
                 argc--;
             } else if (argv[i].equals("-G")) {
                 argc--;
@@ -318,7 +318,7 @@ public class ReaderTest {
 
         // estat = gdp_init();
         System.err.println("About to initialize the GDP.");
-        estat = Gdp10Library.INSTANCE.gdp_init(gdpd_addr);
+        estat = Gdp02Library.INSTANCE.gdp_init(gdpd_addr);
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);
@@ -331,7 +331,7 @@ public class ReaderTest {
                 + multiread + ", numrecs: " + numrecs + ", subscribe: "
                 + subscribe + " name: " + argv[argv.length - 1]);
         // Was estat = gdp_gcl_parse_name(argv[0], gclname);
-        estat = Gdp10Library.INSTANCE.gdp_parse_name(argv[argv.length - 1],
+        estat = Gdp02Library.INSTANCE.gdp_parse_name(argv[argv.length - 1],
                 gclname);
 
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
@@ -340,14 +340,14 @@ public class ReaderTest {
             System.exit(1);
         }
 
-        Gdp10Library.INSTANCE.gdp_printable_name(gclname, gclpname);
+        Gdp02Library.INSTANCE.gdp_printable_name(gclname, gclpname);
 
         System.out.println("Reading GCL " + gclpname);
 
         // Was: estat = gdp_gcl_open(gclname, GDP_MODE_RO, &gclh);
         PointerByReference gclhByReference = new PointerByReference();
-        estat = Gdp10Library.INSTANCE.gdp_gcl_open(gclname,
-                Gdp10Library.gdp_iomode_t.GDP_MODE_RO, (PointerByReference) null, gclhByReference);
+        estat = Gdp02Library.INSTANCE.gdp_gcl_open(gclname,
+                Gdp02Library.gdp_iomode_t.GDP_MODE_RO, (PointerByReference) null, gclhByReference);
         gclh = gclhByReference.getValue();
 
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
