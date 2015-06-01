@@ -76,7 +76,7 @@ all: jclass
 install: jclass jars
 
 runReaderTest: ReaderTest.class
-	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest  -G gdp-03.eecs.berkeley.edu:8007 -D gdp.api=100 elvis
+	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest  -G gdp-03.eecs.berkeley.edu:8007 -D gdp.api=100 edu.berkeley.eecs.mor.log01
 
 # Read libraries from the $PTII/lib
 runReaderTestPtIILib: ReaderTest.class
@@ -87,7 +87,7 @@ runReaderTestSubscriber: ReaderTest.class
 	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.ReaderTest -s -D gdp.api=100 elvis
 
 runWriterTest: WriterTest.class
-	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest -G gdp-03.eecs.berkeley.edu:8007 -D gdp.api=100 edu.berkeley.eecs.cxh.01
+	DYLD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib LD_LIBRARY_PATH=${PTII}/org/terraswarm/gdp/src/gdp/libs:/usr/local/lib $(JAVA) -Djna.debug_load=true -Djna.dump_memory=true -classpath $(CLASSPATH) org.terraswarm.gdp.apps.WriterTest -G gdp-03.eecs.berkeley.edu:8007 -D gdp.req=100 edu.berkeley.eecs.cxh.01
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
