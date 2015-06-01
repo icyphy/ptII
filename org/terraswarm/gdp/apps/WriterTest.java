@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 
 import org.ptolemy.fmi.NativeSizeT;
 import org.terraswarm.gdp.EP_STAT;
-import org.terraswarm.gdp.Gdp10Library;
+import org.terraswarm.gdp.Gdp02Library;
 import org.terraswarm.gdp.GdpUtilities;
 
 import com.sun.jna.Memory;
@@ -122,7 +122,7 @@ public class WriterTest {
                 argc--;
             } else if (argv[i].equals("-D")) {
                 argc--;
-                Gdp10Library.INSTANCE.ep_dbg_set(argv[i + 1]);
+                Gdp02Library.INSTANCE.ep_dbg_set(argv[i + 1]);
                 argc--;
             } else if (argv[i].equals("-G")) {
                 argc--;
@@ -147,7 +147,7 @@ public class WriterTest {
         }
 
         _debug("About to initialize the GDP.");
-        estat = Gdp10Library.INSTANCE.gdp_init(gdpd_addr);
+        estat = Gdp02Library.INSTANCE.gdp_init(gdpd_addr);
         if (!GdpUtilities.EP_STAT_ISOK(estat)) {
             System.err.println("GDP Initialization failed");
             _fail0(estat);
@@ -157,11 +157,11 @@ public class WriterTest {
         PointerByReference gclhByReference = new PointerByReference();
         // writer-test.c requires a log_name
         _debug("About to parse " + xname);
-        Gdp10Library.INSTANCE.gdp_parse_name(xname, gcliname);
+        Gdp02Library.INSTANCE.gdp_parse_name(xname, gcliname);
         _debug("About to call gdp_gcl_open()");
-        //estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname, Gdp10Library.gdp_iomode_t.GDP_MODE_AO, gclh);
-        estat = Gdp10Library.INSTANCE.gdp_gcl_open(gcliname,
-                Gdp10Library.gdp_iomode_t.GDP_MODE_AO, (PointerByReference) null, gclhByReference);
+        //estat = Gdp02Library.INSTANCE.gdp_gcl_open(gcliname, Gdp02Library.gdp_iomode_t.GDP_MODE_AO, gclh);
+        estat = Gdp02Library.INSTANCE.gdp_gcl_open(gcliname,
+                Gdp02Library.gdp_iomode_t.GDP_MODE_AO, (PointerByReference) null, gclhByReference);
         gclh = gclhByReference.getValue();
         _debug("About to check error code after either creating a new handle, gdp_gcl_open() or gdp_gcl_create()");
         // EP_STAT_CHECK(estat, goto fail0);
@@ -169,17 +169,17 @@ public class WriterTest {
             _fail0(estat);
         }
 
-        //Gdp10Library.INSTANCE.gdp_gcl_print(gclh, stdout, 0, 0);
+        //Gdp02Library.INSTANCE.gdp_gcl_print(gclh, stdout, 0, 0);
         _debug("GCL" + System.identityHashCode(gclh) + ":");
 
         // FIXME: Need to allocate something 44 chars long (GDP_GCL_PNAME_LEN in gdp.h)
-        // Gdp10Library.INSTANCE.gdp_gcl_printable_name(gclh, nbuf);
+        // Gdp02Library.INSTANCE.gdp_gcl_printable_name(gclh, nbuf);
         // Print nbuf
 
         System.out.println("Starting to read input.");
 
         _debug("About to create a gdp_datum.");
-        PointerByReference datum = Gdp10Library.INSTANCE.gdp_datum_new();
+        PointerByReference datum = Gdp02Library.INSTANCE.gdp_datum_new();
         _debug("Done creating a gdp_datum");
         // Invoke with -Djna.dump_memory=true
         _debug("datum: " + datum);
@@ -215,19 +215,19 @@ public class WriterTest {
 
                 _debug("About to call gdp_datum_getbuf()");
                 // Get a reference to the buffer part of the datum.
-                PointerByReference dbuf = Gdp10Library.INSTANCE
+                PointerByReference dbuf = Gdp02Library.INSTANCE
                         .gdp_datum_getbuf(datum);
                 _debug("About to call gdp_buf_write(): pointer: " + pointer
                         + "pointer.getString(): " + pointer.getString(0));
                 // Write the C string to the buffer.
-                Gdp10Library.INSTANCE.gdp_buf_write(dbuf, pointer,
+                Gdp02Library.INSTANCE.gdp_buf_write(dbuf, pointer,
                         new NativeSizeT(line.length()));
 
                 _debug("About to call gdp_gcl_publish()");
                 _debug("gclh: " + gclh);
                 _debug("datum: " + datum);
                 //GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-                estat = Gdp10Library.INSTANCE.gdp_gcl_append(gclhByReference.getValue(), datum);
+                estat = Gdp02Library.INSTANCE.gdp_gcl_append(gclhByReference.getValue(), datum);
                 if (!GdpUtilities.EP_STAT_ISOK(estat)) {
                     _fail1(estat, gclhByReference);
                     gclh = gclhByReference.getValue();
@@ -236,14 +236,14 @@ public class WriterTest {
                 //gdp_datum_print(datum, stdout);
                 _debug("About to call gdp_datum_print()");
                 //GdpUtilities.gdp_datum_print(datum/*, stdout*/);
-                //Gdp10Library.INSTANCE.gdp_datum_print_to_stdout(datum, 0);
+                //Gdp02Library.INSTANCE.gdp_datum_print_to_stdout(datum, 0);
             }
         } finally {
             if (bufferedReader != null) {
                 bufferedReader.close();
             }
         }
-        Gdp10Library.INSTANCE.gdp_datum_free(datum);
+        Gdp02Library.INSTANCE.gdp_datum_free(datum);
         _fail0(estat);
     }
 
@@ -254,7 +254,7 @@ public class WriterTest {
     private static void _fail1(EP_STAT estat, PointerByReference gclh) {
         // We use a separate method here so that we can mimic the
         // structure of the original writer-test.c.
-        Gdp10Library.INSTANCE.gdp_gcl_close(gclh);
+        Gdp02Library.INSTANCE.gdp_gcl_close(gclh);
         _fail0(estat);
     }
 

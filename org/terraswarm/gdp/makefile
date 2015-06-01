@@ -51,14 +51,18 @@ PTPACKAGE = 	gdp
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS =
 
-JSRCS = \
+# .java files created by the jnaerator.
+JSRCS_DERIVED = \
 	EP_DBG.java \
 	EP_STAT.java \
 	EP_TIME_SPEC.java \
-	Gdp10Library.java \
-	GdpUtilities.java \
+	Gdp02Library.java \
 	ep_malloc_functions.java \
 	ep_stat_to_string.java
+
+JSRCS = \
+	$(JSRCS_DERIVED) \
+	GdpUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
 	gdp.patch
@@ -87,19 +91,19 @@ OPTIONAL_FILES = \
 	'EP_STAT$$ByValue.class' \
 	'EP_TIME_SPEC$$ByReference.class' \
 	'EP_TIME_SPEC$$ByValue.class' \
-	'Gdp10Library$$EP_STAT2.class' \
-	'Gdp10Library$$EP_STAT_HANDLE.class' \
-	'Gdp10Library$$EP_STAT_HANDLER_FUNCP.class' \
-	'Gdp10Library$$EP_STAT_callback.class' \
-	'Gdp10Library$$EP_THR_COND.class' \
-	'Gdp10Library$$EP_THR_MUTEX.class' \
-	'Gdp10Library$$EP_THR_RWLOCK.class' \
-	'Gdp10Library$$FILE.class' \
-	'Gdp10Library$$gdp_buf_t.class' \
-	'Gdp10Library$$gdp_event_t.class' \
-	'Gdp10Library$$gdp_gcl_sub_cbfunc_t.class' \
-	'Gdp10Library$$gdp_gcl_t.class' \
-	'Gdp10Library$$gdp_iomode_t.class' \
+	'Gdp02Library$$EP_STAT2.class' \
+	'Gdp02Library$$EP_STAT_HANDLE.class' \
+	'Gdp02Library$$EP_STAT_HANDLER_FUNCP.class' \
+	'Gdp02Library$$EP_STAT_callback.class' \
+	'Gdp02Library$$EP_THR_COND.class' \
+	'Gdp02Library$$EP_THR_MUTEX.class' \
+	'Gdp02Library$$EP_THR_RWLOCK.class' \
+	'Gdp02Library$$FILE.class' \
+	'Gdp02Library$$gdp_buf_t.class' \
+	'Gdp02Library$$gdp_event_t.class' \
+	'Gdp02Library$$gdp_gcl_sub_cbfunc_t.class' \
+	'Gdp02Library$$gdp_gcl_t.class' \
+	'Gdp02Library$$gdp_iomode_t.class' \
 	'ep_stat_to_string$$ByReference.class' \
 	'ep_stat_to_string$$ByValue.class'
 
@@ -137,7 +141,7 @@ GDP_H_FILES = \
 
 #STD=	-DEP_OSCF_USE_PTHREADS=0
 
-LIBEVENT_VERSION = 2.0.21-stable
+LIBEVENT_VERSION = 2.0.22-stable
 LIBEVENT=libevent-$(LIBEVENT_VERSION)
 LIBEVENT_SRC=src/$(LIBEVENT)
 
@@ -148,12 +152,14 @@ LIBEVENT_H_FILES = \
 # Rebuild the jar file
 # We define gdp_datum_t and gdp_datum as void * so that JNAerator does not generate gdp_datum.java, which would refer to pthreads.
 jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
+	rm -f $(JSRCS_DERIVED)
 	java -jar $(JNAERATOR_JAR) -runtime JNA -Dgdp_datum_t="void *" -Dgdp_datum="void *" -library gdp.0.2 -I $(GDP_SRC) $(GDP_H_FILES) $(PTHREAD_H_FILES) -o $(PTII) -library event2 -I $(LIBEVENT2_SRC)/include $(LIBEVENT_H_FILES) -package org.terraswarm.gdp  -v  -noJar -noComp
 	# Fix up some issues:
 	for file in *.java; do \
 	echo "Fixing $$file"; \
 	sed \
 	    -e 's@NativeSize\([^T]\)@NativeSizeT\1@g' \
+	    -e 's@NativeSizeTByReference \([^ ]*\)@ NativeSizeT \1 /* Updated by cxh in makefile*/@' \
 	    -e 's@import com.ochafik.lang.jnaerator.runtime.NativeSizeT;@import org.ptolemy.fmi.NativeSizeT; //Use NativeSizeT intead of NativeSize.  Fixed in makefile@' \
 	    -e 's@\(import com.ochafik.lang.jnaerator.runtime.\)@// \1 // Commented out by cxh in makefile@' \
 	    -e 's@public static final Pointer EP_GEN_DEADBEEF = (Pointer)0xDEADBEEF;@public static final Pointer EP_GEN_DEADBEEF = new Pointer(0xDEADBEEF); // Fixed by cxh in makefile.@' \
@@ -202,10 +208,8 @@ jna: $(JNAERATOR_JAR) src/gdp $(LIBEVENT_SRC)
 libevent: $(LIBEVENT_SRC)
 $(LIBEVENT_SRC):
 	@if [ ! -d $(LIBEVENT_SRC) ]; then \
-		echo "Github is too stupid to handle wget, so you will need to go to http://libevent.org, download it and then run"; \
-		echo " cd src; tar -zxf ~/Downloads/$(LIBEVENT).tar.gz; cd .."; \
-		echo "Then rerun make."; \
-		exit 2; \
+		wget -O src/$(LIBEVENT).tar.gz 'http://downloads.sourceforge.net/project/levent/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz?r=http%3A%2F%2Flibevent.org%2F&ts=1433174624&use_mirror=iweb'; \
+		(cd src; tar -zxf $(LIBEVENT).tar.gz); \
 	else \
 		echo "$(LIBEVENT_SRC) exists!"; \
 	fi
