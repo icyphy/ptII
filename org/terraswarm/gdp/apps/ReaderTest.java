@@ -87,8 +87,11 @@ public class ReaderTest {
             }
 
             System.out.print(" >>> ");
+            _debug("gclh: " + gclh);
+            _debug("datum: " + datum);
             // Was: gdp_datum_print(datum, stdout);
-            GdpUtilities.gdp_datum_print(datum/*, stdout*/);
+            //GdpUtilities.gdp_datum_print(datum/*, stdout*/);
+            _debug("dlen: " + Gdp10Library.INSTANCE.gdp_datum_getdlen(datum));
             recno++;
 
             // flush any left over data
@@ -178,9 +181,14 @@ public class ReaderTest {
             switch (Gdp10Library.INSTANCE.gdp_event_gettype(gev)) {
             case GdpUtilities.GDP_EVENT_DATA:
                 System.out.print(" >>> ");
+                _debug("gclh: " + gclh);
+                _debug("datum: " +
+                        Gdp10Library.INSTANCE
+                        .gdp_event_getdatum(gev));
+
                 // Was: gdp_datum_print(gdp_event_getdatum(gev), stdout);
-                GdpUtilities.gdp_datum_print(Gdp10Library.INSTANCE
-                        .gdp_event_getdatum(gev)/*, stdout*/);
+                //GdpUtilities.gdp_datum_print(Gdp10Library.INSTANCE
+                //        .gdp_event_getdatum(gev)/*, stdout*/);
                 break;
             case GdpUtilities.GDP_EVENT_EOS:
                 System.err.println("End of "
@@ -376,4 +384,12 @@ public class ReaderTest {
 
         System.exit(GdpUtilities.EP_STAT_ISOK(estat) ? 0 : 1);
     }
+    /** Optionally print a message.
+     *  @param the message
+     */
+    private static void _debug(String message) {
+        System.out.println(message);
+    }
+
 }
+
