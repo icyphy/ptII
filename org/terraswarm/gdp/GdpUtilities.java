@@ -152,15 +152,16 @@ public class GdpUtilities {
             length = Gdp10Library.INSTANCE.gdp_buf_getlength(dbuf);
             System.out.print("len " + length);
 
-            // In gdp_api.c, this method calls:
-            // d = gdp_buf_getptr(datum->dbuf, l);
-            // gdp_buf.h has:
-            // #define gdp_buf_getptr(b, z)        evbuffer_pullup(b, z)
-            // So, we would need to call evbuffer_pullup() here.
+            // The comment below is out of date (5/27/15)
+            // // In gdp_api.c, this method calls:
+            // // d = gdp_buf_getptr(datum->dbuf, l);
+            // // gdp_buf.h has:
+            // // #define gdp_buf_getptr(b, z)        evbuffer_pullup(b, z)
+            // // So, we would need to call evbuffer_pullup() here.
 
-            // A different idea would be to have a gdp_buf.c method
-            // that calls evbuffer_pullup so that we don't need to run
-            // JNA on that class.
+            // // A different idea would be to have a gdp_buf.c method
+            // // that calls evbuffer_pullup so that we don't need to run
+            // // JNA on that class.
 
             //d = Event2Library.INSTANCE.evbuffer_pullup(new evbuffer(datum.dbuf.getValue()), new NativeLong(length.longValue()));
             d = Gdp10Library.INSTANCE.gdp_buf_getptr(dbuf, new NativeSizeT(
