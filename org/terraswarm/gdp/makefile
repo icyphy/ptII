@@ -223,7 +223,8 @@ gdp: $(GDP_SRC)
 $(GDP_SRC):
 	# You will need a password for this, ask Eric.
 	@if [ ! -d src ]; then mkdir src; echo "making the src/ directory."; fi
-	cd src; git clone https://$(USER)@repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git; cd gdp; $(MAKE)
+	# unset LD_LIBRARY_PATH and avoid messages about libcurl.
+	cd src; unset LD_LIBRARY_PATH; git clone repoman@repo.eecs.berkeley.edu:projects/swarmlab/gdp.git; cd gdp; $(MAKE)
 	@echo "If the above fails, read src/gdp/README and install dependencies."
 
 #patch_gdp:
