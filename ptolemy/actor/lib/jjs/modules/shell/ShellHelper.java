@@ -59,8 +59,12 @@ public class ShellHelper  {
     
     /** Kills the process and the reader thread. */
     public void wrapup() throws IOException {
-        in.close();
-        out.close(); 
+        if(in!=null)  {
+            in.close();
+        }
+        if(out!=null) {
+            out.close();
+        }
         if(readerThread.isAlive())  {
             _readerThreadRunning=false;
         }
@@ -72,7 +76,7 @@ public class ShellHelper  {
         }
         readerThread=null;
   
-        if(process.isAlive())  {
+        if((process!=null) && (process.isAlive()))  {
             process.destroy();
         }
         process=null;
@@ -104,6 +108,7 @@ public class ShellHelper  {
             process = processBuilder.start();
         } catch (IOException e) {
             e.printStackTrace();
+            this._currentObj.callMember("error", "HELLO");
             return ;
         }
         out = new BufferedWriter( new OutputStreamWriter(process.getOutputStream()) );
