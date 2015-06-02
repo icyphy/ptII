@@ -31,17 +31,17 @@ public class ShellHelper  {
 
     /** Factory method to create a new shell.
      *  @param currentObj The JavaScript instance invoking the shell.
-     *  @param String The commandto be executed.
+     *  @param String The command to be executed.
      */
-    public static ShellHelper createShell(ScriptObjectMirror currentObj, String cmd) {
-        return new ShellHelper(currentObj, cmd);
+    public static ShellHelper createShell(ScriptObjectMirror currentObj, String command) {
+        return new ShellHelper(currentObj, command);
     }
     
     /** Write to the process' stdin.
      *  @param s The data to be sent to the process.
      */
     public synchronized void write(String s) throws IOException  {
-        if(out!=null && p.isAlive())  {
+        if(out!=null && process.isAlive())  {
             out.write(s);
             out.newLine();  
             out.flush();
@@ -61,21 +61,21 @@ public class ShellHelper  {
     public void wrapup() throws IOException {
         in.close();
         out.close(); 
-        if(th.isAlive())  {
-            _reader_th_running=false;
+        if(readerThread.isAlive())  {
+            _readerThreadRunning=false;
         }
-        _reader_th_running=false;
+        _readerThreadRunning=false;
         try {
-            th.join(10);
+            readerThread.join(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        th=null;
+        readerThread=null;
   
-        if(p.isAlive())  {
-            p.destroy();
+        if(process.isAlive())  {
+            process.destroy();
         }
-        p=null;
+        process=null;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -85,9 +85,9 @@ public class ShellHelper  {
      *  @param currentObj The JavaScript instance of the script that this helps.
      *  @param cmd The command to be called.
      */
-    private ShellHelper(ScriptObjectMirror currentObj, String cmd)  {
+    private ShellHelper(ScriptObjectMirror currentObj, String command)  {
         this._currentObj = currentObj;
-        this.cmd=cmd;
+        this.command=command;
     }
     
     
@@ -96,42 +96,43 @@ public class ShellHelper  {
 
     /** Builds and starts the command in a process.*/
     private void startProcess()  {
-        pb = new ProcessBuilder(cmd);
-        pb.redirectErrorStream(true);
-        pb.redirectOutput(Redirect.PIPE);
-        pb.redirectInput(Redirect.PIPE);
+        processBuilder = new ProcessBuilder(command);
+        processBuilder.redirectErrorStream(true);
+        processBuilder.redirectOutput(Redirect.PIPE);
+        processBuilder.redirectInput(Redirect.PIPE);
         try {
-            p = pb.start();
+            process = processBuilder.start();
         } catch (IOException e) {
             e.printStackTrace();
+            return ;
         }
-        out = new BufferedWriter( new OutputStreamWriter(p.getOutputStream()) );
-        in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        out = new BufferedWriter( new OutputStreamWriter(process.getOutputStream()) );
+        in = new BufferedReader(new InputStreamReader(process.getInputStream()));
     }
     
     /** Starts the reader thread to read from the process' stdout asynchronously.*/
     private void startReader()  {
-        th = new Thread( new Runnable() {
+        readerThread = new Thread( new Runnable() {
                 @Override
                 public void run() {
                     do {
-                        String l = null;
+                        String line = null;
                         try {
-                            l = in.readLine();
+                            line = in.readLine();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        if(l!=null)  {
-                            _currentObj.callMember("emit", "message", l);    
+                        if(line!=null)  {
+                            _currentObj.callMember("emit", "message", line);    
                         }
                         else  {
-                            _reader_th_running = false;
+                            _readerThreadRunning = false;
                         }
                     }
-                    while(_reader_th_running);                        
+                    while(_readerThreadRunning);                        
                 }
             });
-        th.start();
+        readerThread.start();
     }
     
     
@@ -143,7 +144,7 @@ public class ShellHelper  {
     private ScriptObjectMirror _currentObj;
     
     /** The variable used to build the process. */
-    private ProcessBuilder pb;
+    private ProcessBuilder processBuilder;
     
     /** The reader to connect to the process' stdout.*/
     private BufferedReader in;
@@ -152,14 +153,14 @@ public class ShellHelper  {
     private BufferedWriter out;
     
     /** The instance of the invoked command.*/
-    private Process p;
+    private Process process;
     
     /** A thread to read asynchronously from the process' stdout. */
-    private Thread th;
+    private Thread readerThread;
     
     /** Controls the reader thread. */
-    private boolean _reader_th_running = true;
+    private boolean _readerThreadRunning = true;
     
     /** A copy of the command that's invoked. */
-    private String cmd;
+    private String command;
 }
