@@ -1,6 +1,6 @@
 /* Execute a script in JavaScript using Nashorn.
 
-   Copyright (c) 2014 The Regents of the University of California.
+   Copyright (c) 2014-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -531,6 +531,12 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         JavaScript newObject = (JavaScript) super.clone(workspace);
+        ScriptEngineManager factory = new ScriptEngineManager();
+        newObject._engine = factory.getEngineByName("nashorn");
+        if (newObject._engine == null) {
+            // Coverity Scan is happier if we check for null here.
+            throw new CloneNotSupportedException("Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
+        }
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
         newObject._outputTokens = null;
         newObject._pendingTimeoutFunctions = null;
@@ -1441,7 +1447,7 @@ public class JavaScript extends TypedAtomicActor {
         _engine = factory.getEngineByName("nashorn");
         if (_engine == null) {
             // Coverity Scan is happier if we check for null here.
-            throw new IllegalActionException(this, "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Is Nashorn present in JDK 1.8 and later.");
+            throw new IllegalActionException(this, "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
         /* FIXME: The following should intercept errors, but if doesn't!
          * Perhaps Thread.setUncaughtExceptionHandler()? How to get the thread?
