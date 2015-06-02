@@ -270,6 +270,7 @@ Initializable {
         return newObject;
     }
 
+
     /** Get the persistent expression.
      *  @return The expression used by this variable.
      *  @see #setExpression(String)
@@ -481,6 +482,14 @@ Initializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Get the persistent expression as a string, to be used to export to MoML.
+     *  @return The current expression as a string.
+     *  @Override
+     */
+    protected String _getCurrentExpression() {
+	return _persistentExpression;
+    }
 
     /** Override the base class to also propagate the associated port.
      *  @param container Object to contain the new object.

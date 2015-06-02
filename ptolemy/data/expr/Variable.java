@@ -1860,6 +1860,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             }
         }
     }
+    
+    /** Get the current expression as a string, to be used to export to MoML.
+     *  @return The current expression as a string.
+     */
+    protected String _getCurrentExpression() {
+	return _currentExpression;
+    }
 
     /** Notify the value listeners of this variable that this variable
      *  changed.

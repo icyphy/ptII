@@ -223,7 +223,7 @@ public class Parameter extends Variable {
         // EAL 8/8/06.
         // String value = getExpression();
         // if ((value != null) && !value.equals("")) {
-        String value = _currentExpression;
+        String value = _getCurrentExpression();
         if (value == null) {
             ptolemy.data.Token token = null;
             try {
