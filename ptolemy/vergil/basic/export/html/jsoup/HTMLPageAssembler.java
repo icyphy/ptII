@@ -335,7 +335,9 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
                 while (startTagIndex != -1) {
                     closeTagIndex = content.indexOf("/>", startTagIndex);
-                    content.deleteCharAt(closeTagIndex);
+                    if (closeTagIndex != -1) {
+                        content.deleteCharAt(closeTagIndex);
+                    }
                     startTagIndex = content.indexOf("<meta", startTagIndex + 1);
                 }
             }
