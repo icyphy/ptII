@@ -1,4 +1,4 @@
-# object-assign [![Build Status](https://travis-ci.org/sindresorhus/object-assign.svg?branch=master)](https://travis-ci.org/sindresorhus/object-assign)
+# objectAssign [![Build Status](https://travis-ci.org/sindresorhus/object-assign.svg?branch=master)](https://travis-ci.org/sindresorhus/object-assign)
 
 > ES6 [`Object.assign()`](http://www.2ality.com/2014/01/object-assign.html) ponyfill
 

@@ -66,7 +66,8 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'EventBusHelper$$1.class'
+	'EventBusHelper$$1.class' \
+	'EventBusHelper$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -66,7 +66,9 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'UDPSocketHelper$$1.class'
+	'UDPSocketHelper$$1.class' \
+	'UDPSocketHelper$$1$$1.class' \
+	'UDPSocketHelper$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

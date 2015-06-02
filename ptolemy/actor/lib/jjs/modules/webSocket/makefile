@@ -49,7 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	WebSocketHelper.java \
-	WebSocketHelperBase.java \
 	WebSocketServerHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
