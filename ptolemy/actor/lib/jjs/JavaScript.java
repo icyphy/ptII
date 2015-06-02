@@ -462,7 +462,9 @@ public class JavaScript extends TypedAtomicActor {
             _genericInputHandlers = new LinkedList<Runnable>();
         }
         _genericInputHandlers.add(function);
-        return _genericInputHandlers.size() - 1;
+        _handle++;
+        _handleToIndex.put(_handle, _genericInputHandlers.size() - 1);
+        return _handle;
     }
 
     /** React to a change in an attribute, and if the attribute is the
@@ -544,6 +546,8 @@ public class JavaScript extends TypedAtomicActor {
         newObject._proxies = null;
         newObject._proxiesByName = null;
         newObject._genericInputHandlers = null;
+        newObject._handleToIndex = new HashMap<Integer, Integer>();
+        newObject._handleToProxy = new HashMap<Integer, PortOrParameterProxy>();
         return newObject;
     }
 
@@ -883,7 +887,7 @@ public class JavaScript extends TypedAtomicActor {
             _pendingGets = 0;
         }
         
-        // Expose any ports that are not already exposed as JavaScript variables.
+        // Create proxy for ports that don't already have one.
         for (TypedIOPort port : portList()) {
             // Do not convert the script or error ports to a JavaScript variable.
             if (port == script.getPort() || port == error) {
@@ -893,11 +897,9 @@ public class JavaScript extends TypedAtomicActor {
             if (_proxies.get(port) != null) {
         	continue;
             }
-            _checkValidity(port.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(port);
             _proxies.put(port, proxy);
             _proxiesByName.put(port.getName(), proxy);
-            _engine.put(port.getName(), proxy);
         }
 
         // Expose the parameters as JavaScript variables.
@@ -922,6 +924,7 @@ public class JavaScript extends TypedAtomicActor {
             _proxiesByName.put(parameter.getName(), proxy);
             // NOTE: If a parameter has the same name as a port,
             // then this will shadow the port.
+            // FIXME: Don't do this anymore.
             _engine.put(parameter.getName(), proxy);
         }
 
@@ -1220,10 +1223,22 @@ public class JavaScript extends TypedAtomicActor {
      *  @see #addInputHandler(Runnable)
      */
     public void removeInputHandler(Integer handle) {
-        if (handle != null) {
-            int n = handle.intValue();
-            if (_genericInputHandlers != null && n < _genericInputHandlers.size()) {
-        	_genericInputHandlers.remove(n);
+        if (handle != null && _handleToIndex != null) {
+            Integer index = _handleToIndex.get(handle);
+            if (index != null) {
+        	int n = index.intValue();
+        	// If there is a proxy recorded, use that.
+        	PortOrParameterProxy proxy = _handleToProxy.get(handle);
+        	if (proxy == null) {
+        	    // No proxy, so this is a generic input handler.
+        	    if (_genericInputHandlers != null && n < _genericInputHandlers.size()) {
+        		_genericInputHandlers.remove(n);
+        	    }
+        	    _handleToIndex.remove(handle);
+        	} else {
+        	    // Delegate to the proxy.
+        	    proxy.removeInputHandler(handle);
+        	}
             }
         }
     }
@@ -1432,6 +1447,10 @@ public class JavaScript extends TypedAtomicActor {
 	
 	// Reset state so that there isn't spillover from previous scripts.
 	_genericInputHandlers = null;
+        _handleToIndex = new HashMap<Integer, Integer>();
+        _handleToProxy = new HashMap<Integer, PortOrParameterProxy>();
+
+	_handle = 0;
 	
 	// Create a script engine.
         // This is private to this class, so each instance of JavaScript
@@ -1496,8 +1515,8 @@ public class JavaScript extends TypedAtomicActor {
             _engine.put("actor", restrictedInterface);
         }
         
-        // Expose the ports as JavaScript variables.
-        // Note that additional ports may need to be exposed in initialize(),
+        // Create proxies for the port.
+        // Note that additional proxies may need to be created in initialize(),
         // if they are created by a setup() function call.
         _proxies = new HashMap<NamedObj,PortOrParameterProxy>();
         _proxiesByName = new HashMap<String,PortOrParameterProxy>();
@@ -1506,11 +1525,9 @@ public class JavaScript extends TypedAtomicActor {
             if (port == script.getPort() || port == error) {
                 continue;
             }
-            _checkValidity(port.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(port);
             _proxies.put(port, proxy);
             _proxiesByName.put(port.getName(), proxy);
-            _engine.put(port.getName(), proxy);
         }
 
         // Expose the parameters as JavaScript variables.
@@ -1537,6 +1554,7 @@ public class JavaScript extends TypedAtomicActor {
             _proxiesByName.put(parameter.getName(), proxy);
             // NOTE: If a parameter has the same name as a port,
             // then this will shadow the port.
+            // FIXME: Don't do this anymore!
             _engine.put(parameter.getName(), proxy);
         }
 
@@ -1618,6 +1636,10 @@ public class JavaScript extends TypedAtomicActor {
     private synchronized void _setTimeout(final Runnable function, int milliseconds, Integer id)
 	    throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
+        if (currentTime == null) {
+            throw new IllegalActionException(this,
+        	    "Model is not running. Please set timeouts and intervals in initialize.");
+        }
         final Time callbackTime = currentTime.add(milliseconds * 0.001);
 
         Time responseTime = getDirector().fireAt(this, callbackTime);
@@ -1673,6 +1695,15 @@ public class JavaScript extends TypedAtomicActor {
 
     /** A list of generic input handlers, in the order in which they are invoked. */
     private List<Runnable> _genericInputHandlers;
+    
+    /** The current handle to assign to an input handler. */
+    private int _handle;
+
+    /** A mapping of the handle for an input handler to its index in the list. */
+    private Map<Integer, Integer> _handleToIndex;
+
+    /** A mapping of the handle for an input handler to the port or parameter proxy. */
+    private Map<Integer, PortOrParameterProxy> _handleToProxy;
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
@@ -1740,7 +1771,8 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         /** Add an input handler for this port.
-         *  @param handle The handler handle.
+         *  @param function The function to invoke.
+         *  @returns The handler handle.
          *  @throws IllegalActionException If this proxy is not for an input port.
          *  @see #removeInputHandler(Integer)
          */
@@ -1753,7 +1785,11 @@ public class JavaScript extends TypedAtomicActor {
         	    TypedIOPort port = ((PortParameter)_parameter).getPort();
         	    if (port != null) {
         		_inputHandlers.add(function);
-        		return _inputHandlers.size() - 1;
+        		int index = _inputHandlers.size() - 1;
+        		_handle++;
+        		_handleToIndex.put(_handle, index);
+        		_handleToProxy.put(_handle, this);
+        		return _handle;
         	    }
         	}
         	throw new IllegalActionException(JavaScript.this,
@@ -1761,7 +1797,11 @@ public class JavaScript extends TypedAtomicActor {
         			+ ((_port == null)?_parameter.getName():_port.getName()));
             }
             _inputHandlers.add(function);
-	    return _inputHandlers.size() - 1;
+            int index = _inputHandlers.size() - 1;
+            _handle++;
+            _handleToIndex.put(_handle, index);
+            _handleToProxy.put(_handle, this);
+            return _handle;
         }
         
         /** Get the current value of the input port or a parameter.
@@ -1839,11 +1879,16 @@ public class JavaScript extends TypedAtomicActor {
          *  @see #addInputHandler(Runnable)
          */
         public void removeInputHandler(Integer handle) {
-            if (handle != null) {
-        	int n = handle.intValue();
-        	if (_inputHandlers != null && n < _inputHandlers.size()) {
-        	    _inputHandlers.remove(n);
-        	}
+            if (handle != null && _handleToIndex != null) {
+                Integer index = _handleToIndex.get(handle);
+                if (index != null) {
+                    int n = index.intValue();
+                    if (_inputHandlers != null && n < _inputHandlers.size()) {
+                	_inputHandlers.remove(n);
+                    }
+                    _handleToIndex.remove(handle);
+                    _handleToProxy.remove(handle);
+                }
             }
         }
 
@@ -1977,7 +2022,7 @@ public class JavaScript extends TypedAtomicActor {
          *  so handlers should be invoked.
          */
         protected boolean _hasNewInput;
-        
+                
         /** A list of input handlers, in the order in which they are invoked. */
         protected List<Runnable> _inputHandlers;
         

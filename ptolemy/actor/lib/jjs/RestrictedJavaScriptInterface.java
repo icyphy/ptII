@@ -61,6 +61,15 @@ public class RestrictedJavaScriptInterface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add an input handler to be invoked when there is a new token on
+     *  any input port.
+     *  @param handle The handler handle.
+     *  @see #removeInputHandler(Integer)
+     */
+    public int addInputHandler(final Runnable function) throws IllegalActionException {
+        return _actor.addInputHandler(function);
+    }
+
     /** Specify author information to appear in the documentation for this actor.
      *  @param author Author information to appear in documentation.
      */
@@ -192,6 +201,14 @@ public class RestrictedJavaScriptInterface {
     public void output(String name, Map<String,String> options)
 	    throws IllegalActionException, NameDuplicationException {
 	_actor.output(name, options);
+    }
+
+    /** Remove the input handler with the specified handle, if it exists.
+     *  @param handle The handler handle.
+     *  @see #addInputHandler(Runnable)
+     */
+    public void removeInputHandler(Integer handle) {
+        _actor.removeInputHandler(handle);
     }
 
     /** Invoke the specified function after the specified interval and
