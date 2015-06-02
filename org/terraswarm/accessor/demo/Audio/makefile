@@ -1,7 +1,7 @@
-# Makefile for TerraSwarm Accessors
+# Makefile for TerraSwarm Audio demo.
 #
-# @Version: $Id: makefile 70194 2014-09-25 14:25:22Z cxh $
-# @Author: Christopher Brooks
+# @Version: $Id: makefile 72403 2015-05-22 20:12:54Z eal $
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -29,61 +29,48 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = demo test
-
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT = ../../../../..
+
+DIRS = 
+
+# $(ME) is used in ptdir.mk
+ME = org/terraswarm/accessor/demo/Audio
+
+CLASSPATH =	$(ROOT)
+
+# True source directory
+VPATH =	$(ROOT)/$(ME)
+
+# Get configuration info
+CONFIG = $(ROOT)/mk/ptII.mk
+include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = Audio
+PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 
 
-# $(ME) is used in ptdir.mk
-ME =		org/terraswarm/accessor
-
-# AccessorOne.java depends on JavaScript.java, which uses these
-# libraries.  If we run 'make fast', and JavaScript.class does not
-# exist, then we will need these jars in the classpath.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
-
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
-
-# Variables and rules used to create source file distributions
-PTPACKAGE = 	accessor
-PTCLASSJAR =	$(PTPACKAGE).jar
-#PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-JSRCS = \
-	JSAccessor.java
-
 OTHER_FILES_TO_BE_JARED = \
-	JSAccessorIcon.xml \
-	XMLJSToMoML.xslt
+	Audio.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(DIRS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = test
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	'JSAccessor$$1.class' \
-	'JSAccessor$$2.class' \
-        'JSAccessor$$ActionableAttribute.class'
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
