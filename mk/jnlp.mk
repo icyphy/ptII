@@ -298,7 +298,7 @@ SDF_DEMO_JARS = \
 PTANGO_JAR_FILES = \
 	lib/jetty-all-8.1.5-v20120716.jar \
 	lib/javax.servlet-api-3.0.1.jar \
-	lib/jsoup-1.7.3.jar \
+	lib/jsoup-1.8.2.jar \
 	lib/smack.jar \
 	lib/smackx.jar
 
