@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HTMLPageAssembler" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 617}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 240.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 255.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
@@ -86,7 +86,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n &lt;!--  Template for HTMLPageAssembler test file --&gt;\n &lt;head&gt; \n  &lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt; \n  &lt;meta charset=\&quot;utf-8\&quot; &gt; \n  &lt;title&gt;HTMLPageAssemblerTest&lt;/title&gt;\n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div&gt;\n    What is your name? \n   &lt;div id=\&quot;name\&quot;&gt;\n    Claudius Ptolemaeus \n   &lt;/div&gt; What is your quest? \n   &lt;div id=\&quot;quest\&quot;&gt;\n    To test the HTMLPageAssembler \n   &lt;/div&gt; What is your favorite color? \n   &lt;div id=\&quot;color\&quot;&gt;\n    Blue \n   &lt;/div&gt; \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!doctype html&gt;\n&lt;html&gt;\n &lt;!--  Template for HTMLPageAssembler test file --&gt;\n &lt;head&gt; \n  &lt;!-- Prevents against cross-site scripting attacks that use UTF-7 --&gt; \n  &lt;meta charset=\&quot;utf-8\&quot;&gt; \n  &lt;title&gt;HTMLPageAssemblerTest&lt;/title&gt;\n &lt;/head&gt; \n &lt;body&gt; \n  &lt;div&gt;\n    What is your name? \n   &lt;div id=\&quot;name\&quot;&gt;\n    Claudius Ptolemaeus \n   &lt;/div&gt; What is your quest? \n   &lt;div id=\&quot;quest\&quot;&gt;\n    To test the HTMLPageAssembler \n   &lt;/div&gt; What is your favorite color? \n   &lt;div id=\&quot;color\&quot;&gt;\n    Blue \n   &lt;/div&gt; \n  &lt;/div&gt;   \n &lt;/body&gt;\n&lt;/html&gt;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
