@@ -6,7 +6,7 @@ from time import sleep
 
 def sporadic(arg):
     for i in range(arg):
-        print "sporadic msg"
+        print "goodbye"
 	sys.stdout.flush()
         sleep(1)
 

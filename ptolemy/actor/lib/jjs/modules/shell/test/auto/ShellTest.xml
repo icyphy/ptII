@@ -22,34 +22,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <entity name="JSAccessor" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;var shell = require('shell/shell');&#10;&#10;exports.setup = function() {&#10;    accessor.author('Armin Wasicek');&#10;	accessor.input('stdin', {&#10;		'type': 'string',&#10;		'description': 'some input'&#10;	});&#10;	accessor.output('stdout', {&#10;		'type': 'string',&#10;		'description': 'some output'&#10;	});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;	print('init');&#10;	&#10;	var sh = new shell.Shell({'cmd' : './proc.py'});&#10;	&#10;	addInputHandler('stdin', function() {&#10;	    var data = get('stdin');&#10;	    if (data) {&#10;	      console.log(&quot;Got: &quot; + data);&#10;		  sh.write(data);&#10;	    }&#10;	});&#10;	&#10;&#10;	sh.on('message', function(data) {&#10;		if(data)  {&#10;			send(data.toString(), 'stdout');&#10;		}		&#10;	});&#10;&#10;	sh.start();&#10;}	&#10;&#10;	&#10;exports.wrapup = function() {&#10;	print('wrap');&#10;	&#10;}&#10;">
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/Users/armin/Source/gmtk/shelljs/ShellAccessor.js ">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 150.0]">
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Armin Wasicek">
-            </property>
-            <property name="stdin (port)" class="ptolemy.kernel.util.StringAttribute" value="some input">
-            </property>
-            <property name="stdout (port)" class="ptolemy.kernel.util.StringAttribute" value="some output">
-            </property>
-        </property>
-        <port name="stdin" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="stdout" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
         </property>
@@ -68,23 +40,60 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 140.0]">
         </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 150.0]">
         </property>
     </entity>
+    <entity name="ExecAccessor" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;/** Exec starts a shell command and connects to the process' stdin and stdout.&#10; * This accessor implements an interface to the shell of the host. It takes a&#10; * command and starts it as a process. It connects the process' stdin and &#10; * stdout to the accessor ports with the same name.&#10; * FIXME: Provide a selection of shells (e.g., bash, awk, etc)&#10; *&#10; *  @accessor Exec&#10; *  @module Exec&#10; *  @author Armin Wasicek (arminw@berkeley.edu)&#10; *  @stdin The stdin of the executing process. A token received on this&#10; *        port is interpreted as a line entered in stdin of the process.&#10; *  @stdout The stdout of the executing process. Each line read from the &#10; *        executing process is sent out as a token from this port.&#10; *  @command The command to be executed.&#10; */&#10;&#10;// This accessor requires the 'shell' module, which may or may&#10;// not be provided by an accessor host. As this is a very powerful &#10;// module, not all host may provide this module for security reasons.&#10;var shell = require('shell/shell');&#10;&#10;/** Global object to the shell module provided by the host. */&#10;var sh = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.author('Armin Wasicek');&#10;	accessor.input('stdin', {&#10;		'type': 'string',&#10;		'description': 'some input'&#10;	});&#10;	accessor.output('stdout', {&#10;		'type': 'string',&#10;		'description': 'some output'&#10;	});&#10;    accessor.input('command', {&#10;        'value': 'ls',&#10;        'type':'string',&#10;        'description':'The command to be executed.'&#10;    });&#10;}&#10;&#10;/** Initialize the accessor and start the process subsequently.&#10; */&#10;exports.initialize = function() {	&#10;	sh = new shell.Shell({'cmd' : get('command')});&#10;	&#10;	addInputHandler('stdin', function() {&#10;	    var data = get('stdin');&#10;	    if (data) {&#10;		  sh.write(data);&#10;	    }&#10;	});&#10;&#10;	sh.on('message', function(data) {&#10;		if(data)  {&#10;			send('stdout', data.toString());&#10;		}		&#10;	});&#10;&#10;	sh.start();&#10;}&#10;	&#10;/** Wrap up the execution of the accessor by stopping the process.&#10; */&#10;exports.wrapup = function() {&#10;	if(sh)  {&#10;		sh.wrapup();&#10;	}&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/Exec.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 140.0]">
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="&quot;ptolemy/actor/lib/jjs/modules/shell/test/test.py&quot;">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Armin Wasicek">
+            </property>
+            <property name="command (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The command to be executed.">
+            </property>
+            <property name="stdin (port)" class="ptolemy.kernel.util.StringAttribute" value="some input">
+            </property>
+            <property name="stdout (port)" class="ptolemy.kernel.util.StringAttribute" value="some output">
+            </property>
+        </property>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="stdin" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="stdout" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="JSAccessor.stdin" relation="relation2"/>
-    <link port="JSAccessor.stdout" relation="relation3"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Const.trigger" relation="relation"/>
     <link port="Display.input" relation="relation3"/>
     <link port="PoissonClock.output" relation="relation"/>
+    <link port="ExecAccessor.stdin" relation="relation2"/>
+    <link port="ExecAccessor.stdout" relation="relation3"/>
 </entity>
