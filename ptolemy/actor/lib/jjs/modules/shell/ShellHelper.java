@@ -106,7 +106,7 @@ public class ShellHelper  {
      *  are initialized. 
      */
     private boolean startProcess()  {
-        processBuilder = new ProcessBuilder(command);
+        processBuilder = new ProcessBuilder("sh", "-c", command);
         processBuilder.redirectErrorStream(true);
         processBuilder.redirectOutput(Redirect.PIPE);
         processBuilder.redirectInput(Redirect.PIPE);
@@ -114,6 +114,7 @@ public class ShellHelper  {
             process = processBuilder.start();
         } catch (IOException e) {
             //this._currentObj.eval("exports.error('"+e.getMessage()+"');");
+            //FIXME Process cannot be started. What to do?
             e.printStackTrace();
             return false;
         }
