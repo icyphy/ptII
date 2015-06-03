@@ -501,7 +501,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.7.3.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/web/web.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/web"/>
