@@ -11,16 +11,54 @@
         </property>
         <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 45}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 56, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={262, 53, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7191385578580575">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{420.89690113067627, 519.5536619020545}">
+    </property>
+    <property name="HelloCount" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 195.0]">
+        </property>
+    </property>
+    <property name="GoodbyeCount" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 195.0]">
+        </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;hello&quot;">
@@ -32,29 +70,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 150.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={390, 296, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 255.0]">
         </property>
     </entity>
     <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 150.0]">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.9">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 255.0]">
         </property>
     </entity>
-    <entity name="ExecAccessor" class="org.terraswarm.accessor.JSAccessor">
+    <entity name="JSAccessor" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;/** Exec starts a shell command and connects to the process' stdin and stdout.&#10; * This accessor implements an interface to the shell of the host. It takes a&#10; * command and starts it as a process. It connects the process' stdin and &#10; * stdout to the accessor ports with the same name.&#10; * FIXME: Provide a selection of shells (e.g., bash, awk, etc)&#10; *&#10; *  @accessor Exec&#10; *  @module Exec&#10; *  @author Armin Wasicek (arminw@berkeley.edu)&#10; *  @stdin The stdin of the executing process. A token received on this&#10; *        port is interpreted as a line entered in stdin of the process.&#10; *  @stdout The stdout of the executing process. Each line read from the &#10; *        executing process is sent out as a token from this port.&#10; *  @command The command to be executed.&#10; */&#10;&#10;// This accessor requires the 'shell' module, which may or may&#10;// not be provided by an accessor host. As this is a very powerful &#10;// module, not all host may provide this module for security reasons.&#10;var shell = require('shell/shell');&#10;&#10;/** Global object to the shell module provided by the host. */&#10;var sh = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.author('Armin Wasicek');&#10;	accessor.input('stdin', {&#10;		'type': 'string',&#10;		'description': 'some input'&#10;	});&#10;	accessor.output('stdout', {&#10;		'type': 'string',&#10;		'description': 'some output'&#10;	});&#10;    accessor.input('command', {&#10;        'value': 'ls',&#10;        'type':'string',&#10;        'description':'The command to be executed.'&#10;    });&#10;}&#10;&#10;/** Initialize the accessor and start the process subsequently.&#10; */&#10;exports.initialize = function() {	&#10;	sh = new shell.Shell({'cmd' : get('command')});&#10;	&#10;	addInputHandler('stdin', function() {&#10;	    var data = get('stdin');&#10;	    if (data) {&#10;		  sh.write(data);&#10;	    }&#10;	});&#10;&#10;	sh.on('message', function(data) {&#10;		if(data)  {&#10;			send('stdout', data.toString());&#10;		}		&#10;	});&#10;&#10;	sh.start();&#10;}&#10;	&#10;/** Wrap up the execution of the accessor by stopping the process.&#10; */&#10;exports.wrapup = function() {&#10;	if(sh)  {&#10;		sh.wrapup();&#10;	}&#10;}&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/Exec.js">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 245.0]">
         </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="&quot;ptolemy/actor/lib/jjs/modules/shell/test/test.py&quot;">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="&quot;./test.py&quot;">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Armin Wasicek">
@@ -84,16 +116,209 @@
             </property>
         </port>
     </entity>
+    <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="HELLO">
+        </property>
+        <doc>Output a comparison function of two strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="StringCompare2" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="goodbye">
+        </property>
+        <doc>Output a comparison function of two strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="StringCompare3" class="ptolemy.actor.lib.string.StringCompare">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="Finished.">
+        </property>
+        <doc>Output a comparison function of two strings</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="CountTrues" class="ptolemy.domains.sdf.lib.CountTrues">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="CountTrues2" class="ptolemy.domains.sdf.lib.CountTrues">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="HelloCount">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="GoodbyeCount">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 255.0]">
+        </property>
+    </entity>
+    <entity name="Accumulator2" class="ptolemy.actor.lib.Accumulator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 550.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 550.0]">
+        </property>
+    </entity>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="HelloCount">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="GoodbyeCount">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{4,5}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 460.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[240.0, 245.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Const.output" relation="relation2"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[420.0, 400.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="relation13"/>
     <link port="Const.trigger" relation="relation"/>
-    <link port="Display.input" relation="relation3"/>
     <link port="PoissonClock.output" relation="relation"/>
-    <link port="ExecAccessor.stdin" relation="relation2"/>
-    <link port="ExecAccessor.stdout" relation="relation3"/>
+    <link port="JSAccessor.stdin" relation="relation13"/>
+    <link port="JSAccessor.stdout" relation="relation5"/>
+    <link port="StringCompare.firstString" relation="relation5"/>
+    <link port="StringCompare.output" relation="relation8"/>
+    <link port="StringCompare2.firstString" relation="relation5"/>
+    <link port="StringCompare2.output" relation="relation2"/>
+    <link port="StringCompare3.firstString" relation="relation5"/>
+    <link port="StringCompare3.output" relation="relation9"/>
+    <link port="CountTrues.input" relation="relation8"/>
+    <link port="CountTrues.output" relation="relation4"/>
+    <link port="CountTrues2.input" relation="relation2"/>
+    <link port="CountTrues2.output" relation="relation3"/>
+    <link port="SetVariable2.input" relation="relation6"/>
+    <link port="SetVariable3.input" relation="relation7"/>
+    <link port="Accumulator.input" relation="relation4"/>
+    <link port="Accumulator.output" relation="relation6"/>
+    <link port="Accumulator2.input" relation="relation3"/>
+    <link port="Accumulator2.output" relation="relation7"/>
+    <link port="EventFilter.input" relation="relation9"/>
+    <link port="EventFilter.output" relation="relation11"/>
+    <link port="Stop.input" relation="relation10"/>
+    <link port="MicrostepDelay.input" relation="relation11"/>
+    <link port="MicrostepDelay.output" relation="relation10"/>
+    <link port="ElementsToArray.input" relation="relation12"/>
+    <link port="ElementsToArray.input" relation="relation15"/>
+    <link port="ElementsToArray.output" relation="relation14"/>
+    <link port="Const2.output" relation="relation12"/>
+    <link port="Const2.trigger" relation="relation11"/>
+    <link port="Const3.output" relation="relation15"/>
+    <link port="Const3.trigger" relation="relation11"/>
+    <link port="NonStrictTest.input" relation="relation14"/>
 </entity>
