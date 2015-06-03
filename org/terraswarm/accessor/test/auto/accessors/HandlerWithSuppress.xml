@@ -27,15 +27,15 @@ The output is a count of the periods, starting with 1.
     // <![CDATA[
     var count;
     var handleTimeout = function() {
-      send(true, produce);
+      send('produce', true);
     };
 	var inputHandler = function() {
       count = count + 1;
-      if (!get(suppress)) {
-        send(count, output);
+      if (!get('suppress')) {
+        send('output', count);
       }
     };
-	addInputHandler(inputHandler, produce);
+	addInputHandler('produce', inputHandler);
 	exports.initialize = function() {
       count = 0;
       setInterval(handleTimeout, 1000);

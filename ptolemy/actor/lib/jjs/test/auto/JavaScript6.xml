@@ -27,7 +27,7 @@
         </property>
     </property>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" value="function fire() {&#10;  // Get the name of the top-level container.&#10;  var result = actor.getName();&#10;  send(result, output, 0);&#10;}">
+        <property name="script" value="function fire() {&#10;  // Get the name of the top-level container.&#10;  var result = actor.getName();&#10;  send('output', result, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -48,7 +48,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" value="function fire() {&#10;  // Get the name of the top-level container.&#10;  var result = actor.getName();&#10;  send(result, output, 0);&#10;}">
+        <property name="script" value="function fire() {&#10;  // Get the name of the top-level container.&#10;  var result = actor.getName();&#10;  send('output', result, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

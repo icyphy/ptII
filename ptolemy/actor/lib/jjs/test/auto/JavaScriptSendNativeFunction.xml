@@ -45,7 +45,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var ObjectToken = Java.type('ptolemy.data.ObjectToken');&#10;exports.fire = function() {&#10;    var sendFunction = function() {&#10;        // The 'this' keyword ensures that the function is evaluated&#10;        // the context of recipient of this function.&#10;        // Hence, this will send using the recipient's output port.&#10;alert(this.actor.getName());&#10;        send('hello', 'output');&#10;    }&#10;    var token = new ObjectToken(sendFunction);&#10;    send(token, output);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var ObjectToken = Java.type('ptolemy.data.ObjectToken');&#10;exports.fire = function() {&#10;    var sendFunction = function() {&#10;        // The 'this' keyword ensures that the function is evaluated&#10;        // the context of recipient of this function.&#10;        // Hence, this will send using the recipient's output port.&#10;        send('output', 'hello');&#10;    }&#10;    var token = new ObjectToken(sendFunction);&#10;    send('output', token);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -72,7 +72,7 @@
         </property>
     </entity>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var ObjectToken = Java.type('ptolemy.data.ObjectToken');&#10;exports.fire = function() {&#10;    var token = get(input);&#10;    var sendFunction = token.getValue();&#10;    sendFunction();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var ObjectToken = Java.type('ptolemy.data.ObjectToken');&#10;exports.fire = function() {&#10;    var token = get('input');&#10;    var sendFunction = token.getValue();&#10;    sendFunction();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

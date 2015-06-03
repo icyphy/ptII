@@ -43,13 +43,13 @@ It also tests handling of absent inputs and sending null to an output.
   <script type="text/javascript">
     // <![CDATA[
 	function fire() {
-	  var stringValue = get(stringInput);
-	  send(stringValue, stringOutput);
-	  var numericValue = get(numericInput);
-	  send(numericValue, numericOutput);
-	  stringValue = get(stringInputWithoutValue);
-	  send(stringValue, stringOutputWithoutValue);
-	  send(stringValue == null, inputIsAbsent);
+	  var stringValue = get('stringInput');
+	  send('stringOutput', stringValue);
+	  var numericValue = get('numericInput');
+	  send('numericOutput', numericValue);
+	  stringValue = get('stringInputWithoutValue');
+	  send('stringOutputWithoutValue', stringValue);
+	  send('inputIsAbsent', stringValue == null);
 	}
 	// ]]>
   </script>

@@ -105,9 +105,9 @@
         </property>
     </entity>
     <entity name="VertxPublish" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    &#10;var eventbus = require('eventbus');&#10;var bus;&#10;&#10;exports.initialize = function() {&#10;  var port = get(busHostPort);&#10;  var host = get(busHost);&#10;  bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;}&#10;&#10;addInputHandler(function() {&#10;  var topic = get(address);&#10;  var msg = get(message);&#10;  if (msg) {&#10;    bus.publish(topic, JSON.stringify(msg));&#10;  }&#10;}, message);&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;}&#10;&#10;	//  &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    &#10;var eventbus = require('eventbus');&#10;var bus;&#10;var handle;&#10;&#10;exports.initialize = function() {&#10;    var port = get('busHostPort');&#10;    var host = get('busHost');&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    &#10;    handle = addInputHandler('message', function() {&#10;        var topic = get('address');&#10;        var msg = get('message');&#10;        var all = get('broadcast');&#10;        if (msg) {&#10;            if (all) {&#10;                bus.publish(topic, msg);&#10;            } else {&#10;                bus.send(topic, msg, replyHandler);&#10;            }&#10;        }&#10;    });&#10;}&#10;&#10;var replyHandler = function(message) {&#10;   send('reply', message);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;  removeInputHandler(handle, 'message');&#10;}&#10;&#10;	//  &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxPublish.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxPublish.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;    This accessor publishes to a Vert.x event bus. The input can be any data type&#10;    supported by accessors that has a string representation in JSON syntax. The&#10;    published even will be a string in JSON format.&#10;    &lt;p&gt;&#10;    The busHost is the name of the network interface through which to connect to the Vert.x event bus cluster.&#10;    The busHostPort is the port to use for this.&#10;    These two inputs are examined only at initialization time.&#10;	&#10;  ">
@@ -126,6 +126,10 @@
             </property>
             <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The message to the bus.">
             </property>
+            <property name="broadcast (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="True to broadcast the message to all subscribers. False to send to exactly one subscriber, in a roughly round-robin fashion.">
+            </property>
+            <property name="reply (port)" class="ptolemy.kernel.util.StringAttribute" value="The reply, if any, received after a point-to-point send (where broadcast == false).">
+            </property>
         </property>
         <property name="busHost" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
         </property>
@@ -136,6 +140,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 195.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="broadcast" class="ptolemy.actor.parameters.PortParameter" value="true">
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -158,14 +164,28 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
+        <port name="broadcast" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="message" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+        <port name="reply" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </port>
     </entity>
     <entity name="VertxSubscribe" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var eventbus = require('eventbus');&#10;var bus;&#10;var currentAddress;&#10;&#10;var onReceived = function(msg) {&#10;    send(msg, message);&#10;}&#10;&#10;exports.initialize = function() {&#10;    var port = get(busHostPort);&#10;    var host = get(busHost);&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    currentAddress = get(address);&#10;    bus.subscribe(currentAddress);&#10;    bus.on(get(address), onReceived);&#10;}&#10;&#10;addInputHandler(function() {&#10;    var topic = get(address);&#10;    if (topic != currentAddress) {&#10;        bus.unsubscribe(currentAddress);&#10;        bus.subscribe(topic);&#10;    }&#10;}, address);&#10;&#10;exports.wrapup = function() {&#10;    bus.removeAllListeners();&#10;}&#10;  	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var eventbus = require('eventbus');&#10;var bus;&#10;var currentAddress;&#10;&#10;var onReceived = function(msg) {&#10;    send('message', msg);&#10;}&#10;&#10;var addressHandle, replyHandle;&#10;&#10;exports.initialize = function() {&#10;    var port = get('busHostPort');&#10;    var host = get('busHost');&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    currentAddress = get('address');&#10;    bus.subscribe(currentAddress);&#10;    bus.on(get('address'), onReceived);&#10;    var replyText = get('reply');&#10;    if (replyText) {&#10;        bus.setReply(replyText);&#10;    }&#10;    addressHandle = addInputHandler('address', function() {&#10;        var topic = get('address');&#10;        if (topic != currentAddress) {&#10;            bus.unsubscribe(currentAddress);&#10;            bus.subscribe(topic);&#10;        }&#10;    });&#10;&#10;    replyHandle = addInputHandler('reply', function() {&#10;        var replyText = get('reply');&#10;        if (replyText) {&#10;            bus.setReply(replyText);&#10;        } else {&#10;            bus.setReply(null);&#10;        }&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    bus.unsubscribe();&#10;    removeInputHandler('address', addressHandle);&#10;    removeInputHandler('reply', replyHandle);&#10;}&#10;  	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxSubscribe.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/VertxSubscribe.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;    This actor subscribes to a Vert.x event bus.&#10;    It attempts to parse the message as a JSON string, but if that fails,&#10;    it just attempts to produce the output as is.&#10;    The busHost is the name of the network interface through which to connect to the Vert.x event bus cluster.&#10;    The busHostPort is the port to use for this.&#10;    These two inputs are examined only at initialization time.&#10;	&#10;  ">
@@ -184,6 +204,8 @@
             </property>
             <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The message from the bus.">
             </property>
+            <property name="reply (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The reply to send back to the sender for point-to-point messages, or the empty string to send no reply.">
+            </property>
         </property>
         <property name="busHost" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -192,6 +214,10 @@
         <property name="address" class="ptolemy.actor.parameters.PortParameter" value="&quot;x&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 315.0]">
+        </property>
+        <property name="reply" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
         </property>
         <port name="busHost" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -208,6 +234,13 @@
             </property>
         </port>
         <port name="address" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="reply" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>

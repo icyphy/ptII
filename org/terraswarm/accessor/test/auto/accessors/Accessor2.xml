@@ -26,10 +26,10 @@ It checks that inputs and outputs without types are handled correctly.
   <script type="text/javascript">
     // <![CDATA[
 	function fire() {
-	  var value = get(typelessInput);
-	  send(value, typelessOutput);
-	  value = get(quasiTypelessInput);
-	  send(value, quasiTypelessOutput);
+	  var value = get('typelessInput');
+	  send('typelessOutput', value);
+	  value = get('quasiTypelessInput');
+	  send('quasiTypelessOutput', value);
 	}
 	// ]]>
   </script>

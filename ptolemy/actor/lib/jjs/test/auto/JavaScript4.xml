@@ -33,7 +33,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {send(x, 'output', 0);}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {send('output', x, 0);}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -60,7 +60,7 @@
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1;&quot;, &quot;function fire() {send(x, 'output', 0);}&quot;}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1;&quot;, &quot;function fire() {send('output', x, 0);}&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
         </property>

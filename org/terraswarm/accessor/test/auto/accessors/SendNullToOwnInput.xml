@@ -23,16 +23,16 @@ This accessor sends a null to its own input, then forwards the value to the outp
 var count = 0;
 exports.initialize = function() {
     count = 0;
+    setTimeout(null, 0);
 }
 exports.fire = function() {
     count = count + 1;
     if (count <= 2) {
-       var value = get(input);
-       send(value, output);
-       send(null, input);
+       var value = get('input');
+       send('output', value);
+       send('input', null);
    }
 }
-setTimeout(null, 0);
 	// ]]>
   </script>
 </class>

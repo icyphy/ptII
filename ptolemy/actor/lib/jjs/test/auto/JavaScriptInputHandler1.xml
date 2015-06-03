@@ -33,7 +33,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Multiply the input by 2.&#10;function handler() {&#10;  send(get(input,0)*2, output, 0);&#10;}&#10;addInputHandler(handler, output);">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Multiply the input by 2.&#10;function handler() {&#10;  send('output', get('input',0)*2, 0);&#10;}&#10;exports.initialize = function() {&#10;  addInputHandler('output', handler);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

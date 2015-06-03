@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function initialize() {&#10;  setTimeout(function() {&#10;    send(5, output);&#10;  }, 50);&#10;  var handle = setTimeout(function() {&#10;    send(6, foo);&#10;  }, 50);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function initialize() {&#10;  setTimeout(function() {&#10;    send('output', 5);&#10;  }, 50);&#10;  var handle = setTimeout(function() {&#10;    send('foo', 6);&#10;  }, 50);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

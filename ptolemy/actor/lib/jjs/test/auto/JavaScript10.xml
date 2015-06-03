@@ -33,7 +33,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" value="function fire() {&#10;  // Multiply the input by 2.&#10;  send(get(input)*2, output);&#10;}">
+        <property name="script" value="function fire() {&#10;  // Multiply the input by 2.&#10;  send('output', get('input')*2);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

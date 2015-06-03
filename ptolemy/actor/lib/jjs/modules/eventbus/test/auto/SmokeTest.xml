@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var eventbus = require('eventbus');&#10;var bus = new eventbus.VertxBus();&#10;&#10;exports.initialize = function() {&#10;  bus.subscribe('topic');&#10;  bus.on('topic',&#10;    function onReceived(msg) {&#10;      send(msg, output);&#10;    }&#10;  );&#10;  bus.publish('topic', {'hello':'world'});&#10;}&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var eventbus = require('eventbus');&#10;var bus = new eventbus.VertxBus();&#10;&#10;exports.initialize = function() {&#10;  bus.subscribe('topic');&#10;  bus.on('topic',&#10;    function onReceived(msg) {&#10;      send('output', msg);&#10;    }&#10;  );&#10;  bus.publish('topic', {'hello':'world'});&#10;}&#10;&#10;exports.wrapup = function() {&#10;  bus.unsubscribe();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
