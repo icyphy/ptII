@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
-  modelName="out20pt"
-  guid="{aeba48d6-5f7e-46ae-b275-635d7704a125}"
-  numberOfEventIndicators="0">
+    fmiVersion="2.0"
+    modelName="out20pt"
+    guid="{aeba48d6-5f7e-46ae-b275-635d7704a125}"
+    numberOfEventIndicators="0">
 
-<CoSimulation
-  modelIdentifier="out20pt"
-  canGetAndSetFMUstate="true"
-  canHandleVariableCommunicationStepSize="true"
-  canGetMaxStepSize="true"/>
+  <CoSimulation
+      modelIdentifier="out20pt"
+      canGetAndSetFMUstate="true"
+      canHandleVariableCommunicationStepSize="true"
+      canGetMaxStepSize="true"/>
 
-<LogCategories>
-  <Category name="logAll"/>
-  <Category name="logError"/>
-  <Category name="logFmiCall"/>
-  <Category name="logEvent"/>
-</LogCategories>
+  <LogCategories>
+    <Category name="logAll"/>
+    <Category name="logError"/>
+    <Category name="logFmiCall"/>
+    <Category name="logEvent"/>
+  </LogCategories>
 
-<ModelVariables>
-  <ScalarVariable name="input" valueReference="0" description="input value" variability="continuous" causality="input">
-     <Real />
-  </ScalarVariable>
-</ModelVariables>
+  <ModelVariables>
+    <ScalarVariable name="input" valueReference="0" description="input value" variability="continuous" causality="input">
+      <Real />
+    </ScalarVariable>
+  </ModelVariables>
+
+  <ModelStructure>
+  </ModelStructure>
 
 </fmiModelDescription>
