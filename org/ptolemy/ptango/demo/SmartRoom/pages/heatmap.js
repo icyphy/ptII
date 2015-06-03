@@ -144,87 +144,84 @@ function drawMarkers() {
 	// Create circle and square markers, using a g group to link text and marker 
 	// http://stackoverflow.com/questions/11350553/nested-svg-node-creation-in-d3-js
 	
-	for (var i = 0; i < lights.length; i++){
-		var marker = svg.append("g");	// "g" stands for group
-		
-		marker.append("circle")
-				.attr("class", "light") // So we can select by class later
-				.attr("r", 23)
-				.style("fill", "rgb(248, 198, 78)")
-				.style("stroke", "black")
-				.style("stroke-width", 3)
-				.attr("x", 0)
-				.attr("y", 0);
-		
-		marker.append("text")
-			 	.attr("class", "lightLabel")
-			 	.attr("x", -8)
-			 	.attr("y", 5)
-			 	.attr("font-family", "sans-serif")
-				.attr("font-weight", "bold");
-		
-		marker.attr("class", "lightMarker");
-	}
-		
-	lightMarkers = 
-		d3.selectAll(".lightMarker")
-				.data(lights)
-				.attr("transform", function(d,i) {
+	// Use d3 enter() and exit()
+	// http://mbostock.github.io/d3/tutorial/circle.html
+	
+	var svg = d3.select("svg");
+	
+	var lightMarkers = svg.selectAll("lightMarker")
+	                      	.data(lights)
+	                      	.enter().append("g")
+	                      			  .attr("class", "lightMarker");
+	
+	lightMarkers.append("circle")
+			.attr("class", "light") // To select by class later
+			.attr("r", 23)
+			.style("fill", "rgb(248, 198, 78)")
+			.style("stroke", "black")
+			.style("stroke-width", 3)
+			.attr("x", 0)
+			.attr("y", 0);
+	
+	lightMarkers.append("text")
+		 	.attr("class", "lightLabel")
+		 	.attr("x", -8)
+		 	.attr("y", 5)
+		 	.attr("font-family", "sans-serif")
+			.attr("font-weight", "bold");
+	
+	lightMarkers.attr("transform", function(d,i) {
 					return "translate(" + [d.x, d.y] + ")"
 				})
 				.call(dragLights);
-	
+		
 	// Data must be associated to text labels, too, in addition to markers
 	// .text() must be done after .data() 
 	d3.selectAll(".lightLabel")
 		.data(lights)
 		.text(function(d) {return d.name});
-		
-	for (var i = 0; i < sensors.length; i++) {
-		var marker = svg.append("g");	// "g" stands for group
-		
-		marker.append("rect")
-				.attr("class", "sensor") // So we can select by class later, 
-										 // since heat map also uses rectangles,
-										 // can't use selectAll("rect")
-				.attr("width", 40)
-				.attr("height", 40)		
-				.style("fill", "rgb(161, 189, 213)")
-				.style("stroke", "black")
-				.style("stroke-width", 3);
-		
-		// Name label
-		marker.append("text")
-			 	.attr("class", "sensorLabel")
-			 	.attr("x", 11)
-			 	.attr("y", 25)
-			 	.attr("font-family", "sans-serif")
-				.attr("font-weight", "bold");
-		
-		// Sensor reading
-		marker.append("rect")
-			.attr("width", 116)
-			.attr("height", 40)
-			.attr("x", 40)
-			.attr("y", 0)
-			.style("fill", "rgb(255, 255, 255)")
-			.style("stroke", "black")
-			.style("stroke-width", 3);
-		
-		marker.append("text")
-			 	.attr("class", "sensorReading")
-			 	.attr("x", 55)
-			 	.attr("y", 25)
-			 	.attr("font-family", "sans-serif")
-				.attr("font-weight", "bold");
-		
-		marker.attr("class", "sensorMarker");
-	}
 	
-	sensorMarkers = 
-		d3.selectAll(".sensorMarker")
-				.data(sensors)
-				.attr("transform", function(d,i) {
+	var sensorMarkers = svg.selectAll("sensorMarker")
+							.data(sensors)
+							.enter().append("g")
+							        	.attr("class", "sensorMarker");
+	
+	sensorMarkers.append("rect")
+					.attr("class", "sensor") // So we can select by class later, 
+					 // since heat map also uses rectangles,
+					 // can't use selectAll("rect")
+					.attr("width", 40)
+					.attr("height", 40)		
+					.style("fill", "rgb(161, 189, 213)")
+					.style("stroke", "black")
+					.style("stroke-width", 3);
+	
+	// Name label
+	sensorMarkers.append("text")
+				 	.attr("class", "sensorLabel")
+				 	.attr("x", 11)
+				 	.attr("y", 25)
+				 	.attr("font-family", "sans-serif")
+					.attr("font-weight", "bold");
+	
+	// Sensor reading
+	sensorMarkers.append("rect")
+					.attr("width", 116)
+					.attr("height", 40)
+					.attr("x", 40)
+					.attr("y", 0)
+					.style("fill", "rgb(255, 255, 255)")
+					.style("stroke", "black")
+					.style("stroke-width", 3);
+	
+	sensorMarkers.append("text")
+				 	.attr("class", "sensorReading")
+				 	.attr("x", 55)
+				 	.attr("y", 25)
+				 	.attr("font-family", "sans-serif")
+					.attr("font-weight", "bold");
+	
+	sensorMarkers.attr("transform", function(d,i) {
 					return "translate(" + [d.x, d.y] + ")"
 				})
 				.call(dragSensors);
@@ -247,9 +244,6 @@ function drawMarkers() {
 		 .data(sensors)
 		 .text(function(d) {return Math.floor(d.x) + " , " + Math.floor(d.y)});
 		*/ 
-	
-	// TODO:  Allow to add, remove markers using d3 enter() and exit()
-	// http://mbostock.github.io/d3/tutorial/circle.html
 }
 
 // Submit a request to the Ptolemy model to get the heat map data
