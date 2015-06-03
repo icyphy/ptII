@@ -53,8 +53,9 @@ public class ShellHelper  {
      *   been installed. 
      */
     public void start()  {
-        startProcess();
-        startReader();
+        if(startProcess())  {
+            startReader();
+        }
     }
     
     /** Kills the process and the reader thread. */
@@ -65,12 +66,14 @@ public class ShellHelper  {
         if(out!=null) {
             out.close();
         }
-        if(readerThread.isAlive())  {
+        if((readerThread!=null) && (readerThread.isAlive()))  {
             _readerThreadRunning=false;
         }
         _readerThreadRunning=false;
         try {
-            readerThread.join(10);
+            if(readerThread!=null)  {
+                readerThread.join(10);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -98,8 +101,11 @@ public class ShellHelper  {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////   
 
-    /** Builds and starts the command in a process.*/
-    private void startProcess()  {
+    /** Builds and starts the command in a process.
+     *  @return Returns true, if the process has started and the pipes 
+     *  are initialized. 
+     */
+    private boolean startProcess()  {
         processBuilder = new ProcessBuilder(command);
         processBuilder.redirectErrorStream(true);
         processBuilder.redirectOutput(Redirect.PIPE);
@@ -107,12 +113,13 @@ public class ShellHelper  {
         try {
             process = processBuilder.start();
         } catch (IOException e) {
+            //this._currentObj.eval("exports.error('"+e.getMessage()+"');");
             e.printStackTrace();
-            this._currentObj.callMember("error", "HELLO");
-            return ;
+            return false;
         }
         out = new BufferedWriter( new OutputStreamWriter(process.getOutputStream()) );
         in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        return true;
     }
     
     /** Starts the reader thread to read from the process' stdout asynchronously.*/
