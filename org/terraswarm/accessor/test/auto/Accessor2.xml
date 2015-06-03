@@ -65,7 +65,7 @@
         </property>
     </entity>
     <entity name="Accessor2" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var value = get(typelessInput);&#10;	  send(value, typelessOutput);&#10;	  value = get(quasiTypelessInput);&#10;	  send(value, quasiTypelessOutput);&#10;	}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var value = get('typelessInput');&#10;	  send('typelessOutput', value);&#10;	  value = get('quasiTypelessInput');&#10;	  send('quasiTypelessOutput', value);&#10;	}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/Accessor2.xml">
         </property>

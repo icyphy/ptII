@@ -30,17 +30,17 @@ The output is a count of the periods, starting with 1.
       count = 0;
       setInterval(
         function() {
-          send(true, produce);
+          send('produce', true);
         },
         1000);
     }
 	exports.fire = function() {
-	  var isSuppressed = get(suppress);
-	  var toProduce = get(produce);
+	  var isSuppressed = get('suppress');
+	  var toProduce = get('produce');
 	  if (toProduce) {
         count = count + 1;
         if (!isSuppressed) {
-          send(count, output);
+          send('output', count);
         }
       }
 	}

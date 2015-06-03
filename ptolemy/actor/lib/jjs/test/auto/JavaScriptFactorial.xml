@@ -51,7 +51,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;       var value = get(input);&#10;       if (value &lt; 0) {&#10;           throw &quot;Input must be greater than or equal to 0.&quot;;&#10;       } else {&#10;           var total = 1;&#10;           while (value &gt; 1) {&#10;               total *= value;&#10;               value--;&#10;           }&#10;           send(total, output);&#10;       }&#10;   }&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;       var value = get('input');&#10;       if (value &lt; 0) {&#10;           throw &quot;Input must be greater than or equal to 0.&quot;;&#10;       } else {&#10;           var total = 1;&#10;           while (value &gt; 1) {&#10;               total *= value;&#10;               value--;&#10;           }&#10;           send('output', total);&#10;       }&#10;   }&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

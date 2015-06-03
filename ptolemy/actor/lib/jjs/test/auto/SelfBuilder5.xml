@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   accessor.input('foo', {'value':{'a':1, 'b':2}});&#10;   accessor.output('bar');&#10;}&#10;exports.fire = function() {&#10;   send(get('foo'), 'bar');&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   accessor.input('foo', {'value':{'a':1, 'b':2}});&#10;   accessor.output('bar');&#10;}&#10;exports.fire = function() {&#10;   send('bar', get('foo'));&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

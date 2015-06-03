@@ -61,7 +61,7 @@
         </property>
     </entity>
     <entity name="CallbackWithSuppress" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(&#10;        function() {&#10;          send(true, produce);&#10;        },&#10;        1000);&#10;    }&#10;	exports.fire = function() {&#10;	  var isSuppressed = get(suppress);&#10;	  var toProduce = get(produce);&#10;	  if (toProduce) {&#10;        count = count + 1;&#10;        if (!isSuppressed) {&#10;          send(count, output);&#10;        }&#10;      }&#10;	}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(&#10;        function() {&#10;          send('produce', true);&#10;        },&#10;        1000);&#10;    }&#10;	exports.fire = function() {&#10;	  var isSuppressed = get('suppress');&#10;	  var toProduce = get('produce');&#10;	  if (toProduce) {&#10;        count = count + 1;&#10;        if (!isSuppressed) {&#10;          send('output', count);&#10;        }&#10;      }&#10;	}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.xml">
         </property>

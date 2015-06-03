@@ -70,7 +70,7 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     regsub {value=".*\\org\\terraswarm\\accessor\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} moml3
     list $moml3
 } {{<entity name="Accessor" class="org.terraswarm.accessor.JSAccessor">
-    <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get(stringInput);&#10;	  send(stringValue, stringOutput);&#10;	  var numericValue = get(numericInput);&#10;	  send(numericValue, numericOutput);&#10;	  stringValue = get(stringInputWithoutValue);&#10;	  send(stringValue, stringOutputWithoutValue);&#10;	  send(stringValue == null, inputIsAbsent);&#10;	}&#10;	// &#10;  ">
+    <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var stringValue = get('stringInput');&#10;	  send('stringOutput', stringValue);&#10;	  var numericValue = get('numericInput');&#10;	  send('numericOutput', numericValue);&#10;	  stringValue = get('stringInputWithoutValue');&#10;	  send('stringOutputWithoutValue', stringValue);&#10;	  send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
     </property>
     <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
     </property>

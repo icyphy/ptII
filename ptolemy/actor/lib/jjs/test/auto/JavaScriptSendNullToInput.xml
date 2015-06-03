@@ -43,7 +43,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Request a firing at time 0.&#10;    setTimeout(null, 0);&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = get(input);&#10;       if (value) {&#10;          send(value, output);&#10;       } else {&#10;          send(0, output);&#10;          send(null, input);&#10;       }&#10;   }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Request a firing at time 0.&#10;    setTimeout(null, 0);&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = get('input');&#10;       if (value) {&#10;          send('output', value);&#10;       } else {&#10;          send('output', 0);&#10;          send('input', null);&#10;       }&#10;   }&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

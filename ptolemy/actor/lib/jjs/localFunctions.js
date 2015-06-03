@@ -20,31 +20,33 @@ var exports = {
     wrapup: function() {}
 };
 
-/** Add a handler function to call when the specified port receives a new input.
+/** Add a handler function to call when the specified input receives new data.
+ *  If the name argument is null, then call the handler when any input receives data.
  *  Return a handle to use in removeInputHandler(). If there are additional arguments
  *  beyond the first two, then those arguments will be passed to the function
  *  when it is invoked. The handler can retrieve the input input value by invoking get().
- *  Note with this implementation, it is not necessary to
+ *  Note that with this implementation, it is not necessary to
  *  call removeInputHandler() in the actor's wrapup() function.
  *  Nevertheless, it is a good idea to do that in an accessor
  *  since other accessor hosts may not work the same way.
- *  @param func The function to invoke when the port receives an input.
- *  @param port The port name (a string).
+ *  @param name The input name (a string), or null to react to any input.
+ *  @param func The function to invoke when the input receives data.
  */
-function addInputHandler(func, port) {
-    // For backward compatibility, allow the port to be directly
-    // a reference to the proxy.
-    var proxy = port;
-    if (typeof port === 'string') {
-        proxy = actor.getPortOrParameterProxy(port);
+function addInputHandler(name, func) {
+    if (name && typeof name !== 'string') {
+        throw('name argument is required to be a string. Got: ' + (typeof name));
     }
     if (!func) {
         func = nullHandlerFunction;
     } else if (typeof func !== 'function') {
         throw('First argument of addInputHandler is required to be a function. Provided: ' + func);
     }
-    if (!proxy && port) {
-        throw('No such input: ' + port);
+    var proxy = null;
+    if (name) {
+        proxy = actor.getPortOrParameterProxy(name);
+    }
+    if (!proxy && name) {
+        throw('No such input: ' + name);
     }
     var callback = func;
     // If there are arguments to the callback, create a new function.
@@ -77,19 +79,17 @@ function nullHandlerFunction() {}
 // as expected.
 function fire() {exports.fire();}
 
-/** Get data from an input port.
- *  @param port The port name (a string).
- *  @param channel The channel number, where null is equivalent to 0.
+/** Get data from an input.
+ *  @param name The name of the input (a string).
+ *  @param channel The (optional) channel number, where null is equivalent to 0.
  */
-function get(port, channel) {
-    // For backward compatibility, allow the port to be directly
-    // a reference to the proxy.
-    var proxy = port;
-    if (typeof port === 'string') {
-        proxy = actor.getPortOrParameterProxy(port);
+function get(name, channel) {
+    if (typeof name !== 'string') {
+        throw('name argument is required to be a string. Got: ' + (typeof name));
     }
+    var proxy = actor.getPortOrParameterProxy(name);
     if (!proxy) {
-        throw('No such input: ' + port);
+        throw('No such input: ' + name);
     }
     // Give channel a default value of 0.
     channel = (typeof channel !== 'undefined') ? channel : 0;
@@ -104,38 +104,24 @@ function get(port, channel) {
 // as expected.
 function initialize() {exports.initialize();}
 
-/** Remove the input handler for the specified port
- *  with the specified handle.
+/** Remove the input handler with the specified handle.
  *  @param handle The handle.
- *  @param port The port name (a string).
  *  @see #addInputHandler()
  */
-function removeInputHandler(handle, port) {
-    // For backward compatibility, allow the port to be directly
-    // a reference to the proxy.
-    var proxy = port;
-    if (typeof port === 'string') {
-        proxy = actor.getPortOrParameterProxy(port);
-    }
-    if (!proxy) {
-        actor.removeInputHandler(handle);
-    } else {
-        proxy.removeInputHandler(handle);
-    }
+function removeInputHandler(handle) {
+    actor.removeInputHandler(handle);
 }
 
-/** Send data to an output port.
+/** Send data to an output or an input.
+ *  @param name The name of the output or input (a string).
  *  @param value The value to send.
- *  @param port The port name (a string).
- *  @param channel The channel number, where null is equivalent to 0.
+ *  @param channel The (optional) channel number, where null is equivalent to 0.
  */
-function send(value, port, channel) {
-    // For backward compatibility, allow the port to be directly
-    // a reference to the proxy.
-    var proxy = port;
-    if (typeof port === 'string') {
-        proxy = actor.getPortOrParameterProxy(port);
+function send(name, value, channel) {
+    if (typeof name !== 'string') {
+        throw('name argument is required to be a string. Got: ' + (typeof name));
     }
+    var proxy = actor.getPortOrParameterProxy(name);
     if (!proxy) {
         throw('No such output: ' + port);
     }

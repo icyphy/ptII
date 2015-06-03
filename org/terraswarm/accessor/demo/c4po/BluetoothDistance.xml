@@ -29,7 +29,7 @@ http://stackoverflow.com/questions/20416218/understanding-ibeacon-distancing
 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;    
 	  	}
 	 }
-      send(result, distance);
+      send('distance', result);
     }
     // ]]>
   </script>

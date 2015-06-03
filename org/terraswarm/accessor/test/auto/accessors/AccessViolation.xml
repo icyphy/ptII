@@ -27,7 +27,7 @@ This accessor, when fired, reads the most recent bid price for the specified sto
 	  var record = readURL(url);
 	  var json = JSON.parse(record);
 	  var tick = parseFloat(json.query.results.quote.LastTradePriceOnly);
-	  send(tick, 'price');
+	  send('price', tick);
 	}
 	// ]]>
   </script>

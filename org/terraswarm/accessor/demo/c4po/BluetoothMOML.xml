@@ -15,7 +15,7 @@
 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;    
 	  	}
 	 }
-      send(result, distance);">
+      send('distance', result);">
             <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
             </property>
         </property>

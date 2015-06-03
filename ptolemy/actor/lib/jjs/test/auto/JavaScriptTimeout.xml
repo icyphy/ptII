@@ -48,7 +48,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;var pendingTimeout;&#10;function produce() {&#10;   send(count, out);&#10;   count = count + 1;&#10;   pendingTimeout = setTimeout(produce, $interval);&#10;}&#10;function initialize() {&#10;   produce();&#10;}&#10;function wrapup() {&#10;   clearTimeout(pendingTimeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;var pendingTimeout;&#10;function produce() {&#10;   send('out', count);&#10;   count = count + 1;&#10;   pendingTimeout = setTimeout(produce, $interval);&#10;}&#10;function initialize() {&#10;   produce();&#10;}&#10;function wrapup() {&#10;   clearTimeout(pendingTimeout);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

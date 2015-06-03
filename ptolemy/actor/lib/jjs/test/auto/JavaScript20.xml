@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" value="function fire() {&#10;var value = {a: 1, b:2};&#10;send(value, output);&#10;}">
+        <property name="script" value="function fire() {&#10;var value = {a: 1, b:2};&#10;send('output', value);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

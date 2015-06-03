@@ -31,7 +31,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Multiply the input by the gain.&#10;function fire() {&#10;  send( get(input, 0)*${gain}, output, 0);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Multiply the input by the gain.&#10;function fire() {&#10;  send('output', get('input', 0)*${gain}, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

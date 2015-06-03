@@ -67,7 +67,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;  // Send the name of the actor.&#10;  var result = actor.getName();&#10;  send(result, output, 0);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;  // Send the name of the actor.&#10;  var result = actor.getName();&#10;  send('output', result, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

@@ -2,7 +2,7 @@
  * Module supporting publishing and subscribing on the Vert.x event bus.
  * This module provides an interface to the Vert.x event bus, which
  * supports a peer-to-peer publish-and-subscribe network on a local
- * area network. Upon in invoking the VertxBus constructor in this module,
+ * area network. Upon invoking the VertxBus constructor in this module,
  * the host running this module participates in the pub-sub network.
  * The pub-sub network extends as far as multicast packets extend
  * in the local-area network, and other participants will be automatically
@@ -118,7 +118,7 @@ util.inherits(VertxBus, events.EventEmitter);
  *  This function is called from the Nashorn Java helper for this module and
  *  should not be directly invoked by the user of the module.
  *  This method assumes that the body of the message is a string
- *  in JSON format. It will throw an exception if this is not the case.
+ *  in JSON format. If it is not, then it will just emit the body as is.
  *  @param address The address.
  *  @param body The message body
  */
@@ -126,8 +126,8 @@ VertxBus.prototype.notify = function(address, body) {
     try {
         body = JSON.parse(body);
     } catch (exception) {
-        // NOTE: It might be better to just emit this and interpret as a string?
-        throw 'Failed to parse JSON: ' + body + '\nException: ' + exception;
+        // NOTE: Just emit this and interpret a string.
+        // throw 'Failed to parse JSON: ' + body + '\nException: ' + exception;
     }
     this.emit(address, body);
 };
