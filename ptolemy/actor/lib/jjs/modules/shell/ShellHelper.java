@@ -111,7 +111,7 @@ public class ShellHelper  {
         readerThread=null;
   
         if ((process!=null) && (process.isAlive()))  {
-            process.destroy();
+            process.destroyForcibly();
         }
         process=null;
     }
