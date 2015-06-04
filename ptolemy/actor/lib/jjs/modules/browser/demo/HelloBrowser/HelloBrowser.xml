@@ -18,10 +18,10 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <entity name="Browser" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var browser = require('browser');&#10;	function fire() {&#10;	  var toDisplay = get(html);&#10;	  browser.display(toDisplay);&#10;	}&#10;	// &#10;  ">
+    <entity name="Browser" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var browser = require('browser');&#10;	function display() {&#10;	  var toDisplay = get('html');&#10;	  browser.display(toDisplay);&#10;	}&#10;	addInputHandler('html', display);&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="/Users/eal/Box Sync/Projects/TerraSwarm/accessors/web/Browser.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/Browser.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;FIXME.&#10;	&#10;  ">
@@ -34,6 +34,8 @@
             </property>
             <property name="html (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="An HTML document to render in the browser.">
             </property>
+            <property name="html (port)" class="ptolemy.kernel.util.StringAttribute" value="An HTML document to render in the browser.">
+            </property>
         </property>
         <property name="html" class="ptolemy.actor.parameters.PortParameter" value="&quot;&lt;b&gt;Hello World again!&lt;/b&gt;&quot;">
         </property>
@@ -44,6 +46,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
