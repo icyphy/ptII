@@ -535,10 +535,10 @@ if [ "$PTSERVER_DIR" = "ptserver" ]; then
     PTSERVER_JARS="@PTSERVER_JARS@"
 fi
 
-# PTPAHO_MQTT_DIR is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
-PTPAHO_MQTT_DIR=@PTPAHO_MQTT_DIR@
+# PTPAHO_MQTT_DIRS is set to localStorage if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
+PTPAHO_MQTT_DIRS=`echo "@PTPAHO_MQTT_DIRS@" | awk '{print $1}'`
 PTPAHO_MQTT_JARS=""
-if [ "$PTPAHO_MQTT_DIR" = "localStorage" ]; then
+if [ "$PTPAHO_MQTT_DIRS" = "localStorage" ]; then
     PTPAHO_MQTT_JARS="${CLASSPATHSEPARATOR}@PTPAHO_MQTT_JAR@"
 fi
 
