@@ -745,6 +745,7 @@ PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
 PTJAVA3D_DIR
 PTJAVA32_DIR
+PTJAVA18_PACKAGES
 PTJAVA_HOME
 PTJAVA_DIR_NO_CYGDRIVE
 PTJAVA_DIR
@@ -758,6 +759,7 @@ PTITEXTPDF_PACKAGES
 PTITEXTPDF_JAR
 PTITEXTPDF_DIR
 PTII
+PTHTTPCLIENT_DIR
 PTHOMER_PACKAGES
 PTHOMER_JARS
 PTHOMER_DIR
@@ -1768,7 +1770,7 @@ Optional Packages:
   --with-kvm=DIR       use PalmOS KVM from DIR,
                           defaults to \$PTII/vendors/sun/j2me_cldc
   --with-paho-mqtt-jar=Jar       use Paho MQTT from JAR,
-                          defaults to \$PTII/lib/org.eclipse.paho.client.mqttv3.jar
+                                  defaults to \$PTII/lib/org.eclipse.paho.client.mqttv3.jar
   --with-hessian=JAR       use Hessian.jar from JAR,
                           defaults to \$PTII/ptserver/lib/hessian-4.0.7.jar
   --with-wmqtt=JAR       use wmqtt.jar from JAR,
@@ -3216,16 +3218,16 @@ $as_echo "$as_me: WARNING: '${PTJAVA_DIR}' is not a directory, using the default
 			    as_fn_error $? "
 Java directory $DEFAULT_JDK doesn't exist.
 Be sure that the directory that contains javac and java is in your path.
-Typically, under Windows, this directory might be c:\Program Files\Java\jdk1.8.0_05\bin
+Typically, under Windows, this directory might be c:\Program Files\Java\jdk1.8.0_45\bin
 For instructions about adding to a directory to your path permanently,
 consult your user documentation.
 Under bash, you may temporarily add a directory with something like:
-  PATH=/cygdrive/c/Program\ Files/Java/jdk1.8.0_05/bin:\$PATH
+  PATH=/cygdrive/c/Program\ Files/Java/jdk1.8.0_45/bin:\$PATH
   export PATH
   rm config.*; ./configure
 You may also try --with-java=DIR, or set the PTJAVA_DIR environment variable
 to the directory where your jdk is located:
-  PTJAVA_DIR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_05
+  PTJAVA_DIR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_45
   export PTJAVA_DIR
   rm config.*; ./configure
 but adding the directory to your path is likely to work best." "$LINENO" 5
@@ -4456,6 +4458,9 @@ fi
 PTJJS_DIR=
 # Set to accessor and used in org/terraswarm/makefile if Nashorn is found.
 PTACCESSOR_DIR=
+# Set to include packages that require Java 1.8, but do not require Vertx or other optional packages and used in doc/makefile.
+PTJAVA18_PACKAGES=
+
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
     pre1_8packages="org/hlacerti/ org/ptolemy/machineLearning/particleFilter/ org/ptolemy/machineLearning/hsmm/ org/ptolemy/osc/ org/ptolemy/ssm/ ptolemy/apps/hardrealtime/ ptolemy/actor/lib/jjs/ ptolemy/vergil/basic/imprt/accessor/ org/terraswarm/accessor/ ptolemy/domains/wireless/lib/bluetooth/"
@@ -4470,6 +4475,8 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
 	updateExcludes $package
     done
 else
+        # Packages that do not use vertx or other packages, but do use Java 1.8.
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.httpClient"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
@@ -8277,7 +8284,12 @@ if test ! -d "$HLACERTI_USER_DIR" ; then
 $as_echo "$HLACERTI_USER_DIR is not present,
     so we need not find jcerti.jar." >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jcerti, used by hlacerti " >&5
+    if test "$PRE_JDK18" = "yes" ; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: org/hlacerti requires Java 1.8 or later" >&5
+$as_echo "$as_me: WARNING: org/hlacerti requires Java 1.8 or later" >&2;}
+        updateExcludes "org/hlacerti/"
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Jcerti, used by hlacerti " >&5
 $as_echo_n "checking for Jcerti, used by hlacerti ... " >&6; }
 
 # Check whether --with-jcerti was given.
@@ -8287,22 +8299,23 @@ else
   PTJCERTI_JAR=$PTII/lib/jcerti.jar
 fi
 
-    if test  -f "$PTJCERTI_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if test  -f "$PTJCERTI_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJCERTI_JAR" >&5
 $as_echo "$PTJCERTI_JAR" >&6; }; fi
-	# Set to mail and used in
-	# $PTII/ptolemy/apps/makefile if jcerti.jar was found.
-	PTHLACERTI_DIR=hlacerti
-        # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
-	PTHLACERTI_PACKAGES="org.hlacerti.lib"
-	updateClasspath "$PTJCERTI_JAR"
-    else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find jcerti.jar necessary to compile ptolemy/apps/hlacerti
+	    # Set to mail and used in
+	    # $PTII/ptolemy/apps/makefile if jcerti.jar was found.
+	    PTHLACERTI_DIR=hlacerti
+            # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
+	    PTHLACERTI_PACKAGES="org.hlacerti.lib"
+	    updateClasspath "$PTJCERTI_JAR"
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find jcerti.jar necessary to compile org/hlacerti
     hlacerti is optional" >&5
-$as_echo "$as_me: WARNING: Failed to find jcerti.jar necessary to compile ptolemy/apps/hlacerti
+$as_echo "$as_me: WARNING: Failed to find jcerti.jar necessary to compile org/hlacerti
     hlacerti is optional" >&2;}
-       updateExcludes "org/hlacerti/"
+           updateExcludes "org/hlacerti/"
+        fi
     fi
 fi
 
@@ -11016,8 +11029,16 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JSO
 $as_echo "$JSON_DIR" >&6; }; fi
 	# Used in org/makefile
 	PTJSON_DIR=json
-	# Used in doc/makefile
-	PTJSON_PACKAGES="org.json ptolemy.actor.lib.conversions.json ptolemy.vergil.basic.imprt.accessor"
+        if test "$PRE_JDK18" = "yes" ; then
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: ptolemy.vergil.basic.imprt.accessor requires Java 1.8 or later" >&5
+$as_echo "$as_me: WARNING: ptolemy.vergil.basic.imprt.accessor requires Java 1.8 or later" >&2;}
+            updateExcludes "ptolemy.vergil.basic.imprt.accessor"
+	    # Used in doc/makefile
+	    PTJSON_PACKAGES="org.json ptolemy.actor.lib.conversions.json"
+        else
+	    # Used in doc/makefile
+	    PTJSON_PACKAGES="org.json ptolemy.actor.lib.conversions.json ptolemy.vergil.basic.imprt.accessor"
+        fi
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/org/json/
     perhaps JSON is not installed?
@@ -11914,7 +11935,11 @@ if test ! -d "$PTPAHO_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTPAHO_USER_DIR is not present" >&5
 $as_echo "$PTPAHO_USER_DIR is not present" >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the Paho MQTT jar" >&5
+    if test "$PRE_JDK18" = "yes" ; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: ptolemy/actor/lib/jjs/modules/localStorage requires Java 1.8 or later" >&5
+$as_echo "$as_me: WARNING: ptolemy/actor/lib/jjs/modules/localStorage requires Java 1.8 or later" >&2;}
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the Paho MQTT jar" >&5
 $as_echo_n "checking for the Paho MQTT jar... " >&6; }
 
 # Check whether --with-pahoMqtt was given.
@@ -11925,17 +11950,18 @@ else
 fi
 
 
-    if test -f "$PTPAHO_MQTT_JAR"; then
-        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if test -f "$PTPAHO_MQTT_JAR"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTPAHO_MQTT_JAR" >&5
 $as_echo "$PTPAHO_MQTT_JAR" >&6; }; fi
-    else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the PTPAHO_MQTT Jar file.
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the PTPAHO_MQTT Jar file.
     The default location is $PTII/lib/
     Paho MQTT is used by $PTII/ptolemy/actor/lib/jjs/modules/localStorage" >&5
 $as_echo "$as_me: WARNING: Failed to find the PTPAHO_MQTT Jar file.
     The default location is $PTII/lib/
     Paho MQTT is used by $PTII/ptolemy/actor/lib/jjs/modules/localStorage" >&2;}
+        fi
     fi
 fi
 
@@ -13126,6 +13152,9 @@ PTBROWSER_DIR=
 # Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTEVENTBUS_DIR=
 
+# Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTHTTPCLIENT_DIR=
+
 # Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTXEVENTBUS_DIR=
 
@@ -13169,6 +13198,7 @@ fi
             if test -d "$PTVERTX_JAR_DIR"; then
             PTBROWSER_DIR=browser
 	    PTEVENTBUS_DIR=eventbus
+            PTHTTPCLIENT_DIR=httpClient
     	    PTVERTX_DIR=vertx
 	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
@@ -13198,7 +13228,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTV
 $as_echo "$PTVERTX_JARS" >&6; }; fi
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -13206,8 +13236,8 @@ fi
 if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/vertx/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/discovery/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/eventbus/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/httpClient/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
@@ -14033,6 +14063,9 @@ fi
 # Ptolemy II packages that use Netbeans gui code
 
 
+# Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+
+
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
 
@@ -14078,6 +14111,9 @@ fi
 
 
 # Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
+
+
+# Set to include packages that require Java 1.8, but do not require Vertx or other optional packages and used in doc/makefile.
 
 
 # Location of the JDK
