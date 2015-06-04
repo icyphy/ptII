@@ -101,7 +101,8 @@ void deleteQueue() {
 
 void parseSequence(ModelInstance *comp) {
     fmi2String sequence = s(sequence_);
-    for (int i = 0; i < strlen(s(sequence_)); i++) {
+    int i = 0;
+    for (i = 0; i < strlen(s(sequence_)); i++) {
         int idx_t_s = i;
         int idx_t_e = i;
         int idx_v_s = i;
