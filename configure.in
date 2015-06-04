@@ -1123,7 +1123,7 @@ if test "$PRE_JDK18" = "yes" ; then
     done
 else
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.modules.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
@@ -5941,6 +5941,9 @@ PTEVENTBUS_DIR=
 # Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTHTTPCLIENT_DIR=
 
+# Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTUDPSOCKET_DIR=
+
 # Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTXEVENTBUS_DIR=
 
@@ -5975,6 +5978,7 @@ else
             PTBROWSER_DIR=browser
 	    PTEVENTBUS_DIR=eventbus
             PTHTTPCLIENT_DIR=httpClient
+            PTUDPSOCKET_DIR=udpSocket
     	    PTVERTX_DIR=vertx
 	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
@@ -6001,7 +6005,7 @@ else
 	    PT_MSG_RESULT([$PTVERTX_JARS])
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -7149,6 +7153,9 @@ AC_SUBST(GIOTTO_CLASSES)
 
 # Directory that contains the GiottoSDK installation
 AC_SUBST(GIOTTO_DIR)
+
+# Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+AC_SUBST(PTUDPSOCKET_DIR)
 
 # Vertx jars used by actor.lib.vertx
 AC_SUBST(PTVERTX_JARS)
