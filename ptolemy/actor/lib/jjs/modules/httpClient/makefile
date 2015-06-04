@@ -1,10 +1,10 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Nashorn-based Ptolemy II JavaScript httpClient module
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 70884 2014-12-06 17:42:10Z cxh $
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,63 +29,52 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules
+ME =		ptolemy/actor/lib/jjs/modules/httpClient
 
-# PTBROWSER_DIR is set to browser if the Vertx jars are found by configure.
-# PTEVENTBUS_DIR is set to eventbus if the Vertx jars are found by configure
-# PTHTTPCLIENT_DIR is set to eventbus if the Vertx jars are found by configure
-# PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
-# PTVERTXEVENTBUS_DIR is set to vertxEventBus if the Vertx jars are found by configure.
-# PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		audio $(PTBROWSER_DIR) discovery $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) objectAssign $(PTPAHO_MQTT_DIRS) shell udpSocket $(PTVERTXEVENTBUS_DIR) $(PTWEBSOCKET_DIR) 
+DIRS = 		test
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	modules
-#PTCLASSJAR = 	$(PTPACKAGE).jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-# Don't include these possibly optional files.
-#	localStorage/localStorage.jar
-#	mqtt/mqtt.jar
-#	vertxEventBus/vertxEventBus.jar
-#	webSocket/webSocket.jar
+PTPACKAGE = 	httpClient
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	VertxHelperBase.java
+	HttpClientHelper.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	httpClient.js \
+	package.json
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	audio browser discovery eventbus httpClient localStorage mqtt objectAssign shell udpSocket vertxEventBus webSocket #test
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	$(PTCLASSJAR) 
+	doc \
+	$(PTCLASSJAR) \
+	'HttpClientHelper$$1.class' \
+	'HttpClientHelper$$HttpClientBodyHandler.class' \
+	'HttpClientHelper$$HttpClientExceptionHandler.class' \
+	'HttpClientHelper$$HttpClientResponseHandler.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
-all: suball #jclass
-install: subjars jars #jclass
+all: jclass
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
