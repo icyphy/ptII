@@ -450,9 +450,9 @@ PTMACHINE_LEARNING_PACKAGES = \
 	org.ptolemy.machineLearning \
 	org.ptolemy.machineLearning.hmm \
 	org.ptolemy.machineLearning.hmmAOM \
-	org.ptolemy.machineLearning.hsmm \
-	org.ptolemy.machineLearning.particleFilter \
 	org.ptolemy.optimization
+
+# JDK1.8: 	org.ptolemy.machineLearning.particleFilter, org.ptolemy.machineLearning.hsmm
 
 # PTIDES packages
 PTIDES_PACKAGES = \
@@ -562,6 +562,7 @@ ALLPACKAGES = \
 	$(PTITEXTPDF_PACKAGES) \
 	$(PTINYPACKAGES) \
 	$(PTJAI_PACKAGES) \
+	$(PTJAVA18_PACKAGES) \
 	$(PTJAVACV_PACKAGES) \
 	$(PTJAVAMAIL_PACKAGES) \
 	$(PTJAVASCRIPT_PACKAGES) \
@@ -592,10 +593,8 @@ ALLPACKAGES = \
 	org.ptolemy.qss \
 	org.ptolemy.qss.solver \
 	org.ptolemy.qss.util \
-	org.ptolemy.ssm \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
-	ptolemy.actor.lib.jjs \
 	ptolemy.actor.lib.mbed \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.video \
