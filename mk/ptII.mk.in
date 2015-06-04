@@ -119,6 +119,9 @@ TINI_DIR = @TINI_DIR@
 # Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
 TOOLS_JAR =	@TOOLS_JAR@
 
+# Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTUDPSOCKET_DIR = @PTUDPSOCKET_DIR@
+
 # Vertx jars used by actor.lib.vertx
 PTVERTX_JARS = 	@PTVERTX_JARS@
 
@@ -621,6 +624,9 @@ PTHOMER_JARS =		@PTHOMER_JARS@
 
 # Ptolemy II packages that use Netbeans gui code
 PTHOMER_PACKAGES =	@PTHOMER_PACKAGES@
+
+# Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTHTTPCLIENT_DIR=	@PTHTTPCLIENT_DIR@
 
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
