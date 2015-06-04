@@ -665,6 +665,9 @@ PTJAI_DIR =	@PTJAI_DIR@
 # PTJAI_PACKAGES is used in ptII/doc/makefile
 PTJAI_PACKAGES =	@PTJAI_PACKAGES@
 
+# Set to include packages that require Java 1.8, but do not require Vertx or other optional packages and used in doc/makefile.
+PTJAVA18_PACKAGES =	@PTJAVA18_PACKAGES@
+
 # Set to javacv and used in
 # $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
 PTJAVACV_DIR =	@PTJAVACV_DIR@
