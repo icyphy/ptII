@@ -68,12 +68,12 @@ fi
 
 # Without any command line arguments, do all .h, .c, .cc  and *ake* files
 if [ $1x = x ] ; then
-    echo Adding copyrights to all .c, .cc, .cpp, .giotto, .h, .mk, .tcl, .itcl and .java files.
+    echo Adding copyrights to all .c, .cc, .cpp, .giotto, .h, .mk, .tcl, .itcl, .java and .js files.
     #exec $0 *.h *.c *.cc makefile make.template Makefile
-	if [ "`ls *.cpp *.c *.cc *.cpp *.giotto *.H *.h makefile make.template Makefile *.mk *.mmm *.tcl *.itcl *.java 2> /dev/null`" = "" ]; then
+	if [ "`ls *.cpp *.c *.cc *.cpp *.giotto *.H *.h makefile make.template Makefile *.mk *.mmm *.tcl *.itcl *.java *.js 2> /dev/null`" = "" ]; then
 		exit
 	fi
-	set `ls *.c *.cc *.cpp *.giotto *.H *.h makefile make.template Makefile *.mk *.mmm *.tcl *.itcl *.java 2> /dev/null` 
+	set `ls *.c *.cc *.cpp *.giotto *.H *.h makefile make.template Makefile *.mk *.mmm *.tcl *.itcl *.java *.js 2> /dev/null` 
 fi
 
 # Directory to save files in.
@@ -248,7 +248,12 @@ while [ $1x != x ] ; do
 					} else
 					    print NR	
 					exit
-					}' $FP	 `
+					}
+                                  $0 ~ /\/\/ *Copyright: http:\/\/terraswarm.org\/accessors\/copyright.txt/ {
+                                            print NR
+                                            exit
+                                        }
+                              ' $FP	 `
 	#	  startline=`grep -n -i 'Copyright (c)' $FP | sed 's/:.*//'`
     fi
     echo startline is $startline
@@ -264,7 +269,7 @@ while [ $1x != x ] ; do
     case $F in
 	*Makefile|*makefile|*make.template|*.mk|*.tcl|*.itcl) \
 			shcomments=yes;;
-	*.c|*.cc|*.cpp|*.giotto|*.H|*.h|*.html|*.java|*.mmm )   shcomments=no;;
+	*.c|*.cc|*.cpp|*.giotto|*.H|*.h|*.html|*.java|*.js|*.mmm )   shcomments=no;;
 	*) echo "Panic, cannot handle $F, skipping"; continue;;
     esac
 
