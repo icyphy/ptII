@@ -1,6 +1,6 @@
 /* A simple graph view for Ptolemy models
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -2231,7 +2231,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                             // case is that we will have no Import FMU in the menu.
                             // That is better than preventing the user from opening a model.
                             System.err
-                            .println("Warning: Tried to create the an import menu item, but failed: "
+                            .println("Warning: Tried to create the an import menu item by looking for the "
+                                    + importActionClassName + " Java class, but failed: "
                                     + throwable);
                         }
                     }
