@@ -9,10 +9,12 @@ from time import sleep
 
 
 def sporadic(runtime, stop_event):
-    while(not stop_event.is_set()):
+    cnt = 0;
+    while(not stop_event.is_set() and (cnt<5)):
         print "goodbye"
         sys.stdout.flush()
         stop_event.wait(0.9)
+        cnt = cnt + 1
         
 
 def operate(stop_event):
