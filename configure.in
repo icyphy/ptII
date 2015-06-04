@@ -1123,7 +1123,7 @@ if test "$PRE_JDK18" = "yes" ; then
     done
 else
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.httpClient"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
