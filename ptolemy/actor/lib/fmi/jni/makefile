@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 72323 2015-05-14 01:02:27Z cxh $
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/fmi/jni
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -56,7 +56,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't set MISC_FILES to $(DIRS) or else 'make sources' will try to invoke the demos.
-MISC_FILES =
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
