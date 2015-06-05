@@ -42,8 +42,11 @@ $CLASSPATH/org/ptolemy/ssm/demo/SingleRobotTargetLocalization/SingleRobotTargetL
 $CLASSPATH/org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/Audio.xml
 $CLASSPATH/org/terraswarm/accessor/demo/c4po/c4po.xml
+$CLASSPATH/org/terraswarm/accessor/demo/HappySadStock/HappySadStock.xml
+$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
+$CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
