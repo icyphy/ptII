@@ -13,7 +13,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for WebSocketClient accesor. The WebSocketClient can be imported from &#10;http://www.terraswarm.org/accessors/.&#10;&#10;NOTE: This client assumes that there is a web socket server running on the local host.&#10;There are two alternative implementations of the server.  A Ptolemy II server is provided&#10;as a model called WebSocketServer in this same directory. Alternatively, there is also a&#10;Node.js server, which you can start with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.  You may need&#10;to install the 'ws' module using something like:&#10;     &gt; sudo npm install ws&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for WebSocketClient accesor. The WebSocketClient can be imported from &#10;http://www.terraswarm.org/accessors/.&#10;&#10;NOTE: This client assumes that there is a web socket server running on the local host.&#10;There are two alternative implementations of the server.  A Ptolemy II server is provided&#10;as a model called WebSocketServer in this same directory by clicking on the link below:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
         </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 485.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 206, 955, 634}, maximized=false}">
@@ -33,6 +33,43 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
+    </property>
+    <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer Model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 310.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Alternatively, there is also a Node.js server, which you can start with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.  You may need&#10;to install the 'ws' module using something like:&#10;     &gt; sudo npm install ws&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 340.0]">
+        </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>

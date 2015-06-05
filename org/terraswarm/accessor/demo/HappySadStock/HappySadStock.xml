@@ -1,0 +1,348 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HappySadStock" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 976, 735}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[742, 625]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3046854619488164">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.52738431936206, 247.58352217405414}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses a StockTick accessor to read the stock values&#10;of the publicly-held sponsors of the TerraSwarm project.&#10;It then averages the prices, and if the average is greater than the&#10;previous average, it sets the color of a Hue lightbulb to green.&#10;If is going down, it sets it to red. If it is unchanged, it is white.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 325.0]">
+        </property>
+    </property>
+    <property name="stocks" class="ptolemy.data.expr.Parameter" value="{&quot;AMAT&quot;,&quot;IBM&quot;, &quot;INTC&quot;, &quot;MU&quot;, &quot;RTN&quot;, &quot;TXN&quot;, &quot;UTX&quot;}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 35.0]">
+        </property>
+    </property>
+    <property name="bridgeIPAddress" class="ptolemy.data.expr.StringParameter" value="128.32.171.111:80">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 455.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Set the IP address of the Hue Bridge and light ID of the lightbulb here:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 420.0]">
+        </property>
+    </property>
+    <property name="lightID" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 475.0]">
+        </property>
+    </property>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="stocks.length()">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="stocks">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 110.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(currentAverage &gt; previousAverage)?&#10;  46920&#10;: (currentAverage == previousAverage)?&#10;  12750&#10;  : 0">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[331.0, 240.0]">
+        </property>
+        <port name="currentAverage" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="previousAverage" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.5, 120.0]">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="stocks.length()">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[374.5, 120.0]">
+        </property>
+    </entity>
+    <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="StockTick2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;// This accessor requires the optional 'httpClient' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var http = require('httpClient');&#10;&#10;function getPrice() {&#10;    // Read the current value of the 'symbol' input.&#10;    var stock = get('symbol');&#10;    // Construct a URL to obtain a stock price.&#10;    var url = &quot;http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22&quot;&#10;        + stock&#10;        + &quot;%22)%0A%09%09&amp;env=http%3A%2F%2Fdatatables.org%2Falltables.env&amp;format=json&quot;;&#10;    // Request a stock price, and provide a function to handle the response.&#10;    http.get(url, function(response) {&#10;        // Assuming the response is JSON, parse it.&#10;        var json = JSON.parse(response.body);&#10;        // Extract the last trade price from the JSON record.&#10;        var price = parseFloat(json.query.results.quote.LastTradePriceOnly);&#10;        // Send the price to the 'price' output.&#10;        send('price', price);&#10;    });&#10;}&#10;&#10;var handle = null;&#10;&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('symbol', getPrice);&#10;}&#10;&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'symbol');&#10;}&#10;    // &#10;  ">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/StockTick.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor, when fired, reads the most recent trade price for the specified stock symbol from a Yahoo server.&#10;    &#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="symbol (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The stock symbol.">
+            </property>
+            <property name="price (port)" class="ptolemy.kernel.util.StringAttribute" value="The most recent stock price (bid).">
+            </property>
+        </property>
+        <property name="symbol" class="ptolemy.actor.parameters.PortParameter" value="&quot;YHOO&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 110.0]">
+        </property>
+        <port name="symbol" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="price" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="Hue" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;&#10;// State variables.&#10;var timeout = 3000;&#10;var bridge;&#10;var url;&#10;&#10;// Uncormment the following to see the URL being used for the bridge.&#10;// alert(&quot;Connecting to: &quot; + bridge);&#10;&#10;function initialize() {&#10;   ipAddress = get('bridgeIPAddress');&#10;   if (ipAddress == null || ipAddress.trim() == &quot;&quot;) {&#10;      throw &quot;No IP Address is given for the Hue Bridge.&quot;;&#10;   }&#10;   url = &quot;http://&quot; + ipAddress + &quot;/&quot;;&#10;&#10;   // First make sure the bridge is actually there and responding.&#10;   try {&#10;      httpRequest(url, &quot;GET&quot;, null, &quot;&quot;, timeout);&#10;   } catch ( ex) {&#10;      // FIXME: We should do a UPnP discovery here and find a bridge.&#10;      throw &quot;No Hue bridge responding at &quot; + url + &quot;\n&quot; + ex;&#10;   }&#10;   // Next, make sure that &quot;ptolemyuser&quot; is an authorized user.&#10;   url = url + &quot;api/ptolemyuser/&quot;;&#10;   var lights = JSON.parse(httpRequest(url, &quot;GET&quot;, null, &quot;&quot;, timeout));&#10;   if (lights instanceof Array &amp;&amp; lights.length &gt; 0 &amp;&amp; lights[0].error) {&#10;      var description = lights[0].error.description;&#10;      if (description.match(&quot;unauthorized user&quot;)) {&#10;         // ptolemyuser is not an authorized user.  Add this user.&#10;         httpRequest(bridge + &quot;api&quot;, &quot;POST&quot;, null, '{&quot;devicetype&quot;:&quot;ptolemyuser&quot;, &quot;username&quot;:&quot;ptolemyuser&quot;}', timeout);&#10;         alert(&quot;Push the link button on the Hue bridge to establish a connection.&quot;);&#10;         httpRequest(bridge + &quot;api&quot;, &quot;POST&quot;, null, '{&quot;devicetype&quot;:&quot;ptolemyuser&quot;, &quot;username&quot;:&quot;ptolemyuser&quot;}', timeout);&#10;         // Check to see whether it succeeded.&#10;         lights = JSON.parse(httpRequest(url, &quot;GET&quot;, null, &quot;&quot;, timeout));&#10;         if (lights instanceof Array &amp;&amp; lights.length &gt; 0 &amp;&amp; lights[0].error) {&#10;             var description = lights[0].error.description;&#10;             if (description.match(&quot;unauthorized user&quot;)) {&#10;                throw &quot;Failed to create user.&quot;;&#10;             }&#10;         }&#10;      }&#10;   }&#10;   // Next, make sure the specified light is reachable.&#10;   var reachable;&#10;   try {&#10;      reachable = lights.lights[get('lightID')].state.reachable;&#10;   } catch (e) {&#10;      throw &quot;Failed to access the state of light &quot;&#10;         + get('lightID') + &quot; at URL &quot; + url + &quot;\n&quot; + e;&#10;   }&#10;&#10;   if (! reachable) {&#10;      // Light is not reachable.&#10;      // Find the lights that are reachable.&#10;      var other = &quot;&quot;;&#10;      try {&#10;         for (id in lights.lights) {&#10;            if (! lights.lights[id].state.reachable) {&#10;               continue;&#10;            }&#10;            if (other == &quot;&quot;) {&#10;               other = &quot; Lights that are reachable are: &quot; + id;&#10;            } else {&#10;               other = other + &quot;, &quot; + id;&#10;            }&#10;         }&#10;         if (other == &quot;&quot;) {&#10;            other = &quot;. No lights are reachable.&quot;;&#10;         } else {&#10;            other = other + &quot;.&quot;;&#10;         }&#10;      } catch (e) {&#10;         // Ignore and don't give further info about reachable lights.&#10;      }&#10;      throw &quot;Light &quot; + get('lightID') + &quot; is not reachable at &quot; + url + other;&#10;   }&#10;   url = url + &quot;lights/&quot; + get('lightID') + &quot;/state&quot;;&#10;}&#10;&#10;function fire() {&#10;   var command = '{&quot;on&quot;:false,';&#10;   if (get('on') === &quot;true&quot;) {&#10;      command = '{&quot;on&quot;:true,';&#10;   }&#10;   command = command &#10;         + '&quot;bri&quot;:' + limit(get('brightness'), 0, 255) + ','&#10;         + '&quot;hue&quot;:' + limit(get('hue'), 0, 65280) + ','&#10;         + '&quot;sat&quot;:' + limit(get('saturation'), 0, 255) + ','&#10;         + '&quot;transitiontime&quot;:' + limit(get('transitionTime'), 0, 65535)&#10;         + '}';&#10;   try {&#10;      var response = httpRequest(url, &quot;PUT&quot;, null, command, timeout);&#10;      if (response instanceof Array &amp;&amp; response.length &gt; 0 &amp;&amp; response[0].error) {&#10;         throw &quot;Server responds with error: &quot; + response[0].error.description;&#10;      }&#10;   } catch(e) {&#10;      throw &quot;Error accessing network: &quot; + e;&#10;   }&#10;}&#10;&#10;// Turn the light off on wrapup.&#10;function wrapup() {&#10;   var command = '{&quot;on&quot;:false}';&#10;   var response = httpRequest(url, &quot;PUT&quot;, null, command, timeout);&#10;   if (response instanceof Array &amp;&amp; response.length &gt; 0 &amp;&amp; response[0].error) {&#10;       alert(response[0].error.description);&#10;   }&#10;}&#10;&#10;// Utility function to limit the range of a number&#10;// and to force it to be an integer. If the value argument&#10;// is a string, then it will be converted to a Number.&#10;function limit(value, low, high) {&#10;   var parsed = parseInt(value);&#10;   if (!parsed) {&#10;      throw &quot;Expected a number between &quot; + low + &quot; and &quot; + high + &quot;, but got &quot; + value;&#10;   }&#10;   if (parsed &lt; low) {&#10;      return low;&#10;   } else if (parsed &gt; high) {&#10;      return high;&#10;   } else {&#10;      return parsed;&#10;   }&#10;}&#10;     // &#10;  ">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/Hue.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;    This accessor controls a Philips Hue lightbulb.&#10;    &lt;p&gt;&#10;    When this accessor fires, it sets the parameters of the specified&#10;    light according to the input values.&#10;    &lt;/p&gt;&lt;p&gt;&#10;    Logging on: This script attempts to access the bridge as a user with&#10;    name given by &lt;i&gt;userName&lt;/i&gt;, which defaults to &quot;ptolemyuser&quot;.&#10;    If there is no such user on the bridge, the script registers such a user and requests&#10;    (via an alert dialog) that the&#10;    link button on the bridge be pushed to authorize registration of this user.&#10;    &lt;/p&gt;&lt;p&gt;&#10;    Verifying the light: The final initialization step is to verify&#10;    that the specified light is accessible. If it is not, this accessor throws&#10;    an exception, where the error message provides a list of available lights.&#10;    &lt;/p&gt;&lt;p&gt;&#10;    Discovery: Finding the IP address of the Hue Bridge is not necessarily easy.&#10;    The bridge acquires its address via DHCP, so the address will typically change&#10;    each time the bridge is rebooted. Moreover, the address will likely not be&#10;    accessible except on the local network.  The bridge responds to UPnP packets&#10;    (universal plug-and-play), so it is possible to use software such as&#10;    &lt;a href=&quot;http://4thline.org/projects/cling/&quot;&gt;Cling&lt;/a&gt; to discover the bridge.&#10;    Ideally, UPnP discover would be provided via an accessor. In this case, a&#10;    swarmlet could be created that runs periodically on a local network and publishes&#10;    the URL of any discovered bridges to a key-value store. Then the KeyValueStore&#10;    accessor could be used to provide the &lt;i&gt;bridgeIPAdress&lt;/i&gt; input to this accessor.&#10;    &lt;/p&gt;&#10;   &#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.2">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="bridgeIPAddress (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The bridge IP address (and port, if needed).">
+            </property>
+            <property name="userName (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The user name for logging on to the Hue Bridge.">
+            </property>
+            <property name="lightID (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The light identifier (an integer beginning with 1).">
+            </property>
+            <property name="brightness (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The brightness (an integer between 0 and 255).">
+            </property>
+            <property name="hue (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The hue (an integer between 0 and 65280).">
+            </property>
+            <property name="saturation (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The saturation (an integer between 0 and 255).">
+            </property>
+            <property name="on (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Whether the light is on (true) or off (false).">
+            </property>
+            <property name="transitionTime (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The transition time, in multiples of 100ms (an integer between 0 and 65535).">
+            </property>
+        </property>
+        <property name="bridgeIPAddress" class="ptolemy.actor.parameters.PortParameter" value="bridgeIPAddress">
+        </property>
+        <property name="userName" class="ptolemy.actor.parameters.PortParameter" value="&quot;ptolemyuser&quot;">
+        </property>
+        <property name="lightID" class="ptolemy.actor.parameters.PortParameter" value="lightID">
+        </property>
+        <property name="brightness" class="ptolemy.actor.parameters.PortParameter" value="255">
+        </property>
+        <property name="hue" class="ptolemy.actor.parameters.PortParameter" value="65280">
+        </property>
+        <property name="saturation" class="ptolemy.actor.parameters.PortParameter" value="255">
+        </property>
+        <property name="on" class="ptolemy.actor.parameters.PortParameter" value="false">
+        </property>
+        <property name="transitionTime" class="ptolemy.actor.parameters.PortParameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 230.0]">
+        </property>
+        <port name="bridgeIPAddress" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="userName" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="lightID" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="brightness" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="hue" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="saturation" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="on" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="transitionTime" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToSequence.input&quot;,x=140.0,y=115.0}, tail={id=&quot;Const.output&quot;,x=55.0,y=115.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayAverage.input&quot;,x=500.0,y=125.0}, tail={id=&quot;SequenceToArray.output&quot;,x=375.0,y=125.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[175.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ArrayToSequence.input" relation="relation"/>
+    <link port="ArrayToSequence.output" relation="relation8"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Expression.output" relation="relation6"/>
+    <link port="Expression.currentAverage" relation="relation7"/>
+    <link port="Expression.previousAverage" relation="relation2"/>
+    <link port="ArrayAverage.input" relation="relation4"/>
+    <link port="ArrayAverage.output" relation="relation7"/>
+    <link port="SequenceToArray.input" relation="relation3"/>
+    <link port="SequenceToArray.output" relation="relation4"/>
+    <link port="SampleDelay2.input" relation="relation7"/>
+    <link port="SampleDelay2.output" relation="relation2"/>
+    <link port="StockTick2.symbol" relation="relation8"/>
+    <link port="StockTick2.price" relation="relation3"/>
+    <link port="Hue.hue" relation="relation6"/>
+</entity>

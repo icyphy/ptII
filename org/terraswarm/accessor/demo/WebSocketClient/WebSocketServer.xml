@@ -11,13 +11,13 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A web socket server that issues a response constructed from the incoming message.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -25,7 +25,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 290.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 22, 955, 634}, maximized=false}">
@@ -34,7 +34,44 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.5, 262.0}">
+    </property>
+    <property name="Publisher" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebSocketClient Model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 260.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also the web socket client model by clicking on the link below:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 230.0]">
+        </property>
     </property>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;    &#10;  var server = null;&#10;  var socketID = 0;&#10;&#10;  exports.initialize = function() {&#10;    if (!server) {&#10;      server = new WebSocket.Server({'port':get('port')});&#10;      server.on('listening', onListening);&#10;      server.on('connection', onConnection);&#10;      server.start();&#10;    }&#10;    socketID = 0;&#10;  }&#10;&#10;  function onListening() {&#10;    console.log('Server: Listening for socket connection requests.');&#10;  }&#10;  &#10;  function onConnection(socket) {&#10;    var id = socketID++;&#10;    console.log('Server: new socket established with ID: ' + id);&#10;    send('connection', {'socketID':id, 'status':'open'});&#10;    socket.on('message', function(message) {&#10;      send('received', {'socketID':id, 'message':message});&#10;    });&#10;    // For each new connection, add an input handler.&#10;    var handler = addInputHandler('toSend', function() {&#10;      var data = get('toSend');&#10;      if (data) {&#10;        if (data.socketID &amp;&amp; data.message) {&#10;          // data has the right form for a point-to-point send.&#10;          if (data.socketID == id) {&#10;            // id matches this socket.&#10;            console.log(&quot;Sending to socket id &quot; + id + &quot; message: &quot; + data.message);&#10;            socket.send(data.message);&#10;          }&#10;        } else {&#10;          // No socketID or message, so this is a broadcast message.&#10;          console.log(&quot;Broadcasting to socket id &quot; + id + &quot; message: &quot; + data);&#10;          socket.send(data);&#10;        }&#10;      }&#10;    });&#10;    &#10;    socket.on('close', function(message) {&#10;      send('connection', {'socketID':id, 'status':'closed'});&#10;      removeInputHandler(handler, 'toSend');&#10;    });&#10;  }&#10;  &#10;  function wrapup() {&#10;    if (server != null) {&#10;      server.close();&#10;      server = null;&#10;    }&#10;  }&#10;    // &#10;  ">
@@ -69,7 +106,7 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 170.0]">
         </property>
         <port name="hostInterface" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -108,7 +145,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 180.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -120,7 +157,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 180.0]">
         </property>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -134,7 +171,7 @@
         </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 180.0]">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -144,7 +181,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{440.0, 100.0}">
+        <vertex name="vertex1" value="[450.0, 125.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JavaScript.received&quot;,x=65.0,y=155.0}, tail={id=&quot;relation.vertex1&quot;,x=440.0,y=100.0}, points={0.0,155.0,0.0,100.0} },{ head={id=&quot;WebSocketServer.received&quot;,x=325.0,y=145.0}, tail={id=&quot;relation.vertex1&quot;,x=440.0,y=100.0}, points={420.0,135.0,420.0,100.0} },{ head={id=&quot;MessageFromClient.input&quot;,x=485.0,y=155.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=440.0,y=100.0}, points={440.0,150.0} } }">
         </property>
