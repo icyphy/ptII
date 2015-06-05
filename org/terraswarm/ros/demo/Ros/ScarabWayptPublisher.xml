@@ -1,0 +1,103 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ScarabWayptPublisher" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for the ScarabWayptPublisher accessor. &#10;This accessor connects sets up a web socket and connects to rosbridge server, &#10;running on Scarab's ROS host.  &#10;&#10;The accessor takes in the following 3 inputs:&#10;1. address (string) of rosbridge, eg: &quot;localhost&quot; or &quot;127.0.0.1&quot;&#10;2. port (number) of rosbridge, eg: 9090&#10;3. position (array of 2 floats: {x, y}) &#10;&#10;The connection has been verified over localhost and IPv4.&#10;&#10;In this demo, the position coordinates are provided by the 'values' &#10;parameter in DiscreteClock. &#10;The websocket publishes this waypt to the '/goal' topic via rosbridge. &#10;It also publishes the final orientation for the robot in quartenion coordinates.&#10;This is hardcoded to (x , y, z, w) = (0, 0, 0, 1) for now. This makes Scarab turn to &#10;its original orientation (facing the x-axis).&#10;&#10;To make Scarab cycle between (0, 0) and (5, 0), configure the DiscreteClock as follows:&#10;Period: 20&#10;Offset: {0.0, 10.0}&#10;Values:{{0.0, 0.0}, {2.0, 0.0}}&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 225.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 112, 918, 780}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 663]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000114">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{158.33003656915372, 368.9896941489362}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 65.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 5.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{0.0, 0.0}, {2.0, 0.0}}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="ScarabWayptPublisher2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var client = null;&#10;  var server = get('server');&#10;  var port = get('port');&#10;&#10;  exports.initialize = function() {&#10;    client = new WebSocket.Client({'host':server, 'port':port});&#10;    client.on('open', onOpen);&#10;    client.on('message', onMessage);&#10;    client.on('close', onClose);&#10;    client.on('error', onError);&#10;    console.log('initialized');&#10;  }&#10;&#10;  function onOpen() {&#10;    console.log('Status: Connected to '+ server + &#10;                ' on port ' + port);&#10;    addInputHandler('position', publishWaypt);&#10;  }&#10;  &#10;  function onClose(message) {&#10;    console.log('Status: Connection closed: ' + message);&#10;  }&#10;  &#10;  function onError(message) {&#10;    console.error(message);&#10;    throw(message);&#10;  }&#10;  &#10;  function onMessage(message) {&#10;    var msg_string = JSON.stringify(message);&#10;    console.log('Received: ' + msg_string);&#10;  } &#10;&#10;  function publishWaypt() {&#10;    var position = get('position');&#10;    var msg = {&#10;      &quot;header&quot;: {&#10;        &quot;seq&quot;: 0,&#10;        &quot;stamp&quot;: {&#10;          &quot;secs&quot;: 0,&#10;          &quot;nsecs&quot;: 0  &#10;        },&#10;        &quot;frame_id&quot;: &quot;map_hokuyo&quot;    &#10;      },&#10;      &quot;pose&quot;: {&#10;        &quot;position&quot;: {&#10;          &quot;x&quot;: position[0],&#10;          &quot;y&quot;: position[1],&#10;          &quot;z&quot;: 0.0,&#10;        },&#10;        &quot;orientation&quot;: {&#10;          &quot;x&quot;: 0.0,&#10;          &quot;y&quot;: 0.0,&#10;          &quot;z&quot;: 0.0,&#10;          &quot;w&quot;: 1.0 &#10;        }&#10;      }&#10;    }&#10;    var data = &#10;      { &#10;        &quot;op&quot; : &quot;publish&quot;,&#10;        &quot;topic&quot;: &quot;/goal&quot;, &#10;        &quot;msg&quot; : msg&#10;      };  &#10;    console.log('publishing waypoint: (' + position[0] + &#10;                ', ' + position[1] + ')');&#10;    client.send(data);&#10;  }&#10;&#10;  function wrapup() {&#10;    if (client != null) {&#10;      console.log('Closing');&#10;      client.close();&#10;    }&#10;  }&#10;    // &#10;  ">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/ScarabWayptPublisher.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor publishes waypoints to the Scarab robot through a web socket. ROS running on the Scarab connects to the web socket through rosbridge. &#10;The inputs are an array of 2 floats, {x, y}.&#10;When wrapup() is invoked, this accessor closes the connection.&#10;  &#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2015-06-03 09:13:24 -0700 (Wed, 6 June 2015) $">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
+            </property>
+            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
+            </property>
+            <property name="position (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The waypoint xy coordinates">
+            </property>
+        </property>
+        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
+        </property>
+        <property name="position" class="ptolemy.actor.parameters.PortParameter" value="{0.0, 0.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 165.0]">
+        </property>
+        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="position" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="ScarabWayptPublisher2.position" relation="relation"/>
+</entity>

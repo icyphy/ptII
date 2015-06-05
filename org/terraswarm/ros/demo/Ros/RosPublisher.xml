@@ -1,0 +1,108 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RosPublisher" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for running the RosPublisher accessor.&#10;&#10;This accessor assumes there is a ROS system running a rosbridge server.&#10;It connects to that rosbridge server through a web socket. It publishes JSON data to a &#10;pre-established topic on the ROS system. &#10;&#10;See instructions in Ros.xml for instructions on how to run a demo with ROS. &#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 240.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 91, 1060, 752}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 663]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000041">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{585.770279255319, 316.22606382978734}">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{'{&quot;data&quot;: &quot;im an accessor publisher&quot;}'}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="RosPublisher" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var client = null;&#10;  var server = get('server');&#10;  var port = get('port');&#10;  &#10;  exports.initialize = function() {&#10;    client = new WebSocket.Client({'host':server, 'port':port});&#10;    client.on('open', onOpen);&#10;    client.on('message', onMessage);&#10;    client.on('close', onClose);&#10;    client.on('error', onError);&#10;    console.log('initialized');&#10;&#10;  }&#10;&#10;  function publish() {&#10;    var msg = get('toPublish'); &#10;    var topic = get('topic');&#10;    console.log('publishing to ' + topic + ': ' + msg);&#10;    var data = &#10;      { &#10;        &quot;op&quot; : &quot;publish&quot;,&#10;        &quot;topic&quot;: get('topic'), &#10;        &quot;msg&quot; : JSON.parse(msg)&#10;      };  &#10;    client.send(data);&#10;  }&#10;&#10;  function onOpen() {&#10;    console.log('Status: Connected to '&#10;    + server + ' on port ' + port);&#10;    addInputHandler('toPublish', publish);&#10;  }&#10;  &#10;  function onClose(message) {&#10;    console.log('Status: Connection closed: ' + message);&#10;  }&#10;  &#10;  function onError(message) {&#10;    console.error(message);&#10;    throw(message);&#10;  }&#10;  &#10;  function onMessage(message) {&#10;    var msg_string = JSON.stringify(message);&#10;    console.log('Received from web socket: ' + msg_string);&#10;  } &#10;&#10;  function wrapup() {&#10;    if (client != null) {&#10;      console.log('Closing');&#10;      client.close();&#10;    }&#10;  }&#10;    // &#10;  ">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/RosPublisher.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor publishes data to a ROS topic through a websocket &#10;connected to a rosbridge server.&#10;It takes in the server, port and topic as inputs. It also takes&#10;in a JSON formatted string 'toPublish'. The accessor converts&#10;this to JSON and sends along its merry way to rosbridge. &#10;  &#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2015-05-19 09:13:24 -0700 (Tue, 19 May 2015) $">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
+            </property>
+            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
+            </property>
+            <property name="topic (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The topic to publish to">
+            </property>
+            <property name="toPublish (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The message to publish in JSON string format">
+            </property>
+        </property>
+        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
+        </property>
+        <property name="topic" class="ptolemy.actor.parameters.PortParameter" value="&quot;/noise&quot;">
+        </property>
+        <property name="toPublish" class="ptolemy.actor.parameters.PortParameter" value="'{\&quot;data\&quot;: \&quot;im an accessor publisher\&quot;}'">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 140.0]">
+        </property>
+        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="topic" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toPublish" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="RosPublisher.toPublish" relation="relation"/>
+</entity>
