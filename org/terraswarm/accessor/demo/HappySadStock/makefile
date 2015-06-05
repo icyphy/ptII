@@ -1,7 +1,8 @@
-# Makefile for TerraSwarm demos
+# Makefile for Ptolemy II HappySadStock demo
 #
-# @Version: $Id: makefile 70389 2014-10-22 22:25:44Z cxh $
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only)
+#
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -27,65 +28,59 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# Root of Ptolemy II directory
-ROOT = ../../../..
+ME =		org/terraswarm/accessor/demo/HappySadStock
 
-DIRS = Audio HappySadStock HueToggle KeyValueStoreClient MoC StockTick \
-	SwarmAcousticService UDPSocket VertxBus WebSocketClient c4po
+# Root of the Java directory
+ROOT =		../../../../../
 
-# $(ME) is used in ptdir.mk
-ME =  org/terraswarm/accessor/demo
-
-CLASSPATH =	$(ROOT)
-
-# True source directory
-VPATH =	$(ROOT)/$(ME)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
-CONFIG = $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = demo
-#PTCLASSJAR = $(PTPACKAGE).jar
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	HappySadStock
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	Audio/Audio.jar \
-	HappySadStock/HappySadStock.jar \
-	HueToggle/HueToggle.jar \
-	KeyValueStoreClient/KeyValueStoreClient.jar \
-	MoC/MoC.jar \
-	StockTick/StockTick.jar \
-	SwarmAcousticService/SwarmAcousticService.jar \
-	UDPSocket/UDPSocket.jar \
-	VertxBus/VertxBus.jar \
-	WebSocketClient/WebSocketClient.jar \
-	c4po/c4po.jar
+JSRCS =
 
-JSRCS = 
+OTHER_FILES_TO_BE_JARED = 	HappySadStock.xml
 
-OTHER_FILES_TO_BE_JARED = 
-
-EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(DIRS)
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
+
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer HappySadStock.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" HappySadStock.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" HappySadStock.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
