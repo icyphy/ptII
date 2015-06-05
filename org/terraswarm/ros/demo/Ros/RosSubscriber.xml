@@ -1,0 +1,101 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RosSubsriber" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for RosSubscriber accesor. This accessor connects to a rosbridge server, &#10;that is running on a ROS sytem, and subscribes to a ROS topic in that system. &#10;&#10;The accessor takes in the following 3 inputs:&#10;1. address (string) of rosbridge, eg: &quot;localhost&quot; or &quot;127.0.0.1&quot;&#10;2. port (number) of rosbridge, eg: 9090&#10;3. topic (string), eg: &quot;/port&quot;&#10;&#10;It displays the JSON message it receives.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 210.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 148, 1060, 752}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 663]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000013">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{629.6547029702972, 120.68827351485146}">
+    </property>
+    <entity name="MessageFromServer" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={70, 508, 1370, 379}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1370, 358]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="RosSubscriber" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var client = null;&#10;  var server = get('server');&#10;  var port = get('port');&#10;&#10;  exports.initialize = function() {&#10;    client = new WebSocket.Client({'host':server, 'port':port});&#10;    client.on('open', onOpen);&#10;    client.on('message', onMessage);&#10;    client.on('close', onClose);&#10;    client.on('error', onError);&#10;    console.log('initialized');&#10;&#10;  }&#10;&#10;  function subscribe(topic) {&#10;    var data = &#10;      { &#10;        'op' : 'subscribe',&#10;        'topic': topic&#10;      };  &#10;    client.send(data);&#10;  }&#10;&#10;  function onOpen() {&#10;    console.log('Status: Connection established with ' + server + &#10;    ' on port ' + port);&#10;    subscribe(get('topic'));&#10;  }&#10;  &#10;  function onClose(message) {&#10;    console.log('Status: Connection closed: ' + message);&#10;  }&#10;  &#10;  function onError(message) {&#10;    console.error(message);&#10;    throw(message);&#10;  }&#10;  &#10;  function onMessage(message) {&#10;    var msg_string = JSON.stringify(message);&#10;    console.log('Received: ' + msg_string);&#10;    send('received', message);&#10;  } &#10;&#10;  function wrapup() {&#10;    if (client != null) {&#10;      client.close();&#10;    }&#10;  }&#10;    // &#10;  ">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/RosSubscriber.xml">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor subscribes to a topic on ROS. It sets up a web socket to communicate to rosbridge. Whenever a message is received from the socket, that message is produced on the 'received' output.&#10;  &#10;  ">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2015-06-04 09:13:24 -0700 (Wed, 4 June 2015) $">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            </property>
+            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
+            </property>
+            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
+            </property>
+            <property name="topic (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The topic to subscribe to.">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The message received from the web socket server.">
+            </property>
+        </property>
+        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
+        </property>
+        <property name="topic" class="ptolemy.actor.parameters.PortParameter" value="&quot;/noise&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 155.0]">
+        </property>
+        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="topic" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="MessageFromServer.input" relation="relation2"/>
+    <link port="RosSubscriber.received" relation="relation2"/>
+</entity>
