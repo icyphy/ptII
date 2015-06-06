@@ -37,7 +37,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
 # PTVERTXEVENTBUS_DIR is set to vertxEventBus if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		audio $(PTBROWSER_DIR) discovery $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) objectAssign $(PTPAHO_MQTT_DIRS) shell udpSocket $(PTVERTXEVENTBUS_DIR) $(PTWEBSOCKET_DIR) 
+DIRS = 		audio $(PTBROWSER_DIR) discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) objectAssign $(PTPAHO_MQTT_DIRS) shell udpSocket $(PTVERTXEVENTBUS_DIR) $(PTWEBSOCKET_DIR) 
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -73,7 +73,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	audio browser discovery eventbus httpClient localStorage mqtt objectAssign shell udpSocket vertxEventBus webSocket #test
+MISC_FILES =	audio browser discovery dsp eventbus httpClient localStorage mqtt objectAssign shell udpSocket vertxEventBus webSocket #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
