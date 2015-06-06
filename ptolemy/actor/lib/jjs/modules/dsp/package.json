@@ -1,0 +1,11 @@
+{
+  "name": "dsp",
+  "version": "0.1.0",
+  "main": "dsp.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Ilge Akkaya"
+    , "email" : "ilgea@eecs.berkeley.edu"}
+  ],
+  "description": "A module for signal processing functions."
+}
