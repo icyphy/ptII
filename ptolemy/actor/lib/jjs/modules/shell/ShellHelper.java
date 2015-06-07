@@ -45,9 +45,14 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 /**
  * A helper class for the shell accessor module. It provides functionality
  * to invoke a command and control <i>stdin</i> and <i>stdout</i>. It forks 
- * off a process that executes the specified command. A reader thread listens 
- * to outputs asynchronously and forward out puts via the EventEmitter subsystem 
- * to the <i>shell.js</i> module in Nashorn. 
+ * off a process that executes the specified command. 
+ * 
+ * A reader thread listens to the process' output and forwards them via the 
+ * EventEmitter subsystem (<i>'message'</i> event) to the <i>shell.js</i> 
+ * module in Nashorn.
+ * 
+ * A wait thread waits until the process exits and emits a <i>'close'</i> event
+ * containing the process' exit value.
  *
  * @author Armin Wasicek
  * @version $Id$
@@ -82,21 +87,23 @@ public class ShellHelper  {
     /** Starts the process and the reader thread. Call 
      *   this after initialization and all callbacks have
      *   been installed. 
+     *   TODO get the exit value of the process
      */
     public void start()  {
         if(startProcess())  {
             startReader();
+            startWaitForProcess();
         }
     }
     
     /** Kills the process and the reader thread. */
     public void wrapup() throws IOException {
-        if (in!=null)  {
-            in.close();
-        }
-        if (out!=null) {
-            out.close();
-        }
+//        if (in!=null)  {
+//            in.close();
+//        }
+//        if (out!=null) {
+//            out.close();
+//        }
         if ((readerThread!=null) && (readerThread.isAlive()))  {
             _readerThreadRunning=false;
         }
@@ -114,6 +121,15 @@ public class ShellHelper  {
             process.destroyForcibly();
         }
         process=null;
+        
+        try {
+            if (waitForProcessThread!=null)  {
+                waitForProcessThread.join(10);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        waitForProcessThread=null;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -176,10 +192,30 @@ public class ShellHelper  {
                     while(_readerThreadRunning);                        
                 }
             });
+        readerThread.setName("ShellHelper-reader");
         readerThread.start();
     }
     
-    
+    /** Starts the thread to wait for the process' exit and collects the exit value. */
+    private void startWaitForProcess()  {
+        waitForProcessThread = new Thread( new Runnable() {
+            @Override
+            public void run() {
+                //Wait to get exit value
+                try {
+                    int exitValue = process.waitFor();
+                    _currentObj.callMember("emit", "close", exitValue);
+//                    System.out.println("\n\nExit Value is " + exitValue);
+//                    System.out.flush();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        });
+        waitForProcessThread.setName("ShellHelper-waiter");
+        waitForProcessThread.start();
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
@@ -202,9 +238,14 @@ public class ShellHelper  {
     /** A thread to read asynchronously from the process' stdout. */
     private Thread readerThread;
     
+    /** A thread to wait for the process and read its exit value. */
+    private Thread waitForProcessThread;
+    
     /** Controls the reader thread. */
     private boolean _readerThreadRunning = true;
     
     /** A copy of the command that's invoked. */
     private String command;
+    
+
 }
