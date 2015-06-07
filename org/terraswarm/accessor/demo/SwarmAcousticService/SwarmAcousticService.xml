@@ -7,49 +7,49 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, -135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, -155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-9, -9, 1938, 1050}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 920]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7775542959305988">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8903089438887114">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{921.078125, 303.8536005434782}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1120.6015624999998, 310.0585523409894}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Swarm acoustic service (sas) demo using accessors. The service &#10;receives sensor data from an Android app that can be downloaded at &#10;https://play.google.com/store/apps/details?id=com.longle1.spectrogram.&#10;&#10;Author: Long Le&#10;University of Illinois at Urbana-Champaign">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, -185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, -205.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the database service to get the raw audio data.&#10;Note: data is received correctly, but the audio is corrupted &#10;because FileWriter writes strings, not binary data.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the database service to get the raw audio data.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1180.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1540.0, 245.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the query service to search for audio events &#10;and rank them.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 125.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use a speech recognition service to automatically &#10;find the transcription of the 1st audio event.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, -140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1505.0, -40.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, -20.0]">
         </property>
     </entity>
     <entity name="sasQuery" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//The MIT License&#10;//&#10;//Copyright 2015.&#10;//&#10;//Permission is hereby granted, free of charge, to any person obtaining a copy&#10;//of this software and associated documentation files (the &quot;Software&quot;), to deal&#10;//in the Software without restriction, including without limitation the rights&#10;//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#10;//copies of the Software, and to permit persons to whom the Software is&#10;//furnished to do so, subject to the following conditions:&#10;//&#10;//The above copyright notice and this permission notice shall be included in&#10;//all copies or substantial portions of the Software.&#10;//&#10;//THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#10;//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#10;//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#10;//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#10;//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#10;//THE SOFTWARE.&#10;&#10;/** Search an online acoustic database, which is continuously populated by our Android sensor app, &#10; * downloadable from https://play.google.com/store/apps/details?id=com.longle1.spectrogram,&#10; * for acoustic events that satisfy given criteria and rank them.&#10; * &#10; * @accessor SwarmAcousticServiceQuery&#10; * @module SwarmAcousticService&#10; * @author Long N.T. Le (longle1@illinois.edu)&#10; * @version 0.1&#10; * @input {record} search criteria (see the accompanied demo for details).&#10; * @output {array} an array of ranked acoustic events.&#10; */&#10;&#10;var remoteAddr = 'acoustic.ifp.illinois.edu:8956';&#10;var handle = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.input('input', {&#10;        'description':'key-value input'&#10;    });&#10;		accessor.output('events', {&#10;				'type': 'string',&#10;        'description':'acoustic events.'&#10;    });&#10;};&#10;&#10;/** Initialize the accessor by attaching an input handler to the input. */&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('input', sasQuery);&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'input');&#10;};&#10;&#10;/** Make http request */&#10;var sasQuery = function (){&#10;	var mInput = get('input');&#10;	var db=mInput.db, col=mInput.col, user=mInput.user, pwd=mInput.pwd, q=mInput.query, classname=mInput.classname;&#10;	&#10;	// Construct the query data to send&#10;	var timeDat, freqDat, durDat, lpDat, locDat, kwDat;    &#10;	if (q.hasOwnProperty('t1') &amp;&amp; q.hasOwnProperty('t2')){&#10;			timeDat = '{&quot;recordDate&quot;:{&quot;$$gte&quot;:{&quot;$$date&quot;:&quot;'+ q.t1+'&quot;}, &quot;$$lte&quot;:{&quot;$$date&quot;:&quot;'+q.t2+'&quot;}}}';&#10;	}&#10;	else if (q.hasOwnProperty('t1')){&#10;			timeDat = '{&quot;recordDate&quot;:{&quot;$$gte&quot;:{&quot;$$date&quot;:&quot;'+ q.t1+'&quot;}}}';&#10;	}&#10;	else if (q.hasOwnProperty('t2')){&#10;			timeDat = '{&quot;recordDate&quot;:{&quot;$$lte&quot;:{&quot;$$date&quot;:&quot;'+ q.t2+'&quot;}}}';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('f1') &amp;&amp; q.hasOwnProperty('f2')){&#10;			freqDat = ',{&quot;minFreq&quot;:{&quot;$$gte&quot;:'+q.f1+'}},{&quot;maxFreq&quot;:{&quot;$$lte&quot;:'+q.f2+'}}';&#10;	}&#10;	else if (q.hasOwnProperty('f1')){&#10;			freqDat = ',{&quot;minFreq&quot;:{&quot;$$gte&quot;:'+q.f1+'}}';&#10;	}else if (q.hasOwnProperty('f2')){&#10;			freqDat = ',{&quot;maxFreq&quot;:{&quot;$$lte&quot;:'+q.f2+'}}';&#10;	}else{&#10;			freqDat = '';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('dur1') &amp;&amp; q.hasOwnProperty('dur2')){&#10;			durDat = ',{&quot;duration&quot;:{&quot;$$gte&quot;:'+q.dur1+', &quot;$$lte&quot;:'+q.dur2+'}}';&#10;	}&#10;	else if (q.hasOwnProperty('dur1')){&#10;			durDat = ',{&quot;duration&quot;:{&quot;$$gte&quot;:'+q.dur1+'}}';&#10;	}&#10;	else if (q.hasOwnProperty('dur2')){&#10;			durDat = ',{&quot;duration&quot;:{&quot;$$lte&quot;:'+q.dur2+'}}';&#10;	}&#10;	else{&#10;			durDat = '';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('lat') &amp;&amp; q.hasOwnProperty('lng') &amp;&amp; q.hasOwnProperty('rad')){&#10;			locDat = ',{&quot;location&quot;:{&quot;$$geoWithin&quot;:{&quot;$$centerSphere&quot;:[['+q.lng+','+q.lat+'], '+q.rad/3959+']}}}'; // earth radius = 3959 miles&#10;	}else{&#10;			locDat = '';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('kw')){&#10;			kwDat = ',{&quot;$$text&quot;: {&quot;$$search&quot;:&quot;'+q.kw+'&quot;}}';&#10;	}else{&#10;			kwDat = '';&#10;	}&#10;	var postDat = '{&quot;$$and&quot;:['+timeDat+freqDat+durDat+locDat+kwDat+']}';&#10;&#10;	// Construct the query string&#10;	var queryString = 'dbname='+db+'&amp;colname='+col+'&amp;user='+user+'&amp;passwd='+pwd+'&amp;classname='+classname;&#10;	&#10;	/*&#10;	var options = {&#10;		host: remoteAddr,&#10;		port:8957,&#10;		method: 'POST',&#10;		path: '/infer',&#10;		query: '?'+queryString,&#10;	};&#10;	http.request(options, function(data){&#10;		var events = JSON.parse(data);&#10;		send('events', events);&#10;	}).write(postDat, 'UTF-8').end();&#10;	*/&#10;	var events = httpRequest('http://'+remoteAddr+'/query?'+queryString, 'POST', &#10;									{'keepAlive': 'true', 'trustAll': 'true'}, postDat, 10000);&#10;	send('events', events);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//The MIT License&#10;//&#10;//Copyright 2015.&#10;//&#10;//Permission is hereby granted, free of charge, to any person obtaining a copy&#10;//of this software and associated documentation files (the &quot;Software&quot;), to deal&#10;//in the Software without restriction, including without limitation the rights&#10;//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#10;//copies of the Software, and to permit persons to whom the Software is&#10;//furnished to do so, subject to the following conditions:&#10;//&#10;//The above copyright notice and this permission notice shall be included in&#10;//all copies or substantial portions of the Software.&#10;//&#10;//THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#10;//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#10;//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#10;//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#10;//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#10;//THE SOFTWARE.&#10;&#10;/** Search an online acoustic database, which is continuously populated by our Android sensor app, &#10; * downloadable from https://play.google.com/store/apps/details?id=com.longle1.spectrogram,&#10; * for acoustic events that satisfy given criteria and rank them.&#10; * &#10; * @accessor SwarmAcousticServiceQuery&#10; * @module SwarmAcousticService&#10; * @author Long N.T. Le (longle1@illinois.edu)&#10; * @version 0.1&#10; * @input {record} search criteria (see the accompanied demo for details).&#10; * @output {array} an array of ranked acoustic events.&#10; */&#10;&#10;var remoteAddr = 'acoustic.ifp.illinois.edu:8956';&#10;var handle = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.input('input', {&#10;				'type':'JSON'&#10;    });&#10;		accessor.output('events', {&#10;				'type': 'string'&#10;    });&#10;};&#10;&#10;/** Initialize the accessor by attaching an input handler to the input. */&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('input', sasQuery);&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'input');&#10;};&#10;&#10;/** Make http request */&#10;var sasQuery = function (){&#10;	var mInput = get('input');&#10;	var db=mInput.db, col=mInput.col, user=mInput.user, pwd=mInput.pwd, q=mInput.query, classname=mInput.classname;&#10;	&#10;	// Construct the query data to send&#10;	var timeDat, freqDat, durDat, lpDat, locDat, kwDat;    &#10;	if (q.hasOwnProperty('t1') &amp;&amp; q.hasOwnProperty('t2')){&#10;			timeDat = '{&quot;recordDate&quot;:{&quot;$$gte&quot;:{&quot;$$date&quot;:&quot;'+ q.t1+'&quot;}, &quot;$$lte&quot;:{&quot;$$date&quot;:&quot;'+q.t2+'&quot;}}}';&#10;	}&#10;	else if (q.hasOwnProperty('t1')){&#10;			timeDat = '{&quot;recordDate&quot;:{&quot;$$gte&quot;:{&quot;$$date&quot;:&quot;'+ q.t1+'&quot;}}}';&#10;	}&#10;	else if (q.hasOwnProperty('t2')){&#10;			timeDat = '{&quot;recordDate&quot;:{&quot;$$lte&quot;:{&quot;$$date&quot;:&quot;'+ q.t2+'&quot;}}}';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('f1') &amp;&amp; q.hasOwnProperty('f2')){&#10;			freqDat = ',{&quot;minFreq&quot;:{&quot;$$gte&quot;:'+q.f1+'}},{&quot;maxFreq&quot;:{&quot;$$lte&quot;:'+q.f2+'}}';&#10;	}&#10;	else if (q.hasOwnProperty('f1')){&#10;			freqDat = ',{&quot;minFreq&quot;:{&quot;$$gte&quot;:'+q.f1+'}}';&#10;	}else if (q.hasOwnProperty('f2')){&#10;			freqDat = ',{&quot;maxFreq&quot;:{&quot;$$lte&quot;:'+q.f2+'}}';&#10;	}else{&#10;			freqDat = '';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('dur1') &amp;&amp; q.hasOwnProperty('dur2')){&#10;			durDat = ',{&quot;duration&quot;:{&quot;$$gte&quot;:'+q.dur1+', &quot;$$lte&quot;:'+q.dur2+'}}';&#10;	}&#10;	else if (q.hasOwnProperty('dur1')){&#10;			durDat = ',{&quot;duration&quot;:{&quot;$$gte&quot;:'+q.dur1+'}}';&#10;	}&#10;	else if (q.hasOwnProperty('dur2')){&#10;			durDat = ',{&quot;duration&quot;:{&quot;$$lte&quot;:'+q.dur2+'}}';&#10;	}&#10;	else{&#10;			durDat = '';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('lat') &amp;&amp; q.hasOwnProperty('lng') &amp;&amp; q.hasOwnProperty('rad')){&#10;			locDat = ',{&quot;location&quot;:{&quot;$$geoWithin&quot;:{&quot;$$centerSphere&quot;:[['+q.lng+','+q.lat+'], '+q.rad/3959+']}}}'; // earth radius = 3959 miles&#10;	}else{&#10;			locDat = '';&#10;	}&#10;	&#10;	if (q.hasOwnProperty('kw')){&#10;			kwDat = ',{&quot;$$text&quot;: {&quot;$$search&quot;:&quot;'+q.kw+'&quot;}}';&#10;	}else{&#10;			kwDat = '';&#10;	}&#10;	var postDat = '{&quot;$$and&quot;:['+timeDat+freqDat+durDat+locDat+kwDat+']}';&#10;&#10;	// Construct the query string&#10;	var queryString = 'dbname='+db+'&amp;colname='+col+'&amp;user='+user+'&amp;passwd='+pwd+'&amp;classname='+classname;&#10;	&#10;	/*&#10;	var options = {&#10;		host: remoteAddr,&#10;		port:8957,&#10;		method: 'POST',&#10;		path: '/infer',&#10;		query: '?'+queryString,&#10;	};&#10;	http.request(options, function(data){&#10;		var events = JSON.parse(data);&#10;		send('events', events);&#10;	}).write(postDat, 'UTF-8').end();&#10;	*/&#10;	var events = httpRequest('http://'+remoteAddr+'/query?'+queryString, 'POST', &#10;									{'keepAlive': 'true', 'trustAll': 'true'}, postDat, 10000);&#10;	send('events', events);&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -57,7 +57,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 70.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor, when fired, makes a query to the SAS service.">
@@ -82,253 +82,16 @@
             </property>
         </port>
     </entity>
-    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 260.0]">
-        </property>
-        <port name="db" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="user" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="pwd" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="col" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="classname" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="query" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 395.0]">
-        </property>
-        <port name="t1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="t2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="f1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="f2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="dur1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="dur2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="lat" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="lng" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="rad" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="kw" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 410.0]">
-        </property>
-    </entity>
-    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="2015-05-30T05:15:17.428Z">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 335.0]">
-        </property>
-    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 586, 348, 263}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 586, 366, 292}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[348, 219]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1235.0, 355.0]">
-        </property>
-    </entity>
-    <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="8000">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 450.0]">
-        </property>
-    </entity>
-    <entity name="Const3" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 495.0]">
-        </property>
-    </entity>
-    <entity name="Const4" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="10.0">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 530.0]">
-        </property>
-    </entity>
-    <entity name="Const5" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="40.10979">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 580.0]">
-        </property>
-    </entity>
-    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="2015-05-30T21:15:17.428Z">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 375.0]">
-        </property>
-    </entity>
-    <entity name="Const6" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="-88.22726">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 615.0]">
-        </property>
-    </entity>
-    <entity name="Const7" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 650.0]">
-        </property>
-    </entity>
-    <entity name="StringConst4" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="publicDb">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 65.0]">
-        </property>
-    </entity>
-    <entity name="StringConst5" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="publicUser">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 115.0]">
-        </property>
-    </entity>
-    <entity name="StringConst6" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="publicPwd">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 155.0}">
-        </property>
-    </entity>
-    <entity name="StringConst7" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="event">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465.0, 195.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1020.0, 185.0]">
         </property>
     </entity>
     <entity name="sasInfer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//The MIT License&#10;//&#10;//Copyright 2015.&#10;//&#10;//Permission is hereby granted, free of charge, to any person obtaining a copy&#10;//of this software and associated documentation files (the &quot;Software&quot;), to deal&#10;//in the Software without restriction, including without limitation the rights&#10;//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#10;//copies of the Software, and to permit persons to whom the Software is&#10;//furnished to do so, subject to the following conditions:&#10;//&#10;//The above copyright notice and this permission notice shall be included in&#10;//all copies or substantial portions of the Software.&#10;//&#10;//THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#10;//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#10;//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#10;//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#10;//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#10;//THE SOFTWARE.&#10;&#10;/** Perform speech recognition on a array of acoustic events.&#10; * &#10; * @accessor SwarmAcousticServiceInfer&#10; * @module SwarmAcousticService&#10; * @author Long N.T. Le (longle1@illinois.edu)&#10; * @version 0.1&#10; * @input {array} an array of acoustic events with only name and (ranking) score.&#10; * @output {array} an array of acoustic events augmented by transcription.&#10; */&#10;&#10;var remoteAddr = 'acoustic.ifp.illinois.edu:8956';&#10;var handle = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.input('input', {&#10;        'description':'key-value input'&#10;    });&#10;		accessor.output('events', {&#10;				'type': 'string',&#10;        'description':'acoustic events.'&#10;    });&#10;};&#10;&#10;/** Initialize the accessor by attaching an input handler to the input. */&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('input', sasInfer);&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'input');&#10;};&#10;&#10;/** Make http request */&#10;var sasInfer = function (){&#10;	var mInput = get('input');&#10;	var db=mInput.db, col=mInput.col, user=mInput.user, pwd=mInput.pwd, smallEvents=mInput.smallEvents, classname=mInput.classname; // only score and filename fields are needed&#10;&#10;	// Construct the query string&#10;	var queryString = 'dbname='+db+'&amp;colname='+col+'&amp;user='+user+'&amp;passwd='+pwd+'&amp;classname='+classname;&#10;&#10;	var new_events = httpRequest('http://'+remoteAddr+'/infer?'+queryString, 'POST', &#10;									{'keepAlive': 'true', 'trustAll': 'true'}, JSON.stringify(smallEvents), 10001);&#10;	send('events', new_events);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//The MIT License&#10;//&#10;//Copyright 2015.&#10;//&#10;//Permission is hereby granted, free of charge, to any person obtaining a copy&#10;//of this software and associated documentation files (the &quot;Software&quot;), to deal&#10;//in the Software without restriction, including without limitation the rights&#10;//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#10;//copies of the Software, and to permit persons to whom the Software is&#10;//furnished to do so, subject to the following conditions:&#10;//&#10;//The above copyright notice and this permission notice shall be included in&#10;//all copies or substantial portions of the Software.&#10;//&#10;//THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#10;//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#10;//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#10;//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#10;//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#10;//THE SOFTWARE.&#10;&#10;/** Perform speech recognition on a array of acoustic events.&#10; * &#10; * @accessor SwarmAcousticServiceInfer&#10; * @module SwarmAcousticService&#10; * @author Long N.T. Le (longle1@illinois.edu)&#10; * @version 0.1&#10; * @input {array} an array of acoustic events with only name and (ranking) score.&#10; * @output {array} an array of acoustic events augmented by transcription.&#10; */&#10;&#10;var remoteAddr = 'acoustic.ifp.illinois.edu:8956';&#10;var handle = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.input('input', {&#10;				'type':'JSON'&#10;    });&#10;		accessor.output('events', {&#10;				'type': 'string'&#10;    });&#10;};&#10;&#10;/** Initialize the accessor by attaching an input handler to the input. */&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('input', sasInfer);&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'input');&#10;};&#10;&#10;/** Make http request */&#10;var sasInfer = function (){&#10;	var mInput = get('input');&#10;	var db=mInput.db, col=mInput.col, user=mInput.user, pwd=mInput.pwd, smallEvents=mInput.smallEvents, classname=mInput.classname; // only score and filename fields are needed&#10;&#10;	// Construct the query string&#10;	var queryString = 'dbname='+db+'&amp;colname='+col+'&amp;user='+user+'&amp;passwd='+pwd+'&amp;classname='+classname;&#10;&#10;	var new_events = httpRequest('http://'+remoteAddr+'/infer?'+queryString, 'POST', &#10;									{'keepAlive': 'true', 'trustAll': 'true'}, JSON.stringify(smallEvents), 10001);&#10;	send('events', new_events);&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -336,7 +99,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1250.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1695.0, 65.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor, when fired, ask for the inference service.">
@@ -362,7 +125,7 @@
         </port>
     </entity>
     <entity name="sasGetdat" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//The MIT License&#10;//&#10;//Copyright 2015.&#10;//&#10;//Permission is hereby granted, free of charge, to any person obtaining a copy&#10;//of this software and associated documentation files (the &quot;Software&quot;), to deal&#10;//in the Software without restriction, including without limitation the rights&#10;//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#10;//copies of the Software, and to permit persons to whom the Software is&#10;//furnished to do so, subject to the following conditions:&#10;//&#10;//The above copyright notice and this permission notice shall be included in&#10;//all copies or substantial portions of the Software.&#10;//&#10;//THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#10;//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#10;//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#10;//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#10;//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#10;//THE SOFTWARE.&#10;&#10;/** Return the raw audio data in .wav format for a given input acoustic event.&#10; * &#10; * @accessor SwarmAcousticServiceGetdat&#10; * @module SwarmAcousticService&#10; * @author Long N.T. Le (longle1@illinois.edu)&#10; * @version 0.1&#10; * @input {record} search criteria including the name of an acoustic event (see the accompanied demo for details).&#10; * @output {general} the raw data associated with the input acoustic event, for playback.&#10; */&#10;&#10;var remoteAddr = 'acoustic.ifp.illinois.edu:8956';&#10;var handle = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.input('input', {&#10;        'description':'key-value input'&#10;    });&#10;		accessor.output('data', {&#10;        'description':'acoustic data.'&#10;    });&#10;};&#10;&#10;/** Initialize the accessor by attaching an input handler to the input. */&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('input', sasGetdat);&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'input');&#10;};&#10;&#10;/** Make http request */&#10;var sasGetdat = function(){&#10;	var mInput = get('input');&#10;	var db=mInput.db, col=mInput.col, user=mInput.user, pwd=mInput.pwd, filename=mInput.filename;&#10;&#10;	// Construct the query string&#10;	var queryString = 'user='+user+'&amp;passwd='+pwd+'&amp;filename='+filename;&#10;&#10;	var data = httpRequest('http://'+remoteAddr+'/gridfs/'+db+'/'+col+'?'+queryString, 'GET', &#10;									{'keepAlive': 'true', 'trustAll': 'true'}, null, 10000);&#10;	send('data', data);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//The MIT License&#10;//&#10;//Copyright 2015.&#10;//&#10;//Permission is hereby granted, free of charge, to any person obtaining a copy&#10;//of this software and associated documentation files (the &quot;Software&quot;), to deal&#10;//in the Software without restriction, including without limitation the rights&#10;//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#10;//copies of the Software, and to permit persons to whom the Software is&#10;//furnished to do so, subject to the following conditions:&#10;//&#10;//The above copyright notice and this permission notice shall be included in&#10;//all copies or substantial portions of the Software.&#10;//&#10;//THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#10;//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#10;//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#10;//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#10;//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#10;//THE SOFTWARE.&#10;&#10;/** Return the raw audio data in .wav format for a given input acoustic event.&#10; * &#10; * @accessor SwarmAcousticServiceGetdat&#10; * @module SwarmAcousticService&#10; * @author Long N.T. Le (longle1@illinois.edu)&#10; * @version 0.1&#10; * @input {record} search criteria including the name of an acoustic event (see the accompanied demo for details).&#10; * @output {general} the raw data associated with the input acoustic event, for playback.&#10; */&#10;&#10;var remoteAddr = 'acoustic.ifp.illinois.edu:8956';&#10;var handle = null;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function() {&#10;    accessor.input('input', {&#10;				'type':'JSON'&#10;    });&#10;		accessor.output('data', {&#10;        'type':'string'&#10;    });&#10;};&#10;&#10;/** Initialize the accessor by attaching an input handler to the input. */&#10;exports.initialize = function() {&#10;    // Invoke the getPrice function each time a 'symbol' input arrives.&#10;    handle = addInputHandler('input', sasGetdat);&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    // Failing to do this will likely trigger an exception when the model stops running,&#10;    // because the getPrice() function will attempt to send an output after the model&#10;    // has stopped.&#10;    removeInputHandler(handle, 'input');&#10;};&#10;&#10;/** Make http request */&#10;var sasGetdat = function(){&#10;	var mInput = get('input');&#10;	var db=mInput.db, col=mInput.col, user=mInput.user, pwd=mInput.pwd, filename=mInput.filename;&#10;&#10;	// Construct the query string&#10;	var queryString = 'user='+user+'&amp;passwd='+pwd+'&amp;filename='+filename;&#10;&#10;	var data = httpRequest('http://'+remoteAddr+'/gridfs/'+db+'/'+col+'?'+queryString, 'GET', &#10;									{'keepAlive': 'true', 'trustAll': 'true'}, null, 10000);&#10;	send('data', data);&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -370,7 +133,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1255.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1680.0, 310.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor, when fired, download from the SAS service.">
@@ -393,66 +156,16 @@
             </property>
         </port>
     </entity>
-    <entity name="RecordAssembler3" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1090.0, 65.0]">
-        </property>
-        <port name="db" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="user" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="pwd" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="col" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="filename" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 190.0]">
-        </property>
-        <port name="filename" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-    </entity>
-    <entity name="RecordAssembler4" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1095.0, -70.0}">
-        </property>
-        <port name="db" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="user" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="pwd" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="col" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="classname" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="smallEvents" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={959, 641, 347, 230}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1109, 610, 365, 259}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1660.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1740.0, 155.0]">
         </property>
     </entity>
     <entity name="RecordAssembler5" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1205.0, 45.0]">
         </property>
         <port name="score" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -461,96 +174,28 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="StringConst3" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 695.0]">
-        </property>
-    </entity>
     <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 70.0]">
         </property>
     </entity>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[925.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[925.0, 80.0]">
         </property>
-    </entity>
-    <entity name="StringConst8" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="data">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 230.0]">
-        </property>
-    </entity>
-    <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
-        <doc>Write an entire file from a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1375.0, 95.0]">
-        </property>
-    </entity>
-    <entity name="StringConst9" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="speech">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, -30.0]">
-        </property>
-    </entity>
-    <entity name="RecordDisassembler2" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, -10.0]">
-        </property>
-        <port name="score" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-            </property>
-        </port>
     </entity>
     <entity name="JSONToToken2" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1320.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1760.0, 65.0]">
         </property>
     </entity>
     <entity name="ArrayElement2" class="ptolemy.actor.lib.ArrayElement">
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1430.0, -40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1400.0, 155.0]">
         </property>
-    </entity>
-    <entity name="RecordDisassembler3" class="ptolemy.actor.lib.RecordDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1500.0, -60.0]">
-        </property>
-        <port name="tag" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
     </entity>
     <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[940.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 185.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -574,14 +219,14 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1085.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 185.0]">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="'transcript of the 1st audio event \n'+x">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="'transcript of the 1st audio event \n'+x.tag">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -591,68 +236,155 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1510.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1570.0, 155.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{tag=string}">
+            </property>
+        </port>
+    </entity>
+    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1260.0, 65.0]">
+        </property>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{t1=&quot;2015-05-30T05:15:17.428Z&quot;,t2=&quot;2015-05-30T21:15:17.428Z&quot;,f1=0,f2=8000,dur1=0.0,dur2=10.0,lat=40.10979,lng=-88.22726,rad=1}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, -20.0]">
+        </property>
+    </entity>
+    <entity name="Expression3" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{db=&quot;publicDb&quot;,col=&quot;event&quot;,usr=&quot;publicUser&quot;,pwd=&quot;publicPwd&quot;,classname=&quot;speech&quot;,query=x}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 70.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression4" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{db=&quot;publicDb&quot;,col=&quot;event&quot;,usr=&quot;publicUser&quot;,pwd=&quot;publicPwd&quot;,classname=&quot;speech&quot;,smallEvents=x}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1470.0, 65.0]">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
-    <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 20.0]">
+    <entity name="Expression5" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{db=&quot;publicDb&quot;,col=&quot;data&quot;,usr=&quot;publicUser&quot;,pwd=&quot;publicPwd&quot;,filename=x}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1445.0, 310.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={683, 616, 365, 259}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[347, 186]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1555.0, 400.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="Expression6" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x.filename">
         </property>
-        <vertex name="vertex1" value="[240.0, 240.0]">
-        </vertex>
-    </relation>
-    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
         </property>
-        <vertex name="vertex1" value="[640.0, 65.0]">
-        </vertex>
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1055.0, 110.0]">
         </property>
-        <vertex name="vertex1" value="[630.0, 90.0]">
-        </vertex>
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{filename=string}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression7" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x.score">
         </property>
-        <vertex name="vertex1" value="[650.0, 110.0]">
-        </vertex>
-    </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
         </property>
-        <vertex name="vertex1" value="[675.0, 195.0]">
-        </vertex>
-    </relation>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1050.0, 55.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{score=double}">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression8" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x.subarray(44,x.length-44)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1385.0, 400.0]">
+        </property>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1230.0, 400.0]">
+        </property>
+    </entity>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[1015.0, 105.0]">
+        <vertex name="vertex1" value="[1195.0, 110.0]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
@@ -660,147 +392,92 @@
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[970.0, 290.0]">
+        <vertex name="vertex1" value="[995.0, 80.0]">
         </vertex>
-    </relation>
-    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[615.0, -30.0]">
-        </vertex>
-    </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[875.0, 280.0]">
+        <vertex name="vertex1" value="[835.0, 70.0]">
         </vertex>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation34" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation35" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SingleEvent.output" relation="relation14"/>
-    <link port="sasQuery.input" relation="relation18"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation7"/>
+    <link port="sasQuery.input" relation="relation"/>
     <link port="sasQuery.events" relation="relation17"/>
-    <link port="RecordAssembler.output" relation="relation18"/>
-    <link port="RecordAssembler.db" relation="relation20"/>
-    <link port="RecordAssembler.user" relation="relation13"/>
-    <link port="RecordAssembler.pwd" relation="relation16"/>
-    <link port="RecordAssembler.col" relation="relation15"/>
-    <link port="RecordAssembler.classname" relation="relation25"/>
-    <link port="RecordAssembler.query" relation="relation27"/>
-    <link port="RecordAssembler2.output" relation="relation27"/>
-    <link port="RecordAssembler2.t1" relation="relation3"/>
-    <link port="RecordAssembler2.t2" relation="relation8"/>
-    <link port="RecordAssembler2.f1" relation="relation"/>
-    <link port="RecordAssembler2.f2" relation="relation5"/>
-    <link port="RecordAssembler2.dur1" relation="relation6"/>
-    <link port="RecordAssembler2.dur2" relation="relation7"/>
-    <link port="RecordAssembler2.lat" relation="relation9"/>
-    <link port="RecordAssembler2.lng" relation="relation10"/>
-    <link port="RecordAssembler2.rad" relation="relation11"/>
-    <link port="Const.output" relation="relation"/>
-    <link port="Const.trigger" relation="relation14"/>
-    <link port="StringConst.output" relation="relation3"/>
-    <link port="StringConst.trigger" relation="relation14"/>
     <link port="Display.input" relation="relation12"/>
-    <link port="Const2.output" relation="relation5"/>
-    <link port="Const2.trigger" relation="relation14"/>
-    <link port="Const3.output" relation="relation6"/>
-    <link port="Const3.trigger" relation="relation14"/>
-    <link port="Const4.output" relation="relation7"/>
-    <link port="Const4.trigger" relation="relation14"/>
-    <link port="Const5.output" relation="relation9"/>
-    <link port="Const5.trigger" relation="relation14"/>
-    <link port="StringConst2.output" relation="relation8"/>
-    <link port="StringConst2.trigger" relation="relation14"/>
-    <link port="Const6.output" relation="relation10"/>
-    <link port="Const6.trigger" relation="relation14"/>
-    <link port="Const7.output" relation="relation11"/>
-    <link port="Const7.trigger" relation="relation14"/>
-    <link port="StringConst4.output" relation="relation20"/>
-    <link port="StringConst4.trigger" relation="relation14"/>
-    <link port="StringConst5.output" relation="relation13"/>
-    <link port="StringConst5.trigger" relation="relation14"/>
-    <link port="StringConst6.output" relation="relation16"/>
-    <link port="StringConst6.trigger" relation="relation14"/>
-    <link port="StringConst7.output" relation="relation15"/>
-    <link port="StringConst7.trigger" relation="relation14"/>
     <link port="sasInfer.input" relation="relation2"/>
     <link port="sasInfer.events" relation="relation31"/>
-    <link port="sasGetdat.input" relation="relation22"/>
-    <link port="sasGetdat.data" relation="relation19"/>
-    <link port="RecordAssembler3.output" relation="relation22"/>
-    <link port="RecordAssembler3.db" relation="relation20"/>
-    <link port="RecordAssembler3.user" relation="relation13"/>
-    <link port="RecordAssembler3.pwd" relation="relation16"/>
-    <link port="RecordAssembler3.col" relation="relation21"/>
-    <link port="RecordAssembler3.filename" relation="relation26"/>
-    <link port="RecordDisassembler.input" relation="relation29"/>
-    <link port="RecordDisassembler.filename" relation="relation26"/>
-    <link port="RecordAssembler4.output" relation="relation2"/>
-    <link port="RecordAssembler4.db" relation="relation20"/>
-    <link port="RecordAssembler4.user" relation="relation13"/>
-    <link port="RecordAssembler4.pwd" relation="relation16"/>
-    <link port="RecordAssembler4.col" relation="relation15"/>
-    <link port="RecordAssembler4.classname" relation="relation25"/>
-    <link port="RecordAssembler4.smallEvents" relation="relation23"/>
+    <link port="sasGetdat.input" relation="relation6"/>
+    <link port="sasGetdat.data" relation="relation10"/>
     <link port="Display3.input" relation="relation34"/>
     <link port="RecordAssembler5.output" relation="relation35"/>
     <link port="RecordAssembler5.score" relation="relation4"/>
     <link port="RecordAssembler5.filename" relation="relation26"/>
-    <link port="StringConst3.trigger" relation="relation14"/>
     <link port="JSONToToken.input" relation="relation17"/>
     <link port="JSONToToken.output" relation="relation30"/>
     <link port="ArrayElement.input" relation="relation30"/>
     <link port="ArrayElement.output" relation="relation29"/>
-    <link port="StringConst8.output" relation="relation21"/>
-    <link port="StringConst8.trigger" relation="relation14"/>
-    <link port="FileWriter.input" relation="relation19"/>
-    <link port="StringConst9.output" relation="relation25"/>
-    <link port="StringConst9.trigger" relation="relation14"/>
-    <link port="RecordDisassembler2.input" relation="relation29"/>
-    <link port="RecordDisassembler2.score" relation="relation4"/>
     <link port="JSONToToken2.input" relation="relation31"/>
     <link port="JSONToToken2.output" relation="relation24"/>
     <link port="ArrayElement2.input" relation="relation24"/>
-    <link port="ArrayElement2.output" relation="relation32"/>
-    <link port="RecordDisassembler3.input" relation="relation32"/>
-    <link port="RecordDisassembler3.tag" relation="relation33"/>
+    <link port="ArrayElement2.output" relation="relation9"/>
     <link port="ArrayLength.input" relation="relation30"/>
     <link port="ArrayLength.output" relation="relation28"/>
     <link port="Expression.output" relation="relation12"/>
     <link port="Expression.x" relation="relation28"/>
     <link port="Expression2.output" relation="relation34"/>
-    <link port="Expression2.x" relation="relation33"/>
+    <link port="Expression2.x" relation="relation9"/>
     <link port="ElementsToArray.input" relation="relation35"/>
-    <link port="ElementsToArray.output" relation="relation23"/>
+    <link port="ElementsToArray.output" relation="relation5"/>
+    <link port="Const8.output" relation="relation3"/>
+    <link port="Const8.trigger" relation="relation7"/>
+    <link port="Expression3.output" relation="relation"/>
+    <link port="Expression3.x" relation="relation3"/>
+    <link port="Expression4.output" relation="relation2"/>
+    <link port="Expression4.x" relation="relation5"/>
+    <link port="Expression5.output" relation="relation6"/>
+    <link port="Expression5.x" relation="relation26"/>
+    <link port="Display2.input" relation="relation11"/>
+    <link port="Expression6.output" relation="relation26"/>
+    <link port="Expression6.x" relation="relation29"/>
+    <link port="Expression7.output" relation="relation4"/>
+    <link port="Expression7.x" relation="relation29"/>
+    <link port="Expression8.output" relation="relation11"/>
+    <link port="Expression8.x" relation="relation8"/>
+    <link port="StringToUnsignedByteArray.input" relation="relation10"/>
+    <link port="StringToUnsignedByteArray.output" relation="relation8"/>
 </entity>
