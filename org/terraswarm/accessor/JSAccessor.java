@@ -153,7 +153,7 @@ public class JSAccessor extends JavaScript {
      *  <p>The accessor is read in from a url, processed with 
      *  XSLT and MoML is returned.</p>
      *
-     *  @param url The URL of the accessor.
+     *  @param urlSpec The URL of the accessor.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
      *  @exception IOException If the urlSpec cannot be converted, opened
