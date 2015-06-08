@@ -79,8 +79,7 @@ public class HttpClientHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
 
-    /** Private constructor for WebSocketHelper to open a client-side web socket.
-     *  Open an internal web socket using Vert.x.
+    /** Private constructor to open an HTTP client.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param address The URL of the WebSocket host with an optional port number
      *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
@@ -88,6 +87,15 @@ public class HttpClientHelper extends VertxHelperBase {
     private HttpClientHelper(ScriptObjectMirror currentObj, Map<String, Object> options) {
         super(currentObj);
         HttpClient client = _vertx.createHttpClient();
+        
+        // NOTE: Vert.x documentation states about HttpClient:
+        // "If an instance is instantiated from some other arbitrary Java thread
+        // (i.e. when running embedded) then and event loop will be assigned
+        // to the instance and used when any of its handlers are called."
+        // Hence, the HttpClient we just created will be assigned its own
+        // event loop. We need to ensure that callbacks are mutually exclusive
+        // with other Java code here.
+        
         // FIXME: Why does Vert.x require setHost and setPort and also a URI?
         client.setHost((String) options.get("host")); 
         client.setPort((int) options.get("port")); 
@@ -97,9 +105,13 @@ public class HttpClientHelper extends VertxHelperBase {
         }
         // FIXME: Provide a timeout. Use setTimeout() of the client.
         
-        String query = options.get("query").toString().trim();
-        if(!query.equals("") && !query.startsWith("?")) {
-            query = "?" + query;
+        String query = "";
+        Object queryObject = options.get("query");
+        if (queryObject != null) {
+            String querySpec = queryObject.toString().trim();
+            if(!querySpec.equals("") && !querySpec.startsWith("?")) {
+        	query = "?" + querySpec;
+            }
         }
         
         String uri = options.get("protocol")
@@ -171,6 +183,9 @@ public class HttpClientHelper extends VertxHelperBase {
 	}
         @Override
         public void handle(Buffer body) {
+            // Need to synchronize because Vert.x ensures these callbacks are
+            // atomic w.r.t. one another, but not w.r.t. the JavaScript engine
+            // or this actor's methods.
             synchronized(_actor) {
         	// FIXME: This assumes the body is a string encoded in UTF-8.
         	_currentObj.callMember("_response", _response, body.toString());
