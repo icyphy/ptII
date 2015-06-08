@@ -241,6 +241,10 @@ For example:
     </echo>
   </target>
 
+  <target name="-check-vendors-jsdoc" unless="vendors.jsdoc.exists">
+    <available property="vendors.jsdoc.exists" file="${jsdoc.home}/jsdoc"/>
+  </target>
+
   <target name="-check-ptII-mk-file" unless="ptII.mk..exists">
     <available property="ptII.mk.exists" file="mk/ptII.mk"/>
   </target>
@@ -580,7 +584,10 @@ For example:
     </javac>    
   </target>
 
-  <target name="jsdoc">
+  <target name="jsdoc"
+          depends="vendors-jsdoc"
+          description="Run jsdoc to generate documentation for JavaScript files."
+          >
     <echo>Invoke jsdoc to generate documentation for .js files.
     To set this up:
        cd $PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git    
@@ -1346,6 +1353,18 @@ For example:
     <exec executable="svn">
       <arg value="update"/>
     </exec>
+  </target>
+
+  <target name="vendors-jsdoc"
+	  depends="-check-vendors-jsdoc"
+	  description="Check out jsdoc using git to create vendors/jsdoc."
+	  unless="${vendors.jsdoc.exists}">
+      <mkdir dir="${basedir}/vendors"/>
+      <exec dir="${basedir}/vendors"
+            executable="git">
+        <arg value="clone"/>
+        <arg value="https://github.com/jsdoc3/jsdoc.git"/>
+      </exec>
   </target>
 
   <target name="vergil" depends="build-project"
