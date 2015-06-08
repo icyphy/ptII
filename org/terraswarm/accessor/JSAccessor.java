@@ -91,11 +91,10 @@ import ptolemy.util.StringUtilities;
 
  <h2>References</h2>
 
- <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee,
- Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
+ <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
  <a href="http://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
- <i>IEEE Internet Computing, Special Issue on Building Internet
- of Things Software</i>, 19(2):20-29, March 2015.</p>
+ <i>IEEE Internet Computing, Special Issue on Building Internet of Things Software</i>,
+ 19(2):20-29, March 2015.</p>
 
  @author Edward A. Lee, Contributor: Christopher Brooks
  @version $Id$
