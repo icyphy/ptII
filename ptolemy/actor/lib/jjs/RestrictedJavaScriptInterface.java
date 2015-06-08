@@ -113,8 +113,9 @@ public class RestrictedJavaScriptInterface {
 
     /** Delegate to the associated JavaScript actor to report an error.
      *  @param message The message
+     *  @throws IllegalActionException If the error cannot be handled.
      */
-    public void error(String message) {
+    public void error(String message) throws IllegalActionException {
 	_actor.error(message);
     }
     
