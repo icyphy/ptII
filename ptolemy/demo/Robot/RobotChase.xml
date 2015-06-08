@@ -140,9 +140,9 @@
             </property>
         </port>
         <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
-            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
             </property>
-            <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
+            <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
             </property>
             <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
                 <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To retrieve the value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/get?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To remove a value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/delete?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To list all keys (a JSON array of strings), use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/list&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;p&gt;&#10;A Ptolemy II model that provides such a key-value store service is provided&#10;at &lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&lt;/a&gt;.&#10;A demo client that uses this accessor is provided at&#10;&lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
@@ -150,6 +150,8 @@
                 <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
                 </property>
                 <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+                </property>
+                <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
                 </property>
                 <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -160,6 +162,10 @@
                 <property name="value (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
                 </property>
                 <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
+                </property>
+                <property name="key (port)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+                </property>
+                <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
                 </property>
             </property>
             <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
@@ -185,6 +191,8 @@
                 </property>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
             </port>
             <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -198,6 +206,8 @@
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
                 </property>
             </port>
             <port name="result" class="ptolemy.actor.TypedIOPort">
@@ -252,9 +262,9 @@
         <link port="ArrayToElements.output" relation="relation5"/>
     </class>
     <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/KeyValueStore.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/set?id=MY_ID&amp;value=MY_VALUE&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To retrieve the value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/get?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To remove a value, use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/delete?id=MY_ID&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;To list all keys (a JSON array of strings), use&#10;&lt;pre&gt;&#10;   http://ptango.eecs.berkeley.edu:8077/keyvalue/list&#10;&lt;/pre&gt;&#10;&lt;/li&gt;&#10;&lt;p&gt;&#10;A Ptolemy II model that provides such a key-value store service is provided&#10;at &lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStore.xml&lt;/a&gt;.&#10;A demo client that uses this accessor is provided at&#10;&lt;a href=&quot;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&quot;&gt;&#10;http://terraswarm.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
@@ -262,6 +272,8 @@
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
             <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
             </property>
@@ -272,6 +284,10 @@
             <property name="value (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
             </property>
             <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
+            </property>
+            <property name="key (port)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+            </property>
+            <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
             </property>
         </property>
         <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
@@ -297,6 +313,8 @@
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
         </port>
         <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -310,6 +328,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="result" class="ptolemy.actor.TypedIOPort">
@@ -544,24 +564,40 @@
     <entity name="Team0" class="KVRead">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1175.0, -310.0}">
         </property>
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+        </entity>
     </entity>
     <entity name="Team1" class="KVRead">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1175.0, -240.0}">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team1&quot;">
         </property>
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+        </entity>
     </entity>
     <entity name="Team2" class="KVRead">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1175.0, -175.0}">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team2&quot;">
         </property>
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+        </entity>
     </entity>
     <entity name="Team3" class="KVRead">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1175.0, -5.0}">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;team3&quot;">
         </property>
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+        </entity>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="team0,team1,team2,team3,intruder">
@@ -590,6 +626,10 @@
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="&quot;intruder&quot;">
         </property>
+        <entity name="Team" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+        </entity>
     </entity>
     <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, -235.0}">

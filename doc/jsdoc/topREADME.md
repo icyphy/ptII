@@ -1,5 +1,9 @@
 $Id$
 
+Optional Java Script Modules
+============================
+The following objects provide bundles of functions. An accessor that uses one or more of these modules must declare that requirement using the [require](https://www.terraswarm.org/accessors/wiki/Version0/Require) tag or JavaScript function. 
+
 Reasonably Well-Developed Modules
 ---------------------------------
 
@@ -25,6 +29,19 @@ Unfinished Modules
 
 To implement a module, see the [Module Specification](https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification).
 
+The following objects provide bundles of functions and should be built in to any accessor host.
+
+
+Built-In Java Script Modules
+============================
+* [console](module-console.html): Provides various utilities for formatting and displaying data.
+* [events](module-events.html): Provides an event emitter design pattern (requires util).
+* [util](module-util.html): Provides various utility functions.
+
+Top-level Functions
+===================
+* [basicFunctions](module-basicFunctions.html)
+* [localFunctions](module-localFunctions.html)
 
 Where to find this page on the web
 ----------------------------------
