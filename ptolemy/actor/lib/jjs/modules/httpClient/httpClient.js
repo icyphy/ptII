@@ -1,5 +1,13 @@
 /**
  * Module for HTTP clients.
+ * A simple use of this module is to request a web page and print its contents, as
+ * illustrated by the following example:
+ * <pre>
+ *    var httpClient = require('httpClient');
+ *    httpClient.get('http://accessors.org', function(message) {
+ *        print(message.body);
+ *    });
+ * </pre>
  * @module httpClient
  * @author Marten Lohstroh and Edward A. Lee
  * @copyright http://terraswarm.org/accessors/copyright.txt
@@ -35,7 +43,7 @@ var EventEmitter = require('events').EventEmitter;
  *  </ul>
  *  Alternatively, the options argument may be given as a URL (a string), in which case
  *  an HTTP GET will be issued to that URL.
- *  @param options The options.
+ *  @param options The options or URL.
  *  @param responseCallback The callback function to call with an instance of IncomingMessage.
  */
 exports.request = function(options, responseCallback) {
@@ -92,8 +100,8 @@ exports.get = function(options, reponseCallback) {
 // Event: 'unpipe'
 // Event: 'error'
 
-/** The class returned by the request function.
- *  This class provides the following functions:
+/** The object type returned by the request function.
+ *  This object type provides the following functions:
  *  <ul>
  *  <li> end(): Call this to end the request. </li>
  *  <li> write(''data'', ''encoding''): Write data (e.g. for a POST request). </li>
@@ -105,6 +113,7 @@ exports.get = function(options, reponseCallback) {
  *  <li> 'response': A response is received from the server. This event is automatically
  *       handled by calling responseCallback, if responseCallback is not null.</li>
  *  </ul>
+ *  @constructor
  *  @param options The options.
  *  @param responseCallback The callback function to call with an instance of IncomingMessage.
  */
@@ -150,11 +159,6 @@ function ClientRequest(options, reponseCallback) {
     self.once('response', reponseCallback);
   }
   
-  self.on('error', function(message) {
-    console.error(message);
-    //send(message, 'error'); // FIXME
-  });
-  
   console.log("Making an HTTP request: " + JSON.stringify(options));
 
   this.helper = HttpClientHelper.createHttpClient(this, options);
@@ -196,20 +200,23 @@ ClientRequest.prototype._response = function(response, body) {
 // Event: 'close'
 // Event: 'error'
 
-/** Incoming message class.  This should not be constructed by the user,
+/** Incoming message object type.  This should not be constructed by the user,
  *  but rather is constructed by the _response function above.
- *  An instance of this class will be passed to the callback passed to the
+ *  An instance of this object type will be passed to the callback passed to the
  *  request() or get() functions. The instance contains:
  *  <ul>
+ *  <li> body: a string with the body of the response. </li>
+ *  <li> cookies: an array of strings with cookies returned. </li>
  *  <li> statusCode: an integer indicating the status of the response. </li>
  *  <li> statusMessage: a string with the status message of the response. </li>
- *  <li> body: a string with the body of the response. </li>
  *  </ul>
  *  FIXME: At this time, only UTF-8-encoded string bodies are supported.
+ *  @constructor
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */
 IncomingMessage = function(response, body) {
+    this.body = body;
+    this.cookies = response.cookies();
     this.statusCode = response.statusCode();
     this.statusMessage = response.statusMessage();
-    this.body = body;
 }
