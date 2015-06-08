@@ -602,7 +602,7 @@ For example:
       <arg value="-c" />
       <arg value="doc/jsdoc/jsdoc.json" />
       <arg value="-R" />
-      <arg value="doc/jsDoc/topREADME.md" />
+      <arg value="doc/jsdoc/topREADME.md" />
       <arg value="-d" />
       <arg value="doc/codeDoc/js" />
 
