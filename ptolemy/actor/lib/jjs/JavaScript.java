@@ -449,7 +449,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Add an input handler to be invoked when there is a new token on
      *  any input port.
-     *  @param handle The handler handle.
+     *  @param function The function to handle the token.
      *  @see #removeInputHandler(Integer)
      */
     public int addInputHandler(final Runnable function) throws IllegalActionException {
@@ -1096,7 +1096,6 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new output port if it does not already exist.
      *  Set the type to general.
      *  @param name The name of the port.
-     *  @param options The options, or null to accept the defaults.
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */

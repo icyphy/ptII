@@ -1,5 +1,5 @@
 /* Measurement Model Attributes
- Copyright (c) 2014 The Regents of the University of California.
+ Copyright (c) 2014-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,9 +44,9 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 ////MeasurementModelAttributes
 
-/**Attribute generator class for the MeasurementModel
+/** Attribute generator class for the MeasurementModel/
 
-@see org.ptolemy.ssm.MeasurementModel.java
+@see org.ptolemy.ssm.MeasurementModel
 
 @author Ilge Akkaya
 @version $Id$
