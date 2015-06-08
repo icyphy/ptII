@@ -1,15 +1,54 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// This file includes local functions that are specific to the Nashorn implementation.
-//
-// Author: Edward A. Lee
-// Copyright: http://terraswarm.org/accessors/copyright.txt
-//
-/////////////////////////////////////////////////////////////////
-// First section is utility functions that accessors are not meant
-// to use directly, but that the accessor support functions below
-// use. These all have names beginning with underscore.
-//
-// Set a global variable _debug to true to see console outputs.
+// Copyright (c) 2015 The Regents of the University of California.
+// All rights reserved.
+
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+/** JavaScript functions for a Ptolemy II (Nashorn) accessor host.
+ *
+ * <p> This file includes local functions that are specific to the
+ * Nashorn implementation.</p>
+ *
+ * <p> The First section is utility functions that accessors are not meant
+ * to use directly, but that the accessor support functions below
+ * use. These all have names beginning with underscore.</p>
+ *
+ * <p>Set a global variable _debug to true to see console outputs.</p>
+ *
+ * <h2>References</h2>
+ *
+ * <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee,
+ * Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
+ * <a href="http://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
+ * <i>IEEE Internet Computing, Special Issue on Building Internet
+ * of Things Software</i>, 19(2):20-29, March 2015.</p>
+ *
+ * @module basicFunctions
+ * @author Edward A. Lee, Contributor: Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, actor */
 
 ////////////////////
 // Set an exports global object with default functions.

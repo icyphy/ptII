@@ -34,6 +34,7 @@
  * <i>IEEE Internet Computing, Special Issue on Building Internet
  * of Things Software</i>, 19(2):20-29, March 2015.</p>
  *
+ * @module basicFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 11.0
