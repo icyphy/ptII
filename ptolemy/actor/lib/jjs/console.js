@@ -41,6 +41,7 @@ var util = require('util');
  *  @param arguments One or more additional arguments to form an error message if
  *   the assertion is false, where the
  *   first argument is optionally a formatting specification string.
+ */
 exports.assert = function(assertion, message) {
     if (!assertion) {
         // Get an array of arguments excluding the first.
