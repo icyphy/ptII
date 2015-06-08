@@ -175,6 +175,7 @@ import ptolemy.util.StringUtilities;
    <li> alert(string): pop up a dialog with the specified message.</li>
    <li> clearInterval(int): clear an interval with the specified handle.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
+   <li> error(string): send a message to error port, or throw an exception if the error port is not connected.</li>
    <li> get(portOrParameter, n): get an input from a port on channel n or a parameter
         (return null if there is no such port or parameter).</li>
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
@@ -373,12 +374,6 @@ import ptolemy.util.StringUtilities;
    </ul>
    <p>
    FIXME: document console package, Listen to actor, util package.</p>
-   <p>
-   In addition to the above methods, deprecated methods are included
-   in this implementation to accommodate legacy scripts:</p>
-   <ul>
-      <li> error(string): throw an IllegalActionException with the specified message. (just use throw)</li>
-   </ul>
 
    @author Edward A. Lee
    @version $Id$
@@ -389,7 +384,7 @@ import ptolemy.util.StringUtilities;
 public class JavaScript extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the <i>error</i> parameter and the <i>script</i> port parameter.
+     *  the <i>error</i> port and the <i>script</i> port parameter.
      *  Initialize <i>script</i> to a block of JavaScript.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -578,15 +573,21 @@ public class JavaScript extends TypedAtomicActor {
 	requestChange(request);
     }
 
-    /** If debugging is turned on, then send the specified message to the
+    /** If the model is executing and the error port is connected, then send the
+     *  message to the error port; otherwise, throw an exception.
+     *  In addition, if debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stderr.
      *  @param message The message
+     *  @throws IllegalActionException If the error cannot be handled.
      */
-    public void error(String message) {
+    public void error(String message) throws IllegalActionException {
 	if (_debugging) {
 	    _debug(message);
+	}
+	if (_executing && error.getWidth() > 0) {
+	    error.send(0, new StringToken(message));
 	} else {
-	    System.err.println(message);
+	    throw new IllegalActionException(this, message);
 	}
     }
 
@@ -1307,18 +1308,15 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     public void wrapup() throws IllegalActionException {
+	_executing = false;
         // Synchronize so that this invocation is atomic w.r.t. any callbacks.
         synchronized (this) {
+            // Invoke the wrapup function.
             try {
-        	// Invoke the wrapup function.
-        	try {
-        	    ((Invocable)_engine).invokeFunction("wrapup");
-        	} catch (ScriptException | NoSuchMethodException e) {
-        	    throw new IllegalActionException(this, e,
-        		    "Failure executing the wrapup function.");
-        	}
-            } finally {
-        	_executing = false;
+        	((Invocable)_engine).invokeFunction("wrapup");
+            } catch (ScriptException | NoSuchMethodException e) {
+        	throw new IllegalActionException(this, e,
+        		"Failure executing the wrapup function.");
             }
         }
         super.wrapup();
@@ -1408,7 +1406,9 @@ public class JavaScript extends TypedAtomicActor {
     protected ScriptEngine _engine;
 
     /** True while the model is executing (between initialize() and
-     *  wrapup(), inclusive.
+     *  wrapup(), including the initialize() but not wrapup().
+     *  This is the phase of execution during which it is OK to
+     *  send outputs.
      */
     protected boolean _executing;
 
