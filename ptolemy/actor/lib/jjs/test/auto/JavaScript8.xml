@@ -27,7 +27,7 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="fire() function triggers an exception.&#10;  in .JavaScript8.JavaScript&#10;Because:&#10;foo in &lt;eval&gt; at line number 33 at column number 4">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="ptolemy.kernel.util.IllegalActionException: foo&#10;  in .JavaScript8.JavaScript">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
         </property>
