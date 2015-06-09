@@ -1149,14 +1149,19 @@ public class Director extends Attribute implements Executable {
 
         Time modifiedTime = _consultTimeRegulators(localClock
                 .getLocalTimeForCurrentEnvironmentTime());
-
+        
         setModelTime(modifiedTime);
-
+        boolean noNewActors = true;
+        List<TimeRegulator> regulators = getContainer().attributeList(
+                TimeRegulator.class);
+        for (TimeRegulator regulator : regulators) {
+            noNewActors =  noNewActors && regulator.noNewActors();
+        }
         if (_debugging) {
             _debug("-- Setting current time to " + getModelTime());
         }
 
-        return true;
+        return true && noNewActors;
     }
 
     /** Validate the attributes and then invoke the preinitialize()

@@ -1140,7 +1140,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // The following call sets the local time to match
         // the environment time (with drift and offset taken into account),
         // but it does not set the microstep. We do that below.
-        super.prefire();
+        boolean newActorFromProposeTime = super.prefire();
 
         // Have to also do this for the microstep.
         if (isEmbedded()) {
@@ -1165,9 +1165,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
             if (_debugging) {
-                _debug("Prefire returns true.");
+                _debug("Prefire returns" + newActorFromProposeTime);
             }
-            return true;
+            return true && newActorFromProposeTime;
         }
 
         // If embedded, check the timestamp of the next event to decide
@@ -1262,7 +1262,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // Indicate that fireAt requests can be handled locally because
         // we are within an iteration.
         _delegateFireAt = false;
-        return true;
+        return true && newActorFromProposeTime;
     }
 
     /** Set the current timestamp to the model start time, invoke the
