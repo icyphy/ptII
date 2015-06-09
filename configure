@@ -912,8 +912,8 @@ CC
 PTCC
 PTECLIPSE
 JAVADOC
-GAWK
 MVN
+GAWK
 ANT
 KEYTOOL
 JAVAWS
@@ -1667,8 +1667,8 @@ Optional Packages:
   --with-java32=DIR         use 32-bit Java binaries from DIR,
                            defaults to the value of the
                            PTJAVA32_DIR environment variable
-  --with-gawk=PATH         use the gawk command from PATH with maven,
-	                   /usr/bin/gawk
+  --with-gawk=PATH         use the gawk command from PATH with maven and ptolemy/configs/doc/makefile,
+                   /usr/bin/gawk
   --with-boost-include=DIR      use boost includes from DIR DIR/boost/numeric/odeint.hpp should exist,
                           defaults to /usr/local/include
   --with-cmkit=DIR       use CaffeineMark from DIR,
@@ -4567,92 +4567,9 @@ fi
 
 
 
-if test ! -f pom.xml; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: pom.xml is not present
-    so we need not find Maven." >&5
-$as_echo "pom.xml is not present
-    so we need not find Maven." >&6; }; fi
-else
-    # Extract the first word of "mvn", so it can be a program name with args.
-set dummy mvn; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_path_MVN+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  case $MVN in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_MVN="$MVN" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_MVN="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-MVN=$ac_cv_path_MVN
-if test -n "$MVN"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MVN" >&5
-$as_echo "$MVN" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-    if test -x "$ANT" -a -x "$MVN"; then
-        cat > maven-ant-tasks-test.xml << EoF
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project basedir="." default="build" name="ptII"
- xmlns:artifact="antlib:org.apache.maven.artifact.ant">
- <target name="help">
-    <artifact:mvn pom="pom.xml">
-      <arg value="help"/>
-    </artifact:mvn>
-  </target>
-</project>
-EoF
-
-       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for maven ant task.  This could take a minute the first time configure is run." >&5
-$as_echo_n "checking for maven ant task.  This could take a minute the first time configure is run.... " >&6; }
-       if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
-          if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; fi
-          ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
-          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for websensor in \$PTII/ptolemy/apps/websensor" >&5
-$as_echo_n "checking for websensor in \$PTII/ptolemy/apps/websensor... " >&6; }
-          if test -d "$PTII/ptolemy/apps/websensor" ; then
-              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; fi
-	      ANT_MAVEN_BUILD_WEBSENSOR="
-  <target name=\"build-websensor\">
-    <artifact:mvn pom=\"ptolemy/apps/websensor/pom.xml\">
-      <arg value=\"compile\"/>
-    </artifact:mvn>
-  </target>"
-	      ANT_MAVEN_SUBPROJECTS=',build-websensor'
-      	      ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
-	      ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
-	      ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
-
-	      #--------------------------------------------------------------------
-	      #       Look for the "gawk" command, used by maven
-	      #--------------------------------------------------------------------
+#--------------------------------------------------------------------
+#       Look for the "gawk" command, used by maven
+#--------------------------------------------------------------------
 
 # Check whether --with-gawk was given.
 if test "${with_gawk+set}" = set; then :
@@ -4661,7 +4578,7 @@ else
   GAWK=gawk
 fi
 
-	      # Extract the first word of "gawk", so it can be a program name with args.
+# Extract the first word of "gawk", so it can be a program name with args.
 set dummy gawk; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -4701,10 +4618,10 @@ $as_echo "no" >&6; }
 fi
 
 
-              if test ! -x "$GAWK"; then
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven." >&5
-$as_echo "$as_me: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven." >&2;}
-                  # Extract the first word of "awk", so it can be a program name with args.
+if test ! -x "$GAWK"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven and in ptolemy/configs/doc/makefile." >&5
+$as_echo "$as_me: WARNING: Couldn't find gawk, looking for awk. gawk or awk is used by maven and in ptolemy/configs/doc/makefile." >&2;}
+    # Extract the first word of "awk", so it can be a program name with args.
 set dummy awk; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -4744,10 +4661,98 @@ $as_echo "no" >&6; }
 fi
 
 
-                  if test ! -x "$GAWK"; then
-                      GAWK=awk
-                  fi
-              fi
+    if test ! -x "$GAWK"; then
+        GAWK=awk
+    fi
+fi
+
+if test ! -f pom.xml; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: pom.xml is not present
+    so we need not find Maven." >&5
+$as_echo "pom.xml is not present
+    so we need not find Maven." >&6; }; fi
+else
+    for ac_prog in mvn mvn32
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_MVN+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $MVN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_MVN="$MVN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_MVN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+MVN=$ac_cv_path_MVN
+if test -n "$MVN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MVN" >&5
+$as_echo "$MVN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  test -n "$MVN" && break
+done
+
+    if test -x "$ANT" -a -x "$MVN"; then
+        cat > maven-ant-tasks-test.xml << EoF
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="ptII"
+ xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+ <target name="help">
+    <artifact:mvn pom="pom.xml">
+      <arg value="help"/>
+    </artifact:mvn>
+  </target>
+</project>
+EoF
+
+       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for maven ant task.  This could take a minute the first time configure is run." >&5
+$as_echo_n "checking for maven ant task.  This could take a minute the first time configure is run.... " >&6; }
+       if "$ANT" -f maven-ant-tasks-test.xml help > /dev/null 2>&1 ; then
+          if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+          ANT_MAVEN_ARTIFACT='xmlns:artifact="antlib:org.apache.maven.artifact.ant"'
+          { $as_echo "$as_me:${as_lineno-$LINENO}: checking for websensor in \$PTII/ptolemy/apps/websensor" >&5
+$as_echo_n "checking for websensor in \$PTII/ptolemy/apps/websensor... " >&6; }
+          if test -d "$PTII/ptolemy/apps/websensor" ; then
+              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+	      ANT_MAVEN_BUILD_WEBSENSOR="
+  <target name=\"build-websensor\">
+    <artifact:mvn pom=\"ptolemy/apps/websensor/pom.xml\">
+      <arg value=\"compile\"/>
+    </artifact:mvn>
+  </target>"
+	      ANT_MAVEN_SUBPROJECTS=',build-websensor'
+      	      ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
+	      ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
+	      ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
           fi
       else
           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: ant did not find the maven-ant-tasks*.jar file,
