@@ -1,8 +1,7 @@
-# Makefile for Ptolemy II Ros demo
+# Makefile for TerraSwarm Robot Operating System (ROS) demos
 #
-# @Authors: Christopher Brooks (makefile only)
-#
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -28,66 +27,54 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME = org/terraswarm/ros/demo/Ros
+# Root of Ptolemy II directory
+ROOT = ../../../..
 
-# Root of the Java directory
-ROOT =		../../../../..
+DIRS = Ros
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
+# $(ME) is used in ptdir.mk
+ME =  org/terraswarm/ros/demo
+
+CLASSPATH =	$(ROOT)
+
+# True source directory
+VPATH =	$(ROOT)/$(ME)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Ros
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = demo
+#PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	Ros/Ros.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	Ros.xml \
-	RosPublisher.xml \
-	RosSubscriber.xml \
-	ScarabPoseSubscriber.xml \
-	ScarabWayptPublisher.xml
+JSRCS = 
 
+OTHER_FILES_TO_BE_JARED = 
 
-
-EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(DIRS)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run all the demos, run 'make demo'"
-
-install: all $(PTCLASSJAR)
-
-demo: demo_ptolemy demo_vergil
-
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Ros.htm
-
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Ros.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" Ros.xml
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-

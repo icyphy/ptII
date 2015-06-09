@@ -597,6 +597,7 @@ FULL_ONLY_JNLP_JARS = \
 	org/hlacerti/hlacerti.jar \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/demo/demo.jar \
+	org/terraswarm/ros/demo/demo.jar \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/ptango/demo/demo.jar \
 	org/ptolemy/qss/qss.jar \

@@ -1,8 +1,7 @@
-# Makefile for Ptolemy II Ros demo
+# Makefile Terraswarm Robot Operating System (ros) work.
 #
-# @Authors: Christopher Brooks (makefile only)
-#
-# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: $Id$
+# @Author: Christopher Brooks
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -28,11 +27,15 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME = org/terraswarm/ros/demo/Ros
+DIRS = demo test
 
-# Root of the Java directory
-ROOT =		../../../../..
+# Root of Ptolemy II directory
+ROOT =		../../..
+
+# $(ME) is used in ptdir.mk
+ME =		org.terraswarm.ros
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -40,54 +43,41 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	Ros
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	ros
+PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS =
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	Ros.xml \
-	RosPublisher.xml \
-	RosSubscriber.xml \
-	ScarabPoseSubscriber.xml \
-	ScarabWayptPublisher.xml
+OTHER_FILES_TO_BE_JARED =
 
-
-
-EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
+all: jclass 
+	@echo "See the apps directory for demos."
+install: jclass jars
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES = test #src
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(DIRS)
+
+
+JCLASS = $(JSRCS:%.java=%.class)
+
 all: jclass
-	@echo "To run all the demos, run 'make demo'"
-
-install: all $(PTCLASSJAR)
-
-demo: demo_ptolemy demo_vergil
-
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Ros.htm
-
-#demo_applet_vergil:
-#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Ros.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" Ros.xml
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
