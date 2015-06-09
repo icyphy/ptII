@@ -1174,11 +1174,27 @@ ANT_WEBSENSOR_SRC=''
 
 AC_PATH_PROG(ANT, ant)
 
+#--------------------------------------------------------------------
+#       Look for the "gawk" command, used by maven
+#--------------------------------------------------------------------
+AC_ARG_WITH(gawk, [  --with-gawk=PATH         use the gawk command from PATH with maven and ptolemy/configs/doc/makefile,
+                   /usr/bin/gawk],
+		   GAWK=$withval,
+		   GAWK=gawk)
+AC_PATH_PROG(GAWK, gawk)
+if test ! -x "$GAWK"; then
+    AC_MSG_WARN([Couldn't find gawk, looking for awk. gawk or awk is used by maven and in ptolemy/configs/doc/makefile.])
+    AC_PATH_PROG(GAWK, awk)
+    if test ! -x "$GAWK"; then
+        GAWK=awk
+    fi	
+fi
+
 if test ! -f pom.xml; then
     PT_MSG_STATUS([pom.xml is not present
     so we need not find Maven.])
 else
-    AC_PATH_PROG(MVN, mvn)
+    AC_PATH_PROGS(MVN, mvn mvn32)
     if test -x "$ANT" -a -x "$MVN"; then
         cat > maven-ant-tasks-test.xml << EoF
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1209,22 +1225,6 @@ EoF
       	      ANT_WEBSENSOR_FILESET='<fileset dir="${basedir}/ptolemy/apps/websensor"/>'
 	      ANT_WEBSENSOR_SOURCEPATH='<sourcePath path="${basedir}/ptolemy/apps/websensor"/>'
 	      ANT_WEBSENSOR_SRC='<src path="${basedir}/ptolemy/apps/websensor"/>'
-
-	      #--------------------------------------------------------------------
-	      #       Look for the "gawk" command, used by maven
-	      #--------------------------------------------------------------------
-	      AC_ARG_WITH(gawk, [  --with-gawk=PATH         use the gawk command from PATH with maven,
-	                   /usr/bin/gawk],
-			   GAWK=$withval,
-			   GAWK=gawk)
-	      AC_PATH_PROG(GAWK, gawk)
-              if test ! -x "$GAWK"; then
-                  AC_MSG_WARN([Couldn't find gawk, looking for awk. gawk or awk is used by maven.])
-                  AC_PATH_PROG(GAWK, awk)
-                  if test ! -x "$GAWK"; then
-                      GAWK=awk
-                  fi	
-              fi
           fi
       else
           AC_MSG_WARN([ant did not find the maven-ant-tasks*.jar file,
