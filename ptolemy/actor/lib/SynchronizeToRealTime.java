@@ -80,7 +80,14 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    /**
+    This class does not create change request for new actor in proposeTime
+    Always return true then.
+    */
+    public boolean noNewActors(){
+        return true;
+    }
+    
     /** Propose a time to advance to.
      *  @param proposedTime The proposed time.
      *  @return The proposed time or a smaller time.
