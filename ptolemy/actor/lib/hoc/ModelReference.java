@@ -32,6 +32,9 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -236,6 +239,8 @@ ExecutionListener {
         spawnSeparateModels.setTypeEquals(BaseType.BOOLEAN);
         spawnSeparateModels.setExpression("false");
         spawnSeparateModels.setPersistent(true);
+        
+        _semarphore= new Semaphore(0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -431,6 +436,7 @@ ExecutionListener {
      */
     @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
+        _semarphore.release();
         _throwable = throwable;
         _executing = false;
 
@@ -456,7 +462,7 @@ ExecutionListener {
     @Override
     public synchronized void executionFinished(Manager manager) {
         _executing = false;
-
+        _semarphore.release();
         // NOTE: Can't remove these now!  The list is being
         // currently used to notify me!
         // manager.removeExecutionListener(this);
@@ -677,6 +683,17 @@ ExecutionListener {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
+
+        if(_executionOnFiringValue == _RUN_IN_A_NEW_THREAD){
+            try {
+                //wait for the notifier to finish if started in a new thread
+                //that way we avoid a race condition in fire
+                _semarphore.acquire(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ModelReference.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+                  
         if (_postfireActionValue == _STOP_EXECUTING && _manager != null) {
             if (_debugging) {
                 _debug("** Calling finish() on the Manager to request termination.");
@@ -940,4 +957,9 @@ ExecutionListener {
 
     // Error from a previous run.
     private transient Throwable _throwable = null;
+    
+    /*
+    * Semaphore used to synchronize a new thread a postfire if needed
+    */
+    private Semaphore _semarphore;
 }
