@@ -10,11 +10,9 @@
  
 /** Construct an instance of a Signal object type. This should be instantiated in your
  *  JavaScript code as
- *  <pre>
- *     var dsp = require("dsp");
+ *  <pre> 
  *     var dsp = require("dsp");  
- *     var dspEngine = new dsp.Signal(); 
- *     var player = new SignalProcessing.Signal();
+ *     var dspEngine = new dsp.Signal();  
  *  </pre>
  *  An instance of this object type implements the following functions: 
  *  <ul>
