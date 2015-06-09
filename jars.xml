@@ -46,6 +46,7 @@
     <include name="org/ptolemy/ssm/ssm.jar" />
     <include name="org/terraswarm/accessor/accessor.jar" />
     <include name="org/terraswarm/accessor/demo/demo.jar" />
+    <include name="org/terraswarm/ros/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
     <include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.jar" />
@@ -4270,6 +4271,17 @@
         <include name="org/terraswarm/accessor/demo/*/*.class"/>
         <include name="org/terraswarm/accessor/demo/*/*.js"/>
         <include name="org/terraswarm/accessor/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+  <!-- org/terraswarm/ros/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/terraswarm/ros/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/terraswarm/ros/demo/*/*.class"/>
+        <include name="org/terraswarm/ros/demo/*/*.js"/>
+        <include name="org/terraswarm/ros/demo/*/*.xml"/>
       </fileset>
     </jar>
 
