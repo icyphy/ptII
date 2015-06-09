@@ -58,4 +58,10 @@ public interface TimeRegulator {
      *  @exception IllegalActionException If the time regulator is being misused.
      */
     public Time proposeTime(Time proposedTime) throws IllegalActionException;
+    
+    /** Return false if change requests have been posted while 
+        during the call to proposeTime.
+    * @return false is ChangeRequest has been queued for a new actor
+    */
+    public boolean noNewActors();
 }
