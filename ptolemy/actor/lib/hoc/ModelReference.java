@@ -436,8 +436,7 @@ ExecutionListener {
      *  @param throwable The throwable to report.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {
-        _semaphore.release();
+    public synchronized void executionError(Manager manager, Throwable throwable) {        
         _throwable = throwable;
         _executing = false;
 
@@ -463,7 +462,6 @@ ExecutionListener {
     @Override
     public synchronized void executionFinished(Manager manager) {
         _executing = false;
-        _semaphore.release();
         // NOTE: Can't remove these now!  The list is being
         // currently used to notify me!
         // manager.removeExecutionListener(this);
@@ -611,31 +609,29 @@ ExecutionListener {
                                     + _manager.getState().getDescription());
                 }
 
-                // NOTE: There is a possible race condition. We would like to
-                // set this within the calling thread to avoid race conditions
-                // where finish() might be called before the spawned thread
-                // actually starts up. But the variable is not accessible.
-                // _manager._finishRequested = false;
+                // NOTE: To avoid race condition, we use 
+                // local copy of manager and then release that semaphore.
+                //That way, postfire wait before setting _manager to null
+                //(Otherwise, we could even have localManager = null
                 Thread thread = new Thread() {
                     @Override
                     public void run() {
+                        Manager localManager = _manager;
+                        _semaphore.release();
                         try {
                             if (_debugging) {
                                 _debug("** Executing model in a new thread.");
                             }
 
-                            _manager.execute();
+                            localManager.execute();
                             _writeOutputs();
                         } catch (Throwable throwable) {
                             // If running tried to load in some native code using JNI
                             // then we may get an Error here
-                            _manager.notifyListenersOfThrowable(throwable);
-
-                            // } finally {
-                            // NOTE: Race condition!  postfire() sets _manager to null.
-                            // So now we do this in postfire.
-                            // _manager.removeExecutionListener(ModelReference.this);
-                        }
+                            localManager.notifyListenersOfThrowable(throwable);
+                        } 
+                        // we dont remove listeners, that is done in the callbacks
+                        // by the listner itself
                     }
                 };
 
@@ -711,13 +707,8 @@ ExecutionListener {
         }
 
         // Test auto/ModelReference2.xml seems to end up here with
-        // _manager == null
-        if (_manager != null) {
-            // If we specified to run in a new thread, then we are listening.
-            // If we didn't, this is harmless.
-            _manager.removeExecutionListener(ModelReference.this);
-            _manager = null;
-        }
+        _manager = null;
+        
 
         return super.postfire();
     }
