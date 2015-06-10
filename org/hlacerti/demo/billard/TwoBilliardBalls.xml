@@ -4,13 +4,13 @@
 <entity name="TwoBilliardBalls" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1378, 771]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9292215431154196">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{313.54715008802816, 334.08137333113274}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.8430095547242, 334.08137333113274}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
@@ -35,7 +35,7 @@
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="1">
             <display name="HLA time unit"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 165.0]">
@@ -112,7 +112,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 0.0]">
             </property>
         </property>
-        <property name="Vx" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="Vx" class="ptolemy.data.expr.Parameter" value="1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -263,7 +263,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 10.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 22, 1201, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 22, 1188, 630}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[967, 524]">
         </property>
@@ -578,6 +578,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 280.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
+            </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -757,13 +759,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 10.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 22, 1201, 460}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 22, 1188, 602}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[967, 350]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[967, 496]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0545953880392065">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.884765625, 148.38090427442526}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.884765625, 217.60176454741375}">
         </property>
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -1062,16 +1064,24 @@
         <vertex name="vertex1" value="[45.0, 235.0]">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{45.0, 265.0}">
+        </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{45.0, 285.0}">
+        </vertex>
     </relation>
     <link port="Bille1.X" relation="relation5"/>
     <link port="Bille1.Y" relation="relation2"/>
     <link port="PositionX.input" relation="relation5"/>
-    <link port="PositionX.input" relation="relation"/>
+    <link port="PositionX.input" relation="relation4"/>
     <link port="PositionY.input" relation="relation2"/>
-    <link port="PositionY.input" relation="relation3"/>
-    <link port="Bille2.X" relation="relation"/>
-    <link port="Bille2.Y" relation="relation3"/>
+    <link port="PositionY.input" relation="relation"/>
+    <link port="Bille2.X" relation="relation4"/>
+    <link port="Bille2.Y" relation="relation"/>
 </entity>
