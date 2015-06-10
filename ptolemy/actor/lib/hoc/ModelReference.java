@@ -240,7 +240,7 @@ ExecutionListener {
         spawnSeparateModels.setExpression("false");
         spawnSeparateModels.setPersistent(true);
         
-        _semarphore= new Semaphore(0);
+        _semaphore= new Semaphore(0);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -421,6 +421,7 @@ ExecutionListener {
         ModelReference newActor = (ModelReference) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
+        newActor._semaphore = new Semaphore(0);
         newActor._throwable = null;
         return newActor;
     }
@@ -436,7 +437,7 @@ ExecutionListener {
      */
     @Override
     public synchronized void executionError(Manager manager, Throwable throwable) {
-        _semarphore.release();
+        _semaphore.release();
         _throwable = throwable;
         _executing = false;
 
@@ -462,7 +463,7 @@ ExecutionListener {
     @Override
     public synchronized void executionFinished(Manager manager) {
         _executing = false;
-        _semarphore.release();
+        _semaphore.release();
         // NOTE: Can't remove these now!  The list is being
         // currently used to notify me!
         // manager.removeExecutionListener(this);
@@ -688,7 +689,7 @@ ExecutionListener {
             try {
                 //wait for the notifier to finish if started in a new thread
                 //that way we avoid a race condition in fire
-                _semarphore.acquire(1);
+                _semaphore.acquire(1);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ModelReference.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -958,8 +959,6 @@ ExecutionListener {
     // Error from a previous run.
     private transient Throwable _throwable = null;
     
-    /*
-    * Semaphore used to synchronize a new thread a postfire if needed
-    */
-    private Semaphore _semarphore;
+    /** Semaphore used to synchronize a new thread a postfire if needed. */
+    private Semaphore _semaphore;
 }
