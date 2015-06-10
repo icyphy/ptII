@@ -625,134 +625,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
-        // Initialize Federate timing values.
-        _federateAmbassador.initializeTimeValues(_hlaStartTime,
-                _hlaLookAHead);
-
-        // Declare the Federate time constrained (if true).
-        if (_isTimeConstrained) {
-            try {
-                _rtia.enableTimeConstrained();
-            } catch (RTIexception e) {
-                throw new IllegalActionException(this, e, e.getMessage());
-            }
-        }
-
-        // Declare the Federate time regulator (if true).
-        if (_isTimeRegulator) {
-            try {
-                _rtia.enableTimeRegulation(_federateAmbassador.logicalTimeHLA,
-                        _federateAmbassador.lookAHeadHLA);
-            } catch (RTIexception e) {
-                throw new IllegalActionException(this, e, e.getMessage());
-            }
-        }
-
-        // Wait the response of the RTI towards Federate time policies that has
-        // been declared. The only way to get a response is to invoke the tick()
-        // method to receive callbacks from the RTI. We use here the tick2()
-        // method which is blocking and saves more CPU than the tick() method.
-        if (_isTimeRegulator && _isTimeConstrained) {
-            while (!(_federateAmbassador.timeConstrained)) {
-                try {
-                    _rtia.tick2();
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e, e.getMessage());
-                }
-            }
-
-            while (!(_federateAmbassador.timeRegulator)) {
-                try {
-                    _rtia.tick2();
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e, e.getMessage());
-                }
-            }
-
-            if (_debugging) {
-                _debug(this.getDisplayName() + " initialize() -"
-                        + " Time Management policies:" + " is Constrained = "
-                        + _federateAmbassador.timeConstrained
-                        + " and is Regulator = "
-                        + _federateAmbassador.timeRegulator);
-            }
-
-            // The following service is required to allow the reception of
-            // callbacks from the RTI when a Federate used the Time management.
-            try {
-                _rtia.enableAsynchronousDelivery();
-            } catch (RTIexception e) {
-                throw new IllegalActionException(this, e, e.getMessage());
-            }
-        }
-
-        if (_requireSynchronization) {
-            // If the current Federate is the creator then create the
-            // synchronization point.
-            if (_isCreator) {
-                try {
-                    byte[] rfspTag = EncodingHelpers
-                            .encodeString(_synchronizationPointName);
-                    _rtia.registerFederationSynchronizationPoint(
-                            _synchronizationPointName, rfspTag);
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e, e.getMessage());
-                }
-
-                // Wait synchronization point callbacks.
-                while (!(_federateAmbassador.synchronizationSuccess)
-                        && !(_federateAmbassador.synchronizationFailed)) {
-                    try {
-                        _rtia.tick2();
-                    } catch (RTIexception e) {
-                        throw new IllegalActionException(this, e,
-                                e.getMessage());
-                    }
-                }
-
-                if (_federateAmbassador.synchronizationFailed) {
-                    throw new IllegalActionException(this,
-                            "CERTI: Synchronization error ! ");
-                }
-            } // End block for synchronization point creation case.
-
-            // Wait synchronization point announcement.
-            while (!(_federateAmbassador.inPause)) {
-                try {
-                    _rtia.tick2();
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e, e.getMessage());
-                }
-            }
-
-                // Satisfied synchronization point.
-                try {
-                    _rtia.synchronizationPointAchieved(_synchronizationPointName);
-                    if (_debugging) {
-                        _debug(this.getDisplayName()
-                                + " initialize() - Synchronisation point "
-                                + _synchronizationPointName + " satisfied !");
-                    }
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e, e.getMessage());
-                }
-
-            // Wait federation synchronization.
-            while (_federateAmbassador.inPause) {
-                if (_debugging) {
-                    _debug(this.getDisplayName()
-                            + " initialize() - Waiting for simulation phase !");
-                }
-
-                try {
-                    _rtia.tick2();
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e, e.getMessage());
-                }
-            }
-        } // End block for synchronization point.
+        _initializeTimeAspects();
+        _doInitialSynchronization();
     }
-    
+
     /** Return true if at least an object has been discovered during the time
     *   advance phase.
     */
@@ -1416,7 +1292,152 @@ public class HlaManager extends AbstractInitializableAttribute implements
     Set to false once in discoverObjectInstance and resert to true in noNewActors
     */
     private boolean _noObjectDicovered;
+    ///////////////////////////////////////////////////////////////////
+    ////                    private  methods                 ////
     
+    /**
+     * Will do the initial synchronization loop among the fedeate
+     * and register the synchronization point if the federate is 
+     */
+    private void _doInitialSynchronization() throws IllegalActionException {
+        if (!_requireSynchronization)  {
+            return;
+        }
+        // If the current Federate is the creator then create the
+        // synchronization point.
+        if (_isCreator) {
+            try {
+                byte[] rfspTag = EncodingHelpers
+                        .encodeString(_synchronizationPointName);
+                _rtia.registerFederationSynchronizationPoint(
+                        _synchronizationPointName, rfspTag);
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            }
+            
+            // Wait synchronization point callbacks.
+            while (!(_federateAmbassador.synchronizationSuccess)
+                    && !(_federateAmbassador.synchronizationFailed)) {
+                try {
+                    _rtia.tick2();
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e,
+                            e.getMessage());
+                }
+            }
+            
+            if (_federateAmbassador.synchronizationFailed) {
+                throw new IllegalActionException(this,
+                        "CERTI: Synchronization error ! ");
+            }
+        } // End block for synchronization point creation case.
+        
+        // Wait synchronization point announcement.
+        while (!(_federateAmbassador.inPause)) {
+            try {
+                _rtia.tick2();
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            }
+        }
+        
+        // Satisfied synchronization point.
+        try {
+            _rtia.synchronizationPointAchieved(_synchronizationPointName);
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " initialize() - Synchronisation point "
+                        + _synchronizationPointName + " satisfied !");
+            }
+        } catch (RTIexception e) {
+            throw new IllegalActionException(this, e, e.getMessage());
+        }
+        
+        // Wait federation synchronization.
+        while (_federateAmbassador.inPause) {
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " initialize() - Waiting for simulation phase !");
+            }
+            
+            try {
+                _rtia.tick2();
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            }
+        }
+    }
+    
+    /**
+     * Will enable all time regulating aspect for the federate. After this call
+     * the federate as stated to the RTI if it time regulating and/or time regulator
+     * and has enable asynchronous delivery for RO messages
+     */
+    private void _initializeTimeAspects() throws IllegalActionException {
+        
+        // Initialize Federate timing values.
+        _federateAmbassador.initializeTimeValues(_hlaStartTime,
+                _hlaLookAHead);
+        
+        // Declare the Federate time constrained (if true).
+        if (_isTimeConstrained) {
+            try {
+                _rtia.enableTimeConstrained();
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            }
+        }
+        
+        // Declare the Federate time regulator (if true).
+        if (_isTimeRegulator) {
+            try {
+                _rtia.enableTimeRegulation(_federateAmbassador.logicalTimeHLA,
+                        _federateAmbassador.lookAHeadHLA);
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            }
+        }
+        
+        // Wait the response of the RTI towards Federate time policies that has
+        // been declared. The only way to get a response is to invoke the tick()
+        // method to receive callbacks from the RTI. We use here the tick2()
+        // method which is blocking and saves more CPU than the tick() method.
+        if (_isTimeRegulator && _isTimeConstrained) {
+            while (!(_federateAmbassador.timeConstrained)) {
+                try {
+                    _rtia.tick2();
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e, e.getMessage());
+                }
+            }
+            
+            while (!(_federateAmbassador.timeRegulator)) {
+                try {
+                    _rtia.tick2();
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e, e.getMessage());
+                }
+            }
+            
+            if (_debugging) {
+                _debug(this.getDisplayName() + " initialize() -"
+                        + " Time Management policies:" + " is Constrained = "
+                        + _federateAmbassador.timeConstrained
+                        + " and is Regulator = "
+                        + _federateAmbassador.timeRegulator);
+            }
+            
+            // The following service is required to allow the reception of
+            // callbacks from the RTI when a Federate used the Time management.
+            try {
+                _rtia.enableAsynchronousDelivery();
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e, e.getMessage());
+            }
+        }
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
     
