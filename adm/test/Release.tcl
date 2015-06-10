@@ -126,13 +126,9 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     puts "Removing \$PTII/vergil_l4j.jar."
     exec rm -f vergil_l4j.jar vergil_l4j.mf
    
-    # Remove hs_err_pid* files created by ScaleC crashing
-    if {[glob -nocomplain {ptolemy/cg/lib/test/hs_err_pid*}] != {}} {
-	puts "Removing hs_err_pid* files created by ScaleC crashing"
-	foreach file [glob -nocomplain {ptolemy/cg/lib/test/hs_err_pid*}] { 
-	    file delete $file
-	}
-    } 
+    puts "Removing hs_err_pid* files: [exec find $PTII . -name hs_err_pid* -print -exec rm \{\} \;]"
+    puts "Removing replay_pid* files: [exec find $PTII . -name replay_pid* -print -exec rm \{\} \;]"
+
 
     set result {}
     set status [exec svn status]
@@ -185,6 +181,8 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.tif} {
 ?       ptolemy/actor/lib/jai/test/auto/file.png} {
 ?       ptolemy/configs/doc/ClassesIllustrated} {
+?       ptolemy/domains/space/test/auto/DOP.csv} {
+?       ptolemy/domains/space/test/auto/Placard.tex} {
 ?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
