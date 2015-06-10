@@ -115,7 +115,7 @@ resolving types
 executing number 1
 wrapping up
 idle
-Completed execution with 5 iterations
+Completed execution with 6 iterations
 consumer end
 } {producer start
 preinitializing
@@ -131,4 +131,5 @@ producer end
 
 # # Let the listeners be gc'd.
 # set listeners [java::null]
+
 
