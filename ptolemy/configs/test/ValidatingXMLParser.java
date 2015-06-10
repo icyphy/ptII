@@ -34,12 +34,14 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+
 
 import ptolemy.moml.MoMLParser;
 
@@ -96,6 +98,29 @@ public class ValidatingXMLParser extends DefaultHandler {
             //saxParser.parse(new File(fileName), handler);
 
             XMLReader xmlReader = saxParser.getXMLReader();
+            // Use error handlers so that if parsing fails, we throw
+            // an exception that can be caught by the test, which will
+            // show which .xml file is failing.  Validating the
+            // accessors required this.
+            xmlReader.setErrorHandler(new ErrorHandler() {
+                    @Override
+                    public void fatalError(SAXParseException exception) throws SAXException {
+                        System.err.println("fatalError: " + exception);
+                        throw exception;
+                    }
+
+                    @Override
+                    public void error(SAXParseException exception) throws SAXException {
+                        System.err.println("error: " + exception);
+                        throw exception;
+                    }
+
+                    @Override
+                    public void warning(SAXParseException exception) throws SAXException {
+                        System.err.println("warning: " + exception);
+                        throw exception;
+                    }
+                });
             MoMLEntityResolver resolver = new MoMLEntityResolver();
             xmlReader.setEntityResolver(resolver);
             xmlReader.setContentHandler(handler);
