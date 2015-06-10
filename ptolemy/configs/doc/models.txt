@@ -49,11 +49,11 @@ $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
-$CLASSPATH/org/terraswarm/ros/demo/ros/Ros.xml
-$CLASSPATH/org/terraswarm/ros/demo/ros/RosPublisher.xml
-$CLASSPATH/org/terraswarm/ros/demo/ros/RosSubscriber.xml
-$CLASSPATH/org/terraswarm/ros/demo/ros/ScarabPoseSubscriber.xml
-$CLASSPATH/org/terraswarm/ros/demo/ros/ScarabWayPointSubscriber.xml
+$CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
+$CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
+$CLASSPATH/org/terraswarm/ros/demo/Ros/RosSubscriber.xml
+$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabPoseSubscriber.xml
+$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabWayPointSubscriber.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
