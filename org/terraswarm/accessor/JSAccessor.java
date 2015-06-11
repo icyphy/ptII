@@ -391,7 +391,14 @@ public class JSAccessor extends JavaScript {
                 StringBuffer result = new StringBuffer();
 
                 // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
-                result.append(_getPtDoc(urlSpec.trim()));
+                try{
+                    result.append(_getPtDoc(urlSpec.trim()));
+                } catch (IOException ex) {
+                    // FIXME: What to do here?
+                    System.err.println("Cannot find PtDoc file for "
+                	    + urlSpec.trim()
+                	    + ". Importing without documentation.");
+                }
 
         	result.append("<property name=\"script\" value=\"");
         	// Since $ causes the expression parser to try to substitute a variable, we need
