@@ -48,6 +48,8 @@
 var _debug = false;
 
 /** Pop up a dialog with the specified message.
+ *  NOTE: This function is not required by the accessor specification, so accessors
+ *  should not rely on it being present.
  *  @param message The message
  */
 function alert(message) {
@@ -138,7 +140,8 @@ function httpRequest(url, method, properties, body, timeout) {
 }
 
 // Print a message to the console.
-// print is built in to Nashorn.
+// print is built in to Nashorn, but is not required by the accessor specification,
+// so accessors should not rely on it being present.
 
 /** Synchronously read a URL.
  *  @param url The url.
