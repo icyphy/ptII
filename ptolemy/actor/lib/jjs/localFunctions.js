@@ -136,6 +136,23 @@ function get(name, channel) {
     return convertFromToken(result);
 }
 
+/** Get data from a parameter.
+ *  @param name The name of the parameter (a string).
+ */
+function getParameter(name) {
+    if (typeof name !== 'string') {
+        throw('name argument is required to be a string. Got: ' + (typeof name));
+    }
+    var proxy = actor.getPortOrParameterProxy(name);
+    if (!proxy) {
+        throw('No such parameter: ' + name);
+    }
+    // Give channel a default value of 0.
+    channel = (typeof channel !== 'undefined') ? channel : 0;
+    var result = proxy.get(channel);
+    return convertFromToken(result);
+}
+
 ////////////////////
 // Default initialize function, which invokes exports.initialize().
 // Note that if the script simply defines a top-level initialize() function instead

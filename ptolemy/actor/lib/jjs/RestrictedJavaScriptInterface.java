@@ -204,6 +204,40 @@ public class RestrictedJavaScriptInterface {
 	_actor.output(name, options);
     }
 
+    /** Create a new parameter if it does not already exist.
+     *  This parameter will have an undeclared type and no description.
+     *  @param name The name of the parameter.
+     *  @throws IllegalActionException If no name is given, or if the
+     *   model is executing.
+     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *   already exists with the name and is not a parameter.
+     */
+    public void parameter(String name)
+	    throws IllegalActionException, NameDuplicationException {
+	_actor.parameter(name);
+    }
+    
+    /** Create a new parameter if it does not already exist.
+     *  The options argument can specify a "type", a "description",
+     *  and/or a "value".
+     *  If a type is given, set the type as specified. Otherwise,
+     *  leave the type unspecified so that it will be inferred from the value.
+     *  If a description is given, then create, append to, or modify the
+     *  DocAttribute named "documentation" contained by this actor to
+     *  include documentation of this output.
+     *  If a value is given, then set the default value of the parameter
+     *  if it does not already have a value.
+     *  @param name The name of the parameter.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *   already exists with the name and is not a parameter.
+     */
+    public void parameter(String name, Map options)
+	    throws IllegalActionException, NameDuplicationException {
+	_actor.parameter(name, options);
+    }
+    
     /** Remove the input handler with the specified handle, if it exists.
      *  @param handle The handler handle.
      *  @see #addInputHandler(Runnable)
