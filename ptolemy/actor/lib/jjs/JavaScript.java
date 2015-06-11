@@ -56,7 +56,9 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -981,6 +983,8 @@ public class JavaScript extends TypedAtomicActor {
 	    throw new IllegalActionException(this, "Must specify a name to create an input.");
 	}
 	TypedIOPort port = (TypedIOPort) getPort(name);
+	PortParameter parameter = null;
+	Object token = null;
 	if (port == null) {
 	    if (options == null) {
 		// No options given. Use defaults.
@@ -990,18 +994,15 @@ public class JavaScript extends TypedAtomicActor {
 		if (value == null) {
 		    port = (TypedIOPort) newPort(name);
 		} else {
-		    PortParameter parameter = new PortParameter(this, name);
+		    parameter = new PortParameter(this, name);
 		    // Convert value to a Ptolemy Token.
-		    Object token;
 		    try {
 			token = ((Invocable)_engine).invokeFunction("convertToToken", value);
 		    } catch (Exception e) {
 			throw new IllegalActionException(this, e,
 				"Cannot convert value to a Ptolemy Token: " + value);
 		    }
-		    if (token instanceof Token) {
-			parameter.setToken((Token) token);
-		    } else {
+		    if (!(token instanceof Token)) {
 			throw new IllegalActionException(this, "Unsupported value: " + value);
 		    }
 		    port = parameter.getPort();
@@ -1012,17 +1013,37 @@ public class JavaScript extends TypedAtomicActor {
 		throw new NameDuplicationException(this,
 			"Name is reserved: " + name);
 	    }
+	    if (port instanceof ParameterPort) {
+		parameter = ((ParameterPort)port).getParameter();
+	    }
 	}
 	if (options != null) { 
 	    Object type = options.get("type");
 	    if (type instanceof String) {
-		port.setTypeEquals(_typeAccessorToPtolemy((String)type));
+		Type ptType = _typeAccessorToPtolemy((String)type);
+		port.setTypeEquals(ptType);
+		if (parameter != null) {
+		    parameter.setTypeEquals(ptType);
+		    /** The following doesn't work. Not persistent.
+		    if (ptType == BaseType.STRING) {
+			parameter.setStringMode(true);
+		    }
+		    */
+		}
 	    } else if (type != null) {
 		throw new IllegalActionException(this, "Unsupported type: " + type);
 	    }
 	    Object description = options.get("description");
 	    if (description != null) {
 		_setPortDescription(port, description.toString());
+	    }
+	}
+	// Make sure to do this after setting the type to catch
+	// string mode and type checks.
+	if (parameter != null) {
+	    // If the parameter already has a value, allow that to prevail.
+	    if (parameter.getToken() == null && token != null) {
+		parameter.setToken((Token) token);
 	    }
 	}
 	port.setInput(true);
@@ -1149,6 +1170,107 @@ public class JavaScript extends TypedAtomicActor {
 	port.setOutput(true);
     }
 
+    /** Create a new parameter if it does not already exist.
+     *  This parameter will have an undeclared type and no description.
+     *  @param name The name of the parameter.
+     *  @throws IllegalActionException If no name is given, or if the
+     *   model is executing.
+     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *   already exists with the name and is not a parameter.
+     */
+    public void parameter(String name)
+	    throws IllegalActionException, NameDuplicationException {
+	parameter(name, null);
+    }
+    
+    /** Create a new parameter if it does not already exist.
+     *  The options argument can specify a "type", a "description",
+     *  and/or a "value".
+     *  If a type is given, set the type as specified. Otherwise,
+     *  leave the type unspecified so that it will be inferred from the value.
+     *  If a description is given, then create, append to, or modify the
+     *  DocAttribute named "documentation" contained by this actor to
+     *  include documentation of this output.
+     *  If a value is given, then set the default value of the parameter
+     *  if it does not already have a value.
+     *  @param name The name of the parameter.
+     *  @param options The options, or null to accept the defaults.
+     *  @throws IllegalActionException If no name is given.
+     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *   already exists with the name and is not a parameter.
+     */
+    public void parameter(String name, Map options)
+	    throws IllegalActionException, NameDuplicationException {
+	/* Don't constrain when this executes.
+	 * FIXME: Instead, we should use a ChangeRequest if we are executing.
+	if (_executing) {
+	    throw new IllegalActionException(this,
+		    "Cannot create a parameter while the model is executing. Stop the model.");
+	}
+	 */
+	if (name == null) {
+	    throw new IllegalActionException(this, "Must specify a name to create a parameter.");
+	}
+	// Find the type, if it is specified.
+	Type ptType = null;
+	if (options != null) { 
+	    Object type = options.get("type");
+	    if (type instanceof String) {
+		ptType = _typeAccessorToPtolemy((String)type);
+	    } else if (type != null) {
+		throw new IllegalActionException(this, "Unsupported type: " + type);
+	    }
+	}
+	Attribute parameter = getAttribute(name);
+	if (parameter == null) {
+	    if (ptType == BaseType.STRING) {
+		parameter = new StringParameter(this, name);
+	    } else {
+		parameter = new Parameter(this, name);
+	    }
+	} else {
+	    if (parameter == script) {
+		// FIXME: Should instead do a name transformation?
+		throw new NameDuplicationException(this,
+			"Name is reserved: " + name);
+	    } else if (!(parameter instanceof Parameter)) {
+		throw new NameDuplicationException(this,
+			"Name is taken: " + name);
+	    }
+	}
+	if (options != null) { 
+	    if (ptType != null) {
+		((Parameter) parameter).setTypeEquals(ptType);
+	    }
+	    if (((Parameter)parameter).getToken() == null
+		    || ((ptType == BaseType.STRING)
+			    && (((StringParameter)parameter).stringValue().equals("")))) {
+		// The parameter does not already have a value. Set the default.
+		Object value = options.get("value");
+		if (value != null) {
+		    // Convert value to a Ptolemy Token.
+		    Object token;
+		    try {
+			token = ((Invocable)_engine).invokeFunction("convertToToken", value);
+		    } catch (Exception e) {
+			throw new IllegalActionException(this, e,
+				"Cannot convert value to a Ptolemy Token: " + value);
+		    }
+		    if (token instanceof Token) {
+			((Parameter)parameter).setToken((Token) token);
+		    } else {
+			throw new IllegalActionException(this, "Unsupported value: " + value);
+		    }
+		}
+	    }
+
+	    Object description = options.get("description");
+	    if (description != null) {
+		_setPortDescription(parameter, description.toString());
+	    }
+	}
+    }
+
     /** If there are any pending self-produced inputs, then request a firing
      *  at the current time.
      *  @throws IllegalActionException If the superclass throws it or the
@@ -1179,14 +1301,15 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public synchronized void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
-        _executing = true;
-        
+                
         _pendingTimeoutFunctions = null;
         _pendingTimeoutIDs = null;
         _timeoutCount = 0;
         
         _createEngineAndEvaluateSetup();
+
+        _executing = true;
+        
         synchronized (this) {
             // Clear any queued output tokens.
             if (_outputTokens != null) {
@@ -1373,21 +1496,16 @@ public class JavaScript extends TypedAtomicActor {
         return null;
     }
     
-    /** Set the description of a port.
-     *  @param port The port.
+    /** Set the description of a port or parameter.
+     *  @param portOrParameter The port.
      *  @param description The description.
      */
-    protected void _setPortDescription(TypedIOPort port, String description) {
+    protected void _setPortDescription(NamedObj portOrParameter, String description) {
 	// Use a change request so as to not create dependencies on vergil here.
 	StringBuffer moml = new StringBuffer(
 		"<property name=\"documentation\" class=\"ptolemy.vergil.basic.DocAttribute\">");
 	moml.append("<property name=\"");
-	moml.append(port.getName());
-	if (port instanceof ParameterPort) {
-	    moml.append(" (port-parameter)");
-	} else {
-	    moml.append(" (port)");
-	}
+	moml.append(portOrParameter.getName());
 	moml.append("\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"");
 	moml.append(StringUtilities.escapeForXML(description));
 	moml.append("\"></property></property>");
@@ -1679,6 +1797,8 @@ public class JavaScript extends TypedAtomicActor {
 	    return(BaseType.DOUBLE);
 	} else if (type.equals("JSON")) {
 	    return(BaseType.GENERAL);
+	} else if (type.equals("int")) {
+	    return(BaseType.INT);
 	} else if (type.equals("string")) {
 	    return(BaseType.STRING);
 	} else if (type.equals("boolean")) {
