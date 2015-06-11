@@ -299,8 +299,14 @@ Initializable {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        String oldExpression = super.getExpression();
         super.setExpression(_persistentExpression);
-        validate();
+        // It can be quite costly an unexpected to validate everything
+        // since this will cause attributeChanged() to be called.
+        // Avoid it if not needed.
+        if (!oldExpression.equals(_persistentExpression)) {
+            validate();
+        }
     }
 
     /** Reset the current value to match the persistent value.
@@ -309,8 +315,14 @@ Initializable {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        String oldExpression = super.getExpression();
         super.setExpression(_persistentExpression);
-        validate();
+        // It can be quite costly an unexpected to validate everything
+        // since this will cause attributeChanged() to be called.
+        // Avoid it if not needed.
+        if (!oldExpression.equals(_persistentExpression)) {
+            validate();
+        }
     }
 
     /** Set the current value of this parameter and notify the container
