@@ -70,6 +70,7 @@ var exports = {
  *  since other accessor hosts may not work the same way.
  *  @param name The input name (a string), or null to react to any input.
  *  @param func The function to invoke when the input receives data.
+ *  @param arguments Additional arguments, if any, to pass to the callback function.
  */
 function addInputHandler(name, func) {
     if (name && typeof name !== 'string') {
