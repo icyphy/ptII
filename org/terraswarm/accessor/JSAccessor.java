@@ -388,7 +388,12 @@ public class JSAccessor extends JavaScript {
             }
             if (extension.equals("js")) {
         	// JavaScript specification.
-        	StringBuffer result = new StringBuffer("<property name=\"script\" value=\"");
+                StringBuffer result = new StringBuffer();
+
+                // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
+                result.append(_getPtDoc(urlSpec.trim()));
+
+        	result.append("<property name=\"script\" value=\"");
         	// Since $ causes the expression parser to try to substitute a variable, we need
         	// to escape it.
         	String escaped = contents.toString().replace("$", "$$");
@@ -430,6 +435,49 @@ public class JSAccessor extends JavaScript {
         	in.close();
             }
         }
+    }
+
+    /** Get the PtDoc for an accessor or create a link to a html file.
+     *
+     *  Given a urlSpec for foo.js, look for PtDoc.xml.  If it is found,
+     *  read it and return the text.  
+     *
+     *  FIXME: Not done yet: If it is not found, create a placehold
+     *  doc that just points to the online HTML file.
+     *
+     * @param urlSpec The URL of the accessor, which must end in ".js".
+     * @return The contents of the *PtDoc.xml file, if any.
+     * @exception IOException If *PtDoc.xml cannot be found or read.
+     */
+    private static String _getPtDoc(String urlSpec) throws IOException {
+        // By definition, this must be called on a url that ends with .js
+        // FIXME: what happens with a JarURL?
+        String baseName = urlSpec.substring(0, urlSpec.length() - 3);
+
+        final URL url = FileUtilities.nameToURL(baseName + "PtDoc.xml" , null, null);
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(
+        	    url.openStream()));
+            StringBuffer contents = new StringBuffer();
+            String input;
+            while ((input = in.readLine()) != null) {
+        	contents.append(input);
+        	contents.append("\n");
+            }
+            return contents.toString();
+        } catch (IOException ex) {
+            // FIXME: Look for a .html file in the same location as
+            // the .js file.
+            System.err.println("JSAccessor._getPtDoc(" + url + "): "
+                    + " Could not find PtDoc file" + ex);
+            //throw ex;
+        } finally {
+            if (in != null) {
+        	in.close();
+            }
+        }
+        return "";
     }
 
     ///////////////////////////////////////////////////////////////////
