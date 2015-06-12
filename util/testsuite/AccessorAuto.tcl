@@ -101,31 +101,6 @@ foreach file [lsort [glob auto/*.xml]] {
 	#java::call System gc
 	list {}
     } {{}}
-    test "Auto-reload1-rerun" "Automatic test reload #1 rerun in Accessor model file $file" {
-    	set timeout 200000
-        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
-                  seconds at [clock format [clock seconds]]"
-	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
-
-        # Reload.  Uses toplevel from above.
-        set entityList [$toplevel entityList [java::call Class forName org.terraswarm.accessor.JSAccessor]]
-	for {set i 0} {$i < [$entityList size]} {incr i} {
-	    set accessor [java::cast org.terraswarm.accessor.JSAccessor [$entityList get $i]]
-            $accessor reload
-        }
-
-        if [catch {$manager execute} errMsg] {
-	    $watchDog cancel
-	    error $errMsg
-        } else {
-	    $watchDog cancel
-   	}
-	# Free up memory.
-        #$toplevel setContainer [java::null]
-	#set toplevel [java::null]
-	#java::call System gc
-	list {}
-    } {{}}
     test "Auto-reload2-rerun" "Automatic test reload #2 rerun in Accessor model file $file" {
     	set timeout 200000
         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\

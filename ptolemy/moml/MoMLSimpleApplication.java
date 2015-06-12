@@ -298,6 +298,14 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _manager.execute();
     }
 
+    /** Return the toplevel.
+     *  @return The toplevel
+     */
+    public CompositeActor toplevel() {
+        // Used in util/testsuite/auto.tcl.
+        return _toplevel;
+    }
+
     /** Wait for all executing runs to finish, then return.
      */
     public synchronized void waitForFinish() {

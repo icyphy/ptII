@@ -325,6 +325,30 @@ public class JSAccessor extends JavaScript {
         requestChange(request);
     }
 
+    /** Reload all the JSAccessors in a CompositeEntity.
+     *  @param composite The composite that contains the JSAccessors
+     *  @return true if the model contained any JSAccessors.
+     *  @exception IllegalActionException If no source file is specified.
+     *  @exception IOException If the urlSpec cannot be converted, opened
+     *  read, parsed or closed.
+     *  @exception TransformerConfigurationException If a factory cannot
+     *  be created from the xslt file.
+     */
+    public static boolean reloadAllAccessors(CompositeEntity composite)
+            throws IllegalActionException, IOException, TransformerConfigurationException {
+        // This method is use by the test harness.
+        System.out.println("reloadAllAccessors: " + composite.getFullName());
+        boolean containsJSAccessors = false;
+        List entities = composite.allAtomicEntityList();
+        for (Object entity : entities) {
+            if (entity instanceof JSAccessor) {
+                containsJSAccessors = true;
+                ((JSAccessor)entity).reload();
+            }
+        }
+        return containsJSAccessors;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

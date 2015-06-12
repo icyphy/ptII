@@ -1,6 +1,6 @@
 /* Base class for tests that use models in the auto/ directory.
 
-   Copyright (c) 2011-2014 The Regents of the University of California.
+   Copyright (c) 2011-2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
@@ -138,6 +139,9 @@ public class ModelTests {
 
     /** The application constructor. */
     protected static Constructor _applicationConstructor;
+
+    /** The application toplevel method. */
+    protected static Method _applicationToplevelMethod = null;
 
     /**
      * A special string that is passed when there are no known failed tests.
