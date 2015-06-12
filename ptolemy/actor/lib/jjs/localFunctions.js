@@ -189,18 +189,18 @@ function send(name, value, channel) {
 }
 
 /** Set the value of a parameter.
- *  @param value The value to set.
+ *  NOTE: This function is not required by the accessor specification, and hence may not
+ *  be supported by all swarmlet hosts.
  *  @param parameter The parameter name (a string).
+ *  @param value The value to set.
  */
-function set(value, parameter) {
-    // For backward compatibility, allow the port to be directly
-    // a reference to the proxy.
-    var proxy = parameter;
-    if (typeof parameter === 'string') {
-        proxy = actor.getPortOrParameterProxy(parameter);
+function set(parameter, value) {
+    if (typeof parameter !== 'string') {
+        throw('parameter argument is required to be a string. Got: ' + (typeof name));
     }
+    var proxy = actor.getPortOrParameterProxy(parameter);
     if (!proxy) {
-        throw('No such input: ' + parameter);
+        throw('No such parameter: ' + parameter);
     }
     var token = convertToToken(value);
     proxy.set(token);
