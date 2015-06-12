@@ -937,8 +937,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     }
                 }
             }
-            super.initialize();
+        }
+        // Release lock to invoke super.initialize(), because that invokes
+        // actors and they may need to post events.
+        super.initialize();
 
+        synchronized (_eventQueue) {
             // Register the stop time as an event such that the model is
             // guaranteed to stop at that time. This event also serves as
             // a guideline for an embedded Continuous model to know how much
