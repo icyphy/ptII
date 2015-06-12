@@ -777,15 +777,6 @@ public class JavaScript extends TypedAtomicActor {
             // Mark that we are in the fire() method, enabling outputs to be
             // sent immediately.
             _inFire = true;
-            notifyAll();
-            // Allow any pending gets to complete.
-            while (_pendingGets > 0) {
-        	try {
-		    wait();
-		} catch (InterruptedException e) {
-		    throw new IllegalActionException(this, "Thread interrupted.");
-		}
-            }
             try {
                 // Handle timeout requests that match the current time.
                 if (_pendingTimeoutIDs != null) {
@@ -884,12 +875,6 @@ public class JavaScript extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         
-        // Coverity complains that this reset needs to be synchronized.
-        // Probably not really necessary, but just in case:
-        synchronized(this) {
-            _pendingGets = 0;
-        }
-        
         // Create proxy for ports that don't already have one.
         for (TypedIOPort port : portList()) {
             // Do not convert the script or error ports to a JavaScript variable.
@@ -905,7 +890,7 @@ public class JavaScript extends TypedAtomicActor {
             _proxiesByName.put(port.getName(), proxy);
         }
 
-        // Expose the parameters as JavaScript variables.
+        // Create proxy for parameters that don't already have one.
         List<Variable> attributes = attributeList(Variable.class);
         for (Variable parameter : attributes) {
             // Do not convert the script parameter to a JavaScript variable.
@@ -921,14 +906,9 @@ public class JavaScript extends TypedAtomicActor {
             if (parameter instanceof PortParameter) {
                 continue;
             }
-            _checkValidity(parameter.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
             _proxiesByName.put(parameter.getName(), proxy);
-            // NOTE: If a parameter has the same name as a port,
-            // then this will shadow the port.
-            // FIXME: Don't do this anymore.
-            _engine.put(parameter.getName(), proxy);
         }
 
         // Invoke the initialize function.
@@ -947,6 +927,7 @@ public class JavaScript extends TypedAtomicActor {
         		"Failure executing the initialize function.");
             }
         }
+        _running = true;
     }
 
     /** Create a new input port if it does not already exist.
@@ -1309,6 +1290,7 @@ public class JavaScript extends TypedAtomicActor {
         _createEngineAndEvaluateSetup();
 
         _executing = true;
+        _running = false;
         
         synchronized (this) {
             // Clear any queued output tokens.
@@ -1431,6 +1413,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void wrapup() throws IllegalActionException {
 	_executing = false;
+	_running = false;
         // Synchronize so that this invocation is atomic w.r.t. any callbacks.
         synchronized (this) {
             // Invoke the wrapup function.
@@ -1551,6 +1534,14 @@ public class JavaScript extends TypedAtomicActor {
      *  functionality as described in the class comment.
      */
     protected boolean _restricted = false;
+    
+    /** True while the model is running (past initialize() and before
+     *  wrapup()).
+     *  This is the phase of execution during which it is OK to
+     *  get inputs.
+     */
+    protected boolean _running = false;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Methods                    ////
@@ -1647,7 +1638,7 @@ public class JavaScript extends TypedAtomicActor {
             _proxiesByName.put(port.getName(), proxy);
         }
 
-        // Expose the parameters as JavaScript variables.
+        // Create proxies for parameters.
         // Note that additional parameters may need to be exposed in initialize(),
         // if they are created by a setup() function call.
         List<Variable> attributes = attributeList(Variable.class);
@@ -1665,14 +1656,9 @@ public class JavaScript extends TypedAtomicActor {
             if (parameter instanceof PortParameter) {
                 continue;
             }
-            _checkValidity(parameter.getName());
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
             _proxiesByName.put(parameter.getName(), proxy);
-            // NOTE: If a parameter has the same name as a port,
-            // then this will shadow the port.
-            // FIXME: Don't do this anymore!
-            _engine.put(parameter.getName(), proxy);
         }
 
         // Evaluate the script.
@@ -1844,9 +1830,6 @@ public class JavaScript extends TypedAtomicActor {
     /** Map from timeout ID to pending timeout functions. */
     private Map<Integer, Runnable> _pendingTimeoutFunctions;
     
-    /** Number of pending gets. */
-    private int _pendingGets;
-
     /** Map from timeout time to pending timeout IDs. */
     private Map<Time, List<Integer>> _pendingTimeoutIDs;
 
@@ -1949,21 +1932,6 @@ public class JavaScript extends TypedAtomicActor {
         	return token;
             }
             synchronized(JavaScript.this) {
-        	if (!_inFire) {
-        	    // Request a firing, then stall until it occurs.
-        	    _fireAtCurrentTime();
-        	    _pendingGets++;
-        	    while (!_inFire) {
-        		try {
-			    JavaScript.this.wait();
-			} catch (InterruptedException e) {
-			    // FIXME: Is this the right thing to do?
-			    throw new IllegalActionException(JavaScript.this, "Thread interrupted.");
-			}
-        	    }
-        	    _pendingGets--;
-        	    JavaScript.this.notifyAll();
-        	}
                 Map<Integer,Token> tokens = _inputTokens.get(_port);
                 if (tokens != null) {
                     Token token = tokens.get(channelIndex);
