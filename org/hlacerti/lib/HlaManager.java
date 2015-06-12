@@ -740,7 +740,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             synchronized (this) {
                 // Build a representation of the proposedTime in HLA/CERTI.
                 CertiLogicalTime certiProposedTime = new CertiLogicalTime(
-                        proposedTime.getDoubleValue()/_hlaTimeUnitValue);
+                        proposedTime.getDoubleValue()*_hlaTimeUnitValue);
 
                 // Call the corresponding HLA Time Management service.
                 try {
@@ -751,7 +751,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 _debug(this.getDisplayName()
                                         + " proposeTime() - call CERTI NER -"
                                         + " nextEventRequest("
-                                        + certiProposedTime.getTime() + ")");
+                                        + certiProposedTime.getTime() + ") with model at " + proposedTime.getDoubleValue());
                             }
                             _rtia.nextEventRequest(certiProposedTime);
                         } else {
@@ -914,8 +914,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // (timeAdvanceGrant()) and its value is the proposedTime or
                 // less, so we have a breakpoint time.
                 try {
-                    double timeValue = (1/_hlaTimeUnitValue) * 
-                                        ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA).getTime();
+                    double hlaTimeGranted = ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA).getTime();
+                    
+                    double timeValue = hlaTimeGranted/_hlaTimeUnitValue ;
+                    if(_debugging){
+                        _debug("TAG for " + hlaTimeGranted+ "model moves to" + timeValue);
+                    }
                     breakpoint = new Time(_director,timeValue);
                 } catch (IllegalActionException e) {
                     throw new IllegalActionException(this, e,
@@ -976,15 +980,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
         // To avoid CERTI exception when calling UAV service, in the case of NER or TAR
         // with lookahead > 0, we add the lookahead value to the event's timestamp.
-        CertiLogicalTime ct = new CertiLogicalTime( (1/_hlaTimeUnitValue)*currentTime.getDoubleValue()
-                + _hlaLookAHead);
-        try {
-            int id = _registeredObject.get(_federateName+" "+senderName);
-            _rtia.updateAttributeValues(id, suppAttributes, tag,
-                    ct);
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e, e.getMessage());
-        }
+        double messageModelTime = currentTime.getDoubleValue() + _hlaLookAHead;
+        CertiLogicalTime ct = new CertiLogicalTime(messageModelTime*_hlaTimeUnitValue);
         if (_debugging) {
             _debug(this.getDisplayName() + " publish() -"
                     + " send (UAV) updateAttributeValues "
@@ -993,6 +990,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     + _getPortFromTab(tObj).getContainer().getName()
                     + "\" (timestamp=" + ct.getTime() + ", value="
                     + in.toString() + ")");
+        }
+        try {
+            int id = _registeredObject.get(_federateName+" "+senderName);
+            _rtia.updateAttributeValues(id, suppAttributes, tag,
+                    ct);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, e.getMessage());
         }
     }
 
@@ -1390,9 +1394,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         
         // Declare the Federate time regulator (if true).
         if (_isTimeRegulator) {
-            try {
+            try {                
                 _rtia.enableTimeRegulation(_federateAmbassador.logicalTimeHLA,
-                        _federateAmbassador.lookAHeadHLA);
+                        _federateAmbassador.effectiveLookAHead);
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
@@ -1518,7 +1522,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         /** The lookahead value set by the user and used by CERTI to handle
          *  time management and to order TSO events.
          */
-        public LogicalTimeInterval lookAHeadHLA;
+        public LogicalTimeInterval effectiveLookAHead;
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -1563,8 +1567,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
          */
         public void initializeTimeValues(Double startTime, Double lookAHead) {
             logicalTimeHLA = new CertiLogicalTime(startTime);
-            lookAHeadHLA = new CertiLogicalTimeInterval(lookAHead);
-
+            
+            effectiveLookAHead = new CertiLogicalTimeInterval(lookAHead*_hlaTimeUnitValue);
+            if(_debugging){
+                _debug("Effective HLA lookahead is " + effectiveLookAHead.toString());
+            }
             timeAdvanceGrant = false;
         }
 
@@ -1607,8 +1614,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             try {
                                 HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
                                 
-                                double timeValue =  _hlaTimeUnitValue * 
-                                        ((CertiLogicalTime) theTime).getTime();
+                                double timeValue =
+                                        ((CertiLogicalTime) theTime).getTime()/ _hlaTimeUnitValue;
+                                
                                     ts = new Time(_director,timeValue);
                                     value = MessageProcessing.decodeHlaValue(hs,
                                             (BaseType) _getTypeFromTab(tObj),
