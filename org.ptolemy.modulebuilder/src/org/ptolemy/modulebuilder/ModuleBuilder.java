@@ -63,14 +63,12 @@ public class ModuleBuilder {
     if(projects.length==0) {
       projects = new String[] {
           "ptolemy.actor.lib", 
+          "ptolemy.actor.lib.gui", 
           "ptolemy.core", 
           "ptolemy.core.test", 
-          "ptolemy.domains.ddf", 
-          "ptolemy.domains.de", 
-          "ptolemy.domains.modal", 
-          "ptolemy.domains.ptera", 
+          "ptolemy.domains.process", 
           "ptolemy.domains.sdf", 
-          "ptolemy.domains.sr",
+          "ptolemy.gui", 
           "ptolemy.moml"
           };
     }

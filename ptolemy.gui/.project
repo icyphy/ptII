@@ -47,6 +47,11 @@
 			<locationURI>PT_LOC/ptolemy/gui/ExtensionFilenameFilter.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/gui/ImageExportable.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/gui/ImageExportable.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/gui/JFileChooserBugFix.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/gui/JFileChooserBugFix.java</locationURI>
@@ -105,6 +110,11 @@
 			<name>linked-src/ptolemy/gui/UndoListener.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/gui/UndoListener.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/gui/AbstractPlaceableJavaSE.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/gui/AbstractPlaceableJavaSE.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/gui/BrowserEffigy.java</name>
@@ -247,6 +257,16 @@
 			<locationURI>PT_LOC/ptolemy/actor/gui/TableauFrame.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/actor/gui/TextEditor.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/gui/TextEditor.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/gui/TextEffigy.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/gui/TextEffigy.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/actor/gui/TopPack.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/gui/TopPack.java</locationURI>
@@ -257,6 +277,11 @@
 			<locationURI>PT_LOC/ptolemy/actor/gui/WindowPropertiesAttribute.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/actor/injection/Injector.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/injection/Injector.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/actor/injection/PortableContainer.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/injection/PortableContainer.java</locationURI>
@@ -265,6 +290,16 @@
 			<name>linked-src/ptolemy/actor/injection/PortablePlaceable.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/injection/PortablePlaceable.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/injection/PtolemyInjector.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/injection/PtolemyInjector.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/injection/PtolemyModule.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/injection/PtolemyModule.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/actor/gui/style/CheckBoxStyle.java</name>

@@ -5842,6 +5842,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     try {
       return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
     } catch (ClassNotFoundException e) {
+      System.out.println("Did not find "+className+" "+_vSpec + " via " + _defaultClassLoadingStrategy);
       if(_classLoader!=null) {
         return _classLoader.loadClass(className);
       } else {

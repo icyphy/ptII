@@ -1,3 +1,4 @@
+/ptolemy/actor/gui/AbstractPlaceableJavaSE.java
 /ptolemy/actor/gui/BrowserEffigy.java
 /ptolemy/actor/gui/ColorAttribute.java
 /ptolemy/actor/gui/Configurer.java
@@ -26,6 +27,8 @@
 /ptolemy/actor/gui/Tableau.java
 /ptolemy/actor/gui/TableauFactory.java
 /ptolemy/actor/gui/TableauFrame.java
+/ptolemy/actor/gui/TextEditor.java
+/ptolemy/actor/gui/TextEffigy.java
 /ptolemy/actor/gui/TopPack.java
 /ptolemy/actor/gui/WindowPropertiesAttribute.java
 /ptolemy/actor/gui/style/CheckBoxStyle.java
@@ -38,12 +41,16 @@
 /ptolemy/actor/gui/style/ParameterEditorStyle.java
 /ptolemy/actor/gui/style/StyleConfigurer.java
 /ptolemy/actor/gui/style/TextStyle.java
+/ptolemy/actor/injection/Injector.java
 /ptolemy/actor/injection/PortableContainer.java
 /ptolemy/actor/injection/PortablePlaceable.java
+/ptolemy/actor/injection/PtolemyInjector.java
+/ptolemy/actor/injection/PtolemyModule.java
 /ptolemy/gui/CloseListener.java
 /ptolemy/gui/ComponentDialog.java
 /ptolemy/gui/EditableParametersDialog.java
 /ptolemy/gui/ExtensionFilenameFilter.java
+/ptolemy/gui/ImageExportable.java
 /ptolemy/gui/JFileChooserBugFix.java
 /ptolemy/gui/MacOSXAdapter.java
 /ptolemy/gui/MemoryCleaner.java

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ptolemy Process domain
+Bundle-SymbolicName: ptolemy.domains.process
+Bundle-Version: 10.1.0.qualifier
+Bundle-Vendor: CHESS
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: ptolemy.actor;version="10.1.0",
+ ptolemy.actor.util;version="10.1.0",
+ ptolemy.data;version="10.1.0",
+ ptolemy.data.expr;version="10.1.0",
+ ptolemy.data.type;version="10.1.0",
+ ptolemy.kernel;version="10.1.0",
+ ptolemy.kernel.util;version="10.1.0"
+Export-Package: ptolemy.actor.process;version="10.1.0",
+ ptolemy.domains.pn.kernel;version="10.1.0",
+ ptolemy.domains.pn.kernel.event;version="10.1.0"

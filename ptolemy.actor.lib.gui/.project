@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>ptolemy.actor.lib.gui</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>linked-src/ptolemy/actor/lib/gui/Display.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/gui/Display.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/lib/gui/DisplayInterface.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/gui/DisplayInterface.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/actor/lib/gui/DisplayJavaSE.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/actor/lib/gui/DisplayJavaSE.java</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
