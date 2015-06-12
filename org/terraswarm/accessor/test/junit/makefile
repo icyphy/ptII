@@ -34,7 +34,7 @@
 ME =		org/terraswarm/accessor/test/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../..
+ROOT =		../../../../..
 
 # JUNIT_JAR is searched for by /Users/cxh/ptII/configure and set in /Users/cxh/ptII/mk/ptII.mk
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)

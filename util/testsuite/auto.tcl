@@ -118,14 +118,51 @@ foreach file [lsort [glob auto/*.xml]] {
         } else {
 	    $watchDog cancel
    	}
-	# Free up memory.
-	$application cleanup
-	set application [java::null]
-	java::call System gc
 	list {}
     } {{}}
-}
 
+    # If the JSAccessor class is present, and the model contains at
+    # least on JSAccessor actor, then reload all the JSAccessors and
+    # rerun the model.
+    if {![catch {java::call Class forName org.terraswarm.accessor.JSAccessor} errMsg]} {
+
+        # Look for JSAccessor actors in the model.
+        set JSAccessorPresent 0
+	set entityList [$configuration allAtomicEntityList]
+	for {set iterator [$entityList iterator]} {[$iterator hasNext] == 1} {} {
+            set entity [$iterator next]
+            if [java::instanceof $entity org.terrasarm.accessor.JSAccessor] {
+                set JSAccessorPresent 1
+            }
+        }
+
+        # If a JSAccessor actor was found, then reload all the JSAccessors and rerun the model.
+        if {$JSAccessorPresent} {
+            test "Auto-reload1-rerun" "Automatic test reload Accessors and rerun in model file $file" {
+                set timeout 200000
+                puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]], then reloading accessor(s)"
+                set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
+
+                set toplevel [$application toplevel]
+                java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel
+
+                if [catch {$application rerun} errMsg] {
+                    $watchDog cancel
+                    error $errMsg
+                } else {
+                    $watchDog cancel
+                }
+                list {}
+            } {{}}
+        }
+    }
+
+    # Free up memory.
+    $application cleanup
+    set application [java::null]
+    java::call System gc
+}
 
 # Print out stats
 doneTests

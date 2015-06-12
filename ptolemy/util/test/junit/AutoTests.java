@@ -105,6 +105,9 @@ public class AutoTests extends ModelTests {
                 _applicationConstructor = _applicationClass
                         .getConstructor(String.class);
 
+                _applicationToplevelMethod = _applicationClass
+                    .getMethod("toplevel", new Class[]{});
+
             }
             Object instance = _applicationConstructor.newInstance(fullPath);
 
@@ -113,6 +116,21 @@ public class AutoTests extends ModelTests {
             Method rerunMethod = _applicationClass.getMethod("rerun",
                     (Class<?>[]) null);
             rerunMethod.invoke(instance, (Object[]) null);
+
+
+            // If JSAccessor is present and the model contains one, then
+            // reload all the JSAccessors and rerun the model
+            if (_jsAccessorClass != null) {
+                Object toplevel = _applicationToplevelMethod.invoke(instance, (Object[]) null);
+                if (_jsAccessorReloadAllAccessorsMethod == null) {
+                    throw new InternalError("Found the JSAccessor class, but not the reloadAllAccessors() method?");
+                }
+                if (((Boolean)_jsAccessorReloadAllAccessorsMethod.invoke(null, new Object [] {toplevel})).booleanValue()) {
+                    System.out.println("----------------- Reloaded Accessors and testing again " + fullPath);
+                    System.out.flush();
+                    rerunMethod.invoke(instance, (Object[]) null);
+                }
+            }
         } else {
             System.err.println("----------------- *** Skipping testing of "
                     + fullPath);
@@ -136,5 +154,30 @@ public class AutoTests extends ModelTests {
             return false;
         }
         return true;
+    }
+
+    /** The org.terraswarm.accessor.JSAccessor class, which is tested
+     * by reloading Accessors.
+     */
+    protected static Class<?> _jsAccessorClass = null;
+
+    /** The method that reloads all the accessors in a CompositeEntity. */
+    protected static Method _jsAccessorReloadAllAccessorsMethod = null;
+
+    static {
+        try {
+            _jsAccessorClass = Class
+                .forName("org.terraswarm.accessor.JSAccessor");
+            Class compositeEntityClass = Class
+                .forName("ptolemy.kernel.CompositeEntity");
+            _jsAccessorReloadAllAccessorsMethod = _jsAccessorClass
+                .getMethod("reloadAllAccessors",
+                        new Class [] {compositeEntityClass});
+        } catch (Throwable throwable) {
+            // Ignore this, it could be that the JSAccessor class
+            // is not present.
+            _jsAccessorClass = null;
+            _jsAccessorReloadAllAccessorsMethod = null;
+        }
     }
 }
