@@ -17,49 +17,53 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for running the RosPublisher accessor.&#10;&#10;This accessor assumes there is a ROS system running a rosbridge server.&#10;It connects to that rosbridge server through a web socket. It publishes JSON data to a &#10;pre-established topic on the ROS system. &#10;&#10;See instructions in Ros.xml for instructions on how to run a demo with ROS. &#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 260.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 91, 1060, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={249, 149, 1060, 752}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 663]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000041">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000064">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{585.770279255319, 316.22606382978734}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{585.7702792553189, 316.2260638297872}">
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{'{&quot;data&quot;: &quot;im an accessor publisher&quot;}'}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{data = &quot;im an accessor publisher&quot;}}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 140.0]">
         </property>
     </entity>
     <entity name="RosPublisher" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var client = null;&#10;  var server = get('server');&#10;  var port = get('port');&#10;  &#10;  exports.initialize = function() {&#10;    client = new WebSocket.Client({'host':server, 'port':port});&#10;    client.on('open', onOpen);&#10;    client.on('message', onMessage);&#10;    client.on('close', onClose);&#10;    client.on('error', onError);&#10;    console.log('initialized');&#10;&#10;  }&#10;&#10;  function publish() {&#10;    var msg = get('toPublish'); &#10;    var topic = get('topic');&#10;    console.log('publishing to ' + topic + ': ' + msg);&#10;    var data = &#10;      { &#10;        &quot;op&quot; : &quot;publish&quot;,&#10;        &quot;topic&quot;: get('topic'), &#10;        &quot;msg&quot; : JSON.parse(msg)&#10;      };  &#10;    client.send(data);&#10;  }&#10;&#10;  function onOpen() {&#10;    console.log('Status: Connected to '&#10;    + server + ' on port ' + port);&#10;    addInputHandler('toPublish', publish);&#10;  }&#10;  &#10;  function onClose(message) {&#10;    console.log('Status: Connection closed: ' + message);&#10;  }&#10;  &#10;  function onError(message) {&#10;    console.error(message);&#10;    throw(message);&#10;  }&#10;  &#10;  function onMessage(message) {&#10;    var msg_string = JSON.stringify(message);&#10;    console.log('Received from web socket: ' + msg_string);&#10;  } &#10;&#10;  function wrapup() {&#10;    if (client != null) {&#10;      console.log('Closing');&#10;      client.close();&#10;    }&#10;  }&#10;    // &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.  // All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor publishes to a pre-defined ROS topic.&lt;br&gt;&#10; *  This accessor requires the module 'webSocketClient'. &#10; *  It inherits the input and output from webSocketClient, but adds&#10; *  its own 'topic' input. This must be a pre-established topic in ROS.&#10; *  This input is usually prefixed with a '/' eg: '/noise'.&lt;br&gt; &#10; *  On input from 'toSend', this accessor publishes that input to the &#10; *  aforementioned topic. &#10; *  The input from 'toSend' must be in JSON form, and must match the message&#10; *  datatype that the ROS topic is expecting. For example if ROS topic is &#10; *  expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; *  as follows:&#10; *  &lt;pre&gt; { &quot;data&quot;: &quot;hello world&quot; } &lt;/pre&gt;&#10; *&#10; *  @accessor RosPublisher&#10; *  @module RosPublisher&#10; *  @input {string} server The IP address or domain name of server.&#10; *  @input {number} port The port that the web socket listens to.&#10; *  @input {string} topic The ROS topic to publish to.&#10; *  @input {JSON} toSend The data to be published to the topic.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10;*/&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in webSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is a pre-defined ROS topic to publish to.*/ &#10;exports.setup = function() {&#10;  wsClient.setup();&#10;  accessor.input('topic', {&#10;    type: &quot;string&quot;,&#10;    value: &quot;&quot;,&#10;    description: &quot;the pre-defined ROS topic to publish to&quot;&#10;  });&#10;}&#10;&#10;/** Overrides inputHandler on 'toSend' from webSocketClient.&lt;br&gt; &#10; *  Inherits initialize from webSocketClient.*/ &#10;exports.initialize = function() {&#10;//must override first before initializing&#10;  wsClient.toSendInputHandler = function() {&#10;    var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: get('topic'),&#10;      &quot;msg&quot;: get('toSend') &#10;    }&#10;    wsClient.sendToWebSocket(data);&#10;  }&#10;&#10;  wsClient.initialize();&#10;}&#10;&#10;/** inherits wrapup function from webSocketClient */&#10;exports.wrapup = wsClient.wrapup;&#10;&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/RosPublisher.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/RosPublisher.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor publishes data to a ROS topic through a websocket &#10;connected to a rosbridge server.&#10;It takes in the server, port and topic as inputs. It also takes&#10;in a JSON formatted string 'toPublish'. The accessor converts&#10;this to JSON and sends along its merry way to rosbridge. &#10;  &#10;  ">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor publishes to a pre-defined ROS topic.&lt;br&gt;&#10; It inherits the input and output from webSocketClient, but adds&#10; its own 'topic' input. This must be a pre-established topic in ROS.&lt;br&gt;&#10; On input from 'toSend', this accessor publishes that input to the &#10; aforementioned topic. &#10; The input from 'toSend' must be in JSON form, and must match the message&#10; datatype that the ROS topic is expecting. For example if ROS topic is &#10; expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; as follows:&#10; &lt;pre&gt; { &quot;data&quot;: &quot;hello world&quot; } &lt;/pre&gt;&#10; This accessor requires the module 'webSocketClient'.">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2015-05-19 09:13:24 -0700 (Tue, 19 May 2015) $">
-            </property>
-            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$Id$">
             </property>
             <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
             </property>
             <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
             </property>
-            <property name="topic (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The topic to publish to">
+            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
             </property>
-            <property name="toPublish (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The message to publish in JSON string format">
+            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
+            </property>
+            <property name="topic (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="the pre-defined ROS topic to publish to">
+            </property>
+            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The data to be published to the topic.">
             </property>
         </property>
         <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
@@ -68,9 +72,7 @@
         </property>
         <property name="topic" class="ptolemy.actor.parameters.PortParameter" value="&quot;/noise&quot;">
         </property>
-        <property name="toPublish" class="ptolemy.actor.parameters.PortParameter" value="'{\&quot;data\&quot;: \&quot;im an accessor publisher\&quot;}'">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[692.6844787597656, 120.64216613769531]">
         </property>
         <port name="server" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -93,16 +95,24 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="toPublish" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="RosPublisher.toPublish" relation="relation"/>
+    <link port="RosPublisher.toSend" relation="relation"/>
 </entity>

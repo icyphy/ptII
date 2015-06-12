@@ -5,7 +5,9 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.9">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -15,7 +17,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for WebSocketClient accesor. The WebSocketClient can be imported from &#10;http://www.terraswarm.org/accessors/.&#10;&#10;NOTE: This client assumes that there is a web socket server running on the local host.&#10;There are two alternative implementations of the server.  A Ptolemy II server is provided&#10;as a model called WebSocketServer in this same directory by clicking on the link below:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 220.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -23,21 +25,21 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 525.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 206, 955, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={257, 52, 1082, 848}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[868, 759]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.31644492574264, 323.2961014851485}">
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 330.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,29 +70,31 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Alternatively, there is also a Node.js server, which you can start with:&#10;     &gt; node NodeServer.js&#10;before running this demo. NodeServer.js is in the same demo directory.  You may need&#10;to install the 'ws' module using something like:&#10;     &gt; sudo npm install ws&#10;&#10;The reply messages from the server appear in the display MessageFromServer, while the&#10;current status of the connection appears in the console.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 370.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 130.0]">
         </property>
     </entity>
     <entity name="MessageFromServer" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={804, 525, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={240, 152, 535, 391}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 342]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 175.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 140.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 120.0]">
         </property>
         <port name="messageID" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -98,38 +102,36 @@
             </property>
         </port>
     </entity>
-    <entity name="WebSocketClient2" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;  var WebSocket = require('webSocket');&#10;  var client = null;&#10;&#10;  exports.initialize = function() {&#10;    client = new WebSocket.Client({'host':get('server'), 'port':get('port')});&#10;    client.on('open', onOpen);&#10;    client.on('message', onMessage);&#10;    client.on('close', onClose);&#10;    client.on('error', onError);&#10;  }&#10;&#10;  function onOpen() {&#10;    console.log('Status: Connection established');&#10;  }&#10;  &#10;  function onClose(message) {&#10;    console.log('Status: Connection closed: ' + message);&#10;  }&#10;  &#10;  function onError(message) {&#10;    console.error(message);&#10;    throw(message);&#10;  }&#10;  &#10;  function onMessage(message) {&#10;    console.log('Received from web socket: ' + message);&#10;    send('received', message);&#10;  }&#10;  &#10;  function inputHandler() {&#10;    var data = get('toSend');&#10;    if (data) {&#10;      console.log(&quot;Sending to socket: &quot; + data);&#10;      client.send(data);&#10;    }&#10;  }&#10;  addInputHandler('toSend', inputHandler);&#10;&#10;  function wrapup() {&#10;    if (client != null) {&#10;      client.close();&#10;    }&#10;  }&#10;    // &#10;  ">
+    <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;/** This accessor sends and/or receives messages from a web socket&#10; *  at the specified host and port. In &lt;code&gt;initialize()&lt;/code&gt;, it connects to the web socket server.&lt;br&gt;&#10;    Once the connection is established, the output &lt;code&gt;'ready'&lt;/code&gt; is set to &lt;code&gt;true&lt;/code&gt;. If a connection was not established during &lt;code&gt;initiazlize()&lt;/code&gt;, this accessor will not try to connect again.&lt;br&gt;&#10; *  Whenever an input is received on the &lt;code&gt;'toSend'&lt;/code&gt; input, the message is sent to&#10; *  the socket.&lt;br&gt;&#10; *  Whenever a message is received from the socket, that message is&#10; *  produced on the &lt;code&gt;'received'&lt;/code&gt; output.&lt;br&gt;&#10; *  When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the connection.&lt;br&gt;&#10; *  The data can be any type that has a JSON representation.&#10; *  For incomming messages, this accessor assumes that the message is&#10; *  a string in UTF-8 that encodes a JSON object.&lt;br&gt;&#10; *  A copy of this accessor is also in the modules directory, which other accessors can use as &#10; *  a generic implementation of a web socket. This accessor-module exports a sendToWebSocket(data) function &#10; *  which other accessors can use, for example:&#10; *  &lt;pre&gt;var wsClient = require('webSocketClient');&#10; *       wsClient.sendToWebSocket(JSONDataToSend);&#10; *  &lt;/pre&gt; &#10; *  This accessor-module also exports its inputHandler function on 'toSend' &#10; *  which other accessors can override, for example:&#10; * &lt;pre&gt; var wsClient = require('webSocketClient');&#10; *       wsClient.toSendInputHandler = function() {...}&#10; * &lt;/pre&gt;&#10; *  See &lt;code&gt;RosPublisher.js&lt;/code&gt; for an example. &lt;br&gt;&#10; *  This accessor requires the 'webSocket' module.&#10; *&#10; *  @accessor WebSocketClient&#10; *  @module WebSocketClient&#10; *  @input {string} server The IP address or domain name of server.&#10; *  @input {number} port The port that the web socket listens to.&#10; *  @input {JSON} toSend The data to be sent to the web socket server.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Hokeun Kim, Marcus Pan &#10; *  @version $$Id$$&#10; */&#10;&#10;&#10;var WebSocket = require('webSocket');&#10;var client = null;&#10;var handle;&#10;var wrappedUp = false;&#10;&#10;/** Sets up accessor by defining inputs and output. */&#10;exports.setup = function() {&#10;  accessor.input('server', {&#10;    type: 'string',&#10;    value: 'localhost',&#10;    description: 'The IP address or domain name of the server.'&#10;  });&#10;  accessor.input('port', {&#10;    type: 'number',&#10;    value: 8080,&#10;    description: 'The port that the web socket server listens to.'&#10;  });&#10;  accessor.input('toSend', {&#10;    type: 'JSON', &#10;    description: 'The data to be send to the web socket server, in JSON format.'&#10;  });&#10;  accessor.output('connected', {&#10;    type: 'boolean',&#10;    description: &quot;outputs 'true' once connection is established&quot;&#10;  });&#10;  accessor.output('received', {&#10;    description: 'The data received from the web socket server, in JSON format.'&#10;  });&#10;}&#10;&#10;/** Initializes accessor by attaching functions to inputs. */&#10;exports.initialize = function() {&#10;  client = new WebSocket.Client({'host':get('server'), 'port':get('port')});&#10;  client.on('open', onOpen);&#10;  client.on('message', onMessage);&#10;  client.on('close', onClose);&#10;  client.on('error', onError);&#10;  handle = addInputHandler('toSend', exports.toSendInputHandler);&#10;  console.log('initialize() complete');&#10;} &#10;&#10;/** Handles input on 'toSend'. */&#10;exports.toSendInputHandler = function() {&#10;  exports.sendToWebSocket(get('toSend'));&#10;}&#10;&#10;/** Sends JSON data to the web socket. */&#10;exports.sendToWebSocket = function(data) {&#10;  client.send(data);&#10;  console.log(&quot;Sending to web socket: &quot; + JSON.stringify(data));&#10;}&#10;&#10;/** Executues once  web socket establishes a connection.&lt;br&gt;&#10;    Sets 'connected' output to true. */&#10;function onOpen() {&#10;  console.log('Status: Connection established');&#10;  send('connected', true);&#10;  connected = true;&#10;}&#10;  &#10;/** Executes once web socket closes.&lt;br&gt;&#10;    Sets 'connected' output to false if accessor hasn't wrapped up. */&#10;function onClose(message) {&#10;  console.log('Status: Connection closed: ' + message);&#10;  &#10;  if (!wrappedUp) {&#10;    send('connected', false);&#10;  } else {&#10;    console.log(&quot;Accessor has wrapped up, so did not send 'false' to connected&quot;);&#10;  }&#10;}&#10;  &#10;/** Throws error received from web socket connection error. */&#10;function onError(message) {&#10;  console.error(message);&#10;  throw(message);&#10;}&#10;  &#10;/** Outputs message received from web socket. */&#10;function onMessage(message) {&#10;  console.log('Received from web socket: ' + JSON.stringify(message));&#10;  send('received', message);&#10;}&#10;  &#10;/** Closes web socket connection. */&#10;exports.wrapup = function() {&#10;  wrappingUp = true;&#10;  if (handle !== null) {&#10;    removeInputHandler(handle, 'toSend');&#10;  }&#10;  if (client) {&#10;    client.close();&#10;  }&#10;  wrappedUp = true;&#10;  console.log('wrapup() complete');&#10;}&#10;&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/WebSocketClient.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/WebSocketClient.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor sends and/or receives messages from a web socket&#10;at the specified host and port. In initialize(), it connects to the web socket server.&#10;Whenever an input is received on the 'toSend' input, the message is sent to&#10;the socket.&#10;Whenever a message is received from the socket, that message is&#10;produced on the 'received' output.&#10;When wrapup() is invoked, this accessor closes the connection.&#10;The data can be any type that has a JSON representation.&#10;For incomming messages, this accessor assumes that the message is&#10;a string in UTF-8 that encodes a JSON object.&#10;  &#10;  ">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor sends and/or receives messages from a web socket&#10; at the specified host and port. In &lt;code&gt;initialize()&lt;/code&gt;, it connects to the web socket server.&lt;br&gt;&#10;    Once the connection is established, the output &lt;code&gt;'ready'&lt;/code&gt; is set to &lt;code&gt;true&lt;/code&gt;.&lt;br&gt;&#10; Whenever an input is received on the &lt;code&gt;'toSend'&lt;/code&gt; input, the message is sent to&#10; the socket.&lt;br&gt;&#10; Whenever a message is received from the socket, that message is&#10; produced on the &lt;code&gt;'received'&lt;/code&gt; output.&lt;br&gt;&#10; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the connection.&lt;br&gt;&#10; The data can be any type that has a JSON representation.&#10; For incomming messages, this accessor assumes that the message is&#10; a string in UTF-8 that encodes a JSON object.&lt;br&gt;&#10; This accessor requires 'webSocket' module.">
             </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim, Marcus Pan">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
-            </property>
-            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$Id$">
             </property>
             <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
             </property>
             <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
             </property>
-            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The data to be sent to the web socket server.">
+            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
             </property>
-            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The message received from the web socket server.">
+            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
+            </property>
+            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The data to be sent to the web socket server.">
             </property>
         </property>
         <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8080">
         </property>
-        <property name="toSend" class="ptolemy.actor.parameters.PortParameter" value="{messageID = 4}">
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 145.0]">
         </property>
         <port name="server" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -145,16 +147,19 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="toSend" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
@@ -162,9 +167,9 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation2"/>
     <link port="MessageFromServer.input" relation="relation5"/>
@@ -172,6 +177,6 @@
     <link port="Ramp.trigger" relation="relation2"/>
     <link port="RecordAssembler.output" relation="relation"/>
     <link port="RecordAssembler.messageID" relation="relation3"/>
-    <link port="WebSocketClient2.toSend" relation="relation"/>
-    <link port="WebSocketClient2.received" relation="relation5"/>
+    <link port="WebSocketClient.toSend" relation="relation"/>
+    <link port="WebSocketClient.received" relation="relation5"/>
 </entity>

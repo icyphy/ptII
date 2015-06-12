@@ -1,0 +1,119 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ScarabGoalPublisher" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for the ScarabGoalPublisher accessor.&#10;To run this demo, Scarab must be running ROS and rosbridge and subscribing the topic&#10;&quot;/goal&quot; for its waypoints. This works with the simulation documented here:&#10;https://www.terraswarm.org/accessors/wiki/Main/&#10;InstallingTheScarabsROSPackages#Run&#10;&#10;The accessor takes in the following 3 inputs:&#10;1. address (string) of rosbridge, eg: &quot;localhost&quot; or &quot;127.0.0.1&quot;&#10;2. port (number) of rosbridge, eg: 9090&#10;3. pose information if JSON form. The formatting is as follows:&#10;{&#10;  &quot;position&quot;: //cartesian coordinates&#10;    {&quot;x&quot;:.., &quot;y&quot;:.. &quot;z&quot;:..},&#10;  &quot;orientation&quot;: //quaternion orientation (final orientation of robot)&#10;    {&quot;w&quot;:.., &quot;x&quot;:.., &quot;y&quot;:.., &quot;z&quot;:..}&#10;}&#10; &#10;In this demo, the position coordinates are provided by the 'values' &#10;parameter in DiscreteClock. &#10;&#10;To make Scarab cycle between (x=0, y=0) and (x=2.5, y=0) every 5 seconds, configure the DiscreteClock as follows:&#10;Period: 10&#10;Offset: {0.0, 5.0}&#10;Values:{{position={x=0, y=0, z=0}, orientation={w=1, x=0, y=0, z=0}}, &#10;               {position={x=2.5, y=0, z=0}, orientation={w=1, x=0, y=0, z=0}}}&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 235.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={606, 52, 918, 794}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 705]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000178">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.22029702970295, 325.0812190594056}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 95.0]">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="8">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 4.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{position={x=0, y=0, z=0}, orientation={w=1, x=0, y=0, z=0}}, {position={x=2.5, y=0, z=0}, orientation={w=1, x=0, y=0, z=0}}}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="ScarabGoalPublisher" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.  // All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor publishes pose information to Scarab topic /goal.&lt;br&gt;&#10; *  This accessor requires the module 'webSocketClient'. &#10; *  It inherits the input and output ports from webSocketClient, and takes in&#10; *  pose information at 'toSend'.&lt;br&gt;&#10; *  The data published must be of the ROS datatype geometry_msgs/PoseStamped.&#10; *  This is formatted as the following:&lt;pre&gt;&#10; *  {&#10; *    &quot;position&quot;: //cartesian coordinates&#10; *      {&quot;x&quot;:.., &quot;y&quot;:.. &quot;z&quot;:..},&#10; *    &quot;orientation&quot;: //quaternion orientation (final orientation of robot)&#10; *      {&quot;w&quot;:.., &quot;x&quot;:.., &quot;y&quot;:.., &quot;z&quot;:..}&#10; *  } &lt;/pre&gt;&#10; *  The header information is added by rosbridge. &lt;br&gt;&#10; *&#10; *  @accessor ScarabGoalPublisher&#10; *  @module ScarabGoalPublisher&#10; *  @input {string} server The IP address or domain name of the rosbridge server.&#10; *  @input {number} port The port of the rosbridge server.&#10; *  @input {JSON} toSend The pose data to be sent to the rosbridge server.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10;*/&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in webSocketClient.*/&#10;exports.setup = wsClient.setup;&#10;&#10;/** Overrides inputHandler on 'toSend' from webSocketClient.&lt;br&gt; &#10;  * New inputHandler takes in pose data and formats it according to the &#10;  * geometry_msgs/PoseStamped datatype in ROS. &lt;br&gt;&#10;  * Inherits initialize from webSocketClient.*/ &#10;exports.initialize = function() {&#10;  //must override first&#10;  wsClient.toSendInputHandler = function() {&#10;    var pose = get('toSend');&#10;    var msg = {&#10;      &quot;header&quot;: {&#10;        &quot;seq&quot;: 0,&#10;        &quot;stamp&quot;: {&#10;          &quot;secs&quot;: 0,&#10;          &quot;nsecs&quot;: 0  &#10;        },&#10;        &quot;frame_id&quot;: &quot;map_hokuyo&quot;    &#10;      },&#10;      &quot;pose&quot;: pose&#10;    }&#10;    var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: &quot;/goal&quot;,&#10;      &quot;msg&quot;: msg &#10;    }&#10;    wsClient.sendToWebSocket(data);&#10;  }&#10;  wsClient.initialize();&#10;}&#10;&#10;/** inherits wrapup function from webSocketClient */&#10;exports.wrapup = wsClient.wrapup;&#10;&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/ScarabGoalPublisher.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor publishes pose information to Scarab topic /goal.&lt;br&gt;&#10; This accessor requires the module 'webSocketClient'. &#10; It inherits the input and output ports from webSocketClient, and takes in&#10; pose information at 'toSend'.&lt;br&gt;&#10; The data published must be of the ROS datatype geometry_msgs/PoseStamped.&#10; This is formatted as the following:&lt;pre&gt;&#10; {&#10;   &quot;position&quot;: //cartesian coordinates&#10;     {&quot;x&quot;:.., &quot;y&quot;:.. &quot;z&quot;:..},&#10;   &quot;orientation&quot;: //quaternion orientation (final orientation of robot)&#10;     {&quot;w&quot;:.., &quot;x&quot;:.., &quot;y&quot;:.., &quot;z&quot;:..}&#10; } &lt;/pre&gt;&#10; The header information is added by rosbridge. &lt;br&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$Id$">
+            </property>
+            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
+            </property>
+            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
+            </property>
+            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The pose data to be sent to the rosbridge server.">
+            </property>
+            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
+            </property>
+            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
+            </property>
+        </property>
+        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 160.0]">
+        </property>
+        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="ScarabGoalPublisher.toSend" relation="relation"/>
+</entity>
