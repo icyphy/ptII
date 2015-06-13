@@ -32,8 +32,9 @@ import ptolemy.actor.TypedActor;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.AbstractInitializableParameter;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -127,6 +128,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class PortParameter extends AbstractInitializableParameter implements
 Initializable {
+    
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -140,12 +142,37 @@ Initializable {
      */
     public PortParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
+	this(container, name, (ParameterPort) null);
+    }
+    
+    /** Construct a parameter with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This parameter will create
+     *  an associated port in the same container.
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @param port The associated ParameterPort, or null to create one.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
+    protected PortParameter(NamedObj container, String name, ParameterPort port)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // If we get to here, we know the container is a ComponentEntity,
-        // so the cast is safe.
-        if (container instanceof TypedActor) {
-            _port = new ParameterPort((ComponentEntity) container, name);
+        _port = port;
+        if (port == null) {
+            // If we get to here, we know the container is a ComponentEntity,
+            // so the cast is safe.
+            Port existingPort = ((ComponentEntity) container).getPort(name);
+            if (existingPort instanceof ParameterPort) {
+        	_port = (ParameterPort) existingPort;
+        	((ParameterPort) existingPort)._parameter = this;
+            } else {
+        	_port = new ParameterPort((ComponentEntity) container, name, this);
+            }
         }
+        _setTypeConstraints();
     }
 
     /** Construct a parameter with the given name contained by the specified
@@ -169,7 +196,8 @@ Initializable {
         // If we get to here, we know the container is a ComponentEntity,
         // so the cast is safe.
         if (initializeParameterPort && container instanceof TypedActor) {
-            _port = new ParameterPort((ComponentEntity) container, name);
+            _port = new ParameterPort((ComponentEntity) container, name, this);
+            _setTypeConstraints();
         }
     }
 
@@ -270,7 +298,6 @@ Initializable {
         return newObject;
     }
 
-
     /** Get the persistent expression.
      *  @return The expression used by this variable.
      *  @see #setExpression(String)
@@ -290,6 +317,17 @@ Initializable {
      *  @return The associated port.
      */
     public ParameterPort getPort() {
+	if (_port == null) {
+	    // Attempt to find the port.
+	    NamedObj container = getContainer();
+	    if (container instanceof Entity) {
+		Port candidate = ((Entity)container).getPort(getName());
+		if (candidate instanceof ParameterPort) {
+		    _port = (ParameterPort)candidate;
+		    _setTypeConstraints();
+		}
+	    }
+	}
         return _port;
     }
 
@@ -299,14 +337,8 @@ Initializable {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        String oldExpression = super.getExpression();
         super.setExpression(_persistentExpression);
-        // It can be quite costly an unexpected to validate everything
-        // since this will cause attributeChanged() to be called.
-        // Avoid it if not needed.
-        if (!oldExpression.equals(_persistentExpression)) {
-            validate();
-        }
+        validate();
     }
 
     /** Reset the current value to match the persistent value.
@@ -315,13 +347,44 @@ Initializable {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        String oldExpression = super.getExpression();
         super.setExpression(_persistentExpression);
-        // It can be quite costly an unexpected to validate everything
-        // since this will cause attributeChanged() to be called.
-        // Avoid it if not needed.
-        if (!oldExpression.equals(_persistentExpression)) {
-            validate();
+        validate();
+    }
+
+    /** Set the container of this parameter. If the container is different
+     *  from what it was before and there is an associated port, then
+     *  also change the container of the port.
+     *  @see ParameterPort
+     *  @param entity The new container.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
+     */
+    @Override
+    public void setContainer(NamedObj entity)
+	    throws IllegalActionException, NameDuplicationException {
+	if (_settingContainer) {
+	    // Recursive call through the port.
+	    return;
+	}
+        Entity previousContainer = (Entity) getContainer();
+        if (entity == previousContainer) {
+            // No change.
+            return;
+        }
+        super.setContainer(entity);
+
+        // If there is an associated port, and the container has changed,
+        // updated the container of the port.
+        if (_port != null && (entity == null || entity instanceof Entity)) {
+            try {
+        	_settingContainer = true;
+                _port.setContainer((Entity)entity);
+            } catch (KernelException ex) {
+        	super.setContainer(previousContainer);
+        	throw ex;
+            } finally {
+        	_settingContainer = false;
+            }
         }
     }
 
@@ -366,14 +429,13 @@ Initializable {
             return;
         }
         super.setDisplayName(name);
-        if (_port != null) {
+        ParameterPort port = getPort();
+        if (port != null) {
             try {
                 _settingName = true;
-                _port._settingName = true;
-                _port.setDisplayName(name);
+                port.setDisplayName(name);
             } finally {
                 _settingName = false;
-                _port._settingName = false;
             }
         }
     }
@@ -399,30 +461,23 @@ Initializable {
      *   contains an attribute with the proposed name.
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+	    throws IllegalActionException, NameDuplicationException {
         if (_settingName) {
             return;
         }
-
         super.setName(name);
-
-        if (_port != null) {
+        ParameterPort port = getPort();
+        if (port != null) {
             String oldName = getName();
-
             try {
                 _settingName = true;
-                _port._settingName = true;
-                _port.setName(name);
-            } catch (IllegalActionException ex) {
-                super.setName(oldName);
-                throw ex;
-            } catch (NameDuplicationException ex) {
+                port.setName(name);
+            } catch (KernelException ex) {
                 super.setName(oldName);
                 throw ex;
             } finally {
                 _settingName = false;
-                _port._settingName = false;
             }
         }
     }
@@ -449,23 +504,6 @@ Initializable {
         super.setToken(newValue);
     }
 
-    /** Declare the type of this parameter to by equal the specified value.
-     *  In addition, if a port is associated, declare its type to be equal
-     *  to this value.
-     *  To undo, call this method with the argument BaseType.UNKNOWN.
-     *  @see ParameterPort
-     *  @param type A Type.
-     *  @exception IllegalActionException If the currently contained
-     *   token cannot be converted losslessly to the specified type.
-     */
-    @Override
-    public void setTypeEquals(Type type) throws IllegalActionException {
-        super.setTypeEquals(type);
-        if (_port != null) {
-            _port.setTypeEquals(type);
-        }
-    }
-
     /** Check to see whether a token has arrived at the
      *  associated port, and if so, update the current value of
      *  parameter with that token.  If there is no associated port,
@@ -475,7 +513,7 @@ Initializable {
      *   port throws it.
      */
     public boolean update() throws IllegalActionException {
-        ParameterPort port = _port;
+        ParameterPort port = getPort();
 
         if (port != null && port.isOutsideConnected() && port.hasToken(0)) {
             Token token = port.get(0);
@@ -495,14 +533,6 @@ Initializable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get the persistent expression as a string, to be used to export to MoML.
-     *  @return The current expression as a string.
-     *  @Override
-     */
-    protected String _getCurrentExpression() {
-	return _persistentExpression;
-    }
-
     /** Override the base class to also propagate the associated port.
      *  @param container Object to contain the new object.
      *  @exception IllegalActionException If the object
@@ -521,10 +551,22 @@ Initializable {
         // If this parameter is contained by class definition
         // somewhere above in the hierarchy, then not propagating
         // the associated port is an error.
-        if (_port != null) {
-            _port.propagateExistence();
+        ParameterPort port = getPort();
+        if (port != null) {
+            port.propagateExistence();
         }
         return result;
+    }
+
+    /** Set the type constraints between the protected member _port
+     *  and this parameter.  This is a protected method so that subclasses
+     *  can define different type constraints.
+     */
+    protected void _setTypeConstraints() {
+        ParameterPort port = getPort();
+        if (port != null) {
+            port.setTypeSameAs(this);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -538,6 +580,9 @@ Initializable {
 
     /** The persistent expression. */
     private String _persistentExpression;
+
+    /** Indicator that we are in the midst of setting the container. */
+    private boolean _settingContainer = false;
 
     /** Indicator that we are in the midst of setting the name. */
     private boolean _settingName = false;

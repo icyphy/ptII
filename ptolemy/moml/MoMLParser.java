@@ -56,8 +56,6 @@ import java.util.Stack;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -2499,6 +2497,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String entityName = (String) _attributes.get("entity");
 
                 // Delete the corresponding ParameterPort, if any.
+                /* No longer needed. Now handled by ParameterPort. EAL 6/13/15
                 Port toDelete = null;
                 try {
                     toDelete = _searchForPort(portName);
@@ -2533,6 +2532,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         }
                     }
                 }
+                */
 
                 // Link is stored and processed last, but before deletions.
                 DeleteRequest request = new DeleteRequest(_DELETE_PORT,
@@ -2566,9 +2566,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 DeleteRequest request = new DeleteRequest(_DELETE_PROPERTY,
                         propName, null);
 
-                // We use toDelete to find any PortParameters
-                Attribute toDelete = _searchForAttribute(propName);
-
                 // Only defer if we are in a class, entity, or model context,
                 // which is equivalent to the _current being an instance of
                 // InstantiableNamedObj.
@@ -2585,6 +2582,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 // Find the corresponding PortParameter and delete it
+                /* No longer needed. Handled by ParameterPort. EAL 6/13/15
+                Attribute toDelete = _searchForAttribute(propName);
                 NamedObj container = toDelete.getContainer();
                 if (container != null && container instanceof Entity) {
                     Port port = ((Entity) container).getPort(propName);
@@ -2608,6 +2607,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         }
                     }
                 }
+                */
 
                 // NOTE: deleteProperty is not supposed to have anything
                 // inside it, so we do not push the context.

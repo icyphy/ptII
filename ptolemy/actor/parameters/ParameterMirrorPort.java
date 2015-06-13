@@ -186,13 +186,6 @@ public class ParameterMirrorPort extends ParameterPort {
         }
     }
 
-    /** Set PortParameter of this ParameterPort.
-     * @param parameter The PortParameter.
-     */
-    public void setParameter(PortParameter parameter) {
-        _parameter = parameter;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

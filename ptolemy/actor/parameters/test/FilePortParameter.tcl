@@ -42,7 +42,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test FilePortParameter-2.0 {Check constructors} {
-    set e [java::new {ptolemy.kernel.Entity String} entity]
+    set e [java::new ptolemy.actor.TypedCompositeActor]
+    $e setName entity
     set tok [java::new  {ptolemy.data.DoubleToken double} 4.5]
     set ws [java::new ptolemy.kernel.util.Workspace workspace]
 
@@ -68,7 +69,8 @@ test FilePortParameter-2.0 {Check constructors} {
 ####
 #
 test FilePortParameter-2.1 {Try empty string} {
-    set e2_1 [java::new {ptolemy.kernel.Entity String} entity]
+    set e2_1 [java::new ptolemy.actor.TypedCompositeActor]
+    $e setName entity
     set tok2_1 [java::new  {ptolemy.data.StringToken} ""]
     set param2_1 [java::new ptolemy.actor.parameters.FilePortParameter $e2_1 \
     	param2_1 $tok2_1]
@@ -79,7 +81,8 @@ test FilePortParameter-2.1 {Try empty string} {
 ####
 #
 test FilePortParameter-2.2 {Try null token} {
-    set e2_2 [java::new {ptolemy.kernel.Entity String} entity]
+    set e2_2 [java::new ptolemy.actor.TypedCompositeActor]
+    $e setName entity
     set tok2_2 [java::null]
     set param2_2 [java::new ptolemy.actor.parameters.FilePortParameter $e2_2 \
     	param2_2 $tok2_2]
