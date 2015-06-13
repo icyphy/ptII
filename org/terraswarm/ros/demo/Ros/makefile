@@ -50,10 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Ros.xml \
 	RosPublisher.xml \
 	RosSubscriber.xml \
-	ScarabPoseSubscriber.xml \
-	ScarabWayptPublisher.xml
-
-
+	ScarabGoalPublisher.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
