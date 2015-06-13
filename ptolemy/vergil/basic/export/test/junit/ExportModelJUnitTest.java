@@ -294,6 +294,7 @@ public class ExportModelJUnitTest {
                 "FMUSimulationX", // 32-bit only
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
+                "HappySadStock.xml", // Run only if there is a Hue on the local network.           
                 "HierarchyFlattening.xml", // gt
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
