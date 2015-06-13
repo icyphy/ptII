@@ -52,8 +52,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosSubscriber.xml
-$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabPoseSubscriber.xml
-$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabWayPointPublisher.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
