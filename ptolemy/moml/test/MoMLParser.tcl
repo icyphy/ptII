@@ -2429,7 +2429,7 @@ test MoMLParser-5.3.2 {Test property deletion of a PortParameter - get both the 
 ######################################################################
 ####
 #
-test MoMLParser-5.3.3 {Test property deletion of a PortParameter - get both the PortParameter and the ParameterPort} {
+test MoMLParser-5.3.3 {Test property deletion of a PortParameter - undo previous change} {
     # Depends on 5.3.1 and 5.3.2
     set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
     $toplevel requestChange $undochange
@@ -2490,8 +2490,6 @@ test MoMLParser-5.3.5 {Test undo of 5.3.4} {
     </property>
     <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-        </property>
     </port>
 </entity>
 }
@@ -4637,9 +4635,11 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
+    </property>
+    <property name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.PortParameter">
     </property>
     <port name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
@@ -4648,15 +4648,19 @@ test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in th
     </port>
     <port name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </property>
     </port>
 </entity>
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
+    </property>
+    <property name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.PortParameter">
     </property>
     <port name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>

@@ -26,7 +26,6 @@
  */
 package ptolemy.actor.parameters;
 
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -34,7 +33,9 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -70,9 +71,41 @@ public class ParameterPort extends TypedIOPort {
      */
     public ParameterPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
+	this(container, name, null);
+    }
+
+    /** Construct a new input port in the specified container with the
+     *  specified name. The specified container
+     *  must implement the Actor interface, or an exception will be thrown.
+     *  @param container The container.
+     *  @param name The name of the port.
+     *  @param parameter The associate PortParameter, or null to create one.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container, or if the container does not implement the
+     *   Actor interface.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a port already in the container.
+     */
+    protected ParameterPort(ComponentEntity container, String name, PortParameter parameter)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setInput(true);
         setMultiport(false);
+        _parameter = parameter;
+        
+        if (_parameter == null) {
+            // This is apparently being created directly, e.g. in MoML, rather than
+            // the preferred way of creating a PortParameter. Create or capture
+            // the corresponding PortParameter.
+            Attribute existingParameter = container.getAttribute(name);
+            if (existingParameter instanceof PortParameter) {
+        	_parameter = (PortParameter) existingParameter;
+        	_parameter._port = this;
+            } else {
+                _parameter = new PortParameter(container, name, this);
+            }
+        }
+        _setTypeConstraints();
 
         // Declare to the SDF scheduler that this port consumes one
         // token, despite not being connected on the inside.
@@ -108,52 +141,59 @@ public class ParameterPort extends TypedIOPort {
         return newObject;
     }
 
+    /** Get the associated parameter.
+     *  @return The associated parameter.
+     */
+    public PortParameter getParameter() {
+	if (_parameter == null) {
+	    // Attempt to find the parameter.
+	    NamedObj container = getContainer();
+	    if (container != null) {
+		Attribute candidate = container.getAttribute(getName());
+		if (candidate instanceof PortParameter) {
+		    _parameter = (PortParameter)candidate;
+		    _setTypeConstraints();
+		}
+	    }
+	}
+        return _parameter;
+    }
+
     /** Set the container of this port. If the container is different
      *  from what it was before and there is an associated parameter, then
-     *  break the association.  If the new container has a parameter with the
-     *  same name as this port, then establish a new association.
-     *  That parameter must be an instance of PortParameter, or no association
-     *  is created.
+     *  also change the container of the parameter.
      *  @see PortParameter
      *  @param entity The new container.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
     @Override
-    public void setContainer(Entity entity) throws IllegalActionException,
-    NameDuplicationException {
+    public void setContainer(Entity entity)
+	    throws IllegalActionException, NameDuplicationException {
+	if (_settingContainer) {
+	    // Recursive call through the parameter.
+	    return;
+	}
         Entity previousContainer = (Entity) getContainer();
+        if (previousContainer == entity) {
+            // No change.
+            return;
+        }
         super.setContainer(entity);
 
-        // If there is an associated port, and the container has changed,
-        // break the association.
-        if (_parameter != null && entity != previousContainer) {
-            _parameter._port = null;
-            _parameter = null;
-        }
-
-        // Look for a parameter in the new container with the same name,
-        // and establish an association.
-        if (entity instanceof TypedActor) {
-            // Establish association with the parameter.
-            Attribute parameter = entity.getAttribute(getName());
-
-            if (parameter instanceof PortParameter) {
-                _parameter = (PortParameter) parameter;
-
-                if (_parameter._port == null) {
-                    _parameter._port = this;
-                    _setTypeConstraints();
-                }
+        // If there is an associated parameter, and the container has changed,
+        // change that container too.
+        if (_parameter != null) {
+            try {
+        	_settingContainer = true;
+        	_parameter.setContainer(entity);
+            } catch (KernelException ex) {
+        	super.setContainer(previousContainer);
+        	throw ex;
+            } finally {
+        	_settingContainer = false;
             }
         }
-    }
-
-    /** Get the associated parameter.
-     *  @return The associated parameter.
-     */
-    public PortParameter getParameter() {
-        return _parameter;
     }
 
     /** Set the display name, and propagate the name change to the
@@ -164,18 +204,21 @@ public class ParameterPort extends TypedIOPort {
      */
     @Override
     public void setDisplayName(String name) {
-        if (_settingName || _parameter == null) {
-            super.setDisplayName(name);
-        } else {
+        if (_settingName) {
+            return;
+        }
+        super.setDisplayName(name);
+        PortParameter parameter = getParameter();
+        if (parameter != null) {
             try {
                 _settingName = true;
-                _parameter.setDisplayName(name);
+                parameter.setDisplayName(name);
             } finally {
                 _settingName = false;
             }
         }
     }
-
+    
     /** Set the name, and propagate the name change to the
      *  associated parameter.  If a null argument is given, then the
      *  name is set to an empty string.
@@ -189,12 +232,19 @@ public class ParameterPort extends TypedIOPort {
     @Override
     public void setName(String name) throws IllegalActionException,
     NameDuplicationException {
-        if (_settingName || _parameter == null) {
-            super.setName(name);
-        } else {
+        if (_settingName) {
+            return;
+        }
+        super.setName(name);
+        PortParameter parameter = getParameter();
+        if (parameter != null) {
+            String oldName = getName();
             try {
                 _settingName = true;
-                _parameter.setName(name);
+                parameter.setName(name);
+            } catch (KernelException ex) {
+                super.setName(oldName);
+                throw ex;
             } finally {
                 _settingName = false;
             }
@@ -212,15 +262,24 @@ public class ParameterPort extends TypedIOPort {
      *  port, and hence the port may not be fully constructed.
      */
     protected void _setTypeConstraints() {
-        _parameter.setTypeSameAs(this);
+        PortParameter parameter = getParameter();
+        if (parameter != null) {
+            parameter.setTypeSameAs(this);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** Indicator that we are in the midst of setting the name. */
-    protected boolean _settingName = false;
+    ////                       protected members                   ////
 
     /** The associated parameter. */
     protected PortParameter _parameter;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** Indicator that we are in the midst of setting the container. */
+    private boolean _settingContainer = false;
+
+    /** Indicator that we are in the midst of setting the name. */
+    private boolean _settingName = false;
 }
