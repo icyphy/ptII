@@ -127,11 +127,12 @@ foreach file [lsort [glob auto/*.xml]] {
     if {![catch {java::call Class forName org.terraswarm.accessor.JSAccessor} errMsg]} {
 
         # Look for JSAccessor actors in the model.
+        set toplevel [$application toplevel]
         set JSAccessorPresent 0
-	set entityList [$configuration allAtomicEntityList]
+	set entityList [$toplevel allAtomicEntityList]
 	for {set iterator [$entityList iterator]} {[$iterator hasNext] == 1} {} {
             set entity [$iterator next]
-            if [java::instanceof $entity org.terrasarm.accessor.JSAccessor] {
+            if [java::instanceof $entity org.terraswarm.accessor.JSAccessor] {
                 set JSAccessorPresent 1
             }
         }
