@@ -1225,6 +1225,7 @@ public class JavaScript extends TypedAtomicActor {
 	    }
 	    if (((Parameter)parameter).getToken() == null
 		    || ((ptType == BaseType.STRING)
+			    && parameter instanceof StringParameter
 			    && (((StringParameter)parameter).stringValue().equals("")))) {
 		// The parameter does not already have a value. Set the default.
 		Object value = options.get("value");
