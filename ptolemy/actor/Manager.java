@@ -792,9 +792,15 @@ public class Manager extends NamedObj implements Runnable {
 
             _iterationCount++;
             _setState(ITERATING);
+
             // Perform domain-specific initialization on the actor.
+            // Do not attempt to initialize transparent composite actors.
+            // Note that the cast is safe, as everything in Ptolemy that
+            // is an actor is also a ComponentEntity.
             for (Actor actor : _actorsToInitialize) {
-                actor.getExecutiveDirector().initialize(actor);
+                if (((ComponentEntity) actor).isOpaque()) {            	
+                	actor.getExecutiveDirector().initialize(actor);
+                }
             }
 
             _actorsToInitialize.clear();
