@@ -104,11 +104,16 @@ public class AutoTests extends ModelTests {
                         .forName("ptolemy.moml.MoMLSimpleApplication");
                 _applicationConstructor = _applicationClass
                         .getConstructor(String.class);
+            }
 
+            // _applicationConstructor might have been initialized in
+            // AutoKnownFailedTests, so we initialize
+            // _applicationToplevelMethod here.
+            if (_applicationToplevelMethod == null) {
                 _applicationToplevelMethod = _applicationClass
                     .getMethod("toplevel", new Class[]{});
-
             }
+
             Object instance = _applicationConstructor.newInstance(fullPath);
 
             System.out.println("----------------- testing again " + fullPath);
@@ -121,6 +126,9 @@ public class AutoTests extends ModelTests {
             // If JSAccessor is present and the model contains one, then
             // reload all the JSAccessors and rerun the model
             if (_jsAccessorClass != null) {
+                _applicationToplevelMethod = _applicationClass
+                    .getMethod("toplevel", new Class[]{});
+
                 Object toplevel = _applicationToplevelMethod.invoke(instance, (Object[]) null);
                 if (_jsAccessorReloadAllAccessorsMethod == null) {
                     throw new InternalError("Found the JSAccessor class, but not the reloadAllAccessors() method?");
