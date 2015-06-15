@@ -14,19 +14,43 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 25.0]">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={210, 143, 1060, 752}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 635]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000041">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{585.7702792553189, 302.22606382978734}">
+    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for running the RosPublisher accessor.&#10;&#10;This accessor assumes there is a ROS system running a rosbridge server.&#10;It connects to that rosbridge server through a web socket. It publishes JSON data to a &#10;pre-established topic on the ROS system. &#10;&#10;See instructions in Ros.xml for instructions on how to run a demo with ROS. &#10;">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 260.0]">
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="SansSerif">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for running the RosPublisher and RosSubscriber accessor.&#10;Open the RosPublisher and RosSubscriber model by clicking on the links. &#10;&#10;Start up ROS and rosbridge on an Ubuntu machine:&#10;&#10;&#10;&#10;Now we set up a ROS topic and publish to it from ROS. &#10;The following command creates the topic &quot;/noise&quot;, ties it to the datatype String,&#10;and publishes &quot;im a ros publisher&quot; with a rate of 1 Hz:&#10;&#10;&#10;&#10;Now run your RosSubscriber accessor with the following parameters:&#10;server (string): IP address of ROS machine, eg &quot;localhost&quot; or &quot;127.0.0.1&quot;&#10;port (number): 9090 (default port of rosbridge)&#10;topic (string): &quot;/noise&quot;&#10;&#10;You should see the JSON output &quot;im a ros publisher&quot; printed at 1 Hz. &#10;&#10;Now we'll publish to that topic using the RosPublisher model.  &#10;Open the RosPublisher model, and configure the DiscreteClock as below.&#10;This triggers the publisher to publish at 1 Hz. The value it publishes must match the &#10;the ROS std_msgs/String datatype, which is formatted: {&quot;data&quot;: &quot;string to publish&quot;} &#10;StopTime: Infinity&#10;Period: 1.0&#10;Offset: {0.0}&#10;Values: {{data = &quot;im an accessor publisher&quot;}}&#10;&#10;Look at the RosSubscriber output, and you should see it alternate between:&#10;&quot;im a ros publisher&quot;&#10;&quot;im an accessor publisher&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={249, 149, 1060, 752}, maximized=false}">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Monospaced">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="$roscore&#10;$roslaunch rosbridge_server rosbridge_websocket.launch&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 275.0]">
+        </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 663]">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000064">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{585.7702792553189, 316.2260638297872}">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Monospaced">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="$rostopic pub /noise std_msgs/String &quot;im a ros publisher&quot; -r 1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 385.0]">
+        </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
@@ -64,6 +88,18 @@
             <property name="topic (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="the pre-defined ROS topic to publish to">
             </property>
             <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The data to be published to the topic.">
+            </property>
+            <property name="server" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
+            </property>
+            <property name="port" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
+            </property>
+            <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
+            </property>
+            <property name="connected" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
+            </property>
+            <property name="received" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
+            </property>
+            <property name="topic" class="ptolemy.kernel.util.StringAttribute" value="the pre-defined ROS topic to publish to">
             </property>
         </property>
         <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">

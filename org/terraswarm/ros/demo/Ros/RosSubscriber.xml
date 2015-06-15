@@ -15,18 +15,28 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for RosSubscriber accesor. This accessor connects to a rosbridge server, &#10;that is running on a ROS sytem, and subscribes to a ROS topic in that system. &#10;&#10;The accessor takes in the following 3 inputs:&#10;1. address (string) of rosbridge, eg: &quot;localhost&quot; or &quot;127.0.0.1&quot;&#10;2. port (number) of rosbridge, eg: 9090&#10;3. topic (string), eg: &quot;/noise&quot;&#10;&#10;It displays the JSON message it receives.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for RosSubscriber accesor. This accessor connects to a rosbridge server, &#10;that is running on a ROS sytem, and subscribes to a ROS topic in that system. &#10;&#10;The accessor takes in the following 3 inputs:$ro&#10;1. address (string) of rosbridge, eg: &quot;localhost&quot; or &quot;127.0.0.1&quot;&#10;2. port (number) of rosbridge, eg: 9090&#10;3. topic (string), eg: &quot;/noise&quot;&#10;&#10;It displays the JSON message it receives.&#10;&#10;To run the demo, run the following commands on a ROS system. &#10;&#10;&#10;&#10;&#10;&#10;&#10;This publishes &quot;hello world&quot; to the /noise topic. You should see the RosSubscriber &#10;output &quot;hello world&quot;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 220.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={287, 136, 1060, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={287, 120, 1060, 780}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 663]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000016">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.640000000000001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{629.6547029702972, 120.68827351485137}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{629.6547029702972, 120.68827351485129}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="fontFamily" class="ptolemy.data.expr.StringParameter" value="Monospaced">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="$roscore&#10;$roslaunch rosbridge_server rosbridge_websocket.launch&#10;$rostopic pub noise std_msgs/String &quot;hello world&quot;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 415.0]">
+        </property>
     </property>
     <entity name="MessageOnTopic" class="ptolemy.actor.lib.gui.Display">
         <display name="MessageOnTopic&#10;"/>
@@ -61,6 +71,18 @@
             </property>
             <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
             </property>
+            <property name="server" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
+            </property>
+            <property name="port" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
+            </property>
+            <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
+            </property>
+            <property name="connected" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
+            </property>
+            <property name="received" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
+            </property>
+            <property name="topic" class="ptolemy.kernel.util.StringAttribute" value="the ROS topic to subscribe to.">
+            </property>
         </property>
         <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
         </property>
@@ -84,32 +106,26 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+        <port name="topic" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="connected" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="topic" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>
