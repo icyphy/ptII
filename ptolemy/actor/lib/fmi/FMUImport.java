@@ -4625,7 +4625,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         public boolean hasChanged;
 
         /** The last token seen at the input port. */
-        public Token lastInput;
+        public double lastDoubleInput;
 
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
