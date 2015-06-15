@@ -19,15 +19,23 @@ var EventEmitter = require('events').EventEmitter;
  *  to a server at the specified host and port.
  *  The returned object subclasses EventEmitter.
  *  You can register handlers for events 'open', 'message', 'close', or 'error'.
+ *  The event 'open' will be emitted when the socket has been successfully opened.
+ *  The event 'message' will be emitted with the body of the message as an
+ *  argument when an incoming message arrives on the socket. If the incoming message
+ *  can be parsed as JSON, then it will be parsed, and the resulting object will be
+ *  sent to any handlers for the 'message' event. If parsing fails, then the message
+ *  will be passed as a string.
+ *  The event 'close' will be emitted when the socket is closed, and 'error' if an
+ *  an error occurs (with an error message as an argument).
  *  For example,
- *  <pre>
- *    var WebSocket = require('webSocket');
- *    var client = new WebSocket.Client('localhost', 8080);
- *    client.on('message', onMessage);
- *    function onMessage(message) {
- *      print('Received from web socket: ' + message);
- *    }
- *  </pre>
+ *  
+ *      var WebSocket = require('webSocket');
+ *      var client = new WebSocket.Client('localhost', 8080);
+ *      client.on('message', onMessage);
+ *      function onMessage(message) {
+ *          print('Received from web socket: ' + message);
+ *      }
+ *  
  *  @param options A JSON object with fields 'host' and 'port' that give the
  *   IP address or host name for the host and the port on which the host is listening.
  *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
