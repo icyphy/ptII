@@ -81,6 +81,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.qss.kernel.QSSDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -912,10 +913,14 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
          * ", return result was " + _fmiStatusDescription(fmiFlag)); } } }
          */
 
+        int index = -1;
+        
         ////////////////
         // Get the outputs from the FMU and produce them..
         for (Output output : _getOutputs()) {
 
+        	index++;
+        	
             TypedIOPort port = output.port;
 
             if (_debugging) {
@@ -1026,16 +1031,24 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                                 0, 1, null, null, null, null, null, null, oo,
                                 ooRef, 0, null, null, null, null, null);
                         token = new DoubleToken(oo[0]);
-                        // Send data to port only when there is a change.
-                        // if (_firstFire) {
-                        //    port.send(0, token);
-                        //    _getOutputs().get(index).lastOutput = oo[0];
-                        // } else if (_getOutputs().get(index).lastOutput != oo[0]
-                        //       && !_firstFire) {
-                        //port.send(0, token);
                     } else {
                         double result = scalarVariable.getDouble(_fmiComponent);
                         token = new DoubleToken(result);
+                        
+                        if (_useQSS) {
+                            if (_firstFire) {
+                                _outputs.get(index).lastDoubleOutput = result;
+                            }
+                            // Produce an output if the quantum has been crossed.
+                            else {
+                                double epsilon = Math.abs(_quantum * output.lastDoubleOutput);
+                                if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
+                                    continue;
+                                } else {
+                                    _outputs.get(index).lastDoubleOutput = result;
+                                }
+                            }
+                        }                                                 
                     }
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     if (_useRawJNI()) {
@@ -1456,6 +1469,19 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         _numberOfStateEvents = 0;
         _numberOfStepEvents = 0;
         _numberOfTimeEvents = 0;
+        
+        // Initialize parameters used for the case where the QSS director is used.
+        // This will be used to determine whether outputs need to be quantized.
+        _useQSS = false;
+        Director director = getDirector();
+        if ((director instanceof QSSDirector)) {
+            _useQSS = true;
+            // get the quantum which will be used to determine whether 
+            // outputs should be produced or not.
+            _quantum = Math.max( ((QSSDirector)getDirector()).getRelativeQuantum(), 
+            		((QSSDirector)getDirector()).getAbsoluteQuantum());
+            
+        }
 
         if (_useRawJNI()) {
             // Load the "FMUImportJNI" native interface. Use a classpath-relative
@@ -4586,6 +4612,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
+    
+    /** The output quantum if QSS is used. */
+    public double _quantum;
 
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
@@ -4613,6 +4642,11 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** Boolean indicating whether the director uses an error tolerance. */
     private byte _toleranceControlled;
+    
+    /**
+     * Indicator that we use the QSSDirector
+     */
+    private boolean _useQSS;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
