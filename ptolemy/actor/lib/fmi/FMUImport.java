@@ -4624,7 +4624,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         /** The flag which indicates that input changed. */
         public boolean hasChanged;
 
-        /** The last token seen at the input port. */
+        /** The last double token seen at the input port. */
         public double lastDoubleInput;
 
         /** The Ptolemy output port for this output. */
