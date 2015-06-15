@@ -130,6 +130,13 @@ public class QSSDirector extends DEDirector {
      *  absoluteQuantum to be used.
      */
     public Parameter relativeQuantum;
+    
+    /** The quantum scale factor to use for QSS integrations under the control
+     *  of this director. This value is used to scale the value of the absolute and 
+     *  relative quantum to achieve a finer quantization. This is a double which 
+     *  value must be greater than 0.0 and less or equal to 1.0. 
+     */
+    public Parameter quantumScaleFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -163,6 +170,18 @@ public class QSSDirector extends DEDirector {
                         "absoluteQuantum is required to be greater than 0.0.");
             }
             _absoluteQuantum = value;
+        }else if (attribute == quantumScaleFactor) {
+            double value = ((DoubleToken) quantumScaleFactor.getToken())
+                    .doubleValue();
+            if (value <= 0.0) {
+                throw new IllegalActionException(this,
+                        "quantumScaleFactor is required to be greater than 0.0.");
+            }
+            if (value > 1.0) {
+                throw new IllegalActionException(this,
+                        "quantumScaleFactor is required to be less than 1.0.");
+            }
+            _quantumScaleFactor = value;
         } else {
             super.attributeChanged(attribute);
         }
@@ -193,13 +212,21 @@ public class QSSDirector extends DEDirector {
         // This method is final for performance reason.
         return _absoluteQuantum;
     }
-
+    
     /** Return the value of the relativeQuantum parameter.
      *  @return The relative quantum.
      */
     public final double getRelativeQuantum() {
         // This method is final for performance reason.
         return _relativeQuantum;
+    }
+    
+    /** Return the value of the quantumScaleFactor parameter.
+     *  @return The state output threshold quantum.
+     */
+    public final double getQuantumScaleFactor() {
+        // This method is final for performance reason.
+        return _quantumScaleFactor;
     }
 
     /** Return a new QSS solver for use.
@@ -281,9 +308,14 @@ public class QSSDirector extends DEDirector {
 	absoluteQuantum.setExpression("1e-4");
 	absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
 
+	quantumScaleFactor = new Parameter(this, "quantumScaleFactor");
+	quantumScaleFactor.setExpression("1.0");
+	quantumScaleFactor.setTypeEquals(BaseType.DOUBLE);
+
 	relativeQuantum = new Parameter(this, "relativeQuantum");
 	relativeQuantum.setExpression("0.0");
 	relativeQuantum.setTypeEquals(BaseType.DOUBLE);
+	
 	
 	QSSSolver = new StringParameter(this, "QSSSolver");
 	configureSolverParameter(QSSSolver, "QSS1");
@@ -295,9 +327,13 @@ public class QSSDirector extends DEDirector {
     /** The absolute quantum for state resolution. */
     private double _absoluteQuantum;
 
+    /** The threshold to produce state outputs . */
+    private double _quantumScaleFactor;
+
     /** The relative quantum for state resolution. */
     private double _relativeQuantum;
-    
+        
     /** The package name for the solvers supported by this director. */
     private static String _solverClasspath = "org.ptolemy.qss.solver.";
+    
 }
