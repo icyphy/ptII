@@ -7,15 +7,25 @@ Updating The JSDoc output
 
 The JSDoc output is in $PTII/doc/codeDoc/js.
 
-To regenerate that directory:
+Running "ant jsdoc" will clone the terraswarm fork of JSDoc.
 
-cd $PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git    
+To build:
+
 cd $PTII
 ./configure
+ant jsdoc
+
+To update the JSDoc fork after running "ant jsdoc"
+
+cd $PTII
+ant vendors-jsdoc-pull
 ant jsdoc
 
 See Also
 --------
 * https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems - Overview of JSDoc systems
+** https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems#JSDocCustomTagPlugin - How @accessor, @input etc. are supported.
 * https://www.terraswarm.org/accessors/wiki/Main/JSDoc - Information for Accessor writers (TerraSwarm membership required)
+
+
 
