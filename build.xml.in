@@ -1363,10 +1363,19 @@ For example:
       <exec dir="${basedir}/vendors"
             executable="git">
         <arg value="clone"/>
-        <arg value="https://github.com/jsdoc3/jsdoc.git"/>
+        <arg value="https://github.com/terraswarm/jsdoc.git"/>
       </exec>
   </target>
 
+  <target name="vendors-jsdoc-pull"
+	  depends="vendors-jsdoc"
+	  description="Do a git pull in vendors/jsdoc">
+    <exec dir="${basedir}/vendors/jsdoc"
+          executable="git">
+      <arg value="pull"/>
+    </exec>
+  </target>
+    
   <target name="vergil" depends="build-project"
 	  description="Invoke the Ptolemy II User Interface.  To run a model, use ant vergil -Dmodel=model.xml"
 	  >
