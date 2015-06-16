@@ -236,6 +236,19 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         persistentInputs = new Parameter(this, "persistentInputs");
         persistentInputs.setTypeEquals(BaseType.BOOLEAN);
         persistentInputs.setExpression("false");
+        
+        // FIXME: removeDirectDependency allows to remove all dependencies between input and outputs of an FMU.
+        // This is relevant for FMUs 1.0 for model-exchange or co-simulation which do in general not
+        // provide input/output dependency information causing to introduce micro step delay if used in feedback loop. This also temporary
+        // addresses the limitation of the causality analysis of Ptolemy II which acts at the actor level rather
+        // than at the port level. In Ptolemy II, If one input of an actor, has direct dependency with one output,
+        // then if that output is connected to any other input which does not have any direct dependency, 
+        // then Ptolemy II will trigger a wrong exception, saying that a feedback back loop is found. 
+        // removeDirectDependency should be used with caution. 
+        removeDirectDependency = new Parameter(this,"removeDirectDependency");
+        removeDirectDependency.setTypeEquals(BaseType.BOOLEAN);
+        removeDirectDependency.setExpression("false");
+        removeDirectDependency.setVisibility(Settable.EXPERT);
 
         stateVariablesAsInputPorts = new Parameter(this,
                 "stateVariablesAsInputPorts");
@@ -280,6 +293,14 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      * mode because normally a user should not be allowed to change it.
      */
     public Parameter modelExchange;
+    
+    /**
+     * If true, then this, then the dependency of all inputs
+     * on outputs are removed. This is particularly useful for FMI 1.0
+     * which do not declare any input/output dependency forcing to add
+     * microstep delays to the system even when not needed.     
+     * */
+    public Parameter removeDirectDependency;
 
     /**
      * If true, then this FMU has state variables that are visible as
@@ -413,6 +434,8 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         // By default, if all outputs depend on all inputs, then the actor
         // is strict.
         _isStrict = true;
+        boolean removeDirectDependencyValue = ((BooleanToken) removeDirectDependency
+                .getToken()).booleanValue();
         for (Output output : _getOutputs()) {
             if (output.dependencies == null) {
                 // There are no dependencies declared for this output,
@@ -421,7 +444,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             }
             List<TypedIOPort> inputs = inputPortList();
             for (TypedIOPort input : inputs) {
-                if (!output.dependencies.contains(input)) {
+                if (removeDirectDependencyValue){
+                    _declareDelayDependency(input, output.port, 0.0);
+                }
+                else if (!output.dependencies.contains(input)) {
                     _declareDelayDependency(input, output.port, 0.0);
                     _isStrict = false;
                     if (_debugging) {
