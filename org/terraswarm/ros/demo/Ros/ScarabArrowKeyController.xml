@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-160.0, 375.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={250, 24, 1013, 876}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={250, 24, 1185, 876}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[799, 759]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[971, 759]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000158">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2500000000000246">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{144.43434405940644, 253.62956373762387}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{213.23434405940503, 253.62956373762387}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -37,161 +37,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 140.0]">
         </property>
     </entity>
-    <entity name="ScarabGoalPublisher" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.  // All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor publishes pose information to Scarab topic /goal.&lt;br&gt;&#10; *  This accessor requires the module 'webSocketClient'. &#10; *  It inherits the input and output ports from webSocketClient, and takes in&#10; *  pose information at 'toSend'.&lt;br&gt;&#10; *  The data published must be of the ROS datatype geometry_msgs/PoseStamped.&#10; *  This is formatted as the following:&lt;pre&gt;&#10; *  {&#10; *    &quot;position&quot;: //cartesian coordinates&#10; *      {&quot;x&quot;:.., &quot;y&quot;:.. &quot;z&quot;:..},&#10; *    &quot;orientation&quot;: //quaternion orientation (final orientation of robot)&#10; *      {&quot;w&quot;:.., &quot;x&quot;:.., &quot;y&quot;:.., &quot;z&quot;:..}&#10; *  } &lt;/pre&gt;&#10; *  The header information is added by rosbridge. &lt;br&gt;&#10; *&#10; *  @accessor ScarabGoalPublisher&#10; *  @module ScarabGoalPublisher&#10; *  @input {string} server The IP address or domain name of the rosbridge server.&#10; *  @input {number} port The port of the rosbridge server.&#10; *  @input {JSON} toSend The pose data to be sent to the rosbridge server.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10;*/&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in webSocketClient.*/&#10;exports.setup = wsClient.setup;&#10;&#10;/** Overrides inputHandler on 'toSend' from webSocketClient.&lt;br&gt; &#10;  * New inputHandler takes in pose data and formats it according to the &#10;  * geometry_msgs/PoseStamped datatype in ROS. &lt;br&gt;&#10;  * Inherits initialize from webSocketClient.*/ &#10;exports.initialize = function() {&#10;  //must override first&#10;  wsClient.toSendInputHandler = function() {&#10;    var pose = get('toSend');&#10;    var msg = {&#10;      &quot;header&quot;: {&#10;        &quot;seq&quot;: 0,&#10;        &quot;stamp&quot;: {&#10;          &quot;secs&quot;: 0,&#10;          &quot;nsecs&quot;: 0  &#10;        },&#10;        &quot;frame_id&quot;: &quot;map_hokuyo&quot;    &#10;      },&#10;      &quot;pose&quot;: pose&#10;    }&#10;    var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: &quot;/goal&quot;,&#10;      &quot;msg&quot;: msg &#10;    }&#10;    wsClient.sendToWebSocket(data);&#10;  }&#10;  wsClient.initialize();&#10;}&#10;&#10;/** inherits wrapup function from webSocketClient */&#10;exports.wrapup = wsClient.wrapup;&#10;&#10;">
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/ScarabGoalPublisher.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor publishes pose information to Scarab topic /goal.&lt;br&gt;&#10; This accessor requires the module 'webSocketClient'. &#10; It inherits the input and output ports from webSocketClient, and takes in&#10; pose information at 'toSend'.&lt;br&gt;&#10; The data published must be of the ROS datatype geometry_msgs/PoseStamped.&#10; This is formatted as the following:&lt;pre&gt;&#10; {&#10;   &quot;position&quot;: //cartesian coordinates&#10;     {&quot;x&quot;:.., &quot;y&quot;:.. &quot;z&quot;:..},&#10;   &quot;orientation&quot;: //quaternion orientation (final orientation of robot)&#10;     {&quot;w&quot;:.., &quot;x&quot;:.., &quot;y&quot;:.., &quot;z&quot;:..}&#10; } &lt;/pre&gt;&#10; The header information is added by rosbridge. &lt;br&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$Id$">
-            </property>
-            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
-            </property>
-            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
-            </property>
-            <property name="toSend (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The pose data to be sent to the rosbridge server.">
-            </property>
-            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
-            </property>
-            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
-            </property>
-            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
-            </property>
-            <property name="server" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
-            </property>
-            <property name="port" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
-            </property>
-            <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
-            </property>
-            <property name="connected" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
-            </property>
-            <property name="received" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
-            </property>
-        </property>
-        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
-        </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[431.0, 162.0]">
-        </property>
-        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="toSend" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="connected" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="received" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="RosSubscriber" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.  // All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor subscribes to a ROS topic.&lt;br&gt;&#10; *  It requires the module 'webSocketClient'. &#10; *  It inherits the input and output from webSocketClient, but adds&#10; *  its own 'topic' input.&#10; *  This input is usually prefixed with a '/' eg: '/noise'.&lt;br&gt; &#10; *&#10; *  @accessor RosSubscriber&#10; *  @module RosSubscriber&#10; *  @input {string} server The IP address or domain name of server.&#10; *  @input {number} port The port that the web socket listens to.&#10; *  @input {string} topic The ROS topic to subscribe to.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10;*/&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs and outputs from setup() in webSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is the ROS topic to subscribe to. */&#10;exports.setup = function() {&#10;  wsClient.setup();&#10;  accessor.input('topic', {&#10;    type: &quot;string&quot;,&#10;    value: &quot;&quot;,&#10;    description: &quot;the ROS topic to subscribe to.&quot;&#10;  });&#10;}&#10;&#10;/** Inherits initialize from webSocketClient.&lt;br&gt;&#10;    Overrides the toSendInputHandler to throw an error if called. A subscriber should not be publishing inputs. &lt;br&gt;&#10;    Sends a message to rosbridge to start subscribing to the topic on input 'topic'.*/ &#10;&#10;exports.initialize = function() {&#10;  wsClient.toSendInputHandler = function(){&#10;    console.error('This accessor is a subscriber and does not take input to publish.');&#10;  }&#10;  wsClient.initialize();&#10;  wsClient.sendToWebSocket({&#10;      &quot;op&quot;: &quot;subscribe&quot;,&#10;      &quot;topic&quot;: get('topic')&#10;  });&#10;}&#10;&#10;/** Inherits wrapup function from webSocketClient. */&#10;exports.wrapup = wsClient.wrapup;&#10;">
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/RosSubscriber.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="This accessor subscribes to a ROS topic.&lt;br&gt;&#10; It requires the module 'webSocketClient'. &#10; It inherits the input and output from webSocketClient, but adds&#10; its own 'topic' input.&#10; This input is usually prefixed with a '/' eg: '/noise'.&lt;br&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$Id$">
-            </property>
-            <property name="server (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
-            </property>
-            <property name="port (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
-            </property>
-            <property name="topic (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="the ROS topic to subscribe to.">
-            </property>
-            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
-            </property>
-            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
-            </property>
-            <property name="toSend (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
-            </property>
-            <property name="server" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of the server.">
-            </property>
-            <property name="port" class="ptolemy.kernel.util.StringAttribute" value="The port that the web socket server listens to.">
-            </property>
-            <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
-            </property>
-            <property name="connected" class="ptolemy.kernel.util.StringAttribute" value="outputs 'true' once connection is established">
-            </property>
-            <property name="received" class="ptolemy.kernel.util.StringAttribute" value="The data received from the web socket server, in JSON format.">
-            </property>
-            <property name="topic" class="ptolemy.kernel.util.StringAttribute" value="the ROS topic to subscribe to.">
-            </property>
-        </property>
-        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="&quot;localhost&quot;">
-        </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="9090">
-        </property>
-        <property name="topic" class="ptolemy.actor.parameters.PortParameter" value="&quot;/pose&quot;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 220.0]">
-        </property>
-        <port name="server" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="port" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="topic" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="toSend" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="connected" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="received" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="NewGoal" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 416, 1375, 436}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 444, 1375, 408}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1375, 387]">
         </property>
@@ -219,7 +66,7 @@
         </property>
         <property name="D" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="pose" class="ptolemy.actor.parameters.PortParameter" value="{msg = {header = {frame_id = &quot;map_hokuyo&quot;, seq = 45821, stamp = {nsecs = 199268102, secs = 1434400103}}, pose = {orientation = {w = 0.9993266200477, x = 0, y = 0, z = -0.0366920490582}, position = {x = 0.1080420787898, y = 0.0286089163351, z = 0}}}, op = &quot;publish&quot;, topic = &quot;/pose&quot;}">
+        <property name="pose" class="ptolemy.actor.parameters.PortParameter" value="{msg = {header = {frame_id = &quot;map_hokuyo&quot;, seq = 993, stamp = {nsecs = 948177099, secs = 1434472632}}, pose = {orientation = {w = 0.9977286844077, x = 0, y = 0, z = -0.0673607623919}, position = {x = 0.1287231524184, y = 0.0049986997636, z = 0}}}, op = &quot;publish&quot;, topic = &quot;/pose&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 140.0]">
         </property>
@@ -278,16 +125,92 @@
             </property>
         </port>
     </entity>
+    <entity name="RosSubscriber" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor subscribes to a ROS topic.&lt;br&gt;&#10; *  It requires the module 'webSocketClient'. &#10; *  It inherits the input and output from webSocketClient, but adds&#10; *  its own 'topic' input.&#10; *  This input is usually prefixed with a '/' eg: '/noise'.&lt;br&gt; &#10; *&#10; *  @accessor RosSubscriber&#10; *  @parameter {string} server The IP address or domain name of server.&#10; *  @parameter {number} port The port that the web socket listens to.&#10; *  @parameter {string} topic The ROS topic to subscribe to.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10; */&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs and outputs from setup() in webSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is the ROS topic to subscribe to. */&#10;exports.setup = function() {&#10;  wsClient.setup();&#10;  accessor.parameter('topic', {&#10;    type: &quot;string&quot;,&#10;    value: &quot;&quot;,&#10;  });&#10;}&#10;&#10;/** Inherits initialize from webSocketClient.&lt;br&gt;&#10;    Overrides the toSendInputHandler to throw an error if called. A subscriber should not be publishing inputs. &lt;br&gt;&#10;    Sends a message to rosbridge to start subscribing to the topic on input 'topic'.*/ &#10;&#10;exports.initialize = function() {&#10;  wsClient.toSendInputHandler = function(){&#10;    console.error('This accessor is a subscriber and does not take input to publish.');&#10;  }&#10;  wsClient.initialize();&#10;  wsClient.sendToWebSocket({&#10;      &quot;op&quot;: &quot;subscribe&quot;,&#10;      &quot;topic&quot;: getParameter('topic')&#10;  });&#10;}&#10;&#10;/** Inherits wrapup function from webSocketClient. */&#10;exports.wrapup = wsClient.wrapup;&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/RosSubscriber.js">
+        </property>
+        <property name="server" class="ptolemy.data.expr.StringParameter" value="localhost">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="9090">
+        </property>
+        <property name="topic" class="ptolemy.data.expr.StringParameter" value="/pose">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 235.0]">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
+            </property>
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="ScarabGoalPublisher" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor publishes pose information to Scarab topic /goal.&lt;br&gt;&#10; *  This accessor requires the module 'webSocketClient'. &#10; *  It inherits the input and output ports from webSocketClient, and takes in&#10; *  pose information at 'toSend'.&lt;br&gt;&#10; *  The data published must be of the ROS datatype geometry_msgs/PoseStamped.&#10; *  This is formatted as the following:&lt;pre&gt;&#10; *  {&#10; *    &quot;position&quot;: //cartesian coordinates&#10; *      {&quot;x&quot;:.., &quot;y&quot;:.. &quot;z&quot;:..},&#10; *    &quot;orientation&quot;: //quaternion orientation (final orientation of robot)&#10; *      {&quot;w&quot;:.., &quot;x&quot;:.., &quot;y&quot;:.., &quot;z&quot;:..}&#10; *  } &lt;/pre&gt;&#10; *  The header information is added by rosbridge. &lt;br&gt;&#10; *&#10; *  @accessor ScarabGoalPublisher&#10; *  @parameter {string} server The IP address or domain name of the rosbridge server.&#10; *  @parameter {number} port The port of the rosbridge server.&#10; *  @input {JSON} toSend The pose data to be sent to the rosbridge server.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10; */&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in webSocketClient.*/&#10;exports.setup = wsClient.setup;&#10;&#10;/** Overrides inputHandler on 'toSend' from webSocketClient.&lt;br&gt; &#10;  * New inputHandler takes in pose data and formats it according to the &#10;  * geometry_msgs/PoseStamped datatype in ROS. &lt;br&gt;&#10;  * Inherits initialize from webSocketClient.*/ &#10;exports.initialize = function() {&#10;  //must override first&#10;  wsClient.toSendInputHandler = function() {&#10;    var pose = get('toSend');&#10;    var msg = {&#10;      &quot;header&quot;: {&#10;        &quot;seq&quot;: 0,&#10;        &quot;stamp&quot;: {&#10;          &quot;secs&quot;: 0,&#10;          &quot;nsecs&quot;: 0  &#10;        },&#10;        &quot;frame_id&quot;: &quot;map_hokuyo&quot;    &#10;      },&#10;      &quot;pose&quot;: pose&#10;    }&#10;    var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: &quot;/goal&quot;,&#10;      &quot;msg&quot;: msg &#10;    }&#10;    wsClient.sendToWebSocket(data);&#10;  }&#10;  wsClient.initialize();&#10;}&#10;&#10;/** inherits wrapup function from webSocketClient */&#10;exports.wrapup = wsClient.wrapup;&#10;&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/ScarabGoalPublisher.js">
+        </property>
+        <property name="server" class="ptolemy.data.expr.StringParameter" value="localhost">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="9090">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 150.0]">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
+            </property>
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[310.0, 150.0]">
+        <vertex name="vertex1" value="[325.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[135.0, 180.0]">
+        <vertex name="vertex1" value="[130.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -302,8 +225,6 @@
     <link port="ArrowKeySensor.leftArrow" relation="relation2"/>
     <link port="ArrowKeySensor.rightArrow" relation="relation3"/>
     <link port="ArrowKeySensor.downArrow" relation="relation4"/>
-    <link port="ScarabGoalPublisher.toSend" relation="relation6"/>
-    <link port="RosSubscriber.received" relation="relation7"/>
     <link port="NewGoal.input" relation="relation6"/>
     <link port="CurrentPose.input" relation="relation7"/>
     <link port="ScarabArrowKeyController.U" relation="relation"/>
@@ -312,4 +233,6 @@
     <link port="ScarabArrowKeyController.D" relation="relation4"/>
     <link port="ScarabArrowKeyController.pose" relation="relation7"/>
     <link port="ScarabArrowKeyController.newGoal" relation="relation6"/>
+    <link port="RosSubscriber.received" relation="relation7"/>
+    <link port="ScarabGoalPublisher.toSend" relation="relation6"/>
 </entity>
