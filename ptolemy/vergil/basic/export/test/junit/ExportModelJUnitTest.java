@@ -265,6 +265,7 @@ public class ExportModelJUnitTest {
                 "AirManagementSystem.xml", // Assert is thrown.
                 "AirManagementSystemCausalityLoop", // Deliberately brings up message on run.
                 "AMS_AMSSim", // FMU does not reliably build everywhere.
+                "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
@@ -313,6 +314,9 @@ public class ExportModelJUnitTest {
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RecordManipulation", // Python demo pops up a dialog.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
+                "Ros.xml", // This demo has links to the demo that are to run
+                "RosPublisher.xml", // RosSubscriber needs to run.
+                "RosSubscriber.xml", // RosPublisher needs to run.
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SerialPort.xml", // Requires serial port.
