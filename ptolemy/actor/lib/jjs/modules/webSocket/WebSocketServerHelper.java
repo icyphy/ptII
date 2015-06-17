@@ -44,9 +44,11 @@ import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 
 /**
    A helper class for the webSocket module's Server object in JavaScript.
+   Instances of this class are helpers for a server that can support multiple sockets.
    See the documentation of that module for instructions.
    This uses Vert.x for the implementation.
    
+   @see WebSocketHelper
    @author Hokeun Kim and Edward A. Lee
    @version $Id$
    @since Ptolemy II 11.0
