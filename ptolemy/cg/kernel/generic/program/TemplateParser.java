@@ -1381,6 +1381,12 @@ public class TemplateParser {
 
             TypedIOPort port = getPort(parameter);
             if (port != null) {
+
+                // Change to PortParameter that caused clone problems causes this NPE.
+                if (_getCodeGenerator().codeGenType(port.getType()) == null) {
+                    throw new NullPointerException("_getCodeGenerator().codeGenType()(port.getType()) == null?, port.getType() was "
+                            + port.getType() + " Port was: " + port.getFullName());
+                }
                 if (_getCodeGenerator().codeGenType(port.getType()).contains(
                         ",")) {
                     return "Record";
