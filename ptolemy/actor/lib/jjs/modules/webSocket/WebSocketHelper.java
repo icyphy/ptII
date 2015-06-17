@@ -43,17 +43,20 @@ import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketBase;
 
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
 
 /**
    A helper class for the webSocket module in JavaScript.
+   Instances of this class are helpers for individual sockets.
    See the documentation of that module for instructions.
    This uses Vert.x for the implementation.
    
    @author Hokeun Kim and Edward A. Lee
    @version $Id$
+   @see WebSocketServerHelper
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
@@ -84,11 +87,13 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param host IP address or host name of the host.
      *  @param port The port number that the host listens on.
+     *  @param numberOfRetries The number of retries.
+     *  @param timeBetweenRetries The time between retries, in milliseconds.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(
-	    ScriptObjectMirror currentObj, String host, int port) {
-	return new WebSocketHelper(currentObj, host, port);
+	    ScriptObjectMirror currentObj, String host, int port, int numberOfRetries, int timeBetweenRetries) {
+	return new WebSocketHelper(currentObj, host, port, numberOfRetries, timeBetweenRetries);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -104,12 +109,19 @@ public class WebSocketHelper extends VertxHelperBase {
     
     /** Send text data through the web socket.
      *  @param msg A text message to be sent.
+     *  @throws IllegalActionException If establishing the connection to the web socket has
+     *   permanently failed.
      */
-    public void sendText(String msg) {
+    public void sendText(String msg) throws IllegalActionException {
 	synchronized(_actor) {
+	    if (_wsFailed != null) {
+	        throw new IllegalActionException(_actor, _wsFailed,
+	                "Failed to establish connection after " + _numberOfTries + " tries.");
+	    }
 	    if (isOpen()) {
 		_webSocket.writeTextFrame(msg);
 	    } else {
+	        // FIXME: Bound the queue. Option to discard data.
 		if (_pendingOutputs == null) {
 		    _pendingOutputs = new LinkedList();
 		}
@@ -138,48 +150,23 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param host The IP address or host name of the host.
      *  @param port The port number of the host.
+     *  @param numberOfRetries The maximum number of retries if a connect attempt fails.
+     *  @param timeBetweenRetries The time between retries, in milliseconds.
      */
     private WebSocketHelper(
-	    ScriptObjectMirror currentObj, String host, int port) {
+	    ScriptObjectMirror currentObj, String host, int port, int numberOfRetries, int timeBetweenRetries) {
         super(currentObj);
 
-        HttpClient client = _vertx.createHttpClient();
-        client.setHost(host);
-        client.setPort(port);
-        client.exceptionHandler(new HttpClientExceptionHandler());
-        // FIXME: Provide a timeout. Use setTimeout() of the client.
-        // FIXME: Why does Vertx require the URI here in addition to setHost() and setPort() above? Seems lame.
-        String address = "ws://" + host + ":" + port;
-        client.connectWebsocket(address, new Handler<WebSocket>() {
-            @Override
-            public void handle(WebSocket websocket) {
-        	synchronized(_actor) {
-        	    _wsIsOpen = true;
-        	    _webSocket = websocket;
-
-        	    _webSocket.dataHandler(new DataHandler());
-        	    _webSocket.endHandler(new EndHandler());
-        	    _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-
-        	    // Socket.io uses the name "connect" for this event, but WS uses "open",
-        	    // so we just emit both events.
-        	    _currentObj.callMember("emit", "connect");
-        	    _currentObj.callMember("emit", "open");
-        	    
-        	    // Send any pending messages.
-        	    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-        		for (Object message : _pendingOutputs) {
-        		    if (message instanceof String) {
-        			_webSocket.writeTextFrame((String)message);
-        		    } else {
-        			_webSocket.writeBinaryFrame((Buffer)message);
-        		    }
-        		}
-        		_pendingOutputs.clear();
-        	    }
-        	}
-            }
-        });
+        _host = host;
+        _port = port;
+        _numberOfRetries = numberOfRetries;
+        _timeBetweenRetries = timeBetweenRetries;
+        _client = _vertx.createHttpClient();
+        _client.setHost(host);
+        _client.setPort(port);
+        _client.exceptionHandler(new HttpClientExceptionHandler());
+        _wsFailed = null;
+        _connectWebsocket(host, port, _client);
     }
 
     /** Private constructor for WebSocketHelper for a server-side web socket.
@@ -198,13 +185,78 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
+    /** Connect to a web socket on the specified host.
+     *  @param host The host IP or name.
+     *  @param port The port.
+     *  @param client The HttpClient object.
+     */
+    private void _connectWebsocket(String host, int port, HttpClient client) {
+        // FIXME: Provide a timeout. Use setTimeout() of the client.
+        // FIXME: Why does Vertx require the URI here in addition to setHost() and setPort() above? Seems lame.
+        String address = "ws://" + host + ":" + port;
+        client.connectWebsocket(address, new Handler<WebSocket>() {
+            @Override
+            public void handle(WebSocket websocket) {
+                synchronized(_actor) {
+                    _wsIsOpen = true;
+                    _webSocket = websocket;
+
+                    _webSocket.dataHandler(new DataHandler());
+                    _webSocket.endHandler(new EndHandler());
+                    _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+
+                    // Socket.io uses the name "connect" for this event, but WS uses "open",
+                    // so we just emit both events.
+                    _currentObj.callMember("emit", "connect");
+                    _currentObj.callMember("emit", "open");
+                    
+                    // Send any pending messages.
+                    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+                        for (Object message : _pendingOutputs) {
+                            if (message instanceof String) {
+                                _webSocket.writeTextFrame((String)message);
+                            } else {
+                                _webSocket.writeBinaryFrame((Buffer)message);
+                            }
+                        }
+                        _pendingOutputs.clear();
+                    }
+                }
+            }
+        });
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
+    
+    /** The HttpClient object. */
+    private HttpClient _client;
+    
+    /** The host IP or name. */
+    private String _host;
+    
+    /** Maximum number of attempts to connect to the web socket. */
+    private int _numberOfRetries = 0;
+    
+    /** Number of attempts so far to connect to the web socket. */
+    private int _numberOfTries = 1;
     
     /** Pending outputs received before the socket is opened. */
     private List _pendingOutputs;
+    
+    /** The host port. */
+    private int _port;
+    
+    /** The time between retries, in milliseconds. */
+    private int _timeBetweenRetries;
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
+    
+    /** Indicator that web socket connection has failed. No need to keep waiting. */
+    private Throwable _wsFailed = null;
 
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
@@ -240,6 +292,7 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     /** The event handler that is triggered when an error occurs in the web socket connection.
+     *  An error here occurs after a socket connection has been established.
      */
     private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
@@ -252,13 +305,37 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     /** The event handler that is triggered when an error occurs in the http client.
+     *  An error here may occur, for example, when a socket fails to get established.
      */
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
             synchronized(_actor) {
-        	_currentObj.callMember("emit", "error", arg0.getMessage());
-        	_wsIsOpen = false;
+                if (_numberOfTries > _numberOfRetries) {
+                    _currentObj.callMember("emit", "error", "After " + _numberOfTries + " tries: " + arg0.getMessage());
+                    _wsIsOpen = false;
+                    _wsFailed = arg0;
+                } else {
+                    _numberOfTries++;
+                    // Retry. Create a new thread to do this.
+                    Runnable retry = new Runnable() {
+                        public void run() {
+                            try {
+                                Thread.sleep(_timeBetweenRetries);
+                            } catch (InterruptedException e) {
+                                _currentObj.callMember("emit", "error", "After " + _numberOfTries + " tries, retries have been cancelled." );
+                                _wsIsOpen = false;
+                                _wsFailed = e;
+                                return;
+                            }
+                            synchronized(_actor) {
+                                _connectWebsocket(_host, _port, _client);
+                            }
+                        }
+                    };
+                    Thread thread = new Thread(retry);
+                    thread.start();
+                }
             }
         }
     }

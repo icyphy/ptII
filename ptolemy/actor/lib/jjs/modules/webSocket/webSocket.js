@@ -36,15 +36,26 @@ var EventEmitter = require('events').EventEmitter;
  *          print('Received from web socket: ' + message);
  *      }
  *  
- *  @param options A JSON object with fields 'host' and 'port' that give the
- *   IP address or host name for the host and the port on which the host is listening.
- *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
+ *  The options argument is a JSON object that can contain the following fields:
+ *  * host: The IP address or host name for the host. Defaults to 'localhost'.
+ *  * port: The port on which the host is listening. Defaults to 80.
+ *  * numberOfRetries: The number of times to retry connecting. Defaults to 0.
+ *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
+ *
+ *  @param options The options.
  */
 exports.Client = function(options) {
     options = options || {};
     this.port = options['port'] || 80;
     this.host = options['host'] || 'localhost';
-    this.helper = WebSocketHelper.createClientSocket(this, this.host, this.port);
+    this.numberOfRetries = options['numberOfRetries'] || 0;
+    this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
+    this.helper = WebSocketHelper.createClientSocket(
+        this,
+        this.host,
+        this.port,
+        this.numberOfRetries,
+        this.timeBetweenRetries);
 }
 util.inherits(exports.Client, EventEmitter);
 
