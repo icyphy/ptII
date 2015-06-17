@@ -576,7 +576,9 @@ public class JavaScript extends TypedAtomicActor {
     }
 
     /** If the model is executing and the error port is connected, then send the
-     *  message to the error port; otherwise, throw an exception.
+     *  message to the error port; otherwise, use the MessageHandler to display the
+     *  error. Note that this should not be used for fatal errors, because it returns.
+     *  For fatal errors, a script should throw an exception.
      *  In addition, if debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stderr.
      *  @param message The message
@@ -589,7 +591,7 @@ public class JavaScript extends TypedAtomicActor {
 	if (_executing && error.getWidth() > 0) {
 	    error.send(0, new StringToken(message));
 	} else {
-	    throw new IllegalActionException(this, message);
+	    MessageHandler.error(message);
 	}
     }
 
@@ -635,7 +637,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (_debugging) {
             // Set a global variable for debugging.
             _engine.put("_debug", true);
@@ -651,18 +653,18 @@ public class JavaScript extends TypedAtomicActor {
             script.update();
             String scriptValue = ((StringToken) script.getToken()).stringValue();
             try {
-        	_engine.eval(scriptValue);
+                _engine.eval(scriptValue);
             } catch (ScriptException ex) {
-        	if (error.getWidth() > 0) {
-        	    error.send(0, new StringToken(ex.getMessage()));
-        	} else {
-        	    throw new IllegalActionException(this, ex,
-        		    "Loading input script triggers an exception.");
-        	}
+                if (error.getWidth() > 0) {
+                    error.send(0, new StringToken(ex.getMessage()));
+                } else {
+                    throw new IllegalActionException(this, ex,
+                            "Loading input script triggers an exception.");
+                }
             }
             if (_debugging) {
-        	_debug("Evaluated new script on input port: " 
-        		+ scriptValue);
+                _debug("Evaluated new script on input port: " 
+                        + scriptValue);
             }
         }
 
@@ -682,9 +684,9 @@ public class JavaScript extends TypedAtomicActor {
                                 port.send(entry.getKey(), token);
                                 if (_debugging) {
                                     _debug("Sent to output port "
-                                	    + port.getName()
-                                	    + " the value "
-                                	    + token);
+                                            + port.getName()
+                                            + " the value "
+                                            + token);
                                 }
                             }
                         }
@@ -693,7 +695,7 @@ public class JavaScript extends TypedAtomicActor {
                 _outputTokens.clear();
             }
         }
-        
+
         // Update port parameters.
         boolean foundNewInput = false;
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
@@ -703,21 +705,21 @@ public class JavaScript extends TypedAtomicActor {
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
             // FIXME: This could be null if the port has been deleted, but not the parameter.
             if (portParameter.update()) {
-        	proxy._hasNewInput(true);
-        	foundNewInput = true;
-        	if (_debugging) {
-        	    _debug("Received new input on " 
-        		    + portParameter.getName()
-        		    + " with value "
-        		    + portParameter.getToken());
-        	}
+                proxy._hasNewInput(true);
+                foundNewInput = true;
+                if (_debugging) {
+                    _debug("Received new input on " 
+                            + portParameter.getName()
+                            + " with value "
+                            + portParameter.getToken());
+                }
             } else if (proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
-        	// There is no new input, but there is a locally provided one.
-        	portParameter.setCurrentValue(proxy._localInputTokens.remove(0));
-        	proxy._hasNewInput(true);
-        	foundNewInput = true;
+                // There is no new input, but there is a locally provided one.
+                portParameter.setCurrentValue(proxy._localInputTokens.remove(0));
+                proxy._hasNewInput(true);
+                foundNewInput = true;
             } else {
-        	proxy._hasNewInput(false);
+                proxy._hasNewInput(false);
             }
         }
 
@@ -740,32 +742,32 @@ public class JavaScript extends TypedAtomicActor {
                     hasInput = true;
                     tokens.put(i, input.get(i));
                     if (_debugging) {
-                	_debug("Received new input on " 
-                		+ input.getName()
-                		+ " with value "
-                		+ tokens.get(i));
+                        _debug("Received new input on " 
+                                + input.getName()
+                                + " with value "
+                                + tokens.get(i));
                     }
                 } else {
                     // There is no external input, but there might be one
                     // sent by the token to itself.
                     if (proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
-                	tokens.put(i, proxy._localInputTokens.remove(0));
-                	hasInput = true;
+                        tokens.put(i, proxy._localInputTokens.remove(0));
+                        hasInput = true;
                     }
                 }
             }
             // Even if the input width is zero, there might be a token
             // that the actor has sent to itself.
             if (input.getWidth() == 0 && proxy._localInputTokens != null && proxy._localInputTokens.size() > 0) {
-        	tokens.put(0, proxy._localInputTokens.remove(0));
-        	hasInput = true;
+                tokens.put(0, proxy._localInputTokens.remove(0));
+                hasInput = true;
             }
             _inputTokens.put(input, tokens);
             if (hasInput) {
-        	proxy._hasNewInput(true);
-        	foundNewInput = true;
+                proxy._hasNewInput(true);
+                foundNewInput = true;
             } else {
-        	proxy._hasNewInput(false);
+                proxy._hasNewInput(false);
             }
         }
         // Invoke any timeout callbacks whose timeout matches current time,
@@ -784,27 +786,27 @@ public class JavaScript extends TypedAtomicActor {
                     Time currentTime = getDirector().getModelTime();
                     List<Integer> ids = _pendingTimeoutIDs.get(currentTime);
                     if (ids != null) {
-                	// Copy the list, because setInterval reschedules a firing
-                	// and will cause a concurrent modification exception otherwise.
-                	List<Integer> copy = new LinkedList<Integer>(ids);
-                	if (ids != null) {
-                	    for (Integer id : copy) {
-                		Runnable function = _pendingTimeoutFunctions.get(id);
-                		if (function != null) {
-                		    // Remove the id before firing the function because it may
-                		    // reschedule itself using the same id.
-                		    _pendingTimeoutFunctions.remove(id);
-                		    function.run();
-                		    if (_debugging) {
-                			_debug("Invoked timeout function.");
-                		    }
-                		}
-                	    }
-                	    _pendingTimeoutIDs.remove(currentTime);
-                	}
+                        // Copy the list, because setInterval reschedules a firing
+                        // and will cause a concurrent modification exception otherwise.
+                        List<Integer> copy = new LinkedList<Integer>(ids);
+                        if (ids != null) {
+                            for (Integer id : copy) {
+                                Runnable function = _pendingTimeoutFunctions.get(id);
+                                if (function != null) {
+                                    // Remove the id before firing the function because it may
+                                    // reschedule itself using the same id.
+                                    _pendingTimeoutFunctions.remove(id);
+                                    function.run();
+                                    if (_debugging) {
+                                        _debug("Invoked timeout function.");
+                                    }
+                                }
+                            }
+                            _pendingTimeoutIDs.remove(currentTime);
+                        }
                     }
                 }
-                
+
                 // Invoke input handlers.
                 for (IOPort input : this.inputPortList()) {
                     // Skip the scriptIn input
@@ -813,20 +815,20 @@ public class JavaScript extends TypedAtomicActor {
                     }
                     _proxies.get(input).invokeHandlers();
                 }
-                
+
                 // Invoke generic input handlers.
                 if (foundNewInput && _genericInputHandlers != null && _genericInputHandlers.size() > 0) {
                     for (Runnable function : _genericInputHandlers) {
-                	if (function != null) {
-                	    function.run();
-                	    if (_debugging) {
-                		_debug("Invoked generic input handler function.");
-                	    }
-                	}
+                        if (function != null) {
+                            function.run();
+                            if (_debugging) {
+                                _debug("Invoked generic input handler function.");
+                            }
+                        }
                     }
                 }
 
-        	// Invoke the fire function.
+                // Invoke the fire function.
                 try {
                     ((Invocable)_engine).invokeFunction("fire");
                     if (_debugging) {
@@ -834,14 +836,14 @@ public class JavaScript extends TypedAtomicActor {
                     }
                 } catch (ScriptException | NoSuchMethodException e) {
                     if (error.getWidth() > 0) {
-                	error.send(0, new StringToken(e.getMessage()));
+                        error.send(0, new StringToken(e.getMessage()));
                     } else {
-                	throw new IllegalActionException(this, e,
-                		"fire() function triggers an exception.");
+                        throw new IllegalActionException(this, e,
+                                "fire() function triggers an exception.");
                     }
                 }
             } finally {
-        	_inFire = false;
+                _inFire = false;
             }
         }
     }
@@ -874,7 +876,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         // Create proxy for ports that don't already have one.
         for (TypedIOPort port : portList()) {
             // Do not convert the script or error ports to a JavaScript variable.
@@ -883,7 +885,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             // Do not expose ports that are already exposed.
             if (_proxies.get(port) != null) {
-        	continue;
+                continue;
             }
             PortOrParameterProxy proxy = new PortOrParameterProxy(port);
             _proxies.put(port, proxy);
@@ -899,7 +901,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             // Do not expose parameters that are already exposed.
             if (_proxies.get(parameter) != null) {
-        	continue;
+                continue;
             }
             // Do not create a proxy for a PortParameter. There is already
             // a proxy for the port.
@@ -921,10 +923,10 @@ public class JavaScript extends TypedAtomicActor {
                 _outputTokens.clear();
             }
             try {
-        	((Invocable)_engine).invokeFunction("initialize");
+                ((Invocable)_engine).invokeFunction("initialize");
             } catch (ScriptException | NoSuchMethodException e) {
-        	throw new IllegalActionException(this, e, 
-        		"Failure executing the initialize function.");
+                throw new IllegalActionException(this, e, 
+                        "Failure executing the initialize function.");
             }
         }
         _running = true;
@@ -1283,16 +1285,16 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public synchronized void preinitialize() throws IllegalActionException {
         super.preinitialize();
-                
+
         _pendingTimeoutFunctions = null;
         _pendingTimeoutIDs = null;
         _timeoutCount = 0;
-        
+
         _createEngineAndEvaluateSetup();
 
         _executing = true;
         _running = false;
-        
+
         synchronized (this) {
             // Clear any queued output tokens.
             if (_outputTokens != null) {
@@ -1413,16 +1415,16 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     public void wrapup() throws IllegalActionException {
-	_executing = false;
-	_running = false;
+        _executing = false;
+        _running = false;
         // Synchronize so that this invocation is atomic w.r.t. any callbacks.
         synchronized (this) {
             // Invoke the wrapup function.
             try {
-        	((Invocable)_engine).invokeFunction("wrapup");
+                ((Invocable)_engine).invokeFunction("wrapup");
             } catch (ScriptException | NoSuchMethodException e) {
-        	throw new IllegalActionException(this, e,
-        		"Failure executing the wrapup function.");
+                throw new IllegalActionException(this, e,
+                        "Failure executing the wrapup function.");
             }
         }
         super.wrapup();
@@ -1810,7 +1812,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** A mapping of the handle for an input handler to the port or parameter proxy. */
     private Map<Integer, PortOrParameterProxy> _handleToProxy;
-
+    
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
 

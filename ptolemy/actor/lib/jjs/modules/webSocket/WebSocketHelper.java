@@ -257,7 +257,7 @@ public class WebSocketHelper extends VertxHelperBase {
         @Override
         public void handle(Throwable arg0) {
             synchronized(_actor) {
-        	_currentObj.callMember("emit", "close", arg0.getMessage());
+        	_currentObj.callMember("emit", "error", arg0.getMessage());
         	_wsIsOpen = false;
             }
         }
