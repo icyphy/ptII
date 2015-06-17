@@ -73,10 +73,13 @@ function clearTimeout(handle) {
     actor.clearTimeout(handle);
 }
 
-/** Handle an error. This implementation delegates to the host actor to
- *  handle the error. In this implementation, the host actor has an error output
+/** Report an error. This implementation delegates to the host actor to
+ *  report the error. In this implementation, the host actor has an error output
  *  port. If that port is connected to something, then the error message is sent
- *  to that port. Otherwise, and exception is thrown.
+ *  to that port. Otherwise, the error is reported via a dialog or on stderr (the
+ *  latter if running headless).
+ *  This function should be used only for non-fatal errors, where it is OK to
+ *  continue executing. For fatal errors, throw an exception.
  *  @param message The message for the exception.
  */
 function error(message) {
