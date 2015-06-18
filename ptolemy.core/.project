@@ -452,6 +452,11 @@
 			<locationURI>PT_LOC/ptolemy/data/ShortToken.java</locationURI>
 		</link>
 		<link>
+			<name>linked-src/ptolemy/data/SmoothToken.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/data/SmoothToken.java</locationURI>
+		</link>
+		<link>
 			<name>linked-src/ptolemy/data/StringToken.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/data/StringToken.java</locationURI>
@@ -1670,6 +1675,11 @@
 			<name>linked-src/ptolemy/graph/mapping/ToIntMapping.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/graph/mapping/ToIntMapping.java</locationURI>
+		</link>
+		<link>
+			<name>linked-src/ptolemy/kernel/attributes/Actionable.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/kernel/attributes/Actionable.java</locationURI>
 		</link>
 		<link>
 			<name>linked-src/ptolemy/kernel/attributes/FileAttribute.java</name>
