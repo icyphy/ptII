@@ -57,19 +57,21 @@
  *  This accessor requires the 'webSocket' module.
  *
  *  @module webSocketClient
- *  @parameter {string} server The IP address or domain name of server.
- *  @parameter {int} port The port that the web socket listens to.
+ *  @parameter {string} server The IP address or domain name of server. Defaults to 'localhost'.
+ *  @parameter {int} port The port that the web socket listens to. Defaults to 8080.
+ *  @parameter {int} numberOfRetries The number of times to retry if a connection fails. Defaults to 5.
+ *  @parameter {int} timeBetweenRetries The time between retries in milliseconds. Defaults to 100.
+ *  @parameter {boolean} reconnectOnClose The option of whether or not to reconnect when disconnected. 
  *  @input {JSON} toSend The data to be sent over the socket.
  *  @output {boolean} connected Output `true` on connected and `false` on disconnected.
  *  @output {JSON} received The data received from the web socket server.
  *  @author Hokeun Kim, Marcus Pan, Edward A. Lee
- *  @version $Id: WebSocketClient.js 171 2015-06-15 12:55:47Z eal $
+ *  @version $Id: WebSocketClient.js 189 2015-06-17 19:33:04Z mpanj@seas.upenn.edu $
  */
 
 var WebSocket = require('webSocket');
 var client = null;
-var handle;
-var wrappedUp = false;
+var inputHandle = null;
 
 /** Set up the accessor by defining the parameters, inputs, and outputs. */
 exports.setup = function() {
@@ -80,6 +82,18 @@ exports.setup = function() {
   accessor.parameter('port', {
     type: 'int',
     value: 8080,
+  });
+  accessor.parameter('numberOfRetries', {
+    type: 'int',
+    value: 5,
+  });
+  accessor.parameter('timeBetweenRetries', {
+    type: 'int',
+    value: 100,
+  });
+  accessor.parameter('reconnectOnClose', {
+    type: 'boolean',
+    value: true,
   });
   accessor.input('toSend', {
     type: 'JSON', 
@@ -93,17 +107,22 @@ exports.setup = function() {
 
 /** Initializes accessor by attaching functions to inputs. */
 exports.initialize = function() {
-  client = new WebSocket.Client(
-    {'host':getParameter('server'), 'port':getParameter('port')}
-  );
+  client = new WebSocket.Client({
+    'host':getParameter('server'),
+    'port':getParameter('port'),
+    'numberOfRetries':getParameter('numberOfRetries'),
+    'timeBetweenRetries':getParameter('timeBetweenRetries')
+  });
   client.on('open', onOpen);
   client.on('message', onMessage);
   client.on('close', onClose);
   client.on('error', function(message) {
-      error(message);
+    error(message)
   });
-  handle = addInputHandler('toSend', exports.toSendInputHandler);
-  console.log('initialize() complete');
+  //only execute once, and not when trying to reconnect. 
+  if (inputHandle == null) { 
+    inputHandle = addInputHandler('toSend', exports.toSendInputHandler);
+  }
 } 
 
 /** Handles input on 'toSend'. */
@@ -113,46 +132,48 @@ exports.toSendInputHandler = function() {
 
 /** Sends JSON data to the web socket. */
 exports.sendToWebSocket = function(data) {
-  client.send(data);
-  console.log("Sending to web socket: " + JSON.stringify(data));
+  if (client) {
+    client.send(data);
+    console.log("Sending to web socket: " + JSON.stringify(data));
+  } else {
+    console.log("Client is not initialized yet.");
+  }
 }
 
-/** Executues once  web socket establishes a connection.
+/** Executes once  web socket establishes a connection.
  *   Sets 'connected' output to true.
  */
 function onOpen() {
   console.log('Status: Connection established');
   send('connected', true);
-  connected = true;
 }
   
-/** Executes once web socket closes.
- *  Sets 'connected' output to false if accessor hasn't wrapped up.
+/** Executes once web socket closes.<br>
+ *  Sets 'connected' output to false.<br>
+ *  Sets reconect interval.<br>
  */
 function onClose(message) {
   console.log('Status: Connection closed: ' + message);
-  
-  if (!wrappedUp) {
-    send('connected', false);
+  if (getParameter('reconnectOnClose')) {
+    exports.initialize();
   }
 }
   
 /** Outputs message received from web socket. */
 function onMessage(message) {
-  console.log('Received from web socket: ' + JSON.stringify(message));
   send('received', message);
 }
   
 /** Closes web socket connection. */
 exports.wrapup = function() {
-  wrappingUp = true;
-  if (handle !== null) {
-    removeInputHandler(handle, 'toSend');
+  if (inputHandle != null) {
+    removeInputHandler(inputHandle, 'toSend');
   }
   if (client) {
+    client.removeAllListeners('open');
+    client.removeAllListeners('message');
+    client.removeAllListeners('close');
     client.close();
   }
-  wrappedUp = true;
-  console.log('wrapup() complete');
 }
 
