@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -28,13 +28,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 525.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 137, 1089, 603}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={359, 117, 930, 603}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[875, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 514]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.81644492574264, 200.79610148514848}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.1530785891089, 171.4598545792079}">
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer Model">
@@ -81,7 +81,7 @@
         </property>
     </entity>
     <entity name="MessageFromServer" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={185, 32, 535, 391}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={159, 294, 535, 391}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 342]">
         </property>
@@ -127,21 +127,15 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="connected" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>

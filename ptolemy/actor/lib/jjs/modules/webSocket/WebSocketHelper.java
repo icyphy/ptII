@@ -70,12 +70,19 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public void close() {
 	synchronized(_actor) {
+      //stop reconnect attempts
+      _numberOfRetries = _numberOfTries - 1;
+      if (thread != null) {
+         thread.interrupt();
+      }
+
 	    if (_webSocket != null) {
 		if (_wsIsOpen) {
 		    _webSocket.close();
 		}
 		_webSocket = null;
 	    }
+       
 	    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
 		_currentObj.callMember("emit", "error", "Unsent messages remain that were queued before the socket opened.");
 	    }
@@ -252,6 +259,9 @@ public class WebSocketHelper extends VertxHelperBase {
     /** The time between retries, in milliseconds. */
     private int _timeBetweenRetries;
 
+   /** The thread that reconnects the web socket connection after the timeBetweenRetries interval. */
+    private Thread thread = null;
+
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
     
@@ -260,6 +270,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
+   
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
@@ -316,7 +327,6 @@ public class WebSocketHelper extends VertxHelperBase {
                     _wsIsOpen = false;
                     _wsFailed = arg0;
                 } else {
-                    _numberOfTries++;
                     // Retry. Create a new thread to do this.
                     Runnable retry = new Runnable() {
                         public void run() {
@@ -329,11 +339,12 @@ public class WebSocketHelper extends VertxHelperBase {
                                 return;
                             }
                             synchronized(_actor) {
+                                _numberOfTries++;
                                 _connectWebsocket(_host, _port, _client);
                             }
                         }
                     };
-                    Thread thread = new Thread(retry);
+                    thread = new Thread(retry);
                     thread.start();
                 }
             }
