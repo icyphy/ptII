@@ -48,7 +48,7 @@ exports.Client = function(options) {
     options = options || {};
     this.port = options['port'] || 80;
     this.host = options['host'] || 'localhost';
-    this.numberOfRetries = options['numberOfRetries'] || 0;
+    this.numberOfRetries = options['numberOfRetries'] || 1;
     this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
     this.helper = WebSocketHelper.createClientSocket(
         this,
@@ -119,7 +119,7 @@ exports.Client.prototype.notifyIncoming = function(message) {
  *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
  *  A typical usage pattern looks like this:
  *  <pre>
- *     var server = new WebSocket.Server({port:8082});
+ *     var server = new WebSocket.Server({'port':8082});
  *     server.on('listening', onListening);
  *     server.on('connection', onConnection);
  *     server.start();

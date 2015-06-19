@@ -582,17 +582,21 @@ public class JavaScript extends TypedAtomicActor {
      *  In addition, if debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stderr.
      *  @param message The message
-     *  @throws IllegalActionException If the error cannot be handled.
      */
-    public void error(String message) throws IllegalActionException {
+    public void error(String message) {
 	if (_debugging) {
 	    _debug(message);
 	}
-	if (_executing && error.getWidth() > 0) {
-	    error.send(0, new StringToken(message));
-	} else {
-	    MessageHandler.error(message);
-	}
+	try {
+	    if (_executing && error.getWidth() > 0) {
+	        error.send(0, new StringToken(message));
+	        return;
+	    }
+	} catch(Throwable e) {
+	    // Sending to the error port fails.
+	    // Revert to directly reporting.
+        }
+	MessageHandler.error(message);
     }
 
     /** Produce any pending outputs specified by send() since the last firing,

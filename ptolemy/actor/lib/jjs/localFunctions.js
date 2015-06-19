@@ -180,12 +180,13 @@ function send(name, value, channel) {
     }
     var proxy = actor.getPortOrParameterProxy(name);
     if (!proxy) {
-        throw('No such output: ' + port);
+        error('No such output: ' + name);
+    } else {
+        // Give channel a default value of 0.
+        channel = (typeof channel !== 'undefined') ? channel : 0;
+        var token = convertToToken(value);
+        proxy.send(channel, token);
     }
-    // Give channel a default value of 0.
-    channel = (typeof channel !== 'undefined') ? channel : 0;
-    var token = convertToToken(value);
-    proxy.send(channel, token);
 }
 
 /** Set the value of a parameter.
