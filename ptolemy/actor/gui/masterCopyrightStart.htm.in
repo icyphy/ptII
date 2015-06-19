@@ -52,7 +52,7 @@ Windows "vergil -ptiny" executable uses only the Ptolemy copyright above,
 <a heef="#Audio">Audio</a>,
 <a href="#BrowserLauncher">BrowserLauncher</a>,
 <a href="#colt">Colt </a>,
-<a href="#DoublUtilities">Double Utilities</a>,
+<a href="#DoubleUtilities">Double Utilities</a>,
 <a href="#ExtensionFileFilter">ExtensionFileFilter</a>,
 <a href="#matlab">Matlab Expression Actor</a> and
 <a href="#jython">Jython</a>.
