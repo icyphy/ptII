@@ -296,6 +296,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.media.Audio",
                 "ptolemy/media/Audio-license.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.util.DoubleUtilities",
+                "ptolemy/util/DoubleUtilities-license.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.util.test.junit.TclTests",
                 "lib/JUnitParams-license.htm");
 
@@ -891,6 +894,7 @@ public class GenerateCopyrights {
             { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
             { "BrowserLauncher", "Y", " ", "Y", "Y",
                     "Include the BrowserLauncher copyright" },
+            { "DoubleUtilities", "Y", " ", "Y", "Y", "Apache License"},
             { "ExtensionFileFilter", "Y", " ", "Y", "Y",
                     "Include Oracle's copyright" },
             { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },

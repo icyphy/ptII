@@ -28,9 +28,11 @@ import static java.lang.Math.getExponent;
 import java.math.BigInteger;
 
 /**
- * Utilities for {@code double} primitives.
+ * Utilities for double primitives.
  *
- * @author Louis Wasserman
+ * This code is used by ptolemy.actor.util.Time to improve performance.
+ *
+ * @author Louis Wasserman, based on https://code.google.com/p/guava-libraries/source/browse/guava/src/com/google/common/math/DoubleUtils.java
  */
 public final class DoubleUtilities {
     private DoubleUtilities() {
@@ -104,7 +106,7 @@ public final class DoubleUtilities {
          * >= 0.5 and signifFloor is odd (which is true if both the 0.5 bit and the 1 bit are set).
          */
         boolean increment = (twiceSignifFloor & 1) != 0
-                && ((signifFloor & 1) != 0 || absX.getLowestSetBit() < shift);
+            && ((signifFloor & 1) != 0 || absX.getLowestSetBit() < shift);
         long signifRounded = increment ? signifFloor + 1 : signifFloor;
         long bits = (long) ((exponent + EXPONENT_BIAS)) << SIGNIFICAND_BITS;
         bits += signifRounded;

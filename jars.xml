@@ -1049,6 +1049,7 @@
       </fileset>
       <fileset dir="${basedir}">
 	<include name="ptolemy/util/*.class"/>
+	<include name="ptolemy/util/DoubleUtilities-license.htm"/>
       </fileset>
     </jar>
 
