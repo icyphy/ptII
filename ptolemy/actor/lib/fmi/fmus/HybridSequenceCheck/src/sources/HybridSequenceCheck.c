@@ -102,6 +102,11 @@ void deleteQueue() {
 void parseSequence(ModelInstance *comp) {
     fmi2String sequence = s(sequence_);
     int i = 0;
+    if (sequence == NULL) {
+        // This could happen if we are running fmusdk2 on this fmu.
+        fprintf(stderr, "HybridSequenceCheck parseSequence(): sequence was null?\n");
+        return;
+    }
     for (i = 0; i < strlen(s(sequence_)); i++) {
         int idx_t_s = i;
         int idx_t_e = i;
