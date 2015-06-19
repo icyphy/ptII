@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy II JavaScript demos
+# Makefile for Ptolemy II Discovery demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 70841 2014-12-02 23:15:50Z pd $
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -29,55 +29,60 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/discovery/demo
+ME =		ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery
 
-DIRS =		Discovery
+# Root of the Java directory
+ROOT =		../../../../../../../../
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../../../..
-
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	Discovery
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	Discovery/Discovery.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Discovery.xml \
 	DiscoveryNmap.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer Discovery.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Discovery.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Discovery.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
