@@ -51,8 +51,10 @@ JSRCS = \
 	DiscoveryHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
+	DeviceDiscoveryAccessor.xml \
+	discovery.js \
 	package.json \
-	discovery.js
+	
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
