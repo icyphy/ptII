@@ -263,7 +263,7 @@ $CLASSPATH/ptolemy/demo/Robot/RobotPFChase.xml
 $CLASSPATH/ptolemy/demo/Robot/SmartChase.xml
 $CLASSPATH/ptolemy/demo/Robot/SmartChaseWithSmartIntruder.xml
 $CLASSPATH/ptolemy/demo/Robot/SmartIntruder.xml
-$CLASSPATH/ptolemy/demo/Robot/SmartIntruder7Teams.xml
+$CLASSPATH/ptolemy/demo/Robot/SmartIntruder6Teams.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankRefactored.xml
