@@ -788,8 +788,8 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
     if (NUMBER_OF_STRINGS > 0) {
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
             if (dest->s[i])
-                dest->functions->freeMemory((void *)dest->s[i]);
-            dest->s[i] = dest->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
+                source->functions->freeMemory((void *)dest->s[i]);
+            dest->s[i] = source->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
     }
@@ -829,7 +829,7 @@ fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
     if (NUMBER_OF_STRINGS > 0) {
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
             // FIXME: Where does this get freed?
-            dest->s[i] = dest->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
+            dest->s[i] = source->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
     }
