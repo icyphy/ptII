@@ -27,7 +27,7 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="ptolemy.kernel.util.IllegalActionException: foo&#10;  in .JavaScript8.JavaScript">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value=" was initialized and should have handled an exception but did not see any.&#10;  in .JavaScript8.TestExceptionAttribute">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
         </property>
