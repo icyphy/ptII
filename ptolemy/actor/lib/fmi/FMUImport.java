@@ -1258,7 +1258,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
                     null, null, null, null, null, null, 0, null, null, null,
                     null, null);
-        }
+        } 
 
         // Set a flag so the first call to fire() can do appropriate
         // initialization.
@@ -2778,7 +2778,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                                     + _fmiStatusDescription(fmiFlag));
                 }
                 if (_debugging) {
-                    _debugToStdOut("FMUImport._fmiInitialize(): about to invoke the fmi exitr initialization function");
+                    _debugToStdOut("FMUImport._fmiInitialize(): about to invoke the fmi exit initialization function");
                 }
                 fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
                         Integer.class, new Object[] { _fmiComponent }))
@@ -2789,6 +2789,10 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                             "Failed to exit the initialization mode of the FMU: "
                                     + _fmiStatusDescription(fmiFlag));
                 }
+                if (_debugging) {
+                    _debugToStdOut("FMUImport._fmiInitialize(): about to request refiring if necessary.");
+                }
+
                 // If the FMU can provide a maximum step size, query for the
                 // initial maximum
                 // step size and call fireAt() and ensure that the FMU is
@@ -2796,6 +2800,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 // at the specified time.
                 _requestRefiringIfNecessary();
 
+                if (_debugging) {
+                    _debugToStdOut("FMUImport._fmiInitialize(): about to record FMU state.");
+                }
                 // In case we have to backtrack, if the FMU supports
                 // backtracking,
                 // record its state.
@@ -3769,6 +3776,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                 if (_recordedState == null) {
                     _recordedState = new PointerByReference();
                     _recordedState.setValue(Pointer.NULL);
+                }
+                if (_debugging) {
+                    _debugToStdOut("FMUImport._recordFMUState(): about to invoke getFMUState().");
                 }
                 int getStateSucceeded = ((Integer) _fmiGetFMUstateFunction
                         .invoke(Integer.class, new Object[] { _fmiComponent,
