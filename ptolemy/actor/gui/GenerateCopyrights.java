@@ -286,7 +286,7 @@ public class GenerateCopyrights {
                 "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
                 "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.graph.Graph",
+        _addIfPresent(copyrightsMap, "ptolemy.graph.Element",
                 "ptolemy/graph/graph-license.htm");
         
         _addIfPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
