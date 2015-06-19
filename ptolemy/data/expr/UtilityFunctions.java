@@ -948,17 +948,30 @@ public class UtilityFunctions {
      *  should not include the platform dependent suffix.
      */
     public static void loadLibrary(String library) {
+        final boolean debug = false;
+        if (debug) {
+            System.out.println("UtilityFunctions.loadLibrary(" + library + ")");
+        }
         try {
             if (library.indexOf("/") == -1 && library.indexOf("\\") == -1) {
                 // loadLibrary does not work if the library has a \ or / in it.
                 // Unfortunately, pathnames tend to get specified with
                 // a forward slash, even under windows
+                if (debug) {
+                    System.out.println("UtilityFunctions.loadLibrary(" + library + "): System.loadLibrary()");
+                }
                 System.loadLibrary(library);
             } else {
                 // load() does not work with relative paths.
+                if (debug) {
+                    System.out.println("UtilityFunctions.loadLibrary(" + library + "): System.load()");
+                }
                 System.load(library);
             }
         } catch (UnsatisfiedLinkError ex) {
+            if (debug) {
+                System.out.println("UtilityFunctions.loadLibrary(" + library + "): " + ex);
+            }
             String sharedLibrarySuffix = "dll";
 
             String osName = StringUtilities.getProperty("os.name");
@@ -2067,6 +2080,10 @@ public class UtilityFunctions {
         String shortLibraryName = null;
 
         String osName = StringUtilities.getProperty("os.name");
+        final boolean debug = false;
+        if (debug) {
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + ")");
+        }
         if (osName.startsWith("SunOS") || osName.startsWith("Linux")
                 || osName.startsWith("Mac OS X")) {
             // Under Solaris, libraries start with lib, so
@@ -2132,7 +2149,13 @@ public class UtilityFunctions {
                 // that is specially marked.  Matlab under Web Start
                 // requires this.
                 if (shortLibraryName != null) {
+                    if (debug) {
+                        System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): System.loadLibrary(" + shortLibraryName + ")");
+                    }
                     System.loadLibrary(shortLibraryName);
+                    if (debug) {
+                        System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): loaded " + shortLibraryName);
+                    }
                 }
                 return;
             } catch (UnsatisfiedLinkError ex2) {
@@ -2147,6 +2170,9 @@ public class UtilityFunctions {
                     if (index != -1) {
                         shortLibraryName2 = shortLibraryName2
                                 .substring(index + 3);
+                    }
+                    if (debug) {
+                        System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): System.loadLibrary(" + shortLibraryName2 + ")");
                     }
                     System.loadLibrary(shortLibraryName2);
                     return;
@@ -2222,6 +2248,9 @@ public class UtilityFunctions {
         // get and UnsatisfiedLinkError on the file we depend on.
         // For example, if liba.so uses libb.so and we call this
         // method on a, then libb.so will not be found.
+        if (debug) {
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): System.load(" + libraryPath + ")");
+        }
         System.load(libraryPath);
     }
 
