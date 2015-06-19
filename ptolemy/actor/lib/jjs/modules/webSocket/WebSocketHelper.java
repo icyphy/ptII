@@ -70,21 +70,33 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public void close() {
 	synchronized(_actor) {
-      //stop reconnect attempts
-      _numberOfRetries = _numberOfTries - 1;
-      if (thread != null) {
-         thread.interrupt();
-      }
+	    // Stop reconnect attempts by stating that the number of
+	    // tries has already exceeded the maximum. This will also
+	    // abort any connection that is established after this close()
+	    // method has been called.
+	    _numberOfTries = _numberOfRetries + 2;
+	    if (_thread != null) {
+	        _thread.interrupt();
+	    }
 
 	    if (_webSocket != null) {
-		if (_wsIsOpen) {
-		    _webSocket.close();
-		}
-		_webSocket = null;
+	        if (_wsIsOpen) {
+	            _webSocket.close();
+	        }
+	        _webSocket = null;
 	    }
-       
+
 	    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-		_currentObj.callMember("emit", "error", "Unsent messages remain that were queued before the socket opened.");
+	        try {
+	            _currentObj.callMember("emit", "error",
+	                    "Unsent messages remain that were queued before the socket opened: "
+	                    + _pendingOutputs.toString());
+	        } catch (Throwable ex) {
+	            // Emitting an error event doesn't work for some reason.
+	            // Report the error anyway.
+	            _actor.error("Unsent messages remain that were queued before the socket opened: "
+                            + _pendingOutputs.toString());
+	        }
 	    }
 	}
     }
@@ -173,6 +185,9 @@ public class WebSocketHelper extends VertxHelperBase {
         _client.setPort(port);
         _client.exceptionHandler(new HttpClientExceptionHandler());
         _wsFailed = null;
+        
+        // Make the connection. This might eventually be a wrapped in a public method.
+        _numberOfTries = 1;
         _connectWebsocket(host, port, _client);
     }
 
@@ -207,6 +222,11 @@ public class WebSocketHelper extends VertxHelperBase {
             @Override
             public void handle(WebSocket websocket) {
                 synchronized(_actor) {
+                    if (_numberOfTries > _numberOfRetries + 1) {
+                        // close() has been called. Abort the connection.
+                        websocket.close();
+                        return;
+                    }
                     _wsIsOpen = true;
                     _webSocket = websocket;
 
@@ -244,7 +264,7 @@ public class WebSocketHelper extends VertxHelperBase {
     /** The host IP or name. */
     private String _host;
     
-    /** Maximum number of attempts to connect to the web socket. */
+    /** Maximum number of attempts to reconnect to the web socket if the first try fails. */
     private int _numberOfRetries = 0;
     
     /** Number of attempts so far to connect to the web socket. */
@@ -260,7 +280,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private int _timeBetweenRetries;
 
    /** The thread that reconnects the web socket connection after the timeBetweenRetries interval. */
-    private Thread thread = null;
+    private Thread _thread = null;
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
@@ -322,30 +342,41 @@ public class WebSocketHelper extends VertxHelperBase {
         @Override
         public void handle(Throwable arg0) {
             synchronized(_actor) {
-                if (_numberOfTries > _numberOfRetries) {
-                    _currentObj.callMember("emit", "error", "After " + _numberOfTries + " tries: " + arg0.getMessage());
+                if (_numberOfTries >= _numberOfRetries + 1) {
+                    _currentObj.callMember("emit", "error", 
+                            "After " + _numberOfTries + " tries: " + arg0.getMessage());
                     _wsIsOpen = false;
                     _wsFailed = arg0;
                 } else {
+                    _actor.log("Connection failed. Will try again: " + arg0.getMessage());
                     // Retry. Create a new thread to do this.
                     Runnable retry = new Runnable() {
                         public void run() {
                             try {
                                 Thread.sleep(_timeBetweenRetries);
                             } catch (InterruptedException e) {
-                                _currentObj.callMember("emit", "error", "After " + _numberOfTries + " tries, retries have been cancelled." );
+                                _currentObj.callMember("emit", "error", 
+                                        "After " + _numberOfTries + " tries, retries have been cancelled." );
                                 _wsIsOpen = false;
                                 _wsFailed = e;
                                 return;
                             }
                             synchronized(_actor) {
-                                _numberOfTries++;
-                                _connectWebsocket(_host, _port, _client);
+                                // Prevent any attempt to interrupt this thread, since it is
+                                // no longer sleeping.
+                                _thread = null;
+                                // Check again the status of the number of tries.
+                                // This may have been changed if close() was called,
+                                // which occurs, for example, when the model stops executing.
+                                if (_numberOfTries <= _numberOfRetries) {
+                                    _numberOfTries++;
+                                    _connectWebsocket(_host, _port, _client);
+                                }
                             }
                         }
                     };
-                    thread = new Thread(retry);
-                    thread.start();
+                    _thread = new Thread(retry);
+                    _thread.start();
                 }
             }
         }
