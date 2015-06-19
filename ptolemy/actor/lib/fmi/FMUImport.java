@@ -1514,7 +1514,27 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             // pathname without the shared library suffix (which is selected
             // and appended by {@link UtilityFunctions#loadLibrary}) for
             // portability.
-            UtilityFunctions.loadLibrary("ptolemy/actor/lib/fmi/jni/FMUImport");
+
+            String buildLibrary = "ptolemy/actor/lib/fmi/jni/FMUImport";
+            String installLibrary = "lib/libFMUImport";
+            try {
+                if (_debugging) {
+                    _debugToStdOut("About to load " + buildLibrary);
+                }
+                UtilityFunctions.loadLibrary(buildLibrary);
+            } catch (Throwable buildThrowable) {
+                try {
+                    if (_debugging) {
+                        _debugToStdOut("Loading " + buildLibrary + " failed with " + buildThrowable
+                                       + " About to load " + installLibrary);
+                    }
+                    // This will load the library from $PTII/lib/libFMUImport.jnilib or .so.
+                    UtilityFunctions.loadLibrary(installLibrary); 
+                } catch (Throwable installThrowable) {
+                    throw new IllegalActionException(this, installThrowable, "Failed to load " + installLibrary
+                            + " Also tried to load " + buildLibrary + ", which threw: " + buildThrowable);
+                }
+            }
         } else {
             try {
                 _nativeLibrary = _fmiModelDescription.getNativeLibrary();
