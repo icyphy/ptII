@@ -112,6 +112,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
+        _addIfPresent(copyrightsMap, "com.microstar.xml.XmlParser",
+                "com/microstar/xml/aelfred-license.htm");
+        
         _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
                 "lib/jna-license.htm");
 
@@ -283,6 +286,9 @@ public class GenerateCopyrights {
                 "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
                 "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
+        _addIfPresent(copyrightsMap, "ptolemy.graph.Graph",
+                "ptolemy/graph/graph-license.htm");
+        
         _addIfPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
                 "ptolemy/gui/ExtensionFilenameFilter-license.htm");
 
@@ -616,6 +622,7 @@ public class GenerateCopyrights {
 
         String aelfredCopyright = _findURL("com/microstar/xml/aelfred-license.htm");
         String graphCopyright = _findURL("ptolemy/graph/graph-license.htm");
+        String doubleUtilitiesCopyright = _findURL("ptolemy/util/DoubleUtilities-license.htm");
 
         String defaultCSS = _findURL("doc/default.css");
         StringBuffer htmlBuffer = new StringBuffer();
@@ -649,7 +656,7 @@ public class GenerateCopyrights {
                         + "AElfred is covered by the copyright in\n "
                         + "<a href=\""
                         + aelfredCopyright
-                        + "\"><code>."
+                        + "\"><code>"
                         + _canonicalizeURLToPTII(aelfredCopyright)
                         + "</code></a>\n</p>"
                         + "<p>"
@@ -660,6 +667,13 @@ public class GenerateCopyrights {
                         + "and his group. and are covered by a BSD License in\n "
                         + "<a href=\"" + graphCopyright + "\"><code>"
                         + _canonicalizeURLToPTII(graphCopyright)
+                        + "</code></a>\n</p>"
+                        + "<p>"
+                        + applicationName
+                        + " uses DoubleUtilities, which is based on Guava's DoubleUtils.java.  "
+                        + "Guava is licensed under the Apache License, Version 2.0, see "
+                        + "<a href=\"" + doubleUtilitiesCopyright + "\"><code>"
+                        + _canonicalizeURLToPTII(doubleUtilitiesCopyright)
                         + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
@@ -870,7 +884,8 @@ public class GenerateCopyrights {
      */
     static class FileNameComparator implements Comparator<String> {
 
-        /** Compare to Strings that should represent files by the name of the file.
+        /** Compare to Strings that should represent files by the
+         *  lower case name of the file.
          *  @param a The first file name.
          *  @param b The second file name.
          *  @return -1, 0 or 1
@@ -879,7 +894,7 @@ public class GenerateCopyrights {
         public int compare(String a, String b) {
             File fileA = new File(a);
             File fileB = new File(b);
-            return fileA.getName().compareTo(fileB.getName());
+            return fileA.getName().toLowerCase().compareTo(fileB.getName().toLowerCase());
         }
     }
 
@@ -890,7 +905,7 @@ public class GenerateCopyrights {
      */
     private static String[][] _licenses = {
             // Name, Ptiny, Windows JRE, Included in Sources, Included in Kepler, Summary
-            { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyrigh" },
+            { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyright" },
             { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
             { "BrowserLauncher", "Y", " ", "Y", "Y",
                     "Include the BrowserLauncher copyright" },
@@ -913,6 +928,7 @@ public class GenerateCopyrights {
             { "fmusdk", " ", " ", "Y", " ", " QTronic: Similar to BSD" },
             { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
             { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
+            { "graph", "Y", " ", "Y", "Y", "BSD" },
             { "guava", " ", " ", "Y", "Y", "Apache License" },
             { "hazelcast", " ", " ", "Y", " ", "Apache License" },
             { "itextpdf", " ", " ", "Y", " ",
