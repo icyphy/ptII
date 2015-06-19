@@ -787,7 +787,7 @@ static int loadLib(int idx) {
 /// \param xdot_dot_get The FMU second derivatives.
 /// \return 0 if succes.
 //////////////////////////////////////////////////////////////////////////////
-JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImportJNI_runNativeFMU(JNIEnv * env,
+JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImport_runNativeFMU(JNIEnv * env,
         jobject obj, jint idx, jint flag, jstring instance, jstring pathlib,
         jstring pathres, jdouble tStart, jdouble tEnd, jdouble time,
         jint toleranceDefined, jdouble tolerance, jint visible, jint loggingOn,
