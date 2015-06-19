@@ -56,8 +56,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	DeviceDiscovery.xml \
-	DeviceDiscoveryNmap.xml
+	Discovery.xml \
+	DiscoveryNmap.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

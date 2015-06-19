@@ -51,7 +51,7 @@ JSRCS = \
 	DiscoveryHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
-	DeviceDiscoveryAccessor.xml \
+	Discovery.xml \
 	discovery.js \
 	package.json \
 	
