@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2011-2014 The Regents of the University of California.
+# @Copyright (c) 2011-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	FMUImport.java \
-	FMUImportJNI.java \
 	FMUQSS.java
 
 OTHER_FILES_TO_BE_JARED = \
