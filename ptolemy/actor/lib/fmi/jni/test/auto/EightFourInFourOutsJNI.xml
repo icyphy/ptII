@@ -26,10 +26,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -315.0}">
         </property>
     </property>
-    <entity name="FourInFourOuts" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -134,10 +136,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts2" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts2" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -242,10 +246,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts3" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts3" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -350,10 +356,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts4" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts4" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -458,10 +466,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts5" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts5" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -566,10 +576,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts6" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts6" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="persistentInputs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -689,10 +701,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-375.0, -200.0}">
         </property>
     </entity>
-    <entity name="FourInFourOuts7" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts7" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, -90.0}">
         </property>
@@ -795,10 +809,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts8" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts8" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{790.0, -90.0}">
         </property>
@@ -901,10 +917,12 @@
             </property>
         </port>
     </entity>
-    <entity name="FourInFourOuts9" class="ptolemy.actor.lib.fmi.FMUImportJNI">
+    <entity name="FourInFourOuts9" class="ptolemy.actor.lib.fmi.FMUImport">
         <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/fourInputsFourOutputsME20.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="useRawJNI" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{920.0, -90.0}">
         </property>
