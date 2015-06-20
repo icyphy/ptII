@@ -58,7 +58,7 @@ EXAMPLE_MODELS = \
 	SmartChase.xml \
 	SmartChaseWithSmartIntruder.xml \
 	SmartIntruder.xml \
-	SmartIntruder7Teams.xml
+	SmartIntruder6Teams.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	$(EXAMPLE_MODELS) \
