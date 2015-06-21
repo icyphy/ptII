@@ -48,7 +48,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Discovery.xml \
-	DiscoveryNmap.xml
+	DiscoveryJS.xml \
+	DiscoveryXML.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
