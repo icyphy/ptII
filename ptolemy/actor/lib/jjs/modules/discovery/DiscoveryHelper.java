@@ -92,6 +92,9 @@ public class DiscoveryHelper {
             baseIP = IPAddress.substring(0, IPAddress.lastIndexOf("."));
             
             if (discoveryMethod.equalsIgnoreCase("nmap")) {
+                if (_debugging) {
+                    System.out.println("Discovery - using nmap");
+                }
                 nmap(baseIP);
             } else {
             
@@ -388,7 +391,9 @@ public class DiscoveryHelper {
                     // Store IP.  Name and mac address are determined in arp
                     // The host machine will be pingable, but will have no arp 
                     // entry, so use "Host machine" as the default name, mac
-                    System.out.println("Device available at " + testIP);
+                    if (_debugging) {
+                        System.out.println("Device available at " + testIP);
+                    }      
                     try {
                             device = new JSONObject("{\"IPaddress\": " + 
                                    testIP + "," + "\"name\": \"Host machine\"" + 
@@ -443,8 +448,11 @@ public class DiscoveryHelper {
                     // Get name of device
                     int bracket = data.indexOf("[");
                     String name = data.substring(8, bracket - 1);
-                    System.out.println("Device " + name + " available at " 
+                    
+                    if (_debugging) {
+                        System.out.println("Device " + name + " available at " 
                             + testIP);
+                    }
                     try {
                         device = new JSONObject("{\"IPaddress\": " + testIP + 
                                 "," + "\"name\": " + name + 
