@@ -161,6 +161,59 @@ function getParameter(name) {
 // as expected.
 function initialize() {exports.initialize();}
 
+/** Specify an input for the accessor.
+ *  The name argument is a required string, recommended to be camelCase with a leading
+ *  lower-case character). The options argument can have the following fields:
+ *  * type: The data type of the input (a string). If this is not specified, then any valid JavaScript value may be provided as an input. If it is specified, it must be one of the valid data types.
+ *  * value: A default value for the input.
+ *  @param name The name of the input.
+ *  @param options The options, or null or omitted to accept the defaults.
+ */
+function input(name, options) {
+    // Nashorn bug if options is undefined, where it says:
+    // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
+    // Replace with null.
+    if (options === undefined) {
+        options = null;
+    }
+    actor.input(name, options);
+}
+
+/** Specify an output for the accessor.
+ *  The name argument is a required string, recommended to be camelCase with a leading
+ *  lower-case character). The options argument can have the following fields:
+ *  * type: The data type of the output (a string). If this is not specified, then any valid JavaScript value may be sent as an output. If it is specified, it must be one of the valid data types.
+ *  @param name The name of the output.
+ *  @param options The options, or null or omitted to accept the defaults.
+ */
+function output(name, options) {
+    // Nashorn bug if options is undefined, where it says:
+    // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
+    // Replace with null.
+    if (options === undefined) {
+        options = null;
+    }
+    actor.output(name, options);
+}
+
+/** Specify a parameter for the accessor.
+ *  The name argument is a required string, recommended to be camelCase with a leading
+ *  lower-case character). The options argument can have the following fields:
+ *  * type: The data type of the parameter (a string). If this is not specified, then any valid JavaScript value may be provided for the value. If it is specified, it must be one of the valid data types.
+ *  * value: A default value for the parameter.
+ *  @param name The name of the parameter.
+ *  @param options The options, or null or omitted to accept the defaults.
+ */
+function parameter(name, options) {
+    // Nashorn bug if options is undefined, where it says:
+    // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
+    // Replace with null.
+    if (options === undefined) {
+        options = null;
+    }
+    actor.parameter(name, options);
+}
+
 /** Remove the input handler with the specified handle.
  *  @param handle The handle.
  *  @see #addInputHandler()

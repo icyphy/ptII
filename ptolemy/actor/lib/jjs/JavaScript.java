@@ -959,10 +959,11 @@ public class JavaScript extends TypedAtomicActor {
      *  an ordinary port and set its default value.
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
+     *   To give options, this argument must implement the Map interface.
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name, Map options)
+    public void input(String name, Object options)
 	    throws IllegalActionException, NameDuplicationException {
 	// FIXME: Should check whether the model is running an use a change
 	// request if so.
@@ -973,11 +974,11 @@ public class JavaScript extends TypedAtomicActor {
 	PortParameter parameter = null;
 	Object token = null;
 	if (port == null) {
-	    if (options == null) {
+	    if (!(options instanceof Map)) {
 		// No options given. Use defaults.
 		port = (TypedIOPort) newPort(name);
 	    } else {
-		Object value = options.get("value");
+		Object value = ((Map)options).get("value");
 		if (value == null) {
 		    port = (TypedIOPort) newPort(name);
 		} else {
@@ -1004,8 +1005,8 @@ public class JavaScript extends TypedAtomicActor {
 		parameter = ((ParameterPort)port).getParameter();
 	    }
 	}
-	if (options != null) { 
-	    Object type = options.get("type");
+	if (options instanceof Map) { 
+	    Object type = ((Map)options).get("type");
 	    if (type instanceof String) {
 		Type ptType = _typeAccessorToPtolemy((String)type);
 		port.setTypeEquals(ptType);
@@ -1020,7 +1021,7 @@ public class JavaScript extends TypedAtomicActor {
 	    } else if (type != null) {
 		throw new IllegalActionException(this, "Unsupported type: " + type);
 	    }
-	    Object description = options.get("description");
+	    Object description = ((Map)options).get("description");
 	    if (description != null) {
 		_setPortDescription(port, description.toString());
 	    }
@@ -1121,10 +1122,11 @@ public class JavaScript extends TypedAtomicActor {
      *  include documentation of this output.
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
+     *   To give options, this argument must implement the Map interface.
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name, Map<String,String> options)
+    public void output(String name, Object options)
 	    throws IllegalActionException, NameDuplicationException {
 	// FIXME: Should check whether the model is running a use a change
 	// request if so.
@@ -1140,16 +1142,20 @@ public class JavaScript extends TypedAtomicActor {
 			"Name is reserved: " + name);
 	    }
 	}
-	if (options != null) { 
-	    String type = options.get("type");
-	    if (type == null) {
-		port.setTypeEquals(BaseType.GENERAL);
+	if (options instanceof Map) { 
+	    Object type = ((Map)options).get("type");
+	    if (type instanceof String) {
+                port.setTypeEquals(_typeAccessorToPtolemy((String)type));
 	    } else {
-		port.setTypeEquals(_typeAccessorToPtolemy(type));
+	        if (type == null) {
+	            port.setTypeEquals(BaseType.GENERAL);
+	        } else {
+	            throw new IllegalActionException(this, "Unsupported type: " + type);
+	        }
 	    }
-	    String description = options.get("description");
+	    Object description = ((Map)options).get("description");
 	    if (description != null) {
-		_setPortDescription(port, description);
+		_setPortDescription(port, description.toString());
 	    }
 	} else {
 	    port.setTypeEquals(BaseType.GENERAL);
