@@ -436,32 +436,14 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         _isStrict = true;
         boolean removeDirectDependencyValue = ((BooleanToken) removeDirectDependency
                 .getToken()).booleanValue();
-        if (removeDirectDependencyValue){
-			try {
-				boolean response = MessageHandler
-						.yesNoCancelQuestion(
-								"The dependency of all inputs on all outputs of "
-										+ this.getFullName()
-										+ "  will be removed., "
-										+ "This can cause a non-deterministic behavior of the FMU. ",
-								"Proceed",
-								"Proceed and do not warn me again",
-								"Cancel");
-
-				if (!response) {
-					// User has asked to not be warned again.
-					// NOTE: This does not mark the model modified, so
-					// the user does not save, then the warning will
-					// reappear next time.
-					removeDirectDependency.setToken(BooleanToken.TRUE);
-				}
-			} catch (CancelException e) {
-				// User cancelled, so we throw an exception to stop the
-				// execution.
-				throw new IllegalActionException(this, e,
-						"Execution cancelled.");
-			}
-        }
+		if (removeDirectDependencyValue) {
+			new Exception(
+					"Warning: The dependency of all inputs on all outputs of "
+							+ this.getFullName()
+							+ "  will be removed., "
+							+ "This can cause a non-deterministic behavior of the FMU.")
+					.printStackTrace();
+		}
         for (Output output : _getOutputs()) {
             if (output.dependencies == null) {
                 // There are no dependencies declared for this output,
