@@ -443,7 +443,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 								"The dependency of all inputs on all outputs of "
 										+ this.getFullName()
 										+ "  will be removed., "
-										+ "This can cause a non-deterministic bahavior of the FMU. ",
+										+ "This can cause a non-deterministic behavior of the FMU. ",
 								"Proceed",
 								"Proceed and do not warn me again",
 								"Cancel");
