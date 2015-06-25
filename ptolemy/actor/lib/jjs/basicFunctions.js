@@ -184,8 +184,15 @@ var _moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
 var _modulePath = [ _moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/' ];
 
 /** A string giving the full path to the root directory for installed accessors. */
-var _accessorsRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
+var _accessorRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
         '$CLASSPATH/org/terraswarm/accessor/accessors/web/', null).getAbsolutePath();
+
+/** A string giving the full path to the root directory for test accessors. */
+var _testAccessors = Java.type('ptolemy.util.FileUtilities').nameToFile(
+        '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/', null).getAbsolutePath();
+
+/** An array that gives the search path for accessors to be extended. */
+var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePath);
 
 /**
  * Require the named module. This function imports modules formatted
@@ -244,7 +251,7 @@ var requireAccessor = load(_moduleRoot + '/external/require.js')(
     //    - a root directory in which to look for accessors.
     //    - an array of paths in which to look for accessors.
     //    - an optional hook object that includes two callback functions for notification.
-    _accessorsRoot, _modulePath);
+    _accessorRoot, _accessorPath);
 
 ////////////////////
 // Pull in the util and console modules.
