@@ -171,9 +171,13 @@
     try {
       compiledWrapper = eval(code);
     } catch (e) {
+      var message = e.message;
+      if (!message) {
+        message = e.toString();
+      }
       throw new Error( "Error evaluating module " + path
         + " line #" + e.lineNumber
-        + " : " + e.message, canonizedFilename, e.lineNumber );
+        + " : " + message + "\nIn file: " + canonizedFilename);
     }
     var __dirname = '' + file.parentFile.canonicalPath;
     var parameters = [
@@ -183,14 +187,19 @@
       canonizedFilename,  /* __filename */
       __dirname           /* __dirname */
     ];
+    // alert(JSON.stringify(parameters));
     try {
       compiledWrapper
         .apply(moduleInfo.exports,  /* this */
                parameters);   
     } catch (e) {
+      var message = e.message;
+      if (!message) {
+        message = e.toString();
+      }
       throw new Error( "Error executing module " + path
         + " line #" + e.lineNumber
-        + " : " + e.message, canonizedFilename, e.lineNumber );
+        + " : " + message + "\nIn file: " + canonizedFilename);
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );

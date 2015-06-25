@@ -41,7 +41,7 @@
  * of Things Software</i>, 19(2):20-29, March 2015.</p>
  *
  * @module localFunctions
- * @author Edward A. Lee, Contributor: Christopher Brooks
+ * @author Edward A. Lee, Contributor: Christopher Brooks, Chris Shaver
  * @version $Id$
  * @since Ptolemy II 11.0
  */
@@ -51,13 +51,14 @@
 /*globals Java, actor */
 
 ////////////////////
-// Set an exports global object with default functions.
-var exports = {
+// Set a prototype for the exports object with default functions.
+var exports = {};
+Object.setPrototypeOf(exports, {
     fire: function() {},
     initialize: function() {},
     setup: function() {},
     wrapup: function() {}
-};
+});
 
 /** Add a handler function to call when the specified input receives new data.
  *  If the name argument is null, then call the handler when any input receives data.
@@ -112,7 +113,44 @@ function addInputHandler(name, func) {
  */
 function nullHandlerFunction() {}
 
-////////////////////
+/** Specify that a derived accessor extends a specified base accessor.
+ *  Call this in the setup() function of the derived accessor as:
+ *  ```javascript
+ *     extend('MyBaseAccessor');
+ *  ```
+ *  This will cause the setup() function of the base accessor to be invoked,
+ *  which means that this accessor will acquire all inputs, outputs, and parameters
+ *  of the base accessor.
+ *
+ *  In addition, the derived accessor inherits all fields of the exports
+ *  field of the base accessor, including its initialize(), wrapup(), and any other
+ *  exported function.  To override these, simply define new functions. The override
+ *  can invoke the base accessor's function as in the following example:
+ *  ```javascript
+ *     exports.initialize = function() {
+ *        Object.getPrototypeOf(exports).initialize.apply(this);
+ *        ... code specific to the current accessor ...
+ *     };
+ *  ```
+ *
+ *  In this implementation, the accessor definition is searched for in
+ *  $PTII/org/terraswarm/accessor/accessors/web, which is expected to be a clone
+ *  of the repository at http://terraswarm.org/accessors.
+ *
+ *  FIXME: Need a way to specify a different search location for the accessor,
+ *  including online.
+ *
+ *  @param accessorName The name of the accessor to extend.
+ *  @see #implement()
+ */
+extend = function(exports) {
+    return function(accessorName) {
+        var exportsPrototype = requireAccessor(accessorName);
+        Object.setPrototypeOf(exports, exportsPrototype);
+        exportsPrototype.setup();
+    };
+}(exports);
+
 // Default fire function, which invokes exports.fire().
 // Note that if the script simply defines a top-level fire() function instead
 // of exports.fire(), that function will overwrite this one and will still work
@@ -153,6 +191,30 @@ function getParameter(name) {
     var result = proxy.get(channel);
     return convertFromToken(result);
 }
+
+/** Specify that a derived accessor implements a specified base accessor interface.
+ *  Call this in the setup() function of the derived accessor as:
+ *  ```javascript
+ *     implement('MyInterface');
+ *  ```
+ *  This will cause the setup() function of the interface to be invoked,
+ *  which means that this accessor will acquire all inputs, outputs, and parameters
+ *  of the interface.
+ *
+ *  In this implementation, the interface is searched for in
+ *  $PTII/org/terraswarm/accessor/accessors/web, which is expected to be a clone
+ *  of the repository at http://terraswarm.org/accessors.
+ *
+ *  FIXME: Need a way to specify a different search location for the interface,
+ *  including online.
+ *
+ *  @param interfaceName The name of the interface to implement.
+ *  @see #extend()
+ */
+function implement(interfaceName) {
+    var interfaceExports = requireAccessor(interfaceName);
+    interfaceExports.setup();
+};
 
 ////////////////////
 // Default initialize function, which invokes exports.initialize().

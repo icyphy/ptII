@@ -24,7 +24,7 @@ var EventEmitter = require('events').EventEmitter;
  *  defined here. This function returns an instance of ClientRequest, also defined here.
  *  The options argument is a JSON object with the following optional fields:
  *  <ul>
- *  <li> headers: A JSON object containing request headers. By default this is an empty object.
+ *  <li> headers: An object containing request headers. By default this is an empty object.
  *       Items may have a value that is an array of values, for headers with more than one value.
  *  <li> host: A string giving the domain name or IP address of the server to issue the request to.
  *       This defaults to 'localhost'.</li>

@@ -177,8 +177,15 @@ function readURL(url, timeout) {
 }
 
 /** A string giving the full path to the root directory for installed modules. */
-var moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
+var _moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
         '$CLASSPATH/ptolemy/actor/lib/jjs/', null).getAbsolutePath();
+
+/** An array that gives the search path for modules to be required. */
+var _modulePath = [ _moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/' ];
+
+/** A string giving the full path to the root directory for installed accessors. */
+var _accessorsRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
+        '$CLASSPATH/org/terraswarm/accessor/accessors/web/', null).getAbsolutePath();
 
 /**
  * Require the named module. This function imports modules formatted
@@ -220,13 +227,24 @@ var moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
  * @see http://nodejs.org/api/modules.html#modules_the_module_object
  * @see also: http://wiki.commonjs.org/wiki/Modules
  */
-var require = load(moduleRoot + '/external/require.js')(
+var require = load(_moduleRoot + '/external/require.js')(
     // Invoke the function returned by 'load' immediately with the following arguments.
     //    - a root directory in which to look for modules.
     //    - an array of paths in which to look for modules.
     //    - an optional hook object that includes two callback functions for notification.
-    moduleRoot,
-    [ moduleRoot + '/', moduleRoot + '/modules/', moduleRoot + '/node/' ]);
+    _moduleRoot, _modulePath);
+
+/**
+ * Require the named accessor. This is a version of require() that looks
+ * in a different place for accessors.
+ * @see #require()
+ */
+var requireAccessor = load(_moduleRoot + '/external/require.js')(
+    // Invoke the function returned by 'load' immediately with the following arguments.
+    //    - a root directory in which to look for accessors.
+    //    - an array of paths in which to look for accessors.
+    //    - an optional hook object that includes two callback functions for notification.
+    _accessorsRoot, _modulePath);
 
 ////////////////////
 // Pull in the util and console modules.
