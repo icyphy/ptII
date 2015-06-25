@@ -75,34 +75,33 @@ var inputHandle = null;
 
 /** Set up the accessor by defining the parameters, inputs, and outputs. */
 exports.setup = function() {
-  accessor.parameter('server', {
+  parameter('server', {
     type: 'string',
-    value: 'localhost',
+    value: 'localhost'
   });
-  accessor.parameter('port', {
+  parameter('port', {
     type: 'int',
-    value: 8080,
+    value: 8080
   });
-  accessor.parameter('numberOfRetries', {
+  parameter('numberOfRetries', {
     type: 'int',
-    value: 5,
+    value: 5
   });
-  accessor.parameter('timeBetweenRetries', {
+  parameter('timeBetweenRetries', {
     type: 'int',
-    value: 100,
+    value: 100
   });
-  accessor.parameter('reconnectOnClose', {
+  parameter('reconnectOnClose', {
     type: 'boolean',
-    value: true,
+    value: true
   });
-  accessor.input('toSend', {
-    type: 'JSON', 
-    description: 'The data to be send to the web socket server, in JSON format.'
+  input('toSend', {
+    type: 'JSON'
   });
-  accessor.output('connected', {
-    type: 'boolean',
+  output('connected', {
+    type: 'boolean'
   });
-  accessor.output('received');
+  output('received');
 }
 
 /** Initializes accessor by attaching functions to inputs. */
