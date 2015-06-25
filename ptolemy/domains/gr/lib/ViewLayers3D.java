@@ -31,6 +31,8 @@ import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -55,7 +57,7 @@ import java.awt.Color;
 /**
    A sink actor that renders layered structure for High Speed Sintering (HSS)
    3D printing simulation.
-   TODO: This is very preliminary version. Still needs a lot of elaboration,
+   TODO: This is a very preliminary version. Still needs a lot of elaboration,
    including information for each layer (shape, color, etc.).
 
    @author Hokeun Kim
@@ -451,32 +453,73 @@ public class ViewLayers3D extends TypedAtomicActor {
         int width = layer.getWidth();
     
         int primitiveFlags = Primitive.GENERATE_NORMALS;
-        Appearance appearance = new Appearance();
         Material material = new Material();
-        float red = 0.7f;
-        float green = 0.7f;
-        float blue = 0.7f;
-        float alpha = 1.0f;
-        Color color = new Color(red, green, blue, alpha);
-        Color3f color3f = new Color3f(color);
-        material.setDiffuseColor(color3f);
-        appearance.setMaterial(material);
+        
         DoubleToken thicknessToken = (DoubleToken)layerThickness.getToken();
         
         for (int i = 0; i < width; i++) {
             BranchGroup branchGroup = new BranchGroup();
-            DoubleToken layerToken = (DoubleToken) layer.get(i);
+            RecordToken recordToken = (RecordToken) layer.get(i);
+            StringToken layerShape = (StringToken) recordToken.get("shape");
+            DoubleToken layerSize = (DoubleToken) recordToken.get("size");
+            StringToken layerColor = (StringToken) recordToken.get("color");
             
-            float xLen = (float)layerToken.doubleValue();
-            float yLen = (float)layerToken.doubleValue();
+            Node node;
+            
+            float red = 0.0f; 
+            float green = 0.0f;
+            float blue = 0.0f;
+            float alpha = 1.0f;
+            if (layerColor.stringValue().equals("red")) {
+                red = 1.0f;
+            }
+            else if (layerColor.stringValue().equals("blue")) {
+            	blue = 1.0f;
+            }
+            else if (layerColor.stringValue().equals("green")) {
+            	green = 1.0f;
+            }
+            else if (layerColor.stringValue().equals("gray")) {
+            	red = 0.5f;
+            	green = 0.5f;
+            	blue = 0.5f;
+            }
+            else if (layerColor.stringValue().equals("white")) {
+            	red = 1.0f;
+            	green = 1.0f;
+            	blue = 1.0f;
+            }
+            else if (layerColor.stringValue().equals("black")) {
+            }
+            else {
+            	red = 0.7f;
+            	green = 0.7f;
+            	blue = 0.7f;
+            }
+            
+            Appearance appearance = new Appearance();
+            Color color = new Color(red, green, blue, alpha);
+            Color3f color3f = new Color3f(color);
+            material.setDiffuseColor(color3f);
+            appearance.setMaterial(material);
+
             float zLen = (float)thicknessToken.doubleValue()/2;
-            Node node = new Box(xLen, yLen, zLen, primitiveFlags, appearance);
+            
+        	node = new Box(1.0f, 1.0f, zLen, primitiveFlags, appearance);
+            if (layerShape.stringValue().equals("rect")) {
+            	float layerLen = (float)layerSize.doubleValue();
+            	node = new Box(layerLen, zLen, layerLen, primitiveFlags, appearance);
+            }
+            else if (layerShape.stringValue().equals("circ")) {
+            	float layerRadius = (float)layerSize.doubleValue();
+            	node = new Cylinder(layerRadius, zLen * 2, primitiveFlags, appearance);
+            }
             
             Transform3D transform = new Transform3D();
+            float zOffset = 0.0f;
             float xOffset = 0.0f;
-            float yOffset = 0.0f;
             
-            float zOffset = (float)(thicknessToken.doubleValue() * _layerCount);
+            float yOffset = (float)(thicknessToken.doubleValue() * _layerCount);
             _layerCount++;
 
             transform.setTranslation(new Vector3d(xOffset, yOffset, zOffset));
