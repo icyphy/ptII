@@ -1,0 +1,70 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Derived" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can read a port defined in a base accessor,&#10;and that the fire() method is defined implicitly even if not explicitly.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 60.0]">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 150}">
+        </property>
+    </entity>
+    <entity name="Derived" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Base');&#10;   input('in2');&#10;   output('output');&#10;   console.log('derived set up');&#10;}&#10;&#10;var handle;&#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;   console.log('derived init');&#10;   handle = addInputHandler('in1', function() {&#10;      send('output', get('in1'));&#10;   });&#10;}&#10;&#10;exports.wrapup1 = function() {&#10;   console.log('derived wrapped up');&#10;   removeInputHandler(handle);&#10;}&#10;&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Derived.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 160.0]">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="in2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485, 160}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="Derived.in1" relation="relation"/>
+    <link port="Derived.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>

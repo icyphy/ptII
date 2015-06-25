@@ -143,19 +143,26 @@ function nullHandlerFunction() {}
  *  @param accessorName The name of the accessor to extend.
  *  @see #implement()
  */
-extend = function(exports) {
+extend = function(exportsExtending) {
     return function(accessorName) {
         var exportsPrototype = requireAccessor(accessorName);
-        Object.setPrototypeOf(exports, exportsPrototype);
+        // Make sure the prototype has default methods defined.
+        if (!exportsPrototype.fire
+                || !exportsPrototype.initialize
+                || !exportsPrototype.setup
+                || !exportsPrototype.wrapup
+        ) {
+            Object.setPrototypeOf(exportsPrototype, {
+                fire: function() {},
+                initialize: function() {},
+                setup: function() {},
+                wrapup: function() {}
+            });
+        }
+        Object.setPrototypeOf(exportsExtending, exportsPrototype);
         exportsPrototype.setup();
     };
 }(exports);
-
-// Default fire function, which invokes exports.fire().
-// Note that if the script simply defines a top-level fire() function instead
-// of exports.fire(), that function will overwrite this one and will still work
-// as expected.
-function fire() {exports.fire();}
 
 /** Get data from an input.
  *  @param name The name of the input (a string).
@@ -215,13 +222,6 @@ function implement(interfaceName) {
     var interfaceExports = requireAccessor(interfaceName);
     interfaceExports.setup();
 };
-
-////////////////////
-// Default initialize function, which invokes exports.initialize().
-// Note that if the script simply defines a top-level initialize() function instead
-// of exports.initialize(), that function will overwrite this one and will still work
-// as expected.
-function initialize() {exports.initialize();}
 
 /** Specify an input for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
@@ -322,14 +322,28 @@ function set(parameter, value) {
     proxy.set(token);
 }
 
-////////////////////
+//------------------------ Functions Invoked by JavaScript.java ------------------------
+// FIXME: Should these names have leading underscores?
+
+// Default fire function, which invokes exports.fire().
+// Note that if the script simply defines a top-level fire() function instead
+// of exports.fire(), that function will overwrite this one and will still work
+// as expected.
+function fire() {exports.fire();}
+
+/** Initialize function used by the Ptolemy II/Nashorn host to provide the host
+ *  context as an argument to the initialize() function of the accessor.
+ *  This should not be called directly or overridden by the accessor.
+ *  FIXME: Above comment not yet implemented.
+ */
+function initialize() {exports.initialize();}
+
 // Default setup function, which invokes exports.setup().
 // Note that if the script simply defines a top-level setup() function instead
 // of exports.setup(), that function will overwrite this one and will still work
 // as expected.
 function setup() {exports.setup();}
 
-////////////////////
 // Default wrapup function, which invokes exports.wrapup().
 // Note that if the script simply defines a top-level wrapup() function instead
 // of exports.wrapup(), that function will overwrite this one and will still work
