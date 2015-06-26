@@ -31,6 +31,8 @@ package ptolemy.actor.lib.jjs.modules.discovery;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -176,6 +178,19 @@ public class DiscoveryHelper {
         }
     }
     
+    /** Return the IP address of the host machine.
+     * 
+     * @return The IP address of the host machine.
+     */
+    public String getHostAddress(){
+        // For a more in-depth algorithm, see:
+        // http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
+        try {
+            return Inet4Address.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            return "Unknown";
+        }
+    }
     
     /** Execute the arp command on a Linux platform.  The arp command finds 
      *  names and MAC addresses for devices on the local area network.  
