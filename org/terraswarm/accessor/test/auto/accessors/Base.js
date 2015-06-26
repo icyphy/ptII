@@ -6,7 +6,7 @@ exports.setup = function() {
 var handle;
 
 exports.initialize = function() {
-   handle = addInputHandler('in1', exports.inputHandler);
+   handle = addInputHandler('in1', this.inputHandler);
 }
 
 exports.inputHandler = function() {
