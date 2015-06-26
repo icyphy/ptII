@@ -1,0 +1,69 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Derived2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 126, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can read a port defined in a base accessor,&#10;and that the fire() method is defined implicitly even if not explicitly.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 60.0]">
+        </property>
+    </property>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485, 160}">
+        </property>
+    </entity>
+    <entity name="Derived2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Base');&#10;}&#10;//Override input Handler of base&#10;exports.inputHandler = function() {&#10;   console.log('sending false');&#10;   send('output', false);&#10;}&#10;&#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;   printProperties(exports);&#10;}&#10;&#10;function printProperties(obj) {&#10;   console.log('printing non-prototype properties');&#10;   for (var i in obj) {&#10;      if (obj.hasOwnProperty(i)) {&#10;         console.log(i + &quot;: &quot; + obj[i].toString());&#10;      }&#10;   }&#10;   console.log('printing protoytpe');&#10;   for (var j in Object.getPrototypeOf(obj)) {&#10;      console.log(j + &quot;: &quot; + obj[j].toString());&#10;   }&#10;}&#10;&#10;&#10;&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Derived.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 145.0]">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Derived2.in1" relation="relation"/>
+    <link port="Derived2.output" relation="relation2"/>
+    <link port="SingleEvent.output" relation="relation"/>
+</entity>
