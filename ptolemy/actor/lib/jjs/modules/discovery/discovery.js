@@ -31,6 +31,7 @@ exports.DiscoveryService = DiscoveryService;
 function DiscoveryService() {
 	EventEmitter.call(this);
 	var self = this;
+	var helper = new DiscoveryHelper();
 	
 	/** Discover devices on the local area network.
 	 * 
@@ -38,8 +39,6 @@ function DiscoveryService() {
 	 * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
 	 */
 	this.discoverDevices = function(IPaddress, discoveryMethod) {
-		
-		var helper = new DiscoveryHelper();
 		
 		// discoverDevices() returns a string representation of a JSON array of 
 		// devices.  Covert this to a format the Ptolemy type system likes.
@@ -54,6 +53,10 @@ function DiscoveryService() {
 		
 		self.emit('discovered', ipArray);
 	};
+	
+	this.getHostAddress = function() {
+		return helper.getHostAddress();
+	}
 }
 //DiscoveryService emits events.  See:
 //http://smalljs.org/object/events/event-emitter/

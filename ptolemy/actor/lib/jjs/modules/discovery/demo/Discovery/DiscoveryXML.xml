@@ -44,11 +44,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[463.25, 310.0]">
         </property>
     </entity>
-    <entity name="IPAddress" class="ptolemy.actor.lib.net.IPAddress">
-        <doc>Send the IP address of the host to the output port.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 365.0]">
-        </property>
-    </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={832, 405, 359, 246}, maximized=false}">
         </property>
@@ -134,10 +129,28 @@
             </property>
         </port>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;IPAddress.trigger&quot;,x=115.0,y=205.0}, tail={id=&quot;SingleEvent.output&quot;,x=35.0,y=215.0}, points={} } }">
+    <entity name="IPAddress" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor outputs the IP address of the local machine.&#10; * &#10; *  @accessor IPAddress&#10; *  @module Discovery&#10; *  @author Elizabeth Latronico (beth@berkeley.edu), based on IPAddress actor&#10; *  by Christopher Brooks&#10; *  @input {boolean} trigger Send a token here to produce an output.&#10; *  @output {string} IPAddress The IP address of the local machine.&#10; */&#10;&#10;var discovery = require('discovery');&#10;// Initialize ds here, instead of in setup(), so that the ds object is defined&#10;// when the ds.on() function is encountered&#10;var ds = new discovery.DiscoveryService(); &#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('trigger', {&#10;        type: 'boolean',&#10;      });&#10;    &#10;    accessor.output('IPAddress', {&#10;        type: 'string',&#10;      });&#10;};&#10;&#10;var handle;&#10;&#10;/** Upon receiving a trigger input, output the host machine's IP address.&#10; */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('trigger', function() {&#10;		send('IPAddress', ds.getHostAddress());&#10;	});&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
         </property>
-    </relation>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/IPAddress.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 375.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="IPAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -162,12 +175,12 @@
         <vertex name="vertex1" value="[230.0, 375.0]">
         </vertex>
     </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Display.input" relation="relation7"/>
-    <link port="IPAddress.output" relation="relation3"/>
-    <link port="IPAddress.trigger" relation="relation4"/>
     <link port="Display2.input" relation="relation3"/>
     <link port="Display3.input" relation="relation"/>
-    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation8"/>
     <link port="Stop.input" relation="relation6"/>
     <link port="MicrostepDelay.input" relation="relation7"/>
     <link port="MicrostepDelay.output" relation="relation5"/>
@@ -179,4 +192,6 @@
     <link port="Discovery.error" relation="relation"/>
     <link port="Discovery.hostIP" relation="relation3"/>
     <link port="Discovery.devices" relation="relation7"/>
+    <link port="IPAddress.trigger" relation="relation8"/>
+    <link port="IPAddress.IPAddress" relation="relation3"/>
 </entity>
