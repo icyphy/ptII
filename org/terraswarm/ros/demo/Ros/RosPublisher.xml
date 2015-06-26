@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 25.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 130, 1060, 724}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 96, 1060, 752}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 635]">
     </property>
@@ -64,9 +64,9 @@
         </property>
     </entity>
     <entity name="RosPublisher" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor publishes to a pre-defined ROS topic.&lt;br&gt;&#10; *  This accessor requires the module 'webSocketClient'. &#10; *  It inherits the input and output from webSocketClient, but adds&#10; *  its own 'topic' input. This must be a pre-established topic in ROS.&#10; *  This input is usually prefixed with a '/' eg: '/noise'.&lt;br&gt; &#10; *  On input from 'toSend', this accessor publishes that input to the &#10; *  aforementioned topic. &#10; *  The input from 'toSend' must be in JSON form, and must match the message&#10; *  datatype that the ROS topic is expecting. For example if ROS topic is &#10; *  expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; *  as follows:&#10; *  &lt;pre&gt; { &quot;data&quot;: &quot;hello world&quot; } &lt;/pre&gt;&#10; *&#10; *  @accessor RosPublisher&#10; *  @parameter {string} server The IP address or domain name of server.&#10; *  @parameter {number} port The port that the web socket listens to.&#10; *  @parameter {string} topic The ROS topic to publish to.&#10; *  @input {JSON} toSend The data to be published to the topic.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id: RosPublisher.js 180 2015-06-16 16:21:07Z mpanj@seas.upenn.edu $$ &#10; */&#10;&#10;var wsClient = require('webSocketClient');&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in webSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is a pre-defined ROS topic to publish to.*/ &#10;exports.setup = function() {&#10;  wsClient.setup();&#10;  accessor.parameter('topic', {&#10;    type: &quot;string&quot;,&#10;    value: &quot;&quot;&#10;  });&#10;}&#10;&#10;/** Overrides inputHandler on 'toSend' from webSocketClient.&lt;br&gt; &#10; *  Inherits initialize from webSocketClient.*/ &#10;exports.initialize = function() {&#10;//must override first before initializing&#10;  wsClient.toSendInputHandler = function() {&#10;    var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;msg&quot;: get('toSend') &#10;    }&#10;    wsClient.sendToWebSocket(data);&#10;  }&#10;&#10;  wsClient.initialize();&#10;}&#10;&#10;/** inherits wrapup function from webSocketClient */&#10;exports.wrapup = wsClient.wrapup;&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor publishes to a pre-defined ROS topic.&lt;br&gt;&#10; *  This accessor extends WebSocketClient.js. &#10; *  It inherits the input and output from WebSocketClient, but adds&#10; *  its own 'topic' input. This must be a pre-established topic in ROS.&#10; *  This input is usually prefixed with a '/' eg: '/noise'.&lt;br&gt; &#10; *  On input from 'toSend', this accessor publishes that input to the &#10; *  aforementioned topic. &#10; *  The input from 'toSend' must be in JSON form, and must match the message&#10; *  datatype that the ROS topic is expecting. For example if ROS topic is &#10; *  expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; *  as follows:&#10; *  &lt;pre&gt; { &quot;data&quot;: &quot;hello world&quot; } &lt;/pre&gt;&#10; *&#10; *  @accessor RosPublisher&#10; *  @parameter {string} server The IP address or domain name of server.&#10; *  @parameter {number} port The port that the web socket listens to.&#10; *  @parameter {string} topic The ROS topic to publish to.&#10; *  @input {JSON} toSend The data to be published to the topic.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id: RosPublisher.js 198 2015-06-26 17:50:11Z mpanj@seas.upenn.edu $$ &#10; */&#10;&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in webSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is a pre-defined ROS topic to publish to.*/ &#10;exports.setup = function() {&#10;   extend('WebSocketClient');&#10;   parameter('topic', {&#10;      type: &quot;string&quot;,&#10;      value: &quot;&quot;&#10;   });&#10;}&#10;&#10;/** Override inputHandler on 'toSend' from WebSocketClient */&#10;exports.toSendInputHandler = function() {&#10;   var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;msg&quot;: get('toSend') &#10;   }&#10;   exports.sendToWebSocket(data);&#10;}&#10;&#10;/**  Inherits initialize from webSocketClient.*/ &#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;}&#10;&#10;&#10;&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/RosPublisher.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/RosPublisher.js">
         </property>
         <property name="server" class="ptolemy.data.expr.StringParameter" value="localhost">
         </property>
@@ -80,25 +80,25 @@
             <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
             </property>
         </property>
+        <property name="numberOfRetries" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="timeBetweenRetries" class="ptolemy.data.expr.Parameter" value="1000">
+        </property>
+        <property name="reconnectOnClose" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="connected" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>

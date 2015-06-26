@@ -4,6 +4,7 @@
     "Base.js",
     "CallbackWithSuppress.xml",
     "Derived.js",
+    "DerivedAgain.js",
     "HandlerWithSuppress.xml",
     "SendNullToOwnInput.xml"
 ]

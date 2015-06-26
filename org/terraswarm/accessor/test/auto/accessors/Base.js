@@ -1,6 +1,6 @@
 exports.setup = function() {
    input('in1');
-   output('output');
+   output('out1');
 }
 
 var handle;
@@ -14,9 +14,9 @@ exports.inputHandler = function() {
    send('output', true);
 }
 
-
 exports.wrapup = function() {
    console.log('base wrapped up');
    removeInputHandler(exports.handle);
 }
 
+exports.baseField = 1;
