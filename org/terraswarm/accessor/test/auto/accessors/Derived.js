@@ -1,21 +1,29 @@
 exports.setup = function() {
    extend('Base');
-   input('in2');
-   output('output');
-   console.log('derived set up');
+}
+//Override input Handler of base
+exports.inputHandler = function() {
+   console.log('sending false');
+   send('output', false);
 }
 
-var handle;
 exports.initialize = function() {
    Object.getPrototypeOf(exports).initialize.apply(this);
-   console.log('derived init');
-   handle = addInputHandler('in1', function() {
-      send('output', get('in1'));
-   });
+   printProperties(exports);
 }
 
-exports.wrapup1 = function() {
-   console.log('derived wrapped up');
-   removeInputHandler(handle);
+function printProperties(obj) {
+   console.log('printing non-prototype properties');
+   for (var i in obj) {
+      if (obj.hasOwnProperty(i)) {
+         console.log(i + ": " + obj[i].toString());
+      }
+   }
+   console.log('printing protoytpe');
+   for (var j in Object.getPrototypeOf(obj)) {
+      console.log(j + ": " + obj[j].toString());
+   }
 }
+
+
 

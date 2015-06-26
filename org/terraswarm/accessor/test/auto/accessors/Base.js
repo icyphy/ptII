@@ -1,12 +1,22 @@
 exports.setup = function() {
    input('in1');
-   console.log('base set up');
+   output('output');
 }
+
+var handle;
+
 exports.initialize = function() {
-   console.log('base init');
+   handle = addInputHandler('in1', exports.inputHandler);
+}
+
+exports.inputHandler = function() {
+   console.log('sending true');
+   send('output', true);
 }
 
 
-exports.wrapupBase = function() {
+exports.wrapup = function() {
    console.log('base wrapped up');
+   removeInputHandler(exports.handle);
 }
+
