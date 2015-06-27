@@ -588,6 +588,10 @@ public class JavaScript extends TypedAtomicActor {
 	    _debug(message);
 	}
 	try {
+	    // FIXME: Might not be in a phase where anyone will receive this
+	    // error message. It might be after the last firing, and just before
+	    // wrapup() sets _executing = false. In this case, the error message
+	    // will never appear anywhere!
 	    if (_executing && error.getWidth() > 0) {
 	        error.send(0, new StringToken(message));
 	        return;
@@ -596,7 +600,7 @@ public class JavaScript extends TypedAtomicActor {
 	    // Sending to the error port fails.
 	    // Revert to directly reporting.
         }
-	MessageHandler.error(message);
+	MessageHandler.error(getName() + ": " + message);
     }
 
     /** Produce any pending outputs specified by send() since the last firing,
@@ -965,7 +969,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public void input(String name, Object options)
 	    throws IllegalActionException, NameDuplicationException {
-	// FIXME: Should check whether the model is running an use a change
+	// FIXME: Should check whether the model is running and use a change
 	// request if so.
 	if (name == null) {
 	    throw new IllegalActionException(this, "Must specify a name to create an input.");
@@ -1036,6 +1040,18 @@ public class JavaScript extends TypedAtomicActor {
 	}
 	port.setInput(true);
     }
+    
+    /** Return true if the model is executing (between initialize() and
+     *  wrapup(), including initialize() but not wrapup()).
+     *  This is (more or less) the phase of execution during which
+     *  it is OK to send outputs. Note that if an asynchronous callback
+     *  calls send() when this returns true, the output may still not
+     *  actually reach its destination. It is possible that the last
+     *  firing has already occurred, but wrapup() has not yet been called.
+     */
+    public boolean isExecuting() {
+        return _executing;
+    }
 
     /** Return true if the specified string is a JavaScript keyword.
      *  @param identifier The identifier name.
@@ -1098,7 +1114,7 @@ public class JavaScript extends TypedAtomicActor {
 	if (_debugging) {
 	    _debug(message);
 	} else {
-	    System.out.println(message);
+	    System.out.println(getName() + ": " + message);
 	}
     }
     
@@ -1293,24 +1309,23 @@ public class JavaScript extends TypedAtomicActor {
      *   default JavaScript files fails, or if the superclass throws it.
      */
     @Override
-    public synchronized void preinitialize() throws IllegalActionException {
+    public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        _pendingTimeoutFunctions = null;
-        _pendingTimeoutIDs = null;
-        _timeoutCount = 0;
-
-        _createEngineAndEvaluateSetup();
-
-        _executing = true;
-        _running = false;
-
         synchronized (this) {
+            _pendingTimeoutFunctions = null;
+            _pendingTimeoutIDs = null;
+            _timeoutCount = 0;
+
+            _createEngineAndEvaluateSetup();
+
             // Clear any queued output tokens.
             if (_outputTokens != null) {
                 _outputTokens.clear();
             }
         }
+        _executing = true;
+        _running = false;
     }
 
     /** Utility method to read a string from an input stream.
@@ -1435,6 +1450,33 @@ public class JavaScript extends TypedAtomicActor {
             } catch (ScriptException | NoSuchMethodException e) {
                 throw new IllegalActionException(this, e,
                         "Failure executing the wrapup function.");
+            }
+            // If there are unsent output tokens, the issue warning messages.
+            // These would result from a call to send() that occurred in an asynchronous
+            // callback after the last firing of this actor but before wrapup().
+            if (_outputTokens != null) {
+                for (IOPort port : _outputTokens.keySet()) {
+                    HashMap<Integer, List<Token>> tokens = _outputTokens.get(port);
+                    for (Map.Entry<Integer, List<Token>> entry : tokens.entrySet()) {
+                        List<Token> queue = entry.getValue();
+                        if (queue != null) {
+                            for (Token token : queue) {
+                                String message = "WARNING: "
+                                        + getName()
+                                        + ": Unfulfilled send to output port \""
+                                        + port.getName()
+                                        + "\" with the value "
+                                        + token;
+                                if (_debugging) {
+                                    _debug(message);
+                                } else {
+                                    System.err.println(message);
+                                }
+                            }
+                        }
+                    }
+                }
+                _outputTokens.clear();
             }
         }
         super.wrapup();
@@ -2004,28 +2046,46 @@ public class JavaScript extends TypedAtomicActor {
         	throw new IllegalActionException(JavaScript.this,
         		"Cannot call send on a parameter: " + _parameter.getName() + ". Use set().");
             }
-            // If we are wrapping up, then just exit.  Do not try to
-            // get the lock because a vertx thread might be trying to
+            // If the model is not in a phase of execution where it can send (in initialize()
+            // or during execution), then do not send the token. Instead, send messages
+            // to the debug channel and stderr. This is likely occurring in a callback that
+            // is being invoked after the model has terminated or while the model is in its
+            // wrapup phase.
+            //
+            // NOTE: There is a window between the last firing of this actor and the
+            // invocation of wrapup() where _executing == true, but nevertheless, there
+            // will be no opportunity to actually send the data token.  In this case,
+            // we queue the token and deal with the problem in the wrapup() method.
+            //
+            // NOTE: This has to be outside the synchronized block! Do not try to
+            // get the lock because a Vertx thread might be trying to
             // send while the actor has already obtained the lock in
-            // wrapup() and may be calling WebSocketHelper.close().
-            // See
+            // wrapup() and may be calling WebSocketHelper.close(). See
             // https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/Deadlock
-            if (getManager().getState() == ptolemy.actor.Manager.WRAPPING_UP) {
-                System.err.println("JavaScript.send(): wrapping up, so we are not sending token " + data);
+            //
+            // FIXME: The above NOTE appears to be wrong.
+            // WebSocketHelper is holding a lock on _actor
+            // when it calls this in DataHandler.
+            if (!_executing) {
+                String message = "WARNING: Invoking send() too late (probably in a callback), so "
+                        + getName()
+                        + " is not able to send the token "
+                        + data
+                        + " to the output "
+                        + _port.getName()
+                        + ". Token is discarded.";
+                if (_debugging) {
+                    _debug(message);
+                } else {
+                    System.err.println(message);
+                }
                 return;
             }
 
+            // FIXME: Race condition. wrapup() could be invoked now, setting _executing == false
+            // and then acquiring a lock on this and calling WebSocketHelper.close().
+            // So we may still have a deadlock risk.
             synchronized (JavaScript.this) {
-                // FindBugs Inconsistent synchronization: _executing
-                // should be accessed within a synchronized block
-                // everywhere.
-                if (!_executing) {
-                    // This is probably being called in a callback, but the model
-                    // execution has ended.
-                    throw new InternalErrorException("Attempt to send "
-                            + data + " to " + _port.getName()
-                            + ", but the model is not executing.");
-                }
         	if (!_port.isOutput()) {
         	    if (!_port.isInput()) {
         		throw new IllegalActionException(JavaScript.this,
