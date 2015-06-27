@@ -183,6 +183,9 @@ exports.Server.prototype.socketCreated = function(serverWebSocket) {
     this.emit('connection', socket);
 }
 
+/////////////////////////////////////////////////////////////////
+//// Socket
+
 /** Construct (using new) a Socket object for the server side of a new connection.
  *  This is called by the socketCreated function above whenever a new connection is
  *  established at the request of a client. It should not normally be called by
@@ -194,6 +197,19 @@ exports.Socket = function(serverWebSocket) {
     this.helper = WebSocketHelper.createServerSocket(this, serverWebSocket);;
 }
 util.inherits(exports.Socket, EventEmitter);
+
+/** Close the socket. Normally, this would be called on the client side,
+ *  not on the server side. But the server can also close the connection.
+ */
+exports.Socket.prototype.close = function() {
+    this.helper.close();
+}
+
+/** Return true if the socket is open.
+ */
+exports.Socket.prototype.isOpen = function() {
+    return this.helper.isOpen();
+}
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to parse the message as JSON and then
@@ -220,11 +236,4 @@ exports.Socket.prototype.send = function(data) {
         data = JSON.stringify(data);
     }
     this.helper.sendText(data);
-}
-
-/** Close the socket. Normally, this would be called on the client side,
- *  not on the server side. But the server can also close the connection.
- */
-exports.Socket.prototype.close = function() {
-    this.helper.close();
 }

@@ -171,7 +171,6 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return True if the socket is open.
      */
     public boolean isOpen() {
-        // FIXME: Why is this synchronized?
 	synchronized(_actor) {
 	    if (_webSocket == null) {
 		return false;
