@@ -41,6 +41,8 @@ var EventEmitter = require('events').EventEmitter;
  *  * port: The port on which the host is listening. Defaults to 80.
  *  * numberOfRetries: The number of times to retry connecting. Defaults to 0.
  *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
+ *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
+ *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
  *
  *  @param options The options.
  */
@@ -50,12 +52,16 @@ exports.Client = function(options) {
     this.host = options['host'] || 'localhost';
     this.numberOfRetries = options['numberOfRetries'] || 1;
     this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
+    this.discardMessagesBeforeOpen = options['discardMessagesBeforeOpen'] || false;
+    this.throttleFactor = options['throttleFactor'] || 0;
     this.helper = WebSocketHelper.createClientSocket(
         this,
         this.host,
         this.port,
         this.numberOfRetries,
-        this.timeBetweenRetries);
+        this.timeBetweenRetries,
+        this.discardMessagesBeforeOpen,
+        this.throttleFactor);
 }
 util.inherits(exports.Client, EventEmitter);
 
