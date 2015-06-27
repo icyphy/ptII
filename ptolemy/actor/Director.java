@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -1694,11 +1695,19 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called wrapup().");
         }
+        
+        // Collect all the exception messages that occur, but ensure that each
+        // wrapup method is called.
+        List<Throwable> exceptions = new LinkedList<Throwable>();
 
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.wrapup();
+                try {
+                    initializable.wrapup();
+                } catch (Throwable ex) {
+                    exceptions.add(ex);
+                }
             }
         }
 
@@ -1710,8 +1719,20 @@ public class Director extends Attribute implements Executable {
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                actor.wrapup();
+                try {
+                    actor.wrapup();
+                } catch (Throwable ex) {
+                    exceptions.add(ex);
+                }
             }
+        }
+        if (exceptions.size() > 0) {
+            StringBuffer message = new StringBuffer("Exceptions occurred during wrapup:\n");
+            for (Throwable ex : exceptions) {
+                message.append(ex);
+                message.append("\n");
+            }
+            throw new IllegalActionException(this, exceptions.get(0), message.toString());
         }
     }
 
