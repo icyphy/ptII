@@ -70,11 +70,16 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public void close() {
 	synchronized(_actor) {
-	    // Stop reconnect attempts by stating that the number of
-	    // tries has already exceeded the maximum. This will also
+	    if (!_actor.isExecuting()) {
+	        _actor.log("Connection closed because model is no longer running.");
+	    } else {
+	        _actor.log("Connection closed.");
+	    }
+	    
+	    // Stop reconnect attempts. This will also
 	    // abort any connection that is established after this close()
 	    // method has been called.
-	    _numberOfTries = _numberOfRetries + 2;
+	    _numberOfTries = -1;
 	    if (_thread != null) {
 	        _thread.interrupt();
 	    }
@@ -108,11 +113,15 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param port The port number that the host listens on.
      *  @param numberOfRetries The number of retries.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
+     *  @param discardMessagesBeforeOpen True to discard messages before the socket is open. False to queue them.
+     *  @param throttleFactor The number of milliseconds to stall for each queued item waiting to be sent.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(
-	    ScriptObjectMirror currentObj, String host, int port, int numberOfRetries, int timeBetweenRetries) {
-	return new WebSocketHelper(currentObj, host, port, numberOfRetries, timeBetweenRetries);
+	    ScriptObjectMirror currentObj, String host, int port,
+	    int numberOfRetries, int timeBetweenRetries, boolean discardMessagesBeforeOpen, int throttleFactor) {
+	return new WebSocketHelper(currentObj, host, port, numberOfRetries,
+	        timeBetweenRetries, discardMessagesBeforeOpen, throttleFactor);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -139,12 +148,21 @@ public class WebSocketHelper extends VertxHelperBase {
 	    }
 	    if (isOpen()) {
 		_webSocket.writeTextFrame(msg);
-	    } else {
-	        // FIXME: Bound the queue. Option to discard data.
+	    } else if (!_discardMessagesBeforeOpen){
+	        // FIXME: Bound the queue?
 		if (_pendingOutputs == null) {
 		    _pendingOutputs = new LinkedList();
 		}
 		_pendingOutputs.add(msg);
+		if (_throttleFactor > 0) {
+		    try {
+		        Thread.sleep(_throttleFactor * _pendingOutputs.size());
+		    } catch (InterruptedException e) {
+		        // Ignore.
+		    }
+		}
+	    } else {
+	        _actor.log("WARNING: Data discarded because socket is not open: " + msg);
 	    }
 	}
     }
@@ -153,6 +171,7 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return True if the socket is open.
      */
     public boolean isOpen() {
+        // FIXME: Why is this synchronized?
 	synchronized(_actor) {
 	    if (_webSocket == null) {
 		return false;
@@ -170,16 +189,20 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param host The IP address or host name of the host.
      *  @param port The port number of the host.
      *  @param numberOfRetries The maximum number of retries if a connect attempt fails.
+     *  @param discardMessagesBeforeOpen True to discard messages before the socket is open, false to queue them.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
      */
     private WebSocketHelper(
-	    ScriptObjectMirror currentObj, String host, int port, int numberOfRetries, int timeBetweenRetries) {
+	    ScriptObjectMirror currentObj, String host, int port,
+	    int numberOfRetries, int timeBetweenRetries, boolean discardMessagesBeforeOpen, int throttleFactor) {
         super(currentObj);
 
         _host = host;
         _port = port;
         _numberOfRetries = numberOfRetries;
         _timeBetweenRetries = timeBetweenRetries;
+        _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
+        _throttleFactor = throttleFactor;
         _client = _vertx.createHttpClient();
         _client.setHost(host);
         _client.setPort(port);
@@ -221,9 +244,16 @@ public class WebSocketHelper extends VertxHelperBase {
         client.connectWebsocket(address, new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
+                // Synchronize to ensure mutex w/ the disconnect in wrapup.
                 synchronized(_actor) {
-                    if (_numberOfTries > _numberOfRetries + 1) {
+                    if (_numberOfTries < 0) {
                         // close() has been called. Abort the connection.
+                        websocket.close();
+                        return;
+                    }
+                    if (!_actor.isExecuting()) {
+                        // Either wrapup() has been called, or wrapup() is blocked waiting
+                        // for the _actor lock we now hold.
                         websocket.close();
                         return;
                     }
@@ -261,6 +291,9 @@ public class WebSocketHelper extends VertxHelperBase {
     /** The HttpClient object. */
     private HttpClient _client;
     
+    /** True to discard messages before the socket is open. False to discard them. */
+    private boolean _discardMessagesBeforeOpen;
+    
     /** The host IP or name. */
     private String _host;
     
@@ -275,6 +308,9 @@ public class WebSocketHelper extends VertxHelperBase {
     
     /** The host port. */
     private int _port;
+    
+    /** The number of milliseconds to stall for each queued item waiting to be sent. */
+    private int _throttleFactor;
     
     /** The time between retries, in milliseconds. */
     private int _timeBetweenRetries;
@@ -300,6 +336,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class DataHandler implements Handler<Buffer> {
         @Override
         public void handle(Buffer buffer) {
+            // FIXME: Why is this synchronized?
             synchronized(_actor) {
         	// This assumes the input is a string encoded in UTF-8.
         	_currentObj.callMember("notifyIncoming", buffer.toString());
@@ -312,6 +349,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
+            // FIXME: Why is this synchronized?
             synchronized(_actor) {
         	_currentObj.callMember("emit", "close");
                 _wsIsOpen = false;
@@ -344,9 +382,13 @@ public class WebSocketHelper extends VertxHelperBase {
             synchronized(_actor) {
                 if (_numberOfTries >= _numberOfRetries + 1) {
                     _currentObj.callMember("emit", "error", 
-                            "After " + _numberOfTries + " tries: " + arg0.getMessage());
+                            "Connection failed after " + _numberOfTries + " tries: " + arg0.getMessage());
                     _wsIsOpen = false;
                     _wsFailed = arg0;
+                } else if (_numberOfTries < 0) {
+                    _currentObj.callMember("emit", "error", 
+                            "Connection closed while trying to connect: " + arg0.getMessage());
+                    _wsIsOpen = false;
                 } else {
                     _actor.log("Connection failed. Will try again: " + arg0.getMessage());
                     // Retry. Create a new thread to do this.
@@ -356,7 +398,7 @@ public class WebSocketHelper extends VertxHelperBase {
                                 Thread.sleep(_timeBetweenRetries);
                             } catch (InterruptedException e) {
                                 _currentObj.callMember("emit", "error", 
-                                        "After " + _numberOfTries + " tries, retries have been cancelled." );
+                                        "Reconnection thread has been interrupted." );
                                 _wsIsOpen = false;
                                 _wsFailed = e;
                                 return;
@@ -368,7 +410,12 @@ public class WebSocketHelper extends VertxHelperBase {
                                 // Check again the status of the number of tries.
                                 // This may have been changed if close() was called,
                                 // which occurs, for example, when the model stops executing.
-                                if (_numberOfTries <= _numberOfRetries) {
+                                // NOTE: This may actually try connecting even if there will be
+                                // no more firings of the JavaScript actor. But it will only try
+                                // if wrapup has not yet been called, so if it succeeds in connecting,
+                                // presumably either wrapup() or the handler in _connectWebsocket will
+                                // disconnect if the model is no longer executing.
+                                if (_numberOfTries >= 0 && _numberOfTries <= _numberOfRetries && _actor.isExecuting()) {
                                     _numberOfTries++;
                                     _connectWebsocket(_host, _port, _client);
                                 }
