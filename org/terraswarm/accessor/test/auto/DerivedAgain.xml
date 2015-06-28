@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999963}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999957}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
@@ -53,11 +53,11 @@
         </property>
     </entity>
     <entity name="DerivedAgain" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Derived3');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   send('out1', this.baseField);&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;}&#10;&#10;&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Derived3');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   Object.getPrototypeOf(exports).inputHandler.apply(this);&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/DerivedAgain.js">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 210.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>

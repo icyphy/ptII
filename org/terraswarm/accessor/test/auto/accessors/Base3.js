@@ -10,12 +10,10 @@ exports.initialize = function() {
 }
 
 exports.inputHandler = function() {
-   console.log('sending true');
-   send('output', true);
+   send('out1', this.baseField);
 }
 
 exports.wrapup = function() {
-   console.log('base wrapped up');
    removeInputHandler(exports.handle);
 }
 
