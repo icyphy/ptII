@@ -69,6 +69,8 @@ Object.setPrototypeOf(exports, {
  *  call removeInputHandler() in the actor's wrapup() function.
  *  Nevertheless, it is a good idea to do that in an accessor
  *  since other accessor hosts may not work the same way.
+ *  The handler function will be invoked in the context of the exports object
+ *  defined in the accessor script (i.e., 'this' will resolve to that exports object).
  *  @param name The input name (a string), or null to react to any input.
  *  @param func The function to invoke when the input receives data.
  *  @param arguments Additional arguments, if any, to pass to the callback function.
@@ -89,13 +91,17 @@ function addInputHandler(name, func) {
     if (!proxy && name) {
         throw('No such input: ' + name);
     }
-    var callback = func;
+    var callback;
     // If there are arguments to the callback, create a new function.
     // Get an array of arguments excluding the first two.
     var tail = Array.prototype.slice.call(arguments, 2);
     if (tail.length !== 0) {
         callback = function() {
-            func.apply(this, tail);
+            func.apply(exports, tail);
+        };
+    } else {
+        callback = function() {
+            func.apply(exports);
         };
     }
     if (proxy) {
@@ -160,6 +166,14 @@ extend = function(exportsExtending) {
             });
         }
         Object.setPrototypeOf(exportsExtending, exportsPrototype);
+        // OK, this is mind-blowing difficult to understand, but the setup() method
+        // below may itself include an invocation of extend(), realizing multi-level
+        // inheritance. To make sure to not overwrite the prototype at this level
+        // of the prototype chain, change the value of the exportsExtending argument
+        // to be the new object whose prototype is to be set by the nested call to
+        // extend().
+        exportsExtending = exportsPrototype;
+        // Now invoke the setup method.
         exportsPrototype.setup();
     };
 }(exports);
@@ -487,8 +501,8 @@ function convertToToken(value) {
             return new RecordToken(fieldNames, valueArray);
         }
     } else if (type === 'undefined') {
-        // FIXME: More information?
-        throw "value is undefined";
+        // Is this the right thing to do?
+        return Token.NIL;
     }
     // If all else fails, wrap the value in an ObjectToken.
     return new ObjectToken(value);

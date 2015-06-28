@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Derived" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Derived2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
@@ -26,10 +26,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{240, 150}">
         </property>
     </entity>
-    <entity name="Derived" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Base');&#10;   input('in2');&#10;   output('output');&#10;   console.log('derived set up');&#10;}&#10;&#10;var handle;&#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;   console.log('derived init');&#10;   handle = addInputHandler('in1', function() {&#10;      send('output', get('in1'));&#10;   });&#10;}&#10;&#10;exports.wrapup1 = function() {&#10;   console.log('derived wrapped up');&#10;   removeInputHandler(handle);&#10;}&#10;&#10;">
+    <entity name="Derived2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Base2');&#10;}&#10;//Override input Handler of base&#10;exports.inputHandler = function() {&#10;   console.log('sending false');&#10;   send('output', false);&#10;}&#10;&#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;   printProperties(exports);&#10;}&#10;&#10;function printProperties(obj) {&#10;   console.log('printing non-prototype properties');&#10;   for (var i in obj) {&#10;      if (obj.hasOwnProperty(i)) {&#10;         console.log(i + &quot;: &quot; + obj[i].toString());&#10;      }&#10;   }&#10;   console.log('printing protoytpe');&#10;   for (var j in Object.getPrototypeOf(obj)) {&#10;      console.log(j + &quot;: &quot; + obj[j].toString());&#10;   }&#10;}&#10;&#10;&#10;&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Derived.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Derived2.js">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 160.0]">
         </property>
@@ -50,7 +50,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -62,7 +62,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SingleEvent.output" relation="relation"/>
-    <link port="Derived.in1" relation="relation"/>
-    <link port="Derived.output" relation="relation2"/>
+    <link port="Derived2.in1" relation="relation"/>
+    <link port="Derived2.output" relation="relation2"/>
     <link port="Test.input" relation="relation2"/>
 </entity>

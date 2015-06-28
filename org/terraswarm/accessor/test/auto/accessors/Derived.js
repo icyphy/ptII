@@ -1,16 +1,21 @@
 exports.setup = function() {
-   extend(this, 'Base');
+   extend('Base');
+   input('in2');
+   output('output');
+   console.log('derived set up');
 }
 
-//Override input Handler of base
-exports.inputHandler = function() {
-   console.log('sending false');
-   send('out1', false);
-}
-
+var handle;
 exports.initialize = function() {
    Object.getPrototypeOf(exports).initialize.apply(this);
+   console.log('derived init');
+   handle = addInputHandler('in1', function() {
+      send('output', get('in1'));
+   });
 }
 
-exports.derivedField = 2;
+exports.wrapup1 = function() {
+   console.log('derived wrapped up');
+   removeInputHandler(handle);
+}
 

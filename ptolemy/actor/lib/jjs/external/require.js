@@ -74,6 +74,9 @@
     //   return fileExists(file);
     // }
     // --- End of modified section.
+    if (typeof moduleName !== 'string') {
+        throw 'Invalid module name: ' + JSON.stringify(moduleName);
+    }
     if ( moduleName.match( /^[^\.\/]/ ) ) {
       // it's a module named like so ... 'events' , 'net/http'
       //

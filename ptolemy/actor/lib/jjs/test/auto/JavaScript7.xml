@@ -26,8 +26,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 25.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor attempts to&#10;access a variable set by&#10;the other actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 260.0]">
+        </property>
+    </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="fire() function triggers an exception.&#10;  in .JavaScript7.JavaScript2&#10;Because:&#10;ReferenceError: &quot;result&quot; is not defined in &lt;eval&gt; at line number 4">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the fire function: ReferenceError: &quot;result&quot; is not defined in &lt;eval&gt; at line number 4&#10;  in .JavaScript7.JavaScript2&#10;Because:&#10;ReferenceError: &quot;result&quot; is not defined in &lt;eval&gt; at line number 4">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="50">
         </property>
@@ -36,14 +42,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{400, 135}">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor attempts to&#10;access a variable set by&#10;the other actor.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 260.0]">
-        </property>
-    </property>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;  // This should trigger an error.&#10;  // result variable was set in another actor.&#10;  send(result, output, 0);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;  // This should trigger an error.&#10;  // result variable was set in another actor.&#10;  send(result, output, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -67,7 +67,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;  // Send the name of the actor.&#10;  var result = actor.getName();&#10;  send('output', result, 0);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;  // Send the name of the actor.&#10;  var result = actor.getName();&#10;  send('output', result, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
