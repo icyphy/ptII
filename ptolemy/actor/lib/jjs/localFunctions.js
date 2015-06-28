@@ -166,6 +166,11 @@ extend = function(exportsExtending) {
             });
         }
         Object.setPrototypeOf(exportsExtending, exportsPrototype);
+        
+        // NOTE: The super keyword is built in to ECMA 6.
+        // Since it isn't available in earlier versions, we provide an alternate:
+        exportsExtending.ssuper = exportsPrototype;
+        
         // OK, this is mind-blowing difficult to understand, but the setup() method
         // below may itself include an invocation of extend(), realizing multi-level
         // inheritance. To make sure to not overwrite the prototype at this level
