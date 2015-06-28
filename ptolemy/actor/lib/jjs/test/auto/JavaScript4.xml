@@ -23,17 +23,17 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="fire() function triggers an exception.&#10;  in .JavaScript4.JavaScript&#10;Because:&#10;ReferenceError: &quot;x&quot; is not defined in &lt;eval&gt; at line number 1">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the fire function: ReferenceError: &quot;x&quot; is not defined in &lt;eval&gt; at line number 1&#10;  in .JavaScript4.JavaScript&#10;Because:&#10;ReferenceError: &quot;x&quot; is not defined in &lt;eval&gt; at line number 1">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{505, 135}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 125.0]">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {send('output', x, 0);}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {send('output', x, 0);}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -60,7 +60,7 @@
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1;&quot;, &quot;function fire() {send('output', x, 0);}&quot;}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;var x = 1;&quot;, &quot;exports.fire = function() {send('output', x, 0);}&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
         </property>

@@ -662,6 +662,7 @@ public class JavaScript extends TypedAtomicActor {
             String scriptValue = ((StringToken) script.getToken()).stringValue();
             try {
                 _engine.eval(scriptValue);
+                _exports = _engine.eval("exports");
             } catch (ScriptException ex) {
                 if (error.getWidth() > 0) {
                     error.send(0, new StringToken(ex.getMessage()));
@@ -837,18 +838,9 @@ public class JavaScript extends TypedAtomicActor {
                 }
 
                 // Invoke the fire function.
-                try {
-                    ((Invocable)_engine).invokeFunction("fire");
-                    if (_debugging) {
-                        _debug("Invoked fire function.");
-                    }
-                } catch (ScriptException | NoSuchMethodException e) {
-                    if (error.getWidth() > 0) {
-                        error.send(0, new StringToken(e.getMessage()));
-                    } else {
-                        throw new IllegalActionException(this, e,
-                                "fire() function triggers an exception.");
-                    }
+                _invokeMethodInContext("fire");
+                if (_debugging) {
+                    _debug("Invoked fire function.");
                 }
             } finally {
                 _inFire = false;
@@ -930,12 +922,7 @@ public class JavaScript extends TypedAtomicActor {
             if (_outputTokens != null) {
                 _outputTokens.clear();
             }
-            try {
-                ((Invocable)_engine).invokeFunction("initialize");
-            } catch (ScriptException | NoSuchMethodException e) {
-                throw new IllegalActionException(this, e, 
-                        "Failure executing the initialize function.");
-            }
+            _invokeMethodInContext("initialize");
         }
         _running = true;
     }
@@ -1445,12 +1432,7 @@ public class JavaScript extends TypedAtomicActor {
         // Synchronize so that this invocation is atomic w.r.t. any callbacks.
         synchronized (this) {
             // Invoke the wrapup function.
-            try {
-                ((Invocable)_engine).invokeFunction("wrapup");
-            } catch (ScriptException | NoSuchMethodException e) {
-                throw new IllegalActionException(this, e,
-                        "Failure executing the wrapup function.");
-            }
+            _invokeMethodInContext("wrapup");
             // If there are unsent output tokens, the issue warning messages.
             // These would result from a call to send() that occurred in an asynchronous
             // callback after the last firing of this actor but before wrapup().
@@ -1534,6 +1516,41 @@ public class JavaScript extends TypedAtomicActor {
         return null;
     }
     
+    /** Invoke the specified method in the context of the exports object.
+     *  If there is no such method in that context, attempt to invoke the
+     *  method in the top-level context.
+     *  @param methodName The method name.
+     *  @throws IllegalActionException If the method does not exist in either
+     *   context, or if an error occurs invoking the method.
+     */
+    protected void _invokeMethodInContext(String methodName) throws IllegalActionException {
+        try {
+            ((Invocable)_engine).invokeMethod(_exports, methodName);
+        } catch (NoSuchMethodException e) {
+            // Attempt to invoke it in the top-level contenxt.
+            try {
+                ((Invocable)_engine).invokeFunction(methodName);
+            } catch (NoSuchMethodException e1) {
+                throw new IllegalActionException(this, e1,
+                        "No function defined named " + methodName);
+            } catch (ScriptException e1) {
+                if (error.getWidth() > 0) {
+                    error.send(0, new StringToken(e1.getMessage()));
+                } else {
+                    throw new IllegalActionException(this, e1,
+                            "Failure executing the " + methodName + " function: " + e1.getMessage());
+                }
+            }
+        } catch (ScriptException e) {
+            if (error.getWidth() > 0) {
+                error.send(0, new StringToken(e.getMessage()));
+            } else {
+                throw new IllegalActionException(this, e,
+                        "Failure executing the " + methodName + " function: " + e.getMessage());
+            }
+        }
+    }
+    
     /** Set the description of a port or parameter.
      *  @param portOrParameter The port.
      *  @param description The description.
@@ -1566,6 +1583,9 @@ public class JavaScript extends TypedAtomicActor {
      *  send outputs.
      */
     protected boolean _executing;
+    
+    /** The exports object defined in the script that is evaluated. */
+    protected Object _exports;
 
     /** JavaScript keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
@@ -1720,6 +1740,7 @@ public class JavaScript extends TypedAtomicActor {
         String scriptValue = script.getValueAsString();
         try {
             _engine.eval(scriptValue);
+            _exports = _engine.eval("exports");
         } catch (ScriptException ex) {
             throw new IllegalActionException(this, ex, "Failed to evaluate script during initialize.");
         }
@@ -1729,12 +1750,7 @@ public class JavaScript extends TypedAtomicActor {
         // Note that the callbacks might be invoked after a model has terminated
         // execution.
         synchronized (this) {
-            try {
-        	((Invocable)_engine).invokeFunction("setup");
-            } catch (ScriptException | NoSuchMethodException e) {
-        	throw new IllegalActionException(this, e, 
-        		"Failure executing the setup function.");
-            }
+            _invokeMethodInContext("setup");
         }
     }
 
@@ -2007,6 +2023,7 @@ public class JavaScript extends TypedAtomicActor {
             if (_inputHandlers != null && _hasNewInput) {
         	for (Runnable function : _inputHandlers) {
                     if (function != null) {
+                        // FIXME: Need to invoke the function so that 'this' is the exports object!
                         function.run();
                         if (_debugging) {
                             _debug("Invoked handler function for " + _port.getName());
