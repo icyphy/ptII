@@ -8,8 +8,11 @@
  *        print(message.body);
  *    });
  * </pre>
+ * Both http and https are supported.
+
  * @module httpClient
  * @author Marten Lohstroh and Edward A. Lee
+ * @version $Id$
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
 
