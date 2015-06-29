@@ -63,6 +63,7 @@ JSRCS = \
 	JSAccessor.java
 
 OTHER_FILES_TO_BE_JARED = \
+	accessors \
 	JSAccessorIcon.xml \
 	XMLJSToMoML.xslt
 
@@ -70,8 +71,15 @@ EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+all: jclass accessors
+install: jclass accessors jars
+
+accessors:
+	if [ ! -d accessors ] ; then \
+		svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors; \
+	else \
+		(cd accessors; svn update); \
+	fi
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
