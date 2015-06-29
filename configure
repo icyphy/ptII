@@ -4477,12 +4477,30 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
     done
 else
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.modules.jjs ptolemy.actor.lib.jjs.modules.shell"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
-        PTACCESSOR_DIR=accessor
         PTJJS_DIR=jjs
         # org.terraswarm.accessor depends on jjs/JavaScript.java so we
         # list org.terraswarm.accessor with jjs/JavaScript
+        PTACCESSOR_DIR=accessor
+        PTACCESSOR_DIR_FULL="$PTII/org/terraswarm/$PTACCESSOR_DIR"
+        if test -d "$PTACCESSOR_DIR_FULL" ; then
+           if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
+              # The accessors mechanism needs to have a repo checked out.  svn:externals won't work.
+              # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnExternals
+              if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: About to check out the accessors repo.  This will fail for people who do not have access." >&5
+$as_echo "About to check out the accessors repo.  This will fail for people who do not have access." >&6; }; fi
+              (cd $PTACCESSOR_DIR_FULL; svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors)
+              if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work." >&5
+$as_echo "$as_me: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work." >&2;}
+              else
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+              fi
+           fi
+        fi
 fi
 
 #####################################################################
