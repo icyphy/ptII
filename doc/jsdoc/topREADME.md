@@ -1,5 +1,3 @@
-$Id$
-
 Optional Java Script Modules
 ============================
 The following objects provide bundles of functions. An accessor that uses one or more of these modules must declare that requirement using the [require](https://www.terraswarm.org/accessors/wiki/Version0/Require) tag or JavaScript function. 
@@ -61,12 +59,12 @@ ant jsdoc
 
 How to update the JSDoc output on the web
 -----------------------------------------
-The ptII nightly build runs JSDoc and creates [http://terra.eecs.berkeley.edu:8080/job/ptII/JSDoc/](http://terra.eecs.berkeley.edu:8080/job/ptII/JSDoc/), which is copied to [https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html](https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html)  Use the second address as the canonical address because port 8080 is blocked.
+The ptII continuous integration build at [http://terra.eecs.berkeley.edu:8080/job/ptIIci/](http://terra.eecs.berkeley.edu:8080/job/ptIIci/) checks the ptII svn repository every 5 minutes and if there is a change, then "ant jsdoc" is run and then the codeDoc/ directory is copied to [https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html](https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html).
 
 See Also
 --------
-* https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems - Overview of JSDoc systems
-* https://www.terraswarm.org/accessors/wiki/Main/JSDoc - Information for Accessor writers (TerraSwarm membership required)
+* [https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems](https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems) - Overview of JSDoc systems
+* [https://www.terraswarm.org/accessors/wiki/Main/JSDoc](https://www.terraswarm.org/accessors/wiki/Main/JSDoc) - Information for Accessor writers (TerraSwarm membership required)
 
 
 How to update this file
@@ -74,4 +72,6 @@ How to update this file
 The source for this file is at $PTII/doc/jsdoc/topREADME.md.
 
 It is copied to $PTII/doc/jsdoc/index.html when JSDoc is invoked with -R $PTII/doc/jsdoc/topREADME.md
+
+$Id$
 
