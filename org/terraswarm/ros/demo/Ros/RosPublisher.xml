@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 25.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 96, 1060, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={380, 124, 1060, 724}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 635]">
     </property>
@@ -85,6 +85,10 @@
         <property name="timeBetweenRetries" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
         <property name="reconnectOnClose" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="discardMessagesBeforeOpen" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="throttleFactor" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
