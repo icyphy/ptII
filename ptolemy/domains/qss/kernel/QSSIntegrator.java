@@ -125,14 +125,10 @@ For QSS3, the output will have first, second, and third derivatives.
 We can now explain how the two modes of operation differ.
 If <i>propagateInputDerivatives</i> is set to
 true (the default), then this integrator will <i>also</i>
-produce an output every time it receives an input.
+produce an output every time it receives an input, at the following microstep.
 Each output will include derivative
 information from the input, to the extent that these are appropriate for
 the solver.
-In this case, the output has a direct dependence on the input, so a cycle
-of instances of QSSIntegrator needs to contain at least one integrator that has
-<i>propagateInputDerivatives</i> set to false, or else it has to contain
-a {@link TimeDelay} actor. Otherwise, a causality loop blocks execution of the model.
 <p>
 If <i>propagateInputDerivatives</i> is set to
 false, then output is not produced <i>only</i> when quantization events occur,
@@ -188,7 +184,7 @@ FIXME: To do:
 - Make a vector version.
 
 @see QSSDirector
-@author Edward A. Lee, Thierry Nouidui, Michael Wetter
+@author Edward A. Lee, Thierry Nouidui, Michael Wetter, Mehrdad Niknami
 @version $Id$
 @since Ptolemy II 11.0
 @Pt.ProposedRating Yellow (eal)
@@ -362,8 +358,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     /** If it is time to produce a quantized output (there is a quantization event), produce it.
      *  Otherwise, indicate that the output is absent. Also produce an output if an <i>impulse</i>
      *  event is received and if this is the first firing at initialization time.
-     *  If <i>propagateInputDerivatives</i> is true, then this method will first read inputs
-     *  and will produce an output whether there is a quantization event or not.
+     *  If <i>propagateInputDerivatives</i> is true, then at the next microstep this actor
+     *  will fire again.
      *  The input value (and any derivatives it provides) will be provided on the output as
      *  the derivative (and any higher-order derivatives) of the output.
      *  @exception IllegalActionException If sending an output fails.
@@ -377,7 +373,14 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         }
         // Flag to produce output.
         boolean produceOutput = false;
-        
+        boolean hasInput = propagatesInputDerivatives() && _inputChanged && !u.hasNewToken(0);
+
+        // If there was a new input previously and we're propagating derivatives,
+        // we want to produce the output for it unless there is a new input token waiting.
+        // In that case, it is wasteful to emit anything since we will have to refire
+        // with new information at the next microstep anyway, so we might as well just wait.
+        produceOutput |= hasInput;
+
         if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
             // The current simulation time is ahead of the solver's time.
             // Apparently, quantization events only occur when this is the case.
@@ -405,18 +408,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
         // Read any impulse input that may be available.
         produceOutput = _handleImpulse() || produceOutput;
-        
-        // If propagateInputDerivatives is true, then reading an input
-        // triggers an output.
-        boolean hasInput = false;
-        if (isStrict()) {
-            // If an input is available, read it.
-            hasInput = _handleInput();
-            produceOutput = hasInput || produceOutput;
-        }
-        
-        // Produce outputs only if there is a quantization event, an impulse,
-        // or an input was read and propagateInputDerivatives is true.
+
         if (produceOutput) {
             // Note that the output will include derivative information
             // from reading the input above, if input was read. Otherwise,
@@ -448,16 +440,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 _debug("Send to output: " + token);
             }
         }
-        // To ensure determinacy, read the input after producing the output.
-        // Otherwise, the output produced could depend on the order in which
-        // actors are created because this actor can be fired at any time.
-        if (!isStrict()) {
-            _handleInput();
-        }
     }
 
-    /** Override the base class to return a causality interface that matches
-     *  the value of <i>propagateInputDerivatives</i>.
+    /** Override the base class to return a causality interface that breaks causality.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      * @exception IllegalActionException Thrown in subclasses if causality
@@ -466,17 +451,10 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     @Override
     public CausalityInterface getCausalityInterface()
             throws IllegalActionException {
-	boolean dependency = ((BooleanToken)propagateInputDerivatives.getToken()).booleanValue();
         Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
-	if (dependency) {
-	    // Ensure the causality interface is the default one, which indicates
-	    // that all outputs depend on all inputs.
-	    return new DefaultCausalityInterface(this, defaultDependency);
-	} else {
-	    // Ensure the causality interface is the break causality interface, which indicates
-	    // that no output depends on any input.
-	    return new BreakCausalityInterface(this, defaultDependency);
-	}
+        // Ensure the causality interface is the break causality interface, which indicates
+        // that no output depends on any input.
+        return new BreakCausalityInterface(this, defaultDependency);
     }
 
     /** Return 1, because this actor always has one input variable,
@@ -609,17 +587,16 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         
         _firstRound = true;
         _lastFireAtTime = null;
+        _inputChanged = false;
     }
 
-    /** Return the value of <i>propagateInputDerivatives</i>,
-     *  because this actor is strict if that value is true, and is non-strict otherwise
-     *  (it does not need to know its input to fire).
-     *  @return The value of propagateInputDerivatives.
-     *  @throws IllegalActionException  If propagateInputDerivatives cannot be evaluated.
-     */
-    @Override
-    public boolean isStrict() throws IllegalActionException {
+    public boolean propagatesInputDerivatives() throws IllegalActionException {
         return ((BooleanToken)propagateInputDerivatives.getToken()).booleanValue();
+    }
+
+    @Override
+    public boolean isStrict() {
+        return false;
     }
 
     /** Update the calculation of the next output time and request
@@ -634,7 +611,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         Time currentTime = getDirector().getModelTime();
         
         // Predict the next quantization event time.
-        final Time possibleFireAtTime = _predictQuantizationEventTimeEarliest(currentTime);
+        _inputChanged = _handleInput();
+        final Time possibleFireAtTime = _inputChanged && propagatesInputDerivatives() ? currentTime : _predictQuantizationEventTimeEarliest(currentTime);
         if (_debugging) {
             _debug("Next expected firing time: " + possibleFireAtTime);
         }
@@ -869,6 +847,10 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  after initialize().
      */
     private boolean _firstRound = true;
+
+    /** Flag identifying whether the input has changed since the last firing.
+     */
+    private boolean _inputChanged;
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;
