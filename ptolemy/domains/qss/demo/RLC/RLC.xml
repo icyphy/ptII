@@ -159,54 +159,54 @@
         <property name="AlgebraicLoopDirector" class="ptolemy.domains.algebraic.kernel.AlgebraicLoopDirector">
             <property name="method" class="ptolemy.data.expr.StringParameter" value="NewtonRaphson">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, -110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-230.0, -110.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 192, 1440, 704}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 192, 855, 445}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1444, 594]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[621, 335]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.0, 151.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{16.5, 21.5}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements the algebraic loop&#10;that needs to be solved. There is an&#10;input for the voltage source, and two pairs&#10;of inputs and outputs that connect the&#10;algebraic loop to the capacitor and the&#10;inductor as they each have a state variable.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model implements the algebraic loop&#10;that needs to be solved. There is an&#10;input for the voltage source, and two pairs&#10;of inputs and outputs that connect the&#10;algebraic loop to the capacitor and the&#10;inductor; they each have a state variable.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, -135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-125.0, -145.0}">
             </property>
         </property>
         <port name="VoltageSource" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, -60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-245.0, 80.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="InductorCurrent" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 47.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 25.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="InductorVoltage" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 7.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 80.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="CapacitorVoltage" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 187.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-260.0, 145.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="CapacitorCurrent" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 142.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 145.0}">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -218,15 +218,15 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 172.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 135.0}">
             </property>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 57.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-105.0, 135.0}">
             </property>
         </entity>
         <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 62.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 145.0}">
             </property>
         </entity>
         <entity name="Resistance2" class="ptolemy.actor.lib.Scale">
@@ -236,7 +236,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 62.5]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-215.0, 25.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -247,24 +247,38 @@
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[-275.0, 252.5]">
+            <vertex name="vertex1" value="{-30.0, 135.0}">
             </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InductorVoltage._location&quot;,x=-10.0,y=80.0}, tail={id=&quot;relation4.vertex1&quot;,x=-30.0,y=135.0}, points={-30.0,80.0} },{ head={id=&quot;Resistance1.input&quot;,x=25.0,y=135.0}, tail={id=&quot;relation4.vertex1&quot;,x=-30.0,y=135.0}, points={} },{ head={id=&quot;AddSubtract.output&quot;,x=-105.0,y=135.0}, tail={id=&quot;relation4.vertex1&quot;,x=-30.0,y=135.0}, points={} } }">
+            </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[125.0, 62.5]">
+            <vertex name="vertex1" value="{195.0, 145.0}">
             </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Resistance2.input&quot;,x=-215.0,y=25.0}, tail={id=&quot;relation8.vertex1&quot;,x=195.0,y=145.0}, points={-285.0,25.0,-285.0,-25.0,195.0,-25.0,195.0,145.0} },{ head={id=&quot;AddSubtract2.output&quot;,x=125.0,y=145.0}, tail={id=&quot;relation8.vertex1&quot;,x=195.0,y=145.0}, points={} },{ head={id=&quot;CapacitorCurrent._location&quot;,x=230.0,y=145.0}, tail={id=&quot;relation8.vertex1&quot;,x=195.0,y=145.0}, points={} } }">
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InductorCurrent._location&quot;,x=-10.0,y=25.0}, tail={id=&quot;AddSubtract2.plus&quot;,x=125.0,y=145.0,index=2}, points={80.0,25.0,80.0,130.0} } }">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Resistance1.output&quot;,x=25.0,y=135.0}, tail={id=&quot;AddSubtract2.plus&quot;,x=125.0,y=145.0,index=2}, points={} } }">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.minus&quot;,x=-105.0,y=135.0,index=2}, tail={id=&quot;Resistance2.output&quot;,x=-215.0,y=25.0}, points={-150.0,140.0,-150.0,25.0} } }">
+            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CapacitorVoltage._location&quot;,x=-260.0,y=145.0}, tail={id=&quot;AddSubtract.minus&quot;,x=-105.0,y=135.0,index=2}, points={} } }">
+            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;VoltageSource._location&quot;,x=-245.0,y=80.0}, tail={id=&quot;AddSubtract.plus&quot;,x=-105.0,y=135.0}, points={-165.0,80.0,-165.0,125.0} } }">
+            </property>
         </relation>
         <link port="VoltageSource" relation="relation6"/>
         <link port="InductorCurrent" relation="relation"/>
@@ -298,7 +312,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>voltage (volts)</yLabel>
 <xRange min="0.0" max="20.0"/>
-<yRange min="0.0" max="1.0350266892569142"/>
+<yRange min="0.0" max="1.039979237067164"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
@@ -348,7 +362,7 @@
 <xLabel>time (seconds)</xLabel>
 <yLabel>current (amps)</yLabel>
 <xRange min="0.0" max="20.0"/>
-<yRange min="-0.006168011642936856" max="0.3165291662793662"/>
+<yRange min="-0.012740693574548694" max="0.30717768564160197"/>
 <default stems="yes"/>
 </plot>?>
         </configure>
