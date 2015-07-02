@@ -72,6 +72,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 50.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This models an object in free fall under gravitational acceleration,&#10;9.8 m/s^2, showing that QSS2 does not need to compute any intermediate&#10;points while accelerations are constant. The only computations performed,&#10;shown in the lower plot, are at the start and end of execution. Nevertheless,&#10;intervening points can be retrieved by simply sampling the signal.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 335.0]">
+        </property>
+    </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="smoothToken(-9.8, {0.0})">
         </property>
@@ -81,7 +87,7 @@
     <entity name="QSSIntegrator" class="ptolemy.domains.qss.kernel.QSSIntegrator">
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2">
         </property>
         <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -179,7 +185,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 180.0}">
         </property>
     </entity>
     <entity name="Sampler" class="ptolemy.actor.lib.Sampler">
