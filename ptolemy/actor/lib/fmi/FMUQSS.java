@@ -32,9 +32,11 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.ptolemy.fmi.FMI20ContinuousStateDerivative;
@@ -45,10 +47,7 @@ import org.ptolemy.fmi.FMIModelDescription.ContinuousState;
 import org.ptolemy.fmi.FMIScalarVariable;
 import org.ptolemy.fmi.FMIScalarVariable.Causality;
 import org.ptolemy.fmi.NativeSizeT;
-import org.ptolemy.fmi.type.FMIBooleanType;
-import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
-import org.ptolemy.fmi.type.FMIStringType;
 import org.ptolemy.qss.solver.QSSBase;
 import org.ptolemy.qss.util.DerivativeFunction;
 import org.ptolemy.qss.util.ModelPolynomial;
@@ -61,12 +60,12 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.actor.lib.fmi.FMUImport;
-import ptolemy.actor.lib.fmi.FMUImport.Input;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.qss.kernel.QSSDirector;
 import ptolemy.kernel.CompositeEntity;
@@ -174,8 +173,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @return Success (0 for success, else user-defined error code).
      * @exception IllegalActionException
      */
-    public final int evaluateDerivatives(final Time time, final double[] stateVariables,
-            final double[] inputVariables, final double[] stateVariableDerivatives)
+    public final int evaluateDerivatives(final Time time,
+            final double[] stateVariables, final double[] inputVariables,
+            final double[] stateVariableDerivatives)
             throws IllegalActionException {
 
         // Check assumptions.
@@ -186,29 +186,55 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Give {time} to the FMU.
         final double timeValue = time.getDoubleValue();
 
-        // long startTime = System.nanoTime();
-        _fmiSetTime(timeValue);
+        if (!_useRawJNI()) {
 
-        // Give {stateVariable} to the FMU.
-        _fmiSetContinuousStates(stateVariables);
+            // long startTime = System.nanoTime();
+            _fmiSetTime(timeValue);
 
-        // Handle any time, state or step event.
-        _handleEvents(timeValue);
+            // Give {stateVariable} to the FMU.
+            _fmiSetContinuousStates(stateVariables);
+
+            // Handle any time, state or step event.
+            // _handleEvents(timeValue);
+        } else {
+            // Set the continuous states.
+            _fmiSetContinuousStatesJNI(stateVariables, timeValue);
+        }
 
         // Give {inputVariable} to the FMU.
         for (int ii = 0; ii < _inputs.size(); ++ii) {
-             final FMIScalarVariable scalar = _inputs.get(ii).scalarVariable;
-             assert (scalar.type instanceof FMIRealType);
-            // final Input input = _inputs.get(ii);
-            //if (!input.hasChanged && !_firstRound) {
-            //    continue;
-            // }
-            scalar.setDouble(_fmiComponent, inputVariables[ii]);
-            //_inputs.get(ii).hasChanged = false;
+            final FMIScalarVariable scalar = _inputs.get(ii).scalarVariable;
+            if (scalar.type instanceof FMIRealType) {
+                // final Input input = _inputs.get(ii);
+                //if (!input.hasChanged && !_firstRound) {
+                //    continue;
+                // }
+                if (!_useRawJNI()) {
+                    scalar.setDouble(_fmiComponent, inputVariables[ii]);
+                } else {
+                    final double uu[] = { inputVariables[ii] };
+                    final long uuRef[] = { _inputValueReferences[ii] };
+                    _fmiSetRealJNI(uu, uuRef, timeValue);
+                }
+                //_inputs.get(ii).hasChanged = false;
+            } else {
+                new Exception(
+                        "Warning: The input variable "
+                                + scalar.name
+                                + " is of type "
+                                + scalar.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
+            }
         }
 
         // Give {stateVariableDerivative} to FMU and evaluate the derivative function.
-        _fmiGetDerivatives(getStateCount(), stateVariableDerivatives);
+        if (!_useRawJNI()) {
+            _fmiGetDerivatives(getStateCount(), stateVariableDerivatives);
+        } else {
+            // Retrieve {xdot}.
+            _fmiGetDerivativesJNI(stateVariableDerivatives, timeValue);
+        }
 
         return 0;
     }
@@ -222,13 +248,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @return The directional derivative (see fmi2GetDirectionalDerivatives in FMI specification).
      * @exception IllegalActionException If thrown while computing the directional derivative.
      */
-    public final double evaluateDirectionalDerivatives(final int stateDerivIndex,
-            final double[] stateVariableDerivatives, final double[] inputVariableDerivatives)
+    public final double evaluateDirectionalDerivatives(
+            final int stateDerivIndex, final double[] stateVariableDerivatives,
+            final double[] inputVariableDerivatives)
             throws IllegalActionException {
         // Get second derivative of current input
-        return (_evaluateInputDirectionalDerivatives(stateDerivIndex, inputVariableDerivatives)
-                + _evaluateStateDirectionalDerivatives(
-                        stateDerivIndex, stateVariableDerivatives));
+        return (_evaluateInputDirectionalDerivatives(stateDerivIndex,
+                inputVariableDerivatives) + _evaluateStateDirectionalDerivatives(
+                stateDerivIndex, stateVariableDerivatives));
     }
 
     /**
@@ -258,19 +285,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Get current simulation time.
         final Time currentTime = _director.getModelTime();
         if (_debugging) {
-            int currentMicrostep =  _director.getIndex();
+            int currentMicrostep = _director.getIndex();
             _debugToStdOut(String.format(
                     "FMUQSS.fire() on id{%d} at time %s, microstep %d",
                     System.identityHashCode(this), currentTime.toString(),
                     currentMicrostep));
         }
-        
+
         // Initialize the input variable models.
         if (_firstRound) {
             _initializeQSSIntegratorInputVariables(currentTime);
             _firstRound = false;
         }
-        
+
         // Assume do not need a quantization-event.
         assert (_qssSolver.needQuantizationEventIndex() == -1);
 
@@ -318,7 +345,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     public final int getStateCount() {
         return _fmiModelDescription.numberOfContinuousStates;
     }
-    
+
     /**
      * Override the importFMU in FMUImport base class.
      * 
@@ -339,12 +366,15 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // because we use a MoMLChangeRequest to instantiate the actor
         // so we can't use object-oriented design to have the subclass
         // provide an implementation of _acceptFMU(). ick.
-        Method acceptFMUMethod = null; 
+        Method acceptFMUMethod = null;
         try {
             Class clazz = Class.forName("ptolemy.actor.lib.fmi.FMUQSS");
-            acceptFMUMethod = clazz.getDeclaredMethod("_acceptFMU", new Class []  {FMIModelDescription.class});
+            acceptFMUMethod = clazz.getDeclaredMethod("_acceptFMU",
+                    new Class[] { FMIModelDescription.class });
         } catch (Throwable throwable) {
-            throw new IllegalActionException(context, throwable,
+            throw new IllegalActionException(
+                    context,
+                    throwable,
                     "Failed to get the static _acceptFMU(FMIModelDescription) method for FMUImport.");
         }
 
@@ -352,11 +382,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // parameter because all QSS fmus are model exchange fmus.  However,
         // _importFMU does take a modelExchange parameter.
         FMUImport._importFMU(originator, fmuFileParameter, context, x, y,
-                true /* modelExchange */,
-                false /*addMaximumStepSize*/,
+                true /* modelExchange */, false /*addMaximumStepSize*/,
                 false /* stateVariablesAsInputPorts */,
-                "ptolemy.actor.lib.fmi.FMUQSS",
-                acceptFMUMethod);
+                "ptolemy.actor.lib.fmi.FMUQSS", acceptFMUMethod);
     }
 
     /**
@@ -398,109 +426,152 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _firstRound = true;
 
         // Initialize FMU parameters.
-        if (((BooleanToken) initFMUParameters.getToken()).booleanValue()) {
+        if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
             _initializeFMUParameters();
         }
 
-        // Enter and exit the initialization mode.
-        _fmiInitialize();
+        if (!_useRawJNI()) {
+            // Enter and exit the initialization mode.
+            _fmiInitialize();
 
-        // To initialize the event indicators, call this.
-        _checkStateEvents();
+            // To initialize the event indicators, call this.
+            _checkStateEvents();
 
-        // The specification says on page 75 that after calling
-        // fmiExitInitializationMode, the FMU is implicitly in Event Mode
-        // and all discrete-time and continuous time variables at the
-        // initial time can be calculated, if needed also iteratively due
-        // to an algebraic loop. Once finalized, fmiNewDiscreteStates must be
-        // called,
-        // and depending on the value of the return argument, the FMU either
-        // continues
-        // the event iteration at the initial time or switches to Continuous
-        // mode.
-        int newDiscreteStatesNeeded = 1;
-        int terminateSimulation = 0;
-        int nominalsOfContinuousStatesChanged = 0;
-        int valuesOfContinuousStatesChanged = 0;
-        int nextEventTimeDefined = 0;
-        double nextEventTime = 0;
+            // The specification says on page 75 that after calling
+            // fmiExitInitializationMode, the FMU is implicitly in Event Mode
+            // and all discrete-time and continuous time variables at the
+            // initial time can be calculated, if needed also iteratively due
+            // to an algebraic loop. Once finalized, fmiNewDiscreteStates must be
+            // called,
+            // and depending on the value of the return argument, the FMU either
+            // continues
+            // the event iteration at the initial time or switches to Continuous
+            // mode.
+            int newDiscreteStatesNeeded = 1;
+            int terminateSimulation = 0;
+            int nominalsOfContinuousStatesChanged = 0;
+            int valuesOfContinuousStatesChanged = 0;
+            int nextEventTimeDefined = 0;
+            double nextEventTime = 0;
 
-        // In FMI-2.0, this is a pointer to the structure, which is by
-        // default how a subclass of Structure is handled, so there is no
-        // need for having FMI20EventInfo.ByValue().
-        _eventInfo = new FMI20EventInfo(newDiscreteStatesNeeded,
-                terminateSimulation, nominalsOfContinuousStatesChanged,
-                valuesOfContinuousStatesChanged, nextEventTimeDefined,
-                nextEventTime);
+            // In FMI-2.0, this is a pointer to the structure, which is by
+            // default how a subclass of Structure is handled, so there is no
+            // need for having FMI20EventInfo.ByValue().
+            _eventInfo = new FMI20EventInfo(newDiscreteStatesNeeded,
+                    terminateSimulation, nominalsOfContinuousStatesChanged,
+                    valuesOfContinuousStatesChanged, nextEventTimeDefined,
+                    nextEventTime);
 
-        if (_fmiNewDiscreteStatesFunction == null) {
-            throw new InternalErrorException(this, null,
-                    "_fmiNewDiscreteStatesFunction was null, indicating that the fmiNewDiscreteStates() function was not found? "
-                    + "This can happen if for some reason the FMU file was imported into Ptolemy II as a Co-Simulation FMU instead of as a Model Exchange FMU."
-                    + "The actor's modelExchange parameter is: " + modelExchange
-                    + ", the value of the modelExchange field in the _fmiModelDescription is: " + _fmiModelDescription.modelExchange);
-        }
+            if (_fmiNewDiscreteStatesFunction == null) {
+                throw new InternalErrorException(
+                        this,
+                        null,
+                        "_fmiNewDiscreteStatesFunction was null, indicating that the fmiNewDiscreteStates() function was not found? "
+                                + "This can happen if for some reason the FMU file was imported into Ptolemy II as a Co-Simulation FMU instead of as a Model Exchange FMU."
+                                + "The actor's modelExchange parameter is: "
+                                + modelExchange
+                                + ", the value of the modelExchange field in the _fmiModelDescription is: "
+                                + _fmiModelDescription.modelExchange);
+            }
 
-        // FIXME: We assume no event iteration.
-        fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(
-                Integer.class, new Object[] { _fmiComponent, _eventInfo }))
-                .intValue();
+            // FIXME: We assume no event iteration.
+            fmiFlag = ((Integer) _fmiNewDiscreteStatesFunction.invoke(
+                    Integer.class, new Object[] { _fmiComponent, _eventInfo }))
+                    .intValue();
 
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Failed to enter discrete state FMU: "
-                            + _fmiStatusDescription(fmiFlag));
-        }
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                throw new IllegalActionException(this,
+                        "Failed to enter discrete state FMU: "
+                                + _fmiStatusDescription(fmiFlag));
+            }
 
-        // FIXME: we check to see whether we should stay in the event mode but do
-        // not do anything if we have to stay in event mode.
-        // We assume that there is no event and that we can switch to the
-        // continuous mode.
-        // We nonetheless warn the user with an exception which does not stop
-        // the simulation.
-        if (_eventInfo.newDiscreteStatesNeeded != 0) {
-            new Exception(
-                    "Warning: FIXME: Need to stay in event mode and do an event update.")
-                    .printStackTrace();
-        }
+            // FIXME: we check to see whether we should stay in the event mode but do
+            // not do anything if we have to stay in event mode.
+            // We assume that there is no event and that we can switch to the
+            // continuous mode.
+            // We nonetheless warn the user with an exception which does not stop
+            // the simulation.
+            if (_eventInfo.newDiscreteStatesNeeded != 0) {
+                new Exception(
+                        "Warning: FIXME: Need to stay in event mode and do an event update.")
+                        .printStackTrace();
+            }
 
-        // We check whether we should terminate the simulation.
-        // If that is the case we call wrapup() and terminate the simulation.
-        // If not we enter the continuous mode and do the time integration.
-        if (_eventInfo.terminateSimulation != 0) {
-            getDirector().finish();
-        }
+            // We check whether we should terminate the simulation.
+            // If that is the case we call wrapup() and terminate the simulation.
+            // If not we enter the continuous mode and do the time integration.
+            if (_eventInfo.terminateSimulation != 0) {
+                getDirector().finish();
+            }
 
-        // FIXME: Switch to the continuous mode.
-        fmiFlag = ((Integer) _fmiEnterContinuousTimeModeFunction
-                .invokeInt(new Object[] { _fmiComponent })).intValue();
+            // FIXME: Switch to the continuous mode.
+            fmiFlag = ((Integer) _fmiEnterContinuousTimeModeFunction
+                    .invokeInt(new Object[] { _fmiComponent })).intValue();
 
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Could not enter continuous mode for FMU: "
-                            + _fmiStatusDescription(fmiFlag));
+            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                throw new IllegalActionException(this,
+                        "Could not enter continuous mode for FMU: "
+                                + _fmiStatusDescription(fmiFlag));
+            }
+        } else {
+            // Get the model identifier from the model description.
+            final String modelIdentifier = _fmiModelDescription.modelIdentifier;
+
+            // There is no simulator UI.
+            byte toBeVisible = 0;
+            if (((BooleanToken) visible.getToken()).booleanValue()) {
+                toBeVisible = 1;
+            }
+
+            // FIXME: We should send logging messages to the debug listener.
+            byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
+
+            // Get the path to the native FMU library.
+            String fmuLibPath = null;
+            try {
+                fmuLibPath = _fmiModelDescription.getNativeLibraryPath();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Could not find path to the native library.");
+            }
+
+            // Instantiate FMU
+            final Time currentTime = _director.getModelTime();
+            final Time startTime = _director.getModelStartTime();
+            final Time stopTime = _director.getModelStopTime();
+            final double timeValue = currentTime.getDoubleValue();
+            _quantumScaleFactor = _director.getQuantumScaleFactor();
+            _internalRelativeQuantum = _director.getRelativeQuantum()
+                    * _quantumScaleFactor;
+
+            // Initialize number of continuous states.
+            double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
+
+            // Instantiate FMU
+            _fmiComponentJNI = _fmiInstantiatesJNI(modelIdentifier, fmuLibPath,
+                    _fmiModelDescription.fmuResourceLocation,
+                    startTime.getDoubleValue(), stopTime.getDoubleValue(),
+                    timeValue, 0, _internalRelativeQuantum, toBeVisible,
+                    loggingOn, _fmiModelDescription.guid, derivatives);
+
+            // Initialize FMU
+            _fmiInitializeJNI(timeValue);
+
+            // Enter discrete states in FMU
+            _fmiNewDiscreteStatesJNI(timeValue);
+
+            // Enter continuous states in FMU
+            _fmiEnterContinuousModeJNI(timeValue);
         }
 
         // Get and configure the QSS integrator.
         _createQSSSolver();
-        
+
         // To make sure this actor fires at the start time, request a firing.
-        getDirector().fireAtCurrentTime(this);
+        _director.fireAtCurrentTime(this);
 
         return;
 
-    }
-
-    /**
-     * Return false if any output has been found that not depend
-     * directly on an input.
-     * 
-     * @return False if this actor can be fired without all inputs
-     * being known.
-     */
-    @Override
-    public boolean isStrict() {
-        return _isStrict;
     }
 
     /**
@@ -556,9 +627,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 .compareTo(_lastFireAtTime) != 0);
         if (null != _lastFireAtTime // Made request before.
                 && _lastFireAtTime.compareTo(currentTime) > 0 // Last request was
-                                                            // not used.
-                                                            // _lastFireAtTime >
-                                                            // currentTime
+                                                              // not used.
+                                                              // _lastFireAtTime >
+                                                              // currentTime
                 && possibleDiffersFromLast // Last request is no longer valid.
         ) {
             if (_debugging) {
@@ -595,27 +666,178 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     public void preinitialize() throws IllegalActionException {
 
+        // By design, this method does not call super.preinitialize(), because
+        // this class uses a different algorithm that is specific
+        // to QSS.  However, we need to do what AtomicActor.preinitialize()
+        // does:
+        if (_debugging) {
+            _debug("Called preinitialize()");
+        }
+
+        _stopRequested = false;
+
+        // For backward compatibility, in case there are actors
+        // that override pruneDependencies() to alter their
+        // causality interface, call it here.
+        pruneDependencies();
+
+        // Declare dependency for this actor. For actors such as
+        // TimeDelay, the delay dependency between input and output
+        // ports are declared.
+        declareDelayDependency();
+
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();
+            }
+        }
+
+        // end of AtomicActor.java
+
         // Initialize the input list.
         _inputs = new LinkedList<Input>();
-        
+
         // Initialize the output list.
         _outputs = new LinkedList<Output>();
-        
+
         // Get the inputs from super class.
         _inputs = _getInputs();
-        
+
+        // Create an array of input value references
+        _inputValueReferences = new long[_inputs.size()];
+
+        for (int ii = 0; ii < _inputs.size(); ++ii) {
+            final FMIScalarVariable scalar = _inputs.get(ii).scalarVariable;
+            _inputValueReferences[ii] = scalar.valueReference;
+        }
+
         // Get the outputs from super class
         _outputs = _getOutputs();
-        
+
         // Initialize the continuous states.
         _initializeContinuousStates();
-        
+
+        // Initialize list of indexes of updated variables
+        _indexesOfUpdatedModelVariables = new LinkedList<Integer>();
+
         // Get the indexes of dependent variables
         _getStateDerivativesDependenciesIndexes();
-        
+
         // Call superclass to instantiate the FMU.
-        super.preinitialize();
+        if (!_useRawJNI()) {
+            super.preinitialize();
+        } else {
+
+            // Indicate that only parameters with FMIRealType will be updated.
+            if (((BooleanToken) initFMUParameters.getToken()).booleanValue()) {
+                new Exception(
+                        "Warning: initFMUParameters has been set to true for actor "
+                                + this.getDisplayName()
+                                + " . This is not supported when using raw JNI yet.")
+                        .printStackTrace();
+            }
+            // Load the "FMUQSS" native interface. Use a classpath-relative
+            // pathname without the shared library suffix (which is selected
+            // and appended by {@link UtilityFunctions#loadLibrary}) for
+            // portability.
+
+            String buildLibrary = "ptolemy/actor/lib/fmi/jni/fmuqss/FMUQSS";
+            String installLibrary = "lib/libFMUQSS";
+            try {
+                if (_debugging) {
+                    _debugToStdOut("About to load " + buildLibrary);
+                }
+                UtilityFunctions.loadLibrary(buildLibrary);
+            } catch (Throwable buildThrowable) {
+                try {
+                    if (_debugging) {
+                        _debugToStdOut("Loading " + buildLibrary
+                                + " failed with " + buildThrowable
+                                + " About to load " + installLibrary);
+                    }
+                    // This will load the library from $PTII/lib/libFMUQSS.jnilib or .so.
+                    UtilityFunctions.loadLibrary(installLibrary);
+                } catch (Throwable installThrowable) {
+                    throw new IllegalActionException(this, installThrowable,
+                            "Failed to load " + installLibrary
+                                    + " Also tried to load " + buildLibrary
+                                    + ", which threw: " + buildThrowable);
+                }
+            }
+        }
+        // Get director and check its type.
+        Director director = getDirector();
+        if (!(director instanceof QSSDirector)) {
+            throw new IllegalActionException(
+                    this,
+                    String.format(
+                            "Director %s cannot be used for QSS, which requires a QSSDirector.",
+                            director.getName()));
+        }
+        _director = (QSSDirector) director;
     }
+
+    /**
+     * Interface to the FMU.
+     *
+     * <p>
+     * This methods calls the FMU using JNI with different flags.
+     * 0: Instantiate.
+     * 1: Initialize. 
+     * 2: Enter event mode. 
+     * 3: Enter continuous mode.
+     * 4: Get continuous states.
+     * 5: Get state derivatives.
+     * 6: Set continuous states.
+     * 7: Set single inputs.
+     * 8: Get single outputs.
+     * 9: Complete integrator.
+     * -1: Terminate simulation.
+     * -10: Get directional derivatives."
+     * </p>
+     * @param idx The index of the FMU instance.
+     * @param fla The flag to determine the FMI functions to call.
+     * @param instance The FMU instance name. 
+     * @param jniResourceLocation The path to the FMU native library.
+     * @param fmuResourceLocation The path to the FMU resource location.
+     * @param tStart The FMU simulation start time.
+     * @param tEnd the FMU simulation end time.
+     * @param time The current simulation time.
+     * @param toleranceDefined the flag is true if sover tolerance is defined.
+     * @param tolerance The FMU solver tolerance.
+     * @param visible The FMU visible flag.
+     * @param loggingOn The FMU logginOn flag.
+     * @param guid The FMU GUID.
+     * @param continuousStateDerivatives The FMU state derivatives to get.
+     * @param continuousStatesFromFMU The FMU continuous states to get.
+     * @param continuousStatesToFMU The FMU continuous states to set.
+     * @param inputValues The FMU input values.
+     * @param inputValueReferences The FMU input value references.
+     * @param outputValues The FMU output values.
+     * @param outputValueReferences The FMU output value references.
+     * @param continuousStateDerivativesValueReference The FMU state derivative value reference.
+     * @param directionalStateDerivatives The FMU directional state derivatives.
+     * @param directionalStateDerivativesValueReferences The FMU directional state derivatives value references.
+     * @param directionalInputDerivatives The FMU directional input derivatives.
+     * @param directionalInputDerivativesValueReferences The FMU directional input derivatives value references.
+     * @param continuousSecondDerivatives The FMU second derivatives.
+     * @return FMU instance The index when fla is zero.
+     */
+    public static native int runNativeFMU(int idx, int fla, String instance,
+            String jniResourceLocation, String fmuResourceLocation,
+            double tStart, double tEnd, double time, int toleranceDefined,
+            double tolerance, int visible, int loggingOn, String guid,
+            double[] continuousStateDerivatives,
+            double[] continuousStatesFromFMU, double[] continuousStatesToFMU,
+            double[] inputValues, long[] inputValueReferences,
+            double[] outputValues, long[] outputValueReferences,
+            long continuousStateDerivativesValueReference,
+            double[] directionalStateDerivatives,
+            long[] directionalStateDerivativesValueReferences,
+            double[] directionalInputDerivatives,
+            long[] directionalInputDerivativesValueReferences,
+            double[] continuousSecondDerivatives);
 
     /**
      * Terminate and free the slave fmu.
@@ -625,13 +847,38 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     public void wrapup() throws IllegalActionException {
         // Allow eventInfo to be garbaged collected.
-        _eventInfo = null;
-        super.wrapup();
+        if (!_useRawJNI()) {
+            _eventInfo = null;
+            super.wrapup();
+        } else {
+
+            // By design, this method does not call super.wrapup() 
+            // when JNI is used, because this class uses a different 
+            // algorithm that is specific to QSS.  However, we need 
+            // to do what AtomicActor.wrapup()
+            // does:
+            if (_debugging) {
+                _debug("Called wrapup()");
+            }
+            // Invoke initializable methods.
+            if (_initializables != null) {
+                for (Initializable initializable : _initializables) {
+                    initializable.wrapup();
+                }
+            }
+
+            // end of AtomicActor.java
+            //System.out.println ("Actor: "  + this.getFullName() + " has been called "
+            //        + "to produce outputs: " + _numberOfSteps + " times.");       
+            runNativeFMU(_fmiComponentJNI, -1, null, null, null, 0.0, 0.0, 0.0,
+                    0, 0.0, 0, 0, null, null, null, null, null, null, null,
+                    null, 0, null, null, null, null, null);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Determine if the model description is acceptable.  
      *  FMUQSS only works with FMI-2.0 (and later) model exchange fmus.   
      *  @param fmiModelDescription The description of the model to be checked.
@@ -650,9 +897,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Check if the FMU is for model exchange.
         if (fmiModelDescription.modelExchangeCapabilities == null) {
-            throw new IOException("There is no ModelExchange attribute in the model description"
-                    + " file of This FMU to indicate whether it is for model exchange or not.  "
-                    + "QSS currently only supports FMU for model exchange.");
+            throw new IOException(
+                    "There is no ModelExchange attribute in the model description"
+                            + " file of This FMU to indicate whether it is for model exchange or not.  "
+                            + "QSS currently only supports FMU for model exchange.");
         }
 
         // Check to see if this FMU is for model exchange.
@@ -678,7 +926,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Return true if we need to update the outputs
      * @param index The variable index.
@@ -709,7 +957,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
         return doNotUpdate;
     }
-    
+
     /**
      * Return true if we are not in the first firing and the sign of
      * some event indicator has changed.
@@ -761,26 +1009,16 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _eventIndicatorsPrevious = _eventIndicators;
         return false;
     }
-    
+
     /** Create a new QSS solver and initialize it for use by this actor.
      *  @exception IllegalActionException If the solver cannot be created or initialized.
      */
     private final void _createQSSSolver() throws IllegalActionException {
-
-        // Get director and check its type.
-        Director director = getDirector();
-        if (!(director instanceof QSSDirector)) {
-            throw new IllegalActionException(
-                    this,
-                    String.format(
-                            "Director %s cannot be used for QSS, which requires a QSSDirector.",
-                            director.getName()));
-        }
-        _director = (QSSDirector) director;
-        _quantumScaleFactor =  _director.getQuantumScaleFactor();
-        _internalRelativeQuantum = _director.getRelativeQuantum() * _quantumScaleFactor;
+        _quantumScaleFactor = _director.getQuantumScaleFactor();
+        _internalRelativeQuantum = _director.getRelativeQuantum()
+                * _quantumScaleFactor;
         final Time currentTime = _director.getModelTime();
-    
+
         if (_debugging) {
             _debugToStdOut(String.format(
                     "FMUQSS._initializeQssIntegrator() on id{%d} at time %s",
@@ -791,22 +1029,30 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _qssSolver = _director.newQSSSolver();
         _qssSolver.initializeDerivativeFunction(this);
         _qssSolver.initializeSimulationTime(currentTime);
-        _qssSolver.setQuantizationEventTimeMaximum(_director.getModelStopTime());
+        _qssSolver
+                .setQuantizationEventTimeMaximum(_director.getModelStopTime());
 
         // Get initial state values from FMU.
         // TODO: Does the FMUQSS need to carry {_states}? Shouldn't all state
         // information be delegated to the integrator {_qssIgr}?
         final int stateCt = _qssSolver.getStateCount();
         _states = new double[stateCt];
-        final int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction.invoke(
-                Integer.class, new Object[] { _fmiComponent, _states,
-                        new NativeSizeT(stateCt) })).intValue();
-        if (FMILibrary.FMIStatus.fmiOK != fmiFlag) {
-            throw new IllegalActionException(
-                    this,
-                    String.format(
-                            "Failed to get continuous states at time %s. Return value of fmiGetContinuousStates() was %s",
-                            currentTime.toString(), _fmiStatusDescription(fmiFlag)));
+        if (!_useRawJNI()) {
+            final int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction
+                    .invoke(Integer.class, new Object[] { _fmiComponent,
+                            _states, new NativeSizeT(stateCt) })).intValue();
+            if (FMILibrary.FMIStatus.fmiOK != fmiFlag) {
+                throw new IllegalActionException(
+                        this,
+                        String.format(
+                                "Failed to get continuous states at time %s. Return value of fmiGetContinuousStates() was %s",
+                                currentTime.toString(),
+                                _fmiStatusDescription(fmiFlag)));
+            }
+        } else {
+            // Get continuous states from FMU
+            _fmiGetContinuousStatesJNI(_states, currentTime.getDoubleValue());
+
         }
 
         // Set initial state values.
@@ -815,8 +1061,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // Set quantization tolerances.
-        double internalAbsoluteQuantum = _director.getAbsoluteQuantum() * _quantumScaleFactor;
-        final double internalRelativeQuantum = _director.getRelativeQuantum() * _quantumScaleFactor;
+        final double absoluteQuantumMinimum = 1e-20;
+        //double internalAbsoluteQuantum = _director.getAbsoluteQuantum() * _quantumScaleFactor;
+        //final double internalRelativeQuantum = _director.getRelativeQuantum() * _quantumScaleFactor;
         for (int ii = 0; ii < stateCt; ++ii) {
             // If the relativeQuantum is greater than 0.0, then use the
             // nominal value for the state, given by the FMU, to set the
@@ -828,11 +1075,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // quantum 1000 times greater than a state with nominal value 1.
             final double nominalValue = _fmiModelDescription.continuousStates
                     .get(ii).nominal.doubleValue();
-            double modifiedAbsoluteQuantum = Math.abs(nominalValue) * internalRelativeQuantum;
-            if (internalAbsoluteQuantum < modifiedAbsoluteQuantum) {
-            internalAbsoluteQuantum = modifiedAbsoluteQuantum;
+            double modifiedInternalAbsoluteQuantum = Math.abs(nominalValue)
+                    * _internalRelativeQuantum;
+            if (modifiedInternalAbsoluteQuantum < absoluteQuantumMinimum) {
+                modifiedInternalAbsoluteQuantum = absoluteQuantumMinimum;
             }
-            _qssSolver.setQuantizationTolerance(ii, internalAbsoluteQuantum, internalRelativeQuantum);
+            _qssSolver.setQuantizationTolerance(ii,
+                    modifiedInternalAbsoluteQuantum, _internalRelativeQuantum);
         }
 
         // Tell integrator to quantize.
@@ -903,44 +1152,53 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     private double _evaluateInputDirectionalDerivatives(final int idx,
             final double[] inputDerivatives) throws IllegalActionException {
-        final FMI20ContinuousStateDerivative stateDerivative = _fmiModelDescription.continuousStateDerivatives
-                .get(idx);
-        final int numDepInputs = stateDerivative.dependentInputIndexes.size();
-        final IntBuffer valueReferenceStateDerivative = IntBuffer.allocate(1).put(0,
-                (int) stateDerivative.scalarVariable.valueReference);
-        final DoubleBuffer valueInput = DoubleBuffer.allocate(1).put(0,
-                (double) (1.0));
-        final DoubleBuffer valueStateDerivative = DoubleBuffer.allocate(1);
-        double jacobianInputs = 0;
+        if (!_useRawJNI()) {
+            final FMI20ContinuousStateDerivative stateDerivative = _fmiModelDescription.continuousStateDerivatives
+                    .get(idx);
+            final int numDepInputs = stateDerivative.dependentInputIndexes
+                    .size();
+            final IntBuffer valueReferenceStateDerivative = IntBuffer.allocate(
+                    1).put(0,
+                    (int) stateDerivative.scalarVariable.valueReference);
+            final DoubleBuffer valueInput = DoubleBuffer.allocate(1).put(0,
+                    (double) (1.0));
+            final DoubleBuffer valueStateDerivative = DoubleBuffer.allocate(1);
+            double jacobianInputs = 0;
 
-        for (int ii = 0; ii < numDepInputs; ++ii) {
-            final int curIdx = stateDerivative.dependentInputIndexes.get(ii);
-            final Input input = _inputs.get(curIdx);
-            final IntBuffer valueReferenceInput = IntBuffer.allocate(1).put(0,
-                    (int) input.scalarVariable.valueReference);
-            // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
-            // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
-            // order. Dassault Systems was informed and will fix this in Dymola 2016.
-            // The current calling order is:  
-            //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
-            // The correct calling order should be:
-            //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
-            int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
-                    .invoke(Integer.class, new Object[] { _fmiComponent,
-                        valueReferenceInput, new NativeSizeT(1), valueReferenceStateDerivative,
-                            new NativeSizeT(1), valueInput, valueStateDerivative }))
-                    .intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new IllegalActionException(this,
-                        "Failed to get directional derivatives in "
-                        + "_evaluateInputDirectionalDerivatives. fmiFlag = "
-                        + _fmiStatusDescription(fmiFlag));
+            for (int ii = 0; ii < numDepInputs; ++ii) {
+                final int curIdx = stateDerivative.dependentInputIndexes
+                        .get(ii);
+                final Input input = _inputs.get(curIdx);
+                final IntBuffer valueReferenceInput = IntBuffer.allocate(1)
+                        .put(0, (int) input.scalarVariable.valueReference);
+                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+                // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
+                // order. Dassault Systems was informed and will fix this in Dymola 2016.
+                // The current calling order is:  
+                //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
+                // The correct calling order should be:
+                //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
+                int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
+                        .invoke(Integer.class, new Object[] { _fmiComponent,
+                                valueReferenceInput, new NativeSizeT(1),
+                                valueReferenceStateDerivative,
+                                new NativeSizeT(1), valueInput,
+                                valueStateDerivative })).intValue();
+                if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                    throw new IllegalActionException(
+                            this,
+                            "Failed to get directional derivatives in "
+                                    + "_evaluateInputDirectionalDerivatives. fmiFlag = "
+                                    + _fmiStatusDescription(fmiFlag));
+                }
+                jacobianInputs = jacobianInputs + valueStateDerivative.get(0)
+                        * inputDerivatives[curIdx];
             }
-            jacobianInputs = jacobianInputs + valueStateDerivative.get(0) * inputDerivatives[curIdx];
+            return jacobianInputs;
+        } else {
+            return 0.0;
         }
-        return jacobianInputs;
     }
-    
 
     /**
      * Evaluate directional derivative with respect to states.
@@ -952,44 +1210,79 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     private double _evaluateStateDirectionalDerivatives(final int idx,
             final double[] stateDerivatives) throws IllegalActionException {
-        final FMI20ContinuousStateDerivative stateDerivative = _fmiModelDescription.continuousStateDerivatives
-                .get(idx);
-        final int numDepStates = stateDerivative.dependentStateIndexes.size();
-        final IntBuffer valueReferenceStateDerivative = IntBuffer.allocate(1)
-                .put(0, (int) stateDerivative.scalarVariable.valueReference);
-        final DoubleBuffer valueState = DoubleBuffer.allocate(1).put(0,
-                (double) (1.0));
-        final DoubleBuffer valueStateDerivative = DoubleBuffer.allocate(1);
-        double jacobianStates = 0.0;
+        if (!_useRawJNI()) {
+            final FMI20ContinuousStateDerivative stateDerivative = _fmiModelDescription.continuousStateDerivatives
+                    .get(idx);
+            final int numDepStates = stateDerivative.dependentStateIndexes
+                    .size();
+            final IntBuffer valueReferenceStateDerivative = IntBuffer.allocate(
+                    1).put(0,
+                    (int) stateDerivative.scalarVariable.valueReference);
+            final DoubleBuffer valueState = DoubleBuffer.allocate(1).put(0,
+                    (double) (1.0));
+            final DoubleBuffer valueStateDerivative = DoubleBuffer.allocate(1);
+            double jacobianStates = 0.0;
 
-        for (int ii = 0; ii < numDepStates; ++ii) {
-            final int curIdx = stateDerivative.dependentStateIndexes.get(ii);
-            final ContinuousState state = _fmiModelDescription.continuousStates
-                    .get(curIdx);
-            final IntBuffer valueReferenceState = IntBuffer.allocate(1).put(0,
-                    (int) state.scalarVariable.valueReference);
-            // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
-            // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
-            // order. Dassault Systems was informed and will fix this in Dymola 2016.
-            // The current calling order is:  
-            //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
-            // The correct calling order should be:
-            //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
-           int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
-                    .invoke(Integer.class, new Object[] { _fmiComponent,
-                            valueReferenceState, new NativeSizeT(1),
-                            valueReferenceStateDerivative, new NativeSizeT(1),
-                            valueState, valueStateDerivative })).intValue();
-            if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-                throw new IllegalActionException(this,
-                        "Failed to get directional derivatives in "
-                        + "_evaluateStateDirectionalDerivatives. fmiFlag = "
-                        + _fmiStatusDescription(fmiFlag));
+            for (int ii = 0; ii < numDepStates; ++ii) {
+                final int curIdx = stateDerivative.dependentStateIndexes
+                        .get(ii);
+                final ContinuousState state = _fmiModelDescription.continuousStates
+                        .get(curIdx);
+                final IntBuffer valueReferenceState = IntBuffer.allocate(1)
+                        .put(0, (int) state.scalarVariable.valueReference);
+                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+                // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
+                // order. Dassault Systems was informed and will fix this in Dymola 2016.
+                // The current calling order is:  
+                //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
+                // The correct calling order should be:
+                //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
+                int fmiFlag = ((Integer) _fmiGetDirectionalDerivativeFunction
+                        .invoke(Integer.class, new Object[] { _fmiComponent,
+                                valueReferenceState, new NativeSizeT(1),
+                                valueReferenceStateDerivative,
+                                new NativeSizeT(1), valueState,
+                                valueStateDerivative })).intValue();
+                if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+                    throw new IllegalActionException(
+                            this,
+                            "Failed to get directional derivatives in "
+                                    + "_evaluateStateDirectionalDerivatives. fmiFlag = "
+                                    + _fmiStatusDescription(fmiFlag));
+                }
+                jacobianStates = jacobianStates + valueStateDerivative.get(0)
+                        * stateDerivatives[curIdx];
             }
-            jacobianStates = jacobianStates + valueStateDerivative.get(0)
-                    * stateDerivatives[curIdx];
+            return jacobianStates;
+        } else {
+            return 0.0;
         }
-        return jacobianStates;
+    }
+
+    /**
+     * Enter continuous mode of the FMU
+     * array.
+     *
+     * @param timeValue The current time.
+     */
+    private void _fmiEnterContinuousModeJNI(double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 3, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, null, null, null, null, null,
+                null, null, 0, null, null, null, null, null);
+    }
+
+    /**
+     * Get the continuous states of the FMU to the specified
+     * array.
+     *
+     * @param values The values of the outputs to get.
+     * @param valueReferences The value references of the outputs.
+     * @param timeValue The current time.
+     */
+    private void _fmiGetContinuousStatesJNI(double values[], double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 4, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, null, values, null, null, null,
+                null, null, 0, null, null, null, null, null);
     }
 
     /**
@@ -1016,7 +1309,118 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                             + _fmiStatusDescription(fmiFlag));
         }
     }
-    
+
+    /**
+     * Get the derivatives of the FMU to the specified
+     * array.
+     *
+     * @param values The derivative values.
+     * @param timeValue The current time.
+     */
+    private void _fmiGetDerivativesJNI(double[] values, double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 5, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, values, null, null, null, null,
+                null, null, 0, null, null, null, null, null);
+    }
+
+    /**
+     * Get the double inputs of the FMU to the specified
+     * array.
+     *
+     * @param values The values of the outputs to get.
+     * @param valueReferences The value references of the outputs.
+     * @param timeValue The current time.
+     */
+    private void _fmiGetRealJNI(double values[], long valueReferences[],
+            double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 8, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 1, null, null, null, null, null, null,
+                values, valueReferences, 0, null, null, null, null, null);
+    }
+
+    /**
+     * Initialize the FMU
+     * array.
+     *
+     * @param timeValue The current time.
+     */
+    private void _fmiInitializeJNI(double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 1, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, null, null, null, null, null,
+                null, null, 0, null, null, null, null, null);
+    }
+
+    /**
+     * Instantiate the FMU
+     * array.
+     *
+     * @param modelIdentifier The model identifier of the FMU.
+     * @param fmuLibPath The path to the FMu library.
+     * @param fmuResourceLocation The path to the FMU resource.
+     * @param startime The FMU start time.
+     * @param stoptime The FMU stop time.
+     * @param currentime The FMU current time.
+     * @param toleranceDefined The FMU tolerance defined.
+     * @param quantum The FMU tolerance.
+     * @param visible The FMU visible attribute.
+     * @param logging The FMU logging attribute.
+     * @param guid The FMU GUID.
+     * @param derivatives The FMU first derivatives.
+     * @return An integer that specifies the FMU.
+     */
+    private Integer _fmiInstantiatesJNI(String modelIdentifier,
+            String fmuLibPath, String fmuResourceLocation, double startime,
+            double stoptime, double currentime, Integer toleranceDefined,
+            double quantum, byte visible, byte logging, String guid,
+            double[] derivatives) {
+
+        return runNativeFMU(0, 0, modelIdentifier, fmuLibPath,
+                _fmiModelDescription.fmuResourceLocation, startime, stoptime,
+                currentime, 0, quantum, visible, logging, guid, derivatives,
+                null, null, null, null, null, null, 0, null, null, null, null,
+                null);
+    }
+
+    /**
+     * Enter discrete states of the FMU
+     * array.
+     *
+     * @param timeValue The current time.
+     */
+    private void _fmiNewDiscreteStatesJNI(double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 2, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, null, null, null, null, null,
+                null, null, 0, null, null, null, null, null);
+    }
+
+    /**
+     * For model exchange, set the continuous states of the FMU to the specified
+     * array.
+     *
+     * @param values The values to assign to the states.
+     * @param timeValue The current time.
+     */
+    private void _fmiSetContinuousStatesJNI(double values[], double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 6, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, null, null, values, null, null,
+                null, null, 0, null, null, null, null, null);
+    }
+
+    /**
+     * Set the double inputs of the FMU to the specified
+     * array.
+     *
+     * @param values The values to assign to the inputs.
+     * @param valueReferences The value references of the inputs.
+     * @param timeValue The current time.
+     */
+    private void _fmiSetRealJNI(double values[], long valueReferences[],
+            double timeValue) {
+        runNativeFMU(_fmiComponentJNI, 7, null, null, null, 0.0, 0.0,
+                timeValue, 0, 0.0, 0, 0, null, null, null, null, values,
+                valueReferences, null, null, 0, null, null, null, null, null);
+    }
+
     /**
      * Set the time of the FMU to the specified time.
      * 
@@ -1149,7 +1553,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
         }
     }
-    
+
     /** If an input is present, read it. If its value and time do not
      *  match that of the most recently seen input, then set the input
      *  variable model of the solver using the provided input data.
@@ -1226,8 +1630,15 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         for (int i = 0; i < numContStates; i++) {
             _fmiModelDescription.continuousStates.get(i).port = (TypedIOPort) _getPortByNameOrDisplayName(_fmiModelDescription.continuousStates
                     .get(i).scalarVariable.name);
-            final ContinuousState contState = _fmiModelDescription.continuousStates.get(i);
-            final FMI20ContinuousStateDerivative contStateDeriv = _fmiModelDescription.continuousStateDerivatives.get(i);
+            final ContinuousState contState = _fmiModelDescription.continuousStates
+                    .get(i);
+            final FMI20ContinuousStateDerivative contStateDeriv = _fmiModelDescription.continuousStateDerivatives
+                    .get(i);
+
+            // Record the index of the continuous state variable in the model variable list.
+            _modelVariableIndexesOfContinuousStates.put(contState.name,
+                    _fmiModelDescription.modelVariablesNames
+                            .indexOf(contState.name));
             // Initialize vector of value references of state variables
             _stateValueReferences[i] = contState.scalarVariable.valueReference;
             // Initialize vector of value references of derivatives of state variables.
@@ -1235,9 +1646,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             // Get the output retrieved from the model structure.
             Set<TypedIOPort> dependencies = null;
-            for (int j = 0; j < contState.dependentScalarVariables
-                    .size(); j++) {
-                final String inputName = contState.dependentScalarVariables.get(j).name;
+            for (int j = 0; j < contState.dependentScalarVariables.size(); j++) {
+                final String inputName = contState.dependentScalarVariables
+                        .get(j).name;
                 final TypedIOPort inputPort = (TypedIOPort) _getPortByNameOrDisplayName(inputName);
                 if (inputPort == null) {
                     continue;
@@ -1249,16 +1660,16 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
         }
 
-		// Iterate through the continuous state ports and remove their
-		// dependencies with respect to inputs. There are no direct dependencies
-		// between the continuous state ports and the input ports.
-		for (int i = 0; i < _fmiModelDescription.numberOfContinuousStates; i++) {
-			IOPort port = _fmiModelDescription.continuousStates.get(i).port;
-			for (Input input : _getInputs()) {
-				// Remove the dependency of the state output on the actor inputs
-				_declareDelayDependency(input.port, port, 0.0);
-			}
-		}
+        // Iterate through the continuous state ports and remove their
+        // dependencies with respect to inputs. There are no direct dependencies
+        // between the continuous state ports and the input ports.
+        for (int i = 0; i < _fmiModelDescription.numberOfContinuousStates; i++) {
+            IOPort port = _fmiModelDescription.continuousStates.get(i).port;
+            for (Input input : _getInputs()) {
+                // Remove the dependency of the state output on the actor inputs
+                _declareDelayDependency(input.port, port, 0.0);
+            }
+        }
     }
 
     /**
@@ -1289,25 +1700,45 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 Parameter parameter = (Parameter) getAttribute(sanitizedName,
                         Parameter.class);
                 if (parameter != null) {
-                    try {
-                        _setFMUScalarVariable(scalar, parameter.getToken());
-                    } catch (IllegalActionException ex) {
-                        throw new IllegalActionException(this, "Failed to set "
-                                + scalar.name + " to " + parameter.getToken());
-                    } catch (RuntimeException runtimeException) {
-                        // FIXME: we are reusing supressWarnings here
-                        // because the AMS model throws an exception
-                        // while trying to set hx.hc.
-                        if (!((BooleanToken) suppressWarnings.getToken())
-                                .booleanValue()) {
-                            throw new IllegalActionException(
-                                    this,
-                                    runtimeException,
-                                    "Failed to set "
-                                            + scalar.name
-                                            + " to "
-                                            + parameter.getToken()
-                                            + ".  To ignore this exception, set the supressWarnings parameter.");
+                    if (!_useRawJNI()) {
+                        try {
+                            _setFMUScalarVariable(scalar, parameter.getToken());
+
+                        } catch (IllegalActionException ex) {
+                            throw new IllegalActionException(this,
+                                    "Failed to set " + scalar.name + " to "
+                                            + parameter.getToken());
+                        } catch (RuntimeException runtimeException) {
+                            // FIXME: we are reusing supressWarnings here
+                            // because the AMS model throws an exception
+                            // while trying to set hx.hc.
+                            if (!((BooleanToken) suppressWarnings.getToken())
+                                    .booleanValue()) {
+                                throw new IllegalActionException(
+                                        this,
+                                        runtimeException,
+                                        "Failed to set "
+                                                + scalar.name
+                                                + " to "
+                                                + parameter.getToken()
+                                                + ".  To ignore this exception, set the supressWarnings parameter.");
+                            }
+                        }
+                    } else {
+                        if (scalar.type instanceof FMIRealType) {
+                            final double uu[] = { ((DoubleToken) parameter
+                                    .getToken()).doubleValue() };
+                            final long uuRef[] = { scalar.valueReference };
+                            // Set the inputs which have changed.
+
+                            _fmiSetRealJNI(uu, uuRef, _director.getModelTime()
+                                    .getDoubleValue());
+                        } else {
+                            new Exception("Warning: The Parameter "
+                                    + scalar.name + " is of type "
+                                    + scalar.type + " .But only parameters "
+                                    + "from type FMIRealType are updated.")
+                                    .printStackTrace();
                         }
                     }
                 }
@@ -1315,21 +1746,22 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
     }
 
-       /**
-     * Configure the QSS integrator's input variable models.
-     *
-     * <p>This cannot be done during initialization stage, because did not yet have
-     * all the information needed.</p>
-     *
-     * @param currentTime The current simulation time.
-     */
+    /**
+    * Configure the QSS integrator's input variable models.
+    *
+    * <p>This cannot be done during initialization stage, because did not yet have
+    * all the information needed.</p>
+    *
+    * @param currentTime The current simulation time.
+    */
     private final void _initializeQSSIntegratorInputVariables(
             final Time currentTime) throws IllegalActionException {
 
         if (_debugging) {
             _debugToStdOut(String
                     .format("FMUQSS._initializeQssIntegrator_inputVars() on id{%d} at time %s",
-                            System.identityHashCode(this), currentTime.toString()));
+                            System.identityHashCode(this),
+                            currentTime.toString()));
         }
 
         // Create array for input models.
@@ -1392,8 +1824,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Save the last double token seen at this port.
             _inputs.get(ii).lastDoubleInput = initialValue;
             // Set the hasChanged flag to true.
-           _inputs.get(ii).hasChanged = true;
-           
+            _inputs.get(ii).hasChanged = true;
+
             // Get the model.
             // We only initialize the first coefficient
             // since we don't have other coefficients yet.
@@ -1419,11 +1851,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _qssSolver.triggerRateEvent();
         } catch (Exception ee) {
             // Rethrow as an IllegalActionException.
-            throw new IllegalActionException(this, ee, "Triggering rate event failed.");
+            throw new IllegalActionException(this, ee,
+                    "Triggering rate event failed.");
         }
 
     }
-    
+
     /**
      * Broadcast FMU outputs that are not quantized states.
      *
@@ -1441,42 +1874,41 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     System.identityHashCode(this), currentTime.toString()));
         }
         // FIXME: This code will only work with doubles for now.
+        final double time = currentTime.getDoubleValue();
         for (int ii = 0; ii < _outputs.size(); ii++) {
             final Output output = _outputs.get(ii);
+
             final TypedIOPort port = output.port;
             // Skip known outputs and outputs which are states.
             if (_skipIfKnown() || output.scalarVariable.isState) {
                 continue;
             }
             FMIScalarVariable scalarVariable = output.scalarVariable;
-
-            if (scalarVariable.type instanceof FMIBooleanType) {
-                throw new IllegalActionException("Type " + scalarVariable.type
-                        + " not supported.");
-                // boolean result = scalarVariable.getBoolean(_fmiComponent);
-                // token = new BooleanToken(result);
-            } else if (scalarVariable.type instanceof FMIIntegerType) {
-                // FIXME: handle Enumerations?
-                throw new IllegalActionException("Type " + scalarVariable.type
-                        + " not supported.");
-                // int result = scalarVariable.getInt(_fmiComponent);
-                // token = new IntToken(result);
-            } else if (scalarVariable.type instanceof FMIRealType) {
-                double result = scalarVariable.getDouble(_fmiComponent);     
-                final double[] ooArr = { result };
+            if (scalarVariable.type instanceof FMIRealType) {
+                final double[] oo = new double[1];
+                if (!_useRawJNI()) {
+                    double result = scalarVariable.getDouble(_fmiComponent);
+                    oo[0] = result;
+                } else {
+                    final long[] ooRef = { scalarVariable.valueReference };
+                    _fmiGetRealJNI(oo, ooRef, time);
+                    // Send result to port.
+                }
                 // Send the initial output values to the port.
-                _sendModelToPort(ooArr, port, currentTime, ii, false);
-                    
-            } else if (scalarVariable.type instanceof FMIStringType) {
-                throw new IllegalActionException("Type " + scalarVariable.type
-                        + " not supported.");
+                _sendModelToPort(oo, port, currentTime, ii, false);
+
             } else {
-                throw new IllegalActionException("Type " + scalarVariable.type
-                        + " not supported.");
+                new Exception(
+                        "Warning: The output variable "
+                                + scalarVariable.name
+                                + " is of type "
+                                + scalarVariable.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
             }
         }
     }
-    
+
     /**
      * Send output and state model to the port.
      *
@@ -1495,8 +1927,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (isState) {
             double lastToken = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
             double epsilon = Math.abs(relativeQuantumUpscale * lastToken);
-            final int modVarIdx = _fmiModelDescription.modelVariablesNames
-                    .indexOf(_fmiModelDescription.continuousStates.get(index).name);
+            final int modVarIdx = _modelVariableIndexesOfContinuousStates
+                    .get(_fmiModelDescription.continuousStates.get(index).name);
             if (_firstRound) {
                 prt.send(0, new SmoothToken(val, time));
                 _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
@@ -1557,34 +1989,34 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @throws IllegalActionException If the specified token cannot be converted
      *   to a double.
      */
-	private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
-			throws IllegalActionException {
+    private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
+            throws IllegalActionException {
 
-		// Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
-		// then the convert method does nothing and just returns the token.
-		// Otherwise, it attempts to convert it to a DoubleToken, and throws
-		// an exception if such conversion is not possible.
-		DoubleToken doubleToken = DoubleToken.convert(token);
+        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
+        // then the convert method does nothing and just returns the token.
+        // Otherwise, it attempts to convert it to a DoubleToken, and throws
+        // an exception if such conversion is not possible.
+        DoubleToken doubleToken = DoubleToken.convert(token);
 
-		// In all cases, the first coefficient is simply the current value of
-		// the token.
-		ivMdl.coeffs[0] = doubleToken.doubleValue();
+        // In all cases, the first coefficient is simply the current value of
+        // the token.
+        ivMdl.coeffs[0] = doubleToken.doubleValue();
 
-		double[] derivatives = null;
-		if (doubleToken instanceof SmoothToken) {
-			derivatives = ((SmoothToken) doubleToken).derivativeValues();
-		}
-		final int ncoeffs = ivMdl.coeffs.length;
-		int factorial = 1;
-		for (int i = 1; i < ncoeffs; i++) {
-			if (derivatives == null || derivatives.length < i) {
-				ivMdl.coeffs[i] = 0.0;
-			} else {
-				ivMdl.coeffs[i] = derivatives[i - 1]/factorial;
-				factorial = factorial * i;
-			}
-		}
-	}
+        double[] derivatives = null;
+        if (doubleToken instanceof SmoothToken) {
+            derivatives = ((SmoothToken) doubleToken).derivativeValues();
+        }
+        final int ncoeffs = ivMdl.coeffs.length;
+        int factorial = 1;
+        for (int i = 1; i < ncoeffs; i++) {
+            if (derivatives == null || derivatives.length < i) {
+                ivMdl.coeffs[i] = 0.0;
+            } else {
+                ivMdl.coeffs[i] = derivatives[i - 1] / factorial;
+                factorial = factorial * i;
+            }
+        }
+    }
 
     /**
      * Trigger quantization-events if necessary.
@@ -1644,8 +2076,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
 
             // Send model to the port
-            _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs, outPort,
-                    currentTime, qIdx, true);
+            if (outPort.getWidth() > 0) {
+                _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
+                        outPort, currentTime, qIdx, true);
+            }
 
             // Diagnostic output.
             if (_debugging) {
@@ -1661,13 +2095,18 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // then update the continuous states in the FMU before updating the outputs.
         // This is needed particularly if an output depends on a state.
         final double[] stateVariables = new double[stateCt];
+        final double timeValue = currentTime.getDoubleValue();
         if (_firstRound || needQuantizationEvents.contains(true)) {
             // In the first round we assume that all states have changed.
             for (int i = 0; i < stateCt; i++) {
                 stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
             }
             // Set the continuous states.
-            _fmiSetContinuousStates(stateVariables);
+            if (!_useRawJNI()) {
+                _fmiSetContinuousStates(stateVariables);
+            } else {
+                _fmiSetContinuousStatesJNI(stateVariables, timeValue);
+            }
         }
 
         // A quantization-event implies other FMU outputs change.
@@ -1675,9 +2114,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _produceOutputs(currentTime);
 
         // Reset hasChanged to false for next quantization events.
-        for (int i = 0; i < _fmiModelDescription.modelVariables.size(); i++) {
-            _fmiModelDescription.modelVariables.get(i).hasChanged = false;
+        for (int i = 0; i < _indexesOfUpdatedModelVariables.size(); i++) {
+            _fmiModelDescription.modelVariables
+                    .get(_indexesOfUpdatedModelVariables.get(i)).hasChanged = false;
         }
+
+        // Clear the list of model variables indexes so 
+        // they can be used in the next quantization.
+        _indexesOfUpdatedModelVariables.clear();
     }
 
     /**
@@ -1728,7 +2172,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             try {
                 _qssSolver.triggerRateEvent();
             } catch (Exception ee) {
-                throw new IllegalActionException(this, ee, "Triggering rate event failed.");
+                throw new IllegalActionException(this, ee,
+                        "Triggering rate event failed.");
             }
         }
 
@@ -1746,10 +2191,18 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (index >= 0) {
             _fmiModelDescription.modelVariables.get(index).hasChanged = value;
         }
+        
+        // Save the indexes of the model variables which have changed
+        if (index >=0 && value){
+            _indexesOfUpdatedModelVariables.add(index);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                           private fields                  ////
+
+    /** FMU component when using JNI. */
+    private int _fmiComponentJNI;
 
     /** QSS director. */
     private QSSDirector _director;
@@ -1768,40 +2221,44 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * after initialize().
      */
     private boolean _firstRound = true;
-    
+    /** The outputs of this FMU. */
+    private List<Integer> _indexesOfUpdatedModelVariables;
+
     /** Models for communicating with the integrator. */
     private ModelPolynomial[] _inputVariableModels;
-    
+
     /** The inputs of this FMU. */
     private List<Input> _inputs;
-    
+
+    /**
+     * Vector of input value references.
+     */
+    private long[] _inputValueReferences;
+
     /** Internal relative quantum. */
     private double _internalRelativeQuantum;
 
-    /**
-     * Indicator of whether the actor is strict, meaning that all inputs must be
-     * known to fire it.
-     */
-    private boolean _isStrict = true;
-
     /** Track requests for firing. */
     private Time _lastFireAtTime;
-    
+
+    /** Record of model variable index of continuous states. */
+    private static Map<String, Integer> _modelVariableIndexesOfContinuousStates = new HashMap<String, Integer>();
+
     /** The outputs of this FMU. */
     private List<Output> _outputs;
-    
+
     /** The QSS solver for this actor.
      *  It is an instance of the class given by the
      *  <i>QSSSolver</i> parameter of the director.
      */
     private QSSBase _qssSolver = null;
-    
+
     /** Quantum scale factor. */
     private double _quantumScaleFactor;
-    
+
     /** Vector of state derivative value references. */
     private long[] _stateDerivativeValueReferences;
-    
+
     /** The new states computed in fire, to be committed in postfire. */
     private double[] _states;
 
