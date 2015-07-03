@@ -4182,6 +4182,16 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             throw new IllegalActionException("Type " + type + " not supported.");
         }
     }
+    
+    /** Return true if we use use raw JNI instead of JNA.
+     *  @return true if raw JNI should be used.
+     *  @exception IllegalActionException If there is a problem
+     *  reading the useRawJNI parameter.
+     */
+    protected boolean _useRawJNI() throws IllegalActionException {
+        return (_fmiVersion >= 2.0) && _fmiModelDescription.modelExchange
+                && ((BooleanToken) useRawJNI.getToken()).booleanValue();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                          protected fields                 ////
@@ -4521,15 +4531,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             long[] directionalInputDerivativesValueReferences,
             double[] continuousSecondDerivatives);
 
-    /** Return true if we use use raw JNI instead of JNA.
-     *  @return true if raw JNI should be used.
-     *  @exception IllegalActionException If there is a problem
-     *  reading the useRawJNI parameter.
-     */
-    private boolean _useRawJNI() throws IllegalActionException {
-        return (_fmiVersion >= 2.0) && _fmiModelDescription.modelExchange
-                && ((BooleanToken) useRawJNI.getToken()).booleanValue();
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////              private fields                               ////
