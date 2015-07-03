@@ -42,7 +42,13 @@
       if ( mainFile.exists() ) {
         return mainFile;
       } else {
-        return null;
+        // --- Modified from original by eal@berkeley.edu to look for index.js.
+        mainFile = new File( dir, 'index.js');
+        if ( mainFile.exists() ) {
+            return mainFile;
+        } else {
+            return null;
+        }
       }
     } else {
       // look for an index.js file
