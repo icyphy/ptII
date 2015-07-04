@@ -350,7 +350,7 @@ public class WebSocketHelper extends VertxHelperBase {
         protected void handle() {
             // FIXME: Why is this synchronized?
             synchronized(_actor) {
-        	_currentObj.callMember("emit", "close");
+        	_currentObj.callMember("emit", "close", "Stream has ended.");
                 _wsIsOpen = false;
                 if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
                     _currentObj.callMember("emit", "error", "Unsent data remains in the queue.");
