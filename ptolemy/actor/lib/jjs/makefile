@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs
 
-DIRS = 		demo external modules node test
+DIRS = 		demo external modules node test node_modules
 
 # Root of the Java directory
 ROOT =		../../../..
