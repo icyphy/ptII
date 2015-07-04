@@ -25,7 +25,7 @@ var EventEmitter = require('events').EventEmitter;
 /** Issue an HTTP request and provide a callback function for responses.
  *  The callback is a function that is passed an instance of IncomingMessage,
  *  defined here. This function returns an instance of ClientRequest, also defined here.
- *  The options argument is a JSON object with the following optional fields:
+ *  The options argument is either a URL (a string) or a JSON object with the following optional fields:
  *  <ul>
  *  <li> headers: An object containing request headers. By default this is an empty object.
  *       Items may have a value that is an array of values, for headers with more than one value.
@@ -44,10 +44,9 @@ var EventEmitter = require('events').EventEmitter;
  *  <li> protocol: The protocol. This is a string that defaults to 'http'.
  *  <li> query: A query string to be appended to the path, such as '?page=12'.
  *  </ul>
- *  Alternatively, the options argument may be given as a URL (a string), in which case
- *  an HTTP GET will be issued to that URL.
  *  @param options The options or URL.
  *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @return An instance of ClientRequest.
  */
 exports.request = function(options, responseCallback) {
   return new ClientRequest(options, responseCallback);
