@@ -181,7 +181,7 @@ var _moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
         '$CLASSPATH/ptolemy/actor/lib/jjs/', null).getAbsolutePath();
 
 /** An array that gives the search path for modules to be required. */
-var _modulePath = [ _moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/' ];
+var _modulePath = [ _moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/', _moduleRoot + '/node_modules/' ];
 
 /** A string giving the full path to the root directory for installed accessors. */
 var _accessorRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
