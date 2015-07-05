@@ -35,6 +35,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -160,9 +161,10 @@ public class DEReceiver extends AbstractReceiver {
      *  @param token The token to be put, or null to put no token.
      *  @exception IllegalActionException If cannot get the director or if
      *   the current microstep is zero.
+     *  @exception NoRoomException Not thrown in this class.
      */
     @Override
-    public void put(Token token) throws IllegalActionException {
+    public void put(Token token) throws IllegalActionException, NoRoomException {
         if (token == null) {
             return;
         }
