@@ -129,11 +129,7 @@ public class ObjectType extends StructuredType implements Cloneable {
     @Override
     public Token convert(Token token) throws IllegalActionException {
         if (token instanceof ObjectToken) {
-            ObjectToken objectToken = (ObjectToken) token;
-            Object value = objectToken.getValue();
-            if (value == null || _class == null || _class.isInstance(value)) {
-                return new ObjectToken(value, _class);
-            }
+            return token;
         }
         throw new IllegalArgumentException(Token.notSupportedConversionMessage(
                 token, this.toString()));
