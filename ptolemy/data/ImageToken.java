@@ -43,7 +43,7 @@ import java.awt.Image;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class ImageToken extends Token {
+public abstract class ImageToken extends ObjectToken {
     /** Construct an empty token.
      */
     public ImageToken() {
