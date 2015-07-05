@@ -332,14 +332,14 @@ public class ObjectToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
     /** The class of the object.
      */
-    private Class _class = null;
+    protected Class _class = null;
 
     /** The actual Object.
      *  This is protected to allow access in derived classes only.
      */
-    private Object _value = null;
+    protected Object _value = null;
 }
