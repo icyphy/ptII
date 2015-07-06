@@ -46,6 +46,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -1001,6 +1002,7 @@ public class JavaScript extends TypedAtomicActor {
 	    if (type instanceof String) {
 		Type ptType = _typeAccessorToPtolemy((String)type);
 		port.setTypeEquals(ptType);
+		_setOptionsForSelect(port, options);
 		if (parameter != null) {
 		    parameter.setTypeEquals(ptType);
 		    /** The following doesn't work. Not persistent.
@@ -1149,6 +1151,7 @@ public class JavaScript extends TypedAtomicActor {
 	    Object type = ((Map)options).get("type");
 	    if (type instanceof String) {
                 port.setTypeEquals(_typeAccessorToPtolemy((String)type));
+                _setOptionsForSelect(port, options);
 	    } else {
 	        if (type == null) {
 	            port.setTypeEquals(BaseType.GENERAL);
@@ -1237,6 +1240,8 @@ public class JavaScript extends TypedAtomicActor {
 	if (options != null) { 
 	    if (ptType != null) {
 		((Parameter) parameter).setTypeEquals(ptType);
+		_setOptionsForSelect((Parameter) parameter, options);
+
 	    }
 	    if (((Parameter)parameter).getToken() == null
 		    || ((ptType == BaseType.STRING)
@@ -1793,6 +1798,33 @@ public class JavaScript extends TypedAtomicActor {
 	}
     }
     
+    private void _setOptionsForSelect(NamedObj typeable, Object options) {
+        if (options instanceof Map) {
+            Object possibilities = ((Map)options).get("options");
+            if (possibilities instanceof ScriptObjectMirror) {
+                // Possibilities are specified.
+                Parameter parameter = null;
+                if (typeable instanceof Parameter) {
+                    parameter = (Parameter)typeable;
+                } else if (typeable instanceof ParameterPort) {
+                    parameter = ((ParameterPort)typeable).getParameter();
+                } else {
+                    // Can't set possibilities. Ignore this option.
+                    return;
+                }
+                for (Object possibility : ((ScriptObjectMirror)possibilities).values()) {
+                    if (possibility instanceof String) {
+                        if (parameter.isStringMode()) {
+                            parameter.addChoice((String)possibility);
+                        } else {
+                            parameter.addChoice("\"" + (String)possibility + "\"");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     /** Invoke the specified function after the specified amount of
      *  time.  Unlike the public method, this method uses the
      *  specified id.  The time will be added to the current time of
@@ -1846,6 +1878,8 @@ public class JavaScript extends TypedAtomicActor {
     
     /** Convert an accessor type definition into a Ptolemy type.
      *  @param type The type designation.
+     *  @param typeable The object to be typed.
+     *  @param options The options object.
      * 	@return A Ptolemy type.
      *  @throws IllegalActionException If the type is not supported.
      */
@@ -1860,6 +1894,8 @@ public class JavaScript extends TypedAtomicActor {
 	    return(BaseType.STRING);
 	} else if (type.equals("boolean")) {
 	    return(BaseType.BOOLEAN);
+        } else if (type.equals("select")) {
+            return(BaseType.STRING);
 	} else {
 	    throw new IllegalActionException(this, "Unsupported type: " + type);
 	}
