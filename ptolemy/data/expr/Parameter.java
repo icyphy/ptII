@@ -169,8 +169,9 @@ public class Parameter extends Variable {
         if (_choices == null) {
             _choices = new ArrayList();
         }
-
-        _choices.add(choice);
+        if (!_choices.contains(choice)) {
+            _choices.add(choice);
+        }
     }
 
     /** Clone the object into the specified workspace.
