@@ -2205,9 +2205,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     ///////////////////////////////////////////////////////////////////
     ////                           private fields                  ////
 
-    /** FMU component when using JNI. */
-    private int _fmiComponentJNI;
-
     /** QSS director. */
     private QSSDirector _director;
 
@@ -2227,6 +2224,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private boolean _firstRound = true;
     /** The outputs of this FMU. */
     private List<Integer> _indexesOfUpdatedModelVariables;
+    
+    /** FMU component when using JNI. */
+    private int _fmiComponentJNI;
 
     /** Models for communicating with the integrator. */
     private ModelPolynomial[] _inputVariableModels;
@@ -2234,9 +2234,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /** The inputs of this FMU. */
     private List<Input> _inputs;
 
-    /**
-     * Vector of input value references.
-     */
+    /** Vector of input value references. */
     private long[] _inputValueReferences;
 
     /** Internal relative quantum. */
