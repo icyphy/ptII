@@ -425,12 +425,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // initialization.
         _firstRound = true;
 
-        // Initialize FMU parameters.
-        if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
-            _initializeFMUParameters();
-        }
-
         if (!_useRawJNI()) {
+            // Initialize FMU parameters.
+            if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
+                _initializeFMUParameters();
+            }      	
             // Enter and exit the initialization mode.
             _fmiInitialize();
 
@@ -553,6 +552,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     startTime.getDoubleValue(), stopTime.getDoubleValue(),
                     timeValue, 0, _internalRelativeQuantum, toBeVisible,
                     loggingOn, _fmiModelDescription.guid, derivatives);
+            
+            // Initialize FMU parameters.
+            if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
+                _initializeFMUParameters();
+            }
 
             // Initialize FMU
             _fmiInitializeJNI(timeValue);
