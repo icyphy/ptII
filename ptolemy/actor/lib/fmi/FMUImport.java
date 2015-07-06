@@ -1072,33 +1072,36 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     int result = scalarVariable.getInt(_fmiComponent);
                     token = new IntToken(result);
                 } else if (scalarVariable.type instanceof FMIRealType) {
+                	double result;
                     if (_useRawJNI()) {
                         final long[] ooRef = { scalarVariable.valueReference };
                         final double[] oo = new double[1];
+                        
                         runNativeFMU(_fmiJNIComponent, 8, null, null, null,
                                 0.0, 0.0, currentTime.getDoubleValue(), 0, 0.0,
                                 0, 1, null, null, null, null, null, null, oo,
                                 ooRef, 0, null, null, null, null, null);
-                        token = new DoubleToken(oo[0]);
-                    } else {
-                        double result = scalarVariable.getDouble(_fmiComponent);
-                        token = new DoubleToken(result);
+                        result = oo[0];
                         
-                        if (_useQSS) {
-                            if (_firstFire) {
-                                _outputs.get(index).lastDoubleOutput = result;
-                            }
-                            // Produce an output if the quantum has been crossed.
-                            else {
-                                double epsilon = Math.abs(_quantum * output.lastDoubleOutput);
-                                if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
-                                    continue;
-                                } else {
-                                    _outputs.get(index).lastDoubleOutput = result;
-                                }
-                            }
-                        }                                                 
+                    } else {
+                        result = scalarVariable.getDouble(_fmiComponent);
                     }
+                    token = new DoubleToken(result);
+					if (_useQSS) {
+						if (_firstFire) {
+							_outputs.get(index).lastDoubleOutput = result;
+						}
+						// Produce an output if the quantum has been crossed.
+						else {
+							double epsilon = Math.abs(_quantum
+									* output.lastDoubleOutput);
+							if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
+								continue;
+							} else {
+								_outputs.get(index).lastDoubleOutput = result;
+							}
+						}
+					}                                          
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     if (_useRawJNI()) {
                         throw new IllegalActionException(this,
