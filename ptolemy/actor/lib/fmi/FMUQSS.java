@@ -252,10 +252,59 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final int stateDerivIndex, final double[] stateVariableDerivatives,
             final double[] inputVariableDerivatives)
             throws IllegalActionException {
-        // Get second derivative of current input
-        return (_evaluateInputDirectionalDerivatives(stateDerivIndex,
-                inputVariableDerivatives) + _evaluateStateDirectionalDerivatives(
-                stateDerivIndex, stateVariableDerivatives));
+		if (!_useRawJNI()) {
+			// Get second derivative of current input
+			return (_evaluateInputDirectionalDerivatives(stateDerivIndex,
+					inputVariableDerivatives) + _evaluateStateDirectionalDerivatives(
+					stateDerivIndex, stateVariableDerivatives));
+		} else {
+			// Get the current continuous state
+			final FMI20ContinuousStateDerivative stateDerivative = _fmiModelDescription.continuousStateDerivatives
+					.get(stateDerivIndex);
+			final long stateDerivRef = stateDerivative.scalarVariable.valueReference;
+			double[] stateSecondDerivative = new double[1];
+
+			// Get the dependent inputs and match the indexes to the input list.
+			final int numDepInputs = stateDerivative.dependentInputIndexes
+					.size();
+			final double[] tmpInputs = new double[numDepInputs];
+			final long[] tmpInputsRefs = new long[numDepInputs];
+
+			for (int ii = 0; ii < numDepInputs; ++ii) {
+				final int curIdx = stateDerivative.dependentInputIndexes
+						.get(ii);
+				final Input input = _inputs.get(curIdx);
+				tmpInputs[ii] = inputVariableDerivatives[curIdx];
+				tmpInputsRefs[ii] = input.scalarVariable.valueReference;
+			}
+
+			// Get the dependent states and match the indexes to the continuous
+			// state list.
+			final int numDepStates = stateDerivative.dependentStateIndexes
+					.size();
+			final double[] tmpStates = new double[numDepStates];
+			final long[] tmpStatesRefs = new long[numDepStates];
+
+			for (int ii = 0; ii < numDepStates; ++ii) {
+				final int curIdx = stateDerivative.dependentStateIndexes
+						.get(ii);
+				final ContinuousState state = _fmiModelDescription.continuousStates
+						.get(curIdx);
+				tmpStates[ii] = stateVariableDerivatives[curIdx];
+				tmpStatesRefs[ii] = state.scalarVariable.valueReference;
+			}
+
+			// Give {stateVariableDerivatives} and {inputVariableDerivatives}
+			// and retrieve {stateSecondDerivative}.
+			// FIXME: This can only be used for QSS2. The assumption being here
+			// that the time and the continuous states have been set previously.
+			runNativeFMU(_fmiComponentJNI, -10, null, null, null, 0.0, 0.0,
+					0.0, 0, 0.0, 0, 0, null, null, null, null, null, null,
+					null, null, stateDerivRef, tmpStates, tmpStatesRefs,
+					tmpInputs, tmpInputsRefs, stateSecondDerivative);
+
+			return stateSecondDerivative[0];
+		}
     }
 
     /**
