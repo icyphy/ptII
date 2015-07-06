@@ -30,17 +30,26 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.httpClient;
 
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.HttpClientRequest;
 import org.vertx.java.core.http.HttpClientResponse;
 
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
 //// HttpClientHelper
@@ -96,7 +105,6 @@ public class HttpClientHelper extends VertxHelperBase {
         // event loop. We need to ensure that callbacks are mutually exclusive
         // with other Java code here.
         
-        // FIXME: Why does Vert.x require setHost and setPort and also a URI?
         client.setHost((String) options.get("host")); 
         client.setPort((int) options.get("port")); 
         client.exceptionHandler(new HttpClientExceptionHandler());
@@ -114,12 +122,9 @@ public class HttpClientHelper extends VertxHelperBase {
             }
         }
         
-        String uri = options.get("protocol")
-        	+ "://"
-        	+ options.get("host")
-        	+ ":"
-        	+ options.get("port")
-        	+ options.get("path")
+        // NOTE: Documentation of Vertx 2.15 is wrong.
+        // The argument is a path with a query, not a URI.
+        String uri = options.get("path")
         	+ query;
         
         _request = client.request(
@@ -166,31 +171,60 @@ public class HttpClientHelper extends VertxHelperBase {
     private class HttpClientResponseHandler implements Handler<HttpClientResponse> {
         @Override
         public void handle(HttpClientResponse response) {
-            // The response is not yet complete. Provide a handler to handle when it
-            // is complete. Note that large response could fill up memory here, since
-            // we do not chunk the response!
-            HttpClientBodyHandler bodyHandler = new HttpClientBodyHandler(response);
-            response.bodyHandler(bodyHandler);
-        }
-    }
-    
-    /** The body handler that is triggered when a complete response body
-     *  has arrived from the server.
-     */
-    private class HttpClientBodyHandler implements Handler<Buffer> {
-	public HttpClientBodyHandler(HttpClientResponse response) {
-	    _response = response;
-	}
-        @Override
-        public void handle(Buffer body) {
-            // Need to synchronize because Vert.x ensures these callbacks are
-            // atomic w.r.t. one another, but not w.r.t. the JavaScript engine
-            // or this actor's methods.
-            synchronized(_actor) {
-        	// FIXME: This assumes the body is a string encoded in UTF-8.
-        	_currentObj.callMember("_response", _response, body.toString());
+            // The response is not yet complete, but we have some information.
+            int status = response.statusCode();
+            if (status >= 400) {
+                // An error occurred.
+                _currentObj.callMember("emit", "error", "Request failed with code "
+                        + status
+                        + ": "
+                        + response.statusMessage());
+                return;
             }
+            MultiMap headers = response.headers();
+            
+            // If the response is a redirect, handle that here.
+            if(status >=300 && status <= 308 && status != 306) {
+                String newLocation = headers.get("Location");
+                if (newLocation != null) {
+                    // FIXME: How to handle the redirect?
+                    _currentObj.callMember("emit", "error", "Redirect to "
+                            + newLocation
+                            + " not yet handled by HttpClientHelper. "
+                            + status
+                            + ": "
+                            + response.statusMessage());
+                    return;
+                }
+            }
+            
+            String contentType = headers.get("Content-Type");
+            boolean isText = (contentType == null)
+                    | (contentType.startsWith("text"));
+                        
+            // A bodyHandler is invoked after the response is complete.
+            // Note that large responses could create a memory problem here.
+            // Could look at the Content-Length header.
+            response.bodyHandler(new Handler<Buffer>() {
+                public void handle(Buffer body) {
+                    if (isText) {
+                        _currentObj.callMember("_response", response, body.toString());
+                    } else if (contentType.startsWith("image")) {
+                        InputStream stream = new ByteArrayInputStream(body.getBytes());
+                        try {
+                            Image image = ImageIO.read(stream);
+                            Token token = new AWTImageToken(image);
+                            _currentObj.callMember("_response", response, token);
+                        } catch (IOException e) {
+                            // FIXME: What to do here?
+                            _currentObj.callMember("_response", response, body.getBytes());
+                        }
+                    } else {
+                        // FIXME: Need to handle other MIME types.Z
+                        _currentObj.callMember("_response", response, body.getBytes()); 
+                    }
+                }
+            });
         }
-        private HttpClientResponse _response;
     }
 }
