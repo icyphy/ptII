@@ -539,7 +539,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             _debugToStdOut("FMUImport.fire() at time " + currentTime
                     + " and microstep " + currentMicrostep);
         }
-
         double derivatives[] = null;
 
         // FMI20EventInfo.ByReference fmi20EventInfo = new
@@ -552,135 +551,143 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         // by definition a timeEventOccurred.
         boolean timeEventOccurred = true;
 
-        if (_fmiModelDescription.modelExchange) {
-            /////////////////////////////////////////
-            // Model exchange version.
+		if (!_useRawJNI()) {
+			if (_fmiModelDescription.modelExchange) {
+				// ///////////////////////////////////////
+				// Model exchange version.
 
-            // Need to retrieve the derivatives before advancing
-            // the time of the FMU. However, this needs to not be
-            // done on the first firing, since the actual integration
-            // step will be performed only in subsequent firings.
-            if (!_firstFire) {
-                derivatives = _fmiGetDerivatives();
-            }
+				// Need to retrieve the derivatives before advancing
+				// the time of the FMU. However, this needs to not be
+				// done on the first firing, since the actual integration
+				// step will be performed only in subsequent firings.
+				if (!_firstFire) {
+					derivatives = _fmiGetDerivatives();
+				}
 
-            if (_fmiVersion < 1.5) {
-                //timeEvent = eventInfo.upcomingTimeEvent == 1
-                //    && eventInfo.nextEventTime < time;
-                //if (timeEvent) {
-                //    time = eventInfo.nextEventTime;
-                //}
-            } else {
-                if (_firstFire) {
-                    _fmi20ModelInstance = new FMI20ModelInstance(_fmiComponent);
-                    if (_fmi20ModelInstance.eventInfo == null) {
-                        _fmi20ModelInstance.eventInfo = new FMI20EventInfo();
-                    }
-                }
+				if (_fmiVersion < 1.5) {
+					// timeEvent = eventInfo.upcomingTimeEvent == 1
+					// && eventInfo.nextEventTime < time;
+					// if (timeEvent) {
+					// time = eventInfo.nextEventTime;
+					// }
+				} else {
+					if (_firstFire) {
+						_fmi20ModelInstance = new FMI20ModelInstance(
+								_fmiComponent);
+						if (_fmi20ModelInstance.eventInfo == null) {
+							_fmi20ModelInstance.eventInfo = new FMI20EventInfo();
+						}
+					}
 
-                fmi20EventInfo = new FMI20EventInfo.ByReference(
-                        _fmi20ModelInstance.eventInfo);
+					fmi20EventInfo = new FMI20EventInfo.ByReference(
+							_fmi20ModelInstance.eventInfo);
 
-                timeEventOccurred = fmi20EventInfo.nextEventTimeDefined == 1
-                        && fmi20EventInfo.nextEventTime < currentTime
-                                .getDoubleValue();
-                //if (timeEventOccurred) {
-                //    time = eventInfo20Reference.nextEventTime;
-                //}
-            }
+					timeEventOccurred = fmi20EventInfo.nextEventTimeDefined == 1
+							&& fmi20EventInfo.nextEventTime < currentTime
+									.getDoubleValue();
+					// if (timeEventOccurred) {
+					// time = eventInfo20Reference.nextEventTime;
+					// }
+				}
 
-            // Set the time.
-            // FIXME: Is it OK to do this even if time has not advanced?
-            if (_fmiVersion < 2.0 || !_firstFire) {
-                // FMI 2.0 p85 says that fmi2SetTime() can only be
-                // called when in EventMode or ContinuousTimeMode.
-                _fmiSetTime(currentTime);
-            }
+				// Set the time.
+				// FIXME: Is it OK to do this even if time has not advanced?
+				if (_fmiVersion < 2.0 || !_firstFire) {
+					// FMI 2.0 p85 says that fmi2SetTime() can only be
+					// called when in EventMode or ContinuousTimeMode.
+					_fmiSetTime(currentTime);
+				}
 
-            // NOTE: The FMI standard says that all variable start values
-            // (of "ScalarVariable / <type> / start") can be set at this time,
-            // but we would only want to do that if we want to influence the
-            // convergence of some algebraic solver. Since no Ptolemy director
-            // currently supports algebraic solvers, we have no reason to want
-            // to set the start value, so we ignore this.
-            // FIXME: If the start value is "fixed" then it should be set
-            // at this time.
+				// NOTE: The FMI standard says that all variable start values
+				// (of "ScalarVariable / <type> / start") can be set at this
+				// time,
+				// but we would only want to do that if we want to influence the
+				// convergence of some algebraic solver. Since no Ptolemy
+				// director
+				// currently supports algebraic solvers, we have no reason to
+				// want
+				// to set the start value, so we ignore this.
+				// FIXME: If the start value is "fixed" then it should be set
+				// at this time.
 
-            //////////////////////
-            // Initialize the FMU if necessary. Model exchange only.
-            if (_firstFire) {
-                _fmiInitialize();
+				// ////////////////////
+				// Initialize the FMU if necessary. Model exchange only.
+				if (_firstFire) {
+					_fmiInitialize();
 
-                if (_fmiVersion >= 2.0) {
-                    // FMUSDK: "event iteration"
-                    if (_newDiscreteStatesNeeded(fmi20EventInfo)) {
-                        return;
-                    }
-                }
+					if (_fmiVersion >= 2.0) {
+						// FMUSDK: "event iteration"
+						if (_newDiscreteStatesNeeded(fmi20EventInfo)) {
+							return;
+						}
+					}
 
-                // Record the state.
-                _recordFMUState();
+					// Record the state.
+					_recordFMUState();
 
-                _lastCommitTime = currentTime;
+					_lastCommitTime = currentTime;
 
-                // To initialize the event indicators, call this.
-                _checkEventIndicators();
+					// To initialize the event indicators, call this.
+					_checkEventIndicators();
 
-                if (_fmiVersion >= 2.0) {
-                    _enterContinuousTimeMode();
-                }
+					if (_fmiVersion >= 2.0) {
+						_enterContinuousTimeMode();
+					}
 
-            }
+				}
 
-            if (_fmiVersion >= 2.0) {
-                // Need to be in modelEventMode during second and subsequent
-                // fires
-                // for fmi2SetInteger() to work. See valuesME20.fmu.
-                _enterEventMode();
-                _newDiscreteStatesNeeded(fmi20EventInfo);
-            }
-            // Initialize the _newStates vector.
-            double states[] = _states.array();
-            if (_newStates == null || _newStates.length != states.length) {
-                _newStates = new double[states.length];
-            }
+				if (_fmiVersion >= 2.0) {
+					// Need to be in modelEventMode during second and subsequent
+					// fires
+					// for fmi2SetInteger() to work. See valuesME20.fmu.
+					_enterEventMode();
+					_newDiscreteStatesNeeded(fmi20EventInfo);
+				}
+				// Initialize the _newStates vector.
+				double states[] = _states.array();
+				if (_newStates == null || _newStates.length != states.length) {
+					_newStates = new double[states.length];
+				}
 
-        } else {
-            /////////////////////////////////////////
-            // Co-simulation version.
+			} else {
+				// ///////////////////////////////////////
+				// Co-simulation version.
 
-            if (_firstFire) {
-                // Set the initial values of inputs that give initial values.
-                // In FMI 1.0, these are given as "start" values that are
-                // "fixed".
-                // In FMI 2.0, these are given as "initial" values that are
-                // "exact".
-                for (Input input : _getInputs()) {
-                    if (input.start != null) {
-                        _setFMUScalarVariable(input.scalarVariable,
-                                new DoubleToken(input.start.doubleValue()));
-                        if (_debugging) {
-                            _debugToStdOut("Setting start value of input "
-                                    + input.port.getName() + " to "
-                                    + input.start);
-                        }
-                    }
-                }
-            }
+				if (_firstFire) {
+					// Set the initial values of inputs that give initial
+					// values.
+					// In FMI 1.0, these are given as "start" values that are
+					// "fixed".
+					// In FMI 2.0, these are given as "initial" values that are
+					// "exact".
+					for (Input input : _getInputs()) {
+						if (input.start != null) {
+							_setFMUScalarVariable(input.scalarVariable,
+									new DoubleToken(input.start.doubleValue()));
+							if (_debugging) {
+								_debugToStdOut("Setting start value of input "
+										+ input.port.getName() + " to "
+										+ input.start);
+							}
+						}
+					}
+				}
 
-            // If time has changed since the last call to fire(), invoke
-            // fmiDoStep() with the current data before updating the inputs
-            // of the FMU. The current value of the inputs will be the
-            // values set on the last call to fire().
-            double refinedStepSize = _fmiDoStep(currentTime, currentMicrostep);
-            if (refinedStepSize >= 0.0) {
-                _stepSizeRejected = true;
-                if (_refinedStepSize < 0.0
-                        || refinedStepSize < _refinedStepSize) {
-                    _refinedStepSize = refinedStepSize;
-                }
-            }
-        }
+				// If time has changed since the last call to fire(), invoke
+				// fmiDoStep() with the current data before updating the inputs
+				// of the FMU. The current value of the inputs will be the
+				// values set on the last call to fire().
+				double refinedStepSize = _fmiDoStep(currentTime,
+						currentMicrostep);
+				if (refinedStepSize >= 0.0) {
+					_stepSizeRejected = true;
+					if (_refinedStepSize < 0.0
+							|| refinedStepSize < _refinedStepSize) {
+						_refinedStepSize = refinedStepSize;
+					}
+				}
+			}
+		}
 
         ////////////////
         // Set the inputs.
@@ -759,150 +766,158 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             }
 
         }
+		if (!_useRawJNI()) {
+			// ////////////////////
+			// For model exchange.
+			if (_fmiModelDescription.modelExchange) {
 
-        //////////////////////
-        // For model exchange.
-        if (_fmiModelDescription.modelExchange) {
+				// If time has advanced since the last
+				// firing, perform the forward Euler advance.
+				double currentTimeValue = currentTime.getDoubleValue();
 
-            // If time has advanced since the last
-            // firing, perform the forward Euler advance.
-            double currentTimeValue = currentTime.getDoubleValue();
+				// FIXME: This might not be needed if we remove the euler
+				// integrator.
+				double states[] = _states.array();
+				// if (_newStates == null || _newStates.length != states.length)
+				// {
+				// _newStates = new double[states.length];
+				// }
 
-            // FIXME: This might not be needed if we remove the euler
-            // integrator.
-            double states[] = _states.array();
-            // if (_newStates == null || _newStates.length != states.length) {
-            // _newStates = new double[states.length];
-            // }
+				if (_fmiVersion >= 2.0) {
+					// Enter the Continuous Time Mode after setting the inputs.
+					// valuesME20.fmu tests this by having integer inputs.
+					_enterContinuousTimeMode();
 
-            if (_fmiVersion >= 2.0) {
-                // Enter the Continuous Time Mode after setting the inputs.
-                // valuesME20.fmu tests this by having integer inputs.
-                _enterContinuousTimeMode();
+					// Make sure the states of the FMU match the last commit.
+					// FIXME: This is only needed if backtracking might occur.
+					// Even then, it's incomplete. Probably need to record and
+					// reset
+					// _all_ variables,
+					// not just the continuous states.
+					// _fmiSetContinuousStates(states);
+				}
 
-                // Make sure the states of the FMU match the last commit.
-                // FIXME: This is only needed if backtracking might occur.
-                // Even then, it's incomplete. Probably need to record and reset
-                // _all_ variables,
-                // not just the continuous states.
-                //_fmiSetContinuousStates(states);
-            }
+				if (_debugging) {
+					_debugToStdOut("currentTimeValue: " + currentTimeValue
+							+ " _lastCommitTime: "
+							+ _lastCommitTime.getDoubleValue());
+				}
+				if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
+					// Set states only if the FMU has states
+					if (states.length > 0) {
+						if (_fmiVersion < 2.0) {
+							// Coverity Scan indicates that derivatives could
+							// be null, but the logic says this can't happen.
+							if (derivatives == null) {
+								throw new InternalErrorException(
+										this,
+										null,
+										"The derivatives array was null, "
+												+ "which should not be possible as "
+												+ "derivatives set on the second and subsequent "
+												+ "firings and derivatives is only "
+												+ "accessed after time has advanced.");
+							} else {
+								double step = currentTimeValue
+										- _lastCommitTime.getDoubleValue();
+								for (int i = 0; i < states.length; i++) {
+									_newStates[i] = states[i] + derivatives[i]
+											* step;
+								}
+							}
+						}
+						_fmiSetContinuousStates(_newStates);
+						if (_debugging) {
+							_debugToStdOut("Step " + _numberOfSteps + " to t="
+									+ currentTimeValue);
+						}
+					}
 
-            if (_debugging) {
-                _debugToStdOut("currentTimeValue: " + currentTimeValue
-                        + " _lastCommitTime: "
-                        + _lastCommitTime.getDoubleValue());
-            }
-            if (currentTimeValue > _lastCommitTime.getDoubleValue()) {
-                // Set states only if the FMU has states
-                if (states.length > 0) {
-                    if (_fmiVersion < 2.0) {
-                        // Coverity Scan indicates that derivatives could
-                        // be null, but the logic says this can't happen.
-                        if (derivatives == null) {
-                            throw new InternalErrorException(
-                                    this,
-                                    null,
-                                    "The derivatives array was null, "
-                                            + "which should not be possible as "
-                                            + "derivatives set on the second and subsequent "
-                                            + "firings and derivatives is only "
-                                            + "accessed after time has advanced.");
-                        } else {
-                            double step = currentTimeValue
-                                    - _lastCommitTime.getDoubleValue();
-                            for (int i = 0; i < states.length; i++) {
-                                _newStates[i] = states[i] + derivatives[i]
-                                        * step;
-                            }
-                        }
-                    }
-                    _fmiSetContinuousStates(_newStates);
-                    if (_debugging) {
-                        _debugToStdOut("Step " + _numberOfSteps + " to t="
-                                + currentTimeValue);
-                    }
-                }
+					// Check event indicators.
+					boolean stateEventOccurred = _checkEventIndicators();
 
-                // Check event indicators.
-                boolean stateEventOccurred = _checkEventIndicators();
+					// Complete the integrator step.
+					if (_fmiVersion < 2.0) {
+						_fmiCompletedIntegratorStep(stateEventOccurred
+								|| timeEventOccurred);
+					} else {
+						// True if fmi2SetFMUState() will not be called for
+						// times
+						// before
+						// the current time in this simulation.
+						boolean noSetFMUStatePriorToCurrentPoint = true;
+						boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
+						// "Handle Events"
+						// if (_debugging) {
+						// _debugToStdOut("Step " + _numberOfSteps + " to t=" +
+						// currentTimeValue);
+						// + " timeEventOccurred: " + timeEventOccurred
+						// + " stateEventOccurred: " + stateEventOccurred
+						// + " stepEvent: " + stepEvent);
+						// }
+						if (timeEventOccurred || stateEventOccurred
+								|| stepEvent) {
+							_enterEventMode();
+							if (stateEventOccurred) {
+								_numberOfStateEvents++;
+								if (_debugging) {
+									for (int i = 0; i < _fmiModelDescription.numberOfEventIndicators; i++) {
+										_debugToStdOut("state event "
+												+ (_eventIndicatorsPrevious[i] > 0
+														&& _eventIndicators[i] < 0 ? "-\\-"
+														: "-/-")
+												+ " eventIndicator[" + i
+												+ "], time: "
+												+ currentTimeValue);
+									}
+								}
+							}
+							if (stepEvent) {
+								_numberOfStepEvents++;
+								if (_debugging) {
+									_debugToStdOut("step event at t="
+											+ currentTimeValue);
+								}
+							}
+							if (timeEventOccurred) {
+								_numberOfTimeEvents++;
+								if (_debugging) {
+									_debugToStdOut("time event at t="
+											+ currentTimeValue);
+								}
+							}
 
-                // Complete the integrator step.
-                if (_fmiVersion < 2.0) {
-                    _fmiCompletedIntegratorStep(stateEventOccurred
-                            || timeEventOccurred);
-                } else {
-                    // True if fmi2SetFMUState() will not be called for times
-                    // before
-                    // the current time in this simulation.
-                    boolean noSetFMUStatePriorToCurrentPoint = true;
-                    boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
-                    // "Handle Events"
-                    //if (_debugging) {
-                    // _debugToStdOut("Step " + _numberOfSteps + " to t=" + currentTimeValue);
-                    // + " timeEventOccurred: " + timeEventOccurred
-                    // + " stateEventOccurred: " + stateEventOccurred
-                    //+ " stepEvent: " + stepEvent);
-                    //}
-                    if (timeEventOccurred || stateEventOccurred || stepEvent) {
-                        _enterEventMode();
-                        if (stateEventOccurred) {
-                            _numberOfStateEvents++;
-                            if (_debugging) {
-                                for (int i = 0; i < _fmiModelDescription.numberOfEventIndicators; i++) {
-                                    _debugToStdOut("state event "
-                                            + (_eventIndicatorsPrevious[i] > 0
-                                                    && _eventIndicators[i] < 0 ? "-\\-"
-                                                            : "-/-")
-                                                            + " eventIndicator[" + i
-                                                            + "], time: " + currentTimeValue);
-                                }
-                            }
-                        }
-                        if (stepEvent) {
-                            _numberOfStepEvents++;
-                            if (_debugging) {
-                                _debugToStdOut("step event at t="
-                                        + currentTimeValue);
-                            }
-                        }
-                        if (timeEventOccurred) {
-                            _numberOfTimeEvents++;
-                            if (_debugging) {
-                                _debugToStdOut("time event at t="
-                                        + currentTimeValue);
-                            }
-                        }
+							if (_fmi20ModelInstance.eventInfo == null) {
+								_fmi20ModelInstance.eventInfo = new FMI20EventInfo();
+							}
+							fmi20EventInfo = new FMI20EventInfo.ByReference(
+									_fmi20ModelInstance.eventInfo);
 
-                        if (_fmi20ModelInstance.eventInfo == null) {
-                            _fmi20ModelInstance.eventInfo = new FMI20EventInfo();
-                        }
-                        fmi20EventInfo = new FMI20EventInfo.ByReference(
-                                _fmi20ModelInstance.eventInfo);
+							// FMUSDK:
+							// "event iteration in one step, ignoring intermediate results"
+							fmi20EventInfo.newDiscreteStatesNeeded = 1;
+							fmi20EventInfo.terminateSimulation = 0;
+							_newDiscreteStatesNeeded(fmi20EventInfo);
 
-                        // FMUSDK: "event iteration in one step, ignoring intermediate results"
-                        fmi20EventInfo.newDiscreteStatesNeeded = 1;
-                        fmi20EventInfo.terminateSimulation = 0;
-                        _newDiscreteStatesNeeded(fmi20EventInfo);
+							_enterContinuousTimeMode();
 
-                        _enterContinuousTimeMode();
-
-                        // "check for change of value of states"
-                        if (_debugging) {
-                            if (fmi20EventInfo.valuesOfContinuousStatesChanged == 1) {
-                                _debugToStdOut("continuous state values changed at t="
-                                        + currentTimeValue);
-                            }
-                            if (fmi20EventInfo.nominalsOfContinuousStatesChanged == 1) {
-                                _debugToStdOut("nominals of continuous state changed  at t="
-                                        + currentTimeValue);
-                            }
-                        }
-                    }
-                }
-            } else {
-                // FIXME: Need to do an event update. Zero step size.
-            }
+							// "check for change of value of states"
+							if (_debugging) {
+								if (fmi20EventInfo.valuesOfContinuousStatesChanged == 1) {
+									_debugToStdOut("continuous state values changed at t="
+											+ currentTimeValue);
+								}
+								if (fmi20EventInfo.nominalsOfContinuousStatesChanged == 1) {
+									_debugToStdOut("nominals of continuous state changed  at t="
+											+ currentTimeValue);
+								}
+							}
+						}
+					}
+				} else {
+					// FIXME: Need to do an event update. Zero step size.
+				}
+			}
         }
         _numberOfSteps++;
 
@@ -1207,72 +1222,13 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         if (_debugging) {
             _debugToStdOut("FMIImport.initialize() method called.");
         }
-        if (_useRawJNI()) {
-            // Set a flag so the first call to fire() can do appropriate
-            // initialization.
-
-            // Get the model identifier from the model description.
-            final String modelIdentifier = _fmiModelDescription.modelIdentifier;
-
-            // There is no simulator UI.
-            byte toBeVisible = 0;
-            if (((BooleanToken) visible.getToken()).booleanValue()) {
-                toBeVisible = 1;
-            }
-
-            // FIXME: We should send logging messages to the debug listener.
-            byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-
-            // Get the path to the native FMU library.
-            String fmuLibPath = null;
-            try {
-                fmuLibPath = _fmiModelDescription.getNativeLibraryPath();
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Could not find path to the native library.");
-            }
-
-            // Instantiate FMU
-            final Time currentTime = getDirector().getModelTime();
-            final Time startTime = getDirector().getModelStartTime();
-            final Time stopTime = getDirector().getModelStopTime();
-            final double relativeTolerance = 1e-4;
-
-            // Initialize number of continuous states.
-            double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
-
-            _fmiJNIComponent = runNativeFMU(0, 0, modelIdentifier, fmuLibPath,
-                    _fmiModelDescription.fmuResourceLocation,
-                    startTime.getDoubleValue(), stopTime.getDoubleValue(),
-                    currentTime.getDoubleValue(), 0, relativeTolerance,
-                    toBeVisible, loggingOn, _fmiModelDescription.guid,
-                    derivatives, null, null, null, null, null, null, 0, null,
-                    null, null, null, null);
-
-            // Initialize FMU
-            runNativeFMU(_fmiJNIComponent, 1, null, null, null, 0.0, 0.0,
-                    currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
-                    null, null, null, null, null, null, 0, null, null, null,
-                    null, null);
-
-            // Enter discrete states in FMU
-            runNativeFMU(_fmiJNIComponent, 2, null, null, null, 0.0, 0.0,
-                    currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
-                    null, null, null, null, null, null, 0, null, null, null,
-                    null, null);
-
-            // Enter continuous states in FMU
-            runNativeFMU(_fmiJNIComponent, 3, null, null, null, 0.0, 0.0,
-                    currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
-                    null, null, null, null, null, null, 0, null, null, null,
-                    null, null);
-        } 
-
+        
         // Set a flag so the first call to fire() can do appropriate
         // initialization.
         _firstFire = true;
         _firstFireInIteration = true;
         _newStates = null;
+        
         // Set the parameters of the FMU.
         // Loop through the scalar variables and find a scalar
         // variable that has variability == "parameter" and is not an
@@ -1339,9 +1295,30 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     }
                 }
             }
-        }
+        }     
+        if (_useRawJNI()) {
+            // initialization.
+            final Time currentTime = getDirector().getModelTime();
 
-        if (!_useRawJNI()) {
+            // Initialize FMU
+            runNativeFMU(_fmiJNIComponent, 1, null, null, null, 0.0, 0.0,
+                    currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
+                    null, null, null, null, null, null, 0, null, null, null,
+                    null, null);
+
+            // Enter discrete states in FMU
+            runNativeFMU(_fmiJNIComponent, 2, null, null, null, 0.0, 0.0,
+                    currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
+                    null, null, null, null, null, null, 0, null, null, null,
+                    null, null);
+
+            // Enter continuous states in FMU
+            runNativeFMU(_fmiJNIComponent, 3, null, null, null, 0.0, 0.0,
+                    currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
+                    null, null, null, null, null, null, 0, null, null, null,
+                    null, null);
+        } 
+        else {
             Director director = getDirector();
             Time startTime = director.getModelStartTime();
 
@@ -1788,160 +1765,198 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     "Could not open the native library.");
         }
 
-        // The modelName may have spaces in it.
-        String modelIdentifier = _fmiModelDescription.modelIdentifier;
+		// The modelName may have spaces in it.
+		String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
-        // The tool to use if we have tool coupling.
-        String mimeType = "application/x-fmu-sharedlibrary";
-        // Timeout in ms., 0 means wait forever.
-        double timeout = 1000;
-        // There is no simulator UI. A byte in FMI1.0, an int in
-        // FMI-2.0, so we have two variables.
-        byte toBeVisible = 0;
-        // FMI-2.0
-        int toBeVisibleFMI2 = 0;
-        if (((BooleanToken) visible.getToken()).booleanValue()) {
-            toBeVisible = 1;
-            toBeVisibleFMI2 = 1;
-        }
-        // Run the simulator without user interaction.
-        byte interactive = 0;
+		// The tool to use if we have tool coupling.
+		String mimeType = "application/x-fmu-sharedlibrary";
+		// Timeout in ms., 0 means wait forever.
+		double timeout = 1000;
+		// There is no simulator UI. A byte in FMI1.0, an int in
+		// FMI-2.0, so we have two variables.
+		byte toBeVisible = 0;
+		// FMI-2.0
+		int toBeVisibleFMI2 = 0;
+		if (((BooleanToken) visible.getToken()).booleanValue()) {
+			toBeVisible = 1;
+			toBeVisibleFMI2 = 1;
+		}
+		// FIXME: We should send logging messages to the debug listener.
+		// A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
+		byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
+		int loggingOnFMI2 = _debugging ? 1 : 0;
+		// Run the simulator without user interaction.
+		byte interactive = 0;
+		if (!_useRawJNI()) {
+			if (_fmiVersion < 1.5) {
+				_callbacks = new FMICallbackFunctions.ByValue(
+						new FMULibrary.FMULogger(_fmiModelDescription),
+						new FMULibrary.FMUAllocateMemory(),
+						new FMULibrary.FMUFreeMemory(),
+						new FMULibrary.FMUStepFinished());
+				if (_fmiModelDescription.modelExchange) {
+					if (_debugging) {
+						_debugToStdOut("FMU for model exchange: about to call "
+								+ modelIdentifier + "_fmiInstantiateModel");
+					}
+					_fmiComponent = (Pointer) _fmiInstantiateModelFunction
+							.invoke(Pointer.class, new Object[] {
+									getFullName(), _fmiModelDescription.guid,
+									_callbacks, loggingOn });
+				} else {
+					if (_debugging) {
+						_debugToStdOut("FMUCoSimulation: about to call "
+								+ modelIdentifier + "_fmiInstantiateSlave");
+					}
+					_fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
+							.invoke(Pointer.class, new Object[] {
+									getFullName(), _fmiModelDescription.guid,
+									_fmiModelDescription.fmuResourceLocation,
+									mimeType, timeout, toBeVisible,
+									interactive, _callbacks, loggingOn });
+				}
+			} else {
+				// FMI-1.5 and greater...
 
-        // FIXME: We should send logging messages to the debug listener.
-        // A byte in FMI-1.0, an int in FMI-2.0, so we have two variables.
-        byte loggingOn = _debugging ? (byte) 1 : (byte) 0;
-        int loggingOnFMI2 = _debugging ? 1 : 0;
+				// FMI-1.5 is the experimental version with our extensions.
 
-        if (_fmiVersion < 1.5) {
-            _callbacks = new FMICallbackFunctions.ByValue(
-                    new FMULibrary.FMULogger(_fmiModelDescription),
-                    new FMULibrary.FMUAllocateMemory(),
-                    new FMULibrary.FMUFreeMemory(),
-                    new FMULibrary.FMUStepFinished());
-            if (_fmiModelDescription.modelExchange) {
-                if (_debugging) {
-                    _debugToStdOut("FMU for model exchange: about to call "
-                            + modelIdentifier + "_fmiInstantiateModel");
-                }
-                _fmiComponent = (Pointer) _fmiInstantiateModelFunction.invoke(
-                        Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid, _callbacks,
-                            loggingOn });
-            } else {
-                if (_debugging) {
-                    _debugToStdOut("FMUCoSimulation: about to call "
-                            + modelIdentifier + "_fmiInstantiateSlave");
-                }
-                _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction.invoke(
-                        Pointer.class, new Object[] { getFullName(),
-                            _fmiModelDescription.guid,
-                            _fmiModelDescription.fmuResourceLocation,
-                            mimeType, timeout, toBeVisible, interactive,
-                            _callbacks, loggingOn });
+				// In FMI-2.0, the fmiComponentEnvironment is passed to
+				// the callback Functions so that the logger can access it
+				// to access the names. However, JFMI worked around that
+				// by providing access to the FMIModelDescription object.
+				// This could cause problems, but mainly we want to be
+				// sure that we differentiate between the
+				// fmiComponentEnvironment and the fmiComponent.
+
+				// We use FMUAllocateMemory so that we can retain a reference
+				// to the allocated memory and the memory does not get gc'd.
+				Pointer fmiEnvironment = _fmiModelDescription
+						.getFMUAllocateMemory().apply(new NativeSizeT(1),
+								new NativeSizeT(Pointer.SIZE));
+
+				// In FMI-1.5 and FMI-2.0, this is a pointer to the
+				// structure, which is by default how a subclass of
+				// Structure is handled, so there is no need for the inner
+				// class ByValue, as above.
+				_callbacks20 = new FMI20CallbackFunctions(
+						new FMULibrary.FMULogger(_fmiModelDescription),
+						_fmiModelDescription.getFMUAllocateMemory(),
+						new FMULibrary.FMUFreeMemory(),
+						new FMULibrary.FMUStepFinished(),
+						// We use to pass a fmiComponent here, but in FMI-2.0
+						// fmiEnvironment was introduced, ticket #41 and the
+						// FMI-2.0 spec.
+						fmiEnvironment);
+				// The FMI standard is silent about whether an FMU needs to copy
+				// the struct pointed to by the callbacks argument, so we have
+				// to
+				// assume that the FMU will not. This means that we need to
+				// allocate
+				// memory here, and deallocate it in wrapup().
+
+				if (_debugging) {
+					_debugToStdOut("FMU for model exchange or co-simulation: about to call "
+							+ modelIdentifier + "_fmiInstantiate");
+				}
+
+				// FIXME: Not sure about the fmiType enumeration, see
+				// ptolemy/actor/lib/fmi/fmus/jmodelica/CoupledClutches/src/sources/fmiFunctionTypes.h,
+				// which was copied from
+				// /usr/local/jmodelica/ThirdParty/FMI/2.0/.
+
+				int fmiType = 1; // CoSimulation
+				if (_fmiModelDescription.modelExchange) {
+					// Presumably Hybrid-Cosimulation would be 3? Ptolemy could
+					// be
+					// 4?
+					fmiType = 0;
+				}
+
+				if (_fmiVersion < 1.5) {
+					// FMI-1.5 is the experimental version with our extensions.
+					if (_fmiModelDescription.modelExchange) {
+						// We don't have any FMI-1.5 Model Exchange
+						// models, so there is no need to implement this.
+						throw new IllegalActionException(this,
+								"Model exchange not yet implemented for FMI "
+										+ _fmiVersion);
+					} else {
+						// FMI-1.5 Cosimulation, which is similar to
+						// FMI-2.0 except 1.5 has fmiInstantiateSlave()
+
+						// FIXME: Check canBeInstantiatedOnlyOncePerProcess
+						// capability flag.
+						// Do not instantiate if true and previously
+						// instantiated.
+						_fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
+								.invoke(Pointer.class,
+										new Object[] {
+												getFullName(),
+												_fmiModelDescription.guid,
+												_fmiModelDescription.fmuResourceLocation,
+												_callbacks, toBeVisible,
+												loggingOn });
+					}
+				} else if (_fmiVersion > 1.0 && _fmiVersion < 2.0) {
+					// FMI-1.5 is based on early versions of FMI-2.0
+					_fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
+							.invoke(Pointer.class, new Object[] {
+									getFullName(), _fmiModelDescription.guid,
+									_fmiModelDescription.fmuResourceLocation,
+									_callbacks20, toBeVisibleFMI2,
+									loggingOnFMI2 });
+				} else if (_fmiVersion >= 2.0) {
+					// FMI-2.0 Model Exchange and Cosimulation.
+
+					// In FMI-2.0rc1, fmiInstantiate() is shared between ME and
+					// CS.
+
+					// FIXME: Check canBeInstantiatedOnlyOncePerProcess
+					// capability
+					// flag.
+					// Do not instantiate if true and previously instantiated.
+					_fmiComponent = (Pointer) _fmiInstantiateFunction.invoke(
+							Pointer.class, new Object[] { getFullName(),
+									fmiType, _fmiModelDescription.guid,
+									_fmiModelDescription.fmuResourceLocation,
+									_callbacks20, toBeVisibleFMI2,
+									loggingOnFMI2 });
+				}
+				if (_debugging) {
+					_debugToStdOut("Done with fmi instantiate");
+				}
+			}
+
+			if (_fmiComponent == null || _fmiComponent.equals(Pointer.NULL)) {
+				throw new IllegalActionException(this,
+						"Could not instantiate Functional Mockup Unit (FMU).");
+			}
+		}
+		else{
+            final Time currentTime = director.getModelTime();
+            final Time startTime = director.getModelStartTime();
+            final Time stopTime = director.getModelStopTime();
+            final double relativeTolerance = 1e-4;
+            // Get the path to the native FMU library.
+            String fmuLibPath = null;
+            try {
+                fmuLibPath = _fmiModelDescription.getNativeLibraryPath();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Could not find path to the native library.");
             }
-        } else {
-            // FMI-1.5 and greater...
-
-            // FMI-1.5 is the experimental version with our extensions.
-
-            // In FMI-2.0, the fmiComponentEnvironment is passed to
-            // the callback Functions so that the logger can access it
-            // to access the names.  However, JFMI worked around that
-            // by providing access to the FMIModelDescription object.
-            // This could cause problems, but mainly we want to be
-            // sure that we differentiate between the
-            // fmiComponentEnvironment and the fmiComponent.
-
-            // We use FMUAllocateMemory so that we can retain a reference
-            // to the allocated memory and the memory does not get gc'd.
-            Pointer fmiEnvironment = _fmiModelDescription
-                    .getFMUAllocateMemory().apply(new NativeSizeT(1),
-                            new NativeSizeT(Pointer.SIZE));
-
-            // In FMI-1.5 and FMI-2.0, this is a pointer to the
-            // structure, which is by default how a subclass of
-            // Structure is handled, so there is no need for the inner
-            // class ByValue, as above.
-            _callbacks20 = new FMI20CallbackFunctions(new FMULibrary.FMULogger(
-                    _fmiModelDescription),
-                    _fmiModelDescription.getFMUAllocateMemory(),
-                    new FMULibrary.FMUFreeMemory(),
-                    new FMULibrary.FMUStepFinished(),
-                    // We use to pass a fmiComponent here, but in FMI-2.0 fmiEnvironment was introduced, ticket #41 and the FMI-2.0 spec.
-                    fmiEnvironment);
-            // The FMI standard is silent about whether an FMU needs to copy
-            // the struct pointed to by the callbacks argument, so we have to
-            // assume that the FMU will not. This means that we need to allocate
-            // memory here, and deallocate it in wrapup().
-
-            if (_debugging) {
-                _debugToStdOut("FMU for model exchange or co-simulation: about to call "
-                        + modelIdentifier + "_fmiInstantiate");
-            }
-
-            // FIXME: Not sure about the fmiType enumeration, see
-            // ptolemy/actor/lib/fmi/fmus/jmodelica/CoupledClutches/src/sources/fmiFunctionTypes.h,
-            // which was copied from
-            // /usr/local/jmodelica/ThirdParty/FMI/2.0/.
-
-            int fmiType = 1; // CoSimulation
-            if (_fmiModelDescription.modelExchange) {
-                // Presumably Hybrid-Cosimulation would be 3? Ptolemy could be
-                // 4?
-                fmiType = 0;
-            }
-
-            if (_fmiVersion < 1.5) {
-                // FMI-1.5 is the experimental version with our extensions.
-                if (_fmiModelDescription.modelExchange) {
-                    // We don't have any FMI-1.5 Model Exchange
-                    // models, so there is no need to implement this.
-                    throw new IllegalActionException(this,
-                            "Model exchange not yet implemented for FMI "
-                                    + _fmiVersion);
-                } else {
-                    // FMI-1.5 Cosimulation, which is similar to
-                    // FMI-2.0 except 1.5 has fmiInstantiateSlave()
-
-                    // FIXME: Check canBeInstantiatedOnlyOncePerProcess
-                    // capability flag.
-                    // Do not instantiate if true and previously instantiated.
-                    _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction
-                            .invoke(Pointer.class, new Object[] {
-                                getFullName(), _fmiModelDescription.guid,
-                                _fmiModelDescription.fmuResourceLocation,
-                                _callbacks, toBeVisible, loggingOn });
-                }
-            } else if (_fmiVersion > 1.0 && _fmiVersion < 2.0) {
-                // FMI-1.5 is based on early versions of FMI-2.0
-                _fmiComponent = (Pointer) _fmiInstantiateSlaveFunction.invoke(
-                        Pointer.class, new Object[] { getFullName(),
-                                _fmiModelDescription.guid,
-                            _fmiModelDescription.fmuResourceLocation,
-                            _callbacks20, toBeVisibleFMI2, loggingOnFMI2 });
-            } else if (_fmiVersion >= 2.0) {
-                // FMI-2.0 Model Exchange and Cosimulation.
-
-                // In FMI-2.0rc1, fmiInstantiate() is shared between ME and CS.
-
-                // FIXME: Check canBeInstantiatedOnlyOncePerProcess capability
-                // flag.
-                // Do not instantiate if true and previously instantiated.
-                _fmiComponent = (Pointer) _fmiInstantiateFunction.invoke(
-                        Pointer.class, new Object[] { getFullName(), fmiType,
-                            _fmiModelDescription.guid,
-                            _fmiModelDescription.fmuResourceLocation,
-                            _callbacks20, toBeVisibleFMI2, loggingOnFMI2 });
-            }
-            if (_debugging) {
-                _debugToStdOut("Done with fmi instantiate");
-            }
-        }
-
-        if (_fmiComponent == null || _fmiComponent.equals(Pointer.NULL)) {
-            throw new IllegalActionException(this,
-                    "Could not instantiate Functional Mockup Unit (FMU).");
-        }
+            // Initialize number of continuous states.
+            double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
+            
+            // Instantiate FMU
+            _fmiJNIComponent = runNativeFMU(0, 0, modelIdentifier, fmuLibPath,
+                    _fmiModelDescription.fmuResourceLocation,
+                    startTime.getDoubleValue(), stopTime.getDoubleValue(),
+                    currentTime.getDoubleValue(), 0, relativeTolerance,
+                    toBeVisible, loggingOn, _fmiModelDescription.guid,
+                    derivatives, null, null, null, null, null, null, 0, null,
+                    null, null, null, null);
+		}
     }
 
     /**
