@@ -25,24 +25,30 @@ var EventEmitter = require('events').EventEmitter;
 /** Issue an HTTP request and provide a callback function for responses.
  *  The callback is a function that is passed an instance of IncomingMessage,
  *  defined here. This function returns an instance of ClientRequest, also defined here.
- *  The options argument is either a URL (a string) or a JSON object with the following optional fields:
+ *  The options argument can be a string URL
+ *  or a map with the following fields (this helper class assumes
+ *  all fields are present, so please be sure they are):
  *  <ul>
- *  <li> headers: An object containing request headers. By default this is an empty object.
- *       Items may have a value that is an array of values, for headers with more than one value.
- *  <li> host: A string giving the domain name or IP address of the server to issue the request to.
- *       This defaults to 'localhost'.</li>
- *  <li> keepAlive: A boolean that specified whether to keep sockets around in a pool
- *       to be used by other requests in the future. This defaults to false.
- *  <li> method: A string specifying the HTTP request method. This defaults to 'GET', but can
- *       also be 'PUT', 'POST', 'DELETE', etc.
- *  <li> path: Request path as a string. This defaults to '/'. This can include a
- *       query string, e.g. '/index.html?page=12', or the query string can be specified
- *       as a separate field (see below). An exception is thrown if the request
- *       path contains illegal characters. Currently, only spaces are rejected but that
- *       may change in the future.
- *  <li> port: Port of remote server. Defaults to 80.
- *  <li> protocol: The protocol. This is a string that defaults to 'http'.
- *  <li> query: A query string to be appended to the path, such as '?page=12'.
+ *  <li> headers: An object containing request headers. By default this
+ *       is an empty object. Items may have a value that is an array of values,
+ *       for headers with more than one value.
+ *  <li> keepAlive: A boolean that specified whether to keep sockets around
+ *       in a pool to be used by other requests in the future. This defaults to false.
+ *  <li> method: A string specifying the HTTP request method.
+ *       This defaults to 'GET', but can also be 'PUT', 'POST', 'DELETE', etc.
+ *  <li> url: A string that can be parsed as a URL, or an object containing
+ *       the following fields:
+ *       <ul>
+ *       <li> host: A string giving the domain name or IP address of
+ *            the server to issue the request to. This defaults to 'localhost'.
+ *       <li> path: Request path as a string. This defaults to '/'. This can
+ *            include a query string, e.g. '/index.html?page=12', or the query
+ *            string can be specified as a separate field (see below). 
+ *            An exception is thrown if the request path contains illegal characters.
+ *       <li> protocol: The protocol. This is a string that defaults to 'http'.
+ *       <li> port: Port of remote server. This defaults to 80. 
+ *       <li> query: A query string to be appended to the path, such as '?page=12'.
+ *       </ul>
  *  </ul>
  *  @param options The options or URL.
  *  @param responseCallback The callback function to call with an instance of IncomingMessage.
@@ -123,20 +129,27 @@ function ClientRequest(options, reponseCallback) {
   var self = this;
   
   var defaultOptions = {
-    'host':'localhost',
-    'port':80,
-    'protocol':'http',
-    'localAddress':'localhost',
-    'method':'GET',
-    'path':'/',
     'headers':{},
     'keepAlive':false,
-    'query':'',
-    'trustAll':false
+    'method':'GET',
+    'trustAll':false,
   };
-    
+  var defaultURL = {
+    'host':'localhost',
+    'path':'/',
+    'port':80,
+    'protocol':'http',
+    'query':''
+  };
+
+  var urlSpec;
   if (util.isString(options)) {
-    var url = new URL(options);
+    urlSpec = options;
+  } else if (util.isString(options.url)) {
+    urlSpec = options['url'];
+  }
+  if (urlSpec) {
+    var url = new URL(urlSpec);
     var port = url.getPort();
     if (port < 0) {
         port = url.getDefaultPort();
@@ -145,12 +158,16 @@ function ClientRequest(options, reponseCallback) {
         }
     }
     options = {
-        'host':url.getHost(),
-        'path':url.getPath(),
-        'protocol':url.getProtocol(),
-        'port':port,
-        'query':url.getQuery()
+        'url':{
+            'host':url.getHost(),
+            'path':url.getPath(),
+            'port':port,
+            'protocol':url.getProtocol(),
+            'query':url.getQuery()
+            }
     };
+  } else {
+    options.url = util._extend(defaultURL, options.url);
   }
   // Fill in default values.
   options = util._extend(defaultOptions, options);
