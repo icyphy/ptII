@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!--
+The MIT License
+
+Copyright 2014 Long.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+<html>
+    <head>
+        <title>SwarmBoxes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5NvcrQ54Rbzdxpo3FtJsAyvUjy6O3cn4&sensor=false">
+        </script>
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/jquery-ajax-blob-arraybuffer.js"></script>
+        <script src="js/illiad.min.js"></script>
+        <script src="js/oms.min.js"></script>
+
+        <script>
+            //window.open("https://acoustic.ifp.illinois.edu:8081");
+            var map;
+            var oms;
+            var iw = new google.maps.InfoWindow();
+            
+            var pUpdate = function(){
+                var markers = oms.getMarkers();
+                for (var i = 0; i <markers.length;i++){
+                    markers[i].setMap(null);
+                }
+                oms.clearMarkers();
+
+                // Canned data.
+                //$.getJSON("data/swarmServers.json", function(json){
+
+                // Live Data, different format.
+                $.getJSON("/hosts", function(json){
+                     $.each( json, function(key, value) {
+					
+						// Get list of devices connected to this swarmbox
+						$.get("/hosts/" + value.hostname + "/devices", function(devices) {
+						  
+						  // Look up location using ip.
+                          $.getJSON("https://www.telize.com/geoip/"+value.ip+"?callback=?", function (data){
+                            // Create a marker for each nuc
+                            var marker = new google.maps.Marker({
+                                position:new google.maps.LatLng(data.latitude, data.longitude),
+                                //hostname: json[data.ip],
+                                hostname: value.hostname,
+                                ip: data.ip,
+                                icon:'images/computers.png' // Maps Icons Collection https://mapicons.mapsmarker.com
+                            });
+                            marker.setMap(map);
+
+                            google.maps.event.addListener(marker, 'mouseover', (function(marker) {
+                                return function(){
+									var content = "<p> " + marker.hostname + "<br />" + marker.ip + "<br />" ;
+									if (devices != null && devices.length > 0) {
+										content = content + "Devices: <br />";
+										devices.forEach(function (element, index, array) {
+											content = content + element.name + " at IP " + element.IPAddress 
+															  + " , MAC: " + element.mac + " <br />";
+										});
+									}
+									content = content + "</p>";
+							
+									iw.setContent(content);
+                                    iw.open(map, marker);
+                                };
+                            })(marker));
+                            google.maps.event.addListener(marker, 'mouseout', function(){
+                                iw.close();
+                            });
+                            oms.addMarker(marker);
+                         });
+						});
+                    });
+                    //}
+                });
+            };
+            $(function(){
+		// Geographic Center of the US: https://en.wikipedia.org/wiki/Geographic_center_of_the_contiguous_United_States			
+                var gLoc = [39.828175,-98.5795];
+                
+                var mapProp = {
+                    center:new google.maps.LatLng(gLoc[0], gLoc[1]),
+                    zoom:5,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                
+                oms=new OverlappingMarkerSpiderfier(map);
+                
+                pUpdate();
+                setInterval(pUpdate,15000);
+            });
+            
+        </script>
+        <!-- Basic CSS -->
+        <style>
+            #googleMap {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                background: #000;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="googleMap"></div>
+    </body>
+</html>

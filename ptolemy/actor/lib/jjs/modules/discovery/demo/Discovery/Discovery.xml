@@ -10,14 +10,14 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0089830346017445">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.13825389105057, 171.01562500000006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.13825389105057, 171.0156250000001}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These demos uses an accessor to discover devices on the local area network.&#10;The accessor uses the discovery module.&#10;&#10;The discovery module determines the host platform (Linux, Mac, Windows), &#10;then executes OS commands to find IP addresses, names (when available), &#10;and MAC addresses (when available) of devices on the local network.  &#10;&#10;By default, discovery uses the ping and arp commands.  To use nmap, &#10;double-click on the accessor and check &quot;useNmap&quot;.  The nmap program must&#10;be installed on your system.  See link below for nmap setup info.&#10;&#10;For more info, please see:&#10;https://www.terraswarm.org/accessors/wiki/Version0/Discovery&#10;&#10;Please double-click annotations below to open models:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, -75.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discovery demo - XML accessor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 200.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryXML.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -56,7 +56,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Discovery demo - Javascript accessor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 230.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryJS.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -76,6 +76,76 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 325}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The device list can be posted to the swarmbox map hosted on terra.&#10;Double-click annotations below to select a model:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 260.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Post devices from a single swarmbox">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 310.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="PostSwarmboxDevices.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 290}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Post test data">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 340.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="PopulateSwarmboxMap.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 290}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Also in this directory: &#10;discoverylistener.js contains Node.js code to run a web server to accept device POSTs, and&#10;swarmboxes.html contains a copy of the swarmbox map HTML source.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 370.0]">
         </property>
     </property>
 </entity>

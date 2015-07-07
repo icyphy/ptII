@@ -114,7 +114,12 @@ public class JSONToToken extends Converter {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, _parseJSON(((StringToken) input.get(0)).stringValue()));
+        Token token =  _parseJSON(((StringToken) input.get(0)).stringValue());
+        if (token == null) {
+                throw new IllegalActionException(this,
+                        "Unable to parse JSON data: " + input);
+        }
+        output.send(0, token);
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -147,7 +152,7 @@ public class JSONToToken extends Converter {
      * @return A Token that represents the JSON-formatted input string
      * @exception IllegalActionException If the given input string cannot be parsed.
      */
-    protected Token _parseJSON(String input) throws IllegalActionException {
+    public static Token _parseJSON(String input) throws IllegalActionException {
         try {
             input = input.trim();
             if (input.length() == 0 || input.equals("nil")) {
@@ -159,8 +164,7 @@ public class JSONToToken extends Converter {
                 return _scanJSONArray(new JSONArray(input));
             }
         } catch (JSONException e) {
-            throw new IllegalActionException(this, e,
-                    "Unable to parse JSON data: " + input);
+            return null;
         }
     }
 
@@ -176,7 +180,7 @@ public class JSONToToken extends Converter {
      *  @exception IllegalActionException Upon failing to instantiate a new
      *  Token.
      */
-    private Token _mapValueToToken(Object value) throws IllegalActionException,
+    private static Token _mapValueToToken(Object value) throws IllegalActionException,
     JSONException {
 
         // The value can be any of these types:
@@ -222,7 +226,7 @@ public class JSONToToken extends Converter {
      *  @exception IllegalActionException Upon failing to instantiate a new
      *  ArrayToken.
      */
-    private ArrayToken _scanJSONArray(JSONArray array) throws JSONException,
+    private static ArrayToken _scanJSONArray(JSONArray array) throws JSONException,
     IllegalActionException {
         ArrayList<Token> values = new ArrayList<Token>();
 
@@ -252,7 +256,7 @@ public class JSONToToken extends Converter {
      *  @exception IllegalActionException Upon failing to instantiate a new
      *  RecordToken.
      */
-    private RecordToken _scanJSONObject(JSONObject object)
+    private static RecordToken _scanJSONObject(JSONObject object)
             throws IllegalActionException, JSONException {
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Token> values = new ArrayList<Token>();

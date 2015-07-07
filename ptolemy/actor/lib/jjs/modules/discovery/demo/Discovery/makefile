@@ -49,7 +49,11 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	Discovery.xml \
 	DiscoveryJS.xml \
-	DiscoveryXML.xml
+	discoverylistener.js \
+	DiscoveryXML.xml \
+	PopulateSwarmboxMap.xml \
+	PostSwarmboxDevices.xml \
+	swarmboxes.html
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

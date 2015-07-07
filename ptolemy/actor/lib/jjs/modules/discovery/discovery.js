@@ -48,10 +48,11 @@ function DiscoveryService() {
 		} else {
 			devices = helper.discoverDevices(IPaddress, "ping");
 		}
-		var ipArray = [];
-		ipArray.push(JSON.parse(devices)); 
+		//var ipArray = [];
+		//ipArray.push(JSON.parse(devices)); 
 		
-		self.emit('discovered', ipArray);
+		//self.emit('discovered', ipArray);
+		self.emit('discovered', devices);
 	};
 	
 	this.getHostAddress = function() {

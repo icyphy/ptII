@@ -1,0 +1,751 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="PopulateSwarmboxMap" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 49, 1257, 679}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1029, 562]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7120834892090971">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{667.0008627300613, 336.2407975460123}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Populate the swarmbox map with fake local area network devices.&#10;Then, retrieve them from the server, to check proper storage.&#10;Some swarmboxes are not populated in order to test an empty device list.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, -40.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -15.0]">
+        </property>
+    </property>
+    <property name="baseURL" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:8088/hosts/&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test a swarmbox name that has no device entries">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 1060.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To test locally using node, run&#10;npm install express&#10;npm install body-parser&#10;node discoverylistener.js&#10;Run the model">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, -45.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Terra URL:  http://terra.eecs.berkeley.edu:8088/hosts/">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 55.0]">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[64.0, 92.25]">
+        </property>
+    </entity>
+    <entity name="Swarmbox1" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;swarmnuc001.eecs.berkeley.edu&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[129.0, 152.25]">
+        </property>
+    </entity>
+    <entity name="HTTPPost" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Post the input to the given URL.  A wrapper for httpRequest for posting. &#10; *  Does NOT handle multiple data types.  Only knows how to post JSON data. &#10; * &#10; *  @accessor HTTPPost&#10; *  @author Elizabeth Latronico (beth@berkeley.edu)&#10; *  @input {JSON} data The data to post.&#10; *  @input {String} url The url to post the data to.&#10; *  @output {string} response The server's response.&#10; */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('data', {&#10;        type: 'JSON',&#10;      });&#10;    &#10;    accessor.input('url', {&#10;        type: 'string',&#10;      });&#10;    &#10;    accessor.output('response', {&#10;        type: 'string',&#10;      });&#10;};&#10;&#10;var handle;&#10;var timeout = 2000;    // The httpRequest method currently ignores the timeout&#10;&#10;/** Post the received data to the specified url.  */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('data', function() {&#10;		var properties = {};&#10;		properties[&quot;Content-Type&quot;] = &quot;application/json&quot;;&#10;		var responseText = &#10;			httpRequest(get('url'), 'POST', properties, get('data'), &#10;					timeout);&#10;		send('response', responseText);&#10;	});&#10;}&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/HTTPPost.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[850.0, 172.75]">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="url" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[374.0, 177.25]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Swarmbox4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;4908nuc01&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 540.0]">
+        </property>
+    </entity>
+    <entity name="Swarmbox2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;swarmnuc011&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Swarmbox3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;swarmnuc007&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[64.0, 412.25]">
+        </property>
+    </entity>
+    <entity name="HTTPPost2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Post the input to the given URL.  A wrapper for httpRequest for posting. &#10; *  Does NOT handle multiple data types.  Only knows how to post JSON data. &#10; * &#10; *  @accessor HTTPPost&#10; *  @author Elizabeth Latronico (beth@berkeley.edu)&#10; *  @input {JSON} data The data to post.&#10; *  @input {String} url The url to post the data to.&#10; *  @output {string} response The server's response.&#10; */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('data', {&#10;        type: 'JSON',&#10;      });&#10;    &#10;    accessor.input('url', {&#10;        type: 'string',&#10;      });&#10;    &#10;    accessor.output('response', {&#10;        type: 'string',&#10;      });&#10;};&#10;&#10;var handle;&#10;var timeout = 2000;    // The httpRequest method currently ignores the timeout&#10;&#10;/** Post the received data to the specified url.  */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('data', function() {&#10;		var properties = {};&#10;		properties[&quot;Content-Type&quot;] = &quot;application/json&quot;;&#10;		var responseText = &#10;			httpRequest(get('url'), 'POST', properties, get('data'), &#10;					timeout);&#10;		send('response', responseText);&#10;	});&#10;}&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/HTTPPost.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[779.0, 272.25]">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="url" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 285.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HTTPPost3" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Post the input to the given URL.  A wrapper for httpRequest for posting. &#10; *  Does NOT handle multiple data types.  Only knows how to post JSON data. &#10; * &#10; *  @accessor HTTPPost&#10; *  @author Elizabeth Latronico (beth@berkeley.edu)&#10; *  @input {JSON} data The data to post.&#10; *  @input {String} url The url to post the data to.&#10; *  @output {string} response The server's response.&#10; */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('data', {&#10;        type: 'JSON',&#10;      });&#10;    &#10;    accessor.input('url', {&#10;        type: 'string',&#10;      });&#10;    &#10;    accessor.output('response', {&#10;        type: 'string',&#10;      });&#10;};&#10;&#10;var handle;&#10;var timeout = 2000;    // The httpRequest method currently ignores the timeout&#10;&#10;/** Post the received data to the specified url.  */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('data', function() {&#10;		var properties = {};&#10;		properties[&quot;Content-Type&quot;] = &quot;application/json&quot;;&#10;		var responseText = &#10;			httpRequest(get('url'), 'POST', properties, get('data'), &#10;					timeout);&#10;		send('response', responseText);&#10;	});&#10;}&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/HTTPPost.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[784.0, 402.25]">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="url" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression3" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[329.0, 412.25]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HTTPPost4" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Post the input to the given URL.  A wrapper for httpRequest for posting. &#10; *  Does NOT handle multiple data types.  Only knows how to post JSON data. &#10; * &#10; *  @accessor HTTPPost&#10; *  @author Elizabeth Latronico (beth@berkeley.edu)&#10; *  @input {JSON} data The data to post.&#10; *  @input {String} url The url to post the data to.&#10; *  @output {string} response The server's response.&#10; */&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('data', {&#10;        type: 'JSON',&#10;      });&#10;    &#10;    accessor.input('url', {&#10;        type: 'string',&#10;      });&#10;    &#10;    accessor.output('response', {&#10;        type: 'string',&#10;      });&#10;};&#10;&#10;var handle;&#10;var timeout = 2000;    // The httpRequest method currently ignores the timeout&#10;&#10;/** Post the received data to the specified url.  */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('data', function() {&#10;		var properties = {};&#10;		properties[&quot;Content-Type&quot;] = &quot;application/json&quot;;&#10;		var responseText = &#10;			httpRequest(get('url'), 'POST', properties, get('data'), &#10;					timeout);&#10;		send('response', responseText);&#10;	});&#10;}&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/HTTPPost.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[805.0, 530.0]">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="url" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Expression4" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 540.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{960.0, 240.0}">
+        </property>
+    </entity>
+    <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[774.0, 117.25]">
+        </property>
+    </entity>
+    <entity name="TokenToJSON2" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[684.0, 242.25]">
+        </property>
+    </entity>
+    <entity name="TokenToJSON3" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[669.0, 372.25]">
+        </property>
+    </entity>
+    <entity name="TokenToJSON4" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[714.0, 497.25]">
+        </property>
+    </entity>
+    <entity name="Devices1" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{IPAddress = &quot;123.456.789.12&quot;, mac = &quot;12:34:5a:6b:7c:8d&quot;, name = &quot;Upscale espresso machine&quot;}}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[449.0, 117.25]">
+        </property>
+    </entity>
+    <entity name="Devices2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{IPAddress = &quot;343.555.343.8&quot;, mac = &quot;11:22:33:aa:bb:cc&quot;, name = &quot;Skynet interface&quot;},{IPAddress = &quot;343.555.343.9&quot;, mac = &quot;77:77:77:77:77:77&quot;, name = &quot;Spycam1&quot;}, {IPAddress = &quot;343.555.343.2&quot;, mac = &quot;10:10:10:10:10:ff&quot;, name = &quot;Spycam2&quot;}}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[429.0, 242.25]">
+        </property>
+    </entity>
+    <entity name="Devices3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{IPAddress = &quot;007.007.007.1&quot;, mac = &quot;87:87:ff:87:87:ff&quot;, name = &quot;Ring camera&quot;}, {IPAddress = &quot;007.007.007.2&quot;, mac = &quot;c2:d3:a4:11:12:13&quot;, name = &quot;Jetpack&quot;}, {IPAddress = &quot;007.007.007.3&quot;, mac = &quot;2c:3d:4a:31:21:11&quot;, name = &quot;X-ray glasses&quot;}}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[424.0, 372.25]">
+        </property>
+    </entity>
+    <entity name="Devices4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{IPAddress = &quot;488.922.343.777&quot;, mac = &quot;99:88:77:aa:bb:cc&quot;, name = &quot;Batmobile&quot;}, {IPAddress = &quot;488.922.343.778&quot;, mac = &quot;cc:bb:aa:77:88:99&quot;, name = &quot;Electric vehicle charger&quot;}}">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[434.0, 497.25]">
+        </property>
+    </entity>
+    <entity name="HttpGet" class="org.ptolemy.ptango.lib.HttpGet">
+        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8088/hosts/swarmnuc001.eecs.berkeley.edu/devices">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 645.0]">
+        </property>
+    </entity>
+    <entity name="Swarmbox" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;swarmnuc001.eecs.berkeley.edu&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[162.0, 680.0]">
+        </property>
+    </entity>
+    <entity name="Expression5" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[412.0, 680.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 261, 359, 246}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[955.0, 635.0]">
+        </property>
+    </entity>
+    <entity name="Swarmbox5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;swarmnuc011&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 770.0]">
+        </property>
+    </entity>
+    <entity name="Expression6" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 770.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HttpGet2" class="org.ptolemy.ptango.lib.HttpGet">
+        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8088/hosts/swarmnuc011/devices">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 740.0]">
+        </property>
+    </entity>
+    <entity name="Swarmbox6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;swarmnuc007&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 890.0]">
+        </property>
+    </entity>
+    <entity name="Expression7" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 890.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HttpGet3" class="org.ptolemy.ptango.lib.HttpGet">
+        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8088/hosts/swarmnuc007/devices">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 860.0]">
+        </property>
+    </entity>
+    <entity name="Swarmbox7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;4908nuc01&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 1020.0]">
+        </property>
+    </entity>
+    <entity name="Expression8" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 1020.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HttpGet4" class="org.ptolemy.ptango.lib.HttpGet">
+        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8088/hosts/4908nuc01/devices">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{730.0, 970.0}">
+        </property>
+    </entity>
+    <entity name="Swarmbox8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;mysteryswarmbox&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 1155.0]">
+        </property>
+    </entity>
+    <entity name="Expression9" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="baseURL + name + &quot;/devices&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 1155.0]">
+        </property>
+        <port name="name" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="HttpGet5" class="org.ptolemy.ptango.lib.HttpGet">
+        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://localhost:8088/hosts/mysteryswarmbox/devices">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 1120.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[885.0, 207.75]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[744.0, 337.25]">
+        </vertex>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[835.0, 442.75]">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[885.0, 600.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[254.0, 152.25]">
+        </vertex>
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[180.0, 285.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[184.0, 412.25]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[225.0, 540.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[715.0, 700.0]">
+        </vertex>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[785.0, 810.0]">
+        </vertex>
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[785.0, 930.0]">
+        </vertex>
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[785.0, 1055.0]">
+        </vertex>
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation3"/>
+    <link port="Swarmbox1.output" relation="relation17"/>
+    <link port="Swarmbox1.trigger" relation="relation3"/>
+    <link port="HTTPPost.data" relation="relation"/>
+    <link port="HTTPPost.url" relation="relation2"/>
+    <link port="HTTPPost.response" relation="relation12"/>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="Expression.name" relation="relation17"/>
+    <link port="Swarmbox4.output" relation="relation9"/>
+    <link port="Swarmbox4.trigger" relation="relation14"/>
+    <link port="Swarmbox2.output" relation="relation18"/>
+    <link port="Swarmbox2.trigger" relation="relation12"/>
+    <link port="Swarmbox3.output" relation="relation10"/>
+    <link port="Swarmbox3.trigger" relation="relation13"/>
+    <link port="HTTPPost2.data" relation="relation5"/>
+    <link port="HTTPPost2.url" relation="relation4"/>
+    <link port="HTTPPost2.response" relation="relation13"/>
+    <link port="Expression2.output" relation="relation4"/>
+    <link port="Expression2.name" relation="relation18"/>
+    <link port="HTTPPost3.data" relation="relation7"/>
+    <link port="HTTPPost3.url" relation="relation6"/>
+    <link port="HTTPPost3.response" relation="relation14"/>
+    <link port="Expression3.output" relation="relation6"/>
+    <link port="Expression3.name" relation="relation10"/>
+    <link port="HTTPPost4.data" relation="relation11"/>
+    <link port="HTTPPost4.url" relation="relation8"/>
+    <link port="HTTPPost4.response" relation="relation15"/>
+    <link port="Expression4.output" relation="relation8"/>
+    <link port="Expression4.name" relation="relation9"/>
+    <link port="Display.input" relation="relation12"/>
+    <link port="Display.input" relation="relation13"/>
+    <link port="Display.input" relation="relation14"/>
+    <link port="Display.input" relation="relation15"/>
+    <link port="TokenToJSON.input" relation="relation22"/>
+    <link port="TokenToJSON.output" relation="relation"/>
+    <link port="TokenToJSON2.input" relation="relation16"/>
+    <link port="TokenToJSON2.output" relation="relation5"/>
+    <link port="TokenToJSON3.input" relation="relation19"/>
+    <link port="TokenToJSON3.output" relation="relation7"/>
+    <link port="TokenToJSON4.input" relation="relation20"/>
+    <link port="TokenToJSON4.output" relation="relation11"/>
+    <link port="Devices1.output" relation="relation22"/>
+    <link port="Devices1.trigger" relation="relation17"/>
+    <link port="Devices2.output" relation="relation16"/>
+    <link port="Devices2.trigger" relation="relation18"/>
+    <link port="Devices3.output" relation="relation19"/>
+    <link port="Devices3.trigger" relation="relation10"/>
+    <link port="Devices4.output" relation="relation20"/>
+    <link port="Devices4.trigger" relation="relation9"/>
+    <link port="HttpGet.output" relation="relation26"/>
+    <link port="HttpGet.trigger" relation="relation15"/>
+    <link port="HttpGet.url" relation="relation23"/>
+    <link port="Swarmbox.output" relation="relation21"/>
+    <link port="Swarmbox.trigger" relation="relation15"/>
+    <link port="Expression5.output" relation="relation23"/>
+    <link port="Expression5.name" relation="relation21"/>
+    <link port="Display2.input" relation="relation26"/>
+    <link port="Display2.input" relation="relation27"/>
+    <link port="Display2.input" relation="relation30"/>
+    <link port="Display2.input" relation="relation33"/>
+    <link port="Display2.input" relation="relation35"/>
+    <link port="Swarmbox5.output" relation="relation25"/>
+    <link port="Swarmbox5.trigger" relation="relation26"/>
+    <link port="Expression6.output" relation="relation24"/>
+    <link port="Expression6.name" relation="relation25"/>
+    <link port="HttpGet2.output" relation="relation27"/>
+    <link port="HttpGet2.trigger" relation="relation26"/>
+    <link port="HttpGet2.url" relation="relation24"/>
+    <link port="Swarmbox6.output" relation="relation28"/>
+    <link port="Swarmbox6.trigger" relation="relation27"/>
+    <link port="Expression7.output" relation="relation29"/>
+    <link port="Expression7.name" relation="relation28"/>
+    <link port="HttpGet3.output" relation="relation30"/>
+    <link port="HttpGet3.trigger" relation="relation27"/>
+    <link port="HttpGet3.url" relation="relation29"/>
+    <link port="Swarmbox7.output" relation="relation31"/>
+    <link port="Swarmbox7.trigger" relation="relation30"/>
+    <link port="Expression8.output" relation="relation32"/>
+    <link port="Expression8.name" relation="relation31"/>
+    <link port="HttpGet4.output" relation="relation33"/>
+    <link port="HttpGet4.trigger" relation="relation30"/>
+    <link port="HttpGet4.url" relation="relation32"/>
+    <link port="Swarmbox8.output" relation="relation34"/>
+    <link port="Swarmbox8.trigger" relation="relation33"/>
+    <link port="Expression9.output" relation="relation37"/>
+    <link port="Expression9.name" relation="relation34"/>
+    <link port="HttpGet5.output" relation="relation35"/>
+    <link port="HttpGet5.trigger" relation="relation33"/>
+    <link port="HttpGet5.url" relation="relation37"/>
+</entity>
