@@ -28,6 +28,7 @@
 package org.ptolemy.optimization;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
 /**
@@ -53,28 +54,41 @@ public class BarrierMethod  {
      * @throws IllegalActionException
      */
     public int optimize(ObjectiveFunction objective) throws IllegalActionException {
-        //reset all relax values
-        objective.resetConstraints();
-
+        
         int returnVal = FAILED_MAX_ITERATION_LIMIT;
         ////////////////////////////////////////////////////
         //Phase I: Search for a feasible initial point.
+        //To reduce computational complexity, 
+        //we at first search feasible points using approximated objective function.
+        for(int count=0; count<5; count++) {
+            ApproximatedObjectiveFunction approxObjective = new ApproximatedObjectiveFunction(objective);
+            ObjectiveFunctionForPhaseI objectivePh1 = new ObjectiveFunctionForPhaseI(approxObjective);
+            //calculate at (X, 0)
+            objectivePh1.calcFuncInternal(objectivePh1.currentX);
+            //check X0 feasibility and set initial s
+            if(!objectivePh1.setInitialValue(_tolerance)) {
+                objectivePh1.calcFuncInternal(objectivePh1.currentX);
+                returnVal = optimizationOfGivenPhase(objectivePh1, 1, 50, 1.0);
+            } else {
+                //given starting point is already feasible
+                returnVal = CONVERGED;
+            }
+            objective.calcFuncInternal(approxObjective.currentX);
+            if(objective.checkFeasibility()) break;
+        }
+        ////////////////////////////////////////////
+        //Phase I using real objective function.
         objective.iterationCounter = 0;
         ObjectiveFunctionForPhaseI objectivePh1 = new ObjectiveFunctionForPhaseI(objective);
         //calculate at (X, 0)
         objectivePh1.calcFuncInternal(objectivePh1.currentX);
-        //set initial s
-        objectivePh1.currentX[objectivePh1.currentX.length-1] = maxValue(objectivePh1.fiResults)+_tolerance;
-        //check X0 feasibility
-        if(objectivePh1.currentX[objectivePh1.currentX.length-1] < 0){
-            returnVal = CONVERGED; //given starting point is already feasible
+        //check X0 feasibility and set initial s
+        if(!objectivePh1.setInitialValue(_tolerance)) {
+            objectivePh1.calcFuncInternal(objectivePh1.currentX);
+            returnVal = optimizationOfGivenPhase(objectivePh1, 1, 50, 100.0);
         } else {
-            objectivePh1.calcFuncInternal(objectivePh1.currentX);
-            returnVal = optimizationOfGivenPhase(objectivePh1, 1);
-        }
-        if(returnVal != CONVERGED) {
-            relaxConstraints(objectivePh1, _tolerance); //relax the constraints of objective.
-            objectivePh1.calcFuncInternal(objectivePh1.currentX);
+            //given starting point is already feasible
+            returnVal = CONVERGED; 
         }
         if(_flagDebugPrint) {
             System.out.print("Phase1: "+objective.iterationCounter);
@@ -83,12 +97,31 @@ public class BarrierMethod  {
             }
             System.out.println();
         }
+        if(!objective.checkFeasibility()) {
+            /////////////////////////////////////////////////////
+            //If we couldn't find feasible points,
+            //we treat constraints as soft constraints and optimize given problem as possible.
+            objective.iterationCounter = 0;
+            ObjectiveFunctionWithSoftConstraints objectiveSoftConst = new ObjectiveFunctionWithSoftConstraints(objective);
+            objectiveSoftConst.calcFuncInternal(objectiveSoftConst.currentX);
+            int returnVal_soft = optimizationOfGivenPhase(objectiveSoftConst, 2, _maxIterationNum, 1.0E-50);
+            if(_flagDebugPrint) {
+                System.out.print("Phase2WithSlack" + ": " + objectiveSoftConst.iterationCounter);
+                if(returnVal_soft != CONVERGED) {
+                    System.out.print(" Terminated by criteria No."+returnVal_soft);
+                }
+                System.out.println();
+            }
+            objective.calcFuncInternal(objectiveSoftConst.currentX);
+            return returnVal;  //return with error code
+            /////////////////////////////////////////////////////
+        }
         /////////////////////////////////////////////////////
 
         /////////////////////////////////////////////////////
         //Phase II: optimize objective.current_point
         objective.iterationCounter = 0;
-        returnVal = optimizationOfGivenPhase(objective, 2);
+        returnVal = optimizationOfGivenPhase(objective, 2, _maxIterationNum, 1.0E-50);
         if(_flagDebugPrint) {
             System.out.print("Phase2: "+objective.iterationCounter);
             if(returnVal != CONVERGED) {
@@ -231,19 +264,6 @@ public class BarrierMethod  {
     }
 
     /**
-     * check feasibility of current point
-     * @param objective
-     * @return : true if all of constraints are negative
-     */
-    private boolean checkFeasibility(ObjectiveFunction objective) {
-        boolean areAllNegative = true;
-        for (int j = 0; areAllNegative && j < objective.fiResults.length; j++) {
-            areAllNegative = (objective.fiResults[j] < 0.0);
-        }
-        return areAllNegative;
-    }
-
-    /**
      * TODO: This function should be defined in DoubleMatrixMath.
      * Return a matrix that is the decomposition of input matrix.
      * Input matrix A is decomposed into the matrix product of L x Lt.
@@ -296,30 +316,13 @@ public class BarrierMethod  {
     }
     
     /**
-     * dotProduct of two vectors.
-     * @param v1 : input vector1
-     * @param v2 : input vector2
-     * @return dotProduct v1*v2
-     */
-    private double dotProduct(double[] v1, double[] v2) {
-        if(v1.length != v2.length) {
-            System.err.println("error in dotProduct: length of v1 and v2 must be the same. (v1:" + v1.length+" v2:"+v2.length+")");
-        }
-        double[] sumVals = new double[v1.length];
-        for(int i=0; i<v1.length; i++) {
-            sumVals[i]= v1[i]*v2[i];
-        }
-        return sumVector(sumVals, v1.length);
-    }
-
-    /**
      *  compute inner loop of Barrier method.
      * @param objective : data set of the cost function, constraints function, etc.
      * @param phase : flag of phase (phase 1 or 2)
      * @param t : the parameter (gap) of the barrier function.
      * @return return code
      */
-    private int innerLoop(ObjectiveFunction objective, int phase, double t) {
+    private int innerLoop(ObjectiveFunction objective, int phase, double t, int maxInnerLoopIterationNum) {
         for (int iteration = 0; ; iteration++) {
             /////////////////////////////////////////////////
             // check exit condition
@@ -329,21 +332,22 @@ public class BarrierMethod  {
             }
             // iteration limit condition
             if (objective.iterationCounter > _maxIterationNum) {
+                if(_flagDebugPrint) System.out.println("maxIt:"+ _maxIterationNum+" current:"+objective.iterationCounter);
                 return FAILED_MAX_ITERATION_LIMIT;
             }
             //check the feasibility of current point
-            if(!checkFeasibility(objective)) {
+            if (!objective.checkFeasibility()) {
                 return FAILED_IMPOSSIBLE_TO_REMAIN_WITHIN_FEASIBLE;
             }
             //If the current point satisfies constraints, finish phase1.
             if (phase == 1) {
-                double[] X = objective.currentX; // get reference to the current X.
-                if(((maxValue(objective.fiResults)+X[X.length-1]) < -_tolerance)) {
+                if(((ObjectiveFunctionForPhaseI)objective).checkPhaseICriteria()) {
                     return CONVERGED;
                 }
                 //In current implementation, Phase1 is forced to finish within a half of maxIterationNum.
                 //If some of the constraints are non-negative, they will be relaxed.
-                if (objective.iterationCounter > _maxIterationNum/2) {
+                if (objective.iterationCounter > maxInnerLoopIterationNum) {
+                    if(_flagDebugPrint) System.out.println("maxInnerIterationNum:"+ (maxInnerLoopIterationNum)+" current:"+objective.iterationCounter);
                     return FAILED_MAX_ITERATION_LIMIT;
                 }
             }
@@ -374,7 +378,7 @@ public class BarrierMethod  {
 
             ////////////////////////////////////////////////////////////////////
             // check exit condition
-            double gradXNorm = Math.sqrt(dotProduct(unscaledGBr, unscaledGBr));
+            double gradXNorm = Math.sqrt(DoubleArrayMath.dotProduct(unscaledGBr, unscaledGBr));
             if(gradXNorm < (_tolerance*_tolerance)){
                 return _INNER_LOOP_FINISH; //exit from inner loop
             }
@@ -388,8 +392,8 @@ public class BarrierMethod  {
             ////////////////////////////////////////////////////////////////////
             // check exit condition: check the Newton decrement
             double[] step_H = DoubleMatrixMath.multiply(hessBr, dx);
-            double lambda = dotProduct(step_H, dx);
-            if ((lambda/4.0 <= _tolerance*_tolerance)) {
+            double lambda = DoubleArrayMath.dotProduct(step_H, dx);
+            if ((lambda>0.0)&&(lambda/4.0 <= _tolerance*_tolerance)) {
                 return _INNER_LOOP_FINISH; //exit from inner loop
             }
             ////////////////////////////////////////////////////////////////////
@@ -406,7 +410,7 @@ public class BarrierMethod  {
             // Approximated function calculates the new constraints using current gradients of Fi.
             for(int i=0; i<objective.fiResults.length; i++) {
                 //calculate approximated Fi. (dfi = grad*dx*s)
-                double elementP = dotProduct(objective.fiGradients[i], dx);
+                double elementP = DoubleArrayMath.dotProduct(objective.fiGradients[i], dx);
                 //find maximum s which satisfies P*s + Fi < 0
                 if(Math.abs(elementP)<1.0E-50) continue;
                 double approxSize = -objective.fiResults[i]/elementP;
@@ -420,7 +424,7 @@ public class BarrierMethod  {
             //calculate the current cost of Barrier Function.
             double F0X = calculateBarrierFunction(objective, t);
             double[] previosX = objective.getCurrentPoint(); //copy the previous value.
-            double approxDeltaBr = dotProduct(unscaledGBr, dx); //liner approximation of update of cost.
+            double approxDeltaBr = DoubleArrayMath.dotProduct(unscaledGBr, dx); //liner approximation of update of cost.
 
             ////////////////////////////////////////////////////////
             // backtracking line search with actual objective function
@@ -431,11 +435,21 @@ public class BarrierMethod  {
                     X1[row] = previosX[row] + dx[row]*stepSize;
                 }
                 objective.calcFuncInternal(X1);
-                if(checkFeasibility(objective)) {
+                if(objective.checkFeasibility()) {
                     double currentCost = calculateBarrierFunction(objective, t);
                     double approximatedCost = F0X + _alpha  * stepSize * approxDeltaBr;
-                    if((_flagDebugPrint)&&(objective.iterationCounter>50)) {
-                        System.out.println(objective.iterationCounter+" f0:"+objective.f0Result+"\t condSX:"+currentCost);
+                    if((_flagDebugPrint)&&((objective.iterationCounter>50)&&(phase == 2))) {
+                        System.out.println(objective.iterationCounter+" f0:"+objective.f0Result+"\t currentCost:"+currentCost+"\t meanDiff:"+_meanDiffOfCost);
+                    }
+                    if(phase==1) {
+                        //If there is no solution which satisfies all constraints, 
+                        //phase 1 will repeat at the same cost and not finish.
+                        //TODO: It needs the method to check the feasibility of given optimization problem.
+                        _meanDiffOfCost = Math.abs(currentCost-_previousCost)+0.5*_meanDiffOfCost;
+                        _previousCost = currentCost;
+                        if ((searchIt>1)&&(_meanDiffOfCost/Math.abs(currentCost) < 1.0E-5)) {
+                            return FAILED_IMPOSSIBLE_TO_REMAIN_WITHIN_FEASIBLE;
+                        }
                     }
                     if (currentCost <= approximatedCost) {
                         break;
@@ -443,7 +457,7 @@ public class BarrierMethod  {
                 }
                 stepSize = _beta * stepSize;
                 if(stepSize<1.0E-5) {
-                    if(_flagDebugPrint) System.out.println("Step s = "+stepSize);
+                    if(_flagDebugPrint) System.out.println("Step s = "+stepSize + ", "+ objective.iterationCounter + ", " + searchIt + ", " + phase);
                 }
                 if(stepSize<_MIN_STEP_SIZE) {
                     return FAILED_IMPOSSIBLE_TO_REMAIN_WITHIN_FEASIBLE;
@@ -460,8 +474,11 @@ public class BarrierMethod  {
      * @return maximum value
      */
     private double maxValue(double[] array) {
-        double ret = array[0];
-        for(int i=1; i<array.length; i++) {
+        return maxValue(array, 0, array.length);
+    }
+    private double maxValue(double[] array, int from_id, int check_num) {
+        double ret = array[from_id];
+        for(int i=from_id; i<from_id+check_num; i++) {
             if(ret<array[i]) ret = array[i];
         }
         return ret;
@@ -474,18 +491,18 @@ public class BarrierMethod  {
      * @return : if this method finish successfully, return 0("CONVERGED")
      * @throws IllegalActionException
      */
-    private int optimizationOfGivenPhase(ObjectiveFunction objective, int phase) throws IllegalActionException {
+    private int optimizationOfGivenPhase(ObjectiveFunction objective, int phase, int maxIterationNum, double initialT) throws IllegalActionException {
         //set the parameter which defines the gap of constraints. t will increase through the iteration.
-        double t = 1.0E-20; 
-        if(phase == 1) t=100.0; // phase1 might be efficient with greater t.
+        double t = initialT; 
 
         for (int outerIt = 0; ; outerIt++) {
-            if(outerIt>_maxIterationNum) {
+            if(outerIt>maxIterationNum) {
+                if(_flagDebugPrint) System.out.println("maxIt:"+ (maxIterationNum)+" outerIt:"+outerIt);
                 return FAILED_MAX_ITERATION_LIMIT;
             }
 
             // optimize at current t
-            int retVal = innerLoop(objective, phase, t);
+            int retVal = innerLoop(objective, phase, t, maxIterationNum);
             if(retVal != _INNER_LOOP_FINISH) return retVal; // terminated by user input or max iteration limit.
             // increase t
             t *= _mu;
@@ -494,26 +511,6 @@ public class BarrierMethod  {
                 return CONVERGED;
             }
         }
-    }
-
-    /**
-     * Relax the constraints. This function called when Phase1 is converged and some of the constraints 
-     * are not satisfied. This function overwrite the constraint function as below.
-     * g(x) -> g(x)-val
-     * Where "val" is the residual of the constraint function.
-     * @param objective : the set of objective function, current_results,... which is converged in Phase1.
-     * @param tolerance : all constraints are forced to satisfy g(x) < -tolerance 
-     */
-    private void relaxConstraints(ObjectiveFunction objective, double tolerance) {
-        double residual = objective.currentX[objective.currentX.length-1];
-        if(_flagDebugPrint) System.out.print("constraint No.");
-        for(int i=0; i<objective.fiResults.length; i++) {
-            if(objective.fiResults[i]+residual >= -tolerance) {
-                objective.addConstraints(i, -(objective.fiResults[i]+residual + tolerance));
-                if(_flagDebugPrint) System.out.print(i+" ");
-            }
-        }
-        if(_flagDebugPrint) System.out.println("was relaxed");
     }
 
     /**
@@ -595,5 +592,6 @@ public class BarrierMethod  {
     private int _maxIterationInLineSearch = 250;
     private double _mu = 10.0;
     private double _tolerance = 1.0E-5;
-    
+    private double _meanDiffOfCost = 0;
+    private double _previousCost = 0;
 }
