@@ -479,6 +479,18 @@ public class ViewLayers3D extends TypedAtomicActor {
             else if (layerColor.stringValue().equals("green")) {
             	green = 1.0f;
             }
+            else if (layerColor.stringValue().equals("cyan")) {
+            	green = 1.0f;
+            	blue = 1.0f;
+            }
+            else if (layerColor.stringValue().equals("magenta")) {
+            	red = 1.0f;
+            	blue = 1.0f;
+            }
+            else if (layerColor.stringValue().equals("yellow")) {
+            	red = 1.0f;
+            	green = 1.0f;
+            }
             else if (layerColor.stringValue().equals("gray")) {
             	red = 0.5f;
             	green = 0.5f;
