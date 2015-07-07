@@ -34,6 +34,8 @@ import java.awt.Image;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -111,6 +113,16 @@ public class HttpClientHelper extends VertxHelperBase {
 	}
     }
 
+    /** Stop a response. */
+    public void stop() {
+        if (_response != null) {
+            // FIXME: There seems to be no way to stop this stream!!!
+            // Even closing the socket doesn't stop the flow from the camera and the invocation of the callback.
+            // See FIXME below.
+            _response.netSocket().close();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
 
@@ -158,6 +170,11 @@ public class HttpClientHelper extends VertxHelperBase {
         // FIXME: How do we set the protocol?
         // It is specified in urlSpec.get("protocol").
         
+        Object complete = options.get("outputCompleteResponseOnly");
+        if (complete instanceof Boolean && !(Boolean)complete) {
+            _outputCompleteResponseOnly = false;
+        }
+        
         _request = client.request(
         	(String)options.get("method"),
         	uri,
@@ -180,8 +197,14 @@ public class HttpClientHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
     
+    /** Boolean indicating whether outputting partial responses is permitted. */
+    private boolean _outputCompleteResponseOnly = true;
+    
     /** The request built in the constructor. */
     private HttpClientRequest _request;
+    
+    /** The current response, which may be streaming data, or null if there is no active response. */
+    private HttpClientResponse _response;
 
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
@@ -200,62 +223,174 @@ public class HttpClientHelper extends VertxHelperBase {
     /** The event handler that is triggered when a response arrives from the server.
      */
     private class HttpClientResponseHandler implements Handler<HttpClientResponse> {
+        private List<byte[]> _imageParts;
+        private String _boundary;
+        private boolean _inSegment;
         @Override
         public void handle(HttpClientResponse response) {
-            // The response is not yet complete, but we have some information.
-            int status = response.statusCode();
-            if (status >= 400) {
-                // An error occurred.
-                _currentObj.callMember("emit", "error", "Request failed with code "
-                        + status
-                        + ": "
-                        + response.statusMessage());
-                return;
-            }
-            MultiMap headers = response.headers();
-            
-            // If the response is a redirect, handle that here.
-            if(status >=300 && status <= 308 && status != 306) {
-                String newLocation = headers.get("Location");
-                if (newLocation != null) {
-                    // FIXME: How to handle the redirect?
-                    _currentObj.callMember("emit", "error", "Redirect to "
-                            + newLocation
-                            + " not yet handled by HttpClientHelper. "
+            synchronized(_actor) {
+                _response = response;
+                // The response is not yet complete, but we have some information.
+                int status = response.statusCode();
+                if (status >= 400) {
+                    // An error occurred.
+                    _currentObj.callMember("emit", "error", "Request failed with code "
                             + status
                             + ": "
                             + response.statusMessage());
                     return;
                 }
-            }
-            
-            String contentType = headers.get("Content-Type");
-            boolean isText = (contentType == null)
-                    | (contentType.startsWith("text"));
-                        
-            // A bodyHandler is invoked after the response is complete.
-            // Note that large responses could create a memory problem here.
-            // Could look at the Content-Length header.
-            response.bodyHandler(new Handler<Buffer>() {
-                public void handle(Buffer body) {
-                    if (isText) {
-                        _currentObj.callMember("_response", response, body.toString());
-                    } else if (contentType.startsWith("image")) {
-                        InputStream stream = new ByteArrayInputStream(body.getBytes());
-                        try {
-                            Image image = ImageIO.read(stream);
-                            Token token = new AWTImageToken(image);
-                            _currentObj.callMember("_response", response, token);
-                        } catch (IOException e) {
-                            // FIXME: What to do here?
-                            _currentObj.callMember("_response", response, body.getBytes());
-                        }
-                    } else {
-                        // FIXME: Need to handle other MIME types.Z
-                        _currentObj.callMember("_response", response, body.getBytes()); 
+                MultiMap headers = response.headers();
+
+                // If the response is a redirect, handle that here.
+                if(status >=300 && status <= 308 && status != 306) {
+                    String newLocation = headers.get("Location");
+                    if (newLocation != null) {
+                        // FIXME: How to handle the redirect?
+                        _currentObj.callMember("emit", "error", "Redirect to "
+                                + newLocation
+                                + " not yet handled by HttpClientHelper. "
+                                + status
+                                + ": "
+                                + response.statusMessage());
+                        return;
                     }
                 }
-            });
+
+                String contentType = headers.get("Content-Type");
+                boolean isText = (contentType == null)
+                        | (contentType.startsWith("text"));
+                boolean isMultipart = (contentType != null)
+                        && (contentType.startsWith("multipart"));
+                if (isMultipart) {
+                    int index = contentType.indexOf("=");
+                    if (index > 0) {
+                        _boundary = "--" + contentType.substring(index + 1).trim();
+                    }
+                }
+
+                // FIXME: The Content-Type might be something like
+                // multipart/x-mixed-replace;boundary=ipcamera, in which case,
+                // we really need to be chunking the data rather than using a
+                // bodyHandler.
+
+                if (_outputCompleteResponseOnly) {                        
+                    // A bodyHandler is invoked after the response is complete.
+                    // Note that large responses could create a memory problem here.
+                    // Could look at the Content-Length header.
+                    response.bodyHandler(new Handler<Buffer>() {
+                        public void handle(Buffer body) {
+                            synchronized(_actor) {
+                                if (isText) {
+                                    _currentObj.callMember("_response", response, body.toString());
+                                } else if (contentType.startsWith("image")) {
+                                    InputStream stream = new ByteArrayInputStream(body.getBytes());
+                                    try {
+                                        Image image = ImageIO.read(stream);
+                                        Token token = new AWTImageToken(image);
+                                        _currentObj.callMember("_response", response, token);
+                                    } catch (IOException e) {
+                                        // FIXME: What to do here?
+                                        _currentObj.callMember("_response", response, body.getBytes());
+                                    }
+                                } else {
+                                    // FIXME: Need to handle other MIME types.Z
+                                    _currentObj.callMember("_response", response, body.getBytes()); 
+                                }
+                                _response = null;
+                            }
+                        }
+                    });
+                } else {
+                    response.endHandler(new Handler() {
+                        public void handle(Object body) {
+                            synchronized(_actor) {
+                                _response = null;
+                            }
+                        }
+                    });
+                    _imageParts = new LinkedList<byte[]>();
+                    _inSegment = false;
+                    response.dataHandler(new Handler<Buffer>() {
+                        public void handle(Buffer body) {
+                            // FIXME: There seems to be no way to stop this stream!!!
+                            // This function gets invoked even after the model stops!
+                            synchronized(_actor) {
+                                if (isText) {
+                                    _currentObj.callMember("_response", response, body.toString());
+                                } else if (isMultipart) {
+                                    byte[] data = body.getBytes();
+                                    String dataAsString = body.toString();
+                                    int boundaryIndex = dataAsString.indexOf(_boundary);
+                                    if (boundaryIndex >= 0) {
+                                        // The data contains a boundary.  If we are in
+                                        // a segment, finish it.
+                                        if (_inSegment) {
+                                            if (boundaryIndex > 1) {
+                                                // There is additional data in this segment.
+                                                byte[] prefix = new byte[boundaryIndex];
+                                                System.arraycopy(data, 0, prefix, 0, boundaryIndex-1);
+                                                _imageParts.add(prefix);
+
+                                                // Construct one big byte array.
+                                                int length = 0;
+                                                for (byte[] piece : _imageParts) {
+                                                    length += piece.length;
+                                                }
+                                                byte[] imageBytes = new byte[length];
+                                                int position = 0;
+                                                for (byte[] piece : _imageParts) {
+                                                    System.arraycopy(piece, 0, imageBytes, position, piece.length);
+                                                    position += piece.length;
+                                                }
+
+                                                // Have a complete image.
+                                                InputStream stream = new ByteArrayInputStream(imageBytes);
+                                                try {
+                                                    Image image = ImageIO.read(stream);
+                                                    if (image != null) {
+                                                        Token token = new AWTImageToken(image);
+                                                        _currentObj.callMember("_response", response, token);
+                                                        System.out.println("Sent an image.");
+                                                    } else {
+                                                        System.err.println("Input data is apparently not an image.");
+                                                    }
+                                                } catch (IOException e) {
+                                                    // FIXME: What to do here?
+                                                    _currentObj.callMember("_response", response, body.getBytes());
+                                                }
+                                            }
+                                        }
+                                        // Since there is a boundary string, we are definitely in the segment.
+                                        _inSegment = true;
+                                        _imageParts.clear();
+                                        // Skip to character 255, the start of a jpeg image.
+                                        // (in signed notation, -1).
+                                        int start = boundaryIndex + _boundary.length() + 2;
+                                        while (start < data.length && data[start] != -1) {
+                                            start++;
+                                        }
+                                        if (start < data.length) {
+                                            byte[] segment = new byte[data.length - start];
+                                            System.arraycopy(data, start, segment, 0, segment.length);
+                                            _imageParts.add(segment);
+                                        }
+                                    } else {
+                                        // data does not contain a boundary.
+                                        if (_inSegment) {
+                                            _imageParts.add(data);
+                                        }
+                                    }
+
+                                } else {
+                                    // FIXME: Need to handle other MIME types.Z
+                                    _currentObj.callMember("_response", response, body.getBytes()); 
+                                }
+                            }
+                        }
+                    });
+                }
+            }
         }
     }
 }

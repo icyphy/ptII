@@ -132,6 +132,7 @@ function ClientRequest(options, reponseCallback) {
     'headers':{},
     'keepAlive':false,
     'method':'GET',
+    'outputCompleteResponseOnly':true,
     'trustAll':false,
   };
   var defaultURL = {
@@ -188,6 +189,15 @@ exports.ClientRequest = ClientRequest;
 /** End a request. */
 ClientRequest.prototype.end = function() {
   this.helper.end();
+};
+
+/** Stop a response, if there is one active. This is useful if a streaming response
+ *  needs to be stopped. The closes the socket connection.
+ */
+ClientRequest.prototype.stop = function() {
+    if (this.helper) {
+        this.helper.stop();
+    }
 };
 
 // FIXME:
