@@ -778,6 +778,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Get the indexes of dependent variables
         _getStateDerivativesDependenciesIndexes();
+        
+        // Get the indexes of input and state variables.
+        _getIndexOfInputsAndContinuousStates();
+        
+        // Initialize hasChanged field of model variables.
+         for (int i = 0; i <  _fmiModelDescription.modelVariables.size(); i++) {
+            _fmiModelDescription.modelVariables.get(i).hasChanged = true;
+        }
 
         // Call superclass to instantiate the FMU.
         if (!_useRawJNI()) {
@@ -996,8 +1004,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 .size(); i++) {
             FMIScalarVariable scalar = _outputs.get(index).inputStateDependentScalarVariables
                     .get(i);
-            final int modVarIdx = _fmiModelDescription.modelVariablesNames
-                    .indexOf(scalar.name);
+            // Check whether the dependent variable which is an input or a state has changed.
+            // FIXME: Note that inputs are not observable thus we assume that when there is 
+            // a quantization event then the input must have changed too.
+            final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
+                    .get(scalar.name);
             // Record the changes in this variable.
             if ((modVarIdx >= 0)
                     && _fmiModelDescription.modelVariables.get(modVarIdx).hasChanged) {
@@ -1498,6 +1509,28 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
+     * Get the index of input and state variables from model variables.
+     */
+    private void _getIndexOfInputsAndContinuousStates() {
+        final int numContStates = _fmiModelDescription.numberOfContinuousStates;
+        for (int i = 0; i < numContStates; i++) {
+            final ContinuousState contState = _fmiModelDescription.continuousStates
+                    .get(i);
+            // Record the index of the continuous state variable in the model variable list.
+            _modelVariableIndexesOfInputsAndContinuousStates.put(contState.name,
+                    _fmiModelDescription.modelVariablesNames
+                            .indexOf(contState.name));
+        }
+        for (int i = 0; i < _inputs.size(); i++) {
+            // Record the index of the continuous state variable in the model variable list.
+            final Input input = _inputs.get(i);
+            _modelVariableIndexesOfInputsAndContinuousStates.put(input.scalarVariable.name,
+                    _fmiModelDescription.modelVariablesNames
+                            .indexOf(input.scalarVariable.name));
+        }
+    }
+    
+    /**
      * Get the indexes of the dependent inputs and continuous state variables.
      */
     private void _getStateDerivativesDependenciesIndexes() {
@@ -1668,7 +1701,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
         }
     }
-
+    
     /**
      * Initialize the values of the continuous state ports with their
      * dependencies and remove the direct dependency of states on inputs.
@@ -1689,11 +1722,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     .get(i);
             final FMI20ContinuousStateDerivative contStateDeriv = _fmiModelDescription.continuousStateDerivatives
                     .get(i);
-
-            // Record the index of the continuous state variable in the model variable list.
-            _modelVariableIndexesOfContinuousStates.put(contState.name,
-                    _fmiModelDescription.modelVariablesNames
-                            .indexOf(contState.name));
             // Initialize vector of value references of state variables
             _stateValueReferences[i] = contState.scalarVariable.valueReference;
             // Initialize vector of value references of derivatives of state variables.
@@ -1911,7 +1939,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
     }
-
+    
     /**
      * Broadcast FMU outputs that are not quantized states.
      *
@@ -1982,7 +2010,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (isState) {
             double lastToken = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
             double epsilon = Math.abs(relativeQuantumUpscale * lastToken);
-            final int modVarIdx = _modelVariableIndexesOfContinuousStates
+            final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
                     .get(_fmiModelDescription.continuousStates.get(index).name);
             if (_firstRound) {
                 prt.send(0, new SmoothToken(val, time));
@@ -2119,7 +2147,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final TypedIOPort outPort = _fmiModelDescription.continuousStates
                     .get(qIdx).port;
 
-            _fmiModelDescription.continuousStates.get(qIdx).hasChanged = true;
+            // _fmiModelDescription.continuousStates.get(qIdx).hasChanged = true;
 
             // final int modVarIdx = _fmiModelDescription.modelVariablesNames
             //        .indexOf(_fmiModelDescription.continuousStates.get(qIdx).name);
@@ -2295,7 +2323,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private Time _lastFireAtTime;
 
     /** Record of model variable index of continuous states. */
-    private static Map<String, Integer> _modelVariableIndexesOfContinuousStates = new HashMap<String, Integer>();
+    private static Map<String, Integer> _modelVariableIndexesOfInputsAndContinuousStates = new HashMap<String, Integer>();
 
     /** The outputs of this FMU. */
     private List<Output> _outputs;
