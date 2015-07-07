@@ -32,12 +32,10 @@ package org.hlacerti.lib;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Workspace;
+
 
 /**
  * Utility class for storing all we need to know about a given class
@@ -45,19 +43,50 @@ import ptolemy.kernel.Port;
  * @author David Come
  */
 public class StructuralInformation {
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         Constructor                       ////
     public StructuralInformation(){
         freeActors = new LinkedList<ComponentEntity>();
-        relations = new HashMap<String,HashSet<IOPort>>();
-    }
+        _relations = new HashMap<String,HashSet<IOPort>>();
+    }       
+    ///////////////////////////////////////////////////////////////////
+    ////                         Public variables                  ////
+    /*
+    * current free actors for that class (ie instance of that class
+    that have not been binded to an object instance from the federation).
+    */
     public LinkedList<ComponentEntity> freeActors;
-    public ComponentEntity classToInstantiate;
-    public HashMap<String,HashSet<IOPort>> relations;
     
-    public void addPortSinks(IOPort port){
-        if(!relations.containsKey(port.getName())){
-            relations.put(port.getName(), new HashSet<IOPort>());
-        }       
-        relations.get(port.getName()).addAll(port.sinkPortList());
+    /*
+    The class to instanticate
+    */
+    public ComponentEntity classToInstantiate;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         Public functions                  ////
+
+    /**
+     * Retrieve all receiving port for the output port whose name is given
+    */
+    public HashSet<IOPort> getPortReceiver(String name){
+        return _relations.get(name);
     }
+    
+    /** 
+     * Add for the given all its receiving ports
+    */
+    public void addPortSinks(IOPort port){
+        if(!_relations.containsKey(port.getName())){
+            _relations.put(port.getName(), new HashSet<IOPort>());
+        }       
+        _relations.get(port.getName()).addAll(port.sinkPortList());
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    /*
+    * For a given output port, all the inputs ports 
+    * that will receive a token from it. The key is the 
+    * output port's name.
+    */
+    private HashMap<String,HashSet<IOPort>> _relations;
 }
