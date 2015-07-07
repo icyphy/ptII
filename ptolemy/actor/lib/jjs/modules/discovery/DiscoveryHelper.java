@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,7 +78,7 @@ public class DiscoveryHelper {
      *  @param discoveryMethod The discovery method to be used, e.g. nmap.
      *  @return A String containing a JSON representation of devices found.
      */
-    public String discoverDevices(String IPAddress, String discoveryMethod) {
+    public JSONArray discoverDevices(String IPAddress, String discoveryMethod) {
         // FIXME: We probably want to take a broadcast address as an
         // input and ping that to get all the hosts.  Pinging 1
         // through 255 works for class C subnets.
@@ -160,21 +161,18 @@ public class DiscoveryHelper {
             // of error?
         }
         
+        JSONArray jArray = new JSONArray();
+        
         // Return a string representation of a JSON array of JSON objects
-        if (ipMap.size() > 0) {
-            StringBuffer JSON = new StringBuffer("[");
+        if (ipMap.size() > 0) {    
             for (String key : ipMap.keySet()) {
-                JSON.append(ipMap.get(key).toString() + ", ");
+                jArray.put(ipMap.get(key));
             }
-            
-            // Remove last ", " and add " ]"
-            JSON.delete(JSON.length() - 2, JSON.length() - 1);
-            JSON.append(" ]");
-            return JSON.toString();
+            return jArray;
         } else {
             System.err.println("DiscoveryHelper.discover(" + IPAddress + "): "
                     + "no devices found? Returning [].");
-            return "[]";
+            return jArray;
         }
     }
     
