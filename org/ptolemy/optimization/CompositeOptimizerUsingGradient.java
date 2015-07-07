@@ -349,6 +349,26 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
         }
 
+        /**
+         *  Hide the mirror port in top level composite.
+         *  The port is specified by input string.
+         * @param portname
+         */
+        private void hideMirrorPort(String portname) throws NameDuplicationException, IllegalActionException{
+            IOPort p = (IOPort) (((CompositeActor) getContainer())
+                    .getPort(portname));
+            if (p != null) {
+                SingletonParameter hidden = (SingletonParameter) p
+                        .getAttribute("_hide");
+                if (hidden == null) {
+                    hidden = new SingletonParameter(p, "_hide");
+                    hidden.setToken("true");
+                } else {
+                    hidden.setToken("true");
+                }
+            }
+        }
+
         private void _init() throws IllegalActionException,
         NameDuplicationException {
 
@@ -383,65 +403,11 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             intermediate_dgx.setOutput(true);
             
             // hide the mirror ports in top level composite
-
-            IOPort p = (IOPort) (((CompositeActor) getContainer())
-                    .getPort(INTERMEDIATE_VALUE_PORT_NAME));
-            if (p != null) {
-                SingletonParameter hidden = (SingletonParameter) p
-                        .getAttribute("_hide");
-                if (hidden == null) {
-                    hidden = new SingletonParameter(p, "_hide");
-                    hidden.setToken("true");
-                } else {
-                    hidden.setToken("true");
-                }
-            }
-            p = (IOPort) (((CompositeEntity) getContainer())
-                    .getPort(CONSTRAINTS_PORT_NAME));
-            if (p != null) {
-                SingletonParameter hidden = (SingletonParameter) p
-                        .getAttribute("_hide");
-                if (hidden == null) {
-                    hidden = new SingletonParameter(p, "_hide");
-                    hidden.setToken("true");
-                } else {
-                    hidden.setToken("true");
-                }
-            }
-            p = (IOPort) (((CompositeEntity) getContainer())
-                    .getPort(OPTIMIZATION_VARIABLE_NAME));
-            if (p != null) {
-                SingletonParameter hidden = (SingletonParameter) p
-                        .getAttribute("_hide");
-                if (hidden == null) {
-                    hidden = new SingletonParameter(p, "_hide");
-                    hidden.setToken("true");
-                } else {
-                    hidden.setToken("true");
-                }
-            }
-            p = (IOPort) (((CompositeEntity) getContainer())
-                    .getPort(GRADIENT_VALUE_PORT_NAME));
-            if (p != null) {
-                SingletonParameter hidden = (SingletonParameter) p.getAttribute("_hide");
-                if (hidden == null) {
-                    hidden = new SingletonParameter(p, "_hide");
-                    hidden.setToken("true");
-                } else {
-                    hidden.setToken("true");
-                }
-            }
-            p = (IOPort) (((CompositeEntity) getContainer())
-                    .getPort(GRADIENT_CONSTRAINTS_PORT_NAME));
-            if (p != null) {
-                SingletonParameter hidden = (SingletonParameter) p.getAttribute("_hide");
-                if (hidden == null) {
-                    hidden = new SingletonParameter(p, "_hide");
-                    hidden.setToken("true");
-                } else {
-                    hidden.setToken("true");
-                }
-            }
+            hideMirrorPort(INTERMEDIATE_VALUE_PORT_NAME);
+            hideMirrorPort(CONSTRAINTS_PORT_NAME);
+            hideMirrorPort(OPTIMIZATION_VARIABLE_NAME);
+            hideMirrorPort(GRADIENT_VALUE_PORT_NAME);
+            hideMirrorPort(GRADIENT_CONSTRAINTS_PORT_NAME);
         }
     }
 
@@ -583,81 +549,51 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
         }
         @Override
         public void fire() throws IllegalActionException {
-            Calcfc calcfc = new Calcfc() {
-                @Override
-                public double Compute(int n, int m, double[] x, double[] con,
-                        boolean[] terminate) throws IllegalActionException {
-                    double evalX = oneStepIteration(x, con, null, null);
-                    // if stop has been requested, the inside might not have produced tokens. so do not proceed
-                    if (_stopRequested) {
-                        terminate[0] = _stopRequested;
-                        // set one constraint value to negative, so that this iteration is not considered by FindMinimum()
-                        con[0] = -1;
-                        return evalX;
-                    } else {
-                        if (_mode == MAXIMIZE) {
-                            evalX = -1.0 * evalX; // minimize -f(x) = maximize f(x)
-                        }
-                        // if stop() has been called, this method will not be called again.
-                        terminate[0] = _stopRequested;
-                    }
-                    return evalX;
-                }
-            };
-            
             boolean need_to_initialize = false;
             if(_reusePreviousResult) {
                 if(_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
                     _optInput = new double[_dimension];
                     _firstStep = false; //Keeping the optimized values for next step.
-                    need_to_initialize = true;
+                    need_to_initialize = true; //initialization of objective function class will be called later.
+                } else {
+                    //reuse previous solution as an initial value.
                 }
             } else {
                 _optInput = new double[_dimension];
-                need_to_initialize = true;
+                need_to_initialize = true; //initialization of objective function class will be called later.
             }
-            // nConstraints is 1 because we transfer the task of computing constraints to an inside actor.
+            //The flag "_firstIteration" should be true before an optimize function is called.
             _firstIteration = true;
-            boolean[] terminateArray = new boolean[1];
-            terminateArray[0] = _stopRequested;
-            //////////////////////////////////////////////////////
-            // Objective function
-            if(need_to_initialize) {
-                calc_func = new ObjectiveFunction(_dimension, _numConstraints) {
+            
+            //////////////////////////////////////////////////////////////////////
+            // If _useGradient is false, we use Cobyla library(Cobyla.FindMinimum) 
+            // to solve given problem.
+            // If _useGradient is true, we use Barrier Method.
+            if(!_useGradient) {
+                boolean[] terminateArray = new boolean[1];
+                terminateArray[0] = _stopRequested;
+                int nVariables = _dimension;
+                Calcfc calcfc = new Calcfc() {
                     @Override
-                    public boolean calcFunction(double[] x) {
-                        try {
-                            f0Result = oneStepIteration(x, fiResults, f0Gradient, fiGradients);
-                            //constraints must be minus value (g(x) < 0)
-                            for(int i=0; i<fiResults.length; i++) {
-                                fiResults[i] = -fiResults[i];
-                                for(int j=0; j<fiGradients[i].length; j++) {
-                                    fiGradients[i][j] = -fiGradients[i][j];
-                                }
-                            }
+                    public double Compute(int n, int m, double[] x, double[] con,
+                            boolean[] terminate) throws IllegalActionException {
+                        double evalX = oneStepIteration(x, con, null, null);
+                        // if stop has been requested, the inside might not have produced tokens. so do not proceed
+                        if (_stopRequested) {
+                            terminate[0] = _stopRequested;
+                            // set one constraint value to negative, so that this iteration is not considered by FindMinimum()
+                            con[0] = -1;
+                            return evalX;
+                        } else {
                             if (_mode == MAXIMIZE) {
-                               // minimize -f(x) = maximize f(x)
-                                f0Result = -f0Result;
-                                for(int i=0; i<f0Gradient.length; i++) {
-                                    f0Gradient[i] = -f0Gradient[i];
-                                }
+                                evalX = -1.0 * evalX; // minimize -f(x) = maximize f(x)
                             }
-                            if(_stopRequested) return false;
-                        } catch (IllegalActionException iae) {
-                            iae.printStackTrace();
+                            // if stop() has been called, this method will not be called again.
+                            terminate[0] = _stopRequested;
                         }
-                        return true;
+                        return evalX;
                     }
                 };
-            }
-
-            // optimization
-            BarrierMethod opt = new BarrierMethod();
-            opt.setTolerance(_rhoend);
-            opt.setMaxIterationNum(_maxEvaluations);
-            
-            if(!_useGradient) {
-                int nVariables = _dimension;
                 CobylaExitStatus status = Cobyla.FindMinimum(calcfc, nVariables,
                         _numConstraints, _optInput, _rhobeg, _rhoend, iprint,
                         _maxEvaluations, terminateArray);
@@ -680,15 +616,65 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
                 }
             } else {
-                int returnCode = opt.optimize(calc_func);
-                for(int i=0; i<_optInput.length; i++) {
-                    _optInput[i] = calc_func.currentX[i];
+                // optimization by Barrier Method
+                if(need_to_initialize) {
+                    //////////////////////////////////////////////////////
+                    // Creating objective function Class
+                    _objectiveFunction = new ObjectiveFunction(_dimension, _numConstraints) {
+                        @Override
+                        public boolean calcFunction(double[] x) {
+                            try {
+                                f0Result = oneStepIteration(x, fiResults, f0Gradient, fiGradients);
+                                //constraints must be minus value (g(x) < 0) in the BarrierMethod class.
+                                for(int i=0; i<fiResults.length; i++) {
+                                    fiResults[i] = -fiResults[i];
+                                    for(int j=0; j<fiGradients[i].length; j++) {
+                                        fiGradients[i][j] = -fiGradients[i][j];
+                                    }
+                                }
+                                if (_mode == MAXIMIZE) {
+                                   // minimize -f(x) = maximize f(x)
+                                    f0Result = -f0Result;
+                                    for(int i=0; i<f0Gradient.length; i++) {
+                                        f0Gradient[i] = -f0Gradient[i];
+                                    }
+                                }
+                                if(_stopRequested) return false;
+                            } catch (IllegalActionException iae) {
+                                iae.printStackTrace();
+                            }
+                            return true;
+                        }
+                    };
+                    
+                    //To estimate Hessian, compute objectiveFunction at several points.
+                    double[] searchX = new double[_objectiveFunction.currentX.length];
+                    for(int count=0; count<_optInput.length; count++) {
+                        for(int i=0; i<_optInput.length; i++) { //Set Initial Value
+                            searchX[i] = 0;
+                        }
+                        searchX[count] = _rhobeg;
+                        _objectiveFunction.calcFuncInternal(searchX);
+                    }
                 }
-                // TODO: if returnCode!= normal, throw exception
+
+                // optimization
+                BarrierMethod opt = new BarrierMethod();
+//                ExteriorPenaltyFunctionMethod opt = new ExteriorPenaltyFunctionMethod();
+                opt.setTolerance(_rhoend);
+                opt.setMaxIterationNum(_maxEvaluations);
+                //Set Initial Value
+                for(int i=0; i<_optInput.length; i++) { 
+                    _objectiveFunction.currentX[i] = _optInput[i];
+                }
+                int returnCode = opt.optimize(_objectiveFunction);
+                for(int i=0; i<_optInput.length; i++) {
+                    _optInput[i] = _objectiveFunction.currentX[i];
+                }
             }
 //            System.out.println("itration "+iteration_counter+" steps.");
             //////////////////////////////////////////////////////
-
+            
             _firstIteration = true;
 
             DoubleToken[] outTokens = new DoubleToken[_dimension];
@@ -701,7 +687,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                     .getPort(OPTIMAL_VALUE_PORT_NAME))
                     .send(0, outputArrayToken);
         }
-        private ObjectiveFunction calc_func;
+        private ObjectiveFunction _objectiveFunction;
         /** Transfer data from an input port of the
          *  container to the ports it is connected to on the inside.
          *  This method reads tokens from the outside port if any, and writes to
@@ -740,6 +726,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
             return result;
         }
+
 
         /** Transfer data previously read from the outside ports to the inside ports
          *  do not re-read values from outside ports until the firing is complete.
