@@ -59,7 +59,8 @@ abstract class ObjectiveFunction {
         _fiRelax = new double[numOfConstraints];
         iterationCounter = 0;
         stopRequested = false;
-
+        quasiNewtonMethod = true;
+        
         for(int i=0; i<dimensionX; i++) {
             currentX[i] = 0.0;
         }
@@ -74,14 +75,6 @@ abstract class ObjectiveFunction {
         }
     }
 
-    /**
-     * Add a constant value to the specified constraint function.
-     * @param id : index of a constraint function which is added the value.
-     * @param val : adding value
-     */
-    public void addConstraints(int id, double val) {
-        _fiRelax[id] += val;
-    }
 
     /**
      * Objective function and constraint functions.
@@ -126,9 +119,22 @@ abstract class ObjectiveFunction {
                 _previousX[i] = currentX[i];
             }
         }
-        updateHessian();
+        if(quasiNewtonMethod) updateHessian();
         iterationCounter++;
     }
+
+    /**
+     * check feasibility of current point
+     * @return : true if all of constraints are negative
+     */
+    public boolean checkFeasibility() {
+        boolean areAllNegative = true;
+        for (int j = 0; areAllNegative && j < fiResults.length; j++) {
+            areAllNegative = (fiResults[j] < 0.0);
+        }
+        return areAllNegative;
+    }
+
     /**
      * get current point
      * @return : current point X
@@ -139,14 +145,6 @@ abstract class ObjectiveFunction {
             ret[i] = currentX[i];
         }
         return ret;
-    }
-    /**
-     * Reset all constant values which are added to constraint functions.
-     */
-    public void resetConstraints() {
-        for(int i=0; i<_fiRelax.length; i++) {
-            _fiRelax[i] = 0;
-        }
     }
 
     /*
@@ -161,6 +159,7 @@ abstract class ObjectiveFunction {
     public double[] currentX;
     public int iterationCounter;
     public boolean stopRequested;
+    public boolean quasiNewtonMethod;
 
 
     /*
@@ -297,12 +296,7 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
         }
         currentX[currentX.length-1] = 0;
     }
-    
-    @Override
-    public void addConstraints(int id, double val) {
-        _source.addConstraints(id, val);
-    }
-    
+        
     @Override
     public boolean calcFunction(double[] x) {
         return false;
@@ -313,6 +307,10 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
      * @param s : extended input variables
      */
     public void calcFuncInternal(double[] x) {
+        if(_source.stopRequested) {
+            stopRequested = true;
+            return;
+        }
         setCurrentPoint(x);
         double[] input_x = new double[x.length-1];
         for(int i=0; i<input_x.length; i++) {
@@ -347,9 +345,16 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
         }
     }
     
-    @Override
-    public void resetConstraints() {
-        _source.resetConstraints();
+    /**
+     * check the termination criteria in phase I
+     * @return : true if all of constraints are negative and Phase I should finish.
+     */
+    public boolean checkPhaseICriteria() {
+        boolean areAllNegative = true;
+        for (int j = 0; areAllNegative && j < fiResults.length; j++) {
+            areAllNegative = (fiResults[j]+currentX[currentX.length-1] < -(1.0E-10));
+        }
+        return areAllNegative;
     }
     /**
      * set current searching point X
@@ -362,6 +367,22 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
                 _source.currentX[i] = x[i];
             }
         }
+    }
+    
+    /**
+     * set initial residual value s
+     * @param tolerance : the value which defines margin from constraints.
+     * @return true if initial value is already feasible.
+     */
+    public boolean setInitialValue(double tolerance) {
+        if(fiResults.length == 0) return true;
+        double maxValue = fiResults[0];
+        for(int i=1; i<fiResults.length; i++) {
+            if(maxValue<fiResults[i]) maxValue = fiResults[i];
+        }
+        currentX[currentX.length-1] = maxValue+tolerance;
+        //check X0 feasibility
+        return currentX[currentX.length-1] < 0;
     }
     
     /*
