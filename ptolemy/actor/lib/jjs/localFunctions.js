@@ -470,7 +470,6 @@ function convertToToken(value) {
 	    var token = JSONToToken._parseJSON(value);  
 	    if (token != null) {
 	    	return token;
-	    	// return StringToken.convert(token);
 	    }
     	
         if (Array.isArray(value)) {
