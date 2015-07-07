@@ -70,7 +70,33 @@ public class HttpClientHelper extends VertxHelperBase {
 
     /** Create a HttpClientHelper instance for the specified JavaScript
      *  Socket instance for the client side of the socket.
+     *  The options argument can be a string URL
+     *  or a map with the following fields (this helper class assumes
+     *  all fields are present, so please be sure they are):
+     *  <ul>
+     *  <li> headers: An object containing request headers. By default this
+     *       is an empty object. Items may have a value that is an array of values,
+     *       for headers with more than one value.
+     *  <li> keepAlive: A boolean that specified whether to keep sockets around
+     *       in a pool to be used by other requests in the future. This defaults to false.
+     *  <li> method: A string specifying the HTTP request method.
+     *       This defaults to 'GET', but can also be 'PUT', 'POST', 'DELETE', etc.
+     *  <li> url: A string that can be parsed as a URL, or an object containing
+     *       the following fields:
+     *       <ul>
+     *       <li> host: A string giving the domain name or IP address of
+     *            the server to issue the request to. This defaults to 'localhost'.
+     *       <li> path: Request path as a string. This defaults to '/'. This can
+     *            include a query string, e.g. '/index.html?page=12', or the query
+     *            string can be specified as a separate field (see below). 
+     *            An exception is thrown if the request path contains illegal characters.
+     *       <li> protocol: The protocol. This is a string that defaults to 'http'.
+     *       <li> port: Port of remote server. This defaults to 80. 
+     *       <li> query: A query string to be appended to the path, such as '?page=12'.
+     *       </ul>
+     *  </ul>
      *  @param currentObj The JavaScript instance of the Socket.
+     *  @param options The options.
      *  @return A new HttpClientHelper instance.
      */
     public static HttpClientHelper createHttpClient(
@@ -105,8 +131,10 @@ public class HttpClientHelper extends VertxHelperBase {
         // event loop. We need to ensure that callbacks are mutually exclusive
         // with other Java code here.
         
-        client.setHost((String) options.get("host")); 
-        client.setPort((int) options.get("port")); 
+        Map<String, Object> urlSpec = (Map<String, Object>) options.get("url");
+        
+        client.setHost((String) urlSpec.get("host")); 
+        client.setPort((int) urlSpec.get("port")); 
         client.exceptionHandler(new HttpClientExceptionHandler());
         if ((boolean)options.get("keepAlive")) {
             client.setKeepAlive(true);
@@ -114,7 +142,7 @@ public class HttpClientHelper extends VertxHelperBase {
         // FIXME: Provide a timeout. Use setTimeout() of the client.
         
         String query = "";
-        Object queryObject = options.get("query");
+        Object queryObject = urlSpec.get("query");
         if (queryObject != null) {
             String querySpec = queryObject.toString().trim();
             if(!querySpec.equals("") && !querySpec.startsWith("?")) {
@@ -124,8 +152,11 @@ public class HttpClientHelper extends VertxHelperBase {
         
         // NOTE: Documentation of Vertx 2.15 is wrong.
         // The argument is a path with a query, not a URI.
-        String uri = options.get("path")
+        String uri = urlSpec.get("path")
         	+ query;
+        
+        // FIXME: How do we set the protocol?
+        // It is specified in urlSpec.get("protocol").
         
         _request = client.request(
         	(String)options.get("method"),
