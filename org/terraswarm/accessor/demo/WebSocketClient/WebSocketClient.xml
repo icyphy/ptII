@@ -28,13 +28,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 525.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={653, 437, 787, 491}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 22, 922, 710}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 402]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 600]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9572222251645814">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.6495490061582, 136.42873850676466}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.7191947878509, 239.85299820046146}">
     </property>
     <property name="Sender" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer Model">
