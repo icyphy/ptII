@@ -109,6 +109,7 @@ import ptolemy.kernel.util.Workspace;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
+import java.util.HashSet;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
@@ -716,24 +717,24 @@ public class HlaManager extends AbstractInitializableAttribute implements
         
 /*        if (_lastProposedTime != null) {
             if (_lastProposedTime.compareTo(proposedTime) == 0) {
-                
-                // Even if we avoid the multiple calls of the HLA Time management
-                // service for optimization, it could be possible to have events
-                // from the Federation in the Federate's priority timestamp queue,
-                // so we tick() to get these events (if they exist).
-                try {
-                    _rtia.tick();
-                } catch (ConcurrentAccessAttempted e) {
-                    throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
-                } catch (RTIinternalError e) {
-                    throw new IllegalActionException(this, e, "RTIinternalError ");
-                }
-                
-                return _lastProposedTime;
+            
+            // Even if we avoid the multiple calls of the HLA Time management
+            // service for optimization, it could be possible to have events
+            // from the Federation in the Federate's priority timestamp queue,
+            // so we tick() to get these events (if they exist).
+            try {
+                _rtia.tick();
+            } catch (ConcurrentAccessAttempted e) {
+                throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
+            } catch (RTIinternalError e) {
+                throw new IllegalActionException(this, e, "RTIinternalError ");
             }
+            
+            return _lastProposedTime;
+        }
         }
 */         
-
+        
         // If the HLA Time Management is required, ask to the HLA/CERTI
         // Federation (the RTI) the authorization to advance its time.
         if (_isTimeRegulator && _isTimeConstrained) {
@@ -1103,6 +1104,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _hlaAttributesSubscribedTo.clear();
         _fromFederationEvents.clear();
         _objectIdToClassHandle.clear();
+                
+        if (_debugging) {
+            _debug("-----------------------");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1179,39 +1184,34 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // received by callbacks (from the RTI) from the whole HLA/CERTI
         // Federation, are store in the _subscribedValues queue (see
         // reflectAttributeValues() in PtolemyFederateAmbassadorInner class).
-
+        
         TimedEvent event;
-        for (int i = 0; i < _hlaAttributesSubscribedTo.size(); i++) {
-            Iterator<Entry<String, LinkedList<TimedEvent>>> it = _fromFederationEvents
-                    .entrySet().iterator();
-
-            while (it.hasNext()) {
-                Map.Entry<String, LinkedList<TimedEvent>> elt = it.next();
-
-                // GL: FIXME: Check if multiple events here with same timestamp
-                // make sense and can occur, if true we need to update the
-                // following code to handle this case.
-                if (elt.getValue().size() > 0) {
-                LinkedList<TimedEvent> events = elt.getValue();
-                //for(int j = 0 ; j < events.size() ; ++j) {
-                    
-                    event = events.get(0);
-
-                    // Get the HLA subscriber actor destinatory of the event.
-                    TypedIOPort tiop = _getPortFromTab(_hlaAttributesSubscribedTo
-                            .get(elt.getKey()));
-                    HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
-                    
-                    hs.putReflectedHlaAttribute(event);
-                    if (_debugging) {
-                        _debug(this.getDisplayName()
-                                + " _putReflectedAttributesOnHlaSubscribers() - "
-                                + " put Event: " + event.toString() + " in "
-                                + hs.getDisplayName());
-                    }
-
-                    elt.getValue().remove(event);
+        Iterator<Entry<String, LinkedList<TimedEvent>>> it = _fromFederationEvents
+                .entrySet().iterator();
+        
+        while (it.hasNext()) {
+            Map.Entry<String, LinkedList<TimedEvent>> elt = it.next();
+            
+            //multiple events can occur at the same time
+            LinkedList<TimedEvent> events = elt.getValue();
+            while(events.size()>0) {
+                
+                event = events.get(0);
+                
+                // Get the HLA subscriber actor destinatory of the event.
+                String identity = elt.getKey();
+                TypedIOPort tiop = _getPortFromTab(_hlaAttributesSubscribedTo.get(identity));
+                HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
+                
+                hs.putReflectedHlaAttribute(event);
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " _putReflectedAttributesOnHlaSubscribers() - "
+                            + " put Event: " + event.toString() + " in "
+                            + hs.getDisplayName());
                 }
+                
+                events.removeFirst();
             }
         }
     }
@@ -1587,15 +1587,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 throws ObjectNotKnown, AttributeNotKnown,
                 FederateOwnsAttributes, InvalidFederationTime,
                 FederateInternalError {
-            
+            boolean done = false;
             try {
                 // Get the object class handle corresponding to
                 // received "theObject" id.
                 int classHandle = _objectIdToClassHandle.get(theObject);
                 
                 for (int i = 0; i < theAttributes.size(); i++) {
-                    Iterator<Entry<String, Object[]>> ot = _hlaAttributesSubscribedTo
-                            .entrySet().iterator();
+                    
+                    Iterator<Entry<String, Object[]>> ot =
+                            _hlaAttributesSubscribedTo.entrySet().iterator();
                     
                     while (ot.hasNext()) {
                         Map.Entry<String, Object[]> elt = ot.next();
@@ -1604,28 +1605,28 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         Time ts = null;
                         TimedEvent te = null;
                         Object value = null;
-                        
+                        HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
                         // The tuple (attributeHandle, classHandle) allows to
                         // identify the object attribute
                         // (i.e. one of the HlaSubscribers)
                         // where the updated value has to be put.
                         if (theAttributes.getAttributeHandle(i) == _getAttributeHandleFromTab(tObj)
-                                && _getClassHandleFromTab(tObj) == classHandle) {
+                                && _getClassHandleFromTab(tObj) == classHandle
+                                && hs.getObjectHandle() == theObject) {
                             try {
-                                HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj).getContainer();
                                 
                                 double timeValue =
                                         ((CertiLogicalTime) theTime).getTime()/ _hlaTimeUnitValue;
                                 
-                                    ts = new Time(_director,timeValue);
-                                    value = MessageProcessing.decodeHlaValue(hs,
-                                            (BaseType) _getTypeFromTab(tObj),
-                                            theAttributes.getValue(i));
-                                    te = new OriginatedEvent(
-                                            ts,
-                                            new Object[] {
-                                                (BaseType) _getTypeFromTab(tObj),value},
-                                            theObject);
+                                ts = new Time(_director,timeValue);
+                                value = MessageProcessing.decodeHlaValue(hs,
+                                        (BaseType) _getTypeFromTab(tObj),
+                                        theAttributes.getValue(i));
+                                te = new OriginatedEvent(
+                                        ts,
+                                        new Object[] {
+                                            (BaseType) _getTypeFromTab(tObj),value},
+                                        theObject);
                                 
                                 
                                 _fromFederationEvents.get(hs.getIdentity()).add(te);
@@ -1640,6 +1641,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             + hs.getDisplayName()
                                     );
                                 }
+                                done = true;
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
                             }
@@ -1648,6 +1650,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 }
             } catch (ArrayIndexOutOfBounds e) {
                 e.printStackTrace();
+            }
+            /*This may trigger, not 100% sure. If so, need to review the code
+            to store RAV no matter what*/
+            if(!done){
+                throw new FederateInternalError("Received a RAV but could not put in "
+                        + "anyobject. Means the ChangeRequest has not been processed yet");
             }
         }
 
@@ -1705,7 +1713,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                     
                                     for(IOPort out : outputPortList){
                                         ComponentRelation r=null;
-                                        for(IOPort recv : info.relations.get(out.getName())){
+                                        HashSet<IOPort> ports = info.getPortReceiver(out.getName());
+
+                                        //if we dont know what to do with the port, just skip it
+                                        if(ports == null){
+                                            continue;
+                                        }
+                                        
+                                        for(IOPort recv :ports){
                                             if(r==null) {
                                                 //connect output port to new relation
                                                 r = container.connect(out, recv,objectName + " " + out.getName());
