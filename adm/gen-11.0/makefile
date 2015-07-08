@@ -3170,7 +3170,7 @@ update_moog:
 	#
 	# Copy images in eclipse.htm
 	-ssh -l $(USER) moog mkdir -p $(PTEXTERNAL_NIGHTLY)/doc/img
-	scp -Bprq $(HUDSON_PTII)/doc/img/{eclipseWorkspaceLauncher.png,eclipsePreferencesGeneralWorkspace.png,eclipseNewProject.png,eclipseNewJavaProject.png,eclipseNewJavaProject2.png,eclipsePreferencesGeneralWorkspaceWindows.png,eclipseWorkspaceLauncherWindows.png} $(USER)@moog:$(PTEXTERNAL_NIGHTLY)/doc/img
+	scp -Bprq $(HUDSON_PTII)/doc/img/{eclipseWorkspaceLauncher.png,eclipsePreferencesGeneralWorkspace.png,eclipseNewProject.png,eclipseNewJavaProject.png,eclipseNewJavaProject2.png,eclipsePreferencesGeneralWorkspaceWindows.png,eclipseWorkspaceLauncherWindows.png,eclipseAccessorsCheckOutAs.png,eclipseAccessorsNewProject.png} $(USER)@moog:$(PTEXTERNAL_NIGHTLY)/doc/img
 	# Update the doc/eclipse directory to work with the CHESS site
 	ssh -l $(USER) moog "cd $(PTEXTERNAL_NIGHTLY)/doc/eclipse; ./fixEclipseInstructions"
 	# Copy the ptII tree over to moog.
