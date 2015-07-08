@@ -18,10 +18,14 @@
 	copy <code>.classpath.default</code> to <code>.classpath</code>.
 	This choice is the simpler choice, but might exclude optional
 	third party packages.
+        <br/>
+        If you are working with accessors, then only choose this option if you have already checked out accessors repo, see:
+        <a href="noEclipseSVN.htm">Eclipse is unaware of the version control aspects of the Ptolemy II project, use the shell version of Subversion to update the tree.</a>.
       </li>
       <li> Run <code>./configure</code>.  This choice is more complex, but this choice will include
 	optional third party software that is already installed on your
 	machine.
+        <br/>If you are working with accessors and have read access to the accessors repo, then running <code>./configure</code> will check out the accessors repo for you.
       </li>
     </ol>
 
