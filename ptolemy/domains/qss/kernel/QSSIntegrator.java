@@ -371,13 +371,15 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         }
         // Flag to produce output.
         boolean produceOutput = false;
-        boolean hasInput = propagatesInputDerivatives() && _inputChanged && !u.hasNewToken(0);
-
         // If there was a new input previously and we're propagating derivatives,
         // we want to produce the output for it unless there is a new input token waiting.
         // In that case, it is wasteful to emit anything since we will have to refire
         // with new information at the next microstep anyway, so we might as well just wait.
-        produceOutput |= hasInput;
+        boolean hasInput = propagatesInputDerivatives() && _inputChanged > 0 && !u.hasNewToken(0);
+
+        // There's no need to keep re-firing once we've fired as many times as the order of the integrator,
+        // since by that time, we should have reached a fixed point.
+        produceOutput |= hasInput && _inputChanged <= _maximumInputOrder + 1;
 
         if (_qssSolver.getCurrentSimulationTime().compareTo(currentTime) < 0) {
             // The current simulation time is ahead of the solver's time.
@@ -424,13 +426,12 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             // input, extrapolated to the present, up to the n-th derivative, for QSSn.
             double[] derivatives = null;
             if (_previousInput != null) {
-        	SmoothToken extrapolatedInput = _previousInput.extrapolate(currentTime);
-        	int order = SmoothToken.order(extrapolatedInput);
-                derivatives = new double[order + 1];
-                derivatives[0] = extrapolatedInput.doubleValue();
-                for (int i = 1; i <= order; i++) {
+                SmoothToken extrapolatedInput = _previousInput.extrapolate(currentTime);
+                derivatives = new double[SmoothToken.order(extrapolatedInput) + 1];
+                if (derivatives.length > 0) { derivatives[0] = extrapolatedInput.doubleValue(); }
+                for (int i = 1; i < derivatives.length; i++) {
                     derivatives[i] = SmoothToken.derivativeValue(extrapolatedInput, i);
-        	}
+                }
             }
             Token token = new SmoothToken(currentValue, currentTime, derivatives);
             q.send(0, token);
@@ -585,7 +586,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         
         _firstRound = true;
         _lastFireAtTime = null;
-        _inputChanged = false;
+        _inputChanged = 0;
     }
 
     public boolean propagatesInputDerivatives() throws IllegalActionException {
@@ -609,30 +610,38 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         Time currentTime = getDirector().getModelTime();
         
         // Predict the next quantization event time.
-        _inputChanged = _handleInput();
-        final Time possibleFireAtTime = _inputChanged && propagatesInputDerivatives() ? currentTime : _predictQuantizationEventTimeEarliest(currentTime);
+        if (_previousInputTime == null || _previousInputTime.compareTo(currentTime) < 0) {
+            _inputChanged = 0;
+        }
+        boolean newInput = _handleInput();
+        if (newInput) {
+            ++_inputChanged;
+        }
+        Time possibleFireAtTime;
+        if (newInput && propagatesInputDerivatives() && _inputChanged <= _maximumInputOrder + 1) {
+            possibleFireAtTime = currentTime;
+        } else {
+            possibleFireAtTime = _predictQuantizationEventTimeEarliest(currentTime);
+            // This happens at the end of the simulation... we don't want to keep firing forever
+            if (possibleFireAtTime.compareTo(currentTime) <= 0) {
+                possibleFireAtTime = Time.POSITIVE_INFINITY;
+            }
+        }
         if (_debugging) {
             _debug("Next expected firing time: " + possibleFireAtTime);
         }
 
         // Cancel previous firing time if necessary.
-        // FIXME: Following is confusing and probably redundant.
-        final boolean possibleDiffersFromLast = (null == _lastFireAtTime || possibleFireAtTime
-        	.compareTo(_lastFireAtTime) != 0);
-        if (_lastFireAtTime != null // Made request before.
-        	&& _lastFireAtTime.compareTo(currentTime) > 0
-        	// Last request was not used.
-        	// _lastFireAtTime > currentTime
-        	&& possibleDiffersFromLast // Last request is no longer valid.
-        	) {
+        if (_lastFireAtTime != null && _lastFireAtTime.compareTo(currentTime) > 0) {
             if (_debugging) {
         	_debug("Canceling previous fireAt request at " + _lastFireAtTime);
             }
             ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+            _lastFireAtTime = null;
         }
 
         // Request firing time if necessary.
-        if (possibleDiffersFromLast && !possibleFireAtTime.isPositiveInfinite()) {
+        if (!possibleFireAtTime.isPositiveInfinite()) {
             getDirector().fireAt(this, possibleFireAtTime);
             if (_debugging) {
         	_debug("Requesting refiring at " + possibleFireAtTime);
@@ -710,6 +719,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         	_debug("Read input: " + inputToken);
             }
             Time currentTime = getDirector().getModelTime();
+            double currentTimeDouble = currentTime.getDoubleValue();
             if (currentTime.equals(_previousInputTime) && inputToken.equals(_previousInput)) {
         	// Input is identical to previous input. No new information.
         	if (_debugging) {
@@ -848,7 +858,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
     /** Flag identifying whether the input has changed since the last firing.
      */
-    private boolean _inputChanged;
+    private int _inputChanged;
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;
