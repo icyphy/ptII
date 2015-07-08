@@ -82,6 +82,9 @@ exports.request = function(options, responseCallback) {
 // Agent object: explicitly use the passed in Agent.
 // false: opts out of connection pooling with an Agent, defaults request to Connection: close.
 
+// NOTE: This interface is attempting to follow principles in this module: 
+// https://github.com/request/request
+
 /** Convenience method to issue an HTTP GET.  This just calls request() and then
  *  calls end() on the object returned by request(). It returns the object returned
  *  by request() (an instance of ClientRequest). See request() for documentation of
