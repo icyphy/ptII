@@ -98,9 +98,12 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.DesignPatternGetMoMLAction;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.gui.BrowserEffigy;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
@@ -122,7 +125,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.domains.modal.modal.ModalModel;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
@@ -1231,11 +1233,16 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         	// class matches ModalModel, because then subclasses of ModalModel
         	// are not recognized. This unfortunately creates a new dependence
         	// on the modal package.
-                if (container instanceof ModalModel) {
-        	    container = container.getContainer();
-        	    if (container == null) {
-        		// This should not occur.
-        		return;
+                if (thisEntity instanceof Actor) {
+                    Director director = ((Actor)thisEntity).getDirector();
+                    if (director instanceof QuasiTransparentDirector) {
+                        if (thisEntity.getName().equals("_Controller")) {
+                            container = container.getContainer();
+                            if (container == null) {
+                                // This should not occur.
+                                return;
+                            }
+                        }
         	    }
                 }
                 
