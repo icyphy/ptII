@@ -192,25 +192,25 @@ public class HlaSubscriber extends TypedAtomicActor {
         }
         else if(attribute == parameterName || attribute == objectName){
             try {
-                StringToken opaqueName = (StringToken) objectName.getToken();
-                StringToken paramName = (StringToken) parameterName.getToken();
+                StringToken objNameTo = (StringToken) objectName.getToken();
+                StringToken paramNameTok = (StringToken) parameterName.getToken();
                 String param = "";
-                String opaque = "";
-                if(opaqueName == null) {
+                String objectName = "";
+                if(objNameTo == null) {
                     throw new IllegalActionException(this,
-                        "opaqueName Cant be null");
+                        "objectName Cant be null");
                 } else {
-                    opaque = opaqueName.stringValue();
+                    objectName = objNameTo.stringValue();
                 }
-                if(paramName == null) {
+                if(paramNameTok == null) {
                     throw new IllegalActionException(this,
                         "paramName Cant be null");
                 }else {
-                    param = paramName.stringValue();
+                    param = paramNameTok.stringValue();
                 }
                 
-                if(!"objectName".equals(opaque) || !"parameterName".equals(param)){
-                    setDisplayName(opaque + " " +param);
+                if(!"objectName".equals(objectName) || !"parameterName".equals(param)){
+                    setDisplayName(objectName + " " +param);
                 }
                 
             } catch (IllegalActionException illegalActionException) {}
