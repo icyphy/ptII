@@ -45,7 +45,7 @@ EXPERIMENTAL_DOMAINS =
 #   ojdbc6.jar was found.
 # coroutine is on a separate line because it is not shipped and 
 #   building the installer removes coroutine.
-DOMAINS =	algebraic ca ci continuous \
+DOMAINS =	algebraic atc ca ci continuous \
 		coroutine \
 		csp curriculum \
 	        dde ddf de hdf modal pn sdf dt giotto \

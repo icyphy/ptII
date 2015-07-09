@@ -259,6 +259,7 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/algebraic/algebraic.jar \
 	ptolemy/domains/algebraic/demo/demo.jar \
+	ptolemy/domains/atc/atc.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/qss/qss.jar \
