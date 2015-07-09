@@ -537,6 +537,7 @@ public class JavaScript extends TypedAtomicActor {
             // Coverity Scan is happier if we check for null here.
             throw new CloneNotSupportedException("Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
+        newObject._exports = null;
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
         newObject._outputTokens = null;
         newObject._pendingTimeoutFunctions = null;
