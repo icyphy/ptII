@@ -700,35 +700,47 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             // only call fmiSet* between fmiInstantiateSlave() and
             // fmiInitializeSlave(). Same for inputs that have
             // variability==constant.
-            if (input.port.getWidth() > 0 && input.port.isKnown(0)) {
-                if (input.port.hasToken(0)) {
-                    Token token = input.port.get(0);
-                    if (_useRawJNI()) {
-                        DoubleToken doubleToken = DoubleToken.convert(token);
-                        final double tmp_uu[] = { doubleToken.doubleValue() };
-                        final long tmp_uuRef[] = { input.scalarVariable.valueReference };
-                        // Set the inputs which have changed.
-                        runNativeFMU(_fmiJNIComponent, 7, null, null, null,
-                                0.0, 0.0, currentTime.getDoubleValue(), 0, 0.0,
-                                0, 0, null, null, null, null, tmp_uu,
-                                tmp_uuRef, null, null, 0, null, null, null,
-                                null, null);
+			if (input.port.getWidth() > 0 && input.port.isKnown(0)) {
+				if (input.port.hasToken(0)) {
+					Token token = input.port.get(0);
+					if (_useRawJNI()) {
+						// Skip input which are not doubles.
+						if (input.scalarVariable.type instanceof FMIRealType) {
+							DoubleToken doubleToken = DoubleToken
+									.convert(token);
+							final double tmp_uu[] = { doubleToken.doubleValue() };
+							final long tmp_uuRef[] = { input.scalarVariable.valueReference };
+							// Set the inputs which have changed.
+							runNativeFMU(_fmiJNIComponent, 7, null, null, null,
+									0.0, 0.0, currentTime.getDoubleValue(), 0,
+									0.0, 0, 0, null, null, null, null, tmp_uu,
+									tmp_uuRef, null, null, 0, null, null, null,
+									null, null);
+						} else {
+							throw new IllegalActionException(
+									this,
+									"useRawJNI is true, "
+											+ "but but only doubles are suported. "
+											+ "the type was "
+											+ input.scalarVariable.type);
+						}
 
-                    } else {
-                        _setFMUScalarVariable(input.scalarVariable, token);
-                    }
+					} else {
+						_setFMUScalarVariable(input.scalarVariable, token);
+					}
                     // If the input is a continuous state, update the newStates
                     // vector.
-                    if ((_fmiVersion >= 2.0)
-                            && _fmiModelDescription.modelExchange
-                            && _fmiModelDescription.continuousStateNames
-                                    .contains(input.scalarVariable.name)) {
-                        _index = _fmiModelDescription.continuousStateNames
-                                .indexOf(input.scalarVariable.name);
-                        _newStates[_index] = ((DoubleToken) token)
-                                .doubleValue();
-                    }
-
+					if (!_useRawJNI()) {
+						if ((_fmiVersion >= 2.0)
+								&& _fmiModelDescription.modelExchange
+								&& _fmiModelDescription.continuousStateNames
+										.contains(input.scalarVariable.name)) {
+							_index = _fmiModelDescription.continuousStateNames
+									.indexOf(input.scalarVariable.name);
+							_newStates[_index] = ((DoubleToken) token)
+									.doubleValue();
+						}
+					}
                     if (_debugging) {
                         _debugToStdOut("FMUImport.fire(): set input variable "
                                 + input.scalarVariable.name + " to " + token);
