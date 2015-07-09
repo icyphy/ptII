@@ -475,21 +475,13 @@ public class JSAccessor extends JavaScript {
 
         URL accessorURL = null;
         try {
-            // First time through, do a checkout or update of the repo.
-            if (!_checkedOutOrUpdatedRepo) {
-                _checkedOutOrUpdatedRepo = true;
-                try {
-                    JSAccessor.getAccessorsRepository();
-                } catch (Throwable throwable) {
-                    if (!_printedRepoMessage) {
-                        _printedRepoMessage = true;
-                        System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
-                                + "  This could happen if you don't have read access to the repo."
-                                + "The message was:\n"
-                                + throwable
-                                + "This message will be printed only once.");
-                    }
-                }
+            try {
+                JSAccessor.getAccessorsRepository();
+            } catch (Throwable throwable) {
+                System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
+                        + "  This could happen if you don't have read access to the repo."
+                        + "The message was:\n"
+                        + throwable);
             }
             accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
         } catch (IOException ex) {
@@ -630,15 +622,9 @@ public class JSAccessor extends JavaScript {
         return "";
     }
 
-    /** Set to true if we have checked out or updated the repo. */
-    private static boolean _checkedOutOrUpdatedRepo = false;
-
     /** Commands that were run to check out or update the repo. */
     private static String _commands = "";
 
-    /** Print the repo message only once. */
-    private static boolean _printedRepoMessage = false;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
