@@ -46,7 +46,9 @@ import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
@@ -121,6 +123,7 @@ public class JSAccessor extends JavaScript {
         super(container, name);
 
         accessorSource = new ActionableAttribute(this, "accessorSource");
+
         // Make the source editable so that you can update from another site.
         // accessorSource.setVisibility(Settable.NOT_EDITABLE);
 
@@ -441,6 +444,15 @@ public class JSAccessor extends JavaScript {
      *  to update an accessor. 
      *  The accessor is read in from a url, processed with 
      *  XSLT and MoML is returned.
+     *
+     *  <p>The first time this method is run, it will attempt to
+     *  either checkout or update the TerraSwarm accessors repo
+     *  located at $PTII/org/terraswarm/accessor/accessors.  Note that
+     *  this repo is not necessarily world readable. </p>
+     * 
+     *  <p>If the <i>urlSpec</i> is not found, then the TerraSwarm
+     *  accessor repo will be checked out or updated.</p>
+     *
      *  @param url The URL of the accessor.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
@@ -463,6 +475,22 @@ public class JSAccessor extends JavaScript {
 
         URL accessorURL = null;
         try {
+            // First time through, do a checkout or update of the repo.
+            if (!_checkedOutOrUpdatedRepo) {
+                _checkedOutOrUpdatedRepo = true;
+                try {
+                    JSAccessor.getAccessorsRepository();
+                } catch (Throwable throwable) {
+                    if (!_printedRepoMessage) {
+                        _printedRepoMessage = true;
+                        System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
+                                + "  This could happen if you don't have read access to the repo."
+                                + "The message was:\n"
+                                + throwable
+                                + "This message will be printed only once.");
+                    }
+                }
+            }
             accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
         } catch (IOException ex) {
             // If the urlSpec could be in the accessors repo, then try
@@ -602,9 +630,15 @@ public class JSAccessor extends JavaScript {
         return "";
     }
 
+    /** Set to true if we have checked out or updated the repo. */
+    private static boolean _checkedOutOrUpdatedRepo = false;
+
     /** Commands that were run to check out or update the repo. */
     private static String _commands = "";
 
+    /** Print the repo message only once. */
+    private static boolean _printedRepoMessage = false;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
