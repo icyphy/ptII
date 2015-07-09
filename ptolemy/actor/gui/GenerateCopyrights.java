@@ -222,6 +222,8 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/io/comm/rxtx-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
+                "ptolemy/actor/lib/jjs/jjs-license.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jmf.JMFImageToken",
                 "ptolemy/actor/lib/jmf/jmf-copyright.htm");
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",

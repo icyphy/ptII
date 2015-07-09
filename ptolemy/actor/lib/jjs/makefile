@@ -56,6 +56,7 @@ OTHER_FILES_TO_BE_JARED = \
 	basicFunctions.js \
 	console.js \
 	JavaScriptIcon.xml \
+	jjs-license.htm \
 	js.xml \
 	localFunctions.js
 
