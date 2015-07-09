@@ -31,7 +31,8 @@
 
 ME =		ptolemy/actor/lib/jjs
 
-DIRS = 		demo external modules node test node_modules
+# node_modules has no makefiles, so don't add it to DIRS.
+DIRS = 		demo external modules node test #node_modules
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -70,6 +71,7 @@ MISC_FILES =	external modules node test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	node_files \
 	'JavaScript$$1.class' \
 	'JavaScript$$2.class' \
 	'JavaScript$$ParameterProxy.class' \
