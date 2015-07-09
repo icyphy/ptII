@@ -1378,6 +1378,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         if (_debugging) {
             _debugToStdOut("FMIImport.initialize() call completed.");
         }
+        return;
     }
 
     /**
@@ -2083,21 +2084,20 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     + _numberOfStepEvents + "\n  timeEvents: "
                     + _numberOfTimeEvents);
         }
-
         if (_useRawJNI()) {
             runNativeFMU(_fmiJNIComponent, -1, null, null, null, 0.0, 0.0, 0.0,
                     0, 0.0, 0, 0, null, null, null, null, null, null, null,
                     null, 0, null, null, null, null, null);
         } else {
-            _checkFmiCommon();
-        }
-
+        _checkFmiCommon();
         _fmiTerminate();
         _fmiFreeInstance();
         _freeFMUState();
 
         // Allow the callback functions structure to be garbage collected.
         _callbacks = null;
+        }
+        super.wrapup();
     }
 
     /**
