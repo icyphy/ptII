@@ -28,10 +28,12 @@
 package org.terraswarm.accessor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.transform.OutputKeys;
@@ -44,6 +46,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
@@ -59,6 +62,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -208,6 +212,44 @@ public class JSAccessor extends JavaScript {
 	}
     }
 
+    /** Check out the TerraSwarm accessor repository.
+     *  @exception IOExeption If the repository cannot be checked out.
+     */
+    public static void getAccessorsRepository() throws IOException {
+        final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+        try {
+            List execCommands = new LinkedList();
+            // If the org/terraswarm/accessor/accessors directory
+            // exists, then run svn update, otherwise try to check out
+            // the repo.
+            File accessorsRepoDirectory = new File(JSAccessor._accessorDirectory(), "accessors");
+            
+            if (accessorsRepoDirectory.isDirectory()) {
+                exec.setWorkingDirectory(accessorsRepoDirectory);
+                execCommands.add("svn update");
+                _commands = "cd " + accessorsRepoDirectory + "\nsvn update";
+            } else {
+                exec.setWorkingDirectory(JSAccessor._accessorDirectory());
+                String svnCommand = "svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors";
+                execCommands.add(svnCommand);
+                _commands = "cd " + JSAccessor._accessorDirectory() + "\n" + svnCommand;
+            }
+
+            exec.setCommands(execCommands);
+
+            exec.setWaitForLastSubprocess(true);
+            exec.start();
+            _commands += exec.buffer.toString();
+        } catch (Throwable throwable) {
+            IOException ioException = new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
+                    + _commands + "\n"
+                    + "Perhaps you don't have read access?"
+                    + "The TerraSwarm accessors repository is under development.\n"
+                    + "The output was: " + exec.buffer);
+            ioException.initCause(throwable);
+            throw ioException;
+        }
+    }
     /** Handle an accessor-specific MoMLChangeRequest.
      *   
      *  In the postParse() phase, the _location and accessorSource
@@ -365,6 +407,34 @@ public class JSAccessor extends JavaScript {
         showName.setExpression("true");
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** The directory that contains the accessors svn repository. 
+     *  The default value is $PTII/org/terraswarm/accessor
+     *  Note that this repo is not world readable.
+     *  The command to check out the repo is:
+     *  <pre>
+     *  cd $PTII/org/terraswarm/accessor
+     *  svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+     *  </pre>
+     *  @return The $PTII/org/terraswarm/accessor directory.
+     *  @exception IOException If the ptolemy.ptII.dir property does
+     *  not exist or if the directory does not exist.
+     */
+    private static File _accessorDirectory() throws IOException {
+        String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+        if (ptII == null) {
+            throw new IOException("Could not get the property \"ptolemy.ptII.dir\"?");
+        }
+        File accessorDirectory = new File(ptII, "org/terraswarm/accessor");
+        if ( !accessorDirectory.isDirectory()) {
+            throw new IOException("The accessor directory \""
+                    + accessorDirectory + "\" does not exist or is not a directory.");
+        }
+        return accessorDirectory;
+    }
+    
     /** Generate MoML for an Accessor. This produces only the body MoML.
      *  It must be wrapped in an <entity></entity> or <class></class>
      *  element to be instantiable, or in a <group></group> to be used
@@ -391,7 +461,28 @@ public class JSAccessor extends JavaScript {
 	    throw new IllegalActionException("No source file specified.");
 	}
 
-        final URL url = FileUtilities.nameToURL(urlSpec.trim(), null, null);
+        URL accessorURL = null;
+        try {
+            accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
+        } catch (IOException ex) {
+            // If the urlSpec could be in the accessors repo, then try
+            // to either check out or update the repo.
+            if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
+                try {
+                    JSAccessor.getAccessorsRepository();
+                    accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
+                } catch (IOException ex2) {
+                    IOException ioException = new IOException(ex.getMessage()
+                            + "In addition, tried checking out the accessors repo with \n"
+                            + JSAccessor._commands + "\n"
+                            + "but that failed with: " + ex2.getMessage());
+                    ioException.initCause(ex2);
+                    throw ioException;
+                }
+            }
+        }
+
+        final URL url = accessorURL;
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
@@ -510,6 +601,9 @@ public class JSAccessor extends JavaScript {
         }
         return "";
     }
+
+    /** Commands that were run to check out or update the repo. */
+    private static String _commands = "";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
