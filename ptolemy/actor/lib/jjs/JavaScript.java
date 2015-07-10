@@ -147,12 +147,14 @@ import ptolemy.util.StringUtilities;
    <pre>
       var handle = addInputHandler(function, port);
    </pre>
+   <p>
    The specified function will be invoked whenever the port receives a new input.
    Note that the fire() function, if defined, will also be invoked (after the
    specified function) and will see
    the same input. If the specified function is null, then only the fire() function
    will be invoked. The returned handle can be used to call removeInputHandler().
-   </p><p>
+   </p>
+   <p>
    Usually, you will need to explicitly set the types
    of the output ports. Alternatively, you can enable backward
    type inference on the enclosing model, and the types of output
@@ -194,9 +196,10 @@ import ptolemy.util.StringUtilities;
    <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
+   <p>
    The last argument of get() and send() (the channel number) is optional.
    If you leave it off, the channel number will be assumed to be zero
-   (designating the first channel connected to the port).
+   (designating the first channel connected to the port).</p>
    <p>
    Note that get() may be called within a JavaScript callback function. In that case,
    if the callback function is invoked during the firing of this actor, then the get()
@@ -205,7 +208,7 @@ import ptolemy.util.StringUtilities;
    that firing.  This way, this actor ensures that get() reads a proper input.
    Note that although blocking JavaScript functions is not normally done, this actor
    has its own JavaScript engine, so no other JavaScript anywhere in the model will be
-   affected. Those JavaScript threads are not blocked.
+   affected. Those JavaScript threads are not blocked.</p>
    <p>
    The following example script calculates the factorial of the input.</p>
    <pre>
@@ -236,7 +239,7 @@ import ptolemy.util.StringUtilities;
        send(init, output);
    }
    </pre>
-   will send a count of firings to the output named "output".
+   <p>will send a count of firings to the output named "output".</p>
    <p>
    Notice that you may name ports or parameters of this actor in such
    a way as to shadow objects in the global scope. For example,
@@ -453,6 +456,8 @@ public class JavaScript extends TypedAtomicActor {
     /** Add an input handler to be invoked when there is a new token on
      *  any input port.
      *  @param function The function to handle the token.
+     *  @return The incremented input handler index.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @see #removeInputHandler(Integer)
      */
     public int addInputHandler(final Runnable function) throws IllegalActionException {
@@ -860,6 +865,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Get the proxy for a port or parameter with the specified name.
      *  This is an object on which JavaScript can directly invoke methods.
+     *  @param name The name of the port or parameter.
      *  @return The proxy for the specified name, or null if there is none.
      */
     public PortOrParameterProxy getPortOrParameterProxy(String name) {
@@ -1038,6 +1044,7 @@ public class JavaScript extends TypedAtomicActor {
      *  calls send() when this returns true, the output may still not
      *  actually reach its destination. It is possible that the last
      *  firing has already occurred, but wrapup() has not yet been called.
+     *  @return true if the model is executing.
      */
     public boolean isExecuting() {
         return _executing;
@@ -1982,7 +1989,7 @@ public class JavaScript extends TypedAtomicActor {
         
         /** Add an input handler for this port.
          *  @param function The function to invoke.
-         *  @returns The handler handle.
+         *  @return The handler handle.
          *  @throws IllegalActionException If this proxy is not for an input port.
          *  @see #removeInputHandler(Integer)
          */

@@ -64,6 +64,7 @@ public class UDPSocketHelper extends VertxHelperBase {
     ////                     public methods                        ////
     
     /** Close the UDP socket with a given port number.
+     *  @param port The port number.
      */
     public void bind(int port) {
         _socket.listen("0.0.0.0", port, new AsyncResultHandler<DatagramSocket>() {
@@ -89,15 +90,21 @@ public class UDPSocketHelper extends VertxHelperBase {
     }
     
     /** Create the UDP socket.
+     *  @param scriptObjectMirror The JavaScript instance invoking the shell.
      */
-    public static UDPSocketHelper createSocket(ScriptObjectMirror currentObj)
-    {
-        return new UDPSocketHelper(currentObj);
+    public static UDPSocketHelper createSocket(ScriptObjectMirror scriptObjectMirror) {
+        return new UDPSocketHelper(scriptObjectMirror);
     }
 
     /** Send a UDP message.
+     *  @param data An array of bytes to be sent.  Currently Ignored.
+     *  @param offset The offset. Current Ignored.
+     *  @param length The length of the message. Currently Ignored.
+     *  @param port The port.  Currently Ignored.
+     *  @param hostname The hostname.  Currently Ignored.
      */
-    public void send(byte[] buf, int offset, int length, int port, String hostname) {
+    public void send(byte[] data, int offset, int length, int port, String hostname) {
+        // FIXME: Why are we not using data here?
         Buffer buffer = new Buffer("content");
         // Send a Buffer
         _socket.send(buffer, "10.0.0.1", 1234, new AsyncResultHandler<DatagramSocket>() {

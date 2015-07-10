@@ -1282,13 +1282,17 @@ ValueListener, ChangeListener, CloseListener {
 	    }
         }
 
-        /** Return the contents of the entry box. */
+        /** Return the contents of the entry box.
+         *  @see #setQueryValue(String)
+         */
 	@Override
 	public String getQueryValue() {
 	    return _entryBox.getText();
 	}
 
-	/** Set the contents of the entry box. */
+	/** Set the contents of the entry box.
+         *  @see #getQueryValue()
+         */
 	@Override
 	public void setQueryValue(String value) {
 	    _entryBox.setText(value);

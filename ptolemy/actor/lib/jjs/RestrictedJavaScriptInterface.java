@@ -63,7 +63,9 @@ public class RestrictedJavaScriptInterface {
 
     /** Add an input handler to be invoked when there is a new token on
      *  any input port.
-     *  @param handle The handler handle.
+     *  @param function The function to handle the token.
+     *  @return The incremented input handler index.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @see #removeInputHandler(Integer)
      */
     public int addInputHandler(final Runnable function) throws IllegalActionException {
@@ -121,6 +123,7 @@ public class RestrictedJavaScriptInterface {
     
     /** Get the proxy for a port or parameter with the specified name.
      *  This is an object on which JavaScript can directly invoke methods.
+     *  @param name The name of the port or parameter.
      *  @return The proxy for the specified name, or null if there is none.
      */
     public PortOrParameterProxy getPortOrParameterProxy(String name) {
@@ -292,6 +295,7 @@ public class RestrictedJavaScriptInterface {
      *  instances of HelperBase can retrieve it (for the purposes of
      *  synchronization), but not public so that JavaScript cannot gain
      *  access to it.
+     *  @return the actor that this wraps.
      */
     protected JavaScript _getActor() {
 	return _actor;

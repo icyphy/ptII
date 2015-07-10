@@ -66,28 +66,29 @@ public class ShellHelper  {
     ////                     public methods                        ////
 
     /** Factory method to create a new shell.
-     *  @param currentObj The JavaScript instance invoking the shell.
-     *  @param String The command to be executed.
+     *  @param scriptObjectMirror The JavaScript instance invoking the shell.
+     *  @param command The command to be executed.
      */
-    public static ShellHelper createShell(ScriptObjectMirror currentObj, String command) {
-        return new ShellHelper(currentObj, command);
+    public static ShellHelper createShell(ScriptObjectMirror scriptObjectMirror, String command) {
+        return new ShellHelper(scriptObjectMirror, command);
     }
     
-    /** Write to the process' stdin.
-     *  @param s The data to be sent to the process.
+    /** Write to the stdin of the process.
+     *  @param input The data to be sent to the process.
+     *  @exception IOException If the string cannot be written.
      */
-    public synchronized void write(String s) throws IOException  {
+    public synchronized void write(String input) throws IOException  {
         if (out!=null && process.isAlive())  {
-            out.write(s);
+            out.write(input);
             out.newLine();  
             out.flush();
         }
     }   
     
-    /** Starts the process and the reader thread. Call 
+    /** Start the process and the reader thread. Call 
      *   this after initialization and all callbacks have
      *   been installed. 
-     *   TODO get the exit value of the process
+     *   TODO: get the exit value of the process.
      */
     public void start()  {
         if(startProcess())  {
@@ -96,7 +97,9 @@ public class ShellHelper  {
         }
     }
     
-    /** Kills the process and the reader thread. */
+    /** Kill the process and the reader thread.
+     *  @throws IOException Not thrown in this base class.
+     */
     public void wrapup() throws IOException {
 //        if (in!=null)  {
 //            in.close();

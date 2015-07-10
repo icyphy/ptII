@@ -56,7 +56,6 @@ public class VertxBrowserHelper {
     
     /** Create a web server that serves the specified string.
      *  @param currentObj The JavaScript object on which this method is called.
-     *  @param html The string to serve.
      *  @param port The port to listen for requests on.
      *	@return A new VertxHelper.
      */
@@ -67,7 +66,12 @@ public class VertxBrowserHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
 
+    /** A http server that gets and sets responses.
+     */
     public static class Server {
+        /** Instantiate a http server that listens only on localhost.
+         *  @param port The port number
+         */   
 	public Server(int port) {
 	    HttpServer server = _vertx.createHttpServer();
             // new Exception("Start of Server(" + port + ")").printStackTrace();
@@ -97,11 +101,19 @@ public class VertxBrowserHelper {
         	}
             });
 	}
-	public void setResponse(String response) {
+
+	
+        /** Set the response.
+         *  @param response The response.
+         */
+        public void setResponse(String response) {
             System.err.println("setResponse(" + response + ")");
 	    _response = response;
 	}
 
+        /** Get the response.
+         *  @return The response.
+         */   
         private String _getResponse() {
             System.err.println("getResponse(): " + _response);
             return _response;
