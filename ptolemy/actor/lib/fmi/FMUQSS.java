@@ -796,13 +796,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                                 + " . This is not supported when using raw JNI yet.")
                         .printStackTrace();
             }
-            // Load the "FMUQSS" native interface. Use a classpath-relative
+            // Load the "JNIFMU" native interface. Use a classpath-relative
             // pathname without the shared library suffix (which is selected
             // and appended by {@link UtilityFunctions#loadLibrary}) for
             // portability.
 
-            String buildLibrary = "ptolemy/actor/lib/fmi/jni/FMUQSS";
-            String installLibrary = "lib/libFMUQSS";
+            String buildLibrary = "ptolemy/actor/lib/fmi/jni/libJNIFMU";
+            String installLibrary = "lib/libJNIFMU";
             try {
                 if (_debugging) {
                     _debugToStdOut("About to load " + buildLibrary);
