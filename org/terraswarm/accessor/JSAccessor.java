@@ -46,10 +46,12 @@ import javax.xml.transform.stream.StreamSource;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
+import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
 import ptolemy.kernel.util.Attribute;
@@ -141,6 +143,10 @@ public class JSAccessor extends JavaScript {
         
         // Hide the port for the script.
         (new SingletonParameter(script.getPort(), "_hide")).setExpression("true");
+
+        checkoutOrUpdateAccessorsRepository = new SharedParameter(this, "checkoutOrUpdateAccessorsRepository", getClass(),
+                "true");
+        checkoutOrUpdateAccessorsRepository.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,6 +155,16 @@ public class JSAccessor extends JavaScript {
     /** The source of the accessor (a URL). */
     public StringAttribute accessorSource;
     
+    /** If true, then check out the TerraSwarm accessors svn
+     *  repository when the accessor is reloaded.  This repository is
+     *  not currently publically readable.  This parameter is a
+     *  boolean, and the initial default value is true.  This
+     *  parameter is a shared parameter, meaning that changing it for
+     *  any one instance in a model will change it for all instances
+     *  in the model.
+     */
+    public SharedParameter checkoutOrUpdateAccessorsRepository;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -212,13 +228,22 @@ public class JSAccessor extends JavaScript {
 	    // The above will have the side effect that a script will not be saved
 	    // when you save the model. Force it to be saved.
 	    attribute.setPersistent(true);
+        } else if (attribute == checkoutOrUpdateAccessorsRepository) {
+            // Update the static cached version of this variable.
+            _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
 	}
     }
 
-    /** Check out the TerraSwarm accessor repository.
+    /** Check out or update the TerraSwarm accessor repository.
+     *  If the <i>checkoutOrUpdateAccessorsRepository</i> parameter is
+     *  false, then the repository is not checked out or updated.
      *  @exception IOExeption If the repository cannot be checked out.
      */
     public static void getAccessorsRepository() throws IOException {
+        if (!_checkoutOrUpdateAccessorsRepository) {
+            return;
+        }
+
         final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
         try {
             List execCommands = new LinkedList();
@@ -621,6 +646,11 @@ public class JSAccessor extends JavaScript {
         }
         return "";
     }
+
+    /** Cached version of the checkoutOrUpdateAccessorsRepository parameter.
+     *  The method that uses this field is static.   
+     */
+    private static boolean _checkoutOrUpdateAccessorsRepository = true;
 
     /** Commands that were run to check out or update the repo. */
     private static String _commands = "";
