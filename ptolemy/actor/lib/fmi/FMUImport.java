@@ -1511,13 +1511,13 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         }
 
         if (_useRawJNI()) {
-            // Load the "FMUImportJNI" native interface. Use a classpath-relative
+            // Load the "JNIFMU" native interface. Use a classpath-relative
             // pathname without the shared library suffix (which is selected
             // and appended by {@link UtilityFunctions#loadLibrary}) for
             // portability.
 
-            String buildLibrary = "ptolemy/actor/lib/fmi/jni/FMUImport";
-            String installLibrary = "lib/libFMUImport";
+            String buildLibrary = "ptolemy/actor/lib/fmi/jni/libJNIFMU";
+            String installLibrary = "lib/libJNIFMU";
             try {
                 if (_debugging) {
                     _debugToStdOut("About to load " + buildLibrary);
