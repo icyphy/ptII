@@ -50,7 +50,11 @@ if {[info procs jdkCaptureErr] == "" } then {
 ####
 #
 test domains.1.1 {} {
-    catch {createAndExecute "auto/knownFailedTests/PNSDFtest1.xml"} errMsg
+    # We catch stderr because these tests are known failures and we
+    # don't want to confuse the user.
+    jdkCaptureErr {
+        catch {createAndExecute "auto/knownFailedTests/PNSDFtest1.xml"} errMsg
+    } err
     # Sometimes it is port, sometimes port2
     regsub -all {port[^.]*.} $errMsg {portXXX.} r1
     list $r1
@@ -62,6 +66,7 @@ test domains.1.1 {} {
 #
 test domains-2.1 {} {
     # PNSRTimedtest.xml does not terminate the second time it is run.
+    puts "domains-2.1 takes about 7 seconds..."
     jdkCaptureErr {
 	catch {createAndExecute "auto/nonTerminatingTests/PNSRTimedtest.xml"} errMsg
     } out
@@ -73,7 +78,9 @@ test domains-2.1 {} {
 ####
 #
 test domains-3.1 {} {
-     catch {createAndExecute "auto/knownFailedTests/PNSRtest3.xml"} errMsg
+    jdkCaptureErr {
+        catch {createAndExecute "auto/knownFailedTests/PNSRtest3.xml"} errMsg
+    } err
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Queue size 131072 exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus (channel 1). Perhaps you have an unbounded queue?
   in .PNSRtest3.AddSubtract.plus}}
@@ -82,7 +89,9 @@ test domains-3.1 {} {
 ####
 #
 test domains-4.1 {} {
-     catch {createAndExecute "auto/knownFailedTests/SDFSRtest2.xml"} errMsg
+    jdkCaptureErr {
+        catch {createAndExecute "auto/knownFailedTests/SDFSRtest2.xml"} errMsg
+    } err
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.  Perhaps SampleDelay.prefire() returned false? Try debugging the actor by selecting "Listen to Actor".  Also, for SDF check moml for tokenConsumptionRate on input.
   in .SDFSRtest2.SDF Director and .SDFSRtest2.SampleDelay}}
@@ -92,7 +101,9 @@ test domains-4.1 {} {
 ####
 #
 test domains-5.1 {} {
-     catch {createAndExecute "auto/knownFailedTests/SRSDFtest1.xml"} errMsg
+    jdkCaptureErr {
+        catch {createAndExecute "auto/knownFailedTests/SRSDFtest1.xml"} errMsg
+    } err
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Width of input is 0 but NonStrictTest only supports a width of 1.
   in .SRSDFtest1.NonStrictTest2}}
@@ -101,8 +112,17 @@ test domains-5.1 {} {
 ####
 #
 test domains-6.1 {} {
-     catch {createAndExecute "auto/knownFailedTests/SRSDFtest2.xml"} errMsg
+    jdkCaptureErr {
+        catch {createAndExecute "auto/knownFailedTests/SRSDFtest2.xml"} errMsg
+    } err
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
+} {{ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
+  in .SRSDFtest2.NonStrictTest
+
+  in .SRSDFtest2.1:SR Director
+Because:
+The test produced only 0 tokens, yet the correctValues parameter was expecting 1 tokens.
   in .SRSDFtest2.NonStrictTest}}
+
 
