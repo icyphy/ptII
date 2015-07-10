@@ -461,17 +461,6 @@ function convertToToken(value) {
     } else if (type === 'boolean') {
         return new BooleanToken(value);
     } else if (type === 'object') {
-    	// Check if it's JSON.  Note, "JSON" is not a Javascript type.
-    	// _parseJSON returns null if the object format is not valid JSON.
-    	// TODO:  The accessor port type is declared in setup.  How can we 
-    	// look up that type?  JSON is a valid accessor port type.
-    	
-    	// Returns ArrayToken or RecordToken
-	    var token = JSONToToken._parseJSON(value);  
-	    if (token != null) {
-	    	return token;
-	    }
-    	
         if (Array.isArray(value)) {
             // Using Nashorn-specific extension here to create Java array.
         	if (value.length < 1) {
