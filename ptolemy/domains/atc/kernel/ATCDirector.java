@@ -43,6 +43,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class ATCDirector extends DEDirector {
 
+    /** Construct a director in the workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this object.
+     *  @exception NameDuplicationException If thrown by the super class.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
     public ATCDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -56,10 +63,9 @@ public class ATCDirector extends DEDirector {
     
     /** Return an additional delay for a track to keep an aircraft in
      *  transit.
-     *  @param track
-     *  @param rejector
+     *  @param track The track
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException If thrown while getting the value of the track.
      */
     public double handleRejectionWithDelay(Track track) throws IllegalActionException {
         // FIXME: what value should be returned here?
