@@ -22,7 +22,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1473565048703243">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.92060838115066, 448.4639832478174}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.9206083811506, 448.4639832478174}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -176,7 +176,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {1.0}), smoothToken(5.0, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, smoothToken(1.0, {1.0}), smoothToken(5.0, {1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
