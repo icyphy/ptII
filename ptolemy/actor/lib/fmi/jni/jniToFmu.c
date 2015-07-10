@@ -807,11 +807,9 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImport_runNativeFMU(JNIEnv * env,
         // clock_gettime(CLOCK_MONOTONIC, &start);
 
         fmu_t* _c = (fmu_t*) calloc(1, sizeof(struct idfFmu_t));
-        // FIXME: Do I need to free before reallocating?
-        //if (insNum > 0){
-        //	free (_c);
-        //	fmu_t* _c = (idfFmu_t*) calloc(1, sizeof(struct fmu_t));
-        //}
+	    fmi2CallbackFunctions callbacks = {fmuLogger, calloc, free, NULL, _c};
+        fmi2CallbackFunctions *p = malloc(sizeof *p);
+
         // save the index
         _c->index = insNum;
 
@@ -824,9 +822,6 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImport_runNativeFMU(JNIEnv * env,
         } else {
             return error("The number of state variables cannot be null");
         }
-
-        fmi2CallbackFunctions callbacks = {fmuLogger, calloc, free, NULL, _c};
-        fmi2CallbackFunctions *p = malloc(sizeof *p);
 
         if (p == NULL) abort();
         memcpy(p, &callbacks, sizeof *p);
