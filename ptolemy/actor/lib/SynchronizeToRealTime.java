@@ -43,14 +43,15 @@ import ptolemy.kernel.util.NamedObj;
 //// SynchronizeToRealTime
 
 /**
- Attribute that regulates the passage of time to wait for real time to catch up.
- * The scaleFactor parameter is here to set up how many seconds in wallclock 
+ * Attribute that regulates the passage of time to wait for real time to catch up.
+ *
+ * <p>The scaleFactor parameter is here to set up how many seconds in wallclock 
  * time should pass for a single second in model time. So a scale factor of 0.5 
  * will make the model time passes twice as fast as real time, while make it 
  * equals 2 means that 2 seconds in wallclock are needed for a single unit 
- * of time in the model.
+ * of time in the model.</p>
  * 
- * The default value is 1.
+ * <p>The default value is 1.</p>
  * 
  @author Edward A. Lee, Gilles Lasnier, Patricia Derler
  @version $Id$
@@ -80,10 +81,11 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /**
-    This class does not create change request for new actor in proposeTime
-    Always return true then.
-    */
+     * This class does not create change request for new actor in proposeTime.
+     * Always return true then.
+     */
     public boolean noNewActors(){
         return true;
     }
@@ -166,5 +168,11 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
     
+    /** How many seconds in wallclock time should pass for a single
+     * second in model time. So a scaleFactor of 0.5 will make the
+     * model time passes twice as fast as real time, while make it
+     * equals 2 means that 2 seconds in wallclock are needed for a
+     * single unit of time in the model.  The default value is 1.0.
+     */
     public Parameter scaleFactor;
 }

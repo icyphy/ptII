@@ -158,6 +158,7 @@ public class EventBusHelper {
      *  the associated JavaScript object's reply() function will be invoked.
      *  @param address The address, (topic, channel name, stream ID,...) 
      *  @param message A message to be published, as a string.
+     *  @param replyHandler The handler for the reply.
      */
     public void send(String address, String message, final Object replyHandler) {
 	EventBus bus = _vertx.eventBus();
@@ -213,7 +214,7 @@ public class EventBusHelper {
      *  specified address on the event bus.
      *  @param address The address on the bus to unsubscribe to, or null to
      *   unsubscribe to all addresses.
-     *  @see #subscribe(String)
+     *  @see #subscribe(final String)
      *  @see #unsubscribe()
      */
     public void unsubscribe(final String address) {

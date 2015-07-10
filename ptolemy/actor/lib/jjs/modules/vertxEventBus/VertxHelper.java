@@ -65,7 +65,6 @@ public class VertxHelper {
     /** Create a VertxHelper instance as a client-side web socket for
      * each JavaScript instance.
      * 
-     * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
@@ -90,7 +89,6 @@ public class VertxHelper {
     /**
      * Create a VertxHelper instance as an http client.
      * 
-     * @param engine The JavaScript engine of the JavaScript actor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
