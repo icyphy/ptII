@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2014 The Regents of the University of California.
+# @Copyright (c) 2004-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -171,8 +171,8 @@ test Test-1.4.1 {If fire() is not called, throw an Exception} {
     catch {[$e5 getManager] execute} errMsg
 
     list [string range $errMsg 0 176]
-} {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
-  in .top.test5}}
+} {{ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usua}}
 
 ######################################################################
 #### 
@@ -378,8 +378,15 @@ test Test-2.2.3 {Fail the array test with insufficient data} {
     puts [$e22 exportMoML]
     catch {[$e22 getManager] execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+} {{ptolemy.kernel.util.IllegalActionException: Exceptions occurred during wrapup:
+ptolemy.kernel.util.IllegalActionException: The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
+  in .top.test
+
+  in .top.<Unnamed Object>
+Because:
+The test produced only 2 tokens, yet the correctValues parameter was expecting 3 tokens.
   in .top.test}}
+
 
 ######################################################################
 #### 
