@@ -1,0 +1,28 @@
+$Id$
+
+The FMUImport actor looks for the FMUImport shared library in $PTII/lib.
+
+After editing jniToFMU, to update the shared library in $PTII/lib, run
+
+  make update
+
+Then, when you are satisfied with your changes, commit the shared library.
+
+
+Under Linux, be sure to run the build under RHEL *NOT* Ubuntu.
+
+This is because RHEL uses an older version of GLIBC.
+
+So much for binary compatibility.
+
+terra.eecs.berkeley.edu is a good RHEL machine to build this on.
+
+If you build and install under Ubuntu, then the nightly build will fail with:
+
+
+java.lang.UnsatisfiedLinkError: /home/jenkins/workspace/ptII/lib/libFMUImport.so: /lib64/libc.so.6: version GLIBC_2.14 not found (required by /home/jenkins/workspace/ptII/lib/libFMUImport.so)
+
+
+Note that you must also build, install and commit under Mac OS X.
+
+Windows is not currently supported.
