@@ -67,9 +67,9 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-FMUIMPORTJNI=FMUImport
+JNIFMU=JNIFMU
 
-PTLIB = $(PTJNI_SHAREDLIBRARY_PREFIX)$(FMUIMPORTJNI).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+PTLIB = $(PTJNI_SHAREDLIBRARY_PREFIX)$(JNIFMU).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 JNISRCS= jniToFmu.c
 
@@ -85,8 +85,8 @@ jclass: $(PTLIB)
 jni: $(PTLIB)
 
 #jniTofmu.c has the definition of runNativeFMU in it, so we don't need to run this.
-#$(JNISRCS): $(FMUIMPORTJNI).h
-#	javah -classpath $(CLASSPATH) -o $(FMUIMPORTJNI).h ptolemy.actor.lib.fmi.$(FMUIMPORTJNI)
+#$(JNISRCS): $(JNIFMU).h
+#	javah -classpath $(CLASSPATH) -o $(JNIFMU).h ptolemy.actor.lib.fmi.FMUImport
 
 $(PTLIB): $(JNISRCS)
 	$(PTCC) $(PTJNI_NO_CYGWIN) \
