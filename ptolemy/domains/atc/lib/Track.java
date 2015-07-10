@@ -50,6 +50,18 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class Track extends TypedAtomicActor implements Rejecting{
 
+    /** Create a new Track actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public Track(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -60,8 +72,13 @@ public class Track extends TypedAtomicActor implements Rejecting{
         delay.setExpression("1.0");
     }
     
+    /** The input port.  The type is not specified. */
     public TypedIOPort input;
+
+    /** The output port.  The type is not specified. */
     public TypedIOPort output;
+
+    /** The delay.  The default is 1.0 */
     public Parameter delay;
     
     @Override
