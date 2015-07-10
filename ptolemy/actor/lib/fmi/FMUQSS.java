@@ -801,7 +801,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // and appended by {@link UtilityFunctions#loadLibrary}) for
             // portability.
 
-            String buildLibrary = "ptolemy/actor/lib/fmi/jni/fmuqss/FMUQSS";
+            String buildLibrary = "ptolemy/actor/lib/fmi/jni/FMUQSS";
             String installLibrary = "lib/libFMUQSS";
             try {
                 if (_debugging) {
@@ -1772,45 +1772,48 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 Parameter parameter = (Parameter) getAttribute(sanitizedName,
                         Parameter.class);
                 if (parameter != null) {
-                    if (!_useRawJNI()) {
-                        try {
-                            _setFMUScalarVariable(scalar, parameter.getToken());
-
-                        } catch (IllegalActionException ex) {
-                            throw new IllegalActionException(this,
-                                    "Failed to set " + scalar.name + " to "
-                                            + parameter.getToken());
-                        } catch (RuntimeException runtimeException) {
-                            // FIXME: we are reusing supressWarnings here
-                            // because the AMS model throws an exception
-                            // while trying to set hx.hc.
-                            if (!((BooleanToken) suppressWarnings.getToken())
-                                    .booleanValue()) {
+                    try {
+                        if (_useRawJNI()) {
+                            if (scalar.type instanceof FMIRealType) {
+                                final double tmp_uu[] = { ((DoubleToken) parameter
+                                        .getToken()).doubleValue() };
+                                final long tmp_uuRef[] = { scalar.valueReference };
+                                // Set the inputs which have changed.
+                                runNativeFMU(_fmiJNIComponent, 7, null, null,
+                                        null, 0.0, 0.0, getDirector()
+                                                .getModelTime()
+                                                .getDoubleValue(), 0, 0.0, 0,
+                                        0, null, null, null, null, tmp_uu,
+                                        tmp_uuRef, null, null, 0, null, null,
+                                        null, null, null);
+                            } else {
                                 throw new IllegalActionException(
                                         this,
-                                        runtimeException,
-                                        "Failed to set "
-                                                + scalar.name
-                                                + " to "
-                                                + parameter.getToken()
-                                                + ".  To ignore this exception, set the supressWarnings parameter.");
+                                        "useRawJNI is true, "
+                                                + "but but only doubles are suported. "
+                                                + "the type was " + scalar.type);
                             }
-                        }
-                    } else {
-                        if (scalar.type instanceof FMIRealType) {
-                            final double uu[] = { ((DoubleToken) parameter
-                                    .getToken()).doubleValue() };
-                            final long uuRef[] = { scalar.valueReference };
-                            // Set the inputs which have changed.
 
-                            _fmiSetRealJNI(uu, uuRef, _director.getModelTime()
-                                    .getDoubleValue());
                         } else {
-                            new Exception("Warning: The Parameter "
-                                    + scalar.name + " is of type "
-                                    + scalar.type + " .But only parameters "
-                                    + "from type FMIRealType are updated.")
-                                    .printStackTrace();
+                            _setFMUScalarVariable(scalar, parameter.getToken());
+                        }
+                    } catch (IllegalActionException ex) {
+                        throw new IllegalActionException(this, "Failed to set "
+                                + scalar.name + " to " + parameter.getToken());
+                    } catch (RuntimeException runtimeException) {
+                        // FIXME: we are reusing supressWarnings here
+                        // because the AMS model throws an exception
+                        // while trying to set hx.hc.
+                        if (!((BooleanToken) suppressWarnings.getToken())
+                                .booleanValue()) {
+                            throw new IllegalActionException(
+                                    this,
+                                    runtimeException,
+                                    "Failed to set "
+                                            + scalar.name
+                                            + " to "
+                                            + parameter.getToken()
+                                            + ".  To ignore this exception, set the supressWarnings parameter.");
                         }
                     }
                 }
