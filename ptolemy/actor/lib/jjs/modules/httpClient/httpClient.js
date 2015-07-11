@@ -161,15 +161,15 @@ function ClientRequest(options, reponseCallback) {
             port = 80;
         }
     }
-    options = {
-        'url':{
-            'host':url.getHost(),
-            'path':url.getPath(),
-            'port':port,
-            'protocol':url.getProtocol(),
-            'query':url.getQuery()
-            }
+
+    options.url = {
+                'host':url.getHost(),
+                'path':url.getPath(),
+                'port':port,
+                'protocol':url.getProtocol(),
+                'query':url.getQuery()
     };
+    	
   } else {
     options.url = util._extend(defaultURL, options.url);
   }
@@ -180,6 +180,19 @@ function ClientRequest(options, reponseCallback) {
   // a 'response' event.  
   if (reponseCallback) {
     self.once('response', reponseCallback);
+  }
+  
+  // Set the Content-Length header
+  if (options.body != null) {
+	  var headers;
+	  if (typeof options.headers == "undefined") {
+		  headers = {};
+	  } else {
+		  headers = options.headers;
+	  }
+
+	  headers['Content-Length'] = options.body.length;
+	  options.headers = headers;
   }
   
   console.log("Making an HTTP request: " + JSON.stringify(options));
@@ -203,9 +216,13 @@ ClientRequest.prototype.stop = function() {
     }
 };
 
-// FIXME:
+// FIXME:  Writing is currently implemented as part of ClientRequest().  The 
+// body is passed in as part of the options object, options.body.  
+// ClientRequest() both creates and sends the request; the request object is not 
+// returned to httpClient.js.
+// We may need something different for multi-part requests? 
 ClientRequest.prototype.write = function(data, encoding) {
-   throw("Write not supported yet");
+   throw("Write is implemented as part of ClientRequest()");
 }
 
 /** Internal method used to handle a response. The argument is an
