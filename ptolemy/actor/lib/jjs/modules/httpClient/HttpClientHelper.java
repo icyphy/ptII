@@ -187,10 +187,19 @@ public class HttpClientHelper extends VertxHelperBase {
         	Object value = headers.get(key);
         	if (value instanceof String) {
         	    _request.putHeader((String)key, (String)value);
+        	} else if (value instanceof Integer) {
+        	    _request.putHeader((String) key, 
+        	            ((Integer) value).toString());
         	} else if (value instanceof Iterable) {
         	    _request.putHeader((String)key, (Iterable<String>)value);
         	}
             }
+        }
+        
+        // Handle the body, if present.
+        String body = (String) options.get("body");
+        if (body != null) {
+            _request.write(body);
         }
     }
 
