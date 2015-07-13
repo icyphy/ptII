@@ -1179,6 +1179,40 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
     }
 
     /**
+	 * Return the input scalar dependency for a given FMI scalar.
+	 *
+	 * @param scalar The FMI scalar output port for which you want the
+	 * FMI input scalar dependency list.
+	 * @return the list of input ports that directly influence the
+	 * value of the given output port. If port is not an output port
+	 * return null.
+	 */
+	public List<FMIScalarVariable> getInputDependencyList(
+	        FMIScalarVariable scalar) {
+	    List<FMIScalarVariable> inputVariables = new ArrayList<FMIScalarVariable>();
+	
+	    if (scalar != null) {
+	        for (String inputScalarName : scalar.directDependency) {
+	            for (FMIScalarVariable inputVar : _fmiModelDescription.modelVariables) {
+	                if (inputVar.name.equals(inputScalarName))
+	                    inputVariables.add(inputVar);
+	            }
+	        }
+	    }
+	    return inputVariables;
+	}
+
+	/**
+	 * Return the list of all the scalar variables defined in the FMU
+	 * interface.
+	 *
+	 * @return the list of ScalarVariables
+	 */
+	public List<FMIScalarVariable> getScalarVariables() {
+	    return _fmiModelDescription.modelVariables;
+	}
+
+	/**
      * Import a FMUFile.
      *
      * @param originator The originator of the change request.
@@ -2058,6 +2092,67 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
     }
 
     /**
+	 * Interface to the FMU.
+	 *
+	 * <p>
+	 * This methods calls the FMU using JNI with different flags.
+	 * 0: Instantiate.
+	 * 1: Initialize.
+	 * 2: Enter event mode.
+	 * 3: Enter continuous mode.
+	 * 4: Get continuous states.
+	 * 5: Get state derivatives.
+	 * 6: Set continuous states.
+	 * 7: Set single inputs.
+	 * 8: Get single outputs.
+	 * 9: Complete integrator.
+	 * -1: Terminate simulation.
+	 * -10: Get directional derivatives."
+	 * </p>
+	 * @param idx The index of the FMU instance.
+	 * @param fla The flag to determine the FMI functions to call.
+	 * @param instance The FMU instance name.
+	 * @param jniResourceLocation The path to the FMU native library.
+	 * @param fmuResourceLocation The path to the FMU resource location.
+	 * @param tStart The FMU simulation start time.
+	 * @param tEnd the FMU simulation end time.
+	 * @param time The current simulation time.
+	 * @param toleranceDefined the flag is true if sover tolerance is defined.
+	 * @param tolerance The FMU solver tolerance.
+	 * @param visible The FMU visible flag.
+	 * @param loggingOn The FMU logginOn flag.
+	 * @param guid The FMU GUID.
+	 * @param continuousStateDerivatives The FMU state derivatives to get.
+	 * @param continuousStatesFromFMU The FMU continuous states to get.
+	 * @param continuousStatesToFMU The FMU continuous states to set.
+	 * @param inputValues The FMU input values.
+	 * @param inputValueReferences The FMU input value references.
+	 * @param outputValues The FMU output values.
+	 * @param outputValueReferences The FMU output value references.
+	 * @param continuousStateDerivativesValueReference The FMU state derivative value reference.
+	 * @param directionalStateDerivatives The FMU directional state derivatives.
+	 * @param directionalStateDerivativesValueReferences The FMU directional state derivatives value references.
+	 * @param directionalInputDerivatives The FMU directional input derivatives.
+	 * @param directionalInputDerivativesValueReferences The FMU directional input derivatives value references.
+	 * @param continuousSecondDerivatives The FMU second derivatives.
+	 * @return FMU instance The index when fla is zero.
+	 */
+	public static native int runNativeFMU(int idx, int fla, String instance,
+	        String jniResourceLocation, String fmuResourceLocation,
+	        double tStart, double tEnd, double time, int toleranceDefined,
+	        double tolerance, int visible, int loggingOn, String guid,
+	        double[] continuousStateDerivatives,
+	        double[] continuousStatesFromFMU, double[] continuousStatesToFMU,
+	        double[] inputValues, long[] inputValueReferences,
+	        double[] outputValues, long[] outputValueReferences,
+	        long continuousStateDerivativesValueReference,
+	        double[] directionalStateDerivatives,
+	        long[] directionalStateDerivativesValueReferences,
+	        double[] directionalInputDerivatives,
+	        long[] directionalInputDerivativesValueReferences,
+	        double[] continuousSecondDerivatives);
+
+	/**
      * Return the suggested next step size. This method returns 0.0 if the
      * previous invocation of fmiDoStep() was discarded, in order to force a
      * zero-time integration step after an event is detected by the FMU.
@@ -2112,44 +2207,12 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         super.wrapup();
     }
 
-    /**
-     * Return the list of all the scalar variables defined in the FMU
-     * interface.
-     *
-     * @return the list of ScalarVariables
-     */
-    public List<FMIScalarVariable> getScalarVariables() {
-        return _fmiModelDescription.modelVariables;
-    }
-
-    /**
-     * Return the input scalar dependency for a given FMI scalar.
-     *
-     * @param scalar The FMI scalar output port for which you want the
-     * FMI input scalar dependency list.
-     * @return the list of input ports that directly influence the
-     * value of the given output port. If port is not an output port
-     * return null.
-     */
-    public List<FMIScalarVariable> getInputDependencyList(
-            FMIScalarVariable scalar) {
-        List<FMIScalarVariable> inputVariables = new ArrayList<FMIScalarVariable>();
-
-        if (scalar != null) {
-            for (String inputScalarName : scalar.directDependency) {
-                for (FMIScalarVariable inputVar : _fmiModelDescription.modelVariables) {
-                    if (inputVar.name.equals(inputScalarName))
-                        inputVariables.add(inputVar);
-                }
-            }
-        }
-        return inputVariables;
-    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Determine if the model description is acceptable.  For example
+	/** Determine if the model description is acceptable.  For example
      *  a derived class that imports FMI-2.0 ME FMUs might throw an
      *  exception.
      *  @param fmiModelDescription The description of the model to be checked.
@@ -4500,66 +4563,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         }
     }
 
-    /**
-     * Interface to the FMU.
-     *
-     * <p>
-     * This methods calls the FMU using JNI with different flags.
-     * 0: Instantiate.
-     * 1: Initialize.
-     * 2: Enter event mode.
-     * 3: Enter continuous mode.
-     * 4: Get continuous states.
-     * 5: Get state derivatives.
-     * 6: Set continuous states.
-     * 7: Set single inputs.
-     * 8: Get single outputs.
-     * 9: Complete integrator.
-     * -1: Terminate simulation.
-     * -10: Get directional derivatives."
-     * </p>
-     * @param idx The index of the FMU instance.
-     * @param fla The flag to determine the FMI functions to call.
-     * @param instance The FMU instance name.
-     * @param jniResourceLocation The path to the FMU native library.
-     * @param fmuResourceLocation The path to the FMU resource location.
-     * @param tStart The FMU simulation start time.
-     * @param tEnd the FMU simulation end time.
-     * @param time The current simulation time.
-     * @param toleranceDefined the flag is true if sover tolerance is defined.
-     * @param tolerance The FMU solver tolerance.
-     * @param visible The FMU visible flag.
-     * @param loggingOn The FMU logginOn flag.
-     * @param guid The FMU GUID.
-     * @param continuousStateDerivatives The FMU state derivatives to get.
-     * @param continuousStatesFromFMU The FMU continuous states to get.
-     * @param continuousStatesToFMU The FMU continuous states to set.
-     * @param inputValues The FMU input values.
-     * @param inputValueReferences The FMU input value references.
-     * @param outputValues The FMU output values.
-     * @param outputValueReferences The FMU output value references.
-     * @param continuousStateDerivativesValueReference The FMU state derivative value reference.
-     * @param directionalStateDerivatives The FMU directional state derivatives.
-     * @param directionalStateDerivativesValueReferences The FMU directional state derivatives value references.
-     * @param directionalInputDerivatives The FMU directional input derivatives.
-     * @param directionalInputDerivativesValueReferences The FMU directional input derivatives value references.
-     * @param continuousSecondDerivatives The FMU second derivatives.
-     * @return FMU instance The index when fla is zero.
-     */
-    public static native int runNativeFMU(int idx, int fla, String instance,
-            String jniResourceLocation, String fmuResourceLocation,
-            double tStart, double tEnd, double time, int toleranceDefined,
-            double tolerance, int visible, int loggingOn, String guid,
-            double[] continuousStateDerivatives,
-            double[] continuousStatesFromFMU, double[] continuousStatesToFMU,
-            double[] inputValues, long[] inputValueReferences,
-            double[] outputValues, long[] outputValueReferences,
-            long continuousStateDerivativesValueReference,
-            double[] directionalStateDerivatives,
-            long[] directionalStateDerivativesValueReferences,
-            double[] directionalInputDerivatives,
-            long[] directionalInputDerivativesValueReferences,
-            double[] continuousSecondDerivatives);
+    
 
 
     ///////////////////////////////////////////////////////////////////
