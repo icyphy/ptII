@@ -1648,7 +1648,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @param curIdx The input index.
      *  @throws IllegalActionException If the input cannot be set.
      */
-    private void _handleInput(Input input, Time currentTime, Token token,
+    private boolean _handleInput(Input input, Time currentTime, Token token,
             int curIdx) throws IllegalActionException {
         // Here we have gotten a SmoothToken which has derivatives information. We assume
         // this token to be a quantized state since it does contain value and non-zero
@@ -1658,6 +1658,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 && (((SmoothToken) token).derivativeValues() != null)) {
             // Update the model.
             _updateInputModel(input, currentTime, token, curIdx);
+            return true;
         }
         // Handle cases where we have a smooth token with zero derivatives.
         else if (token instanceof SmoothToken
@@ -1668,6 +1669,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _updateInputModel(input, currentTime, token, curIdx);
                 // Save the last double seen at this port
                 _inputs.get(curIdx).lastDoubleInput = inputDoubleValue;
+                return true;
             }
         }
         // Handle cases where we have a double token.
@@ -1678,6 +1680,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _updateInputModel(input, currentTime, token, curIdx);
                 // Save the last double seen at this port
                 _inputs.get(curIdx).lastDoubleInput = inputDoubleValue;
+                return true;
             }
         } else if (!(token instanceof SmoothToken)
                 && !(token instanceof DoubleToken)) {
@@ -1689,6 +1692,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         input.port.getName()));
             }
         }
+        return false;
     }
     
     /**
@@ -2232,7 +2236,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (input.port.hasNewToken(0)) {
                 // Here, have a new value on the input port.
                 final Token token = input.port.get(0);
-                _handleInput(input, currentTime, token, curIdx);
+                if(!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
                 updatedInputVarMdl = true;
             }       
         }
