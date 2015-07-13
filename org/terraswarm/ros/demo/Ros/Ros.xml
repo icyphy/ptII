@@ -11,23 +11,23 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ROS accessors publish and subscribe to a ROS robot or simulator that runs&#10;rosbridge. rosbridge interfaces ROS topics with non-ROS programs. Some of these&#10;accessors are developed for the Scarab ground robot.   &#10;&#10;There are five ROS accessors:&#10;&#10;&#10;ScarabArrowKeyController controls a Scarab robot using the keyboards arrow keys. This demo uses the &#10;RosSubscriber and ScarabGoalPublisher accessor too. &#10;&#10;&#10;&#10;&#10;ScarabHueController controls the light closest to the Scarab. For example, in a disaster scenario,&#10;Scarab can find the path out of a hazardous area, and turn on the lights along that exit path.&#10;This is combined with a RosSubscriber to get pose input and the Hue accessor to control the light bulbs.&#10;&#10;&#10;&#10;ScarabGoalPublisher publishes waypoints to the &quot;/goal&quot; topic of Scarab.&#10;&#10;&#10;&#10;&#10;RosSubscriber is a general subscriber to a ROS topic. To subscribe to Scarab's current position, set&#10;the input topic to &quot;/pose&quot;.&#10;&#10;&#10;&#10;RosPublisher is a general publisher to a ROS topic. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ROS demo's use the RosPublisher and RosSubscriber accessors to interface with&#10;ROS topics. These topics can be established by the Scarab robot or a simulator that runs&#10;rosbridge. rosbridge interfaces ROS topics with non-ROS programs. &#10;&#10;There are five ROS demo's:&#10;&#10;RosSubscriber is a general subscriber to a ROS topic.&#10;&#10;&#10;RosPublisher is a general publisher to a ROS topic. &#10;&#10;&#10;ScarabArrowKeyController controls a Scarab robot using the keyboards arrow keys. This demo uses the &#10;RosSubscriber and RosPublisher accessor too. &#10;&#10;&#10;ScarabHueController controls the light closest to the Scarab. For example, in a disaster scenario,&#10;Scarab can find the path out of a hazardous area, and turn on the lights along that exit path.&#10;This is combined with a RosSubscriber to get pose input and the Hue accessor to control the light bulbs.&#10;&#10;&#10;&#10;ScarabGoalPublisher publishes waypoints to the &quot;/goal&quot; topic of Scarab.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, -150.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={361, 148, 1060, 752}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={361, 148, 1060, 780}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 663]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.000000000000007">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000078">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{370.7342202970297, 98.31598081683168}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{387.9352568069306, 7.749767945544534}">
     </property>
     <property name="Publisher2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="RosPublisher Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 20.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -58,7 +58,7 @@
     <property name="Publisher4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ScarabGoalPublisher Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 230.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabGoalPublisher.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -99,7 +99,7 @@
     <property name="Publisher5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="RosSubscriber Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, -30.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/ros/demo/Ros/RosSubscriber.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -130,7 +130,7 @@
     <property name="Publisher" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ScarabArrowKeyController Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 85.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabArrowKeyController.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -161,7 +161,7 @@
     <property name="Publisher3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ScarabHueController Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 165.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/ros/demo/Ros/ScarabHueController.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
