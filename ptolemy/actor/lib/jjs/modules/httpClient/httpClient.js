@@ -161,15 +161,14 @@ function ClientRequest(options, reponseCallback) {
             port = 80;
         }
     }
-
+    options = {};
     options.url = {
                 'host':url.getHost(),
                 'path':url.getPath(),
                 'port':port,
                 'protocol':url.getProtocol(),
                 'query':url.getQuery()
-    };
-    	
+    };    	
   } else {
     options.url = util._extend(defaultURL, options.url);
   }
