@@ -42,10 +42,12 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 170.0]">
         </property>
     </property>
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
+        <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
+        </property>
         <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/httpClient/test/auto">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 65.0]">
@@ -67,7 +69,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 145.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -192,7 +194,7 @@
             </property>
         </port>
         <entity name="HttpActor" class="org.ptolemy.ptango.lib.HttpActor">
-            <property name="path" class="ptolemy.data.expr.StringParameter" value="/hosts/swarmbox007/devices/">
+            <property name="path" class="ptolemy.data.expr.StringParameter" value="/hosts/swarmbox007/devices">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 360.0]">
             </property>
@@ -346,7 +348,7 @@
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 350.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[837.0, 395.0]">
             </property>
         </port>
         <entity name="RESTWithBody" class="org.terraswarm.accessor.JSAccessor">
@@ -354,9 +356,9 @@
             </property>
             <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/accessors/web/net/RESTWithBody.js">
             </property>
-            <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{headers = {&quot;Content-Type&quot; = &quot;application/x-www-form-urlencoded&quot;}, method = &quot;POST&quot;, url = &quot;http://localhost:8078&quot;}">
+            <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{headers = {&quot;Content-Type&quot; = &quot;application/x-www-form-urlencoded&quot;}, method = &quot;POST&quot;, url = baseURL}">
             </property>
-            <property name="command" class="ptolemy.actor.parameters.PortParameter" value="&quot;hosts/swarmbox007/devices/&quot;">
+            <property name="command" class="ptolemy.actor.parameters.PortParameter" value="&quot;hosts/swarmbox007/devices&quot;">
             </property>
             <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="&quot;&quot;">
             </property>
@@ -466,7 +468,7 @@
             </property>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;hosts/swarmbox007/devices/&quot;">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;hosts/swarmbox007/devices&quot;">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -508,7 +510,7 @@
         <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
             <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="\r">
             </property>
-            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&quot;&lt;!DOCTYPE html&gt; &lt;head&gt; &lt;meta charset=\&quot;utf-8\&quot;&gt; &lt;title&gt;Data received&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Received hello&lt;/body&gt;&lt;/html&gt;&quot;">
+            <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&quot;Request timed out\r\n&quot;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 455.0]">
@@ -516,6 +518,23 @@
         </entity>
         <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 437.5]">
+            </property>
+        </entity>
+        <entity name="Const4" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 315.0]">
+            </property>
+        </entity>
+        <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{800, 360}">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -542,8 +561,12 @@
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="start" relation="relation8"/>
-        <link port="done" relation="relation9"/>
+        <link port="done" relation="relation12"/>
         <link port="RESTWithBody.options" relation="relation6"/>
         <link port="RESTWithBody.command" relation="relation5"/>
         <link port="RESTWithBody.trigger" relation="relation2"/>
@@ -566,6 +589,10 @@
         <link port="StringReplace.output" relation="relation7"/>
         <link port="TokenToExpression.input" relation="relation9"/>
         <link port="TokenToExpression.output" relation="relation10"/>
+        <link port="Const4.output" relation="relation11"/>
+        <link port="Const4.trigger" relation="relation9"/>
+        <link port="MicrostepDelay.input" relation="relation11"/>
+        <link port="MicrostepDelay.output" relation="relation12"/>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 255.0]">
