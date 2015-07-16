@@ -1,0 +1,11 @@
+{
+  "name": "IMUSensor",
+  "version": "0.1.0",
+  "main": "IMUSensor.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Hunter Massey"
+    , "email" : "hunter.massey@utdallas.edu"}
+  ],
+  "description": "A package to access Roozbeh's MotionNet sensors over Bluetooth."
+}
