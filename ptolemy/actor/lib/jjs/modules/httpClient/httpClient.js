@@ -130,7 +130,7 @@ exports.get = function(options, reponseCallback) {
  */
 function ClientRequest(options, reponseCallback) {
   var self = this;
-  
+
   var defaultOptions = {
     'headers':{},
     'keepAlive':false,
@@ -149,6 +149,7 @@ function ClientRequest(options, reponseCallback) {
   var urlSpec;
   if (util.isString(options)) {
     urlSpec = options;
+    options = {};  // If only URL is passed in, create new options object 
   } else if (util.isString(options.url)) {
     urlSpec = options['url'];
   }
@@ -161,7 +162,7 @@ function ClientRequest(options, reponseCallback) {
             port = 80;
         }
     }
-    options = {};
+    
     options.url = {
                 'host':url.getHost(),
                 'path':url.getPath(),
