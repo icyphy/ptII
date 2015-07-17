@@ -588,6 +588,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _quantumScaleFactor = _director.getQuantumScaleFactor();
             _internalRelativeQuantum = _director.getRelativeQuantum()
                     * _quantumScaleFactor;
+            _internalAbsoluteQuantum = _director.getAbsoluteQuantum()
+                    * _quantumScaleFactor;
 
             // Initialize number of continuous states.
             double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
@@ -1092,8 +1094,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _qssSolver = _director.newQSSSolver();
         _qssSolver.initializeDerivativeFunction(this);
         _qssSolver.initializeSimulationTime(currentTime);
-        _qssSolver
-                .setQuantizationEventTimeMaximum(_director.getModelStopTime());
+        _qssSolver.setQuantizationEventTimeMaximum(_director.getModelStopTime());
 
         // Get initial state values from FMU.
         // TODO: Does the FMUQSS need to carry {_states}? Shouldn't all state
@@ -1128,23 +1129,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         //double internalAbsoluteQuantum = _director.getAbsoluteQuantum() * _quantumScaleFactor;
         //final double internalRelativeQuantum = _director.getRelativeQuantum() * _quantumScaleFactor;
         for (int ii = 0; ii < stateCt; ++ii) {
-            // If the relativeQuantum is greater than 0.0, then use the
-            // nominal value for the state, given by the FMU, to set the
-            // absolute quantum. Specifically, if the relativeQuantum
-            // times the nominal value is greater than the given absoluteQuantum,
-            // then change the absoluteQuantum to be the product of the nominal
-            // value and the relativeQuantum.
-            // Thus a state with nominal value 1000 will have an absolute
-            // quantum 1000 times greater than a state with nominal value 1.
+            // If the relativeQuantum and absolute quantum are greater than 0.0, then use the
+            // nominal value for the state, given by the FMU to scale those values.
             final double nominalValue = _fmiModelDescription.continuousStates
                     .get(ii).nominal.doubleValue();
-            double modifiedInternalAbsoluteQuantum = Math.abs(nominalValue)
+            double modifiedInternalRelativeQuantum = Math.abs(nominalValue)
                     * _internalRelativeQuantum;
+            double modifiedInternalAbsoluteQuantum = Math.abs(nominalValue)
+            		* _internalAbsoluteQuantum;         
             if (modifiedInternalAbsoluteQuantum < absoluteQuantumMinimum) {
-                modifiedInternalAbsoluteQuantum = absoluteQuantumMinimum;
+            	modifiedInternalAbsoluteQuantum = absoluteQuantumMinimum;
             }
             _qssSolver.setQuantizationTolerance(ii,
-                    modifiedInternalAbsoluteQuantum, _internalRelativeQuantum);
+            		modifiedInternalAbsoluteQuantum, modifiedInternalRelativeQuantum);
         }
 
         // Tell integrator to quantize.
@@ -1997,8 +1994,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private void _sendModelToPort(final double[] val, final TypedIOPort prt,
             Time time, int index, boolean isState) throws NoRoomException,
             IllegalActionException {
-
-        double relativeQuantumUpscale = _internalRelativeQuantum
+        // Make sure that the outputQuantum is non zero.
+        double outputQuantum = Math.max(_internalRelativeQuantum, _internalAbsoluteQuantum)
                 / _quantumScaleFactor;
         // Handle outputs which are states.      
         if (isState) {
@@ -2006,16 +2003,16 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
                     .get(_fmiModelDescription.continuousStates.get(index).name);       
             // Evaluate the continuous state model at this current time.
-            final double conStaMdl = _qssSolver.evaluateStateModelContinuous(index, time);
+            final double qStaMdl = _qssSolver.evaluateStateModel(index, time);
             double epsilon = 0;          
             if (_firstRound) {
                 prt.send(0, new SmoothToken(val, time));
-                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = conStaMdl;
+                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = qStaMdl;
                 epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
                 // Update model variable hasChanged field.
                 _updateModelVariableAttribute(modVarIdx, true);
             } else {
-                if (Math.abs(conStaMdl - lastConStaMdl) <= Math.abs(epsilon)) {
+                if (Math.abs(qStaMdl - lastConStaMdl) <= Math.abs(epsilon)) {
                     // Update model variable hasChanged field.
                     _updateModelVariableAttribute(modVarIdx, false);
                     return;
@@ -2023,7 +2020,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     prt.send(0, new SmoothToken(val, time));
                     // Update model variable hasChanged field.
                     _updateModelVariableAttribute(modVarIdx, true);
-                    _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = conStaMdl;
+                    _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = qStaMdl;
                     epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
                 }
             }
@@ -2033,10 +2030,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             double epsilon = 0;
             double lastDblOut = _outputs.get(index).lastDoubleOutput;
             if (_firstRound) {
-                //prt.send(0, new SmoothToken(val, time));
                 prt.send(0, new SmoothToken(val, time));
                 _outputs.get(index).lastDoubleOutput = val[0];
-                epsilon = Math.abs(relativeQuantumUpscale * _outputs.get(index).lastDoubleOutput);
+                epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
             } else {
                 if (Math.abs(val[0] - lastDblOut) <= Math.abs(epsilon)) {
                     return;
@@ -2055,7 +2051,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         return;
                     prt.send(0, new SmoothToken(val, time));
                     _outputs.get(index).lastDoubleOutput = val[0];
-                    epsilon = Math.abs(relativeQuantumUpscale * _outputs.get(index).lastDoubleOutput);
+                    epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
                 }
             }
         }
@@ -2337,10 +2333,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** Vector of input value references. */
     private long[] _inputValueReferences;
+    
+    /** Internal absolute quantum. */
+    private double _internalAbsoluteQuantum;
 
     /** Internal relative quantum. */
     private double _internalRelativeQuantum;
-
+    
     /** Track requests for firing. */
     private Time _lastFireAtTime;
 
