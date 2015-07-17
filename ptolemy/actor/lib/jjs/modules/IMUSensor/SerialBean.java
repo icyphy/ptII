@@ -115,7 +115,7 @@ public class SerialBean {
         String Msg = null;
 	try{
         Msg = SB.GetMsg(Length);
-	} catch(Exception e) {}
+	} catch(Exception e) {e.printStackTrace();}
         return Msg;
     }
 

@@ -42,16 +42,14 @@ public class ReaderM extends Thread {
     
     /** isStart is true when the thread has been started */
     public boolean isStart = false;
-    /** A boolean that is set to true when the input buffer becomes full */
-    public boolean full = false;
    
     char dataCount = 0; // The current count of data bytes that have been read in from a packet
     int com; // The communication port number
     int baudRate; // The baud rate of the serial port
     SerialBean sb = null; // SerialBean takes care of serial port communication on a lower level
-    final char DLE = 0x10; // "Data Link Escape" character, signals that next value is a control value
-    final char SOH = 0x01; // "Start of Header" character, signals start of non-data header value
-    final char EOT = 0x04; // "End of Transmission" character, signals end of a single    
+    static final char DLE = 0x10; // "Data Link Escape" character, signals that next value is a control value
+    static final char SOH = 0x01; // "Start of Header" character, signals start of non-data header value
+    static final char EOT = 0x04; // "End of Transmission" character, signals end of a single    
 
     private int window = 0; // The window size of the circular buffer
     private int bufIndex = 0; // Holds the current index in circular buffer to which next sample will be placed
@@ -106,7 +104,7 @@ public class ReaderM extends Thread {
 
 			try{
 	                        cData = (char) sb.ReadPort(1).toCharArray()[0];
-			} catch(Exception e){}
+			} catch(Exception e){e.printStackTrace();}
                         if ((pData == DLE) && (cData == DLE)) 
                         {
                             pData = cData;
@@ -175,7 +173,6 @@ public class ReaderM extends Thread {
         bufIndex++;
         if(bufIndex == window)
         {
-            full = true;
             bufIndex = window - 1;
         }
     }

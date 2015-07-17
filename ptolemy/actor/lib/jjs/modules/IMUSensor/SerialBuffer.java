@@ -48,7 +48,7 @@ public class SerialBuffer {
      *
      */
     public synchronized void PutChar(int c) {
-        Character d = new Character((char) c);
+        Character d = Character.valueOf((char) c);
         Content = Content.concat(d.toString());
         if (LengthNeeded < Content.length()) {
             available = true;

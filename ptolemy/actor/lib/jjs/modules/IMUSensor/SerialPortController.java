@@ -49,13 +49,11 @@ public class SerialPortController {
     
     // Parameters for the program
     private static int baudrate = 115200; 
-    private static int r1COM;
+    private int r1COM;
     private static int window = 60;
     //input correct values before running
     
-    private static ReaderM h1;
-    private Thread collect;
-    private boolean running = false;
+    private ReaderM h1;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -72,7 +70,6 @@ public class SerialPortController {
         h1 = new ReaderM(r1COM, baudrate, window);
         h1.start();
         h1.isStart = true;
-        running = true;
     }
 
     /** Grab the latest unread sample from the buffer and return it. Returns latest sample 
@@ -99,7 +96,6 @@ public class SerialPortController {
     /** Stops the reading ReaderM thread and terminates the serial connection */
     public void stop(){
         h1.isStart = false;
-        running = false;
 	h1.stopRead();
     }
 }
