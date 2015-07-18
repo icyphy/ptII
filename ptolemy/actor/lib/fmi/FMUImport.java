@@ -1105,7 +1105,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 						}
 						// Produce an output if the quantum has been crossed.
 						else {
-							double epsilon = Math.abs(_quantum
+							double epsilon = Math.abs(_outputQuantum
 									* output.lastDoubleOutput);
 							if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
 								continue;
@@ -1537,10 +1537,14 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         Director director = getDirector();
         if ((director instanceof QSSDirector)) {
             _useQSS = true;
-            // get the quantum which will be used to determine whether 
+            // Get the quantum which will be used to determine whether 
             // outputs should be produced or not.
-            _quantum = Math.max( ((QSSDirector)getDirector()).getRelativeQuantum(), 
-            		((QSSDirector)getDirector()).getAbsoluteQuantum());
+            _outputQuantum = ((QSSDirector)getDirector()).getRelativeQuantum();
+            // Check if the relative quantum is zero and assert if that is the case. 
+            if (_outputQuantum == 0.0) {
+                throw new IllegalActionException(this,
+                        "The relative quantum of the QSSDirector cannot be null.");
+            }
             
         }
 
@@ -4713,7 +4717,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
     private long _outputsVersion = -1;
     
     /** The output quantum if QSS is used. */
-    public double _quantum;
+    public double _outputQuantum;
 
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
