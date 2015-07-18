@@ -470,6 +470,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Set a flag so the first call to fire() can do appropriate
         // initialization.
         _firstRound = true;
+        // Initialize the quantum scale factor
+        _quantumScaleFactor = _director.getQuantumScaleFactor();
+        // Intitialize the internal relative quantum
+        _internalRelativeQuantum = _director.getRelativeQuantum()
+                * _quantumScaleFactor;
+        // Check if the relative quantum is zero. It is guaranteed 
+        // that the _quantumScaleFactor is never null.
+        if (_internalRelativeQuantum == 0.0) {
+            throw new IllegalActionException(this,
+                    "The relative quantum of the QSSDirector cannot be null.");
+        }
 
         if (!_useRawJNI()) {
             // Initialize FMU parameters.
@@ -585,15 +596,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final Time startTime = _director.getModelStartTime();
             final Time stopTime = _director.getModelStopTime();
             final double timeValue = currentTime.getDoubleValue();
-            _quantumScaleFactor = _director.getQuantumScaleFactor();
-            _internalRelativeQuantum = _director.getRelativeQuantum()
-                    * _quantumScaleFactor;
-            // Check if the relative quantum is zero. It is guaranteed 
-            // that the _quantumScaleFactor is never null.
-            if (_internalRelativeQuantum == 0.0) {
-                throw new IllegalActionException(this,
-                        "The relative quantum of the QSSDirector cannot be null.");
-            }
 
             // Initialize number of continuous states.
             double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
