@@ -22,10 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS. 
 */
-package ptolemy.actor.lib.jjs.modules.IMUSensor.node;
+package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
-import ptolemy.actor.lib.jjs.modules.IMUSensor.io.SerialBean;
-import ptolemy.actor.lib.jjs.modules.IMUSensor.main.CircularFifoQueue;
+import ptolemy.actor.lib.jjs.modules.IMUSensor.SerialBean;
+import ptolemy.actor.lib.jjs.modules.IMUSensor.CircularFifoQueue;
 
 /////////////////////////////////////////////////////////////////////////
 ///// ReaderM

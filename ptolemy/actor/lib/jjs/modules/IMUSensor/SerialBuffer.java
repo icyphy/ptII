@@ -1,6 +1,6 @@
 /* SerialBuffer manages the buffer for incoming messages over the serial port
 */
-package  ptolemy.actor.lib.jjs.modules.IMUSensor.io;
+package  ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 public class SerialBuffer {
     public String Content = "";

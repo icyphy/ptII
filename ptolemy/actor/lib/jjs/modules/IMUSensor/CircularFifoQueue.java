@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ptolemy.actor.lib.jjs.modules.IMUSensor.main;
+package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
