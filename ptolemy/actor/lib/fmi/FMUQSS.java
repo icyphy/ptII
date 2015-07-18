@@ -588,8 +588,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _quantumScaleFactor = _director.getQuantumScaleFactor();
             _internalRelativeQuantum = _director.getRelativeQuantum()
                     * _quantumScaleFactor;
-            _internalAbsoluteQuantum = _director.getAbsoluteQuantum()
-                    * _quantumScaleFactor;
+            // Check if the relative quantum is zero. It is guaranteed 
+            // that the _quantumScaleFactor is never null.
+            if (_internalRelativeQuantum == 0.0) {
+                throw new IllegalActionException(this,
+                        "The relative quantum of the QSSDirector cannot be null.");
+            }
 
             // Initialize number of continuous states.
             double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
@@ -1079,9 +1083,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @exception IllegalActionException If the solver cannot be created or initialized.
      */
     private final void _createQSSSolver() throws IllegalActionException {
-        _quantumScaleFactor = _director.getQuantumScaleFactor();
-        _internalRelativeQuantum = _director.getRelativeQuantum()
-                * _quantumScaleFactor;
         final Time currentTime = _director.getModelTime();
 
         if (_debugging) {
@@ -1126,22 +1127,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Set quantization tolerances.
         final double absoluteQuantumMinimum = 1e-20;
-        //double internalAbsoluteQuantum = _director.getAbsoluteQuantum() * _quantumScaleFactor;
-        //final double internalRelativeQuantum = _director.getRelativeQuantum() * _quantumScaleFactor;
         for (int ii = 0; ii < stateCt; ++ii) {
-            // If the relativeQuantum and absolute quantum are greater than 0.0, then use the
-            // nominal value for the state, given by the FMU to scale those values.
+            // If the relativeQuantum is greater than 0.0, then use the
+            // nominal value for the state, given by the FMU, to 
+            // calculate the absolute quantum. 
+            // Thus a state with nominal value 1000 will have an absolute
+            // quantum 1000 times greater than a state with nominal value 1.
             final double nominalValue = _fmiModelDescription.continuousStates
                     .get(ii).nominal.doubleValue();
-            double modifiedInternalRelativeQuantum = Math.abs(nominalValue)
-                    * _internalRelativeQuantum;
             double modifiedInternalAbsoluteQuantum = Math.abs(nominalValue)
-            		* _internalAbsoluteQuantum;         
+            		* _internalRelativeQuantum;         
             if (modifiedInternalAbsoluteQuantum < absoluteQuantumMinimum) {
             	modifiedInternalAbsoluteQuantum = absoluteQuantumMinimum;
             }
             _qssSolver.setQuantizationTolerance(ii,
-            		modifiedInternalAbsoluteQuantum, modifiedInternalRelativeQuantum);
+            		modifiedInternalAbsoluteQuantum, _internalRelativeQuantum);
         }
 
         // Tell integrator to quantize.
@@ -1994,15 +1994,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private void _sendModelToPort(final double[] val, final TypedIOPort prt,
             Time time, int index, boolean isState) throws NoRoomException,
             IllegalActionException {
-        // Make sure that the outputQuantum is non zero.
-        double outputQuantum = Math.max(_internalRelativeQuantum, _internalAbsoluteQuantum)
-                / _quantumScaleFactor;
+        double outputQuantum = _internalRelativeQuantum/ _quantumScaleFactor;
         // Handle outputs which are states.      
         if (isState) {
             double lastConStaMdl = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
             final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
                     .get(_fmiModelDescription.continuousStates.get(index).name);       
-            // Evaluate the continuous state model at this current time.
+            // Evaluate the quantized state model at this current time.
             final double qStaMdl = _qssSolver.evaluateStateModel(index, time);
             double epsilon = 0;          
             if (_firstRound) {
@@ -2045,8 +2043,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     // code every time we called trigger quantization events, we also updated the
                     // continuous states using the continuous state model. this in turn will
                     // change x_w causing it to produce outputs at a rate which is different
-                    // from the quantized model. therefore, by using following method, which checks whether
-                    // dependents have changed, we can capture that.
+                    // from the quantized model. therefore, by using following method, 
+                    // which checks whether dependents have changed, we can capture that.
                     if (_cancelSendModelToPort(index))
                         return;
                     prt.send(0, new SmoothToken(val, time));
@@ -2333,9 +2331,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** Vector of input value references. */
     private long[] _inputValueReferences;
-    
-    /** Internal absolute quantum. */
-    private double _internalAbsoluteQuantum;
 
     /** Internal relative quantum. */
     private double _internalRelativeQuantum;
