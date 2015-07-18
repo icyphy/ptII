@@ -1,6 +1,6 @@
 /* ReadSerial is a class that opens a new thread to read latest messages from the serial port and places them in a SerialBuffer
 */
-package ptolemy.actor.lib.jjs.modules.IMUSensor.io;
+package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 import java.io.InputStream;
 import java.io.IOException;

@@ -1,6 +1,6 @@
 /* SerialBean class provides serial port data exchange operations
 */
-package ptolemy.actor.lib.jjs.modules.IMUSensor.io;
+package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS. 
 */
-package ptolemy.actor.lib.jjs.modules.IMUSensor.main;
+package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 import java.awt.EventQueue;
 import ptolemy.actor.lib.jjs.modules.IMUSensor.node.ReaderM;
