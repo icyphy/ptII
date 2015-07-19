@@ -25,8 +25,8 @@
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 import java.awt.EventQueue;
-import ptolemy.actor.lib.jjs.modules.IMUSensor.node.ReaderM;
-import ptolemy.actor.lib.jjs.modules.IMUSensor.main.CircularFifoQueue;
+import ptolemy.actor.lib.jjs.modules.IMUSensor.ReaderM;
+import ptolemy.actor.lib.jjs.modules.IMUSensor.CircularFifoQueue;
 
 /////////////////////////////////////////////////////////////////////////
 ///// SerialPortController
