@@ -1999,20 +1999,20 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         double outputQuantum = _internalRelativeQuantum/ _quantumScaleFactor;
         // Handle outputs which are states.      
         if (isState) {
-            double lastConStaMdl = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
+            double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
             final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
                     .get(_fmiModelDescription.continuousStates.get(index).name);       
-            // Evaluate the quantized state model at this current time.
-            final double qStaMdl = _qssSolver.evaluateStateModel(index, time);
+            // We should only use the first coefficient of the the quantized state model
+            // since since higher order terms are zero at quantization time.
             double epsilon = 0;          
             if (_firstRound) {
                 prt.send(0, new SmoothToken(val, time));
-                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = qStaMdl;
+                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
                 epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
                 // Update model variable hasChanged field.
                 _updateModelVariableAttribute(modVarIdx, true);
             } else {
-                if (Math.abs(qStaMdl - lastConStaMdl) <= Math.abs(epsilon)) {
+                if (Math.abs(val[0] - lastqSta) <= Math.abs(epsilon)) {
                     // Update model variable hasChanged field.
                     _updateModelVariableAttribute(modVarIdx, false);
                     return;
@@ -2020,7 +2020,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     prt.send(0, new SmoothToken(val, time));
                     // Update model variable hasChanged field.
                     _updateModelVariableAttribute(modVarIdx, true);
-                    _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = qStaMdl;
+                    _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
                     epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
                 }
             }
