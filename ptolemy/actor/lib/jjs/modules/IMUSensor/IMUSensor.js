@@ -6,7 +6,7 @@
  */
 
  // Reference to the Java class that controls the bluetooth serial stream
-var Controller = Java.type('ptolemy.actor.lib.jjs.modules.IMUSensor.main.Controller');
+var Controller = Java.type('ptolemy.actor.lib.jjs.modules.IMUSensor.SerialPortController');
 var SensorStream = null;
 
 /** Construct an instance of a Controller object type.
