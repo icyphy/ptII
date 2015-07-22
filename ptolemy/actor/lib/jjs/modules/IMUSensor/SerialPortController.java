@@ -78,7 +78,7 @@ public class SerialPortController {
     */
     public int[] getSample()
     {
-	int[] sample = new int[6];
+	int[] sample = new int[9];
 	// If the collection thread has started, grab data
 	if(h1.isStart){
 		try{

@@ -140,8 +140,11 @@ public class ReaderM extends Thread {
                         int gx = UCharToInt(packet[6], packet[7]);
                         int gy = UCharToInt(packet[8], packet[9]);
                         int gz = UCharToInt(packet[10], packet[11]);
+                        int magx = UCharToInt(packet[12], packet[13]);
+                        int magy = UCharToInt(packet[14], packet[15]);
+                        int magz = UCharToInt(packet[16], packet[17]);
                         
-                        int[] raw = {ax, ay, az, gx, gy, gz};
+                        int[] raw = {ax, ay, az, gx, gy, gz, magx, magy, magz};
                         preProcess(raw);
                     }
 
@@ -167,6 +170,9 @@ public class ReaderM extends Thread {
 	//int gx = raw[3];
 	//int gy = raw[4];
 	//int gz = raw[5];
+        //int magx = raw[6];
+        //int magy = raw[7];
+        //int magz = raw[8];
 
         buf.add(raw); // add array of raw data to circular buffer
 
