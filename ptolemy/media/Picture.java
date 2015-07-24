@@ -27,8 +27,14 @@
  */
 package ptolemy.media;
 
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.KEY_RENDERING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_OFF;
+import static java.awt.RenderingHints.VALUE_RENDER_SPEED;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.ColorModel;
 import java.awt.image.MemoryImageSource;
@@ -108,6 +114,8 @@ public class Picture extends JPanel {
     @Override
     public synchronized void paint(Graphics graphics) {
         if (_image != null) {
+            ((Graphics2D) graphics).setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_OFF);
+            ((Graphics2D) graphics).setRenderingHint(KEY_RENDERING, VALUE_RENDER_SPEED);
             graphics.drawImage(_image, 0, 0, this);
         }
     }
