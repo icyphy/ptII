@@ -53,7 +53,7 @@ import com.github.sarxos.webcam.WebcamListener;
  *  and spends most of its time blocked rather than rendering. Hence, we do not get
  *  smooth video. Perhaps this is an Eclipse bug?
  *  
- *  FIXME: MORE.
+ *  See the documentation for the JavaScript cameras module to see how to use this.
  *  
  *  @author Edward A. Lee
  *  @version $Id$
