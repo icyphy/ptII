@@ -1279,6 +1279,13 @@ public class JavaScript extends TypedAtomicActor {
 		_setPortDescription(parameter, description.toString());
 	    }
 	}
+	// Parameters may be immediately referenced in the setup function, so we
+	// need to create a proxy for them now.
+        if (_proxies.get(parameter) == null) {
+            PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
+            _proxies.put(parameter, proxy);
+            _proxiesByName.put(parameter.getName(), proxy);
+        }
     }
 
     /** If there are any pending self-produced inputs, then request a firing
