@@ -26,10 +26,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo uses the Camera object in the cameras module in &quot;triggered&quot; mode,&#10;where it captures an image when triggered. In this example, it is being triggered&#10;every 0.1 seconds.&#10;&#10;See also:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 200.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -83,7 +79,7 @@
         </property>
         <property name="triggered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="camera" class="ptolemy.data.expr.StringParameter" value="FaceTime HD Camera CC24173YC0PF6VVDJ">
+        <property name="camera" class="ptolemy.data.expr.StringParameter" value="default camera">
         </property>
         <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
         </property>
@@ -93,14 +89,10 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>
