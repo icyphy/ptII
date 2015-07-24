@@ -63,6 +63,11 @@ import ptolemy.media.Picture;
 ImageDisplayJavaSE is the implementation of the ImageDisplayInterface that uses AWT and Swing
 classes.</p>
 
+Note that this class does not work well when executed within Eclipse. In Eclipse, the
+Swing event thread blocks "waiting for: OGLRenderQueue$QueueFluher", and spends most of its
+time blocked rather than rendering. Hence, we do not get smooth updates of images.
+
+
 @author Jianwu Wang, Based on code by James Yeh, Edward A. Lee
 @version $Id$
 @since Ptolemy II 10.0

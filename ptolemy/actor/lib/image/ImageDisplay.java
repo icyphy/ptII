@@ -51,6 +51,10 @@ import ptolemy.kernel.util.Workspace;
  will continually update the picture with new data.   If the size of the
  input image changes, then a new Picture object is created.  This class
  will only accept an ImageToken on its input.
+ 
+ Note that this class does not work well when executed within Eclipse. In Eclipse, the
+ Swing event thread blocks "waiting for: OGLRenderQueue$QueueFluher", and spends most of its
+ time blocked rather than rendering. Hence, we do not get smooth updates of images.
 
  @author James Yeh, Edward A. Lee
  @version $Id$
@@ -73,7 +77,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
         // FIXME: This is required to be an ImageToken, but
         // we don't see to have that class.
-        input.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(BaseType.GENERAL);
         _getImplementation().initWindowAndSizeProperties();
     }
 
