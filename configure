@@ -644,6 +644,8 @@ RXTX_JAR
 QTJAVA_ZIP
 PTII_LOCALURL
 PTXMPP_DIR
+PTWEBCAMCAPTURE_JARS
+PTWEBCAMCAPTURE_DIR
 PTWABA_DIR
 PTGIOTTO_DIR
 PTTINYOS_DIR
@@ -1033,6 +1035,7 @@ with_batikjar
 with_tini
 with_giotto
 with_waba
+with_webcam_capture
 with_expat_include
 '
       ac_precious_vars='build_alias
@@ -1802,6 +1805,8 @@ Optional Packages:
                               defaults to \$PTII/lib
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
+  --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
+                          defaults to \$PTII/lib/webcam-capture-0.3.10.jar
   --with-expat-include=DIR       use expat.h from DIR
                           defaults to /usr/include
 
@@ -13376,6 +13381,88 @@ $as_echo "$as_me: WARNING: Failed to find waba/wabasdk
 fi
 
 #--------------------------------------------------------------------
+#       webcam-capture is used by the webcam accessor
+#	Source may be found at
+#--------------------------------------------------------------------
+
+# Set to webcam and used in ptolemy/actor/lib/jjs/modules/makefile
+# if webcam-capture*.jar and other jar files are found.
+PTWEBCAMCAPTURE_DIR=
+
+# Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
+PTWEBCAMCAPTURE_JARS=
+
+# FIXME: change this to the name of the webcam directory after Edward checks in his work
+WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules
+# We only need to look for webcam-capture*.jar if the directory that uses it exists.
+if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $WEBCAMCAPTURE_USER_DIR is not present,
+    so we need not find webcam-capture." >&5
+$as_echo "$WEBCAMCAPTURE_USER_DIR is not present,
+    so we need not find webcam-capture." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for webcam-capture" >&5
+$as_echo_n "checking for webcam-capture... " >&6; }
+
+# Check whether --with-webcam-capture was given.
+if test "${with_webcam_capture+set}" = set; then :
+  withval=$with_webcam_capture; PTWEBCAMCAPTURE_JAR=$withval
+else
+  PTWEBCAMCAPTURE_JAR=$PTII/lib/webcam-capture-0.3.10.jar
+fi
+
+
+    if test -f "$PTWEBCAMCAPTURE_JAR"; then
+        PTSLF4J_JAR="$PTII/lib/slf4j-api-1.7.2.jar"
+        if test -f "$PTSLF4J_JAR"; then
+           PTBRIDG_JAR="$PTII/lib/bridj-0.6.2.jar"
+           if test -f "$PTBRIDG_JAR"; then
+              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWEBCAMCAPTURE_JAR" >&5
+$as_echo "$PTWEBCAMCAPTURE_JAR" >&6; }; fi
+              PTWEBCAMCAPTURE_DIR=webcam
+              PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR"
+              updateClasspath "$PTWEBCAMCAPTURE_JAR"
+              updateClasspath "$PTSLF4J_JAR"
+              updateClasspath "$PTBRIDG_JAR"
+           else
+              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTBRIDG_JAR
+   perhaps webcam-capture was not installed from
+   https://github.com/sarxos/webcam-capture?
+   The webcam accessor will not be compiled." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTBRIDG_JAR
+   perhaps webcam-capture was not installed from
+   https://github.com/sarxos/webcam-capture?
+   The webcam accessor will not be compiled." >&2;}
+           fi
+        else
+           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_JAR
+   perhaps webcam-capture was not installed from
+   https://github.com/sarxos/webcam-capture?
+   The webcam accessor will not be compiled." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_JAR
+   perhaps webcam-capture was not installed from
+   https://github.com/sarxos/webcam-capture?
+   The webcam accessor will not be compiled." >&2;}
+        fi
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTWEBCAMCAPTURE_JAR
+   perhaps webcam-capture was not installed from
+   https://github.com/sarxos/webcam-capture?
+   The webcam accessor will not be compiled." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTWEBCAMCAPTURE_JAR
+   perhaps webcam-capture was not installed from
+   https://github.com/sarxos/webcam-capture?
+   The webcam accessor will not be compiled." >&2;}
+	PTWEBCAMCAPTURE_JARS=
+    fi
+fi
+
+if test -z "$PTWEBCAMCAPTURE_DIR"; then
+   updateExcludes "ptolemy/actor/lib/jjs/modules/webcam"
+fi
+
+#--------------------------------------------------------------------
 #       libexpat is used by the lbnl simulation interface in ptII/lbnl
 #--------------------------------------------------------------------
 
@@ -14502,6 +14589,13 @@ fi
 
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
+
+
+# Set to webcam and used in ptolemy/actor/lib/jjs/modules/makefile
+# if webcam-capture*.jar and other jar files are found.
+
+
+# Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 
 
 # PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
