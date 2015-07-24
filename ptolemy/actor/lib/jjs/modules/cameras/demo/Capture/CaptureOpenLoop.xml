@@ -64,7 +64,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 135.0}">
         </property>
-        <property name="camera" class="ptolemy.data.expr.StringParameter" value="FaceTime HD Camera CC24173YC0PF6VVDJ">
+        <property name="camera" class="ptolemy.data.expr.StringParameter" value="default camera">
         </property>
         <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
         </property>

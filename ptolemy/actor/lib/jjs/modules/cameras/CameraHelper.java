@@ -111,8 +111,10 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             return null;
         }
         _webcams = new HashMap<String,Webcam>();
-        _webcamNames = new String[webcams.size()];
-        int i = 0;
+        _webcamNames = new String[webcams.size() + 1];
+        _webcamNames[0] = "default camera";
+        _webcams.put("default camera", Webcam.getDefault());
+        int i = 1;
         for (Webcam webcam : webcams) {
             _webcams.put(webcam.getName(), webcam);
             _webcamNames[i++] = webcam.getName();

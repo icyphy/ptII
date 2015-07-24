@@ -19,7 +19,8 @@ var EventEmitter = require('events').EventEmitter;
 //// Functions provided in this module.
 
 /** Return an array of camera names for cameras currently available
- *  on the current host.
+ *  on the current host. This array includes a special name "default camera",
+ *  which represents the system default camera, if there is one.
  *  @return An array of names, or null if there are no cameras.
  */
 exports.cameras = function() {
