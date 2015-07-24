@@ -125,8 +125,7 @@ public class ImageTableau extends TokenTableau {
     }
 
     /** Display the specified tokens.
-     *  If the display is not a MatrixPane, or the tokens are not
-     *  instances of MatrixToken, do nothing.
+     *  If the tokens are not instances of ImageToken, do nothing.
      *  @exception IllegalActionException If the tokens are not
      *  instances of ImageToken.
      */
