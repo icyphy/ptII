@@ -61,7 +61,7 @@ exports.defaultCamera = function() {
  *  An instance of this object type implements the following functions:
  *  <ul>
  *  <li> close(): Close the camera.
- *  <li> getViewSize(): Return the current view size for this camera, an object with a "width" and "height" field, as in {"width":176, "height":144}.
+ *  <li> getViewSize(): Return the current view size for this camera as a JSON string, as in {"width":176, "height":144}.
  *  <li> on(event, handler): Specify an event handler for the camera.
  *  <li> open(): Open the camera.
  *  <li> setViewSize(size): Set the current view size for this camera. The argument can either be a JSON string or an object with a width and height field, as in for example {"width":176, "height":144}.
@@ -87,13 +87,13 @@ exports.Camera.prototype.close = function() {
     this.helper.close();
 }
 
-/** Return the current view size for this camera, an object with
- *  a "width" and "height" field, as in {"width":176, "height":144}.
- *  @return An object representing the current view size.
+/** Return the current view size for this camera, a JSON string
+ *  as in {"width":176, "height":144}.
+ *  @return A JSON string representing the current view size.
  */
 exports.Camera.prototype.getViewSize = function() {
     var spec = this.helper.getViewSize();
-    return JSON.parse(spec);
+    return spec;
 }
 
 /** Open the camera, initiating emission of the 'image' event each
