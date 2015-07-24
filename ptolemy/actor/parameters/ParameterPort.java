@@ -194,6 +194,15 @@ public class ParameterPort extends TypedIOPort {
         	_settingContainer = false;
             }
         }
+        if (previousContainer == null) {
+            // This may be part of cloning operation, in which case we need to
+            // establish type constraints that are present in the original.
+            // Since ports are normally cloned after parameters, the container should
+            // have the relevant parameter by now.
+            if (getParameter() != null) {
+                _setTypeConstraints();
+            }
+        }
     }
 
     /** Set the display name, and propagate the name change to the
