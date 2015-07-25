@@ -102,6 +102,7 @@ EXTRA_SRCS = \
 	build.default.xml \
 	build.xml \
 	build.xml.in \
+	cluster.xml \
 	copyright.htm \
 	copyright.txt \
 	configure.in \
