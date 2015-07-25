@@ -10,8 +10,6 @@
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
-// Reference to the Java class documented at:
-//    https://github.com/sarxos/webcam-capture
 var CameraHelper = Java.type('ptolemy.actor.lib.jjs.modules.cameras.CameraHelper');
 var EventEmitter = require('events').EventEmitter;
 
