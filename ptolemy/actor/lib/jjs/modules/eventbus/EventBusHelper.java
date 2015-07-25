@@ -217,8 +217,7 @@ public class EventBusHelper {
      *  specified address on the event bus.
      *  @param address The address on the bus to unsubscribe to, or null to
      *   unsubscribe to all addresses.
-     *  @see #subscribe(final String)
-     *  @see #unsubscribe()
+     *  @see #subscribe(String)
      */
     public void unsubscribe(final String address) {
         if (_subscriptions != null) {
