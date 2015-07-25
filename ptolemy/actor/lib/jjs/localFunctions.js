@@ -372,11 +372,13 @@ function wrapup() {exports.wrapup();}
 //--------------------------- Exposed Java Types -----------------------------
 var ActorToken = Java.type('ptolemy.data.ActorToken');
 var ArrayToken = Java.type('ptolemy.data.ArrayToken');
+var AWTImageToken = Java.type('ptolemy.data.AWTImageToken');
 var BaseType = Java.type('ptolemy.data.type.BaseType');
 var BooleanToken = Java.type('ptolemy.data.BooleanToken');
 var DateToken = Java.type('ptolemy.data.DateToken');
 var DoubleToken = Java.type('ptolemy.data.DoubleToken');
 var Entity = Java.type('ptolemy.kernel.Entity');
+var Image = Java.type('java.awt.Image');
 var IntToken = Java.type('ptolemy.data.IntToken');
 var LongToken = Java.type('ptolemy.data.LongToken');
 var ObjectToken = Java.type('ptolemy.data.ObjectToken');
@@ -484,6 +486,8 @@ function convertToToken(value) {
             return new DateToken(value.getTime());
         } else if (value instanceof Entity) {
             return new ActorToken(value);
+        } else if (value instanceof Image) {
+            return new AWTImageToken(value);
         } else {
             // Create a RecordToken with the fields of the object.
             // Using Nashorn-specific extension here to create Java array.
