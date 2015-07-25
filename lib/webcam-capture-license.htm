@@ -37,6 +37,8 @@
 <p>webcam-capture uses the following packages.</p>
 
 <h2>bridj-0.6.3</h2>
+<p>webcam-capture requires <code>bridj-0.6.2.jar</code>.</p>
+
 <p><a href="https://github.com/sarxos/webcam-capture/releases/download/webcam-capture-parent-0.3.10/webcam-capture-0.3.10-dist.zip#in_browser" target="_top">https://github.com/sarxos/webcam-capture/releases/download/webcam-capture-parent-0.3.10/webcam-capture-0.3.10-dist.zip</code></a> contained <code>webcam-capture-0.3.10-dist/license/bridj-0.6.3.LICENSE</code>, reproduced below.
 
 <blockquote>
@@ -358,6 +360,19 @@ END OF TERMS AND CONDITIONS
 </blockquote>
 
 <h2>slf4j-api</h2>
+<p>webcam-capture requires <code>slf4j-api-1.7.2.jar</code> and <code>slf4j-nop-1.7.12.jar</code>.
+
+<p>  When using the camera accessor, stderr gets a (harmless) error message:</p>
+<code>
+  SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+  SLF4J: Defaulting to no-operation (NOP) logger implementation
+  SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+</code>
+<p>Following the link indicates that we can silence this by including slf4j-nop.jar in the classpath.
+This directs all log messages from the Webcam package to /dev/null. This jar file is here:
+
+<a href="http://www.slf4j.org/download.html#in_browser" target="_top">http://www.slf4j.org/download.html</a>.</p>
+  
 <p><a href="https://github.com/sarxos/webcam-capture/releases/download/webcam-capture-parent-0.3.10/webcam-capture-0.3.10-dist.zip#in_browser" target="_top">https://github.com/sarxos/webcam-capture/releases/download/webcam-capture-parent-0.3.10/webcam-capture-0.3.10-dist.zip</code></a> contained <code>webcam-capture-0.3.10-dist/license/slf4j-api-1.7.2.LICENSE</code>, reproduced below:
 
 <blockquote>

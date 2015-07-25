@@ -675,7 +675,7 @@ changequote([, ])dnl
 cd "$startdir"
 
 #--------------------------------------------------------------------
-#	We require JDK1.5
+#	We require JDK1.6, JDK 1.8 preferred
 #--------------------------------------------------------------------
 
 AC_MSG_CHECKING([the JDK version])
@@ -6121,8 +6121,11 @@ PTWEBCAMCAPTURE_DIR=
 # Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 PTWEBCAMCAPTURE_JARS=
 
+# PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
+PTWEBCAMCAPTURE_PACKAGES=
+
 # FIXME: change this to the name of the webcam directory after Edward checks in his work
-WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules
+WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
 # We only need to look for webcam-capture*.jar if the directory that uses it exists.
 if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
     PT_MSG_STATUS([$WEBCAMCAPTURE_USER_DIR is not present,
@@ -6141,10 +6144,21 @@ else
            if test -f "$PTBRIDG_JAR"; then
               PT_MSG_RESULT([$PTWEBCAMCAPTURE_JAR])
               PTWEBCAMCAPTURE_DIR=webcam
-              PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR"
+              PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
+              PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
               updateClasspath "$PTWEBCAMCAPTURE_JAR"
               updateClasspath "$PTSLF4J_JAR"
               updateClasspath "$PTBRIDG_JAR"
+              PTSLF4J_NOP_JAR="$PTII/lib/slf4j-nop-1.7.12.jar"
+              if test -f "$PTSLF4J_NOP_JAR"; then
+                  PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
+                  updateClasspath "$PTSLF4J_NOP_JAR"
+              else
+                  AC_MSG_WARN([Failed to find $PTSLF4J_NOP_JAR
+   which means you may get error messages when using the camera accessor.
+   See http://www.slf4j.org/codes.html StaticLoggerBinder for details.
+   The webcam accessor will be compiled anyway.])
+              fi
            else
               AC_MSG_WARN([Failed to find $PTBRIDG_JAR
    perhaps webcam-capture was not installed from
@@ -6167,7 +6181,7 @@ else
 fi
 
 if test -z "$PTWEBCAMCAPTURE_DIR"; then
-   updateExcludes "ptolemy/actor/lib/jjs/modules/webcam"
+   updateExcludes "ptolemy/actor/lib/jjs/modules/cameras/"
 fi
 
 #--------------------------------------------------------------------
@@ -7194,6 +7208,9 @@ AC_SUBST(PTWEBCAMCAPTURE_DIR)
 
 # Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 AC_SUBST(PTWEBCAMCAPTURE_JARS)
+
+# PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
+AC_SUBST(PTWEBCAMCAPTURE_PACKAGES)
 
 # PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
 AC_SUBST(PTXMPP_DIR)

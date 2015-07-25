@@ -109,6 +109,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "com.cureos.numerics.Cobyla",
                 "com/cureos/jcobyla-license.htm");
 
+        _addIfPresent(copyrightsMap, "com.github.sarxos.webcam.Webcam",
+                "lib/webcam-capture-license.htm");
+        
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
@@ -981,6 +984,6 @@ public class GenerateCopyrights {
             { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
             { "udunits", " ", " ", "Y", " ",
                     "Similar to BSD.  No use of sponsor name in advertising" },
-            { "vertx", " ", " ", "Y", " ", "Apache License" } };
-
+            { "vertx", " ", " ", "Y", " ", "Apache License" },
+            { "webcam", " ", " ", "Y", " ", "BSD and Apache Licenses" } };
 }
