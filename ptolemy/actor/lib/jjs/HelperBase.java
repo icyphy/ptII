@@ -41,7 +41,7 @@ import ptolemy.kernel.util.InternalErrorException;
    This is available in a protected method so that it isn't directly available
    in JavaScript. This actor should be used for all synchronized actions
    (to avoid deadlocks and race conditions).
-   
+
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 11.0
@@ -49,34 +49,37 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.AcceptedRating Red (bilung)
  */
 public class HelperBase {
-    
+
     /** Construct a helper for the specified JavaScript object.
      *  @param currentObj The JavaScript object that this is helping.
      */
     public HelperBase(ScriptObjectMirror currentObj) {
-	_currentObj = currentObj;
-	
-	Object actorOrWrapper = _currentObj.eval("actor");
-	if (actorOrWrapper instanceof ScriptObjectMirror) {
-	    actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper, ScriptContext.ENGINE_SCOPE);
-	}
-	if (actorOrWrapper instanceof RestrictedJavaScriptInterface) {
-	    _actor = ((RestrictedJavaScriptInterface)actorOrWrapper)._getActor();
-	} else if (actorOrWrapper instanceof JavaScript) {
-	    _actor = ((JavaScript)actorOrWrapper);
-	} else {
-	    throw new InternalErrorException("Invalid actor object: " + actorOrWrapper.toString());
-	}
+        _currentObj = currentObj;
+
+        Object actorOrWrapper = _currentObj.eval("actor");
+        if (actorOrWrapper instanceof ScriptObjectMirror) {
+            actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper,
+                    ScriptContext.ENGINE_SCOPE);
+        }
+        if (actorOrWrapper instanceof RestrictedJavaScriptInterface) {
+            _actor = ((RestrictedJavaScriptInterface) actorOrWrapper)
+                    ._getActor();
+        } else if (actorOrWrapper instanceof JavaScript) {
+            _actor = ((JavaScript) actorOrWrapper);
+        } else {
+            throw new InternalErrorException("Invalid actor object: "
+                    + actorOrWrapper.toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
-    
+
     /** The JavaScript actor that this is helping. All synchronization
      *  done by the helper should synchronize using this object as the monitor.
      */
     protected JavaScript _actor;
-    
+
     /** The JavaScript object that this is a helper for. */
     protected ScriptObjectMirror _currentObj;
 }

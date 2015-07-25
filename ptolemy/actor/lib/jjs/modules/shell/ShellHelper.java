@@ -25,8 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						COPYRIGHTENDKEY
 
 
-*/
-
+ */
 
 package ptolemy.actor.lib.jjs.modules.shell;
 
@@ -44,13 +43,13 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /**
  * A helper class for the shell accessor module. It provides functionality
- * to invoke a command and control <i>stdin</i> and <i>stdout</i>. It forks 
- * off a process that executes the specified command. 
- * 
- * A reader thread listens to the process' output and forwards them via the 
- * EventEmitter subsystem (<i>'message'</i> event) to the <i>shell.js</i> 
+ * to invoke a command and control <i>stdin</i> and <i>stdout</i>. It forks
+ * off a process that executes the specified command.
+ *
+ * A reader thread listens to the process' output and forwards them via the
+ * EventEmitter subsystem (<i>'message'</i> event) to the <i>shell.js</i>
  * module in Nashorn.
- * 
+ *
  * A wait thread waits until the process exits and emits a <i>'close'</i> event
  * containing the process' exit value.
  *
@@ -60,7 +59,7 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (bilung)
  */
-public class ShellHelper  {
+public class ShellHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -69,93 +68,93 @@ public class ShellHelper  {
      *  @param scriptObjectMirror The JavaScript instance invoking the shell.
      *  @param command The command to be executed.
      */
-    public static ShellHelper createShell(ScriptObjectMirror scriptObjectMirror, String command) {
+    public static ShellHelper createShell(
+            ScriptObjectMirror scriptObjectMirror, String command) {
         return new ShellHelper(scriptObjectMirror, command);
     }
-    
+
     /** Write to the stdin of the process.
      *  @param input The data to be sent to the process.
      *  @exception IOException If the string cannot be written.
      */
-    public synchronized void write(String input) throws IOException  {
-        if (out!=null && process.isAlive())  {
+    public synchronized void write(String input) throws IOException {
+        if (out != null && process.isAlive()) {
             out.write(input);
-            out.newLine();  
+            out.newLine();
             out.flush();
         }
-    }   
-    
-    /** Start the process and the reader thread. Call 
+    }
+
+    /** Start the process and the reader thread. Call
      *   this after initialization and all callbacks have
-     *   been installed. 
+     *   been installed.
      *   TODO: get the exit value of the process.
      */
-    public void start()  {
-        if(startProcess())  {
+    public void start() {
+        if (startProcess()) {
             startReader();
             startWaitForProcess();
         }
     }
-    
+
     /** Kill the process and the reader thread.
      *  @throws IOException Not thrown in this base class.
      */
     public void wrapup() throws IOException {
-//        if (in!=null)  {
-//            in.close();
-//        }
-//        if (out!=null) {
-//            out.close();
-//        }
-        if ((readerThread!=null) && (readerThread.isAlive()))  {
-            _readerThreadRunning=false;
+        //        if (in!=null)  {
+        //            in.close();
+        //        }
+        //        if (out!=null) {
+        //            out.close();
+        //        }
+        if ((readerThread != null) && (readerThread.isAlive())) {
+            _readerThreadRunning = false;
         }
-        _readerThreadRunning=false;
+        _readerThreadRunning = false;
         try {
-            if (readerThread!=null)  {
+            if (readerThread != null) {
                 readerThread.join(10);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        readerThread=null;
-  
-        if ((process!=null) && (process.isAlive()))  {
+        readerThread = null;
+
+        if ((process != null) && (process.isAlive())) {
             process.destroyForcibly();
         }
-        process=null;
-        
+        process = null;
+
         try {
-            if (waitForProcessThread!=null)  {
+            if (waitForProcessThread != null) {
                 waitForProcessThread.join(10);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        waitForProcessThread=null;
+        waitForProcessThread = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                  ////
-    
+
     /** Private constructor for ShellHelper for calling a shell command
      *  @param currentObj The JavaScript instance of the script that this helps.
      *  @param cmd The command to be called.
      */
-    private ShellHelper(ScriptObjectMirror currentObj, String command)  {
-        this._currentObj = currentObj;
-        this.command=command;
+    private ShellHelper(ScriptObjectMirror currentObj, String command) {
+        _currentObj = currentObj;
+        this.command = command;
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////   
+    ////                     private methods                       ////
 
     /** Builds and starts the command in a process.
-     *  @return Returns true, if the process has started and the pipes 
-     *  are initialized. 
+     *  @return Returns true, if the process has started and the pipes
+     *  are initialized.
      */
-    private boolean startProcess()  {
+    private boolean startProcess() {
         processBuilder = new ProcessBuilder("sh", "-c", command);
         processBuilder.redirectErrorStream(true);
         processBuilder.redirectOutput(Redirect.PIPE);
@@ -168,48 +167,47 @@ public class ShellHelper  {
             e.printStackTrace();
             return false;
         }
-        out = new BufferedWriter( new OutputStreamWriter(process.getOutputStream()) );
+        out = new BufferedWriter(new OutputStreamWriter(
+                process.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(process.getInputStream()));
         return true;
     }
-    
+
     /** Starts the reader thread to read from the process' stdout asynchronously.*/
-    private void startReader()  {
-        readerThread = new Thread( new Runnable() {
-                @Override
-                public void run() {
-                    do {
-                        String line = null;
-                        try {
-                            line = in.readLine();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (line!=null)  {
-                            _currentObj.callMember("emit", "message", line);    
-                        }
-                        else  {
-                            _readerThreadRunning = false;
-                        }
+    private void startReader() {
+        readerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                do {
+                    String line = null;
+                    try {
+                        line = in.readLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    while(_readerThreadRunning);                        
-                }
-            });
+                    if (line != null) {
+                        _currentObj.callMember("emit", "message", line);
+                    } else {
+                        _readerThreadRunning = false;
+                    }
+                } while (_readerThreadRunning);
+            }
+        });
         readerThread.setName("ShellHelper-reader");
         readerThread.start();
     }
-    
+
     /** Starts the thread to wait for the process' exit and collects the exit value. */
-    private void startWaitForProcess()  {
-        waitForProcessThread = new Thread( new Runnable() {
+    private void startWaitForProcess() {
+        waitForProcessThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 //Wait to get exit value
                 try {
                     int exitValue = process.waitFor();
                     _currentObj.callMember("emit", "close", exitValue);
-//                    System.out.println("\n\nExit Value is " + exitValue);
-//                    System.out.flush();
+                    //                    System.out.println("\n\nExit Value is " + exitValue);
+                    //                    System.out.flush();
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -218,37 +216,36 @@ public class ShellHelper  {
         });
         waitForProcessThread.setName("ShellHelper-waiter");
         waitForProcessThread.start();
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-        
+
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
-    
+
     /** The variable used to build the process. */
     private ProcessBuilder processBuilder;
-    
+
     /** The reader to connect to the process' stdout.*/
     private BufferedReader in;
-    
+
     /** The reader to connect to the process' stdin.*/
     private BufferedWriter out;
-    
+
     /** The instance of the invoked command.*/
     private Process process;
-    
+
     /** A thread to read asynchronously from the process' stdout. */
     private Thread readerThread;
-    
+
     /** A thread to wait for the process and read its exit value. */
     private Thread waitForProcessThread;
-    
+
     /** Controls the reader thread. */
     private boolean _readerThreadRunning = true;
-    
+
     /** A copy of the command that's invoked. */
     private String command;
-    
 
 }

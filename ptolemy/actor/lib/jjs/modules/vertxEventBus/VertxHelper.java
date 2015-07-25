@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// VertxHelper
 
 /** A helper class for the Vert.x event bus API.
-   
+
    @author Patricia Derler
    @version $Id: VertxHelper.java 71355 2015-01-13 05:40:56Z cxh $
    @since Ptolemy II 11.0
@@ -59,109 +59,111 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (pd)
  */
 public class VertxHelper {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     /** Create a VertxHelper instance as a client-side web socket for
      * each JavaScript instance.
-     * 
+     *
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getEventBus(
-	    ScriptObjectMirror currentObj, String host, int port) {
+    public static VertxHelper getEventBus(ScriptObjectMirror currentObj,
+            String host, int port) {
         return new VertxHelper(currentObj, host, port, true);
     }
-    
+
     /** Create a VertxHelper instance as a server-side vertx bus host.
-     * 
+     *
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getEventBusServer( 
-            ScriptObjectMirror currentObj, int port) {
+    public static VertxHelper getEventBusServer(ScriptObjectMirror currentObj,
+            int port) {
         return new VertxHelper(currentObj, port, true);
     }
-    
+
     /**
      * Create a VertxHelper instance as an http client.
-     * 
+     *
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getHttpClient(
-	    ScriptObjectMirror currentObj, String host, int port) {
+    public static VertxHelper getHttpClient(ScriptObjectMirror currentObj,
+            String host, int port) {
         return new VertxHelper(currentObj, host, port, false);
     }
 
     /**
      * Create a VertxHelper instance as an http server.
-     * 
+     *
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param port The port on the host that provides access to the Vert.x bus.
      * @return A new VertxHelper.
      */
-    public static VertxHelper getHttpServer(
-            ScriptObjectMirror currentObj, int port) {
+    public static VertxHelper getHttpServer(ScriptObjectMirror currentObj,
+            int port) {
         return new VertxHelper(currentObj, port, false);
     }
-    
+
     /** Establish a connection to the event bus, if not already connected.
      */
     public void connect() {
-        if (!_wsIsOpen) { 
+        if (!_wsIsOpen) {
             try {
-                _httpClient.connectWebsocket("/eventbus/websocket", 
-                    new Handler<WebSocket>() {
-                    @Override
-                    public void handle(WebSocket websocket) {
-                        /* Uncomment this to test delays in opening the bus.
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }
-                        */
-        
-                        _wsIsOpen = true;
-                        _webSocket = websocket;
-                        _currentObj.callMember("emit", "open");
-                        
-                        _webSocket.dataHandler(new DataHandler());
-                        _webSocket.endHandler(new EndHandler());
-                        _webSocket.exceptionHandler(new ExceptionHandler());
-                        
-                        // a periodic ping is needed to keep the websocket open.
-                        _periodicPing = _vertx.setPeriodic(5000, 
-                                new Handler<Long>() {
+                _httpClient.connectWebsocket("/eventbus/websocket",
+                        new Handler<WebSocket>() {
                             @Override
-                            public void handle(Long timerID) {
-                                JsonObject json = 
-                                     new JsonObject().putString("type", "ping");
+                            public void handle(WebSocket websocket) {
+                                /* Uncomment this to test delays in opening the bus.
                                 try {
-                                    _sendTextFrame(json);
-                                } catch (IllegalActionException e) {
-                                    _currentObj.callMember("emit", "error");
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
                                 }
-                            }
-                          });
-                    }
-                });
-            
+                                */
 
-                } catch(Exception e){
-                    _currentObj.callMember("emit", "error", "connect");
-                    System.out.println(e);
-                }
+                                _wsIsOpen = true;
+                                _webSocket = websocket;
+                                _currentObj.callMember("emit", "open");
+
+                                _webSocket.dataHandler(new DataHandler());
+                                _webSocket.endHandler(new EndHandler());
+                                _webSocket
+                                        .exceptionHandler(new ExceptionHandler());
+
+                                // a periodic ping is needed to keep the websocket open.
+                                _periodicPing = _vertx.setPeriodic(5000,
+                                        new Handler<Long>() {
+                                            @Override
+                                            public void handle(Long timerID) {
+                                                JsonObject json = new JsonObject()
+                                                        .putString("type",
+                                                                "ping");
+                                                try {
+                                                    _sendTextFrame(json);
+                                                } catch (IllegalActionException e) {
+                                                    _currentObj.callMember(
+                                                            "emit", "error");
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+
+            } catch (Exception e) {
+                _currentObj.callMember("emit", "error", "connect");
+                System.out.println(e);
             }
+        }
     }
-    
+
     /** Close the internal web socket, cancel periodic ping.
      */
     public void close() {
@@ -172,31 +174,30 @@ public class VertxHelper {
             _webSocket = null;
         }
     }
-    
+
     /** Close server.
      */
     public void closeServer() {
         _httpServer.close();
     }
-    
-    /** Return whether the web socket is opened successfully. 
+
+    /** Return whether the web socket is opened successfully.
      * @return True if the socket was opened successfully.
      */
     public boolean isOpen() {
-    	if (_webSocket == null) {
-    	    return false;
-    	}
-    	return _wsIsOpen;
+        if (_webSocket == null) {
+            return false;
+        }
+        return _wsIsOpen;
     }
 
-    /** Publish text data onto vertx bus. 
+    /** Publish text data onto vertx bus.
      * @param address The address.
      * @param message A text message to be sent.
      */
     public void publish(String address, String message) {
         JsonObject json = new JsonObject().putString("type", "publish")
-                .putString("address", address)
-                .putString("body", message);
+                .putString("address", address).putString("body", message);
         try {
             _sendTextFrame(json);
         } catch (IllegalActionException e) {
@@ -208,8 +209,8 @@ public class VertxHelper {
      * @param address The address on the bus that should be suscribed to.
      */
     public void registerHandler(String address) {
-        JsonObject message = new JsonObject().putString("type",
-                "register").putString("address", address);
+        JsonObject message = new JsonObject().putString("type", "register")
+                .putString("address", address);
         _webSocket.writeTextFrame(message.encode());
     }
 
@@ -223,32 +224,30 @@ public class VertxHelper {
         request.response().write(response);
         request.response().end();
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                        ////
     /**
-     * Private constructor for VertxHelper to open a 
+     * Private constructor for VertxHelper to open a
      * client-side web socket and add a ping to keep the websocket open.
-     * 
+     *
      * @param namespaceName The name of the JavaScript module constructor.
      * @param currentObj The JavaScript instance of the WebSocket.
      * @param host The host of the Vert.x bus.
      * @param port The port on the host that provides access to the Vert.x bus.
      */
-    private VertxHelper(ScriptObjectMirror currentObj, String host, int port, 
+    private VertxHelper(ScriptObjectMirror currentObj, String host, int port,
             boolean withEventBus) {
         _currentObj = currentObj;
-        
-        _httpClient = _vertx.createHttpClient().setHost(host)
-                .setPort(port);
+
+        _httpClient = _vertx.createHttpClient().setHost(host).setPort(port);
         _httpClient.exceptionHandler(new Handler() {
-        
-            /** Intercept a java.net.ConnectException if connecting fails. */ 
+
+            /** Intercept a java.net.ConnectException if connecting fails. */
             public void handle(Object arg0) {
                 _currentObj.callMember("emit", "error", "connect");
             }
-            
+
         });
 
         // For convenience, connect to bus straight away
@@ -256,26 +255,26 @@ public class VertxHelper {
             connect();
         }
     }
-    
+
     /**
-     * Private constructor for VertxHelper to open a 
+     * Private constructor for VertxHelper to open a
      * Vert.x bus server. This also opens an HTTP server.
      * The constructed object uses the EventEmitter pattern,
      * so HTTP requests will emit "httpRequest" events.
-     * 
+     *
      * @param currentObj The JavaScript object representing this server (used
      *  to emit events).
      * @param port The port on the host that provides access to the Vert.x bus.
      * @param withEventBus If true, open an event-bus server and an HTTP server,
      *  and otherwise just open an HTTP server.
      */
-    private VertxHelper(
-            ScriptObjectMirror currentObj, int port, boolean withEventBus) {
-	// FIXME: Remove engine! Not needed. Make sure to update JavaScript in demos.
+    private VertxHelper(ScriptObjectMirror currentObj, int port,
+            boolean withEventBus) {
+        // FIXME: Remove engine! Not needed. Make sure to update JavaScript in demos.
         _currentObj = currentObj;
 
         _httpServer = _vertx.createHttpServer();
-        
+
         _httpServer.requestHandler(new Handler<HttpServerRequest>() {
             public void handle(HttpServerRequest request) {
                 _currentObj.callMember("emit", "httpRequest", request);
@@ -286,25 +285,27 @@ public class VertxHelper {
             /* Set security permission to let everything go through */
             JsonArray permitted = new JsonArray();
             permitted.add(new JsonObject());
-    
+
             /* Create SockJS and bridge it to the Event Bus */
             SockJSServer sockJSServer = _vertx.createSockJSServer(_httpServer);
-            sockJSServer.bridge(new JsonObject().putString("prefix", "/eventbus"),
+            sockJSServer.bridge(
+                    new JsonObject().putString("prefix", "/eventbus"),
                     permitted, permitted);
         }
         /* Start the server */
         _httpServer.listen(port);
     }
-    
-    private void _sendTextFrame(JsonObject message) throws IllegalActionException {
+
+    private void _sendTextFrame(JsonObject message)
+            throws IllegalActionException {
         if (_webSocket != null) {
             _webSocket.writeTextFrame(message.encode());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-    
+
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
 
@@ -314,7 +315,7 @@ public class VertxHelper {
 
     /** Periodic ping to keep websocket alive when using the eventbus. */
     private long _periodicPing;
-    
+
     /** Instance of Vertx. Apparently we need only one. */
     private static Vertx _vertx = VertxFactory.newVertx();
 
@@ -323,12 +324,10 @@ public class VertxHelper {
 
     /** Whether the internal web socket is opened successfully. */
     private boolean _wsIsOpen = false;
-    
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
-    
+
     /**
      * The event handler that is triggered when a message arrives on the web socket.
      */
@@ -337,7 +336,8 @@ public class VertxHelper {
         public void handle(Buffer buff) {
             String message = buff.toString();
             JsonObject received = new JsonObject(message);
-            _currentObj.callMember("emit", "received", received.getField("body").toString());
+            _currentObj.callMember("emit", "received", received
+                    .getField("body").toString());
         }
     }
 
@@ -360,5 +360,5 @@ public class VertxHelper {
             _currentObj.callMember("emit", "error");
         }
     }
-    
+
 }

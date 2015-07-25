@@ -42,7 +42,7 @@ import org.vertx.java.core.http.HttpServerResponse;
 //// VertxHelper
 
 /** A helper class for the Vert.x browser API.
-   
+
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 11.0
@@ -50,19 +50,19 @@ import org.vertx.java.core.http.HttpServerResponse;
    @Pt.AcceptedRating Red (pd)
  */
 public class VertxBrowserHelper {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Create a web server that serves the specified string.
      *  @param currentObj The JavaScript object on which this method is called.
      *  @param port The port to listen for requests on.
      *	@return A new VertxHelper.
      */
     public static Server createServer(int port) {
-	return new Server(port);
+        return new Server(port);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
 
@@ -71,60 +71,64 @@ public class VertxBrowserHelper {
     public static class Server {
         /** Instantiate a http server that listens only on localhost.
          *  @param port The port number
-         */   
-	public Server(int port) {
-	    HttpServer server = _vertx.createHttpServer();
+         */
+        public Server(int port) {
+            HttpServer server = _vertx.createHttpServer();
             // new Exception("Start of Server(" + port + ")").printStackTrace();
             server.requestHandler(new Handler<HttpServerRequest>() {
-        	public void handle(HttpServerRequest request) {		        
-        	    // System.err.println("Server(" + port + ").handle(HttpServerRequest " + request + "), server: " + server + " _response: " + _getResponse());
-        	    HttpServerResponse response = request.response();
-        	    response.putHeader("content-type", "text/html");
-        	    response.setChunked(true);
-        	    response.write(_getResponse());
-        	    response.end();
+                public void handle(HttpServerRequest request) {
+                    // System.err.println("Server(" + port + ").handle(HttpServerRequest " + request + "), server: " + server + " _response: " + _getResponse());
+                    HttpServerResponse response = request.response();
+                    response.putHeader("content-type", "text/html");
+                    response.setChunked(true);
+                    response.write(_getResponse());
+                    response.end();
 
-        	    // Need to close the server after writing to it
-        	    // otherwise subsequent firings of the accessor
-        	    // will not write new material
-        	    //server.close();
-        	}
+                    // Need to close the server after writing to it
+                    // otherwise subsequent firings of the accessor
+                    // will not write new material
+                    //server.close();
+                }
             });
-            
+
             // The second argument specifies to listen
             // on localhost only (interface lo0).
-            server.listen(port, "127.0.0.1", new Handler<AsyncResult<HttpServer>>() {
-        	public void handle(AsyncResult<HttpServer> asyncResult) {
-        	    System.err.println("Server(" + port + ").handle(<AsyncResult> " + asyncResult + ")" + " Listen succeeded? " + asyncResult.succeeded() + " cause: " + asyncResult.cause() );
-        	    // FIXME: Called when the server actually starts listening.
-        	    // Probably need to have a callback back to JavaScript here.
-        	}
-            });
-	}
+            server.listen(port, "127.0.0.1",
+                    new Handler<AsyncResult<HttpServer>>() {
+                        public void handle(AsyncResult<HttpServer> asyncResult) {
+                            System.err.println("Server(" + port
+                                    + ").handle(<AsyncResult> " + asyncResult
+                                    + ")" + " Listen succeeded? "
+                                    + asyncResult.succeeded() + " cause: "
+                                    + asyncResult.cause());
+                            // FIXME: Called when the server actually starts listening.
+                            // Probably need to have a callback back to JavaScript here.
+                        }
+                    });
+        }
 
-	
         /** Set the response.
          *  @param response The response.
          */
         public void setResponse(String response) {
             System.err.println("setResponse(" + response + ")");
-	    _response = response;
-	}
+            _response = response;
+        }
 
         /** Get the response.
          *  @return The response.
-         */   
+         */
         private String _getResponse() {
             System.err.println("getResponse(): " + _response);
             return _response;
         }
 
-        private  String  _response = "No data yet";
+        private String _response = "No data yet";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-    
+
     /** Instance of Vertx. Apparently we need only one. */
     private static Vertx _vertx = VertxFactory.newVertx();
 }

@@ -47,8 +47,8 @@ import java.util.Queue;
  * @since 4.0
  * @version $Id$
  */
-public class CircularFifoQueue<E> extends AbstractCollection<E>
-    implements Queue<E>, Serializable {
+public class CircularFifoQueue<E> extends AbstractCollection<E> implements
+Queue<E>, Serializable {
 
     /** Serialization version. */
     private static final long serialVersionUID = -8423413834657610406L;
@@ -90,7 +90,8 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
     @SuppressWarnings("unchecked")
     public CircularFifoQueue(final int size) {
         if (size <= 0) {
-            throw new IllegalArgumentException("The size must be greater than 0");
+            throw new IllegalArgumentException(
+                    "The size must be greater than 0");
         }
         elements = (E[]) new Object[size];
         maxElements = elements.length;
@@ -131,7 +132,8 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
      * @throws ClassNotFoundException if the class of a serialized object can not be found
      */
     @SuppressWarnings("unchecked")
-    private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+    private void readObject(final ObjectInputStream in) throws IOException,
+    ClassNotFoundException {
         in.defaultReadObject();
         elements = (E[]) new Object[maxElements];
         final int size = in.readInt();
@@ -225,7 +227,8 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
     @Override
     public boolean add(final E element) {
         if (null == element) {
-            throw new NullPointerException("Attempted to add null object to queue");
+            throw new NullPointerException(
+                    "Attempted to add null object to queue");
         }
 
         if (isAtFullCapacity()) {
@@ -256,8 +259,9 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
         final int sz = size();
         if (index < 0 || index >= sz) {
             throw new NoSuchElementException(
-                    String.format("The specified index (%1$d) is outside the available range [0, %2$d)",
-                                  Integer.valueOf(index), Integer.valueOf(sz)));
+                    String.format(
+                            "The specified index (%1$d) is outside the available range [0, %2$d)",
+                            Integer.valueOf(index), Integer.valueOf(sz)));
         }
 
         final int idx = (start + index) % maxElements;
@@ -387,7 +391,8 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
                 int pos = lastReturnedIndex + 1;
                 if (start < lastReturnedIndex && pos < end) {
                     // shift in one part
-                    System.arraycopy(elements, pos, elements, lastReturnedIndex, end - pos);
+                    System.arraycopy(elements, pos, elements,
+                            lastReturnedIndex, end - pos);
                 } else {
                     // Other elements require us to shift the subsequent elements
                     while (pos != end) {

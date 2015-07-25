@@ -46,15 +46,15 @@ import com.github.sarxos.webcam.WebcamListener;
 /** Helper for the cameras JavaScript module.  This is based on
  *  the webcam-capture package by Bartosz Firyn (SarXos), available from:
  *    https://github.com/sarxos/webcam-capture
- *    
+ *
  *  Note that you can use the Ptolemy II ImageDisplay actor to display image sequences
  *  captured using this module, but this does not work well when executed within Eclipse.
  *  In Eclipse, the Swing event thread blocks "waiting for: OGLRenderQueue$QueueFluher",
  *  and spends most of its time blocked rather than rendering. Hence, we do not get
  *  smooth video. Perhaps this is an Eclipse bug?
- *  
+ *
  *  See the documentation for the JavaScript cameras module to see how to use this.
- *  
+ *
  *  @author Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -71,7 +71,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     public CameraHelper(ScriptObjectMirror currentObj) throws IOException {
         this(currentObj, null);
     }
-    
+
     /** Create a camera with the specified name. The name is
      *  required to be one of those returned by {@link #cameras()},
      *  or else a exception will be thrown.
@@ -79,7 +79,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  @param currentObj The JavaScript object that this is helping.
      *  @throws IOException If the camera does not exist.
      */
-    public CameraHelper(ScriptObjectMirror currentObj, String name) throws IOException {
+    public CameraHelper(ScriptObjectMirror currentObj, String name)
+            throws IOException {
         super(currentObj);
         if (name == null) {
             _webcam = Webcam.getDefault();
@@ -95,7 +96,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         }
         _webcam.addWebcamListener(this);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
@@ -110,7 +111,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             _webcams = null;
             return null;
         }
-        _webcams = new HashMap<String,Webcam>();
+        _webcams = new HashMap<String, Webcam>();
         _webcamNames = new String[webcams.size() + 1];
         _webcamNames[0] = "default camera";
         _webcams.put("default camera", Webcam.getDefault());
@@ -121,7 +122,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         }
         return _webcamNames;
     }
-    
+
     /** Close the camera.
      */
     public void close() {
@@ -138,7 +139,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         }
         return null;
     }
-    
+
     /** Return the current view size for this camera,
      *  given as a JSON formatted string with fields "width"
      *  and "height", for example '{"width":176, "height":144}'.
@@ -147,7 +148,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      */
     public String getViewSize() {
         Dimension size = _webcam.getViewSize();
-        String result = "{\"width\":" + size.width + ", \"height\":" + size.height + "}";
+        String result = "{\"width\":" + size.width + ", \"height\":"
+                + size.height + "}";
         return result;
     }
 
@@ -170,17 +172,19 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         int width = 0, height = 0;
         Object widthSpec = spec.get("width");
         if (widthSpec instanceof Integer) {
-            width = ((Integer)widthSpec).intValue();
+            width = ((Integer) widthSpec).intValue();
         } else {
             throw new IllegalActionException(_actor,
-                    "Expected integer width specification for the view size. Got: " + widthSpec);
+                    "Expected integer width specification for the view size. Got: "
+                            + widthSpec);
         }
         Object heightSpec = spec.get("height");
         if (heightSpec instanceof Integer) {
-            height = ((Integer)heightSpec).intValue();
+            height = ((Integer) heightSpec).intValue();
         } else {
             throw new IllegalActionException(_actor,
-                    "Expected integer height specification for the view size. Got: " + heightSpec);
+                    "Expected integer height specification for the view size. Got: "
+                            + heightSpec);
         }
         _webcam.setViewSize(new Dimension(width, height));
     }
@@ -204,7 +208,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         }
         return null;
     }
-    
+
     /** Return an array of view sizes supported by this camera,
      *  each given as a string of the form "width=176,height=144", for example.
      *  @return An array of strings representing available view sizes.
@@ -213,7 +217,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         Dimension[] sizes = _webcam.getViewSizes();
         String[] result = new String[sizes.length];
         for (int i = 0; i < sizes.length; i++) {
-            result[i] = "{\"width\":" + sizes[i].width + ", \"height\":" + sizes[i].height + "}";
+            result[i] = "{\"width\":" + sizes[i].width + ", \"height\":"
+                    + sizes[i].height + "}";
         }
         return result;
     }
@@ -258,13 +263,13 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The latest image obtained. */
     private BufferedImage _image;
 
     /** The camera associated with this instance. */
     private Webcam _webcam;
-    
+
     /** Cache of discovered local webcam names.
      *  This will be refreshed whenever {@link #cameras()} is called.
      */
@@ -273,5 +278,5 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     /** Cache of discovered local webcams indexed by name.
      *  This will be refreshed whenever {@link #cameras()} is called.
      */
-    private static Map<String,Webcam> _webcams;
+    private static Map<String, Webcam> _webcams;
 }

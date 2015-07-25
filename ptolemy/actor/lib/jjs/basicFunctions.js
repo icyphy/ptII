@@ -43,6 +43,7 @@
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, actor */
+"use strict";
 
 // Flag that will cause debug output to the console if set to true.
 var _debug = false;
