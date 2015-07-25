@@ -51,6 +51,7 @@ TCL_SRCS = \
 	AccessorAuto.tcl \
 	CGC.tcl \
 	CCGAuto.tcl \
+	FMIMAAuto.tcl \
 	JavaCGAuto.tcl \
 	auto.tcl \
 	codegen.tcl \
