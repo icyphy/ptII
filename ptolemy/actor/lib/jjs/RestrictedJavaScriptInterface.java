@@ -33,7 +33,6 @@ import ptolemy.actor.lib.jjs.JavaScript.PortOrParameterProxy;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// RestrictedJavaScriptInterface
 
@@ -42,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    An instance of this class provides limited access to the JavaScript actor
    specified in the constructor, given access only to methods that an untrusted
    script can safely execute.
-   
+
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 10.0
@@ -50,12 +49,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (bilung)
  */
 public class RestrictedJavaScriptInterface {
-    
+
     /** Construct a restricted interface to the specified JavaScript actor.
      *  @param actor The actor.
-     */ 
+     */
     public RestrictedJavaScriptInterface(JavaScript actor) {
-	_actor = actor;
+        _actor = actor;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -68,7 +67,8 @@ public class RestrictedJavaScriptInterface {
      *  @exception IllegalActionException Not thrown in this base class.
      *  @see #removeInputHandler(Integer)
      */
-    public int addInputHandler(final Runnable function) throws IllegalActionException {
+    public int addInputHandler(final Runnable function)
+            throws IllegalActionException {
         return _actor.addInputHandler(function);
     }
 
@@ -118,27 +118,27 @@ public class RestrictedJavaScriptInterface {
      *  @throws IllegalActionException If the error cannot be handled.
      */
     public void error(String message) throws IllegalActionException {
-	_actor.error(message);
+        _actor.error(message);
     }
-    
+
     /** Get the proxy for a port or parameter with the specified name.
      *  This is an object on which JavaScript can directly invoke methods.
      *  @param name The name of the port or parameter.
      *  @return The proxy for the specified name, or null if there is none.
      */
     public PortOrParameterProxy getPortOrParameterProxy(String name) {
-	return _actor.getPortOrParameterProxy(name);
+        return _actor.getPortOrParameterProxy(name);
     }
-    
+
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name)
-	    throws IllegalActionException, NameDuplicationException {
-	_actor.input(name, null);
+    public void input(String name) throws IllegalActionException,
+            NameDuplicationException {
+        _actor.input(name, null);
     }
 
     /** Create a new input port if it does not already exist.
@@ -156,14 +156,14 @@ public class RestrictedJavaScriptInterface {
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name, Map options)
-	    throws IllegalActionException, NameDuplicationException {
-	_actor.input(name, options);
+    public void input(String name, Map options) throws IllegalActionException,
+            NameDuplicationException {
+        _actor.input(name, options);
     }
 
     /** Return true.
      *  A restricted JavaScript actor limits the capabilities available
-     *  to the script it executes so that it can execute untrusted code. 
+     *  to the script it executes so that it can execute untrusted code.
      *  This class is an interface to a restricted JavaScript actor,
      *  so it returns true.
      *  @return True.
@@ -176,7 +176,7 @@ public class RestrictedJavaScriptInterface {
      *  @param message The message
      */
     public void log(String message) {
-	_actor.log(message);
+        _actor.log(message);
     }
 
     /** Create a new output port if it does not already exist.
@@ -185,9 +185,9 @@ public class RestrictedJavaScriptInterface {
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name)
-	    throws IllegalActionException, NameDuplicationException {
-	_actor.output(name, null);
+    public void output(String name) throws IllegalActionException,
+            NameDuplicationException {
+        _actor.output(name, null);
     }
 
     /** Create a new output port if it does not already exist.
@@ -202,9 +202,9 @@ public class RestrictedJavaScriptInterface {
      *  @throws IllegalActionException If no name is given.
      *  @throws NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name, Map<String,String> options)
-	    throws IllegalActionException, NameDuplicationException {
-	_actor.output(name, options);
+    public void output(String name, Map<String, String> options)
+            throws IllegalActionException, NameDuplicationException {
+        _actor.output(name, options);
     }
 
     /** Create a new parameter if it does not already exist.
@@ -215,11 +215,11 @@ public class RestrictedJavaScriptInterface {
      *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public void parameter(String name)
-	    throws IllegalActionException, NameDuplicationException {
-	_actor.parameter(name);
+    public void parameter(String name) throws IllegalActionException,
+            NameDuplicationException {
+        _actor.parameter(name);
     }
-    
+
     /** Create a new parameter if it does not already exist.
      *  The options argument can specify a "type", a "description",
      *  and/or a "value".
@@ -237,10 +237,10 @@ public class RestrictedJavaScriptInterface {
      *   already exists with the name and is not a parameter.
      */
     public void parameter(String name, Map options)
-	    throws IllegalActionException, NameDuplicationException {
-	_actor.parameter(name, options);
+            throws IllegalActionException, NameDuplicationException {
+        _actor.parameter(name, options);
     }
-    
+
     /** Remove the input handler with the specified handle, if it exists.
      *  @param handle The handler handle.
      *  @see #addInputHandler(Runnable)
@@ -262,8 +262,9 @@ public class RestrictedJavaScriptInterface {
      *  @return A unique ID for this callback
      *  @throws IllegalActionException If the director cannot respect the request.
      */
-    public int setInterval(final Runnable function, int millisecond) throws IllegalActionException {
-	return _actor.setInterval(function, millisecond);
+    public int setInterval(final Runnable function, int millisecond)
+            throws IllegalActionException {
+        return _actor.setInterval(function, millisecond);
     }
 
     /** Invoke the specified function after the specified amount of time.
@@ -277,20 +278,21 @@ public class RestrictedJavaScriptInterface {
      *  @return A unique ID for this callback
      *  @throws IllegalActionException If the director cannot respect the request.
      */
-    public int setTimeout(final Runnable function, int millisecond) throws IllegalActionException {
-	return _actor.setTimeout(function, millisecond);
+    public int setTimeout(final Runnable function, int millisecond)
+            throws IllegalActionException {
+        return _actor.setTimeout(function, millisecond);
     }
-    
+
     /** Specify version information to appear in the documentation for this actor.
      *  @param version Version information to appear in documentation.
      */
     public void version(String version) {
-	_actor.version(version);
+        _actor.version(version);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        Protected Methods                  ////
-    
+
     /** Return the actor that this wraps. This is protected so that
      *  instances of HelperBase can retrieve it (for the purposes of
      *  synchronization), but not public so that JavaScript cannot gain
@@ -298,7 +300,7 @@ public class RestrictedJavaScriptInterface {
      *  @return the actor that this wraps.
      */
     protected JavaScript _getActor() {
-	return _actor;
+        return _actor;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -60,7 +60,7 @@ import org.vertx.java.core.eventbus.Message;
  *  but we will not be using Vert.x to run verticles or modules, so this seems
  *  appropriate. We are using it only for the event bus and networking
  *  infrastructure.</p>
- *  
+ *
  *  @author Patricia Derler and Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -68,7 +68,7 @@ import org.vertx.java.core.eventbus.Message;
  *  @Pt.AcceptedRating Red (pd)
  */
 public class EventBusHelper {
-        
+
     /** Create a EventBusHelper for the specified publish or subscribe
      *  client for the event bus using the specified port and hostname
      *  for cluster connections.
@@ -93,61 +93,63 @@ public class EventBusHelper {
      *   for cluster connections, or null to create an unclustered
      *   EventBusHelper.
      */
-    public EventBusHelper(ScriptObjectMirror jsObject, int clusterPort, String clusterHostname) {
-	_currentObj = jsObject;
-	if (clusterHostname == null) {
-	    if (_unclusteredVertxInstance == null) {
-		_unclusteredVertxInstance = VertxFactory.newVertx();
-	    }
-	    _vertx = _unclusteredVertxInstance;
-	} else {
-	    if (_vertxInstances == null) {
-		_vertxInstances = new HashMap<String,Map<Integer,Vertx>>();
-	    }
-	    // FIXME: How to ensure that "localhost" and "127.0.0.1" return
-	    // the same helper? localhost could resolve to something else,
-	    // e.g. under IPv6.
-	    Map<Integer,Vertx> instances = _vertxInstances.get(clusterHostname);
-	    if (instances == null) {
-		_createVertx(clusterPort, clusterHostname);
-		instances = new HashMap<Integer,Vertx>();
-		instances.put(clusterPort, _vertx);
-		_vertxInstances.put(clusterHostname, instances);
-	    } else {
-		Vertx instance = instances.get(clusterPort);
-		if (instance == null) {
-		    _createVertx(clusterPort, clusterHostname);
-		    instances.put(clusterPort, _vertx);
-		} else {
-		    _vertx = instance;
-		}
-	    }
-	}
+    public EventBusHelper(ScriptObjectMirror jsObject, int clusterPort,
+            String clusterHostname) {
+        _currentObj = jsObject;
+        if (clusterHostname == null) {
+            if (_unclusteredVertxInstance == null) {
+                _unclusteredVertxInstance = VertxFactory.newVertx();
+            }
+            _vertx = _unclusteredVertxInstance;
+        } else {
+            if (_vertxInstances == null) {
+                _vertxInstances = new HashMap<String, Map<Integer, Vertx>>();
+            }
+            // FIXME: How to ensure that "localhost" and "127.0.0.1" return
+            // the same helper? localhost could resolve to something else,
+            // e.g. under IPv6.
+            Map<Integer, Vertx> instances = _vertxInstances
+                    .get(clusterHostname);
+            if (instances == null) {
+                _createVertx(clusterPort, clusterHostname);
+                instances = new HashMap<Integer, Vertx>();
+                instances.put(clusterPort, _vertx);
+                _vertxInstances.put(clusterHostname, instances);
+            } else {
+                Vertx instance = instances.get(clusterPort);
+                if (instance == null) {
+                    _createVertx(clusterPort, clusterHostname);
+                    instances.put(clusterPort, _vertx);
+                } else {
+                    _vertx = instance;
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
-    /** Publish text data onto the Vertx event bus. 
-     *  @param address The address, (topic, channel name, stream ID,...) 
+
+    /** Publish text data onto the Vertx event bus.
+     *  @param address The address, (topic, channel name, stream ID,...)
      *  @param message A message to be published, as a string.
      */
     public void publish(String address, String message) {
-	EventBus bus = _vertx.eventBus();
-	bus.publish(address, message);
+        EventBus bus = _vertx.eventBus();
+        bus.publish(address, message);
     }
-    
+
     /** Send text data to exactly one recipient on the Vertx event bus.
      *  According to the Vert.x documentation, the recipient is choosen
      *  in a loosely round-robin fashion. If a reply has been set via
      *  {@link #setReply(String)}, then if an when the reply is received,
      *  the associated JavaScript object's reply() function will be invoked.
-     *  @param address The address, (topic, channel name, stream ID,...) 
+     *  @param address The address, (topic, channel name, stream ID,...)
      *  @param message A message to be published, as a string.
      */
     public void send(String address, String message) {
-	EventBus bus = _vertx.eventBus();
-	bus.send(address, message);
+        EventBus bus = _vertx.eventBus();
+        bus.send(address, message);
     }
 
     /** Send text data to exactly one recipient on the Vertx event bus
@@ -156,18 +158,19 @@ public class EventBusHelper {
      *  in a loosely round-robin fashion. If a reply has been set via
      *  {@link #setReply(String)}, then if an when the reply is received,
      *  the associated JavaScript object's reply() function will be invoked.
-     *  @param address The address, (topic, channel name, stream ID,...) 
+     *  @param address The address, (topic, channel name, stream ID,...)
      *  @param message A message to be published, as a string.
      *  @param replyHandler The handler for the reply.
      */
     public void send(String address, String message, final Object replyHandler) {
-	EventBus bus = _vertx.eventBus();
-	Handler<Message> newHandler = new Handler<Message>() {
-	    public void handle(Message message) {
-		_currentObj.callMember("notifyReply", replyHandler, message.body());
-	    }
-	};
-	bus.send(address, message, newHandler);
+        EventBus bus = _vertx.eventBus();
+        Handler<Message> newHandler = new Handler<Message>() {
+            public void handle(Message message) {
+                _currentObj.callMember("notifyReply", replyHandler,
+                        message.body());
+            }
+        };
+        bus.send(address, message, newHandler);
     }
 
     /** Set the reply to send in response to any point-to-point
@@ -176,7 +179,7 @@ public class EventBusHelper {
      *   to not send any replies.
      */
     public void setReply(String reply) {
-	_reply = reply;
+        _reply = reply;
     }
 
     /** Subscribe to the specified address on the event bus.
@@ -191,23 +194,23 @@ public class EventBusHelper {
      *  @see #unsubscribe(String)
      */
     public void subscribe(final String address) {
-	if (_subscriptions == null) {
-	    _subscriptions = new HashMap<String,Handler>();
-	}
-	if (_subscriptions.get(address) != null) {
-	    return;
-	}
-	Handler<Message> newHandler = new Handler<Message>() {
-	    public void handle(Message message) {
+        if (_subscriptions == null) {
+            _subscriptions = new HashMap<String, Handler>();
+        }
+        if (_subscriptions.get(address) != null) {
+            return;
+        }
+        Handler<Message> newHandler = new Handler<Message>() {
+            public void handle(Message message) {
                 _currentObj.callMember("notify", address, message.body());
                 if (_reply != null) {
                     message.reply(_reply);
                 }
-	    }
-	};
-	_subscriptions.put(address, newHandler);
-	EventBus bus = _vertx.eventBus();
-	bus.registerHandler(address, newHandler);
+            }
+        };
+        _subscriptions.put(address, newHandler);
+        EventBus bus = _vertx.eventBus();
+        bus.registerHandler(address, newHandler);
     }
 
     /** Unsubscribe the associated JavaScript object as a subscriber to the
@@ -218,62 +221,63 @@ public class EventBusHelper {
      *  @see #unsubscribe()
      */
     public void unsubscribe(final String address) {
-	if (_subscriptions != null) {
-	    EventBus bus = _vertx.eventBus();
-	    if (address == null) {
-		for (String toUnsubscribe : _subscriptions.keySet()) {
-		    Handler<Message> previousHandler = _subscriptions.get(toUnsubscribe);
-		    bus.unregisterHandler(toUnsubscribe, previousHandler);
-		}
-		_subscriptions.clear();
-	    } else {
-		Handler<Message> previousHandler = _subscriptions.get(address);
-		if (previousHandler != null) {
-		    bus.unregisterHandler(address, previousHandler);
-		    _subscriptions.remove(address);
-		}
-	    }
-	}
+        if (_subscriptions != null) {
+            EventBus bus = _vertx.eventBus();
+            if (address == null) {
+                for (String toUnsubscribe : _subscriptions.keySet()) {
+                    Handler<Message> previousHandler = _subscriptions
+                            .get(toUnsubscribe);
+                    bus.unregisterHandler(toUnsubscribe, previousHandler);
+                }
+                _subscriptions.clear();
+            } else {
+                Handler<Message> previousHandler = _subscriptions.get(address);
+                if (previousHandler != null) {
+                    bus.unregisterHandler(address, previousHandler);
+                    _subscriptions.remove(address);
+                }
+            }
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
-   
+
     /** Create the Vertx instance we will use.
      *  @param clusterPort The port to listen for cluster information.
      *  @param clusterHostname The network interface to use for the cluster.
      */
     private void _createVertx(int clusterPort, String clusterHostname) {
-	_vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
-	
-	/** FIXME: Some example code includes the following, but I can't find VertxOptions:
-	VertxOptions options = new VertxOptions();
-	Vertx.clusteredVertx(options, res -> {
-	  if (res.succeeded()) {
-	    Vertx vertx = res.result();
-	    EventBus eventBus = vertx.eventBus();
-	    System.out.println("We now have a clustered event bus: " + eventBus);
-	  } else {
-	    System.out.println("Failed: " + res.cause());
-	  }
-	});
-	*/
+        _vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
+
+        /** FIXME: Some example code includes the following, but I can't find VertxOptions:
+        VertxOptions options = new VertxOptions();
+        Vertx.clusteredVertx(options, res -> {
+          if (res.succeeded()) {
+            Vertx vertx = res.result();
+            EventBus eventBus = vertx.eventBus();
+            System.out.println("We now have a clustered event bus: " + eventBus);
+          } else {
+            System.out.println("Failed: " + res.cause());
+          }
+        });
+        */
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-    
+
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
-    
+
     /** The reply to send in response to received messages, or null to send no reply. */
     private String _reply = null;
 
     /** Map from addresses to which the associated JavaScript object is
      *  subscribed to the handler function.
      */
-    private Map<String,Handler> _subscriptions;
-    
+    private Map<String, Handler> _subscriptions;
+
     /** An unclustered Vertx instance, if it has been created. */
     private static Vertx _unclusteredVertxInstance;
 
@@ -282,7 +286,7 @@ public class EventBusHelper {
      *  over which clusters are formed for the event bus.
      */
     private Vertx _vertx;
-    
+
     /** The platform manager instances, indexed by hostname and port. */
-    private static Map<String,Map<Integer,Vertx>> _vertxInstances;
+    private static Map<String, Map<Integer, Vertx>> _vertxInstances;
 }

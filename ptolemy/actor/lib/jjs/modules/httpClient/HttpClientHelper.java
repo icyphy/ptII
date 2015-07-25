@@ -58,7 +58,7 @@ import ptolemy.data.Token;
 
 /**
    A helper class for the HttpClient module in JavaScript.
-   
+
    @author Marten Lohstroh, Edward A. Lee
    @version $Id: HttpClientHelper.java 71938 2015-04-08 21:55:19Z hokeunkim $
    @since Ptolemy II 11.0
@@ -90,10 +90,10 @@ public class HttpClientHelper extends VertxHelperBase {
      *            the server to issue the request to. This defaults to 'localhost'.
      *       <li> path: Request path as a string. This defaults to '/'. This can
      *            include a query string, e.g. '/index.html?page=12', or the query
-     *            string can be specified as a separate field (see below). 
+     *            string can be specified as a separate field (see below).
      *            An exception is thrown if the request path contains illegal characters.
      *       <li> protocol: The protocol. This is a string that defaults to 'http'.
-     *       <li> port: Port of remote server. This defaults to 80. 
+     *       <li> port: Port of remote server. This defaults to 80.
      *       <li> query: A query string to be appended to the path, such as '?page=12'.
      *       </ul>
      *  </ul>
@@ -108,9 +108,9 @@ public class HttpClientHelper extends VertxHelperBase {
 
     /** End a request. */
     public void end() {
-	if (_request != null) {
-	    _request.end();
-	}
+        if (_request != null) {
+            _request.end();
+        }
     }
 
     /** Stop a response. */
@@ -131,10 +131,11 @@ public class HttpClientHelper extends VertxHelperBase {
      *  @param address The URL of the WebSocket host with an optional port number
      *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
      */
-    private HttpClientHelper(ScriptObjectMirror currentObj, Map<String, Object> options) {
+    private HttpClientHelper(ScriptObjectMirror currentObj,
+            Map<String, Object> options) {
         super(currentObj);
         HttpClient client = _vertx.createHttpClient();
-        
+
         // NOTE: Vert.x documentation states about HttpClient:
         // "If an instance is instantiated from some other arbitrary Java thread
         // (i.e. when running embedded) then and event loop will be assigned
@@ -142,60 +143,57 @@ public class HttpClientHelper extends VertxHelperBase {
         // Hence, the HttpClient we just created will be assigned its own
         // event loop. We need to ensure that callbacks are mutually exclusive
         // with other Java code here.
-        
+
         Map<String, Object> urlSpec = (Map<String, Object>) options.get("url");
-        
-        client.setHost((String) urlSpec.get("host")); 
-        client.setPort((int) urlSpec.get("port")); 
+
+        client.setHost((String) urlSpec.get("host"));
+        client.setPort((int) urlSpec.get("port"));
         client.exceptionHandler(new HttpClientExceptionHandler());
-        if ((boolean)options.get("keepAlive")) {
+        if ((boolean) options.get("keepAlive")) {
             client.setKeepAlive(true);
         }
         // FIXME: Provide a timeout. Use setTimeout() of the client.
-        
+
         String query = "";
         Object queryObject = urlSpec.get("query");
         if (queryObject != null) {
             String querySpec = queryObject.toString().trim();
-            if(!querySpec.equals("") && !querySpec.startsWith("?")) {
-        	query = "?" + querySpec;
+            if (!querySpec.equals("") && !querySpec.startsWith("?")) {
+                query = "?" + querySpec;
             }
         }
-        
+
         // NOTE: Documentation of Vertx 2.15 is wrong.
         // The argument is a path with a query, not a URI.
-        String uri = urlSpec.get("path")
-        	+ query;
-        
+        String uri = urlSpec.get("path") + query;
+
         // FIXME: How do we set the protocol?
         // It is specified in urlSpec.get("protocol").
-        
+
         Object complete = options.get("outputCompleteResponseOnly");
-        if (complete instanceof Boolean && !(Boolean)complete) {
+        if (complete instanceof Boolean && !(Boolean) complete) {
             _outputCompleteResponseOnly = false;
         }
-        
-        _request = client.request(
-        	(String)options.get("method"),
-        	uri,
-        	new HttpClientResponseHandler());
-   
+
+        _request = client.request((String) options.get("method"), uri,
+                new HttpClientResponseHandler());
+
         // Handle the headers.
-        Map headers = (Map)options.get("headers");
+        Map headers = (Map) options.get("headers");
         if (!headers.isEmpty()) {
             for (Object key : headers.keySet()) {
-        	Object value = headers.get(key);
-        	if (value instanceof String) {
-        	    _request.putHeader((String)key, (String)value);
-        	} else if (value instanceof Integer) {
-        	    _request.putHeader((String) key, 
-        	            ((Integer) value).toString());
-        	} else if (value instanceof Iterable) {
-        	    _request.putHeader((String)key, (Iterable<String>)value);
-        	}
+                Object value = headers.get(key);
+                if (value instanceof String) {
+                    _request.putHeader((String) key, (String) value);
+                } else if (value instanceof Integer) {
+                    _request.putHeader((String) key,
+                            ((Integer) value).toString());
+                } else if (value instanceof Iterable) {
+                    _request.putHeader((String) key, (Iterable<String>) value);
+                }
             }
         }
-        
+
         // Handle the body, if present.
         String body = (String) options.get("body");
         if (body != null) {
@@ -205,13 +203,13 @@ public class HttpClientHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-    
+
     /** Boolean indicating whether outputting partial responses is permitted. */
     private boolean _outputCompleteResponseOnly = true;
-    
+
     /** The request built in the constructor. */
     private HttpClientRequest _request;
-    
+
     /** The current response, which may be streaming data, or null if there is no active response. */
     private HttpClientResponse _response;
 
@@ -223,45 +221,44 @@ public class HttpClientHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
-            synchronized(_actor) {
-        	_currentObj.callMember("emit", "error", throwable.getMessage());
+            synchronized (_actor) {
+                _currentObj.callMember("emit", "error", throwable.getMessage());
             }
         }
     }
-    
+
     /** The event handler that is triggered when a response arrives from the server.
      */
-    private class HttpClientResponseHandler implements Handler<HttpClientResponse> {
+    private class HttpClientResponseHandler implements
+            Handler<HttpClientResponse> {
         private List<byte[]> _imageParts;
         private String _boundary;
         private boolean _inSegment;
+
         @Override
         public void handle(HttpClientResponse response) {
-            synchronized(_actor) {
+            synchronized (_actor) {
                 _response = response;
                 // The response is not yet complete, but we have some information.
                 int status = response.statusCode();
                 if (status >= 400) {
                     // An error occurred.
-                    _currentObj.callMember("emit", "error", "Request failed with code "
-                            + status
-                            + ": "
-                            + response.statusMessage());
+                    _currentObj.callMember("emit", "error",
+                            "Request failed with code " + status + ": "
+                                    + response.statusMessage());
                     return;
                 }
                 MultiMap headers = response.headers();
 
                 // If the response is a redirect, handle that here.
-                if(status >=300 && status <= 308 && status != 306) {
+                if (status >= 300 && status <= 308 && status != 306) {
                     String newLocation = headers.get("Location");
                     if (newLocation != null) {
                         // FIXME: How to handle the redirect?
                         _currentObj.callMember("emit", "error", "Redirect to "
                                 + newLocation
                                 + " not yet handled by HttpClientHelper. "
-                                + status
-                                + ": "
-                                + response.statusMessage());
+                                + status + ": " + response.statusMessage());
                         return;
                     }
                 }
@@ -274,7 +271,8 @@ public class HttpClientHelper extends VertxHelperBase {
                 if (isMultipart) {
                     int index = contentType.indexOf("=");
                     if (index > 0) {
-                        _boundary = "--" + contentType.substring(index + 1).trim();
+                        _boundary = "--"
+                                + contentType.substring(index + 1).trim();
                     }
                 }
 
@@ -283,28 +281,33 @@ public class HttpClientHelper extends VertxHelperBase {
                 // we really need to be chunking the data rather than using a
                 // bodyHandler.
 
-                if (_outputCompleteResponseOnly) {                        
+                if (_outputCompleteResponseOnly) {
                     // A bodyHandler is invoked after the response is complete.
                     // Note that large responses could create a memory problem here.
                     // Could look at the Content-Length header.
                     response.bodyHandler(new Handler<Buffer>() {
                         public void handle(Buffer body) {
-                            synchronized(_actor) {
+                            synchronized (_actor) {
                                 if (isText) {
-                                    _currentObj.callMember("_response", response, body.toString());
+                                    _currentObj.callMember("_response",
+                                            response, body.toString());
                                 } else if (contentType.startsWith("image")) {
-                                    InputStream stream = new ByteArrayInputStream(body.getBytes());
+                                    InputStream stream = new ByteArrayInputStream(
+                                            body.getBytes());
                                     try {
                                         Image image = ImageIO.read(stream);
                                         Token token = new AWTImageToken(image);
-                                        _currentObj.callMember("_response", response, token);
+                                        _currentObj.callMember("_response",
+                                                response, token);
                                     } catch (IOException e) {
                                         // FIXME: What to do here?
-                                        _currentObj.callMember("_response", response, body.getBytes());
+                                        _currentObj.callMember("_response",
+                                                response, body.getBytes());
                                     }
                                 } else {
                                     // FIXME: Need to handle other MIME types.Z
-                                    _currentObj.callMember("_response", response, body.getBytes()); 
+                                    _currentObj.callMember("_response",
+                                            response, body.getBytes());
                                 }
                                 _response = null;
                             }
@@ -313,7 +316,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 } else {
                     response.endHandler(new Handler() {
                         public void handle(Object body) {
-                            synchronized(_actor) {
+                            synchronized (_actor) {
                                 _response = null;
                             }
                         }
@@ -324,13 +327,15 @@ public class HttpClientHelper extends VertxHelperBase {
                         public void handle(Buffer body) {
                             // FIXME: There seems to be no way to stop this stream!!!
                             // This function gets invoked even after the model stops!
-                            synchronized(_actor) {
+                            synchronized (_actor) {
                                 if (isText) {
-                                    _currentObj.callMember("_response", response, body.toString());
+                                    _currentObj.callMember("_response",
+                                            response, body.toString());
                                 } else if (isMultipart) {
                                     byte[] data = body.getBytes();
                                     String dataAsString = body.toString();
-                                    int boundaryIndex = dataAsString.indexOf(_boundary);
+                                    int boundaryIndex = dataAsString
+                                            .indexOf(_boundary);
                                     if (boundaryIndex >= 0) {
                                         // The data contains a boundary.  If we are in
                                         // a segment, finish it.
@@ -338,7 +343,9 @@ public class HttpClientHelper extends VertxHelperBase {
                                             if (boundaryIndex > 1) {
                                                 // There is additional data in this segment.
                                                 byte[] prefix = new byte[boundaryIndex];
-                                                System.arraycopy(data, 0, prefix, 0, boundaryIndex-1);
+                                                System.arraycopy(data, 0,
+                                                        prefix, 0,
+                                                        boundaryIndex - 1);
                                                 _imageParts.add(prefix);
 
                                                 // Construct one big byte array.
@@ -349,24 +356,39 @@ public class HttpClientHelper extends VertxHelperBase {
                                                 byte[] imageBytes = new byte[length];
                                                 int position = 0;
                                                 for (byte[] piece : _imageParts) {
-                                                    System.arraycopy(piece, 0, imageBytes, position, piece.length);
+                                                    System.arraycopy(piece, 0,
+                                                            imageBytes,
+                                                            position,
+                                                            piece.length);
                                                     position += piece.length;
                                                 }
 
                                                 // Have a complete image.
-                                                InputStream stream = new ByteArrayInputStream(imageBytes);
+                                                InputStream stream = new ByteArrayInputStream(
+                                                        imageBytes);
                                                 try {
-                                                    Image image = ImageIO.read(stream);
+                                                    Image image = ImageIO
+                                                            .read(stream);
                                                     if (image != null) {
-                                                        Token token = new AWTImageToken(image);
-                                                        _currentObj.callMember("_response", response, token);
-                                                        System.out.println("Sent an image.");
+                                                        Token token = new AWTImageToken(
+                                                                image);
+                                                        _currentObj
+                                                                .callMember(
+                                                                        "_response",
+                                                                        response,
+                                                                        token);
+                                                        System.out
+                                                                .println("Sent an image.");
                                                     } else {
-                                                        System.err.println("Input data is apparently not an image.");
+                                                        System.err
+                                                                .println("Input data is apparently not an image.");
                                                     }
                                                 } catch (IOException e) {
                                                     // FIXME: What to do here?
-                                                    _currentObj.callMember("_response", response, body.getBytes());
+                                                    _currentObj.callMember(
+                                                            "_response",
+                                                            response,
+                                                            body.getBytes());
                                                 }
                                             }
                                         }
@@ -375,13 +397,17 @@ public class HttpClientHelper extends VertxHelperBase {
                                         _imageParts.clear();
                                         // Skip to character 255, the start of a jpeg image.
                                         // (in signed notation, -1).
-                                        int start = boundaryIndex + _boundary.length() + 2;
-                                        while (start < data.length && data[start] != -1) {
+                                        int start = boundaryIndex
+                                                + _boundary.length() + 2;
+                                        while (start < data.length
+                                                && data[start] != -1) {
                                             start++;
                                         }
                                         if (start < data.length) {
-                                            byte[] segment = new byte[data.length - start];
-                                            System.arraycopy(data, start, segment, 0, segment.length);
+                                            byte[] segment = new byte[data.length
+                                                    - start];
+                                            System.arraycopy(data, start,
+                                                    segment, 0, segment.length);
                                             _imageParts.add(segment);
                                         }
                                     } else {
@@ -393,7 +419,8 @@ public class HttpClientHelper extends VertxHelperBase {
 
                                 } else {
                                     // FIXME: Need to handle other MIME types.Z
-                                    _currentObj.callMember("_response", response, body.getBytes()); 
+                                    _currentObj.callMember("_response",
+                                            response, body.getBytes());
                                 }
                             }
                         }

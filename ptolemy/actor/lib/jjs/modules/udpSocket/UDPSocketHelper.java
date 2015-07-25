@@ -43,56 +43,59 @@ import org.vertx.java.core.datagram.InternetProtocolFamily;
 
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 
-
 ///////////////////////////////////////////////////////////////////
 ////UDPSocketHelper
 
 /**
    A helper class for the udpSocket module in JavaScript.
    See the documentation of that module for instructions.
-   
+
    @author Hokeun Kim
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
-*/
+ */
 
 public class UDPSocketHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Close the UDP socket with a given port number.
      *  @param port The port number.
      */
     public void bind(int port) {
-        _socket.listen("0.0.0.0", port, new AsyncResultHandler<DatagramSocket>() {
-            public void handle(AsyncResult<DatagramSocket> asyncResult) {
-                if (asyncResult.succeeded()) {
-                   _socket.dataHandler(new Handler<DatagramPacket>() {
-                        public void handle(DatagramPacket packet) {
-                            // Do something with the packet
-                            _currentObj.callMember("notifyIncoming", packet.data().toString());
+        _socket.listen("0.0.0.0", port,
+                new AsyncResultHandler<DatagramSocket>() {
+                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
+                        if (asyncResult.succeeded()) {
+                            _socket.dataHandler(new Handler<DatagramPacket>() {
+                                public void handle(DatagramPacket packet) {
+                                    // Do something with the packet
+                                    _currentObj.callMember("notifyIncoming",
+                                            packet.data().toString());
+                                }
+                            });
+                        } else {
+                            System.out.println("Listen failed"
+                                    + asyncResult.cause());
                         }
-                    });
-                } else {
-                    System.out.println("Listen failed" + asyncResult.cause());
-                }
-            }
-        });
+                    }
+                });
     }
-    
+
     /** Close the UDP socket.
      */
     public void close() {
         _socket.close();
     }
-    
+
     /** Create the UDP socket.
      *  @param scriptObjectMirror The JavaScript instance invoking the shell.
      */
-    public static UDPSocketHelper createSocket(ScriptObjectMirror scriptObjectMirror) {
+    public static UDPSocketHelper createSocket(
+            ScriptObjectMirror scriptObjectMirror) {
         return new UDPSocketHelper(scriptObjectMirror);
     }
 
@@ -103,22 +106,24 @@ public class UDPSocketHelper extends VertxHelperBase {
      *  @param port The port.  Currently Ignored.
      *  @param hostname The hostname.  Currently Ignored.
      */
-    public void send(byte[] data, int offset, int length, int port, String hostname) {
+    public void send(byte[] data, int offset, int length, int port,
+            String hostname) {
         // FIXME: Why are we not using data here?
         Buffer buffer = new Buffer("content");
         // Send a Buffer
-        _socket.send(buffer, "10.0.0.1", 1234, new AsyncResultHandler<DatagramSocket>() {
-         public void handle(AsyncResult<DatagramSocket> asyncResult) {
-             System.out.println("Send succeeded? " + asyncResult.succeeded());
-         }
-        });
+        _socket.send(buffer, "10.0.0.1", 1234,
+                new AsyncResultHandler<DatagramSocket>() {
+                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
+                        System.out.println("Send succeeded? "
+                                + asyncResult.succeeded());
+                    }
+                });
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                  ////
-    private UDPSocketHelper(ScriptObjectMirror currentObj)
-    {
-        // Need to call super(currentObject) here and avoid 
+    private UDPSocketHelper(ScriptObjectMirror currentObj) {
+        // Need to call super(currentObject) here and avoid
         // "UDPSocketHelper.java:110: error: constructor VertxHelperBase in class VertxHelperBase cannot be applied to given types;"
         super(currentObj);
         _currentObj = currentObj;
@@ -130,7 +135,7 @@ public class UDPSocketHelper extends VertxHelperBase {
 
     /** The current instance of the Vert.x UDP socket. */
     private DatagramSocket _socket;
-    
+
     /** The current instance of the JavaScript module. */
     private ScriptObjectMirror _currentObj;
 

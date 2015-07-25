@@ -47,7 +47,7 @@ import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
    Instances of this class are helpers for a server that can support multiple sockets.
    See the documentation of that module for instructions.
    This uses Vert.x for the implementation.
-   
+
    @see WebSocketHelper
    @author Hokeun Kim and Edward A. Lee
    @version $Id$
@@ -56,21 +56,21 @@ import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
    @Pt.AcceptedRating Red (bilung)
  */
 public class WebSocketServerHelper extends VertxHelperBase {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
     /** Close the web socket server.
      */
     public void closeServer() {
-	synchronized(_actor) {
-	    if (_server != null) {
-		_server.close();
-		_server = null;
-	    }
-	}
+        synchronized (_actor) {
+            if (_server != null) {
+                _server.close();
+                _server = null;
+            }
+        }
     }
-    
+
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
      *  @param currentObj The JavaScript Server instance for which this is a helper.
      *  @param hostInterface The host interface to use, in case there the host has more
@@ -80,48 +80,50 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
-	    ScriptObjectMirror currentObj, String hostInterface, int port) {
+            ScriptObjectMirror currentObj, String hostInterface, int port) {
         return new WebSocketServerHelper(currentObj, hostInterface, port);
     }
-    
+
     /** Create and start the server and beginning listening for
      *  connections. When a new connection request is received and
      *  a socket has been opened, emit the 'connection' event with the
      *  socket as an argument.
      */
     public void startServer() {
-	synchronized(_actor) {
-	    // Note that the following call apparently starts the new server
-	    // in separate thread. It should not be done in the constructor
-	    // because the script that starts the server needs to register
-	    // callbacks before the server starts. Otherwise, there will be
-	    // a race condition where the callback could be called before
-	    // the server has started.
-	    _server = _vertx.createHttpServer();
-	    _server.websocketHandler(new Handler<ServerWebSocket>() {
-		@Override
-		public void handle(ServerWebSocket serverWebSocket) {
-		    synchronized(_actor) {
-			// FIXME: Create error handler, close handler, etc. on this socket.
+        synchronized (_actor) {
+            // Note that the following call apparently starts the new server
+            // in separate thread. It should not be done in the constructor
+            // because the script that starts the server needs to register
+            // callbacks before the server starts. Otherwise, there will be
+            // a race condition where the callback could be called before
+            // the server has started.
+            _server = _vertx.createHttpServer();
+            _server.websocketHandler(new Handler<ServerWebSocket>() {
+                @Override
+                public void handle(ServerWebSocket serverWebSocket) {
+                    synchronized (_actor) {
+                        // FIXME: Create error handler, close handler, etc. on this socket.
 
-			// Notify of a new connection.
-			// This will have the side effect of creating a new JS Socket
-			// object, which is an event emitter.
-			_currentObj.callMember("socketCreated", serverWebSocket);
-		    }
-		}
-	    });
-	    _server.listen(_port, _hostInterface, new Handler<AsyncResult<HttpServer>>() {
-		@Override
-		public void handle(AsyncResult<HttpServer> arg0) {
-		    synchronized(_actor) {
-			_currentObj.callMember("emit", "listening");
-		    }
-		}
-	    });
-	}
+                        // Notify of a new connection.
+                        // This will have the side effect of creating a new JS Socket
+                        // object, which is an event emitter.
+                        _currentObj
+                                .callMember("socketCreated", serverWebSocket);
+                    }
+                }
+            });
+            _server.listen(_port, _hostInterface,
+                    new Handler<AsyncResult<HttpServer>>() {
+                        @Override
+                        public void handle(AsyncResult<HttpServer> arg0) {
+                            synchronized (_actor) {
+                                _currentObj.callMember("emit", "listening");
+                            }
+                        }
+                    });
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
 
@@ -132,8 +134,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *   the argument is null, then "localhost" will be used.
      *  @param port The port on which to create the server.
      */
-    private WebSocketServerHelper(
-	    ScriptObjectMirror currentObj, String hostInterface, int port) {
+    private WebSocketServerHelper(ScriptObjectMirror currentObj,
+            String hostInterface, int port) {
         super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
@@ -144,13 +146,13 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-        
+
     /** The host interface. */
     private String _hostInterface;
-    
+
     /** The port on which the server listens. */
     private int _port;
-    
+
     /** The internal http server created by Vert.x */
     private HttpServer _server = null;
 

@@ -39,8 +39,8 @@ import ptolemy.actor.lib.jjs.HelperBase;
 
 /**
    A base class for helper classes that use an embedded Vert.x core.
-   Creates only one static Vert.x core that is accessible to its subclasses. 
-   
+   Creates only one static Vert.x core that is accessible to its subclasses.
+
    @author Hokeun Kim
    @version $Id: VertxHelperBase.java 72160 2015-04-29 09:58:26Z hokeunkim $
    @since Ptolemy II 11.0
@@ -53,13 +53,13 @@ public class VertxHelperBase extends HelperBase {
      *  @param currentObj The JavaScript object that this is helping.
      */
     public VertxHelperBase(ScriptObjectMirror currentObj) {
-	super(currentObj);
+        super(currentObj);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                        ////
-    
+
     /** Global instance of Vert.x core. */
-    protected  static Vertx _vertx = VertxFactory.newVertx();
+    protected static Vertx _vertx = VertxFactory.newVertx();
 
 }
