@@ -103,6 +103,7 @@
   <!-- Ant paths to optional jar files set by the configure script. -->
   <path id="ptII.classpath.optional">
     <pathelement location="${basedir}" />
+    <pathelement location="lib/bridj-0.6.2.jar" />
     <pathelement location="lib/bsh-2.0b4.jar" />
     <pathelement location="lib/ptCal.jar" />
     <pathelement location="lib/java_cup.jar" />
@@ -126,6 +127,8 @@
     <pathelement location="lib/ptjacl.jar" />
     <pathelement location="lib/mapss.jar" />
     <pathelement location="lib/oscP5.jar" />
+    <pathelement location="lib/slf4j-api-1.7.2.jar" />
+    <pathelement location="lib/slf4j-nop-1.7.12.jar" />
     <pathelement location="lib/smack.jar" />
     <pathelement location="lib/smackx.jar" />
     <pathelement location="lib/socketio.jar" />
@@ -149,6 +152,7 @@
     <pathelement location="lib/vertx-core-2.1.5.jar" />
     <pathelement location="lib/vertx-hazelcast-2.1.5.jar" />
     <pathelement location="lib/vertx-platform-2.1.5.jar" />
+    <pathelement location="lib/webcam-capture-0.3.10.jar" />
     <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
   </path>
 
@@ -215,6 +219,7 @@
     <exclude name="ptolemy/actor/lib/jni/" />
     <exclude name="ptolemy/actor/lib/jopio/" />
     <exclude name="ptolemy/actor/lib/joystick/" />
+    <exclude name="ptolemy/actor/lib/jjs/modules/IMUSensor/" />
     <exclude name="ptolemy/actor/lib/jxta/" />
     <exclude name="ptolemy/actor/lib/mail/" />
     <exclude name="ptolemy/actor/lib/opencv/" />

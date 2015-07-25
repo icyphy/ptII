@@ -80,10 +80,15 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/audio/audio.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/browser/browser.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/cameras/cameras.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/discovery/browser.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/discovery/discovery.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/dsp/dsp.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar" />
@@ -1778,6 +1783,28 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.json"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/audio/audio.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/audio/audio.jar"
+	 >
+      <fileset dir="${basedir}">
+	<!-- include name="ptolemy/actor/lib/jjs/modules/audio/*.class"/ -->
+	<include name="ptolemy/actor/lib/jjs/modules/audio/*.js"/>
+	<!-- include name="ptolemy/actor/lib/jjs/modules/audio/*.json"/ -->
+      </fileset>
+    </jar>
+
     <!-- ptolemy/actor/lib/jjs/modules/browser/browser.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/browser/browser.jar"
@@ -1795,6 +1822,26 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jjs/modules/browser/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/cameras/cameras.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/cameras/cameras.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/cameras/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/cameras/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/cameras/*.json"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/modules/cameras/demo/*/*.xml"/>
       </fileset>
     </jar>
 
@@ -1819,6 +1866,17 @@
     </jar>
 
     
+    <!-- ptolemy/actor/lib/jjs/modules/dsp/dsp.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/dsp/dsp.jar"
+	 >
+      <fileset dir="${basedir}">
+	<!-- include name="ptolemy/actor/lib/jjs/modules/dsp/*.class"/ -->
+	<include name="ptolemy/actor/lib/jjs/modules/dsp/*.js"/>
+	<!-- include name="ptolemy/actor/lib/jjs/modules/dsp/*.json"/ -->
+      </fileset>
+    </jar>
+
     <!-- ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar"

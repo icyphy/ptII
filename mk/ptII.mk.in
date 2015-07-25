@@ -1005,6 +1005,9 @@ PTWEBCAMCAPTURE_DIR =	@PTWEBCAMCAPTURE_DIR@
 # Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 PTWEBCAMCAPTURE_JARS =	@PTWEBCAMCAPTURE_JARS@
 
+# PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
+PTWEBCAMCAPTURE_PACKAGES =	@PTWEBCAMCAPTURE_PACKAGES@
+
 # PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
 PTXMPP_DIR =	@PTXMPP_DIR@
 
