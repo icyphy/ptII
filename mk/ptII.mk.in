@@ -145,6 +145,9 @@ WABA_DIR = @WABA_DIR@
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTWEBSOCKET_DIR = @PTWEBSOCKET_DIR@
 
+# Set to webSocketClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTWEBSOCKETCLIENT_DIR = @PTWEBSOCKETCLIENT_DIR@
+
 # Lejos is a JDK for Lego Mindstorms, see
 # http://lejos.sourceforge.net
 LEJOS_DIR = @LEJOS_DIR@
@@ -415,6 +418,10 @@ PTBSH_RUN_DIR= @PTBSH_RUN_DIR@
 # Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 PTCALTROP_DIR = @PTCALTROP_DIR@
 
+# Set to cameras and used in ptolemy/actor/lib/jjs/modules/makefile
+# if webcam-capture*.jar and other jar files are found.
+PTCAMERAS_DIR =	@PTCAMERAS_DIR@
+
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 PTCC =	@PTCC@
 
@@ -627,6 +634,9 @@ PTHOMER_PACKAGES =	@PTHOMER_PACKAGES@
 
 # Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTHTTPCLIENT_DIR=	@PTHTTPCLIENT_DIR@
+
+# PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
+PTIMUSENSOR_DIR=	@PTIMUSENSOR_DIR@
 
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
@@ -997,10 +1007,6 @@ PTINYOS_CLASSPATH = $(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DI
 
 # Set to waba and used in $PTII/ptolemy/makefile if the PalmOS WABA was found
 PTWABA_DIR =	@PTWABA_DIR@
-
-# Set to webcam and used in ptolemy/actor/lib/jjs/modules/makefile
-# if webcam-capture*.jar and other jar files are found.
-PTWEBCAMCAPTURE_DIR =	@PTWEBCAMCAPTURE_DIR@
 
 # Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 PTWEBCAMCAPTURE_JARS =	@PTWEBCAMCAPTURE_JARS@
