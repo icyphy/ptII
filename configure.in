@@ -6035,7 +6035,8 @@ else
 	    PT_MSG_RESULT([$PTVERTX_JARS])
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket ptolemy.actor.lib.jjs.modules.webSocketClient"
+            # ptolemy.actor.lib.jjs.modules.webSocketClient has no .java files, so we don't run javadoc on that package.
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
