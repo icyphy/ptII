@@ -65,7 +65,8 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'ShellHelper$$1.class'
+	'ShellHelper$$1.class' \
+	'ShellHelper$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

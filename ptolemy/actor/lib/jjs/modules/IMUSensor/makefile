@@ -1,10 +1,10 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Nashorn-based Ptolemy II JavaScript IMUSensor module
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,31 +29,35 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/webSocket
+ME =		ptolemy/actor/lib/jjs/modules/IMUSensor
 
-DIRS = 		test demo
+DIRS = 		demo test
 
 # Root of the Java directory
 ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(RXTX_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	webSocket
+PTPACKAGE = 	IMUSensor
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	WebSocketHelper.java \
-	WebSocketServerHelper.java
+	CircularFifoQueue.java \
+	ReadSerial.java \
+	ReaderM.java \
+	SerialBean.java \
+	SerialBuffer.java \
+	SerialPortController.java
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
-	webSocket.js
+	IMUSensor.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -67,24 +71,12 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'WebSocketHelper$$1.class' \
-	'WebSocketHelper$$2.class' \
-	'WebSocketHelper$$3.class' \
-	'WebSocketHelper$$DataHandler.class' \
-	'WebSocketHelper$$EndHandler.class' \
-	'WebSocketHelper$$ExceptionHandler.class' \
-	'WebSocketHelper$$HttpClientExceptionHandler.class' \
-	'WebSocketHelper$$HttpClientExceptionHandler$$1.class' \
-	'WebSocketHelper$$WebSocketExceptionHandler.class' \
-	'WebSocketServerHelper$$1.class' \
-	'WebSocketServerHelper$$2.class'
+	'CircularFifoQueue$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

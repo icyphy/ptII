@@ -1,10 +1,10 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Nashorn-based Ptolemy II JavaScript WebSocketClient modules
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/webSocket
+ME =		ptolemy/actor/lib/jjs/modules/webSocketClient
 
 DIRS = 		test demo
 
@@ -43,17 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	webSocket
+PTPACKAGE = 	webSocketClient
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	WebSocketHelper.java \
-	WebSocketServerHelper.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
-	webSocket.js
+	webSocketClient.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -74,7 +72,6 @@ OPTIONAL_FILES = \
 	'WebSocketHelper$$EndHandler.class' \
 	'WebSocketHelper$$ExceptionHandler.class' \
 	'WebSocketHelper$$HttpClientExceptionHandler.class' \
-	'WebSocketHelper$$HttpClientExceptionHandler$$1.class' \
 	'WebSocketHelper$$WebSocketExceptionHandler.class' \
 	'WebSocketServerHelper$$1.class' \
 	'WebSocketServerHelper$$2.class'
