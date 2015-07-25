@@ -40,19 +40,17 @@ function DiscoveryService() {
 	 */
 	this.discoverDevices = function(IPaddress, discoveryMethod) {
 		
-		// discoverDevices() returns a string representation of a JSON array of 
-		// devices.  Covert this to a format the Ptolemy type system likes.
 		var devices;
 		if (typeof discoveryMethod !== undefined) {
 			devices = helper.discoverDevices(IPaddress, discoveryMethod);
 		} else {
 			devices = helper.discoverDevices(IPaddress, "ping");
 		}
-		//var ipArray = [];
-		//ipArray.push(JSON.parse(devices)); 
 		
-		//self.emit('discovered', ipArray);
-		self.emit('discovered', devices);
+		// Use JSON.parse() here, since discoverDevices() returns a string
+		// representation of a JSON array.  Problems occurred if a JSONArray 
+		// object was directly returned instead of a string.
+		self.emit('discovered', JSON.parse(devices));
 	};
 	
 	this.getHostAddress = function() {

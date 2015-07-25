@@ -72,13 +72,18 @@ public class DiscoveryHelper {
      *  area network connected to the given IP address
      * 
      *  A class-C network has a netmask of /24, or 255.255.255.0.
+     *  
+     *  Returns a string representation of a JSON array of devices.  Note that
+     *  returning the JSONArray directly does not work properly - for some 
+     *  reason, the JSONArray of device objects is not converted into a 
+     *  Javascript array of device objects.  
      *
      *  @param IPAddress The IP address whose subnet should be scanned.  E.g., 
      *  for IP address 192.168.5.7, scan 192.168.5.0 to 192.168.5.255.
      *  @param discoveryMethod The discovery method to be used, e.g. nmap.
-     *  @return A String containing a JSON representation of devices found.
+     *  @return A String containing a JSON representation of devices found.  
      */
-    public JSONArray discoverDevices(String IPAddress, String discoveryMethod) {
+    public String discoverDevices(String IPAddress, String discoveryMethod) {
         // FIXME: We probably want to take a broadcast address as an
         // input and ping that to get all the hosts.  Pinging 1
         // through 255 works for class C subnets.
@@ -168,11 +173,11 @@ public class DiscoveryHelper {
             for (String key : ipMap.keySet()) {
                 jArray.put(ipMap.get(key));
             }
-            return jArray;
+            return jArray.toString();
         } else {
             System.err.println("DiscoveryHelper.discover(" + IPAddress + "): "
                     + "no devices found? Returning [].");
-            return jArray;
+            return jArray.toString();
         }
     }
     
