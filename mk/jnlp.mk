@@ -1620,7 +1620,12 @@ ptbook.exe: ptbook_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) ptbook_l4j.xml`
 
 doc/books/systems/$(PTBOOK_PDF):
-	wget http://ptolemy.eecs.berkeley.edu/books/Systems/$(PTBOOK_PDF)
+	if [ -f $(HOME)/Downloads/$(PTBOOK_PDF) ]; then \
+		cp $(HOME)/Downloads/$(PTBOOK_PDF) .; \
+	else \
+		echo "Downloading $(PTBOOK_PDF)"; \
+		wget http://ptolemy.eecs.berkeley.edu/books/Systems/$(PTBOOK_PDF); \
+	fi; \
 	mv $(PTBOOK_PDF) $@
 	chmod a+x doc/books/systems/$(PTBOOK_PDF)
 

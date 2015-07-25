@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2010 The Regents of the University of California.
+# Copyright (c) 1994-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -235,6 +235,7 @@ release_windows:
 release_mac:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
+# To install gnutar, use: sudo -i port install gnutar
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
@@ -1123,7 +1124,14 @@ update_ftp_book: PtolemyII_DigitalV1_02.pdf
 	scp PtolemyII_DigitalV1_02.pdf $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/doc/books/systems/
 
 PtolemyII_DigitalV1_02.pdf:
-	wget http://ptolemy.eecs.berkeley.edu/books/Systems/PtolemyII_DigitalV1_02.pdf
+	if [ ! -f $@ ]; then \
+		if [ -f $(HOME)/Downloads/$(BOOK_PDF) ]; then \
+			cp $(HOME)/Downloads/$(BOOK_PDF) .; \
+		else \
+			echo "Downloading $(BOOK_URL)"; \
+			wget $(BOOK_URL); \
+		fi; \
+        fi
 
 update_ftp_index:
 	scp index2.htm $(USER)@moog:$(PTII_FTP)/ptII$(VERSION)/index.htm
@@ -2881,8 +2889,12 @@ book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
 BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
 $(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 	if [ ! -f "$@" ] ; then \
-		echo "Downloading $(BOOK_URL)"; \
-		wget $(BOOK_URL); \
+		if [ -f $(HOME)/Downloads/$(BOOK_PDF) ]; then \
+			cp $(HOME)/Downloads/$(BOOK_PDF) .; \
+		else \
+			echo "Downloading $(BOOK_URL)"; \
+			wget $(BOOK_URL); \
+		fi; \
 		mv $(BOOK_PDF) $(PTIIDIST)/doc/books/systems; \
 		ls -l "$@"; \
 	fi
