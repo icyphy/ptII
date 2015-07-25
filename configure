@@ -622,6 +622,7 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+PTWEBSOCKETCLIENT_DIR
 PTWEBSOCKET_DIR
 WABA_DIR
 WABA_CLASSES
@@ -646,7 +647,6 @@ PTII_LOCALURL
 PTXMPP_DIR
 PTWEBCAMCAPTURE_PACKAGES
 PTWEBCAMCAPTURE_JARS
-PTWEBCAMCAPTURE_DIR
 PTWABA_DIR
 PTGIOTTO_DIR
 PTTINYOS_DIR
@@ -759,6 +759,7 @@ PTJAI_PACKAGES
 PTJAI_DIR
 PTJACL_JAR
 PTJACL_DIR
+PTIMUSENSOR_DIR
 PTITEXTPDF_PACKAGES
 PTITEXTPDF_JAR
 PTITEXTPDF_DIR
@@ -806,6 +807,7 @@ PTCOLT_JARS
 PTCOLT_DIR
 PTCM_DIR
 PTCHIC_DIR
+PTCAMERAS_DIR
 PTCALTROP_DIR
 PTBSH_PACKAGES
 PTBSH_RUN_DIR
@@ -9905,6 +9907,10 @@ PTLEGO_DIR=
 # $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
 #
 PTCOMM_DIR=
+
+# PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
+PTIMUSENSOR_DIR=
+
 if test ! -d "$RXTX_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RXTX_USER_DIR is not present,
     so we need not find rxtx." >&5
@@ -9997,11 +10003,13 @@ if test "$RXTX_PRESENT" = "yes"; then
     # Subdirectories that contains Java Communications API specific code
     PTLEGO_DIR=lego
     PTCOMM_DIR=comm
+    PTIMUSENSOR_DIR=IMUSensor
     # PTRXTX_PACKAGES is used in ptII/doc/makefile
-    PTRXTX_PACKAGES=ptolemy.actor.lib.io.comm
+    PTRXTX_PACKAGES=ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor
 else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
     updateExcludes "ptolemy/actor/lib/io/comm/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/IMUSensor/"
 fi
 
 #--------------------------------------------------------------------
@@ -13194,6 +13202,9 @@ PTVERTXEVENTBUS_DIR=
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTWEBSOCKET_DIR=
 
+# Set to webSocketClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTWEBSOCKETCLIENT_DIR=
+
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
 PTVERTX_PACKAGES=
 
@@ -13236,6 +13247,7 @@ fi
     	    PTVERTX_DIR=vertx
 	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
+            PTWEBSOCKETCLIENT_DIR=webSocketClient
 	    # Keep these alphabetic
             jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
             for jar in $jars
@@ -13249,8 +13261,14 @@ fi
 	         else
 	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >&5
 $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >&2;}
-		    PTVERTX_DIR=
-		    PTWEBSOCKET_DIR=
+                    PTBROWSER_DIR=
+	            PTEVENTBUS_DIR=
+                    PTHTTPCLIENT_DIR=
+                    PTUDPSOCKET_DIR=
+    	            PTVERTX_DIR=
+	            PTVERTXEVENTBUS_DIR=
+	            PTWEBSOCKET_DIR=
+                    PTWEBSOCKETCLIENT_DIR=
 	            break;
                  fi
             done
@@ -13262,7 +13280,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTV
 $as_echo "$PTVERTX_JARS" >&6; }; fi
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket ptolemy.actor.lib.jjs.modules.webSocketClient"
         fi
     fi
 fi
@@ -13272,8 +13290,10 @@ if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/eventbus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/httpClient/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/udpSocket/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/webSocketClient/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
     or a version of Java before 1.8 was found
@@ -13386,9 +13406,9 @@ fi
 #	Source may be found at
 #--------------------------------------------------------------------
 
-# Set to webcam and used in ptolemy/actor/lib/jjs/modules/makefile
+# Set to cameras and used in ptolemy/actor/lib/jjs/modules/makefile
 # if webcam-capture*.jar and other jar files are found.
-PTWEBCAMCAPTURE_DIR=
+PTCAMERAS_DIR=
 
 # Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 PTWEBCAMCAPTURE_JARS=
@@ -13424,7 +13444,7 @@ fi
               if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWEBCAMCAPTURE_JAR" >&5
 $as_echo "$PTWEBCAMCAPTURE_JAR" >&6; }; fi
-              PTWEBCAMCAPTURE_DIR=webcam
+              PTCAMERAS_DIR=cameras
               PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
               PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
               updateClasspath "$PTWEBCAMCAPTURE_JAR"
@@ -13477,7 +13497,7 @@ $as_echo "$as_me: WARNING: Failed to find $PTWEBCAMCAPTURE_JAR
     fi
 fi
 
-if test -z "$PTWEBCAMCAPTURE_DIR"; then
+if test -z "$PTCAMERAS_DIR"; then
    updateExcludes "ptolemy/actor/lib/jjs/modules/cameras/"
 fi
 
@@ -14039,6 +14059,10 @@ fi
 # Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 
 
+# Set to cameras and used in ptolemy/actor/lib/jjs/modules/makefile
+# if webcam-capture*.jar and other jar files are found.
+
+
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 
 
@@ -14213,6 +14237,9 @@ fi
 
 
 # PTITEXTPDF_PACKAGES is used in ptII/doc/makefile if iTextjar is found
+
+
+# PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
 
 
 # Set to ptjacl and used in
@@ -14610,10 +14637,6 @@ fi
 # $PTII/ptolemy/apps/makefile if Waba was found
 
 
-# Set to webcam and used in ptolemy/actor/lib/jjs/modules/makefile
-# if webcam-capture*.jar and other jar files are found.
-
-
 # Jar files used in ptolemy/actor/lib/jjs/modules/webcam/makefile
 
 
@@ -14683,6 +14706,9 @@ fi
 
 
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+
+
+# Set to webSocketClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # Files we substitute in
