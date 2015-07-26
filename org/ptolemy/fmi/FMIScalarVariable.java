@@ -423,7 +423,7 @@ public class FMIScalarVariable {
     }
 
     //    public String getTypeName() {
-    //    	return _typeName;
+    //            return _typeName;
     //    }
 
     ///////////////////////////////////////////////////////////////////

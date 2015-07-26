@@ -757,10 +757,10 @@ public class Time implements Comparable {
      *  @return The time resolution of the director.
      */
     protected double _timeResolution() {
-	if (_director != null) {
-	    return _director.getTimeResolution();
-	}
-	return 10E-10;
+        if (_director != null) {
+            return _director.getTimeResolution();
+        }
+        return 10E-10;
     }
 
     ///////////////////////////////////////////////////////////////////

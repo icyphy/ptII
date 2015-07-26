@@ -192,17 +192,17 @@ public class QSSDirector extends DEDirector {
      *  @param defaultSolver The default solver to use.
      */
     public static void configureSolverParameter(
-	    StringParameter solverParameter, String defaultSolver) {
-	solverParameter.setExpression(defaultSolver);
-	solverParameter.addChoice("QSS1");
-	solverParameter.addChoice("QSS2Fd");
-	solverParameter.addChoice("QSS2FdJac");
-	solverParameter.addChoice("QSS2Pts");
-	solverParameter.addChoice("QSS2Qts");
-	solverParameter.addChoice("QSS3Fd");
-	solverParameter.addChoice("QSS3Pts");
-	solverParameter.addChoice("LIQSS1");
-	solverParameter.addChoice("LIQSS2Fd");
+            StringParameter solverParameter, String defaultSolver) {
+        solverParameter.setExpression(defaultSolver);
+        solverParameter.addChoice("QSS1");
+        solverParameter.addChoice("QSS2Fd");
+        solverParameter.addChoice("QSS2FdJac");
+        solverParameter.addChoice("QSS2Pts");
+        solverParameter.addChoice("QSS2Qts");
+        solverParameter.addChoice("QSS3Fd");
+        solverParameter.addChoice("QSS3Pts");
+        solverParameter.addChoice("LIQSS1");
+        solverParameter.addChoice("LIQSS2Fd");
     }
 
     /** Return the value of the absoluteQuantum parameter.
@@ -236,7 +236,7 @@ public class QSSDirector extends DEDirector {
     public QSSBase newQSSSolver() throws IllegalActionException {
         // Instantiate an QSS solver, using the class name given
         // by QSSSolver parameter, which is a string parameter.
-	return newQSSSolver(QSSSolver.stringValue().trim());
+        return newQSSSolver(QSSSolver.stringValue().trim());
     }
 
     /** Return a new QSS solver of the specified type.
@@ -298,27 +298,27 @@ public class QSSDirector extends DEDirector {
      *  @throws IllegalActionException If setting parameters fails.
      */
     private void _initSolverParameters()
-	    throws IllegalActionException, NameDuplicationException {	
-	// The following is probably not needed.
-	// The errors it catches only occur with interaction with
-	// the continuous domain.
-	enforceMicrostepSemantics.setVisibility(Settable.EXPERT);
-	
-	absoluteQuantum = new Parameter(this, "absoluteQuantum");
-	absoluteQuantum.setExpression("1e-4");
-	absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
+            throws IllegalActionException, NameDuplicationException {        
+        // The following is probably not needed.
+        // The errors it catches only occur with interaction with
+        // the continuous domain.
+        enforceMicrostepSemantics.setVisibility(Settable.EXPERT);
+        
+        absoluteQuantum = new Parameter(this, "absoluteQuantum");
+        absoluteQuantum.setExpression("1e-4");
+        absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
 
-	quantumScaleFactor = new Parameter(this, "quantumScaleFactor");
-	quantumScaleFactor.setExpression("1.0");
-	quantumScaleFactor.setTypeEquals(BaseType.DOUBLE);
+        quantumScaleFactor = new Parameter(this, "quantumScaleFactor");
+        quantumScaleFactor.setExpression("1.0");
+        quantumScaleFactor.setTypeEquals(BaseType.DOUBLE);
 
-	relativeQuantum = new Parameter(this, "relativeQuantum");
-	relativeQuantum.setExpression("0.0");
-	relativeQuantum.setTypeEquals(BaseType.DOUBLE);
-	
-	
-	QSSSolver = new StringParameter(this, "QSSSolver");
-	configureSolverParameter(QSSSolver, "QSS1");
+        relativeQuantum = new Parameter(this, "relativeQuantum");
+        relativeQuantum.setExpression("0.0");
+        relativeQuantum.setTypeEquals(BaseType.DOUBLE);
+        
+        
+        QSSSolver = new StringParameter(this, "QSSSolver");
+        configureSolverParameter(QSSSolver, "QSS1");
     }
 
     ///////////////////////////////////////////////////////////////////

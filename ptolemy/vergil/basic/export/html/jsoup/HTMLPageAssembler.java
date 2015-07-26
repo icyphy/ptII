@@ -231,11 +231,11 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
             List<ParseError> errors = htmlParser.getErrors();
             if (errors != null && !errors.isEmpty()) {
-        	StringBuffer messages = new StringBuffer();
-        	for (ParseError error : errors) {
-        	    messages.append(error.toString());
-        	    // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
-        	}
+                StringBuffer messages = new StringBuffer();
+                for (ParseError error : errors) {
+                    messages.append(error.toString());
+                    // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
+                }
                 throw new IllegalActionException(this, "Template file '"
                         + template.getValueAsString()
                         + "' contains HTML syntax errors:\n"
@@ -300,11 +300,11 @@ public class HTMLPageAssembler extends TypedAtomicActor {
 
                     errors = htmlParser.getErrors();
                     if (errors != null && !errors.isEmpty()) {
-                	StringBuffer messages = new StringBuffer();
-                	for (ParseError error : errors) {
-                	    messages.append(error.toString());
-                	    // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
-                	}
+                        StringBuffer messages = new StringBuffer();
+                        for (ParseError error : errors) {
+                            messages.append(error.toString());
+                            // messages.append(error.getErrorMessage() + " at " + error.getPosition() + "\n");
+                        }
                         throw new IllegalActionException(this, "Input '"
                                 + htmlText.toString()
                                 + "' contains HTML syntax errors:\n"

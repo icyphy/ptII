@@ -234,26 +234,26 @@ Token** IOPort_Get1(struct IOPort* port, int channelIndex, int vectorLength) {
 //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
 #ifdef TYPE_Boolean
 boolean IOPort_GetBoolean(struct IOPort* port, int channelIndex) {
-	Token * tempToken = IOPort_Get(port, channelIndex);
-	boolean result = tempToken->payload.Boolean;
-	free(tempToken);
-	return result;
+        Token * tempToken = IOPort_Get(port, channelIndex);
+        boolean result = tempToken->payload.Boolean;
+        free(tempToken);
+        return result;
 }
 #endif
 #ifdef TYPE_Int
 int IOPort_GetInt(struct IOPort* port, int channelIndex) {
-	Token * tempToken = IOPort_Get(port, channelIndex);
-	int result = tempToken->payload.Int;
-	free(tempToken);
-	return result;
+        Token * tempToken = IOPort_Get(port, channelIndex);
+        int result = tempToken->payload.Int;
+        free(tempToken);
+        return result;
 }
 #endif
 #ifdef TYPE_Double
 double IOPort_GetDouble(struct IOPort* port, int channelIndex) {
-	Token * tempToken = IOPort_Get(port, channelIndex);
-	double result = tempToken->payload.Double;
-	free(tempToken);
-	return result;
+        Token * tempToken = IOPort_Get(port, channelIndex);
+        double result = tempToken->payload.Double;
+        free(tempToken);
+        return result;
 }
 #endif
 
@@ -488,7 +488,7 @@ bool IOPort_HasTokenInside(struct IOPort* port, int channelIndex) {
             }
             //MEMORY_FIX: Clearing memory because token was already used
             else {
-            	receiver->clear(receiver);
+                    receiver->clear(receiver);
             }
         }
     }

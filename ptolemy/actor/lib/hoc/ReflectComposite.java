@@ -306,7 +306,7 @@ public class ReflectComposite extends TypedCompositeActor implements
                             // Use a strategy pattern here so that subclasses can control
                             // which ports are mirrored.
                             if (!_mirrorPort(insidePort)) {
-                        	continue;
+                                continue;
                             }
                             String name = insidePort.getName();
 

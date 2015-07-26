@@ -26,8 +26,8 @@ parseArguments(argc, argv, &tEnd, &requiredResolution, &loggingOn, &csv_separato
 
 /***mainEndBlock***/
 // run the simulation
-	printf("FMU Simulator: run '%s' from t=0..%d with step size h=%d, loggingOn=%d, csv separator='%c' ",
-			MODEL_NAME, tEnd, requiredResolution, loggingOn, csv_separator);
+        printf("FMU Simulator: run '%s' from t=0..%d with step size h=%d, loggingOn=%d, csv separator='%c' ",
+                        MODEL_NAME, tEnd, requiredResolution, loggingOn, csv_separator);
     printf("log categories={ ");
         for (i = 0; i < nCategories; i++) {
             printf("%s ", categories[i]);

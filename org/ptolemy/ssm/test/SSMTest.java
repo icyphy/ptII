@@ -46,10 +46,10 @@ import ptolemy.kernel.util.Workspace;
  * Attribute: ptolemy.kernel.util.SingletonConfigurableAttribute {..myStateSpace._iconDescription}
  * Attribute: ptolemy.data.expr.Parameter {..myStateSpace.stateVariableNames} {"x", "y"}
  * Exception in thread "main" java.util.ConcurrentModificationException
- *	at java.util.LinkedList$ListItr.checkForComodification(LinkedList.java:966)
- *	at java.util.LinkedList$ListItr.next(LinkedList.java:888)
- *	at java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1042)
- *	at org.ptolemy.ssm.test.SSMTest.main(SSMTest.java:17)
+ *        at java.util.LinkedList$ListItr.checkForComodification(LinkedList.java:966)
+ *        at java.util.LinkedList$ListItr.next(LinkedList.java:888)
+ *        at java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1042)
+ *        at org.ptolemy.ssm.test.SSMTest.main(SSMTest.java:17)
  * </pre>
  *
  * @author Christopher Brooks

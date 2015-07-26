@@ -72,10 +72,10 @@ public class FMUJUnitTest {
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
-	        + System.getProperty("path.separator")
+                + System.getProperty("path.separator")
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUCoSimulation "
                 + fmuFileName + " " + endTime + " " + stepSize + " false c "
-  	        + knownGoodFileName;
+                  + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));
         new FMUCoSimulation().simulate(fmuFileName, endTime, stepSize,
                 LOGGING, ',', resultsFileName);
@@ -215,7 +215,7 @@ public class FMUJUnitTest {
                 .getCanonicalPath();
         String updateString = "To update " + knownGoodFileName + ", run:\n"
                 + "java -classpath \"" + topDirectory + "/lib/jna.jar"
-	        + System.getProperty("path.separator")
+                + System.getProperty("path.separator")
                 + topDirectory + "\" org.ptolemy.fmi.driver.FMUModelExchange "
                 + fmuFileName + " 1.0 0.1 false c " + knownGoodFileName;
         System.out.println(updateString.replace("\\", "/"));

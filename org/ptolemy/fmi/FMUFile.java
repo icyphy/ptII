@@ -511,12 +511,12 @@ public class FMUFile {
                 
                 // precision, extension for FMI-HCS
                 if (fmiModelDescription.handleIntegerTime == true) {
-                	if (cosimulation.hasAttribute("precision")) {
+                        if (cosimulation.hasAttribute("precision")) {
                         fmiModelDescription.precision = Integer
                                 .parseInt(cosimulation
                                         .getAttribute("precision"));
                     } else {
-                    	System.out
+                            System.out
                         .println("Warning: FMU modelDescription provides Integer representation of time, but precision is not specified");
                     }
                 }

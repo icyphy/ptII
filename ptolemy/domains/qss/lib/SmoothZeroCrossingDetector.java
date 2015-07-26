@@ -231,7 +231,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         if (input.hasNewToken(0)) {
             inputToken = (DoubleToken)input.get(0);
             if (_debugging) {
-        	_debug("Read input: " + inputToken);
+                _debug("Read input: " + inputToken);
             }
         }
         
@@ -239,10 +239,10 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         // in reaction to a projection for a crossing.
         if (inputToken == null && currentTime.equals(_lastFireAtTime)) {
             if (_previousInput != null) {
-        	// There is no new token, so we just update the most recently seen token.
-        	SmoothToken projectedToNow = ((SmoothToken)_previousInput).extrapolate(currentTime);
-        	// Create a virual new input with value 0.0.
-        	inputToken = new SmoothToken(0.0, currentTime, projectedToNow.derivativeValues());
+                // There is no new token, so we just update the most recently seen token.
+                SmoothToken projectedToNow = ((SmoothToken)_previousInput).extrapolate(currentTime);
+                // Create a virual new input with value 0.0.
+                inputToken = new SmoothToken(0.0, currentTime, projectedToNow.derivativeValues());
                 if (_debugging) {
                     _debug("Projected zero crossing has occurred. Assumed input value: " + inputToken);
                 }
@@ -256,18 +256,18 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
 
             // Check whether we should produce an output.
             if (_previousInput != null) {
-        	// If either the input is zero or the sign of the input is opposite of
-        	// the previous input, then produce an output if the direction matches.
-        	double previousValue = _previousInput.doubleValue();
-        	boolean inputIsRising = inputValue >= 0.0 && previousValue < 0.0;
-        	boolean inputIsFalling = inputValue <= 0.0 && previousValue > 0.0;
-        	if (_detectFallingCrossing && inputIsFalling
-        		|| _detectRisingCrossing && inputIsRising) {
-        	    output.send(0, value.getToken());
+                // If either the input is zero or the sign of the input is opposite of
+                // the previous input, then produce an output if the direction matches.
+                double previousValue = _previousInput.doubleValue();
+                boolean inputIsRising = inputValue >= 0.0 && previousValue < 0.0;
+                boolean inputIsFalling = inputValue <= 0.0 && previousValue > 0.0;
+                if (_detectFallingCrossing && inputIsFalling
+                        || _detectRisingCrossing && inputIsRising) {
+                    output.send(0, value.getToken());
                     if (_debugging) {
-                	_debug("Crossing detected. Sending output.");
+                        _debug("Crossing detected. Sending output.");
                     }
-        	}
+                }
             }
             
             // Predict the time of a future zero crossing.
@@ -275,78 +275,78 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
 
             double[] derivatives = ((SmoothToken)inputToken).derivativeValues();
             if (derivatives != null) {
-        	// Handle linear case first.
-        	if (derivatives.length == 1
-        		|| (derivatives.length == 2 && derivatives[1] == 0.0)
-        		|| (derivatives.length > 2 && derivatives[1] == 0.0 && derivatives[2] == 0.0)) {
-        	    // There is a predictable zero crossing only if the derivative
-        	    // and value have opposite signs.
-        	    if (_detectRisingCrossing && inputValue < 0.0 && derivatives[0] > 0.0
-        		    || _detectFallingCrossing && inputValue > 0.0 && derivatives[0] < 0.0) {
-        		future = currentTime.add(- inputValue / derivatives[0]);
-        	    }
-        	} else if (derivatives.length == 2
-        		|| (derivatives.length > 2 && derivatives[2] == 0.0)) {
-        	    // Suppose the current value at the input is x.
-        	    // Then the time of the next zero crossing, if it exists, is t
-        	    // that solves the following quadratic (from the Taylor series expansion):
-        	    //   0 = (d2*t^2)/2 + d1*t + x,
-        	    // where d1 is the first derivative and d2 is the second.
-        	    double delta = PolynomialRoot.findMinimumPositiveRoot2(derivatives[1]/2.0, derivatives[0], inputValue);
-        	    if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
-        		future = currentTime.add(delta);
-        	    }
-        	} else if (derivatives.length >= 3) {
-        	    // Suppose the current value at the input is x.
-        	    // Then the time of the next zero crossing, if it exists, is t
-        	    // that solves the following cubic (from the Taylor series expansion):
-        	    //   0 = (d3*t^3)/6 + (d2*t^2)/2 + d1*t + x,
-        	    // where d1 is the first derivative, d2 is the second, and d3 is the third.
-        	    double delta = PolynomialRoot.findMinimumPositiveRoot3(
-        		    derivatives[2]/6.0, derivatives[1]/2.0, derivatives[0], inputValue, _errorTolerance, 0.0);
-        	    if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
-        		future = currentTime.add(delta);
-        	    }
-        	}
+                // Handle linear case first.
+                if (derivatives.length == 1
+                        || (derivatives.length == 2 && derivatives[1] == 0.0)
+                        || (derivatives.length > 2 && derivatives[1] == 0.0 && derivatives[2] == 0.0)) {
+                    // There is a predictable zero crossing only if the derivative
+                    // and value have opposite signs.
+                    if (_detectRisingCrossing && inputValue < 0.0 && derivatives[0] > 0.0
+                            || _detectFallingCrossing && inputValue > 0.0 && derivatives[0] < 0.0) {
+                        future = currentTime.add(- inputValue / derivatives[0]);
+                    }
+                } else if (derivatives.length == 2
+                        || (derivatives.length > 2 && derivatives[2] == 0.0)) {
+                    // Suppose the current value at the input is x.
+                    // Then the time of the next zero crossing, if it exists, is t
+                    // that solves the following quadratic (from the Taylor series expansion):
+                    //   0 = (d2*t^2)/2 + d1*t + x,
+                    // where d1 is the first derivative and d2 is the second.
+                    double delta = PolynomialRoot.findMinimumPositiveRoot2(derivatives[1]/2.0, derivatives[0], inputValue);
+                    if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
+                        future = currentTime.add(delta);
+                    }
+                } else if (derivatives.length >= 3) {
+                    // Suppose the current value at the input is x.
+                    // Then the time of the next zero crossing, if it exists, is t
+                    // that solves the following cubic (from the Taylor series expansion):
+                    //   0 = (d3*t^3)/6 + (d2*t^2)/2 + d1*t + x,
+                    // where d1 is the first derivative, d2 is the second, and d3 is the third.
+                    double delta = PolynomialRoot.findMinimumPositiveRoot3(
+                            derivatives[2]/6.0, derivatives[1]/2.0, derivatives[0], inputValue, _errorTolerance, 0.0);
+                    if (delta >= _errorTolerance && delta != Double.POSITIVE_INFINITY) {
+                        future = currentTime.add(delta);
+                    }
+                }
             }
             if (future != null) {
-        	// If the new zero crossing prediction differs from the old by the error
-        	// tolerance or more from the old prediction, cancel the old prediction and
-        	// replace it with the new.
-        	if (_lastFireAtTime == null || Math.abs(future.subtractToDouble(_lastFireAtTime)) >= _errorTolerance) {
-        	    // First cancel any previous fireAt() request.
-        	    if (_lastFireAtTime != null) {
-        		if (_debugging) {
-        		    _debug("Cancelling previous fireAt request at " + _lastFireAtTime);
-        		}
-        		// Director class is checked in initialize().
-        		((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
-        	    }
+                // If the new zero crossing prediction differs from the old by the error
+                // tolerance or more from the old prediction, cancel the old prediction and
+                // replace it with the new.
+                if (_lastFireAtTime == null || Math.abs(future.subtractToDouble(_lastFireAtTime)) >= _errorTolerance) {
+                    // First cancel any previous fireAt() request.
+                    if (_lastFireAtTime != null) {
+                        if (_debugging) {
+                            _debug("Cancelling previous fireAt request at " + _lastFireAtTime);
+                        }
+                        // Director class is checked in initialize().
+                        ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                    }
 
-        	    getDirector().fireAt(this, future);
-        	    _lastFireAtTime = future;
-        	}
+                    getDirector().fireAt(this, future);
+                    _lastFireAtTime = future;
+                }
             } else {
-        	// No future prediction.
-        	// If there is a previous prediction, cancel it.
-        	if (_lastFireAtTime != null) {
-        	    if (_debugging) {
-        		_debug("Cancelling previous fireAt request at " + _lastFireAtTime);
-        	    }
-        	    // Director class is checked in initialize().
-        	    ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
-        	    _lastFireAtTime = null;
-        	}
+                // No future prediction.
+                // If there is a previous prediction, cancel it.
+                if (_lastFireAtTime != null) {
+                    if (_debugging) {
+                        _debug("Cancelling previous fireAt request at " + _lastFireAtTime);
+                    }
+                    // Director class is checked in initialize().
+                    ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                    _lastFireAtTime = null;
+                }
             }
         } else {
             // An input token has arrived that is not a SmoothToken. Cancel any
             // previous projection, since we assume all derivatives are zero.
             if (_lastFireAtTime != null) {
-        	if (_debugging) {
-        	    _debug("Input has zero derivatives. Cancelling previous fireAt request at " + _lastFireAtTime);
-        	}
-        	// Director class is checked in initialize().
-        	((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
+                if (_debugging) {
+                    _debug("Input has zero derivatives. Cancelling previous fireAt request at " + _lastFireAtTime);
+                }
+                // Director class is checked in initialize().
+                ((DEDirector) getDirector()).cancelFireAt(this, _lastFireAtTime);
             }
             _lastFireAtTime = null;
         }
@@ -364,7 +364,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         
         if (!(getDirector() instanceof DEDirector)) {
             throw new IllegalActionException(this,
-        	    "SmoothZeroCrossingDetector will only work with a DE or QSS director.");
+                    "SmoothZeroCrossingDetector will only work with a DE or QSS director.");
         }
     }
 

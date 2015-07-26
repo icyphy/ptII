@@ -144,17 +144,17 @@ public class DateToEvent extends Transformer {
                             + token.toString()
                             + ") lies in the past.");
                 } else {
-                	if (_manager == null) {
-                    	_manager = ((CompositeActor) getContainer()).getManager();
+                        if (_manager == null) {
+                            _manager = ((CompositeActor) getContainer()).getManager();
                     }
                     long realTimeDifferenceInMillis = token.getCalendarInstance().getTimeInMillis()
-                	    - _manager.getRealStartTime();
+                            - _manager.getRealStartTime();
                     Time fireTime = new Time(
                             _director,
                             ((double) realTimeDifferenceInMillis / 1000)); // The default unit of time is seconds.
                     if (_debugging) {
-                    	_debug("director start time (ms): " + _director.elapsedTimeSinceStart());
-                    	_debug("real time difference (ms):" + realTimeDifferenceInMillis);
+                            _debug("director start time (ms): " + _director.elapsedTimeSinceStart());
+                            _debug("real time difference (ms):" + realTimeDifferenceInMillis);
                         _debug("Scheduling firing at (model time):" + fireTime);
                     }
                     _director.fireAt(this, fireTime);

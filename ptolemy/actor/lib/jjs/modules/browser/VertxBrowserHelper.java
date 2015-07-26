@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 
@@ -57,7 +57,7 @@ public class VertxBrowserHelper {
     /** Create a web server that serves the specified string.
      *  @param currentObj The JavaScript object on which this method is called.
      *  @param port The port to listen for requests on.
-     *	@return A new VertxHelper.
+     *        @return A new VertxHelper.
      */
     public static Server createServer(int port) {
         return new Server(port);

@@ -128,16 +128,16 @@ public class Align extends Transformer {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             while (input.hasNewToken(i)) {
-        	_received[i] = input.get(i);
+                _received[i] = input.get(i);
             }
         }
         if (!triggerConnected || hasTrigger) {
             Time time = getDirector().getModelTime();
             Token[] result = SmoothToken.align(_received, time);
             for (int i = 0; i < width; i++) {
-        	if (result[i] != null) {
-        	    output.send(i, result[i]);
-        	}
+                if (result[i] != null) {
+                    output.send(i, result[i]);
+                }
             }
         }
     }
@@ -147,7 +147,7 @@ public class Align extends Transformer {
      *   not match the width of the output.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
         int outWidth = output.getWidth();
         int inWidth = input.getWidth();
 

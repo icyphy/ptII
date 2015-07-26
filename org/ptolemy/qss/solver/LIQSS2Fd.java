@@ -306,8 +306,8 @@ public final class LIQSS2Fd
             // TODO: Test whether better to simply retain last estimate.
             double jacDiag = 0;
             if( qStateMdl.tMdl.compareTo(_currSimTime)==0
-            	&&
-            	cStateMdl.tMdl.compareTo(_currSimTime)!=0 ) {
+                    &&
+                    cStateMdl.tMdl.compareTo(_currSimTime)!=0 ) {
                 // Here:
                 // (1) Component {ii} just had a quantization-event.
                 // (2) Did not just start simulation, or reset value of

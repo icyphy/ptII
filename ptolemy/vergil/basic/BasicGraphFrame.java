@@ -1216,23 +1216,23 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         if (thisEntity != thisEntity.toplevel()) {
             // Not already at the top level.
             try {
-        	// See whether the container contains an instance of LevelSkippingTableauFactory.
-        	NamedObj container = thisEntity.getContainer();
-        	List<LevelSkippingTableauFactory> skip 
-        		= container.attributeList(LevelSkippingTableauFactory.class);
-        	while(skip != null && skip.size() > 0) {
-        	    container = container.getContainer();
-        	    if (container == null) {
-        		// This should not occur.
-        		return;
-        	    }
-        	    skip = container.attributeList(LevelSkippingTableauFactory.class);
-        	}
-        	// If the container is a ModalModel, the also skip a level.
-        	// Note that it is not enough to just check whether the name of the
-        	// class matches ModalModel, because then subclasses of ModalModel
-        	// are not recognized. This unfortunately creates a new dependence
-        	// on the modal package.
+                // See whether the container contains an instance of LevelSkippingTableauFactory.
+                NamedObj container = thisEntity.getContainer();
+                List<LevelSkippingTableauFactory> skip 
+                        = container.attributeList(LevelSkippingTableauFactory.class);
+                while(skip != null && skip.size() > 0) {
+                    container = container.getContainer();
+                    if (container == null) {
+                        // This should not occur.
+                        return;
+                    }
+                    skip = container.attributeList(LevelSkippingTableauFactory.class);
+                }
+                // If the container is a ModalModel, the also skip a level.
+                // Note that it is not enough to just check whether the name of the
+                // class matches ModalModel, because then subclasses of ModalModel
+                // are not recognized. This unfortunately creates a new dependence
+                // on the modal package.
                 if (thisEntity instanceof Actor) {
                     Director director = ((Actor)thisEntity).getDirector();
                     if (director instanceof QuasiTransparentDirector) {
@@ -1243,7 +1243,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                                 return;
                             }
                         }
-        	    }
+                    }
                 }
                 
                 Configuration configuration = getConfiguration();

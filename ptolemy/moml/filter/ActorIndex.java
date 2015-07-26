@@ -276,13 +276,13 @@ public class ActorIndex {
      *  a file.
      */
     public static void main(String[] args) throws Exception {
-	try {
-	    ActorIndex.generateActorIndex(args[0], args[1], args[2]);
-	} catch (Throwable throwable) {
+        try {
+            ActorIndex.generateActorIndex(args[0], args[1], args[2]);
+        } catch (Throwable throwable) {
             System.err.print(KernelException.stackTraceToString(throwable));
             StringUtilities.exit(1);
-	}
-	// Need to call exit here because Jython and Jetty cause hangs during exit.
-	StringUtilities.exit(0);
+        }
+        // Need to call exit here because Jython and Jetty cause hangs during exit.
+        StringUtilities.exit(0);
     }
 }

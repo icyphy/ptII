@@ -248,7 +248,7 @@ public class DocAttribute extends SingletonAttribute {
                         // It will try to parse anything with a dollar sign.
                         // But fixing this in a backward compatible way appears to be hard.
                         // new StringParameter(this, name);
-                	new StringAttribute(this, name);
+                        new StringAttribute(this, name);
                     } catch (KernelException e) {
                         throw new InternalErrorException(e);
                     }

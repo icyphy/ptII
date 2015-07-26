@@ -98,7 +98,7 @@ public abstract class BaseType implements Type {
      *  @param theClass The implementation (token class) for the type.
      */
     public static void addType(Type type, String name, Class theClass) {
-	_addType(type, name, theClass);
+        _addType(type, name, theClass);
     }
 
     /** Return this, that is, return the reference to this object.

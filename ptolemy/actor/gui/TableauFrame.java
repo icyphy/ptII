@@ -551,7 +551,7 @@ public class TableauFrame extends Top {
                     item.addActionListener(menuListener);
                     _newMenuItems.addElement(item);
                     if (first) {
-                	first = false;
+                        first = false;
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(KeyStroke.getKeyStroke(
                                 KeyEvent.VK_N, Toolkit.getDefaultToolkit()

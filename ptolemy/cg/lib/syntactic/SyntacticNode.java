@@ -988,7 +988,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         try {
             sport = _outputs.get(base.intValue() + offset);
         } catch (IndexOutOfBoundsException ex) {
-	    // Ignored.
+            // Ignored.
         }
 
         return sport;

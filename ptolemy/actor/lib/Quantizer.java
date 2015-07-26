@@ -161,8 +161,8 @@ public class Quantizer extends Transformer {
         if (attribute == levels) {
             ArrayToken levelsValue = (ArrayToken) levels.getToken();
             if (levelsValue == null || levelsValue.length() == 0) {
-        	_thresholds = null;
-        	return;
+                _thresholds = null;
+                return;
             }
             double[] _levels = new double[levelsValue.length()];
             double previous = Double.NEGATIVE_INFINITY;
@@ -201,13 +201,13 @@ public class Quantizer extends Transformer {
         if (input.hasToken(0)) {
             double in = ((DoubleToken) input.get(0)).doubleValue();
             if (_thresholds != null) {
-        	int index = _getQuantizationIndex(in);
-        	output.send(0, ((ArrayToken) levels.getToken()).getElement(index));
+                int index = _getQuantizationIndex(in);
+                output.send(0, ((ArrayToken) levels.getToken()).getElement(index));
             } else {
-        	// Using delta parameter.
-        	double deltaValue = ((DoubleToken)delta.getToken()).doubleValue();
-        	double result = deltaValue * Math.floor(in / deltaValue);
-        	output.send(0, new DoubleToken(result));
+                // Using delta parameter.
+                double deltaValue = ((DoubleToken)delta.getToken()).doubleValue();
+                double result = deltaValue * Math.floor(in / deltaValue);
+                output.send(0, new DoubleToken(result));
             }
         }
     }

@@ -186,7 +186,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
             }
         }
         _copyCFilesTosrc(
-        		_pathToSupportFiles + "parser/",
+                        _pathToSupportFiles + "parser/",
                 directoryFmiParser,
                 new String[] { "XmlElement.cpp", "XmlElement.h",
                         "XmlParserCApi.cpp", "XmlParserCApi.h",

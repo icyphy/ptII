@@ -1787,8 +1787,8 @@ Decorator {
 
         /** Return the list of generator packages.
          *  @return the list of generator packages.
-	 *  @exception IllegalActionException If thrown while
-	 *  updating the package list.
+         *  @exception IllegalActionException If thrown while
+         *  updating the package list.
          */
         public List<String> generatorPackages() throws IllegalActionException {
             _updateGeneratorPackageList();

@@ -142,7 +142,7 @@ Initializable {
      */
     public PortParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-	this(container, name, (ParameterPort) null);
+        this(container, name, (ParameterPort) null);
     }
     
     /** Construct a parameter with the given name contained by the specified
@@ -166,10 +166,10 @@ Initializable {
             // so the cast is safe.
             Port existingPort = ((ComponentEntity) container).getPort(name);
             if (existingPort instanceof ParameterPort) {
-        	_port = (ParameterPort) existingPort;
-        	((ParameterPort) existingPort)._parameter = this;
+                _port = (ParameterPort) existingPort;
+                ((ParameterPort) existingPort)._parameter = this;
             } else {
-        	_port = new ParameterPort((ComponentEntity) container, name, this);
+                _port = new ParameterPort((ComponentEntity) container, name, this);
             }
         }
         _setTypeConstraints();
@@ -317,17 +317,17 @@ Initializable {
      *  @return The associated port.
      */
     public ParameterPort getPort() {
-	if (_port == null) {
-	    // Attempt to find the port.
-	    NamedObj container = getContainer();
-	    if (container instanceof Entity) {
-		Port candidate = ((Entity)container).getPort(getName());
-		if (candidate instanceof ParameterPort) {
-		    _port = (ParameterPort)candidate;
-		    _setTypeConstraints();
-		}
-	    }
-	}
+        if (_port == null) {
+            // Attempt to find the port.
+            NamedObj container = getContainer();
+            if (container instanceof Entity) {
+                Port candidate = ((Entity)container).getPort(getName());
+                if (candidate instanceof ParameterPort) {
+                    _port = (ParameterPort)candidate;
+                    _setTypeConstraints();
+                }
+            }
+        }
         return _port;
     }
 
@@ -361,11 +361,11 @@ Initializable {
      */
     @Override
     public void setContainer(NamedObj entity)
-	    throws IllegalActionException, NameDuplicationException {
-	if (_settingContainer) {
-	    // Recursive call through the port.
-	    return;
-	}
+            throws IllegalActionException, NameDuplicationException {
+        if (_settingContainer) {
+            // Recursive call through the port.
+            return;
+        }
         Entity previousContainer = (Entity) getContainer();
         if (entity == previousContainer) {
             // No change.
@@ -377,13 +377,13 @@ Initializable {
         // updated the container of the port.
         if (_port != null && (entity == null || entity instanceof Entity)) {
             try {
-        	_settingContainer = true;
+                _settingContainer = true;
                 _port.setContainer((Entity)entity);
             } catch (KernelException ex) {
-        	super.setContainer(previousContainer);
-        	throw ex;
+                super.setContainer(previousContainer);
+                throw ex;
             } finally {
-        	_settingContainer = false;
+                _settingContainer = false;
             }
         }
     }
@@ -462,7 +462,7 @@ Initializable {
      */
     @Override
     public void setName(String name)
-	    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (_settingName) {
             return;
         }

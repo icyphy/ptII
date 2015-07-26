@@ -1223,7 +1223,7 @@ public class JavaScript extends TypedAtomicActor {
          * FIXME: Instead, we should use a ChangeRequest if we are executing.
         if (_executing) {
             throw new IllegalActionException(this,
-        	    "Cannot create a parameter while the model is executing. Stop the model.");
+                    "Cannot create a parameter while the model is executing. Stop the model.");
         }
          */
         if (name == null) {
@@ -1704,10 +1704,10 @@ public class JavaScript extends TypedAtomicActor {
         context.setErrorWriter(new StringWriter() {
             @Override
             public void close() throws IOException {
-        	super.close();
-        	// FIXME: Request a firing that can then throw an exception so
-        	// error port is handled correctly.
-        	MessageHandler.error(toString());
+                super.close();
+                // FIXME: Request a firing that can then throw an exception so
+                // error port is handled correctly.
+                MessageHandler.error(toString());
             }
         });
          */
@@ -1925,7 +1925,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param type The type designation.
      *  @param typeable The object to be typed.
      *  @param options The options object.
-     * 	@return A Ptolemy type.
+     *         @return A Ptolemy type.
      *  @throws IllegalActionException If the type is not supported.
      */
     private Type _typeAccessorToPtolemy(String type)

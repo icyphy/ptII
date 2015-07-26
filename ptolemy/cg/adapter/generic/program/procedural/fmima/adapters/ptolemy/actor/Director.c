@@ -30,7 +30,7 @@ printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, 
 printf("log categories={ ");
 
 for (i = 0; i < nCategories; i++) {
-	printf("%s ", categories[i]);
+        printf("%s ", categories[i]);
 }
 
 printf("}\n");
@@ -42,20 +42,20 @@ printf("CSV file '%s' written\n", RESULT_FILE);
 // release FMUs
 #ifdef _MSC_VER
 for (i = 0; i < NUMBER_OF_FMUS; i++) {
-	FreeLibrary(fmus[i]->dllHandle);
+        FreeLibrary(fmus[i]->dllHandle);
 }
 #else
 for (i = 0; i < NUMBER_OF_FMUS; i++) {
-	dlclose(fmus[i].dllHandle);
+        dlclose(fmus[i].dllHandle);
 }
 #endif
 
 for (i = 0; i < NUMBER_OF_FMUS; i++) {
-	freeModelDescription(fmus[i].modelDescription);
+        freeModelDescription(fmus[i].modelDescription);
 }
 
 if (categories) {
-	free(categories);
+        free(categories);
 }
 
 free( fmus);

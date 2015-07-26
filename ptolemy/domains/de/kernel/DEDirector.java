@@ -1288,7 +1288,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     @Override
     public void preinitialize() throws IllegalActionException {
-	_isInitializing = true;
+        _isInitializing = true;
         // Initialize an event queue.
         _eventQueue = new DECQEventQueue(
                 ((IntToken) minBinCount.getToken()).intValue(),
