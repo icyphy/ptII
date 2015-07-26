@@ -688,9 +688,9 @@ if [ "$PTVERTX_DIR" = "vertx" ]; then
 fi
 
 #### Webcam-capture is used by the webcam accessor
-# PTWEBCAMCAPTURE_DIR= is set to webcam if configure found the webcam-capture jars are found
-PTWEBCAMCAPTURE_DIR=@PTWEBCAMCAPTURE_DIR@
-if [ "$PTWEBCAMCAPTURE_DIR" = "webcam" ]; then 
+# PTCAMERAS_DIR= is set to camerasif configure found the webcam-capture jars are found
+PTCAMERAS_DIR=@PTCAMERAS_DIR@
+if [ "$PTCAMERAS_DIR" = "cameras" ]; then 
     PTWEBCAMCAPTURE_JARS="${CLASSPATHSEPARATOR}@PTWEBCAMCAPTURE_JARS@"
 fi
 
