@@ -62,7 +62,7 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 public class ShellHelper {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Factory method to create a new shell.
      *  @param scriptObjectMirror The JavaScript instance invoking the shell.
@@ -98,7 +98,7 @@ public class ShellHelper {
     }
 
     /** Kill the process and the reader thread.
-     *  @throws IOException Not thrown in this base class.
+     *  @exception IOException Not thrown in this base class.
      */
     public void wrapup() throws IOException {
         //        if (in!=null)  {
@@ -148,7 +148,7 @@ public class ShellHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Builds and starts the command in a process.
      *  @return Returns true, if the process has started and the pipes

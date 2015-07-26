@@ -48,15 +48,15 @@ public class OriginatedEvent extends TimedEvent{
 
     @Override
     public boolean equals(Object originatedEvent) {
-        if(!super.equals(originatedEvent)) {
+        if (!super.equals(originatedEvent)) {
             return false;
         } else {
             //at this point this and originatedEvent are the same class
             // and originatedEvent is not null (checks done in super.equals)
             OriginatedEvent event = (OriginatedEvent) originatedEvent;
-            if(objectID == event.objectID) {
+            if (objectID == event.objectID) {
                 return true;
-            } else{
+            } else {
                 return false;
             }
         }

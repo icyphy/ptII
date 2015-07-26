@@ -77,7 +77,7 @@ import com.sun.jna.NativeLibrary;
  */
 public class FMIModelDescription {
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // public fields ////
 
     /**
@@ -204,8 +204,8 @@ public class FMIModelDescription {
      */
     public FMICapabilities modelExchangeCapabilities;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Create the state vector. This should only be called on fmis with a
@@ -581,20 +581,20 @@ public class FMIModelDescription {
                 String[] dependencies = null;
                 List <String> inputDependencies = new LinkedList<String>();
                 List <String> inputStateDependencies = new LinkedList<String>();
-                if (dependencyNode.getNodeValue().trim().length() != 0){
+                if (dependencyNode.getNodeValue().trim().length() != 0) {
                         dependencies = dependencyNode.getNodeValue().trim()
                     .split(" ");
                         // Create a list which contains dependent variables which are inputs.
                         for (int j = 0; j < dependencies.length; j++) {
                                 if (modelVariables
-                                        .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)){
+                                        .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)) {
                                         inputDependencies.add(dependencies[j]);
                                 }
                                 // Create a list which contains dependent variables which are inputs or states.
                     if (modelVariables
                             .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input) ||
                             modelVariables
-                            .get(Integer.parseInt(dependencies[j]) - 1).isState){
+                            .get(Integer.parseInt(dependencies[j]) - 1).isState) {
                         inputStateDependencies.add(dependencies[j]);
                             }
                         }
@@ -713,7 +713,7 @@ public class FMIModelDescription {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // private fields ////
 
     /**

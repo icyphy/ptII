@@ -2496,7 +2496,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + ";" + _eol);
             } else if (containedActor instanceof CompositeActor) {
                 //Why is this here?
-                /*if(_isTopLevel()){
+                /*if (_isTopLevel()) {
                     CCode.append("struct CompositeActor* "
                             + CodeGeneratorAdapter.generateName(containedActor)
                             + ";" + _eol + comment("Struct in CCcodeGenerator Kevin"));

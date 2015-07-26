@@ -123,7 +123,7 @@ public class FMULog {
                 if (!_printedMessage) {
                     _printedMessage = true;
                     System.err
-                            .println("org/ptolemy/fmi/FMULog.java called Pointer.nativeCif(fmiCoomponent), "
+                            .println("org/ptolemy/fmi/FMULog.java called Pointer.nativeCif (fmiCoomponent), "
                                     + "but received a value of 0?  This can happen if a FMU invokes a logger() method "
                                     + "from within fmi2Instantiate() because the Java interface to FMI uses the fmi2Component "
                                     + "returned by fmi2Instantiate() to handle variable numbers of arguments in the "
@@ -636,7 +636,7 @@ public class FMULog {
      */
     private static Method _ffi_closure_va_uint64;
 
-    /** The Pointer.nativeCif(fmiCoomponent) method. */
+    /** The Pointer.nativeCif (fmiCoomponent) method. */
     private static Method _nativeCif;
 
     /** The class of com.sun.jna.Native. */

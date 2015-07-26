@@ -33,7 +33,7 @@ package org.ptolemy.qss.util;
 import ptolemy.actor.util.Time;
 
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ModelPolynomial
 
 
@@ -188,9 +188,9 @@ public final class ModelPolynomial {
             // Evaluate contributions from cubic terms.
             val = coeffs[0] + dt*(coeffs[1] + dt*(coeffs[2] + dt*coeffs[3]));
             // Add contributions from higher-order terms.
-            if( _maxCoeffIdx > 3 ) {
+            if (_maxCoeffIdx > 3 ) {
                 double valHot = coeffs[_maxCoeffIdx];
-                for( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
+                for ( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
                     valHot = coeffs[ii] + dt*valHot;
                 }
                 val += valHot*dt*dt*dt*dt;
@@ -252,9 +252,9 @@ public final class ModelPolynomial {
             // Evaluate contributions from cubic terms.
             deriv = coeffs[1] + dt*(2*coeffs[2] + dt*3*coeffs[3]);
             // Add contributions from higher-order terms.
-            if( _maxCoeffIdx > 3 ) {
+            if (_maxCoeffIdx > 3 ) {
                 double derivHot = _maxCoeffIdx*coeffs[_maxCoeffIdx];
-                for( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
+                for ( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
                     derivHot = ii*coeffs[ii] + dt*derivHot;
                 }
                 deriv += derivHot*dt*dt*dt;
@@ -317,9 +317,9 @@ public final class ModelPolynomial {
             // Evaluate contributions from cubic terms.
             deriv2 = 2*coeffs[2] + dt*6*coeffs[3];
             // Add contributions from higher-order terms.
-            if( _maxCoeffIdx > 3 ) {
+            if (_maxCoeffIdx > 3 ) {
                 double deriv2Hot = _maxCoeffIdx*(_maxCoeffIdx-1)*coeffs[_maxCoeffIdx];
-                for( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
+                for ( int ii=_maxCoeffIdx-1; ii>3; --ii ) {
                     deriv2Hot = ii*(ii-1)*coeffs[ii] + dt*deriv2Hot;
                 }
                 deriv2 += deriv2Hot*dt*dt;
@@ -373,29 +373,29 @@ public final class ModelPolynomial {
         // Initialize string builder with c0.
         res_sb.append(res);
 
-        if( _maxCoeffIdx > 0 ) {
+        if (_maxCoeffIdx > 0 ) {
 
             // Form string "(t-tMdl)".
             String dtStr;
             final double tMdlDbl = tMdl.getDoubleValue();
-            if( tMdlDbl > 0 ) {
+            if (tMdlDbl > 0 ) {
                 dtStr = String.format("(t-%.4g)", tMdlDbl);
-            } else if( tMdlDbl < 0 ) {
+            } else if (tMdlDbl < 0 ) {
                 dtStr = String.format("(t+%.4g)", Math.abs(tMdlDbl));
             } else {
                 dtStr = "t";
             }
 
             // Add c1*dt.
-            if( coeffs[1] != 0 ) {
+            if (coeffs[1] != 0 ) {
                 //res += String.format(" %+.4g*%s", coeffs[1], dtStr);
                 res = String.format(" %+.4g*%s", coeffs[1], dtStr);
                 res_sb.append(res);
             }
 
             // Add higher-order terms.
-            for( int ii=2; ii<=_maxCoeffIdx; ++ii ) {
-                if( coeffs[ii] != 0 ) {
+            for ( int ii=2; ii<=_maxCoeffIdx; ++ii ) {
+                if (coeffs[ii] != 0 ) {
                     //res += String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
                     res = String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
                     res_sb.append(res);

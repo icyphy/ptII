@@ -65,7 +65,7 @@ import com.github.sarxos.webcam.WebcamListener;
 public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** Create the system default camera.
-     *  @throws IOException If there is no such camera.
+     *  @exception IOException If there is no such camera.
      *  @param currentObj The JavaScript object that this is helping.
      */
     public CameraHelper(ScriptObjectMirror currentObj) throws IOException {
@@ -77,7 +77,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  or else a exception will be thrown.
      *  @param name The name of the camera.
      *  @param currentObj The JavaScript object that this is helping.
-     *  @throws IOException If the camera does not exist.
+     *  @exception IOException If the camera does not exist.
      */
     public CameraHelper(ScriptObjectMirror currentObj, String name)
             throws IOException {
@@ -98,7 +98,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Return an array of camera names that are available on this host.
      *  This method refreshes the list.
@@ -165,7 +165,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** Set the current view size for this camera, representing the desired size
      *  as a Map with integer valued fields "width" and "height".
-     *  @throws IllegalActionException If either field is absent.
+     *  @exception IllegalActionException If either field is absent.
      *  @see #getViewSize()
      */
     public void setViewSize(Map spec) throws IllegalActionException {

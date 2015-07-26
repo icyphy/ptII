@@ -114,13 +114,13 @@ public class QuantizedSampler extends Transformer {
      * Produce an output equal to the input if the input has crossed
      * the quantum; otherwise, produce no output.
      *
-     * @throws IllegalActionException If sending an output fails.
+     * @exception IllegalActionException If sending an output fails.
      */
         public void fire() throws IllegalActionException {
                 super.fire();
                 if (input.hasToken(0)) {
                         DoubleToken newInputToken = DoubleToken.convert(input.get(0));
-                        if (_firstFiring){
+                        if (_firstFiring) {
                                 // Initialize last input token with first input token received.
                                 _lastInputToken = newInputToken;
                                 // Send first input token received to the output port.
@@ -171,7 +171,7 @@ public class QuantizedSampler extends Transformer {
      * @param newToken The last input token seen at the port.
      * @retun True if the derivatives are identical.
      */
-    private boolean _compareSmoothTokenDerivatives(DoubleToken newToken, DoubleToken lastToken){
+    private boolean _compareSmoothTokenDerivatives(DoubleToken newToken, DoubleToken lastToken) {
             // Now we just have to check the derivatives.
         double[] derivativesNewToken = ((SmoothToken) newToken).derivativeValues();
         double[] derivativesLastToken = ((SmoothToken) lastToken).derivativeValues();
@@ -191,7 +191,7 @@ public class QuantizedSampler extends Transformer {
             return false;
         }
         // Both tokens have the same number of derivatives.
-        for(int i = 0; i < derivativesLastToken.length; i++){
+        for (int i = 0; i < derivativesLastToken.length; i++) {
             if (derivativesNewToken[i] != derivativesLastToken[i]) {
                 return false;
             }

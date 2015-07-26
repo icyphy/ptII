@@ -1645,7 +1645,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @param currentTime The current simulation time.
      *  @param token The token read from the port
      *  @param curIdx The input index.
-     *  @throws IllegalActionException If the input cannot be set.
+     *  @exception IllegalActionException If the input cannot be set.
      */
     private boolean _handleInput(Input input, Time currentTime, Token token,
             int curIdx) throws IllegalActionException {
@@ -2064,7 +2064,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  required by the model to zero.
      *  @param ivMdl The input model to parameterize.
      *  @param token The token values for parameterization.
-     *  @throws IllegalActionException If the specified token cannot be converted
+     *  @exception IllegalActionException If the specified token cannot be converted
      *   to a double.
      */
     private void _setModelFromToken(ModelPolynomial ivMdl, Token token)
@@ -2232,7 +2232,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (input.port.hasNewToken(0)) {
                 // Here, have a new value on the input port.
                 final Token token = input.port.get(0);
-                if(!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
+                if (!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
                 updatedInputVarMdl = true;
             }
         }
@@ -2262,7 +2262,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @param currentTime The current simulation time.
      *  @param token The token read from the port
      *  @param curIdx The input index.
-     *  @throws IllegalActionException If the input cannot be set.
+     *  @exception IllegalActionException If the input cannot be set.
      */
     private void _updateInputModel(Input input, Time currentTime, Token token,
             int curIdx) throws IllegalActionException {
@@ -2294,7 +2294,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
         // Save the indexes of the model variables which have changed
-        if (index >=0 && value){
+        if (index >=0 && value) {
             _indexesOfUpdatedModelVariables.add(index);
         }
     }

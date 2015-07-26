@@ -361,7 +361,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @param y input observation
      * @param hiddenState index of hidden state
      * @return P(Y=y | X=hiddenState)
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract double emissionProbability(double[] y, int hiddenState)
             throws IllegalActionException;
@@ -387,7 +387,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     /**
      * One step EM iteration
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract void _iterateEM() throws IllegalActionException;
 
@@ -414,7 +414,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @param prior prior state distribution guess
      * @param nCategories number of categories in the multinomial distribution, where applies
      * @return a HashMap containing the updated estimates of all model parameters
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected HashMap HMMAlphaBetaRecursion(double[][] y, double[][] A,
             double[] prior, int nCategories) throws IllegalActionException

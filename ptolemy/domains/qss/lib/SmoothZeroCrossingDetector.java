@@ -354,7 +354,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
     }
 
     /** Initialize this actor to indicate that no input has yet been provided.
-     *  @throws IllegalActionException If the director is not a DEDirector.
+     *  @exception IllegalActionException If the director is not a DEDirector.
      */
     @Override
     public void initialize() throws IllegalActionException {

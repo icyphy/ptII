@@ -48,7 +48,7 @@ public interface Actionable {
     public String actionName();
 
     /** Perform the named action.
-     *  @throws Exception If the action fails.
+     *  @exception Exception If the action fails.
      */
     public void performAction() throws Exception;
 }

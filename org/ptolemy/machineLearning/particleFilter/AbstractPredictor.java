@@ -391,8 +391,8 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     }
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -403,7 +403,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
      * Return the expression for a user-defined parameter.
      * @param parameterName Name of parameter
      * @return parameter expression
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String getUserDefinedParameterExpression(String parameterName)
             throws IllegalActionException {
@@ -419,7 +419,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
      * @return Parameter object
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException;
@@ -449,7 +449,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     /** Measurement covariance matrix */
     protected double[][] _Sigma;
 
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _createRandomGenerator() throws IllegalActionException {
@@ -560,8 +560,8 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
     /**
      * Read input token and initialize particles accordingly
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _initializeParticles() throws IllegalActionException,
     NameDuplicationException {

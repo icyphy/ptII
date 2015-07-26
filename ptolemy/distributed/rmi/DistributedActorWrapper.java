@@ -342,7 +342,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 }
 
                 //for (Integer[] integerReceiver : integerReceivers) {
-                for(int i = 0; i < integerReceivers.length; i++) {
+                for (int i = 0; i < integerReceivers.length; i++) {
                     try {
                         relation = (DistributedTypedIORelation) compositeActor
                                 .newRelation(portName + number);

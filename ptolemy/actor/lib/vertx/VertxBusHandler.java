@@ -194,7 +194,7 @@ public class VertxBusHandler extends TypedAtomicActor {
 
     /** Initialize verticle, create http client and open web socket to connect
      *  to event bus.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     @Override
     public void initialize() throws IllegalActionException {

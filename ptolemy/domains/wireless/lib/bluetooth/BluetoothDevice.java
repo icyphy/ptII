@@ -220,14 +220,14 @@ public class BluetoothDevice extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (!(getDirector() instanceof WirelessDirector) ){
+        if (!(getDirector() instanceof WirelessDirector) ) {
             throw new IllegalActionException(this.getClassName() + ": Cannot execute without WirelessDirector.");
         }
 
         StringToken _wiredInputToken;
         Token _wiredInputExtra;
 
-        if (wiredInput.hasToken(0)){
+        if (wiredInput.hasToken(0)) {
             _wiredInputToken = (StringToken) wiredInput.get(0);
         }
         else {
@@ -236,7 +236,7 @@ public class BluetoothDevice extends TypedAtomicActor {
 
         //Here we will parse our input command string.
         BluetoothCommand command;
-        switch(_wiredInputToken.stringValue()){
+        switch(_wiredInputToken.stringValue()) {
             case "switchon":
                 command = BluetoothCommand.COMMAND_SWITCHON;
                 break;
@@ -278,7 +278,7 @@ public class BluetoothDevice extends TypedAtomicActor {
                 throw new IllegalActionException("Input string does not equal supported command value");
             }
 
-            if (wiredInputDetails.hasToken(0)){
+            if (wiredInputDetails.hasToken(0)) {
                 _wiredInputExtra = (StringToken) wiredInputDetails.get(0);
             }
             else {
@@ -289,35 +289,35 @@ public class BluetoothDevice extends TypedAtomicActor {
             // The state machine
             BluetoothStatusToken status;
 
-            switch(state){
+            switch(state) {
                 case STATE_OFF:
-                    if (command.equals(BluetoothCommand.COMMAND_SWITCHON)){
+                    if (command.equals(BluetoothCommand.COMMAND_SWITCHON)) {
                         this.state = States.STATE_IDLE;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Switchon");
                         this.wiredOutput.send(0, status);
                         break;
                     }
                     else {
-                        if (this.wiredInputData.hasToken(0)){
+                        if (this.wiredInputData.hasToken(0)) {
                             Token _useless = wiredInputData.get(0);
                         }
                         return;
                     }
                 case STATE_IDLE:
-                    if (command.equals(BluetoothCommand.COMMAND_SWITCHOFF)){
+                    if (command.equals(BluetoothCommand.COMMAND_SWITCHOFF)) {
                         this.state = States.STATE_OFF;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Switchoff");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_SCAN)){
+                    else if (command.equals(BluetoothCommand.COMMAND_SCAN)) {
                         this.state = States.STATE_SCANNING;
                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.COMMAND_SCAN, "scan", this.getName(), "" ));
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Scan");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_CONNECT)){
+                    else if (command.equals(BluetoothCommand.COMMAND_CONNECT)) {
                         if (_wiredInputExtra instanceof StringToken) {
                             String deviceToConnect = ((StringToken) _wiredInputExtra).stringValue();
                             if (this._pairedDevices.contains(deviceToConnect)) {
@@ -334,26 +334,26 @@ public class BluetoothDevice extends TypedAtomicActor {
                             throw new IllegalActionException("Invalid device identifier");
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_DISCOVERABLE)){
+                    else if (command.equals(BluetoothCommand.COMMAND_DISCOVERABLE)) {
                         this._discoverable = true;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Discoverable");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_PAIR)){
-                        if (_wiredInputExtra instanceof StringToken){
+                    else if (command.equals(BluetoothCommand.COMMAND_PAIR)) {
+                        if (_wiredInputExtra instanceof StringToken) {
                             String deviceToPair = ((StringToken) _wiredInputExtra).stringValue();
-                            if (this._foundDevices.contains(deviceToPair) && (!this._pairedDevices.contains(deviceToPair))){
+                            if (this._foundDevices.contains(deviceToPair) && (!this._pairedDevices.contains(deviceToPair))) {
                                 this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.COMMAND_REQUESTPAIR, deviceToPair, this.getName(), ""));
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Attempting to pair to:"+deviceToPair);
                                 wiredOutput.send(0, status);
                             }
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_UNPAIR)){
-                        if (_wiredInputExtra instanceof StringToken){
+                    else if (command.equals(BluetoothCommand.COMMAND_UNPAIR)) {
+                        if (_wiredInputExtra instanceof StringToken) {
                             String deviceToUnpair = ((StringToken) _wiredInputExtra).stringValue();
-                            if (this._foundDevices.contains(deviceToUnpair) && (this._pairedDevices.contains(deviceToUnpair))){
+                            if (this._foundDevices.contains(deviceToUnpair) && (this._pairedDevices.contains(deviceToUnpair))) {
                                 // Here is a behavior which is particularly interesting in Bluetooth - when you unpair, you don't tell the paired device anything. You just remove it from your list of paired devices and move on.
                                 this._pairedDevices.remove(deviceToUnpair);
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Unpaired from: "+deviceToUnpair);
@@ -361,21 +361,21 @@ public class BluetoothDevice extends TypedAtomicActor {
                             }
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_HIDE)){
+                    else if (command.equals(BluetoothCommand.COMMAND_HIDE)) {
                         this._discoverable = false;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Hidden");
                         this.wiredOutput.send(0, status);
                         break;
                     }
 
-                    while(this.wirelessInput.hasToken(0)){
+                    while (this.wirelessInput.hasToken(0)) {
                         Token _token = wirelessInput.get(0);
                         if (_token instanceof BluetoothResponseToken) {
                             BluetoothResponseToken _newResponse = (BluetoothResponseToken) _token;
-                            if (_newResponse.getDeviceIdentifier().equals(this.getName())){
-                                if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTCONNECT)){
+                            if (_newResponse.getDeviceIdentifier().equals(this.getName())) {
+                                if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTCONNECT)) {
                                     // For now, we accept all connection requests.
-                                    if (this._pairedDevices.contains(_newResponse.getSourceIdentifier())){
+                                    if (this._pairedDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this.state = States.STATE_CONNECTED;
                                         this._connectedDevices.add(_newResponse.getSourceIdentifier());
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_ACCEPTCONNECT, _newResponse.getSourceIdentifier(), this.getName(), ""));
@@ -383,9 +383,9 @@ public class BluetoothDevice extends TypedAtomicActor {
                                         wiredOutput.send(0, status);
                                     }
                                 }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTPAIR)){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTPAIR)) {
                                     // For now, we accept all pair requests.
-                                    if (this._foundDevices.contains(_newResponse.getSourceIdentifier())){
+                                    if (this._foundDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this._pairedDevices.add(_newResponse.getSourceIdentifier());
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_ACCEPTPAIR, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received pair request from:"+_newResponse.getSourceIdentifier());
@@ -404,9 +404,9 @@ public class BluetoothDevice extends TypedAtomicActor {
                                     wiredOutput.send(0, status);
                                 }
                             }
-                            else if (_newResponse.getDeviceIdentifier().equals("scan")){
-                                if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_SCAN)){
-                                    if (this._discoverable && (!this._foundDevices.contains(_newResponse.getSourceIdentifier()))){
+                            else if (_newResponse.getDeviceIdentifier().equals("scan")) {
+                                if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_SCAN)) {
+                                    if (this._discoverable && (!this._foundDevices.contains(_newResponse.getSourceIdentifier()))) {
                                         this._foundDevices.add(_newResponse.getSourceIdentifier());
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_FINDME, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received scan request from:"+_newResponse.getSourceIdentifier());
@@ -417,14 +417,14 @@ public class BluetoothDevice extends TypedAtomicActor {
                         }
                     }
                     //Eat useless tokens
-                    if (this.wiredInputData.hasToken(0)){
+                    if (this.wiredInputData.hasToken(0)) {
                         Token _useless = wiredInputData.get(0);
                     }
                     break;
                 case STATE_CONNECTED:
-                    if (command.equals(BluetoothCommand.COMMAND_SWITCHOFF)){
+                    if (command.equals(BluetoothCommand.COMMAND_SWITCHOFF)) {
                         this.state = States.STATE_OFF;
-                        for (String device : this._connectedDevices){
+                        for (String device : this._connectedDevices) {
                             BluetoothResponseToken shuttingOff = new BluetoothResponseToken(BluetoothResponse.COMMAND_DISCONNECT, device, this.getName(), "");
                             wirelessOutput.send(0, shuttingOff);
                         }
@@ -432,13 +432,13 @@ public class BluetoothDevice extends TypedAtomicActor {
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_SCAN)){
+                    else if (command.equals(BluetoothCommand.COMMAND_SCAN)) {
                         this.state = States.STATE_SCANNING;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "empty");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_CONNECT)){
+                    else if (command.equals(BluetoothCommand.COMMAND_CONNECT)) {
                         if (_wiredInputExtra instanceof StringToken) {
                             String deviceToConnect = ((StringToken) _wiredInputExtra).stringValue();
                             if (this._pairedDevices.contains(deviceToConnect)) {
@@ -455,7 +455,7 @@ public class BluetoothDevice extends TypedAtomicActor {
                             throw new IllegalActionException("WiredInputDetails port must be filled with device identifier to command connection");
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_DISCONNECT)){
+                    else if (command.equals(BluetoothCommand.COMMAND_DISCONNECT)) {
                         if (_wiredInputExtra instanceof StringToken) {
                             String deviceToDisconnect = ((StringToken) _wiredInputExtra).stringValue();
                             if (this._connectedDevices.contains(deviceToDisconnect)) {
@@ -473,25 +473,25 @@ public class BluetoothDevice extends TypedAtomicActor {
                             throw new IllegalActionException("WiredInputDetails port must be filled with device identifier to command disconnection");
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_PAIR)){
-                        if (_wiredInputExtra instanceof StringToken){
+                    else if (command.equals(BluetoothCommand.COMMAND_PAIR)) {
+                        if (_wiredInputExtra instanceof StringToken) {
                             String deviceToPair = ((StringToken) _wiredInputExtra).stringValue();
-                            if (this._foundDevices.contains(deviceToPair) && (!this._pairedDevices.contains(deviceToPair))){
+                            if (this._foundDevices.contains(deviceToPair) && (!this._pairedDevices.contains(deviceToPair))) {
                                 this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.COMMAND_REQUESTPAIR, deviceToPair, this.getName(), ""));
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Sending pair request to:"+ deviceToPair);
                                 wiredOutput.send(0, status);
                             }
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_UNPAIR)){
-                        if (_wiredInputExtra instanceof StringToken){
+                    else if (command.equals(BluetoothCommand.COMMAND_UNPAIR)) {
+                        if (_wiredInputExtra instanceof StringToken) {
                             String deviceToUnpair = ((StringToken) _wiredInputExtra).stringValue();
-                            if (this._foundDevices.contains(deviceToUnpair) && (this._pairedDevices.contains(deviceToUnpair) && (!this._connectedDevices.contains(deviceToUnpair)))){
+                            if (this._foundDevices.contains(deviceToUnpair) && (this._pairedDevices.contains(deviceToUnpair) && (!this._connectedDevices.contains(deviceToUnpair)))) {
                                 this._pairedDevices.remove(deviceToUnpair);
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Attempting to unpair from: "+deviceToUnpair);
                                 wiredOutput.send(0, status);
                             }
-                            else if (this._foundDevices.contains(deviceToUnpair) && (this._pairedDevices.contains(deviceToUnpair) && (this._connectedDevices.contains(deviceToUnpair)))){
+                            else if (this._foundDevices.contains(deviceToUnpair) && (this._pairedDevices.contains(deviceToUnpair) && (this._connectedDevices.contains(deviceToUnpair)))) {
                                 this._connectedDevices.remove(deviceToUnpair);
                                 this._pairedDevices.remove(deviceToUnpair);
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Attempting to unpair from: "+deviceToUnpair);
@@ -499,22 +499,22 @@ public class BluetoothDevice extends TypedAtomicActor {
                             }
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_DISCOVERABLE)){
+                    else if (command.equals(BluetoothCommand.COMMAND_DISCOVERABLE)) {
                         this._discoverable = true;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Discoverable");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_HIDE)){
+                    else if (command.equals(BluetoothCommand.COMMAND_HIDE)) {
                         this._discoverable = false;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Hidden");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_SENDDATA)){
-                        if (_wiredInputExtra instanceof StringToken){
+                    else if (command.equals(BluetoothCommand.COMMAND_SENDDATA)) {
+                        if (_wiredInputExtra instanceof StringToken) {
                             String deviceToSendData = ((StringToken) _wiredInputExtra).stringValue();
-                            if (this._connectedDevices.contains(deviceToSendData) && this.wiredInputData.hasToken(0)){
+                            if (this._connectedDevices.contains(deviceToSendData) && this.wiredInputData.hasToken(0)) {
                                 this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_OK, deviceToSendData, this.getName(), wiredInputData.get(0)));
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Sent data to: "+deviceToSendData);
                                 wiredOutput.send(0, status);
@@ -524,52 +524,52 @@ public class BluetoothDevice extends TypedAtomicActor {
                             }
                         }
                     }
-                    while(this.wirelessInput.hasToken(0)){
+                    while (this.wirelessInput.hasToken(0)) {
                         Token _token = wirelessInput.get(0);
                         if (_token instanceof BluetoothResponseToken) {
                             BluetoothResponseToken _newResponse = (BluetoothResponseToken) _token;
-                            if (_newResponse.getDeviceIdentifier().equals(this.getName())){
+                            if (_newResponse.getDeviceIdentifier().equals(this.getName())) {
                                 if (_newResponse.getResponse().equals(BluetoothResponse.RESPONSE_ACCEPTCONNECT)) {
                                     this._connectedDevices.add(_newResponse.getDeviceIdentifier());
                                     status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Accepted connection request from : "+_newResponse.getSourceIdentifier());
                                     wiredOutput.send(0, status);
                                    }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.RESPONSE_OK)){
-                                    if (this._connectedDevices.contains(_newResponse.getSourceIdentifier())){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.RESPONSE_OK)) {
+                                    if (this._connectedDevices.contains(_newResponse.getSourceIdentifier())) {
                                         BluetoothStatusToken<?> _newData = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, _newResponse.getData());
                                         wiredOutput.send(0, _newData);
                                     }
                                 }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTPAIR)){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTPAIR)) {
                                     // For now, we accept all pair requests.
-                                    if (this._foundDevices.contains(_newResponse.getSourceIdentifier())){
+                                    if (this._foundDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this._pairedDevices.add(_newResponse.getSourceIdentifier());
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_ACCEPTPAIR, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received pair request from:"+_newResponse.getSourceIdentifier());
                                         wiredOutput.send(0, status);
                                     }
                                 }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTCONNECT) && (this._connectedDevices.size() <= 7)){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTCONNECT) && (this._connectedDevices.size() <= 7)) {
                                     // We will only connect to a new device if we don't have more then 7 connections open.
                                     // See: http://en.wikipedia.org/wiki/Bluetooth#Implementation
-                                    if (this._pairedDevices.contains(_newResponse.getSourceIdentifier())){
+                                    if (this._pairedDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_ACCEPTCONNECT, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         this._connectedDevices.add(_newResponse.getSourceIdentifier());
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received connection request from:"+_newResponse.getSourceIdentifier());
                                         wiredOutput.send(0, status);
                                     }
                                 }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_DISCONNECT)){
-                                    if (this._connectedDevices.contains(_newResponse.getSourceIdentifier())){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_DISCONNECT)) {
+                                    if (this._connectedDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this._connectedDevices.remove(_newResponse.getSourceIdentifier());
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Disconected from: "+_newResponse.getSourceIdentifier());
                                         wiredOutput.send(0, status);
                                     }
                                 }
                             }
-                            else if (_newResponse.getDeviceIdentifier().equals("scan")){
-                                if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_SCAN)){
-                                    if (this._discoverable && (!this._foundDevices.contains(_newResponse.getSourceIdentifier()))){
+                            else if (_newResponse.getDeviceIdentifier().equals("scan")) {
+                                if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_SCAN)) {
+                                    if (this._discoverable && (!this._foundDevices.contains(_newResponse.getSourceIdentifier()))) {
                                         this._foundDevices.add(_newResponse.getSourceIdentifier());
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_FINDME, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received scan request from:"+_newResponse.getSourceIdentifier());
@@ -583,34 +583,34 @@ public class BluetoothDevice extends TypedAtomicActor {
                         this.state = States.STATE_IDLE;
                     }
                     //Eat useless tokens
-                    if (this.wiredInputData.hasToken(0)){
+                    if (this.wiredInputData.hasToken(0)) {
                         Token _useless = wiredInputData.get(0);
                     }
                     break;
                 case STATE_SCANNING:
-                    if (command.equals(BluetoothCommand.COMMAND_SWITCHOFF)){
+                    if (command.equals(BluetoothCommand.COMMAND_SWITCHOFF)) {
                         this.state = States.STATE_OFF;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Switch on");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_STOPSCAN)){
+                    else if (command.equals(BluetoothCommand.COMMAND_STOPSCAN)) {
                         this.state = States.STATE_IDLE;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Switch off");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_PAIR)){
-                        if (_wiredInputExtra instanceof StringToken){
+                    else if (command.equals(BluetoothCommand.COMMAND_PAIR)) {
+                        if (_wiredInputExtra instanceof StringToken) {
                             String deviceToPair = ((StringToken) _wiredInputExtra).stringValue();
-                            if (this._foundDevices.contains(deviceToPair) && (!this._pairedDevices.contains(deviceToPair))){
+                            if (this._foundDevices.contains(deviceToPair) && (!this._pairedDevices.contains(deviceToPair))) {
                                 this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.COMMAND_REQUESTPAIR, deviceToPair, this.getName(), ""));
                                 status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Attempt to pair to: "+deviceToPair);
                                 wiredOutput.send(0, status);
                             }
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_CONNECT)){
+                    else if (command.equals(BluetoothCommand.COMMAND_CONNECT)) {
                         if (_wiredInputExtra instanceof StringToken) {
                             String deviceToConnect = ((StringToken) _wiredInputExtra).stringValue();
                             if (this._pairedDevices.contains(deviceToConnect)) {
@@ -627,40 +627,40 @@ public class BluetoothDevice extends TypedAtomicActor {
                             throw new IllegalActionException("WiredInputDetails port must be filled with device identifier to command connection");
                         }
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_DISCOVERABLE)){
+                    else if (command.equals(BluetoothCommand.COMMAND_DISCOVERABLE)) {
                         this._discoverable = true;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Discoverable");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_HIDE)){
+                    else if (command.equals(BluetoothCommand.COMMAND_HIDE)) {
                         this._discoverable = false;
                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Hidden");
                         this.wiredOutput.send(0, status);
                         break;
                     }
-                    else if (command.equals(BluetoothCommand.COMMAND_NOCOMMAND)){
+                    else if (command.equals(BluetoothCommand.COMMAND_NOCOMMAND)) {
                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.COMMAND_SCAN, "scan", this.getName(), "" ));
                     }
                     while (wirelessInput.hasToken(0)) {
                         Token _token = wirelessInput.get(0);
                         if (_token instanceof BluetoothResponseToken) {
                             BluetoothResponseToken _newResponse = (BluetoothResponseToken) _token;
-                            if (_newResponse.getDeviceIdentifier().equals(this.getName())){
-                                if (_newResponse.getResponse().equals(BluetoothResponse.RESPONSE_FINDME)){
+                            if (_newResponse.getDeviceIdentifier().equals(this.getName())) {
+                                if (_newResponse.getResponse().equals(BluetoothResponse.RESPONSE_FINDME)) {
                                     _foundDevices.add(_newResponse.getSourceIdentifier());
                                 }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTCONNECT)){
-                                    if (this._pairedDevices.contains(_newResponse.getSourceIdentifier())){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTCONNECT)) {
+                                    if (this._pairedDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this.state = States.STATE_CONNECTED;
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_ACCEPTCONNECT, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received connection request from:"+_newResponse.getSourceIdentifier());
                                         wiredOutput.send(0, status);
                                     }
                                 }
-                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTPAIR)){
+                                else if (_newResponse.getResponse().equals(BluetoothResponse.COMMAND_REQUESTPAIR)) {
                                     // For now, we accept all pair requests.
-                                    if (this._foundDevices.contains(_newResponse.getSourceIdentifier())){
+                                    if (this._foundDevices.contains(_newResponse.getSourceIdentifier())) {
                                         this._pairedDevices.add(_newResponse.getSourceIdentifier());
                                         this.wirelessOutput.send(0, new BluetoothResponseToken(BluetoothResponse.RESPONSE_ACCEPTPAIR, _newResponse.getSourceIdentifier(), this.getName(), ""));
                                         status = new BluetoothStatusToken(BluetoothStatus.STATUS_OK, "Received pair request from:"+_newResponse.getSourceIdentifier());
@@ -682,7 +682,7 @@ public class BluetoothDevice extends TypedAtomicActor {
                         }
                     }
                     //Eat useless tokens
-                    if (this.wiredInputData.hasToken(0)){
+                    if (this.wiredInputData.hasToken(0)) {
                         Token _useless = wiredInputData.get(0);
                     }
                     break;

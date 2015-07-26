@@ -52,19 +52,19 @@ class ApproximatedObjectiveFunction extends ObjectiveFunction{
     public ApproximatedObjectiveFunction(ObjectiveFunction a_source) {
         super(a_source.currentX.length, a_source.fiResults.length);
         _source = a_source;
-        for(int i=0; i<_source.currentX.length; i++) {
+        for (int i=0; i<_source.currentX.length; i++) {
             currentX[i] = _source.currentX[i];
         }
 
         // Copy Hessians
-        for(int row=0; row<f0Hessian.length; row++) {
-            for(int col=0; col<f0Hessian[row].length; col++) {
+        for (int row=0; row<f0Hessian.length; row++) {
+            for (int col=0; col<f0Hessian[row].length; col++) {
                 f0Hessian[row][col] = _source.f0Hessian[row][col];
             }
         }
-        for(int i=0; i<fiResults.length; i++) {
-            for(int row=0; row<fiHessians[i].length; row++) {
-                for(int col=0; col<fiHessians[i][row].length; col++) {
+        for (int i=0; i<fiResults.length; i++) {
+            for (int row=0; row<fiHessians[i].length; row++) {
+                for (int col=0; col<fiHessians[i][row].length; col++) {
                     fiHessians[i][row][col] = _source.fiHessians[i][row][col];
                 }
             }
@@ -81,12 +81,12 @@ class ApproximatedObjectiveFunction extends ObjectiveFunction{
      */
     @Override
     public void calcFuncInternal(double[] x) {
-        if(_source.stopRequested) {
+        if (_source.stopRequested) {
             stopRequested = true;
             return;
         }
         double[] dx = new double[x.length];
-        for(int i=0; i<x.length; i++) {
+        for (int i=0; i<x.length; i++) {
             currentX[i] = x[i];
             dx[i] = x[i]-_source.currentX[i];
         }
@@ -96,26 +96,26 @@ class ApproximatedObjectiveFunction extends ObjectiveFunction{
         // f(x+dx) = f(x)+(1/2)(dxT*H*dx)+g*dx
         double[] Qx = DoubleMatrixMath.multiply(dx, f0Hessian);
         f0Result = _source.f0Result;
-        for(int i=0; i<Qx.length; i++) {
+        for (int i=0; i<Qx.length; i++) {
             f0Result += (0.5*Qx[i]*dx[i] + _source.f0Gradient[i]*dx[i]);
         }
         // df(x+dx) = df(x)+H*dx
-        for(int col=0; col<f0Gradient.length; col++) {
+        for (int col=0; col<f0Gradient.length; col++) {
             f0Gradient[col] = _source.f0Gradient[col]+Qx[col];
         }
         // Hessian(x+dx) = Hessian(x) was already copied in the constructor.
 
         ///////////////////////////////////////////////////
         ////// Inequality constraints:
-        for(int i=0; i<fiResults.length; i++) {
+        for (int i=0; i<fiResults.length; i++) {
             // fi(x+dx) = fi(x)+(1/2)(dxT*H*dx)+g*dx
             Qx = DoubleMatrixMath.multiply(dx,  fiHessians[i]);
             fiResults[i] = _source.fiResults[i];
-            for(int col=0; col<dx.length; col++) {
+            for (int col=0; col<dx.length; col++) {
                 fiResults[i] += (0.5*Qx[col]*dx[col] + _source.fiGradients[i][col]*dx[col]);
             }
             // dfi(x+dx) = dfi(x)+H*dx
-            for(int col=0; col<f0Gradient.length; col++) {
+            for (int col=0; col<f0Gradient.length; col++) {
                 fiGradients[i][col] = _source.fiGradients[i][col]+Qx[col];
             }
         }

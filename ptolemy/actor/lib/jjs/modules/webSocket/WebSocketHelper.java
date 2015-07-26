@@ -64,7 +64,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class WebSocketHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Close the web socket.
      */
@@ -138,7 +138,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** Send text data through the web socket.
      *  @param msg A text message to be sent.
-     *  @throws IllegalActionException If establishing the connection to the web socket has
+     *  @exception IllegalActionException If establishing the connection to the web socket has
      *   permanently failed.
      */
     public void sendText(String msg) throws IllegalActionException {
@@ -233,7 +233,7 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Connect to a web socket on the specified host.
      *  @param host The host IP or name.

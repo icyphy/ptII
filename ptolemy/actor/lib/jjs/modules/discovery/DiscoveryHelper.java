@@ -58,7 +58,7 @@ import org.json.JSONObject;
 public class DiscoveryHelper {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Construct a new DiscoveryHelper.
      *

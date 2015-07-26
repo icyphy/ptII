@@ -456,7 +456,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
                 // If local and client side, remember, in order to open after
                 // the server has started
-                if (isLocal && service.isClient()){
+                if (isLocal && service.isClient()) {
                     servicesToOpen.add(service);
                 }
 

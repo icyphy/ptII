@@ -115,7 +115,7 @@ public class RestrictedJavaScriptInterface {
 
     /** Delegate to the associated JavaScript actor to report an error.
      *  @param message The message
-     *  @throws IllegalActionException If the error cannot be handled.
+     *  @exception IllegalActionException If the error cannot be handled.
      */
     public void error(String message) throws IllegalActionException {
         _actor.error(message);
@@ -133,8 +133,8 @@ public class RestrictedJavaScriptInterface {
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void input(String name) throws IllegalActionException,
             NameDuplicationException {
@@ -153,8 +153,8 @@ public class RestrictedJavaScriptInterface {
      *  an ordinary port and set its default value.
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void input(String name, Map options) throws IllegalActionException,
             NameDuplicationException {
@@ -182,8 +182,8 @@ public class RestrictedJavaScriptInterface {
     /** Create a new output port if it does not already exist.
      *  Set the type to general.
      *  @param name The name of the port.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void output(String name) throws IllegalActionException,
             NameDuplicationException {
@@ -199,8 +199,8 @@ public class RestrictedJavaScriptInterface {
      *  include documentation of this output.
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void output(String name, Map<String, String> options)
             throws IllegalActionException, NameDuplicationException {
@@ -210,9 +210,9 @@ public class RestrictedJavaScriptInterface {
     /** Create a new parameter if it does not already exist.
      *  This parameter will have an undeclared type and no description.
      *  @param name The name of the parameter.
-     *  @throws IllegalActionException If no name is given, or if the
+     *  @exception IllegalActionException If no name is given, or if the
      *   model is executing.
-     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
     public void parameter(String name) throws IllegalActionException,
@@ -232,8 +232,8 @@ public class RestrictedJavaScriptInterface {
      *  if it does not already have a value.
      *  @param name The name of the parameter.
      *  @param options The options, or null to accept the defaults.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
     public void parameter(String name, Map options)
@@ -260,7 +260,7 @@ public class RestrictedJavaScriptInterface {
      *  @param millisecond The number of milliseconds in the future to invoke it
      *   and the period thereafter.
      *  @return A unique ID for this callback
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     public int setInterval(final Runnable function, int millisecond)
             throws IllegalActionException {
@@ -276,7 +276,7 @@ public class RestrictedJavaScriptInterface {
      *  @param function The function to invoke.
      *  @param millisecond The number of milliseconds in the future to invoke it.
      *  @return A unique ID for this callback
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     public int setTimeout(final Runnable function, int millisecond)
             throws IllegalActionException {

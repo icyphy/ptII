@@ -127,9 +127,9 @@ public class ParticleMutualInformation extends TypedAtomicActor {
                 for (int k = 0; k < _labels.length; k++) {
                     if (_labels[k].equals("weight")) {
                         _weights[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
-                    } else if(_labels[k].equals("x")) {
+                    } else if (_labels[k].equals("x")) {
                         _px[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
-                    } else if(_labels[k].equals("y")) {
+                    } else if (_labels[k].equals("y")) {
                         _py[i] = ((DoubleToken) token.get(_labels[k])).doubleValue();
                     }
                 }

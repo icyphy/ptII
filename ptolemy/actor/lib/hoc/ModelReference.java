@@ -681,7 +681,7 @@ ExecutionListener {
     @Override
     public boolean postfire() throws IllegalActionException {
 
-        if(_executionOnFiringValue == _RUN_IN_A_NEW_THREAD){
+        if (_executionOnFiringValue == _RUN_IN_A_NEW_THREAD) {
             try {
                 //wait for the notifier to finish if started in a new thread
                 //that way we avoid a race condition in fire

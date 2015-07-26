@@ -71,7 +71,7 @@ public class MqttHelper {
      * @param port The port number of the broker server.
      * @param host The host name of the broker server.
      * @param clientId The id of the client, whiich is passed to MqttAsyncClient();
-     * @throws MqttException
+     * @exception MqttException
      */
     public MqttHelper(ScriptEngine engine, ScriptObjectMirror currentObj,
             int port, String host, String clientId) throws MqttException {
@@ -87,12 +87,12 @@ public class MqttHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /**
      * Start connection between the client and the broker server.
-     * @throws MqttSecurityException
-     * @throws MqttException
+     * @exception MqttSecurityException
+     * @exception MqttException
      */
     public void start() throws MqttSecurityException, MqttException {
         _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
@@ -144,7 +144,7 @@ public class MqttHelper {
      *  @param qos The QoS level of the message. (0: At most once, 1: At least once, 2: Exactly once)
      *  @param retain Whether the sever should hold on the message after it has been delivered to
      *  current subscribers so that a newly incoming subscriber can receive the message later.
-     *  @throws MqttException If the publish fails.
+     *  @exception MqttException If the publish fails.
      */
     public void publish(String topic, String message, Integer qos,
             boolean retain) throws MqttException {
@@ -164,7 +164,7 @@ public class MqttHelper {
      * @param qos The maximum QoS at which to subscribe. Messages published at
      * a lower quality of service will be received at the published QoS. Messages published
      * at a higher quality of service will be received using the QoS specified on the subscribe.
-     * @throws MqttException
+     * @exception MqttException
      */
     public void subscribe(String topic, int qos) throws MqttException {
         _mqttClient.subscribe(topic, qos);
@@ -174,7 +174,7 @@ public class MqttHelper {
      * Unsubscribe a topic. Stop getting messages on the topic.
      *
      * @param topic The topic which the client will unsubscribe.
-     * @throws MqttException
+     * @exception MqttException
      */
     public void unsubscribe(String topic) throws MqttException {
         _mqttClient.unsubscribe(topic);
@@ -183,7 +183,7 @@ public class MqttHelper {
     /**
      * Disconnect from the broker server and close (i.e. return all allocated resources) the client.
      *
-     * @throws MqttException
+     * @exception MqttException
      */
     public void end() throws MqttException {
         if (_mqttClient.isConnected()) {
@@ -215,7 +215,7 @@ public class MqttHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /**
      * Private constructor for WebSocketHelper with a server-side web socket.

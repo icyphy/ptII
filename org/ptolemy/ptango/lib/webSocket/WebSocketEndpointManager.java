@@ -135,7 +135,7 @@ public class WebSocketEndpointManager {
     * Throw an exception if the path is not a valid URI.
     * @param path  The candidate URI.
     * @return True if the path refers to a remote resource; false otherwise.
-    * @throws IllegalActionException If the path is not a valid URI.
+    * @exception IllegalActionException If the path is not a valid URI.
     */
    public static boolean isRemoteURI(String path) throws IllegalActionException{
        String uri = pathToURI(path).toString();
@@ -179,7 +179,7 @@ public class WebSocketEndpointManager {
     * unsubscribing are not interleaved.
     * @param services  The set of services to open connections for.
     * @param portNumber The port number of the local web server.
-    * @throws IllegalActionException If one or more services cannot be opened.
+    * @exception IllegalActionException If one or more services cannot be opened.
     */
   public synchronized void openLocalServices(HashSet<WebSocketService> services,
            int portNumber) throws IllegalActionException {
@@ -209,7 +209,7 @@ public class WebSocketEndpointManager {
     *  URI.  Throw an exception if the path is invalid.
     * @param path The string representation of a websocket URI.
     * @return The URI corresponding to this path string.
-    * @throws IllegalActionException If the path is not a valid URI.
+    * @exception IllegalActionException If the path is not a valid URI.
     */
    public static URI pathToURI(String path) throws IllegalActionException {
 
@@ -248,7 +248,7 @@ public class WebSocketEndpointManager {
     * unsubscribe in wrapup().
     * @param service The service to add as a subscriber.
     * @param path  The URL to subscribe to.
-    * @throws IllegalActionException If the URI is not valid.
+    * @exception IllegalActionException If the URI is not valid.
     * @see #unsubscribe(WebSocketService, String)
     */
    // TODO:  Allow non-shared websockets.
@@ -351,7 +351,7 @@ public class WebSocketEndpointManager {
    /** Open a websocket connection for the given endpoint.
     * @param endpoint  The endpoint to open a connection for.
     * @param uri  The URI to connect to.
-    * @throws IllegalActionException If the connection cannot be opened.
+    * @exception IllegalActionException If the connection cannot be opened.
     */
    private void _open(WebSocketEndpoint endpoint, URI uri)
            throws IllegalActionException{

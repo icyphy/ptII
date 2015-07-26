@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
 public class StructuralInformation {
     ///////////////////////////////////////////////////////////////////
     ////                         Constructor                       ////
-    public StructuralInformation(){
+    public StructuralInformation() {
         freeActors = new LinkedList<ComponentEntity>();
         _relations = new HashMap<String,HashSet<IOPort>>();
     }
@@ -68,15 +68,15 @@ public class StructuralInformation {
     /**
      * Retrieve all receiving port for the output port whose name is given
     */
-    public HashSet<IOPort> getPortReceiver(String name){
+    public HashSet<IOPort> getPortReceiver(String name) {
         return _relations.get(name);
     }
 
     /**
      * Add for the given all its receiving ports
     */
-    public void addPortSinks(IOPort port){
-        if(!_relations.containsKey(port.getName())){
+    public void addPortSinks(IOPort port) {
+        if (!_relations.containsKey(port.getName())) {
             _relations.put(port.getName(), new HashSet<IOPort>());
         }
         _relations.get(port.getName()).addAll(port.sinkPortList());

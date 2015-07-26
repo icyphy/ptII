@@ -332,7 +332,7 @@ public class ObjectToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /** The class of the object.
      */

@@ -231,7 +231,7 @@ public class QSSDirector extends DEDirector {
 
     /** Return a new QSS solver for use.
      *  @return A QSS solver.
-     *  @throws IllegalActionException If creating the solver fails.
+     *  @exception IllegalActionException If creating the solver fails.
      */
     public QSSBase newQSSSolver() throws IllegalActionException {
         // Instantiate an QSS solver, using the class name given
@@ -242,15 +242,15 @@ public class QSSDirector extends DEDirector {
     /** Return a new QSS solver of the specified type.
      *  @param type The type of solver.
      *  @return A QSS solver.
-     *  @throws IllegalActionException If creating the solver fails.
+     *  @exception IllegalActionException If creating the solver fails.
      */
     public QSSBase newQSSSolver(String type) throws IllegalActionException {
         // Instantiate the solver.
         return(_instantiateQSSSolver(_solverClasspath + type));
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                  protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Instantiate an QSSSolver from its class name. Given the solver's full
      *  class name, this method will try to instantiate it by looking
@@ -294,8 +294,8 @@ public class QSSDirector extends DEDirector {
     ////                         private methods                   ////
 
     /** Initialize parameters. Set all parameters to their default values.
-     *  @throws NameDuplicationException If adding parameters fails.
-     *  @throws IllegalActionException If setting parameters fails.
+     *  @exception NameDuplicationException If adding parameters fails.
+     *  @exception IllegalActionException If setting parameters fails.
      */
     private void _initSolverParameters()
             throws IllegalActionException, NameDuplicationException {

@@ -596,7 +596,7 @@ public class CatchUpComposite extends MirrorComposite {
         ////                   private methods                    ////
 
         /** Iterate the contents composite.
-         *  @throws IllegalActionException If the composite throws it.
+         *  @exception IllegalActionException If the composite throws it.
          *  @return false if postfire() returns false.
          */
         private boolean _fireContents() throws IllegalActionException {

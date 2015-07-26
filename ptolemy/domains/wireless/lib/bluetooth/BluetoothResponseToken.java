@@ -58,7 +58,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
      * @param sourceIdentifier : A String representing the name of the device constructing this token.
      * @param data : The arbitrary data to send.
      */
-    public BluetoothResponseToken(BluetoothResponse response, String deviceIdentifier, String sourceIdentifier, T data){
+    public BluetoothResponseToken(BluetoothResponse response, String deviceIdentifier, String sourceIdentifier, T data) {
         this._response = response;
         this._deviceIdentifier = deviceIdentifier;
         this._sourceIdentifier = sourceIdentifier;
@@ -69,7 +69,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
      * Get the BluetoothResponse enum element associated with this token.
      * @return _response
      */
-    public BluetoothResponse getResponse(){
+    public BluetoothResponse getResponse() {
         return this._response;
     }
 
@@ -77,7 +77,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
      * Get the name of the target device associated with this token.
      * @return _deviceIdentifier
      */
-    public String getDeviceIdentifier(){
+    public String getDeviceIdentifier() {
         return this._deviceIdentifier;
     }
 
@@ -85,7 +85,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
      * Get the name of the source device associated with this token.
      * @return _sourceIdentifier
      */
-    public String getSourceIdentifier(){
+    public String getSourceIdentifier() {
         return this._sourceIdentifier;
     }
 
@@ -93,13 +93,13 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
      * Get the data stored within this token.
      * @return _data
      */
-    public T getData(){
+    public T getData() {
         return this._data;
     }
 
     @Override
     public String toString() {
-        switch(this._response){
+        switch(this._response) {
         case COMMAND_DISCONNECT:
             return "DISCONNECT";
         case COMMAND_REQUESTCONNECT:
@@ -125,9 +125,9 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
     @Override
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
-        if (rightArgument instanceof BluetoothResponseToken){
+        if (rightArgument instanceof BluetoothResponseToken) {
             BluetoothResponseToken right = (BluetoothResponseToken) rightArgument;
-            if (this._response == right.getResponse()){
+            if (this._response == right.getResponse()) {
                 return new BooleanToken(true);
             }
             else {

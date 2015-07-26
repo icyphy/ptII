@@ -118,7 +118,7 @@ public class ParticleFilterSSM extends AbstractParticleFilter implements
      * Check if the Actor is associated with a unique enabled StateSpaceModel. Ideally,
      * here, we would also be checking whether the enabled decorator provides the parameters
      * expected by the actor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     @Override
     public boolean validUniqueDecoratorAssociationExists()
@@ -169,7 +169,7 @@ public class ParticleFilterSSM extends AbstractParticleFilter implements
      * Return the first encountered value for now.
      * @param fullName The name of the measurement parameter.
      * @return THe value of the measurement parameter.
-     * @throws IllegalActionException If there is a problem
+     * @exception IllegalActionException If there is a problem
      * getting the parameter.
      */
     @Override

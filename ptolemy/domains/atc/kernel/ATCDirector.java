@@ -65,7 +65,7 @@ public class ATCDirector extends DEDirector {
      *  transit.
      *  @param track The track
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
-     *  @throws IllegalActionException If thrown while getting the value of the track.
+     *  @exception IllegalActionException If thrown while getting the value of the track.
      */
     public double handleRejectionWithDelay(Track track) throws IllegalActionException {
         // FIXME: what value should be returned here?

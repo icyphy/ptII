@@ -239,7 +239,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             // Produce all outputs that have been requested.
                 BooleanToken token = _outputEvents.get(0);
 
-                if (_outputOnlyOnStop){
+                if (_outputOnlyOnStop) {
 
                     // Check for STOP (i.e. FALSE) token.  If any present,
                     // produce a FALSE token on the output port
@@ -283,7 +283,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 }
             }
 
-            if(!hasTrigger) {
+            if (!hasTrigger) {
                 return;
             }
         }
@@ -357,7 +357,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     }
                 }
 
-                if (_outputOnlyOnStop){
+                if (_outputOnlyOnStop) {
                     // Check for STOP (i.e. FALSE) token.  If any present,
                     // produce a FALSE token on the output port
                     for (BooleanToken token : _outputEvents) {

@@ -203,7 +203,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                  ////
+    ////                         private methods                   ////
 
     /** Create an optimal schedule for a set of actors.
      *

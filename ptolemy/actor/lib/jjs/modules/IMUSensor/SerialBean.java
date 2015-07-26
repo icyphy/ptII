@@ -38,15 +38,15 @@ public class SerialBean {
      */
     public SerialBean(int PortID) {
         String OS = System.getProperty("os.name").toLowerCase();
-        if(OS.indexOf("win") >= 0){
+        if (OS.indexOf("win") >= 0) {
                 // In a windows environment, use the following
                 PortName = "COM" + PortID;
         }
-        else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("mac") >= 0){
+        else if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("mac") >= 0) {
                 // In a linux (also, Mac?) environment, use the following
                 PortName = "/dev/ttyS" + PortID;
         }
-        else{
+        else {
                 System.out.println("OS not supported!");
         }
     }
@@ -113,9 +113,9 @@ public class SerialBean {
      */
     public String ReadPort(int Length) {
         String Msg = null;
-        try{
+        try {
         Msg = SB.GetMsg(Length);
-        } catch(Exception e) {e.printStackTrace();}
+        } catch (Exception e) {e.printStackTrace();}
         return Msg;
     }
 
@@ -145,7 +145,7 @@ public class SerialBean {
                           try {
                                         in.close();
                                         out.close();
-                                } catch(Exception e) {}
+                                } catch (Exception e) {}
                                 //serialPort.removeEventListener();
                                 serialPort.close();
     }

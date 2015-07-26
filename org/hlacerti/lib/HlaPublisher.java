@@ -188,7 +188,7 @@ public class HlaPublisher extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
-       for(int i = 0 ; i < input.getWidth() ; ++i) {
+       for (int i = 0 ; i < input.getWidth() ; ++i) {
         if (input.hasToken(i)) {
             Token in = input.get(i);
             _hlaManager.updateHlaAttribute(this, in,input.sourcePortList().get(i).getContainer().getName());

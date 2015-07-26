@@ -537,7 +537,7 @@ public class ClassChanges extends MoMLFilterSimple {
         //Move hlaptolemy classes from $PTII/ptolemy.apps to $PTII/org
         {
             String[] hlaPt2Classes={"HlaPublisher","HlaManager","HlaSubscriber"};
-            for(int i = 0 ; i < hlaPt2Classes.length;++i) {
+            for (int i = 0 ; i < hlaPt2Classes.length;++i) {
                 _classChanges.put("ptolemy.apps.hlacerti.lib."+hlaPt2Classes[i],
                         "org.hlacerti.lib."+hlaPt2Classes[i]);
             }

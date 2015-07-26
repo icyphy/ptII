@@ -366,7 +366,7 @@ public class SmoothToken extends DoubleToken {
      *  @param time The time to which to extrapolate this token.
      *  @return A SmoothToken at the specified time.
      */
-    public SmoothToken extrapolate(Time time){
+    public SmoothToken extrapolate(Time time) {
         // If the time matches, return this token.
         if (_time == time || (_time != null && _time.equals(time))) {
             return this;
@@ -375,7 +375,7 @@ public class SmoothToken extends DoubleToken {
             if (_derivatives == null || _derivatives.length == 0) {
                 return new SmoothToken(_value, time, null);
             }
-            else if(_derivatives.length == 1) {
+            else if (_derivatives.length == 1) {
                 // A common case is QSS2, which has a value and a derivative.
                 // We handle this case special to stay computationally efficient.
                 final double dt = time.subtractToDouble(_time);
@@ -393,14 +393,14 @@ public class SmoothToken extends DoubleToken {
                 double[] fact = new double[coef.length];
                 fact[0] = 1;
                 final double dt = time.subtractToDouble(_time);
-                for(int i = 1; i < coef.length; i++){
+                for (int i = 1; i < coef.length; i++) {
                     fact[i] = dt*fact[i-1]/i;
                 }
 
                 // Advance time for all values in coef and store in new array res
                 double[] res = new double[coef.length];
-                for(int i = 0; i < coef.length; i++) {
-                    for(int j = 0; j < coef.length-i; j++) {
+                for (int i = 0; i < coef.length; i++) {
+                    for (int j = 0; j < coef.length-i; j++) {
                         res[i] += coef[j+i] * fact[j];
                     }
                 }
@@ -418,7 +418,7 @@ public class SmoothToken extends DoubleToken {
      *  @return the maximum order.
      *  @see #setOrderLimit(int)
      */
-    public static int getOrderLimit(){
+    public static int getOrderLimit() {
         return _maxOrder;
     }
 
@@ -503,7 +503,7 @@ public class SmoothToken extends DoubleToken {
      *  @param maxOrder The maximum order of the token.
      *  @see #getOrderLimit()
      */
-    public static void setOrderLimit(int maxOrder){
+    public static void setOrderLimit(int maxOrder) {
         if (maxOrder < 0) {
             throw new IllegalArgumentException("maxOrder must be non-negative, not "
                     + maxOrder + ".");
@@ -673,7 +673,7 @@ public class SmoothToken extends DoubleToken {
                 return new DoubleToken(quotient);
             } else {
                 double[] der = new double[_derivatives.length];
-                for(int i = 0; i < _derivatives.length; i++) {
+                for (int i = 0; i < _derivatives.length; i++) {
                     der[i] = _derivatives[i]/y;
                 }
                 return new SmoothToken(quotient, aligned[0]._time, der);
@@ -685,7 +685,7 @@ public class SmoothToken extends DoubleToken {
                 final double div = ((DoubleToken) divisor).doubleValue();
                 final double quotient = super.doubleValue() / div;
                 double[] der = new double[_derivatives.length];
-                for(int i = 0; i < _derivatives.length; i++) {
+                for (int i = 0; i < _derivatives.length; i++) {
                     der[i] = _derivatives[i]/div;
                 }
                 return new SmoothToken(quotient, _time, der);
@@ -747,10 +747,10 @@ public class SmoothToken extends DoubleToken {
     @Override
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
-        if (rightArgument instanceof DoubleToken){
+        if (rightArgument instanceof DoubleToken) {
             return super._isLessThan(rightArgument);
         }
-        else{
+        else {
             SmoothToken convertedArgument = (SmoothToken) rightArgument;
             return BooleanToken.getInstance(_value < convertedArgument
                     .doubleValue());
@@ -791,7 +791,7 @@ public class SmoothToken extends DoubleToken {
                 return new SmoothToken(product, aligned[0]._time, result);
             }
             // y derivatives may be null. In this case, y should scale x's derivatives.
-            if (derivatives == null){
+            if (derivatives == null) {
                 double[] result = new double[aligned[0]._derivatives.length];
                 for (int i = 0; i < aligned[0]._derivatives.length; i++) {
                     result[i] = aligned[0]._derivatives[i]*y;
@@ -840,21 +840,21 @@ public class SmoothToken extends DoubleToken {
      *  @return The product of the polynomials
      */
     protected static double[] _multiplyPolynomials(
-            final double[] p1, final double[] p2){
+            final double[] p1, final double[] p2) {
 
         double[] res = new double[(p1.length-1) + (p2.length-1) + 1];
         // Set all coefficients to zero.
-        for(int i = 0; i < res.length; i++){
+        for (int i = 0; i < res.length; i++) {
             res[i] = 0;
         }
         // Multiply the polynomials
-        for(int i1=0; i1 < p1.length; i1++){
-            for(int i2=0; i2 < p2.length; i2++){
+        for (int i1=0; i1 < p1.length; i1++) {
+            for (int i2=0; i2 < p2.length; i2++) {
                 final int exponent = i1+i2;
-                if(res[exponent] == 0){
+                if (res[exponent] == 0) {
                     res[exponent] = p1[i1]*p2[i2];
                 }
-                else{
+                else {
                     res[exponent] += p1[i1]*p2[i2];
                 }
             }

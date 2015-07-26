@@ -68,7 +68,7 @@ import ptolemy.data.Token;
 public class HttpClientHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Create a HttpClientHelper instance for the specified JavaScript
      *  Socket instance for the client side of the socket.
@@ -214,7 +214,7 @@ public class HttpClientHelper extends VertxHelperBase {
     private HttpClientResponse _response;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** The event handler that is triggered when an error occurs in the HTTP connection.
      */

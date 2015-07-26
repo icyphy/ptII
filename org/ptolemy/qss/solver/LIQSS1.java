@@ -35,7 +35,7 @@ import org.ptolemy.qss.util.ModelPolynomial;
 import ptolemy.actor.util.Time;
 
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// LIQSS1
 
 
@@ -82,7 +82,7 @@ public final class LIQSS1
         // Allocate scratch memory.
         _stateVals_xx = new double[_stateCt];
         _stateDerivs_xx = new double[_stateCt];
-        if( _ivCt > 0 ) {
+        if (_ivCt > 0 ) {
             _ivVals_xx = new double[_ivCt];
         }
 
@@ -116,14 +116,14 @@ public final class LIQSS1
         assert( quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0 );
 
         // Early return.
-        if( cStateDeriv == 0 ) {
+        if (cStateDeriv == 0 ) {
             return( quantEvtTimeMax );
         }
 
         // Find predicted quantization-event time, as change from {tMostRecent}.
         Time tMostRecent;
         double dt;
-        if( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
+        if (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
             // Here, most recent event was a quantization-event.
             tMostRecent = qStateMdl.tMdl;
             dt = dq / Math.abs(cStateDeriv);
@@ -131,7 +131,7 @@ public final class LIQSS1
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;
             final double constDiff = _cStatesLastQevt[stateIdx] - cStateMdl.coeffs[0];
-            if( cStateDeriv > 0 ) {
+            if (cStateDeriv > 0 ) {
                 dt = (constDiff + dq) / cStateDeriv;
             } else {
                 dt = (constDiff - dq) / cStateDeriv;
@@ -139,7 +139,7 @@ public final class LIQSS1
         }
 
         // Require {dt} > 0.
-        if( dt <= 0 ) {
+        if (dt <= 0 ) {
             // In exact arithmetic, and if the integrator is being stepped properly,
             // this should never happen.  However, if the integrator stepped to a
             // time very close to the previous predicted quantization-event time,
@@ -161,8 +161,8 @@ public final class LIQSS1
         // produces a distinct time.
         //   At upper end, can't be larger than {quantEvtTimeMax}.
         Time predQuantEvtTime;
-        while( true ) {
-            if( quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt ) {
+        while ( true ) {
+            if (quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt ) {
                 // Here, tMostRecent + dt >= quantEvtTimeMax.
                 //   Note determined this case in a slightly roundabout way, since
                 // simply adding {dt} to {tMostRecent} may cause problems if {quantEvtTimeMax}
@@ -172,7 +172,7 @@ public final class LIQSS1
             }
             // Here, tMostRecent + dt < quantEvtTimeMax.
             predQuantEvtTime = tMostRecent.addUnchecked(dt);
-            if( predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
+            if (predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
                 // Here, added {dt} and got a distinct, greater, time.
                 break;
             }
@@ -209,16 +209,16 @@ public final class LIQSS1
 
         // Determine new quantized state.
         double qTest;
-        if( cStateDeriv > 0 ) {
+        if (cStateDeriv > 0 ) {
             qTest = cState + _dqs[stateIdx];
         } else {
             qTest = cState - _dqs[stateIdx];
         }
-        if( jacDiag != 0 ) {
+        if (jacDiag != 0 ) {
             // Check whether {qTest} gives consistent diagonalized state model.
             final double inputTerm0 = _inputTerms0[stateIdx];
             final double diagStateMdlSlope = jacDiag*qTest + inputTerm0;
-            if( diagStateMdlSlope*cStateDeriv <= 0 ) {
+            if (diagStateMdlSlope*cStateDeriv <= 0 ) {
                 // Here, slopes of the state and diagonalized state models do
                 // not have the same sign.
                 //   Choose quantized state using diagonalized state model.
@@ -256,31 +256,31 @@ public final class LIQSS1
         // continuous state model if know none of its arguments changed.
         Time tStateMdl = null;
         double dtStateMdl = 0;
-        for( int ii=0; ii<_stateCt; ++ii ) {
+        for ( int ii=0; ii<_stateCt; ++ii ) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Check for different model time.  Note testing object identity OK.
-            if( cStateMdl.tMdl != tStateMdl ) {
+            if (cStateMdl.tMdl != tStateMdl ) {
                 tStateMdl = cStateMdl.tMdl;
                 dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
             }
             _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // In general, don't expect input variable models to have same times.
-        for( int ii=0; ii<_ivCt; ++ii ) {
+        for ( int ii=0; ii<_ivCt; ++ii ) {
             _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
         final int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
             _stateDerivs_xx);
-        if( 0 != retVal ) {
+        if (0 != retVal ) {
             throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
         }
 
         // Update the diagonalized state models.
         //   Note have to do this before update the internal, continuous state models,
         // since need the rate of the old one.
-        for( int ii=0; ii<_stateCt; ++ii ) {
+        for ( int ii=0; ii<_stateCt; ++ii ) {
             final ModelPolynomial qStateMdl = _qStateMdls[ii];
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Estimate the diagonal element of the Jacobian.
@@ -288,7 +288,7 @@ public final class LIQSS1
             // estimate to zero.
             // TODO: Test whether better to simply retain last estimate.
             double jacDiag = 0;
-            if( qStateMdl.tMdl.compareTo(_currSimTime)==0
+            if (qStateMdl.tMdl.compareTo(_currSimTime)==0
                     &&
                     cStateMdl.tMdl.compareTo(_currSimTime)!=0 ) {
                 // Here:
@@ -298,7 +298,7 @@ public final class LIQSS1
                 // a "nearby" old one.
                 // Therefore have information need to estimate Jacobian diagonal.
                 final double qStateMdlDiff = _qStateMdlDiffs[ii];
-                if( qStateMdlDiff != 0 ) {
+                if (qStateMdlDiff != 0 ) {
                     jacDiag =
                         (_stateDerivs_xx[ii] - cStateMdl.evaluateDerivative(_currSimTime))
                         / qStateMdlDiff;
@@ -312,7 +312,7 @@ public final class LIQSS1
         // Update the internal, continuous state models.
         //   This also updates the rate model, which is just the derivative of
         // the state model.
-        for( int ii=0; ii<_stateCt; ++ii ) {
+        for ( int ii=0; ii<_stateCt; ++ii ) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             cStateMdl.tMdl = _currSimTime;
             cStateMdl.coeffs[0] = _stateVals_xx[ii];

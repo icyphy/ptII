@@ -24,7 +24,7 @@
  */
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
-/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ///// ReaderM
 
 /**
@@ -54,7 +54,7 @@ public class ReaderM extends Thread {
     private CircularFifoQueue<int[]> buf; // Holds six integer arrays of sample values - [accX, accY, accZ, gyroX, gyroY, gyroZ]
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Constructor for ReaderM, takes in a COM port integer, a baudRate, and a buffer window size
      *  @param com The comm port number to connect to

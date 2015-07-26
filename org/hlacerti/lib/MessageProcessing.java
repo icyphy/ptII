@@ -44,7 +44,7 @@ public class MessageProcessing {
      *  @param type The type to decode the token.
      *  @param buffer The encoded value to decode.
      *  @return The decoded value as an object.
-     *  @throws IllegalActionException If the token is not handled or the
+     *  @exception IllegalActionException If the token is not handled or the
      *  decoding has failed.
      */
     static public Object decodeHlaValue(HlaSubscriber hs, Type type, byte[] buffer)
@@ -120,7 +120,7 @@ public class MessageProcessing {
      *  @param hp The HLA publisher actor which sends the HLA attribute value.
      *  @param tok The token to encode, i.e. the HLA attribute value to encode.
      *  @return The encoded value as an array of byte.
-     *  @throws IllegalActionException If the token is not handled or the
+     *  @exception IllegalActionException If the token is not handled or the
      *  encoding has failed.
      */
     public static byte[]  encodeHlaValue(HlaPublisher hp, Token tok)

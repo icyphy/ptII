@@ -54,7 +54,7 @@ public class BluetoothStatusToken<T> extends BluetoothToken {
      * @param status
      * @param data
      */
-    public BluetoothStatusToken(BluetoothStatus status, T data){
+    public BluetoothStatusToken(BluetoothStatus status, T data) {
         this._status = status;
         this._data = data;
     }
@@ -63,7 +63,7 @@ public class BluetoothStatusToken<T> extends BluetoothToken {
      * Returns the status value held by this token.
      * @return BluetoothStatus status
      */
-    public BluetoothStatus getStatusValue(){
+    public BluetoothStatus getStatusValue() {
         return this._status;
     }
 
@@ -78,9 +78,9 @@ public class BluetoothStatusToken<T> extends BluetoothToken {
     @Override
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
-        if (rightArgument instanceof BluetoothStatusToken){
+        if (rightArgument instanceof BluetoothStatusToken) {
             BluetoothStatusToken right = (BluetoothStatusToken) rightArgument;
-            if (this._status == right.getStatusValue()){
+            if (this._status == right.getStatusValue()) {
                 return new BooleanToken(true);
             }
             else {
@@ -96,7 +96,7 @@ public class BluetoothStatusToken<T> extends BluetoothToken {
     @Override
     public String toString() {
         if (_data instanceof String || _data instanceof StringToken) {
-            switch (_status){
+            switch (_status) {
                 case STATUS_ERROR:
                     return ("ERROR," + this._data);
                 case STATUS_OK:
@@ -106,7 +106,7 @@ public class BluetoothStatusToken<T> extends BluetoothToken {
             }
         }
         else {
-            switch (_status){
+            switch (_status) {
                 case STATUS_ERROR:
                     return "ERROR";
                 case STATUS_OK:
