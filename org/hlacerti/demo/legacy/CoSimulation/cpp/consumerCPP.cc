@@ -3,8 +3,8 @@
  *
  * @brief This federate simulates a...
  *
- * $Id: consumerCPP.cc 71890 2015-04-03 18:28:43Z David.COME@supaero.isae.fr $
- * $Author: David.COME@supaero.isae.fr $
+ * $Id$
+ * $Author$
  * $Data$
  */
 

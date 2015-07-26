@@ -2,7 +2,7 @@
 #
 # @Authors: Ilge Akkaya
 #
-# @Version: $Id: makefile 70389 2014-10-22 22:25:44Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2012-2014 The Regents of the University of California.
 # All rights reserved.
