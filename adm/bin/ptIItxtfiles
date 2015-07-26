@@ -33,7 +33,9 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.kar$' \
 	| egrep -v 'Keystore$' \
 	| egrep -v '.keystore$' \
+	| egrep -v 'JavaAppLauncher$' \
 	| egrep -v 'JavaApplicationStub$' \
+	| egrep -v 'Localizable.strings$'  \
 	| egrep -v '\.lib$'  \
 	| egrep -v '\.m$' \
 	| egrep -v '\.MF$' \
@@ -46,6 +48,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.nqc$' \
         | egrep -v '\.o$' \
         | egrep -v '\.opt$' \
+	| egrep -v 'PkgInfo$' \
 	| egrep -v '\.png$' \
 	| egrep -v '\.PNG$' \
 	| egrep -v '\.pom$' \
