@@ -60,7 +60,7 @@ import ptolemy.data.Token;
    A helper class for the HttpClient module in JavaScript.
 
    @author Marten Lohstroh, Edward A. Lee
-   @version $Id: HttpClientHelper.java 71938 2015-04-08 21:55:19Z hokeunkim $
+   @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)

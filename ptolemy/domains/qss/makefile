@@ -1,6 +1,6 @@
 # Makefile for Java Ptolemy Quantized State System (QSS) domains
 #
-# @Version: $Id: makefile 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id$
 # @Author: Christopher Hylands
 #
 # @Copyright (c) 2014 The Regents of the University of California.

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.Workspace;
  * when the DE tests are run with the QSSDirector by the.</p>
 
  * @author Christopher Brooks
- * @version $Id: QSSDirector.java 71198 2015-01-06 20:41:32Z cxh $
+ * @version $Id$
  * @since Ptolemy 11.0
  * @Pt.ProposedRating Red
  * @Pt.AcceptedRating Red

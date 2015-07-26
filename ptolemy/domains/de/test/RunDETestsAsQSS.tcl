@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: DependencyLoop.tcl 57040 2010-01-27 20:52:32Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.

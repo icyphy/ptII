@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: AMSToFMU 69601 2014-07-30 13:51:01Z cxh $
+# $Id$
 # Export the AMS.mo model as a fmu using jmodelica
 
 /usr/local/jmodelica/bin/jm_python.sh <<EoF

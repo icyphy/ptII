@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ptolemy.actor.lib.Discard
  @see ptolemy.moml.filter.DiscardDoublesArray
  @author Christopher Brooks
- @version $Id: Discard.java 70398 2014-10-22 23:44:32Z cxh $
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)

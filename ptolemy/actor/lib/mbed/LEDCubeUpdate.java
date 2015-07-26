@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  class has no methods.</p>
 
  @author Robert Bui
- @version $Id: LEDCubeUpdate.java 71956 2015-04-27 03:52:01Z robert.bui@berkeley.edu $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)

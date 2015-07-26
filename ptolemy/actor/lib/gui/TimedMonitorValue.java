@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 &lt;/entity&gt;
  </pre>
  @author Christopher Brooks
- @version $Id: MonitorValue.java 70398 2014-10-22 23:44:32Z cxh $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)

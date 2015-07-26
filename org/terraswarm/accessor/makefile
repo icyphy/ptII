@@ -1,6 +1,6 @@
 # Makefile for TerraSwarm Accessors
 #
-# @Version: $Id: makefile 70194 2014-09-25 14:25:22Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2015 The Regents of the University of California.

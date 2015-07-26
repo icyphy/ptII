@@ -48,7 +48,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
  class has no methods.</p>
 
  @author Robert Bui
- @version $Id: GestureRecognition.java 71956 2015-04-27 03:52:01Z robert.bui@berkeley.edu $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)

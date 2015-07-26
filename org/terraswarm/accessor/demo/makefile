@@ -1,6 +1,6 @@
 # Makefile for TerraSwarm demos
 #
-# @Version: $Id: makefile 70389 2014-10-22 22:25:44Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California.

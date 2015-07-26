@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen for Mbed IO actors
 #
-# @Version: $Id: makefile 72065 2015-04-22 15:49:35Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California

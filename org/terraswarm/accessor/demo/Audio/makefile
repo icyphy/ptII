@@ -1,6 +1,6 @@
 # Makefile for TerraSwarm Audio demo.
 #
-# @Version: $Id: makefile 72403 2015-05-22 20:12:54Z eal $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California.

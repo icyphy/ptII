@@ -1,7 +1,7 @@
 # Makefile for Ptolemy II XSLT MoML File Transformation demo.
 # @Authors: Christopher Brooks
 #
-# @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.

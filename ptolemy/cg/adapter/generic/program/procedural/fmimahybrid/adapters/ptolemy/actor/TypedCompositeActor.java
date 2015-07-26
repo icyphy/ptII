@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
  Code generator adapter for typed composite actor.
 
  @author Man-Kit Leung, Bert Rodiers
- @version $Id: TypedCompositeActor.java 71660 2015-02-26 16:00:53Z f.cremona $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (zgang)

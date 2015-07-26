@@ -52,7 +52,7 @@ $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fm
 -dialect Hybrid model.xml
 * </pre>
 *  @author Christopher Brooks, Marten Lohstroh, Fabio Cremona
-*  @version $Id: FMIMACodeGenerator.java 70853 2014-12-04 00:26:35Z cxh $
+*  @version $Id$
 *  @since Ptolemy II 10.0
 *  @Pt.ProposedRating red (cxh)
 *  @Pt.AcceptedRating red (cxh)

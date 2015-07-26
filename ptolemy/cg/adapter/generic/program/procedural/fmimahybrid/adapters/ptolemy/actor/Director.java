@@ -54,7 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see GenericCodeGenerator
  * @author Christopher Brooks
- * @version $Id: Director.java 71665 2015-02-27 22:13:20Z f.cremona $
+ * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /** A helper class for the Vert.x event bus API.
 
    @author Patricia Derler
-   @version $Id: VertxHelper.java 71355 2015-01-13 05:40:56Z cxh $
+   @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (pd)
    @Pt.AcceptedRating Red (pd)

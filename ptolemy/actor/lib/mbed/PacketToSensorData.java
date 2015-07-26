@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  class has no methods.</p>
 
  @author Robert Bui
- @version $Id: PacketToSensorData.java 72137 2015-04-28 03:52:01Z robert.bui@berkeley.edu $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)

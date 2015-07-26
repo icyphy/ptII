@@ -1,6 +1,6 @@
 # Makefile for PtolemyII QSS Domain
 #
-# @Version: $Id: makefile 47480 2007-12-06 18:25:06Z cxh $
+# @Version: $Id$
 # @Author: Christopher Hylands
 #
 # @Copyright (c) 2015 The Regents of the University of California.
