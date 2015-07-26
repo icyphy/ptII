@@ -59,5 +59,9 @@ CFILES = \
 	BouncingBallFMI20_functions.c \
 	BouncingBallFMI20_records.c
 
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	BouncingBallFMI20.mos \
+	BouncingBallFMI20.xml
+
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuCS.mk
 

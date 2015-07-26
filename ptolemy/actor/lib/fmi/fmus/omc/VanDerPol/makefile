@@ -55,4 +55,8 @@ CFILES = \
 	VanDerPol_functions.c \
 	VanDerPol_records.c
 
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	$(FMU_NAME).mo \
+	$(FMU_NAME).mos
+
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuCS.mk

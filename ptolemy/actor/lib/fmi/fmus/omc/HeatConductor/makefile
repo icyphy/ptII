@@ -80,6 +80,12 @@ export:
         # Create the fmu
 	(cd src; zip -r ../$(FMU_NAME).fmu *)
 
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	$(FMU_NAME).mo \
+	$(FMU_NAME)Simple.mo \
+	$(FMU_NAME).mos \
+	$(FMU_NAME).xml
+
 # Place the include after the first rule so that it is the default.
 
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuSFMI.mk

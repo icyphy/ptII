@@ -36,6 +36,10 @@ export:
 
 # Place the include after the first rule so that it is the default.
 
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	$(FMU_NAME).mo \
+	$(FMU_NAME).xml
+
 include ../fmuSFMI.mk
 
 KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu src

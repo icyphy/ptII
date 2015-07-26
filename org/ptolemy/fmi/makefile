@@ -110,6 +110,7 @@ OPTIONAL_FILES = \
 	'FMIModelDescription$$ContinuousState.class' \
 	'FMIScalarVariable$$Alias.class' \
 	'FMIScalarVariable$$Causality.class' \
+	'FMIScalarVariable$$Initial.class' \
 	'FMIScalarVariable$$Variability.class' \
 	'FMUBuilder$$_StreamReaderThread.class' \
 	'FMULibrary$$FMUAllocateMemory.class' \

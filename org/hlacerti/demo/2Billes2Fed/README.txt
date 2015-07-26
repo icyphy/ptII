@@ -6,5 +6,5 @@ is a federate (in a different Ptolemly model): Bille.xml and Bille2.xml.
 TestDisplay2 is a federate which can display up to 3 instances of billard and it is the
 same than in folder "billard".
 
-Open the file FederationBillard2fed.xml and follow the instructions.
+Open the file 2Billes2Fed.xml and follow the instructions.
 For more information, see README in folder "billard".

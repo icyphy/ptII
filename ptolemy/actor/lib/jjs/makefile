@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	HelperBase.java \
 	JavaScript.java \
+	JSUtils.java \
 	RestrictedJavaScriptInterface.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -71,6 +72,7 @@ MISC_FILES =	external modules node test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	node_modules \
 	node_files \
 	'JavaScript$$1.class' \
 	'JavaScript$$2.class' \

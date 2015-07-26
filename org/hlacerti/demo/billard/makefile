@@ -48,8 +48,14 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	Autorun.xml \
+	DisplayWithFedName.xml \
+	DisplayWithoutPort.xml \
+	FederationBillard.xml \
+	README.txt \
 	PoolTable2.xml 	\
 	PoolTable3.xml 	\
+	Synchro.xml \
 	Test.fed \
 	TwoBilliardBalls.xml \
 	SingleBillardBall.xml 	\

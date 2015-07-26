@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/lib/fmi/fmus/omc
 
 # Co-Simulation FMUS.
-FMUS_CS =	BouncingBallFMI20 HeatConductorComplex
+FMUS_CS =	BouncingBallFMI20 HeatConductorComplex VanDerPol
 
 # Sparse FMI FMUS
 FMUS_SFMI =	HeatConductor Influenza Linsys LorenzAttractor Linsys2 Test1
@@ -71,13 +71,17 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	fmus.mk \
-	README.txt
+	README.txt \
+	exportOMFMU \
+	fmuBase.mk \
+	fmuCS.mk \
+	fmuSFMI.mk
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) template
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

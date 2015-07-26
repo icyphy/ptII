@@ -45,7 +45,9 @@ include $(CONFIG)
 PTPACKAGE = 	design
 PTCLASSJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	hyvisual.pdf \
+	visualsense.pdf
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

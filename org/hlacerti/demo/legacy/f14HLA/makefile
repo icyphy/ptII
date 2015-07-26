@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/f14HLA
+ME =        org/hlacerti/demo/legacy/f14HLA
 
 # Root of the Java directory
-ROOT =      ../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 

@@ -103,6 +103,8 @@ OTHER_FILES_TO_BE_JARED = \
 	codegen8.gif \
 	codegen9.gif \
 	codegena.gif \
+	eclipseAccessorsCheckOutAs.png \
+	eclipseAccessorsNewProject.png \
 	eclipseCheckOutAs.png \
 	eclipseNewJavaProject.png \
 	eclipseNewJavaProject2.png \
