@@ -3849,7 +3849,7 @@ if test "$RXTX_PRESENT" = "yes"; then
     PTCOMM_DIR=comm
     PTIMUSENSOR_DIR=IMUSensor
     # PTRXTX_PACKAGES is used in ptII/doc/makefile
-    PTRXTX_PACKAGES=ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor
+    PTRXTX_PACKAGES="ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor"
 else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
     updateExcludes "ptolemy/actor/lib/io/comm/"
@@ -6170,7 +6170,7 @@ else
               updateClasspath "$PTBRIDG_JAR"
               PTSLF4J_NOP_JAR="$PTII/lib/slf4j-nop-1.7.12.jar"
               if test -f "$PTSLF4J_NOP_JAR"; then
-                  PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
+                  PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JARS$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
                   updateClasspath "$PTSLF4J_NOP_JAR"
               else
                   AC_MSG_WARN([Failed to find $PTSLF4J_NOP_JAR
