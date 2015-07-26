@@ -36,7 +36,7 @@ import ptolemy.moml.MoMLParser;
 /**
  * A MoML filter to convert StringParameters contained by DocAttribute to
  * StringAttributes.
- * 
+ *
  * @author Daniel Crawl
  * @version $Id$
  * @since Ptolemy II 11.0

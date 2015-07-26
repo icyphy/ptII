@@ -87,5 +87,5 @@ public class IPAddress extends StringConst {
             throw new IllegalActionException(this, ex, "Could not get the local host?");
         }
     }
-    
+
 }

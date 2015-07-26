@@ -35,10 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * This abstract class defines the parent class for all Bluetooth Token classes, and defines which operations are legal and illegal from the base class Token.
  * <p>
- * This class basically disallows the performing of any arithmatic or algebraic operations on Bluetooth Tokens, as these operations would make no sense on the 
+ * This class basically disallows the performing of any arithmatic or algebraic operations on Bluetooth Tokens, as these operations would make no sense on the
  * Bluetooth Token family
  * <p>
- * 
+ *
  * @author Phillip Azar
  * @see BluetoothResponseToken
  * @see BluetoothStatusToken
@@ -50,7 +50,7 @@ public abstract class BluetoothToken extends Token {
             throws IllegalActionException {
         throw new IllegalActionException("Action unsupported");
     }
-    
+
     @Override
     public Token add(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException("Action unsupported");

@@ -191,7 +191,7 @@ public class ProductLatticeOntologyAdapter extends LatticeOntologyAdapter {
                 // value in the original lattice into a derived product lattice
                 // concept value for the product lattice ontology solver.
             } else {
-                // FindBugs: Useless object stored in variable domainOntologyList 
+                // FindBugs: Useless object stored in variable domainOntologyList
                 //List<Ontology> domainOntologyList = new ArrayList<Ontology>(1);
                 //domainOntologyList.add(sourceOntology);
                 ProductLatticeDerivedConceptFunction derivedFunction = new ProductLatticeDerivedConceptFunction(

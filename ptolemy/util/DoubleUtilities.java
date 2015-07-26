@@ -139,7 +139,7 @@ public final class DoubleUtilities {
             return 0.0;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                    static variables                      ////
 
@@ -160,7 +160,7 @@ public final class DoubleUtilities {
 
     // The exponent bias
     static final int EXPONENT_BIAS = 1023;
-    
+
     // The implicit 1 bit that is omitted in significands of normal doubles.
     static final long IMPLICIT_BIT = SIGNIFICAND_MASK + 1;
 

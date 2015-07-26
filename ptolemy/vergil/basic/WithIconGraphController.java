@@ -355,7 +355,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
                         "Cannot invoke NewPortAction on an object "
                                 + "that is not an instance of Entity.");
             }
-            
+
             String name = "port";
             if (_prototype != null) {
                 if (_prototype.isInput() && !_prototype.isOutput()) {

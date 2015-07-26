@@ -56,7 +56,7 @@ import diva.graph.GraphController;
 
 /**
    An Action to import an Internet of Things (IoT) accessor.
-   
+
    <p>This action presents a dialog box that permits specifying a URL
    or local directory.  If the URL or local directory contains a file
    named index.json, then it presents a list of the options given in
@@ -161,7 +161,7 @@ public class ImportAccessorAction extends AbstractAction {
                         + urlSpec + "\".", throwable);
                 return;
             }
-            
+
             JSAccessor.handleAccessorMoMLChangeRequest(this,
                     urlSpec, context, moml, x, y);
         }
@@ -206,7 +206,7 @@ public class ImportAccessorAction extends AbstractAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                    private variables                      ////
-    
+
     /** The top-level window of the contents to be exported. */
     BasicGraphFrame _frame;
 

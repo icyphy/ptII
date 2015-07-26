@@ -138,7 +138,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         // so XYPlot cannot be converted.
 
         // We use DiscardDoublesArray here so that the types are preserved
-        // in case enableBackwardTypeInference is set.  
+        // in case enableBackwardTypeInference is set.
         _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
                 "ptolemy.moml.filter.DiscardDoublesArray");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
@@ -149,7 +149,7 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.actor.lib.Discard");
 
         // We use DiscardDoubles here so that the types are preserved
-        // in case enableBackwardTypeInference is set.  
+        // in case enableBackwardTypeInference is set.
         _graphicalClasses.put("ptolemy.actor.lib.gui.HistogramPlotter",
                 "ptolemy.moml.filter.DiscardDoubles");
         _graphicalClasses.put("ptolemy.actor.lib.gui.RealTimePlotter",

@@ -26,7 +26,7 @@
 
  */
 package org.ptolemy.machineLearning.particleFilter;
- 
+
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
@@ -162,7 +162,7 @@ public class ParticleFilter extends AbstractParticleFilter {
     /** The process noise. If the system contains multiple state variables, the process noise
      * should be an expression that returns an ArrayToken. See multivariateGaussian for one such function.
      */
-    public Parameter processNoise; 
+    public Parameter processNoise;
 
     /** The names of the state variables, in an array of strings.
      *  The default is an ArrayToken of an empty String.
@@ -279,15 +279,15 @@ public class ParticleFilter extends AbstractParticleFilter {
      * @throws IllegalActionException
      */
     @Override
-    protected Parameter getUserDefinedParameter(String parameterName) 
+    protected Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException {
-        Attribute attr = this.getAttribute(parameterName); 
+        Attribute attr = this.getAttribute(parameterName);
         if (attr != null) {
             return ((Parameter)attr);
         } else {
             throw new IllegalActionException("Missing Parameter named: " + parameterName);
-        } 
-    } 
+        }
+    }
 
 
     /** Initialize the class. */
@@ -296,17 +296,17 @@ public class ParticleFilter extends AbstractParticleFilter {
         StringToken[] empty = new StringToken[1];
         stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
-        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty)); 
+        stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
 
         processNoise = new Parameter(this, "processNoise");
         processNoise
         .setExpression("multivariateGaussian({0.0,0.0},[1.0,0.4;0.4,1.2])");
 
         prior = new Parameter(this, "prior");
-        prior.setExpression("random()*200-100"); 
+        prior.setExpression("random()*200-100");
 
         measurementCovariance = new Parameter(this, "measurementCovariance");
-        measurementCovariance.setExpression("[10.0,0.0;0.0,10.0]"); 
+        measurementCovariance.setExpression("[10.0,0.0;0.0,10.0]");
     }
 
     @Override
@@ -330,7 +330,7 @@ public class ParticleFilter extends AbstractParticleFilter {
     protected Parameter getNoiseParameter(String inputName) {
         //just one noise parameter for this actor
         return (Parameter)this.getAttribute("measurementCovariance");
-        
+
     }
 
 }

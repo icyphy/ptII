@@ -27,8 +27,8 @@ FMI2_Export const char* fmi2GetVersion() {
 }
 
 FMI2_Export fmi2Status fmi2SetDebugLogging(fmi2Component    c,
-                                           fmi2Boolean      loggingOn, 
-                                           size_t           nCategories, 
+                                           fmi2Boolean      loggingOn,
+                                           size_t           nCategories,
                                            const fmi2String categories[]) {
     return fmi2_set_debug_logging(c, loggingOn, nCategories, categories);
 }
@@ -51,11 +51,11 @@ FMI2_Export void fmi2FreeInstance(fmi2Component c) {
     fmi2_free_instance(c);
 }
 
-FMI2_Export fmi2Status fmi2SetupExperiment(fmi2Component c, 
-                                           fmi2Boolean   toleranceDefined, 
-                                           fmi2Real      tolerance, 
-                                           fmi2Real      startTime, 
-                                           fmi2Boolean   stopTimeDefined, 
+FMI2_Export fmi2Status fmi2SetupExperiment(fmi2Component c,
+                                           fmi2Boolean   toleranceDefined,
+                                           fmi2Real      tolerance,
+                                           fmi2Real      startTime,
+                                           fmi2Boolean   stopTimeDefined,
                                            fmi2Real      stopTime) {
     return fmi2_setup_experiment(c, toleranceDefined, tolerance, startTime,
                                  stopTimeDefined, stopTime);
@@ -170,8 +170,8 @@ FMI2_Export fmi2Status fmi2EnterContinuousTimeMode(fmi2Component c) {
 }
 
 FMI2_Export fmi2Status fmi2CompletedIntegratorStep(fmi2Component c,
-                                                   fmi2Boolean   noSetFMUStatePriorToCurrentPoint, 
-                                                   fmi2Boolean*  enterEventMode, 
+                                                   fmi2Boolean   noSetFMUStatePriorToCurrentPoint,
+                                                   fmi2Boolean*  enterEventMode,
                                                    fmi2Boolean*   terminateSimulation) {
         return fmi2_completed_integrator_step(c, noSetFMUStatePriorToCurrentPoint,
                                           enterEventMode, terminateSimulation);
@@ -191,7 +191,7 @@ FMI2_Export fmi2Status fmi2GetDerivatives(fmi2Component c, fmi2Real derivatives[
         return fmi2_get_derivatives(c, derivatives, nx);
 }
 
-FMI2_Export fmi2Status fmi2GetEventIndicators(fmi2Component c, 
+FMI2_Export fmi2Status fmi2GetEventIndicators(fmi2Component c,
                                               fmi2Real eventIndicators[], size_t ni) {
         return fmi2_get_event_indicators(c, eventIndicators, ni);
 }
@@ -201,8 +201,8 @@ FMI2_Export fmi2Status fmi2GetContinuousStates(fmi2Component c, fmi2Real x[],
         return fmi2_get_continuous_states(c, x, nx);
 }
 
-FMI2_Export fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c, 
-                                                         fmi2Real x_nominal[], 
+FMI2_Export fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c,
+                                                         fmi2Real x_nominal[],
                                                          size_t nx) {
         return fmi2_get_nominals_of_continuous_states(c, x_nominal, nx);
 }
@@ -211,7 +211,7 @@ FMI2_Export fmi2Status fmi2GetNominalsOfContinuousStates(fmi2Component c,
 #ifdef FMUCS20
 /* FMI 2.0 functions specific for CS.*/
 
-FMI2_Export fmi2Status fmi2SetRealInputDerivatives(fmi2Component c, 
+FMI2_Export fmi2Status fmi2SetRealInputDerivatives(fmi2Component c,
                                                    const fmi2ValueReference vr[],
                                                    size_t nvr, const fmi2Integer order[],
                                                    const fmi2Real value[]) {
@@ -259,7 +259,7 @@ FMI2_Export fmi2Status fmi2GetBooleanStatus(fmi2Component c, const fmi2StatusKin
 FMI2_Export fmi2Status fmi2GetStringStatus(fmi2Component c, const fmi2StatusKind s,
                                            fmi2String* value) {
         return fmi2_get_string_status(c, s, value);
-        
+
 }
 
 #endif

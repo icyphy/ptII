@@ -1545,13 +1545,13 @@ Decorator {
             throws IllegalActionException {
         String language = generatorPackageValue.substring(generatorPackageValue
                 .lastIndexOf("."));
-        
+
         String capitalizedLanguage = language.substring(1, 2).toUpperCase(
                 Locale.getDefault())
                 + language.substring(2);
-        
+
         String dialect = "";
-        
+
         if (generatorDialect != null && !generatorDialect.equals("")) {
             dialect = generatorDialect.substring(0, 1).toUpperCase(
                     Locale.getDefault());
@@ -1559,12 +1559,12 @@ Decorator {
                 dialect += generatorDialect.substring(1);
             }
         }
-        
+
         // Append dialect
         if (dialect != "") {
             capitalizedLanguage += dialect;
         }
-        
+
         String codeGeneratorClassName = generatorPackageValue + "."
                 + capitalizedLanguage + "CodeGenerator";
 
@@ -1578,7 +1578,7 @@ Decorator {
             if (!dialect.equals("")) {
                 capitalizedLanguage += dialect;
             }
-            
+
             String oldCodeGeneratorClassName = codeGeneratorClassName;
             codeGeneratorClassName = generatorPackageValue
                     + capitalizedLanguage + "CodeGenerator";
@@ -1650,22 +1650,22 @@ Decorator {
         return generatorPackageValue;
     }
 
-    
+
     /** Return the value of the -generatorDialect or -dialect command
      *  line argument.
      *  @return The value of the generatorPackage argument
      */
     private static String _getGeneratorDialectValue() {
-        
+
         int parameterIndex = -1;
         if ((parameterIndex = _parameterNames.indexOf("generatorDialect")) != -1) {
             return _parameterValues.get(parameterIndex);
         }
-        
+
         if ((parameterIndex = _parameterNames.indexOf("dialect")) != -1) {
             return _parameterValues.get(parameterIndex);
         }
-        
+
         return "";
     }
     ///////////////////////////////////////////////////////////////////

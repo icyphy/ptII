@@ -67,7 +67,7 @@ void calculateValues(ModelInstance *comp) {
         else {
             hr(output_) = absent_;
         }
-    }    
+    }
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
@@ -85,7 +85,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
-    if ( h == 0 ) {        
+    if ( h == 0 ) {
         if ( i(n_) == 0 ) {
             i (n_) = i(n_) + 1;
             eventInfo->nextEventTimeDefined   = fmi2True;

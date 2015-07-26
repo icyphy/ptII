@@ -43,12 +43,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** A timed actor that outputs the local clock value that corresponds to the date.
- *  Such a correspondence is only given in models that synchronize to real time. 
+ *  Such a correspondence is only given in models that synchronize to real time.
  *  In such models, the real time (date) when the model starts is recorded. An input
  *  date to this actor is compared to the model start date. The difference between
- *  those dates (in millisecond resolution) is multiplied by the time resolution of 
+ *  those dates (in millisecond resolution) is multiplied by the time resolution of
  *  the local clock and then send to the output.
- *  
+ *
  *  Currently, this actor only works in the DE domain.
  * @author Patricia Derler
 @version $Id$
@@ -113,7 +113,7 @@ public class DateToModelTime extends Transformer {
                         _manager = ((CompositeActor) getContainer()).getManager();
                 }
                 long realStartTime = _manager.getRealStartTime();
-                
+
                 Time modelTime = new Time(
                         _director,
                         (double)(token.getCalendarInstance().getTimeInMillis()

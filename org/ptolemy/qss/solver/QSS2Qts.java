@@ -59,14 +59,14 @@ public final class QSS2Qts
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
-    /** 
+    /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
     public final int getStateModelOrder() {
         return( 1 );
     }
 
-    /** 
+    /**
      * Initialize object fields (QSS-specific).
      */
     public final void _initializeWorker() {
@@ -84,16 +84,16 @@ public final class QSS2Qts
             _ivVals_xx = new double[_ivCt];
         }
 
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
-    /** 
+    /**
      *  Get the predicted quantization-event time for a state (QSS-specific).
-     *  
+     *
      *  @param stateIdx The state index.
-     *  @param quantEvtTimeMax The maximum quantization event time.     
+     *  @param quantEvtTimeMax The maximum quantization event time.
      */
     protected final Time _predictQuantizationEventTimeWorker(
         final int stateIdx, final Time quantEvtTimeMax) {
@@ -169,11 +169,11 @@ public final class QSS2Qts
 
         return( predQuantEvtTime );
 
-    } 
-    
-    /** 
+    }
+
+    /**
      *  Form a new external, quantized state model (QSS-specific).
-     * 
+     *
      *  @param stateIdx The state index.
      */
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
@@ -190,10 +190,10 @@ public final class QSS2Qts
         qStateMdl.coeffs[0] = cStateMdl.evaluate(dtStateMdl);
         qStateMdl.coeffs[1] = cStateMdl.evaluateDerivative(dtStateMdl);
 
-    }  
+    }
 
 
-    /** 
+    /**
      * Form new internal, continuous state models (QSS-specific).
      */
     protected final void _triggerRateEventWorker()
@@ -292,7 +292,7 @@ public final class QSS2Qts
             _cStateMdls[ii].coeffs[2] = oneOverTwoDtSample * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]);
         }
 
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
@@ -309,4 +309,4 @@ public final class QSS2Qts
     private double[] _ivVals_xx;
 
 
-}  
+}

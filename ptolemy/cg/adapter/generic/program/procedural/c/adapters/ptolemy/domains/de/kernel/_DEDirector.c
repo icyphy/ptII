@@ -340,7 +340,7 @@ int DEDirector__Fire(struct DEDirector* director) {
 #ifdef _debugging
     fprintf(stderr, "The actor %s will be iterated\n", ((struct Actor *) actorToFire)->getFullName((struct Actor *)actorToFire));
 #endif
-    
+
     (*(actorToFire->fire))(actorToFire);
 
     if (!(*(actorToFire->postfire))(actorToFire)) {

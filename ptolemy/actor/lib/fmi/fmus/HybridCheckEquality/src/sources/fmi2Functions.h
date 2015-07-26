@@ -245,7 +245,7 @@ Functions for FMI2 for Co-Simulation
 /***************************************************
 Functions for FMI2 for Hybrid Co-Simulation
 ****************************************************/
-#define fmi2HybridDoStep               fmi2FullName(fmi2HybridDoStep)             
+#define fmi2HybridDoStep               fmi2FullName(fmi2HybridDoStep)
 #define fmi2HybridGetMaxStepSize       fmi2FullName(fmi2HybridGetMaxStepSize)
 #define fmi2RequiredTimeResolution     fmi2FullName(fmi2RequiredTimeResolution)
 #define fmi2SetTimeResolution          fmi2FullName(fmi2SetTimeResolution)

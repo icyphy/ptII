@@ -56,11 +56,11 @@ import ptolemy.math.DoubleMatrixMath;
  <pre>
  X_{t+1} = f(X_t, U_t, t)
  </pre>
- where X is the state vector, U is the input vector. 
- This actor reads a single record(x, y, vx, vy) from the port "current_state" 
+ where X is the state vector, U is the input vector.
+ This actor reads a single record(x, y, vx, vy) from the port "current_state"
  and an array of vector(acc_x, acc_y) from the port "control_inputs".
  Output is an array of state(x, y, vx, vy) whose length is "prediction horizon".
- If the length of control_inputs is shorter than prediction horizon, 
+ If the length of control_inputs is shorter than prediction horizon,
  the last value of cotrol_inputs is used until the step of prediction horizon.
 
  @author Shuhei Emoto
@@ -109,16 +109,16 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
         // an array of jacobian of states.
         jacobianOfStates = new TypedIOPort(this, "jacobianOfStates", false, true);
         jacobianOfStates.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
-         
+
         _timeHorizon = 1;
         timeHorizon = new Parameter(this, "prediction horizon");
         timeHorizon.setExpression("1");
         timeHorizon.setTypeEquals(BaseType.INT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /** 
+    /**
      * The time-horizon which defines the number of steps of prediction.
      */
     public Parameter timeHorizon;
@@ -140,7 +140,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
 
     /**
      * jacobian of predicted states (dX/dU).
-     * this port output array of matrix {dX1/dU, dX2/dU, ..., dXn/dU} 
+     * this port output array of matrix {dX1/dU, dX2/dU, ..., dXn/dU}
      * where Xn means predicted states of n-Step later and U means control input (matrix [U1, U2, ..., Un]).
      */
     public TypedIOPort jacobianOfStates;
@@ -189,7 +189,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
             _timeHorizon = ((IntToken) timeHorizon.getToken()).intValue();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int  _timeHorizon;
@@ -199,7 +199,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
     private double[][] _uValue;
     private RecordToken[] _predictedStates;
     private double[][][] _jacobianOfStates;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void calcPredict() throws IllegalActionException {
@@ -234,7 +234,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
         _jacobianOfStates[predict_step][2][0] = 1;
         _jacobianOfStates[predict_step][3][1] = 1;
         ////////////////////////////////////
-        
+
         for (predict_step = 1; predict_step < _timeHorizon; predict_step++) {
             int control_step = Math.min(_uValue.length-1, predict_step);
             //If array length of _uValue is shorter than TimeHorizon, the last _uValue is held until the last of prediction step.
@@ -259,7 +259,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
                 dUm_dU[row][control_step*2+row] = 1;
             }
             //// Set Matrix dXn/dXn-1, dXn/dUm (Xn: states of predict_step N);
-            // dXn/dXn-1 = 
+            // dXn/dXn-1 =
             // (1 0 1 0)
             // (0 1 0 1)
             // (0 0 1 0)
@@ -267,7 +267,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
             double[][] dXn_dXn_1 = DoubleMatrixMath.identityMatrixDouble(4);
             dXn_dXn_1[0][2] = 1;
             dXn_dXn_1[1][3] = 1;
-            // dXn/dUm = 
+            // dXn/dUm =
             // (0.5  0)
             // (0  0.5)
             // (1    0)
@@ -286,9 +286,9 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
                 }
             }
             ////result matrix should be below. (When predict_step = 1).
-            // (2.5   0 1.5   0 0.5     0 0 0 ....0 ) 
+            // (2.5   0 1.5   0 0.5     0 0 0 ....0 )
             // (0   2.5   0 1.5   0   0.5 0 0 ....0 )
-            // (1     0   1   0   1     0 0 0 ....0 ) 
+            // (1     0   1   0   1     0 0 0 ....0 )
             // (0     1   0   1   0     1 0 0 ....0 )
             ////////////////////////////////////
         }

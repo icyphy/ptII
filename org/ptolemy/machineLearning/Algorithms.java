@@ -137,32 +137,32 @@ public class Algorithms {
      * @param y observation point
      * @param mu mean array
      * @param sigma covariance matrix
-     * @return value of the probability distribution 
+     * @return value of the probability distribution
      */
-    public static double mvnpdf(double[] y, double[] mu, double[][] sigma) { 
+    public static double mvnpdf(double[] y, double[] mu, double[][] sigma) {
         double[] xt = new double[y.length];
-        Token[] xmat = new Token[y.length]; 
+        Token[] xmat = new Token[y.length];
         for (int i = 0; i < y.length; i ++) {
             xt[i] = y[i] - mu[i];
-            xmat[i] = new DoubleToken(xt[i]); 
+            xmat[i] = new DoubleToken(xt[i]);
         }
-         
-        int k = y.length;     
+
+        int k = y.length;
         try {
-            MatrixToken X = MatrixToken.arrayToMatrix(xmat, y.length, 1); 
+            MatrixToken X = MatrixToken.arrayToMatrix(xmat, y.length, 1);
             DoubleMatrixToken inverseCovariance = new DoubleMatrixToken( DoubleMatrixMath.inverse(sigma));
-            MatrixToken Xtranspose = MatrixToken.arrayToMatrix(xmat, 1, y.length); 
+            MatrixToken Xtranspose = MatrixToken.arrayToMatrix(xmat, 1, y.length);
             Token exponent = Xtranspose.multiply(inverseCovariance);
-            exponent = exponent.multiply(X); 
+            exponent = exponent.multiply(X);
             double value = ((DoubleMatrixToken) exponent)
                     .getElementAt(0, 0);
             double result = 1.0 /Math.sqrt(Math.pow(2 * Math.PI,k) * DoubleMatrixMath.determinant(sigma))
-                    * Math.exp(-0.5 * value); 
+                    * Math.exp(-0.5 * value);
 
             return result;
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
-        } 
+        }
     }
 
     private static final int KEY_NOT_FOUND = -1;

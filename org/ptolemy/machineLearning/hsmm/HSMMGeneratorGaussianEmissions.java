@@ -84,7 +84,7 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
     public HSMMGeneratorGaussianEmissions(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-  
+
 
         mean = new PortParameter(this, "mean");
         mean.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -105,13 +105,13 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
- 
+
     /** Mean array. */
     public PortParameter mean;
 
     /** Variance array. */
     public PortParameter covariance;
-  
+
 
     @Override
     public void attributeChanged(Attribute attribute)
@@ -135,7 +135,7 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
             }
         } else {
             super.attributeChanged(attribute);
-        } 
+        }
     }
 
     @Override
@@ -144,10 +144,10 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
                 .clone(workspace);
         newObject._mean = null;
         newObject._covariance = null;
-        
+
         return newObject;
     }
-    
+
     @Override
     public void fire() throws IllegalActionException {
 
@@ -159,9 +159,9 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
         covariance.update();
         statePriors.update();
         powerUpperBound.update();
-        
+
         if (trigger.hasToken(0)) {
-            trigger.get(0); 
+            trigger.get(0);
             int nStates = ((ArrayToken) statePriors.getToken()).length();
             ArrayToken meanToken = ((ArrayToken) mean.getToken());
             ArrayToken sigmaToken = ((ArrayToken) covariance.getToken());
@@ -188,20 +188,20 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
                                 + "must be defined over the same time extent.");
             }
             _maxDuration = maxDuration;
-            // start generating values 
+            // start generating values
             boolean validSequenceFound = false;
             int trials = 0;
             double [] ys = new double[_windowSize];
             int [] xs = new int [_windowSize];
             while (!validSequenceFound && trials < MAX_TRIALS) {
                 double cumulativePower = 0.0;
-                for (int i = 0; i < _windowSize; i ++ ) {  
+                for (int i = 0; i < _windowSize; i ++ ) {
                     if (_firstIteration) {
                         // sample hidden state from prior
                         _xt = _sampleHiddenStateFromPrior();
                         _dt = _sampleDurationFromPrior();
                         _firstIteration = false;
-                       
+
                     }
                     if (_dt <= 1) {
                         // if the remaining time at the current state is 1 or less, there needs to be a stata transition.
@@ -244,7 +244,7 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
         double s = _covariance[_xt];
 
         DoubleToken yt = UtilityFunctions.gaussian(mu, s);
-        return new double[]{yt.doubleValue()}; 
+        return new double[]{yt.doubleValue()};
     }
 
     @Override
@@ -307,11 +307,11 @@ public class HSMMGeneratorGaussianEmissions extends HSMMGenerator {
                 _maxDuration);
         return bin + 1;
     }
- 
+
     /** Mean vector. */
     private double[] _mean;
-    
+
     /** Covariance vector. */
-    private double[] _covariance; 
+    private double[] _covariance;
 
 }

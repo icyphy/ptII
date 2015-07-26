@@ -59,7 +59,7 @@ public class LocalStorageHelper {
      * Construct a LocalStorageHelper using the container's name and the actors'
      * display name for the directory name. Also use current time to make the
      * directory name unique.
-     * 
+     *
      * @param persistenceDirectory
      *            The default Mqtt file persistance
      * @param containerActorName
@@ -92,7 +92,7 @@ public class LocalStorageHelper {
     /**
      * Take a key and return its value from the local storage if the key exists,
      * otherwise, return null.
-     * 
+     *
      * @param key
      *            The key for the value to be returned.
      * @return The string value associated with the key.
@@ -111,7 +111,7 @@ public class LocalStorageHelper {
 
     /**
      * Take a key-value pair and stores the pair into the local storage.
-     * 
+     *
      * @param key
      *            The key to be stored.
      * @param value
@@ -130,7 +130,7 @@ public class LocalStorageHelper {
 
     /**
      * Take a key and remove it from the local storage.
-     * 
+     *
      * @param key
      *            The key to be removed.
      * @throws MqttPersistenceException
@@ -143,7 +143,7 @@ public class LocalStorageHelper {
 
     /**
      * Remove all keys in the local storage.
-     * 
+     *
      * @throws MqttPersistenceException
      */
     public void clear() throws MqttPersistenceException {
@@ -152,7 +152,7 @@ public class LocalStorageHelper {
 
     /**
      * Return a key with index n, or null if it is not present.
-     * 
+     *
      * @param n
      *            Index for the key to be returned.
      * @return The key with index n.
@@ -179,7 +179,7 @@ public class LocalStorageHelper {
 
     /**
      * Return the number of keys stored in the local storage.
-     * 
+     *
      * @return The number of keys stored.
      * @throws MqttPersistenceException
      */

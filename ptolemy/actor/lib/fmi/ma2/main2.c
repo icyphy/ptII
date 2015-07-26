@@ -38,7 +38,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  * see http://polarhome.com/service/man/?qf=STRDUP&af=0&tf=2&of=Gentoo
  * If you change this file, then please change
  * ptolemy/actor/lib/fmi/ma2/shared/sim_support.c
- * On 01/27/2015 Marten wrote: Doubtful whether this is still true after 
+ * On 01/27/2015 Marten wrote: Doubtful whether this is still true after
  * the -std=gnu99 flag was turned on. Moreover, glibc 2.20, the
  * _BSD_SOURCE macro is deprecated, see:
  * http://man7.org/linux/man-pages/man7/feature_test_macros.7.html.
@@ -446,7 +446,7 @@ int main(int argc, char *argv[]) {
         loadFMU(&fmus[i], fmuFileNames[i]);
         fmus[i].component = initializeFMU(&fmus[i], visible, loggingOn, nCategories, categories);
     }
-    
+
     // Set up port connections
     setupConnections(fmus, connections);
 

@@ -27,7 +27,7 @@
  * see http://polarhome.com/service/man/?qf=STRDUP&af=0&tf=2&of=Gentoo
  * If you change this file, then please change
  * ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/TypedCompositeActor.c
- * On 01/27/2015 Marten wrote: Doubtful whether this is still true after 
+ * On 01/27/2015 Marten wrote: Doubtful whether this is still true after
  * the -std=gnu99 flag was turned on. Moreover, glibc 2.20, the
  * _BSD_SOURCE macro is deprecated, see:
  * http://man7.org/linux/man-pages/man7/feature_test_macros.7.html.
@@ -404,7 +404,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
     // print all other columns
     int j = 0;
     for (j = 0; j < numberOfFMUs; j++)
-    {   
+    {
         int k;
         fmi2Real r;
         fmi2Integer i;

@@ -250,7 +250,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Return the transform context of this figure.
-     *  @return The tranformation context.   
+     *  @return The tranformation context.
      */
     @Override
     public TransformContext getTransformContext() {

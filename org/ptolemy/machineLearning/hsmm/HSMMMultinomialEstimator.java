@@ -90,12 +90,12 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         _nCategories = new int[1];
         _nCategories[0]= 3;
         _etaDimension = IntStream.of(_nCategories).sum();
-        
+
         observationDimension = new Parameter(this, "observationDimension");
         observationDimension.setExpression("1");
 
         _B = new double[_nStates][_etaDimension];
-        _B0 = new double[_nStates][_etaDimension]; 
+        _B0 = new double[_nStates][_etaDimension];
     }
 
     @Override
@@ -179,16 +179,16 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
 
     @Override
     public void fire() throws IllegalActionException {
-        super.fire(); 
-        if ( _EMParameterEstimation() == true) { 
+        super.fire();
+        if ( _EMParameterEstimation() == true) {
             //System.out.println("Final Likelihood: " +likelihood);
-            int _nObservations = _observations.length; 
+            int _nObservations = _observations.length;
             Token[] pTokens = new Token[_nStates];
             Token[] cTokens = new Token[_nObservations];
             Token[] dTokens = new Token[_maxDuration];
             Token[] lTokens = new Token[_likelihoodHistory.size()];
 
-            for (int i = 0; i < _nStates; i++) { 
+            for (int i = 0; i < _nStates; i++) {
                 pTokens[i] = new DoubleToken(prior_new[i]);
             }
             for (int i = 0; i < _maxDuration; i++) {
@@ -204,15 +204,15 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
             }
             _likelihoodHistory.clear();
 
-            emissionEstimates.send(0, new DoubleMatrixToken(_B)); 
+            emissionEstimates.send(0, new DoubleMatrixToken(_B));
             transitionMatrix.send(0, new DoubleMatrixToken(A_new));
             priorEstimates.send(0, new ArrayToken(pTokens));
             durationEstimates.send(0, new DoubleMatrixToken(D_new));
             clusterAssignments.send(0, new ArrayToken(cTokens));
-            durationPriorEstimates.send(0, new ArrayToken(dTokens)); 
-        } else { 
+            durationPriorEstimates.send(0, new ArrayToken(dTokens));
+        } else {
             System.err.println("EM Algorithm did not converge!");
-        } 
+        }
     }
 
     protected double emissionProbability(double[] y, int hiddenState) {
@@ -223,8 +223,8 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         // retrieving the joint probability of all observations being equal
         // to the observed y. Note that _B[hiddenState] is a vector that contains
         // categorical probability belief for ALL dimensions of y in a concatenated format
-        // For instance, if y is a 2-D observation and _nCategories = {M1, M2}, 
-        // _B[hiddenState] will be a vector of length M1+M2. 
+        // For instance, if y is a 2-D observation and _nCategories = {M1, M2},
+        // _B[hiddenState] will be a vector of length M1+M2.
         int categoryIndex = 0;
         for (int i = 1; i < y.length; i ++) {
             categoryIndex += _nCategories[i-1];
@@ -244,7 +244,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
                 break;
             }
         }
-        if (nanDetected) { 
+        if (nanDetected) {
             if (Double.isNaN(D_new[0][0])) {
                 D_new = _D0;
             }
@@ -260,51 +260,51 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
                 System.out
                 .println("Expectation Maximization failed to converge");
                 return false;
-            } else if (_randomize) { 
+            } else if (_randomize) {
             }
         }
         return true;
     }
 
     @Override
-    protected void _initializeEMParameters() { 
+    protected void _initializeEMParameters() {
         _transitionMatrix = _A0;
-        _priorIn = _priors;   
-        _B = _B0; 
+        _priorIn = _priors;
+        _B = _B0;
         B_new = new double[_nStates][_etaDimension];
-        A_new = new double[_nStates][_nStates]; 
+        A_new = new double[_nStates][_nStates];
         prior_new = new double[_nStates];
         D_new = new double[_nStates][_maxDuration];
         _D = _D0;
     }
 
     @Override
-    protected void _iterateEM() { 
+    protected void _iterateEM() {
         newEstimates = HSMMAlphaBetaRecursion(_observations, _transitionMatrix,
-                _priorIn, _nCategories);  
-        B_new = (double[][]) newEstimates.get("eta_hat");  
+                _priorIn, _nCategories);
+        B_new = (double[][]) newEstimates.get("eta_hat");
         A_new = (double[][]) newEstimates.get("A_hat");
         prior_new = (double[]) newEstimates.get("pi_hat");
         dPrior_new = (double[]) newEstimates.get("pi_d_hat");
         likelihood = (Double) (newEstimates.get("likelihood"));
         D_new = (double[][]) newEstimates.get("D_hat");
-        clusters = (int[]) newEstimates.get("clusterAssignments"); 
+        clusters = (int[]) newEstimates.get("clusterAssignments");
     }
 
     @Override
     protected void _updateEstimates() {
-        _transitionMatrix = A_new; 
+        _transitionMatrix = A_new;
         _priorIn = prior_new; // set to the original priors
         _D = D_new;
         //_B = B_new;
-        _durationPriors = dPrior_new; 
+        _durationPriors = dPrior_new;
     }
 
 
 
     /** Duration priors.
      */
-    private double[] dPrior_new; 
+    private double[] dPrior_new;
     /** Inferred cluster assignments.
      */
     protected int[] clusters;
@@ -315,7 +315,7 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
     /** Initial guess of the emission matrix.
      */
     private double[][] _B0;
-     
+
 
     /** Number of categories.
      */
@@ -341,5 +341,5 @@ public class HSMMMultinomialEstimator extends HSMMParameterEstimator {
         } else {
             return _D[hiddenState][y];
         }
-    } 
+    }
 }

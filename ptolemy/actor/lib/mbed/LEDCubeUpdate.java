@@ -39,10 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// LEDCubeUpdate
 
 /**
- This actor receives values to update the position and color of 
- LEDs in the LED Cube mbed demo. 
- 
- <p>The code generator supplies the method contents, thus this 
+ This actor receives values to update the position and color of
+ LEDs in the LED Cube mbed demo.
+
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -63,26 +63,26 @@ public class LEDCubeUpdate extends TypedAtomicActor {
     public LEDCubeUpdate(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         deltaSize = new TypedIOPort(this, "deltaSize", true, false);
         deltaSize.setTypeEquals(BaseType.INT);
         deltaX = new TypedIOPort(this, "deltaX", true, false);
-        deltaX.setTypeEquals(BaseType.INT); 
+        deltaX.setTypeEquals(BaseType.INT);
         deltaY = new TypedIOPort(this, "deltaY", true, false);
-        deltaY.setTypeEquals(BaseType.INT); 
+        deltaY.setTypeEquals(BaseType.INT);
         deltaZ = new TypedIOPort(this, "deltaZ", true, false);
-        deltaZ.setTypeEquals(BaseType.INT); 
+        deltaZ.setTypeEquals(BaseType.INT);
         r = new TypedIOPort(this, "r", true, false);
-        r.setTypeEquals(BaseType.DOUBLE); 
+        r.setTypeEquals(BaseType.DOUBLE);
         g = new TypedIOPort(this, "g", true, false);
-        g.setTypeEquals(BaseType.DOUBLE); 
+        g.setTypeEquals(BaseType.DOUBLE);
         b = new TypedIOPort(this, "b", true, false);
-        b.setTypeEquals(BaseType.DOUBLE); 
+        b.setTypeEquals(BaseType.DOUBLE);
 
         indexes = new TypedIOPort(this, "indexes", false, true);
         indexes.setTypeEquals(new ArrayType(BaseType.INT));
         colors = new TypedIOPort(this, "colors", false, true);
-        colors.setTypeEquals(new ArrayType(BaseType.INT));  
+        colors.setTypeEquals(new ArrayType(BaseType.INT));
     }
 
     ///////////////////////////////////////////////////////////////////

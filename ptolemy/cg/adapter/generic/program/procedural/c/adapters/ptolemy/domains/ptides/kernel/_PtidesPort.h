@@ -62,7 +62,7 @@ struct PtidesPort {
     #ifdef TYPE_Double
     double (*getDouble)(struct IOPort*, int);
     #endif
-    
+
     int (*getChannelForReceiver)(struct PtidesPort*, struct Receiver*);
     Token* (*getInside)(struct PtidesPort*, int);
     PblList* (*getInsideReceivers)(struct PtidesPort*);
@@ -94,7 +94,7 @@ struct PtidesPort {
     char *(*getName)(struct PtidesPort *);
     void (*setName)(struct PtidesPort *, char *);
 #endif
-    
+
 #ifdef PTIDESDIRECTOR
     double delayOffset;
 #endif

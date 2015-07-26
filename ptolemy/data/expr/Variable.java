@@ -885,7 +885,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             NameDuplicationException {
         Nameable previousContainer = getContainer();
 
-        
+
         // Warn if there are variables that depend on this one.
         if (container != previousContainer && previousContainer != null) {
             Set<ValueListener> listeners = new HashSet<ValueListener>();
@@ -896,7 +896,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             if (_weakValueListeners != null && !_weakValueListeners.isEmpty()) {
                 listeners.removeAll(_weakValueListeners);
             }
-            
+
             if (!listeners.isEmpty()) {
                 if (!MessageHandler
                         .yesNoQuestion("WARNING: There are variables depending on "
@@ -1404,10 +1404,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // See https://projects.ecoinformatics.org/ecoinfo/issues/6681
         if (_weakValueListeners == null) {
             _weakValueListeners = new HashSet<ValueListener>();
-        }           
+        }
         _weakValueListeners.add(listener);
     }
-    
+
     /** Set the visibility of this variable.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this variable.
@@ -1860,7 +1860,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             }
         }
     }
-    
+
     /** Get the current expression as a string, to be used to export to MoML.
      *  @return The current expression as a string.
      */
@@ -2569,7 +2569,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     // The visibility of this variable.
     private Settable.Visibility _visibility = Settable.EXPERT;
-    
+
     /** Value listeners that should not be treated as true dependencies. */
     private Set<ValueListener> _weakValueListeners;
 

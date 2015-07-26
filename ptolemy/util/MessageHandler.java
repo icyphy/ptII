@@ -57,7 +57,7 @@ import java.util.Locale;
  @Pt.AcceptedRating Green (cxh)
  */
 public class MessageHandler implements Thread.UncaughtExceptionHandler {
-    
+
     /** Create a MessageHandler.
      */
     public MessageHandler() {
@@ -65,7 +65,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         // invokes new MessageHandler().
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

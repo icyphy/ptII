@@ -1335,7 +1335,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
 
                 _addInputPort(inputPort);
-                
+
                 // If the actor does not have any outputs all its inputs
                 // are in a port group
                 if (actor.outputPortList().size() == 0) {
@@ -1483,7 +1483,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                             .get(i);
                     // If event has same tag and destined to same actor, remove from
                     // queue.
-                    if (eventInQueue.actor().equals(actor) && 
+                    if (eventInQueue.actor().equals(actor) &&
                             eventInQueue.hasTheSameTagAs(ptidesEvent)) {
                         sameTagEvents.add(eventInQueue);
                         if (eventInQueue.receiver() != null) {
@@ -1843,7 +1843,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 return;
             }
         }
-        
+
         DoubleToken token = new DoubleToken(delayOffset);
         Parameter parameter = (Parameter) namedObj.getAttribute("delayOffset");
         if (parameter == null) {

@@ -57,10 +57,10 @@ struct FSMDirector {
     char *(*getFullName)(struct FSMDirector *);
     char *(*getName)(struct FSMDirector *);
     void (*setName)(struct FSMDirector *, char *);
-#endif    
+#endif
 
     // _FSMDirector-specific fields.
-    
+
     //PblMap* _currentLocalReceiverMap;
     //int _indexOffset;
     //PblMap* _localReceiverMaps;

@@ -239,7 +239,7 @@ ExecutionListener {
         spawnSeparateModels.setTypeEquals(BaseType.BOOLEAN);
         spawnSeparateModels.setExpression("false");
         spawnSeparateModels.setPersistent(true);
-        
+
         _semaphore= new Semaphore(0);
     }
 
@@ -436,7 +436,7 @@ ExecutionListener {
      *  @param throwable The throwable to report.
      */
     @Override
-    public synchronized void executionError(Manager manager, Throwable throwable) {        
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _throwable = throwable;
         _executing = false;
 
@@ -609,7 +609,7 @@ ExecutionListener {
                                     + _manager.getState().getDescription());
                 }
 
-                // NOTE: To avoid race condition, we use 
+                // NOTE: To avoid race condition, we use
                 // local copy of manager and then release that semaphore.
                 //That way, postfire wait before setting _manager to null
                 //(Otherwise, we could even have localManager = null
@@ -629,7 +629,7 @@ ExecutionListener {
                             // If running tried to load in some native code using JNI
                             // then we may get an Error here
                             localManager.notifyListenersOfThrowable(throwable);
-                        } 
+                        }
                         // we dont remove listeners, that is done in the callbacks
                         // by the listner itself
                     }
@@ -690,7 +690,7 @@ ExecutionListener {
                 Logger.getLogger(ModelReference.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-                  
+
         if (_postfireActionValue == _STOP_EXECUTING && _manager != null) {
             if (_debugging) {
                 _debug("** Calling finish() on the Manager to request termination.");
@@ -708,7 +708,7 @@ ExecutionListener {
 
         // Test auto/ModelReference2.xml seems to end up here with
         _manager = null;
-        
+
 
         return super.postfire();
     }
@@ -949,7 +949,7 @@ ExecutionListener {
 
     // Error from a previous run.
     private transient Throwable _throwable = null;
-    
+
     /** Semaphore used to synchronize a new thread a postfire if needed. */
     private Semaphore _semaphore;
 }

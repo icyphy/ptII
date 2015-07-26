@@ -39,11 +39,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PacketToSensorData
 
 /**
- This actor uses eight input ports that receives values from the five finger 
- bend sensors and quaternion data of a dataglove and outputs information to 
- update the color, size and position of LEDs in the mbed LED Cube Demo. 
- 
- <p>The code generator supplies the method contents, thus this 
+ This actor uses eight input ports that receives values from the five finger
+ bend sensors and quaternion data of a dataglove and outputs information to
+ update the color, size and position of LEDs in the mbed LED Cube Demo.
+
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -64,25 +64,25 @@ public class PacketToSensorData extends TypedAtomicActor {
     public PacketToSensorData(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         dataPacket = new TypedIOPort(this, "dataPacket", true, false);
-        dataPacket.setTypeEquals(new ArrayType(BaseType.INT)); 
+        dataPacket.setTypeEquals(new ArrayType(BaseType.INT));
         finger1 = new TypedIOPort(this, "finger1", false, true);
         finger1.setTypeEquals(BaseType.INT);
         finger2 = new TypedIOPort(this, "finger2", false, true);
-        finger2.setTypeEquals(BaseType.INT); 
+        finger2.setTypeEquals(BaseType.INT);
         finger3 = new TypedIOPort(this, "finger3", false, true);
-        finger3.setTypeEquals(BaseType.INT); 
+        finger3.setTypeEquals(BaseType.INT);
         finger4 = new TypedIOPort(this, "finger4", false, true);
-        finger4.setTypeEquals(BaseType.INT); 
+        finger4.setTypeEquals(BaseType.INT);
         finger5 = new TypedIOPort(this, "finger5", false, true);
-        finger5.setTypeEquals(BaseType.INT); 
+        finger5.setTypeEquals(BaseType.INT);
         roll = new TypedIOPort(this, "roll", false, true);
-        roll.setTypeEquals(BaseType.INT); 
+        roll.setTypeEquals(BaseType.INT);
         pitch = new TypedIOPort(this, "pitch", false, true);
-        pitch.setTypeEquals(BaseType.INT); 
+        pitch.setTypeEquals(BaseType.INT);
         yaw = new TypedIOPort(this, "yaw", false, true);
-        yaw.setTypeEquals(BaseType.INT); 
+        yaw.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

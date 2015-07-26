@@ -82,7 +82,7 @@ public class WebServerUtilities {
 
         _server = null;
         _selectChannelConnector = null;
-        
+
         _endpointManager = WebSocketEndpointManager.getInstance();
     }
 
@@ -371,12 +371,12 @@ public class WebServerUtilities {
             }
 
             // Close any websockets
-            // FIXME:  Allow each application to have a separate set of 
+            // FIXME:  Allow each application to have a separate set of
             // websockets.  Right now, websockets are globally managed.
             if (_endpointManager != null) {
                 _endpointManager.closeServlets();
             }
-            
+
             // What to do about the resource handler?  This might be shared
             // by other applications.  Need to keep a list.
             // FIXME:  For now, just leave it running.
@@ -450,7 +450,7 @@ public class WebServerUtilities {
 
         for (URI path : appInfo.getWebSocketInfo().keySet()) {
             // TODO:  Use endpoint manager here to get endpoint for new websockets
-            PtolemyWebSocketServlet servlet = 
+            PtolemyWebSocketServlet servlet =
                     _endpointManager.getServlet(path.toString());
             servletHandler.addServlet(new ServletHolder(servlet),
                     path.toString());
@@ -767,7 +767,7 @@ public class WebServerUtilities {
 
     /** A flag indicating if dynamic port selection is allowed. */
     private boolean _dynamicPortSelection;
-    
+
     /** A manager responsible for generating and releasing websockets. */
     private WebSocketEndpointManager _endpointManager;
 

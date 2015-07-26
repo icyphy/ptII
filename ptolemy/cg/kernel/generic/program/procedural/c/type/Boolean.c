@@ -78,7 +78,7 @@ Token* Boolean_new(boolean b) {
         if (Boolean_True == NULL) {
             Boolean_True = malloc(sizeof(Token));
             Boolean_True->type = TYPE_Boolean;
-            Boolean_True->payload.Boolean = b;            
+            Boolean_True->payload.Boolean = b;
         }
         return Boolean_True;
     } else {
@@ -96,7 +96,7 @@ Token* Boolean_new(boolean b) {
     result->type = TYPE_Boolean;
     result->payload.Boolean = b;
     return result;
-#endif    
+#endif
 }
 /**/
 

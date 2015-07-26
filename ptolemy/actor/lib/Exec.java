@@ -211,7 +211,7 @@ public class Exec extends LimitedFiringSource {
      *  name of the user's home directory.</p>
      *
      *  <p>If the value of this parameter is the empty string,
-     *  then the working directory of the subprocess with be 
+     *  then the working directory of the subprocess with be
      *  inherited from the working directory of the parent
      *  process.  Typically, this is the value of the
      *  user.dir property.</p>

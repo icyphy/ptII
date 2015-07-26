@@ -58,7 +58,7 @@ struct PtidesDirector {
     char *(*getFullName)(struct PtidesDirector *);
     char *(*getName)(struct PtidesDirector *);
     void (*setName)(struct PtidesDirector *, char *);
-#endif    
+#endif
 
     // _PtidesDirector-specific fields
 

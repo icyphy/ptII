@@ -48,7 +48,7 @@ struct CompositeActor {
     char *(*getFullName)(struct CompositeActor *);
     char *(*getName)(struct CompositeActor *);
     void (*setName)(struct CompositeActor *, char *);
-#endif    
+#endif
 
     // _CompositeActor-specific fields.
     bool (*isOpaque)(struct CompositeActor*);

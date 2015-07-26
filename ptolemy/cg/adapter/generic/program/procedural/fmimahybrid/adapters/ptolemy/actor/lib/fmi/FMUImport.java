@@ -59,7 +59,7 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
     @Override
     public String generateFMIMA() throws IllegalActionException {
         //        StringBuffer code = new StringBuffer();
-        //        
+        //
         //        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) getComponent();
         //        code.append(getCodeGenerator()
         //                .comment(
@@ -68,20 +68,20 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
         //                                + "   "
         //                                + actor.getName()
         //                                + " is a FMUImport: "));
-        //        
-        //        
+        //
+        //
         //        for (TypedIOPort input : actor.inputPortList()) {
-        //                
+        //
         //                List connected_ports = input.connectedPortList();
-        //                
+        //
         //                String input_module_name = input.getContainer().getName();
-        //                                
+        //
         //                for (int port_idx = 0; port_idx < connected_ports.size(); port_idx++)
         //                {
         //                        TypedIOPort output = (TypedIOPort)connected_ports.get(port_idx);
         //                        ptolemy.actor.lib.fmi.FMUImport source_actor = (ptolemy.actor.lib.fmi.FMUImport) output.getContainer();
         //                        String out_module_name = output.getContainer().getName();
-        //                        
+        //
         //                        code.append("connections[" + out_module_name + "_" + output.getName() + "].sourceFMU = &fmus[" + out_module_name + "];\n"
         //                                        + "connections[" + out_module_name + "_" + output.getName() + "].sourcePort = getValueReference(getScalarVariable(fmus["
         //                                                + out_module_name + "].modelDescription, " + source_actor.getValueReference(output.getName()) + "));\n"
@@ -92,7 +92,7 @@ public class FMUImport extends FMIMACodeGeneratorAdapter {
         //                        + "connections[" + out_module_name + "_" + output.getName() + "].sinkType = " + actor.getTypeOfPort(input.getName()) + ";\n");
         //                }
         //
-        //        }        
+        //        }
         //        return /*processCode(code.toString())*/code.toString();
         return "";
     }

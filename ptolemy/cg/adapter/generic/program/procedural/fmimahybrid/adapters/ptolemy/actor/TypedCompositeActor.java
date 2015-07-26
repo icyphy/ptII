@@ -174,7 +174,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             }
         }
 
-        
+
         codeStream.append("#define NUMBER_OF_FMUS " + actorList.size() + "\n");
         codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
         codeStream
@@ -190,37 +190,37 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                 codeStream.append(",");
         }
         codeStream.append("};\n" + _eol);
-                
+
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
         actors =  topActor.deepEntityList().iterator();
         codeStream.append("int static i = 0;\n");
                 codeStream.append("static void setupParameters(FMU *fmu) {\n");
-                
+
                 codeStream.append("fmi2Status fmi2Flag = fmu->enterInitializationMode(fmu->component);\n");
                 codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
                 codeStream.append("error(\"could not initialize model; failed FMI enter initialization mode\");\n");
                 codeStream.append("}\n");
                 codeStream.append("printf(\"initialization mode entered\\n\");\n");
-                
-                
+
+
                 codeStream.append("int _vr = 0;\n");
                 codeStream.append("fmi2Integer isPresent = 0;\n");
                 codeStream.append("switch(i) {\n");
                 int i = 0;
-                while (actors.hasNext()) {                        
+                while (actors.hasNext()) {
                         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
                                         .next();
-                        
+
                         codeStream.append("case(" + i + "): {\n");
                         int j = 0;
                         for ( FMIScalarVariable scalar : actor.getScalarVariables()) {
-                                
+
                                 if (scalar.causality.equals(Causality.parameter)) {
                                         String sanitizedName = StringUtilities
                                 .sanitizeName(scalar.name);
                         Parameter parameter = (Parameter) actor.getAttribute(sanitizedName,
                                 Parameter.class);
-                        
+
                         // Coverity Scan indicates that getAttribute could return null, so we check.
                         if (parameter == null) {
                             throw new InternalErrorException(actor, null, "Could not find parameter \""
@@ -245,23 +245,23 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                                 codeStream.append("fmu->setHybridString(fmu->component, &_vr, 1, &tmp_" + i + "_" + j + ", &isPresent);" + _eol);
                         }
                                 }
-                                j++;                                
+                                j++;
                         }
                         i++;
-                        codeStream.append("break;\n}\n");                        
+                        codeStream.append("break;\n}\n");
                 }
-                
-                codeStream.append("}\n");                
+
+                codeStream.append("}\n");
                 codeStream.append("i++;\n");
-                
+
                 codeStream.append("fmi2Flag = fmu->exitInitializationMode(fmu->component);\n");
                 codeStream.append("printf(\"successfully initialized.\\n\");\n");
                 codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
                 codeStream.append("error(\"could not initialize model; failed FMI exit initialization mode\");\n");
                 codeStream.append("}\n");
-                
+
                 codeStream.append("}\n");
-        
+
         codeStream.appendCodeBlock("staticDeclareBlock");
 
         return processCode(codeStream.toString());

@@ -52,7 +52,7 @@ extends NamedProgramCodeGeneratorAdapter {
     public CC3000Module(ptolemy.actor.lib.mbed.CC3000Module actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,

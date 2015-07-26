@@ -38,11 +38,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// SensorDataCalibration
 
 /**
- This actor receives values from the bend sensors and 
- accelerometer/gyroscope of a data glove and outputs 
- corrected and filtered data. 
- 
- <p>The code generator supplies the method contents, thus this 
+ This actor receives values from the bend sensors and
+ accelerometer/gyroscope of a data glove and outputs
+ corrected and filtered data.
+
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -63,40 +63,40 @@ public class SensorDataCalibration extends TypedAtomicActor {
     public SensorDataCalibration(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         finger1Input = new TypedIOPort(this, "finger1Input", true, false);
         finger1Input.setTypeEquals(BaseType.INT);
         finger2Input = new TypedIOPort(this, "finger2Input", true, false);
-        finger2Input.setTypeEquals(BaseType.INT); 
+        finger2Input.setTypeEquals(BaseType.INT);
         finger3Input = new TypedIOPort(this, "finger3Input", true, false);
-        finger3Input.setTypeEquals(BaseType.INT); 
+        finger3Input.setTypeEquals(BaseType.INT);
         finger4Input = new TypedIOPort(this, "finger4Input", true, false);
-        finger4Input.setTypeEquals(BaseType.INT); 
+        finger4Input.setTypeEquals(BaseType.INT);
         finger5Input = new TypedIOPort(this, "finger5Input", true, false);
-        finger5Input.setTypeEquals(BaseType.INT); 
+        finger5Input.setTypeEquals(BaseType.INT);
         rollInput = new TypedIOPort(this, "rollInput", true, false);
-        rollInput.setTypeEquals(BaseType.INT); 
+        rollInput.setTypeEquals(BaseType.INT);
         pitchInput = new TypedIOPort(this, "pitchInput", true, false);
-        pitchInput.setTypeEquals(BaseType.INT); 
+        pitchInput.setTypeEquals(BaseType.INT);
         yawInput = new TypedIOPort(this, "yawInput", true, false);
-        yawInput.setTypeEquals(BaseType.INT); 
+        yawInput.setTypeEquals(BaseType.INT);
         finger1Output = new TypedIOPort(this, "finger1Output", false, true);
         finger1Output.setTypeEquals(BaseType.INT);
         finger2Output = new TypedIOPort(this, "finger2Output", false, true);
-        finger2Output.setTypeEquals(BaseType.INT); 
+        finger2Output.setTypeEquals(BaseType.INT);
         finger3Output = new TypedIOPort(this, "finger3Output", false, true);
-        finger3Output.setTypeEquals(BaseType.INT); 
+        finger3Output.setTypeEquals(BaseType.INT);
         finger4Output = new TypedIOPort(this, "finger4Output", false, true);
-        finger4Output.setTypeEquals(BaseType.INT); 
+        finger4Output.setTypeEquals(BaseType.INT);
         finger5Output = new TypedIOPort(this, "finger5Output", false, true);
-        finger5Output.setTypeEquals(BaseType.INT); 
+        finger5Output.setTypeEquals(BaseType.INT);
         rollOutput = new TypedIOPort(this, "rollOutput", false, true);
-        rollOutput.setTypeEquals(BaseType.INT); 
+        rollOutput.setTypeEquals(BaseType.INT);
         pitchOutput = new TypedIOPort(this, "pitchOutput", false, true);
-        pitchOutput.setTypeEquals(BaseType.INT); 
+        pitchOutput.setTypeEquals(BaseType.INT);
         yawOutput = new TypedIOPort(this, "yawOutput", false, true);
-        yawOutput.setTypeEquals(BaseType.INT); 
-        
+        yawOutput.setTypeEquals(BaseType.INT);
+
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -62,7 +62,7 @@ void calculateValues(ModelInstance *comp) {
         else {
             hr(output_) = absent_;
         }
-    }    
+    }
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives

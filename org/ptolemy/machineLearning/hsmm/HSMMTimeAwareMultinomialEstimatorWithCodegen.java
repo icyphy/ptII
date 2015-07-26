@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List; 
+import java.util.List;
 import java.util.Set;
 
 import com.cureos.numerics.Calcfc;
@@ -60,7 +60,7 @@ HSMMTimeAwareMultinomialEstimator {
         minPowerThreshold.setExpression("0");
         minPowerThreshold.setTypeEquals(BaseType.INT);
 
-        propertyFile = new FilePortParameter(this, "propertyFile"); 
+        propertyFile = new FilePortParameter(this, "propertyFile");
         propertyFile.setExpression("properties.pctl");
 
 
@@ -85,18 +85,18 @@ HSMMTimeAwareMultinomialEstimator {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        URI uri = URIAttribute.getModelURI(this);  
+        URI uri = URIAttribute.getModelURI(this);
         if (uri == null) {
             throw new IllegalActionException(this,"Save model before running model checking.");
         }
         // get directory
-        int pos = uri.getPath().lastIndexOf('/'); 
+        int pos = uri.getPath().lastIndexOf('/');
         String directory = uri.getPath().substring(0,pos);
-        _uri = directory;        
+        _uri = directory;
 
         knownOptima.add(new double[]
-                {0.9999998558870935, 0.7365133293652223, 
-                0.7365133293652225, 0.5729570673625037, 
+                {0.9999998558870935, 0.7365133293652223,
+                0.7365133293652225, 0.5729570673625037,
                 0, 0.5729570673625037});
         knownOptima.add(new double[]{0 , 0.9871000428696297 , 0.9871000428696303 , 0.8668749276705995 , 0.8668749276705996 , 0.2852487541062735 , 0.6721797878012544});
         knownOptima.add(new double[]{0.6048189790671137 , 0.6622552721643232 , 0.6622552721643232 , 0.24912678210746997 , 0.24912678210747002 , 0.23353707829230622 , 0.24391543063710114 , 0.24392519246697586});
@@ -123,7 +123,7 @@ HSMMTimeAwareMultinomialEstimator {
         knownOptima.add(new double[]{0.6066919133835842 , 0.6379861903160877 , 0.6379861903160875 , 0.5408912278225496 , 0.18699915566440145 , 0.20455720587403062 , 0.20455720587403065 , 0.13584089843773064 });
         knownOptima.add(new double[]{0.16263114037725163 , 0.9275349558931817 , 0.3968911544709274 , 0.7793100940176831 , 0.779310094017684,0 , 0.3406715441110433 , 0.5612228730860364 });
         knownOptima.add(new double[]{1.0,1.0,1.0,1.0,1.0,1.0});
-        
+
         learningPattern = new HashMap<>();
         learningPattern.put(0, new int[]{0});
         learningPattern.put(1, new int[]{0,1});
@@ -133,7 +133,7 @@ HSMMTimeAwareMultinomialEstimator {
         learningPattern.put(5, new int[]{1,4});
         learningPattern.put(6, new int[]{2,4});
         learningPattern.put(7, new int[]{3,6});
-        
+
     }
 
     @Override
@@ -182,29 +182,29 @@ HSMMTimeAwareMultinomialEstimator {
             _testPreset = ((BooleanToken)testPreset.getToken()).booleanValue();
         } else if(attribute==minPowerThreshold) {
             _pThreshold = ((IntToken)minPowerThreshold.getToken()).intValue();
-        } else { 
+        } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HSMMTimeAwareMultinomialEstimatorWithCodegen newObject = (HSMMTimeAwareMultinomialEstimatorWithCodegen) super
                 .clone(workspace);
         newObject.knownOptima = null;
-        newObject.learningPattern =null; 
-        
+        newObject.learningPattern =null;
+
         return newObject;
     }
-    
-    
-    public void fire() throws IllegalActionException { 
 
-        super.fire(); 
+
+    public void fire() throws IllegalActionException {
+
+        super.fire();
 
         //        HashMap<Integer,double[]> previousOptima = new HashMap<>();
         if (_useModelChecking) {
-            _writeProperties(); 
+            _writeProperties();
 
             if (_testPreset) {
                 //String[] method = {INTERPOLATE, SELF_AND_ZERO, FORCE_SELF, FORCE_ZERO};
@@ -212,7 +212,7 @@ HSMMTimeAwareMultinomialEstimator {
                 _useOptimization = false;
                 //double[] powerSpecs = _computeHourlyPowerSpecs(SPEC_TYPE.MAXIMUM);
                 //for (int optLoop = 0; optLoop <500; optLoop++) {
-                for (String strategy:method) { 
+                for (String strategy:method) {
                     // set learned distributions first
                     At = new double[NUM_CATEGORIES][_nStates][_nStates];
                     for (int h = 0; h < NUM_CATEGORIES; h++) {
@@ -222,41 +222,41 @@ HSMMTimeAwareMultinomialEstimator {
                             }
                         }
                         // fill in missing probabilities according to current strategy
-                        _calculateTransitionScheme(strategy,h); 
+                        _calculateTransitionScheme(strategy,h);
                     }
 
-                    _code = generateCode(0); 
+                    _code = generateCode(0);
                     _writeModelFile();
 
-                    _modelCheckAll(strategy);  
+                    _modelCheckAll(strategy);
                 }
             } else if (! _useOptimization){
                 Token[] optP = new Token[NUM_CATEGORIES];
-                for ( int validHour=0; validHour < NUM_CATEGORIES; validHour++) { 
+                for ( int validHour=0; validHour < NUM_CATEGORIES; validHour++) {
 
-                    _code = generateCode(validHour);   
-                    double[] optima = knownOptima.get(validHour); 
-                    optP[validHour] = new DoubleToken(_optimum); 
-                    _updateAt(optima,validHour); 
-                } 
-                _code = generateCode(23);  
-                _writeModelFile(); 
+                    _code = generateCode(validHour);
+                    double[] optima = knownOptima.get(validHour);
+                    optP[validHour] = new DoubleToken(_optimum);
+                    _updateAt(optima,validHour);
+                }
+                _code = generateCode(23);
+                _writeModelFile();
                 _modelCheckAll("justTesting");
 
                 optvals.send(0, new ArrayToken(optP));
             } else {
                 Token[] optP = new Token[NUM_CATEGORIES];
-                for ( int validHour=0; validHour < NUM_CATEGORIES; validHour++) { 
+                for ( int validHour=0; validHour < NUM_CATEGORIES; validHour++) {
                     System.out.println("Optimizing hour " + validHour);
-                    _code = generateCode(validHour);  
-                    _writeModelFile(); 
+                    _code = generateCode(validHour);
+                    _writeModelFile();
                     //double[] optima = knownOptima.get(validHour);
                     double[] optima = _modelCheck(validHour,null);
                     optP[validHour] = new DoubleToken(_optimum);
                     //previousOptima.put(validHour,optima);
                     if (_useOptimization && !_optimizeOverAll) {
                         _updateAt(optima,validHour);
-                    }  
+                    }
                 }
 
                 optvals.send(0, new ArrayToken(optP));
@@ -264,23 +264,23 @@ HSMMTimeAwareMultinomialEstimator {
         }
 
         Token[] Atokens = new Token[NUM_CATEGORIES];
-        for (int i = 0 ; i < NUM_CATEGORIES; i++) { 
+        for (int i = 0 ; i < NUM_CATEGORIES; i++) {
             Atokens[i] = new DoubleMatrixToken(At[i]);
         }
 
         empiricalStartTimes.send(0, new ArrayToken(Atokens));
 
-    } 
+    }
 
     @Override
     public void _sendEmpiricalMatrix() {
         return;
     }
     private void _updateAt(double[] optima,int validHour) {
-        int k =0; 
+        int k =0;
         for (int[] z :incompleteCategories) {
             if (z[0] == validHour) {
-                int sourceState = z[1]; 
+                int sourceState = z[1];
                 if (sourceState > 0) {
                     int[] indices = learningPattern.get(sourceState);
                     //first, wipe the corresponding row of At;
@@ -288,14 +288,14 @@ HSMMTimeAwareMultinomialEstimator {
                         At[validHour][sourceState][i] =0.0;
                     }
                     At[validHour][sourceState][indices[0]] = 1.0-optima[k];
-                    At[validHour][sourceState][indices[1]] = optima[k];  
+                    At[validHour][sourceState][indices[1]] = optima[k];
                     k++;
-                } 
+                }
             }
         }
     }
 
-    private double[] _modelCheck(int hour, double[] prevOpt) throws IllegalActionException { 
+    private double[] _modelCheck(int hour, double[] prevOpt) throws IllegalActionException {
 
         _optimum=0.0;
         if (_useOptimization) {
@@ -303,10 +303,10 @@ HSMMTimeAwareMultinomialEstimator {
             int numConstraints;
 
             List indices = new ArrayList<Integer>();
-            if (_optimizeOverAll) { 
+            if (_optimizeOverAll) {
                 int pCount =0;
                 for (int[] z :incompleteCategories) {
-                    if (z[0] == hour) { 
+                    if (z[0] == hour) {
                         for (int j = 0 ; j < _nStates-1; j++) {
                             pCount++;
                         }
@@ -316,16 +316,16 @@ HSMMTimeAwareMultinomialEstimator {
                 numConstraints = nVariables*2 + (nVariables/7)*2;
             } else {
                 for (int[] z :incompleteCategories) {
-                    if (z[0] == hour && z[1]!=0) { 
+                    if (z[0] == hour && z[1]!=0) {
                         indices.add(z[1]);
                     }
-                } 
+                }
                 nVariables = indices.size();
                 numConstraints = 2*nVariables;
-            } 
+            }
 
 
-            Calcfc calcfc = new Calcfc() { 
+            Calcfc calcfc = new Calcfc() {
                 public double Compute(int n, int m, double[] x, double[] con,
                         boolean[] terminate) throws IllegalActionException {
                     System.out.print(".");
@@ -368,7 +368,7 @@ HSMMTimeAwareMultinomialEstimator {
                             }
                         }
                     }
-                    if (safeToCall) { 
+                    if (safeToCall) {
                         //                        for (int i=0; i <x.length; i++) {
                         //                            System.out.print(x[i]+" ");
                         //                        }
@@ -378,11 +378,11 @@ HSMMTimeAwareMultinomialEstimator {
                                 propertyFile.getExpression(),"-const",paramValues,"-prop",""+(hour+1),"-exportresults","stdout:csv");
                         pb.directory(new File(_uri));
                         try {
-                            Process pr = pb.start(); 
+                            Process pr = pb.start();
                             BufferedReader in = new BufferedReader(
-                                    new InputStreamReader(pr.getInputStream())); 
+                                    new InputStreamReader(pr.getInputStream()));
                             BufferedReader err = new BufferedReader(
-                                    new InputStreamReader(pr.getErrorStream())); 
+                                    new InputStreamReader(pr.getErrorStream()));
 
                             String line = null;
                             while( (line =err.readLine()) != null) {
@@ -422,7 +422,7 @@ HSMMTimeAwareMultinomialEstimator {
             }
             Cobyla.FindMinimum(calcfc, nVariables,
                     numConstraints, start, 1.0, 1E-2, 0,
-                    _optStep, term); 
+                    _optStep, term);
 
             //System.out.println("Optimal Probabilities For Hour " + hour +" = ");
             //            for (int i = 0; i <start.length; i++) {
@@ -438,11 +438,11 @@ HSMMTimeAwareMultinomialEstimator {
                 ProcessBuilder pb = new ProcessBuilder("prism",filename.getExpression(),
                         propertyFile.getExpression(),"-const", "hTest="+hour,"-prop",""+(hour+1),"-exportresults","resultNoOpt"+hour+".txt:csv");
                 pb.directory(new File(_uri));
-                Process pr = pb.start(); 
+                Process pr = pb.start();
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(pr.getInputStream())); 
+                        new InputStreamReader(pr.getInputStream()));
                 String line = null;
-                while ((line = in.readLine()) != null) { 
+                while ((line = in.readLine()) != null) {
                     System.out.println(line);
                     if (line.equals("Result")) {
                         double[] d = {Double.parseDouble(in.readLine())};
@@ -457,7 +457,7 @@ HSMMTimeAwareMultinomialEstimator {
         return null;
     }
 
-    private void _modelCheckAll(String method) throws IllegalActionException { 
+    private void _modelCheckAll(String method) throws IllegalActionException {
 
         //int[] possibleThresholds = {0,149,165,166};
         Set<Integer> possibleThresholds = new HashSet<>();
@@ -468,24 +468,24 @@ HSMMTimeAwareMultinomialEstimator {
         }
 
         for (int thre : possibleThresholds) {
-            try{ 
+            try{
                 System.out.println("model checking P=" + thre + " with " + method);
                 ProcessBuilder pb = new ProcessBuilder("prism",filename.getExpression(),
                         //propertyFile.getExpression(),
-                        "-const", "hTest=0:23,Pthreshold="+thre, 
+                        "-const", "hTest=0:23,Pthreshold="+thre,
                         "-pf","P=?[G pow <= Pthreshold]",
                         "-exportresults","allResults"+method+thre+".txt:matrix");
                 pb.directory(new File(_uri));
-                Process pr = pb.start(); 
+                Process pr = pb.start();
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(pr.getInputStream())); 
+                        new InputStreamReader(pr.getInputStream()));
                 String line = null;
-                while ((line = in.readLine()) != null) { 
-                    System.out.println(line); 
-                } 
+                while ((line = in.readLine()) != null) {
+                    System.out.println(line);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-            } 
+            }
         }
     }
 
@@ -497,14 +497,14 @@ HSMMTimeAwareMultinomialEstimator {
 
 
         String properties = "";
-        // check some properties 
-        for (int i = 0 ; i< NUM_CATEGORIES; i++) { 
+        // check some properties
+        for (int i = 0 ; i< NUM_CATEGORIES; i++) {
             if (powerSpecs[i]==0) {
-                properties += "P=?[G pow <= "+ 
-                        (powerSpecs[i]+_pThreshold)+ 
-                        "]" + _eol; 
+                properties += "P=?[G pow <= "+
+                        (powerSpecs[i]+_pThreshold)+
+                        "]" + _eol;
             } else {
-                properties += "P=?[G pow <= "+powerSpecs[i]+"]" + _eol; 
+                properties += "P=?[G pow <= "+powerSpecs[i]+"]" + _eol;
             }
 
         }
@@ -512,7 +512,7 @@ HSMMTimeAwareMultinomialEstimator {
         try {
             writer = propertyFile.openForWriting();
             writer.write(properties);
-            writer.close();  
+            writer.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -529,10 +529,10 @@ HSMMTimeAwareMultinomialEstimator {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } 
+        }
     }
     /**
-     * Compute the avg power consumption for each hour 
+     * Compute the avg power consumption for each hour
      * @return
      */
     private double[] _computeHourlyPowerSpecs(SPEC_TYPE type) {
@@ -554,34 +554,34 @@ HSMMTimeAwareMultinomialEstimator {
                 }
             }
         } else if(type == SPEC_TYPE.MAXIMUM) {
-            for (int i = 0; i < _observations.length; i ++) { 
+            for (int i = 0; i < _observations.length; i ++) {
                 double totalPower = 0.0;
                 for (int j=0; j< _observations[i].length; j++) {
                     totalPower += _observations[i][j];
-                }  
+                }
                 if (totalPower > hourSpecs[_hourOfDay[i]]) {
                     hourSpecs[_hourOfDay[i]] = totalPower;
-                } 
-            } 
+                }
+            }
         }
 
         return hourSpecs;
     }
     private StringBuffer generateCode(int validHour) throws IllegalActionException {
-        // Generate PRISM code 
+        // Generate PRISM code
         StringBuffer code = new StringBuffer();
 
         // Must be called first, since PMAX is determined by this method.
-        List stateEmissions = _computeTotalPowerConsumptionDistributions();   
+        List stateEmissions = _computeTotalPowerConsumptionDistributions();
 
         if (_useOptimization) {
-            code.append(_getHeader(validHour)); 
+            code.append(_getHeader(validHour));
         } else {
             code.append(_getHeader());
-        } 
+        }
 
         code.append(_getStateSpaceAutomaton(stateEmissions,validHour));
-        code.append(_getDurationAutomaton()); 
+        code.append(_getDurationAutomaton());
 
         code.append(_getStepCountAutomaton());
         code.append(_getTimeOfDayAutomaton());
@@ -593,32 +593,32 @@ HSMMTimeAwareMultinomialEstimator {
         String code = INDENT1 + "module durationAutomaton" + _eol +
                 INDENT2 + "d : [0..DMAX] init 0;" + _eol ;
 
-        code+=(" " + _eol); 
+        code+=(" " + _eol);
         String ins = "";
         for (int i = 0; i < D_new.length; i++) {
             // initDist=false &
-            ins = INDENT2 +  "[tr] d=0 & s=" + i + " -> "; 
-            D_new[i] = _cleanAndTruncate(D_new[i], threshold, precision);  
+            ins = INDENT2 +  "[tr] d=0 & s=" + i + " -> ";
+            D_new[i] = _cleanAndTruncate(D_new[i], threshold, precision);
 
             for (int j=0; j < D_new[0].length; j++) {
                 if (D_new[i][j] > 0.0) {
-                    ins += D_new[i][j] + " : (d'=" + j + ") + "; 
-                } 
+                    ins += D_new[i][j] + " : (d'=" + j + ") + ";
+                }
             }
             ins = ins.substring(0,ins.length()-3) + ";" + _eol;
             code+=(ins);
-        } 
+        }
 
         code+=(INDENT2 + "[step] d > 0 -> (d'=d-1);" + _eol);
 
-        code+=(INDENT1 +"endmodule" + _eol+ " " + _eol); 
+        code+=(INDENT1 +"endmodule" + _eol+ " " + _eol);
         return code;
     }
 
     private String _getStateSpaceAutomaton(List stateEmissions, int validHour) {
-        String code = INDENT1 + "module stateSpace" + _eol + 
+        String code = INDENT1 + "module stateSpace" + _eol +
                 INDENT2 + "s : [0.. " + (_nStates-1) + "] init 0;" + _eol +
-                INDENT2 + "pow : [0..PMAX] init 0; " + _eol + 
+                INDENT2 + "pow : [0..PMAX] init 0; " + _eol +
                 INDENT2 + "initState : bool init true;"+_eol;
 
         code += _getPriors();
@@ -638,7 +638,7 @@ HSMMTimeAwareMultinomialEstimator {
             // remove the extra plus
             emissions = emissions.substring(0,emissions.length()-3) + ";" + _eol;
             code+=(emissions);
-        } 
+        }
 
         code += INDENT2 + "[step] testThisHour = false & initState = false -> (pow' = 0);" +_eol;
 
@@ -648,9 +648,9 @@ HSMMTimeAwareMultinomialEstimator {
 
         if (!_useOptimization) {
             for (int hour = 0; hour < NUM_CATEGORIES; hour ++) {
-                double[][] A = At[hour]; 
-                for ( int i = 0 ; i < _nStates; i++) { 
-                    guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> "; 
+                double[][] A = At[hour];
+                for ( int i = 0 ; i < _nStates; i++) {
+                    guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                     A[i] = _cleanAndTruncate(A[i], threshold, precision);
                     for (int j=0; j < _nStates; j++) {
                         if(A[i][j]>0) {
@@ -659,16 +659,16 @@ HSMMTimeAwareMultinomialEstimator {
                     }
                     guard = guard.substring(0,guard.length()-3) + ";" + _eol;
                     code+=(guard);
-                }  
+                }
                 code+=(" " + _eol);
-            } 
-        } else { 
+            }
+        } else {
             for (int hour = 0; hour < NUM_CATEGORIES; hour ++) {
                 double[][] A = At[hour];
                 if (hour != validHour) {
                     for ( int i = 0 ; i < _nStates; i++) {
-                        //initDist=false & 
-                        guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> "; 
+                        //initDist=false &
+                        guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                         A[i] = _cleanAndTruncate(A[i], threshold, precision);
                         for (int j=0; j < _nStates; j++) {
                             if(A[i][j]>0) {
@@ -677,11 +677,11 @@ HSMMTimeAwareMultinomialEstimator {
                         }
                         guard = guard.substring(0,guard.length()-3) + ";" + _eol;
                         code+=(guard);
-                    } 
-                } else { 
+                    }
+                } else {
                     if (_optimizeOverAll) {
                         // for valid hour, generate parametric state transition matrix
-                        // ONLY for those states that haven't been generated by the 
+                        // ONLY for those states that haven't been generated by the
                         // original learning method.
                         int pIndex=0;
                         List done = new ArrayList<Integer>();
@@ -690,9 +690,9 @@ HSMMTimeAwareMultinomialEstimator {
                                 int i = z[1];
                                 done.add(i);
                                 String stateSum = "(" ;
-                                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";  
-                                for (int j=1; j < _nStates; j++) { 
-                                    guard += "p"+pIndex + " : (s'=" + j + ") + "; 
+                                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
+                                for (int j=1; j < _nStates; j++) {
+                                    guard += "p"+pIndex + " : (s'=" + j + ") + ";
                                     stateSum += "p"+pIndex+"+";
                                     pIndex ++;
                                 }
@@ -700,14 +700,14 @@ HSMMTimeAwareMultinomialEstimator {
                                 guard += "1-"+stateSum+": (s'=" + 0+");" + _eol;
 
 
-                                //guard += "1-p"+i+" : (s'=" + 0 + ") + p"+i+" : (s'=" + i + ");" + _eol;  
-                                code+=(guard); 
-                            } 
+                                //guard += "1-p"+i+" : (s'=" + 0 + ") + p"+i+" : (s'=" + i + ");" + _eol;
+                                code+=(guard);
+                            }
                         }
                         for ( int i = 0 ; i < _nStates; i++) {
                             if (!done.contains(i)) {
-                                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> "; 
-                                A[i] = _cleanAndTruncate(A[i], threshold, precision); 
+                                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
+                                A[i] = _cleanAndTruncate(A[i], threshold, precision);
                                 for (int j=0; j < _nStates; j++) {
                                     if(A[i][j]>0) {
                                         guard += A[i][j] + " : (s'=" + j + ") + ";
@@ -723,21 +723,21 @@ HSMMTimeAwareMultinomialEstimator {
                         for (int[] z :incompleteCategories) {
                             if (z[0] == validHour) {
                                 int i = z[1];
-                                done.add(i); 
+                                done.add(i);
                                 guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                                 if (i == 0) {
                                     guard += "1.0: (s'=0);" + _eol;
-                                } else { 
+                                } else {
                                     tranStates = learningPattern.get(i);
                                     guard += "1-p"+i+": (s'=" + tranStates[0] + ") + p"+i+" : (s'="+ tranStates[1] +");"+_eol;
                                 }
                                 code+=(guard);
                             }
-                        } 
+                        }
                         for ( int i = 0 ; i < _nStates; i++) {
                             if (!done.contains(i)) {
-                                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> "; 
-                                A[i] = _cleanAndTruncate(A[i], threshold, precision); 
+                                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
+                                A[i] = _cleanAndTruncate(A[i], threshold, precision);
                                 for (int j=0; j < _nStates; j++) {
                                     if(A[i][j]>0) {
                                         guard += A[i][j] + " : (s'=" + j + ") + ";
@@ -770,9 +770,9 @@ HSMMTimeAwareMultinomialEstimator {
         return priors;
     }
     //    private String _getStateSpaceAutomaton(List stateEmissions) {
-    //        String code = INDENT1 + "module stateSpace" + _eol + 
+    //        String code = INDENT1 + "module stateSpace" + _eol +
     //                INDENT2 + "s : [0.. " + (_nStates-1) + "] init 0;" + _eol +
-    //                INDENT2 + "pow : [0..PMAX] init 0; " + _eol + 
+    //                INDENT2 + "pow : [0..PMAX] init 0; " + _eol +
     //                INDENT2 + "initState : bool init true;"+_eol;
     //
     //        String priors = INDENT2 +  "[step] initState = true  -> ";
@@ -799,16 +799,16 @@ HSMMTimeAwareMultinomialEstimator {
     //            // remove the extra plus
     //            emissions = emissions.substring(0,emissions.length()-3) + ";" + _eol;
     //            code+=(emissions);
-    //        } 
+    //        }
     //
     //        code += INDENT2 + "[step] testThisHour = false & initState = false -> (pow' = 0);" +_eol;
     //
     //        String guard;
     //        for (int hour = 0; hour < NUM_CATEGORIES; hour ++) {
-    //            double[][] A = At[hour]; 
+    //            double[][] A = At[hour];
     //            for ( int i = 0 ; i < _nStates; i++) {
-    //                //initDist=false & 
-    //                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> "; 
+    //                //initDist=false &
+    //                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
     //                A[i] = _cleanAndTruncate(A[i], threshold, precision);
     //                for (int j=0; j < _nStates; j++) {
     //                    if(A[i][j]>0) {
@@ -817,7 +817,7 @@ HSMMTimeAwareMultinomialEstimator {
     //                }
     //                guard = guard.substring(0,guard.length()-3) + ";" + _eol;
     //                code+=(guard);
-    //            }  
+    //            }
     //            code+=(" " + _eol);
     //        }
     //        code+=(" " + _eol);
@@ -828,23 +828,23 @@ HSMMTimeAwareMultinomialEstimator {
 
         double[] powerSpecs = _computeHourlyPowerSpecs(SPEC_TYPE.MAXIMUM);
 
-        String str =  "dtmc" + _eol + 
-                "const int MAX_STEP = " + 288 + "; // 288 time steps per improvisation" + _eol + 
+        String str =  "dtmc" + _eol +
+                "const int MAX_STEP = " + 288 + "; // 288 time steps per improvisation" + _eol +
                 "const int PMAX = " + PMAXi + "; // maximum power consumption" + _eol+
                 "const int DMAX = " + _maxDuration + ";// maximum duration consumption" + _eol+
                 "const int T = 5; // sampling period is 5 minutes." + _eol +
-                "const int samplesPerHour = floor(60/T);" + _eol  + 
-                "const int hTest;" + _eol; 
+                "const int samplesPerHour = floor(60/T);" + _eol  +
+                "const int hTest;" + _eol;
 
         if ( _optimizeOverAll) {
             int pCount =0;
             for (int[] z :incompleteCategories) {
-                if (z[0] == validHour) { 
+                if (z[0] == validHour) {
                     for (int j = 0 ; j < _nStates-1; j++) {
                         str += "const double p"+(pCount++)+";"+_eol;
                     }
                 }
-            } 
+            }
         } else {
             // zero or self
             for (int[] z :incompleteCategories) {
@@ -866,14 +866,14 @@ HSMMTimeAwareMultinomialEstimator {
 
     private String _getHeader() {
         double[] powerSpecs = _computeHourlyPowerSpecs(SPEC_TYPE.MAXIMUM);
-        String str =  "dtmc" + _eol + 
-                "const int MAX_STEP = " + 288 + "; // 288 time steps per improvisation" + _eol + 
+        String str =  "dtmc" + _eol +
+                "const int MAX_STEP = " + 288 + "; // 288 time steps per improvisation" + _eol +
                 "const int PMAX = " + PMAXi + "; // maximum power consumption" + _eol+
                 "const int DMAX = " + _maxDuration + ";// maximum duration consumption" + _eol+
                 "const int T = 5; // sampling period is 5 minutes." + _eol +
                 "const int samplesPerHour = floor(60/T);" + _eol  +
                 "const int Pthreshold;" +_eol +
-                "const int hTest;" + _eol; 
+                "const int hTest;" + _eol;
 
         for (int i =0; i < powerSpecs.length; i++) {
             str += "const int Plimit_" + i + " = floor(" + powerSpecs[i] + ");" + _eol;
@@ -883,12 +883,12 @@ HSMMTimeAwareMultinomialEstimator {
     private String _getStepCountAutomaton() {
         return INDENT1 + "module nMod " + _eol +
                 // number of outputs produced;
-                INDENT2+"n : [0..MAX_STEP] init 0;" +_eol+ 
+                INDENT2+"n : [0..MAX_STEP] init 0;" +_eol+
                 INDENT2+"[step] n<MAX_STEP -> (n'=n+1);" + _eol +
                 INDENT1 +"endmodule" + _eol;
     }
 
-    private String _getTimeOfDayAutomaton() { 
+    private String _getTimeOfDayAutomaton() {
 
         // denotes the step within the hour
 
@@ -899,14 +899,14 @@ HSMMTimeAwareMultinomialEstimator {
                 INDENT2 + "[step] i = samplesPerHour & h < 23 -> (h'=h+1);" + _eol +
                 INDENT2 +" [step] i = samplesPerHour & h = 23 -> (h'=0);" + _eol +
                 INDENT2 +"[step] i < samplesPerHour -> true;" + _eol +
-                INDENT2 + "endmodule" + _eol; 
+                INDENT2 + "endmodule" + _eol;
     }
-    
-    
+
+
     /**
      * Given PMF's for multinomial estimates on each dimension of the observation model,
-     * create a single joint PMF on the "sum" of observations at every time step. 
-     * @throws IllegalActionException 
+     * create a single joint PMF on the "sum" of observations at every time step.
+     * @throws IllegalActionException
      */
     private List<double[]> _computeTotalPowerConsumptionDistributions() throws IllegalActionException {
 
@@ -928,9 +928,9 @@ HSMMTimeAwareMultinomialEstimator {
                     count ++;
                 }
                 baseCount += _nCategories[appliance];
-                pmfList.add(appliancePMF); 
+                pmfList.add(appliancePMF);
             }
-            // now will convolve all entries of pmfList. 
+            // now will convolve all entries of pmfList.
             while (pmfList.size() > 1) {
                 double[] a1 = (double[]) pmfList.remove(0);
                 double[] a2 = (double[]) pmfList.remove(0);
@@ -949,7 +949,7 @@ HSMMTimeAwareMultinomialEstimator {
             pmfStates.add(raw);
         }
 
-        return pmfStates; 
+        return pmfStates;
     }
 
     private double[] _cleanAndTruncate(double[] input, double threshold, int decimalPlaces) {
@@ -961,7 +961,7 @@ HSMMTimeAwareMultinomialEstimator {
         for (int i=0; i < input.length; i++) {
             if (input[i] < threshold) {
                 output[i] = 0.0;
-            } else { 
+            } else {
                 output[i] = input[i];
                 sum += input[i];
             }
@@ -977,8 +977,8 @@ HSMMTimeAwareMultinomialEstimator {
         }
 
         if (precision > 0) {
-            output[0] += 1.0-newSum; 
-            output[0] = Math.floor(output[0]*scale)/scale; 
+            output[0] += 1.0-newSum;
+            output[0] = Math.floor(output[0]*scale)/scale;
         }
         return output;
     }
@@ -999,14 +999,14 @@ HSMMTimeAwareMultinomialEstimator {
     private int PMAXi = 0;
     private double threshold = 1E-4;
     private int precision = 0;
-    /** 
-     * Power specification type.  
+    /**
+     * Power specification type.
      */
     private enum SPEC_TYPE {
         AVERAGE,
         MAXIMUM
     }
-    private double _optimum; 
+    private double _optimum;
 
     private boolean _optimizeOverAll = false;
 
@@ -1014,13 +1014,13 @@ HSMMTimeAwareMultinomialEstimator {
 
     private boolean _useModelChecking;
 
-    private boolean _testPreset; 
+    private boolean _testPreset;
 
     private List<double[]> knownOptima = new ArrayList<>();
 
 
     private int _pThreshold;
-    
+
     private HashMap<Integer,int[]> learningPattern;
 
     private String _uri;

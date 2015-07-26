@@ -79,7 +79,7 @@ void calculateValues(ModelInstance *comp) {
             i(was_pos_) = is_pos;
             pos(0) = fmi2False;
         }
-    }    
+    }
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives

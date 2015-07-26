@@ -153,7 +153,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         nStates.setExpression("2");
         nStates.setTypeEquals(BaseType.INT);
         nStates.setDisplayName("numberOfStates");
-        
+
         likelihoodOut = new TypedIOPort(this,"likelihoodOut",false, true);
         likelihoodOut.setTypeEquals((BaseType.DOUBLE));
 
@@ -265,7 +265,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     /** The input port that provides the sample observations.*/
     public TypedIOPort input;
-    
+
     public TypedIOPort likelihoodOut;
 
     /** The vector estimate for the prior distribution on the set of states.*/
@@ -295,7 +295,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             Token observationArray = input.get(0);
             // observation length is inferred from the input array length.
             int _observationLength = ((ArrayToken) observationArray).length();
-    
+
             if (_observationLength <= 0) {
                 throw new IllegalActionException(this,
                         "Observation sequence length " + _observationLength
@@ -309,7 +309,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                 }
             } else {
                 int observationDimension = ((ArrayToken) ((ArrayToken) observationArray)
-                        .getElement(0)).length(); 
+                        .getElement(0)).length();
                 _observations = new double[_observationLength][observationDimension];
                 for (int i = 0; i < _observationLength; i++) {
                     for (int j = 0; j < observationDimension; j++) {
@@ -361,9 +361,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @param y input observation
      * @param hiddenState index of hidden state
      * @return P(Y=y | X=hiddenState)
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    protected abstract double emissionProbability(double[] y, int hiddenState) 
+    protected abstract double emissionProbability(double[] y, int hiddenState)
             throws IllegalActionException;
 
     /**
@@ -374,7 +374,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
         //_observations = new double[_observationLength];
         // infer the number of states from the mean array
-        _likelihood = 0.0; 
+        _likelihood = 0.0;
         _transitionMatrix = new double[_nStates][_nStates];
         _A0 = new double[_nStates][_nStates];
         _priors = new double[_nStates];
@@ -387,7 +387,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     /**
      * One step EM iteration
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected abstract void _iterateEM() throws IllegalActionException;
 
@@ -414,7 +414,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * @param prior prior state distribution guess
      * @param nCategories number of categories in the multinomial distribution, where applies
      * @return a HashMap containing the updated estimates of all model parameters
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     protected HashMap HMMAlphaBetaRecursion(double[][] y, double[][] A,
             double[] prior, int nCategories) throws IllegalActionException
@@ -492,11 +492,11 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                 }
             }
             for (int a = 0 ; a <y[0].length; a++) {
-                mu_hat[next][a] = 0; 
+                mu_hat[next][a] = 0;
                 for (int b = 0 ; b <y[0].length; b++) {
                     s_hat[next][a][b] = 0;
                 }
-            } 
+            }
         }
         // Normalize A
         double[] rowsum = new double[nStates];
@@ -513,10 +513,10 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         }
         for (int j = 0; j < nStates; j++) {
             gammasum[j] = 0.0;
-            
+
             for (int t = 0; t < y.length; t++) {
                 gammasum[j] += gamma[t][j];
-                for (int i = 0 ; i <y[0].length; i++) { 
+                for (int i = 0 ; i <y[0].length; i++) {
                     mu_hat[j][i] += gamma[t][j] * y[t][i];
                 }
             }
@@ -526,10 +526,10 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             for (int t = 0; t < y.length; t++) {
                 for (int a = 0 ; a <y[0].length; a++) {
                     for (int b = 0 ; b <y[0].length; b++) {
-                        s_hat[j][a][b] += gamma[t][j] * 
+                        s_hat[j][a][b] += gamma[t][j] *
                                 (y[t][a] - mu_hat[j][a])*(y[t][b] - mu_hat[j][b]);
                     }
-                } 
+                }
             }
             for (int a = 0 ; a <y[0].length; a++) {
                 for (int b = 0 ; b <y[0].length; b++) {
@@ -596,7 +596,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
     /** User-defined number of iterations of the alpha-beta recursion.*/
     protected int _nIterations;
-    
+
     /** observation dimension */
     protected int _obsDimension;
 

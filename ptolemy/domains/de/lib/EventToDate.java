@@ -40,11 +40,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** A timed actor that outputs a date token that corresponds to the current
- *  model time (maintained by the local clock in the director). 
- *   Such a correspondence is only given in models that synchronize to real time. 
+ *  model time (maintained by the local clock in the director).
+ *   Such a correspondence is only given in models that synchronize to real time.
  *  In such models, the real time (date) when the model starts is recorded. An input
  *  to this actor is compared to the model start time (in model time). The difference between
- *  those dates (in millisecond resolution) is divided by the time resolution of 
+ *  those dates (in millisecond resolution) is divided by the time resolution of
  *  the local clock, added to the start date of the model and then sent to the output.
  * @author Patricia Derler
  * @version $Id$
@@ -88,7 +88,7 @@ public class EventToDate extends Transformer {
 
     /** Output a DateToken with a date that corresponds to the current model
      *  time.
-     *  @exception IllegalActionException Not thrown here. 
+     *  @exception IllegalActionException Not thrown here.
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -97,19 +97,19 @@ public class EventToDate extends Transformer {
             if (input.hasToken(channel)) {
                 input.get(channel);
             }
-            double modelTimeSinceStart = _director.getModelTime().getDoubleValue() - 
+            double modelTimeSinceStart = _director.getModelTime().getDoubleValue() -
                     _director.getModelStartTime().getDoubleValue();
             if (_manager == null) {
                     _manager = ((CompositeActor) getContainer()).getManager();
             }
-            long time = (long) (modelTimeSinceStart * 1000) // The default unit of time is seconds. 
+            long time = (long) (modelTimeSinceStart * 1000) // The default unit of time is seconds.
                     + _manager.getRealStartTime();
             output.send(channel, new DateToken(time));
         }
     }
 
     private DEDirector _director;
-    
+
     private Manager _manager;
 
 }

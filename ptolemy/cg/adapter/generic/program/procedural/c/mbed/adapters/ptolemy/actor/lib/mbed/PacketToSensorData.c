@@ -63,7 +63,7 @@ if ((int) Buf[0] == 0x24) {
                 k += 4;
                 q3 = (Buf[k] << 24) + (Buf[k+1] << 16) + (Buf[k+2] << 8) + Buf[k+3];
                 k += 4;
-        
+
                 glove_finger1 = ((Buf[k] << 8) + Buf[k + 1]);
                 k += 2;
                 glove_finger2 = ((Buf[k] << 8) + Buf[k + 1]);
@@ -74,7 +74,7 @@ if ((int) Buf[0] == 0x24) {
                 k += 2;
                 glove_finger5 = ((Buf[k] << 8) + Buf[k + 1]);
                 k += 2;
-        
+
                 q00 = q0 / 32768.0;
                 q11 = q1 / 32768.0;
                 q22 = q2 / 32768.0;
@@ -82,7 +82,7 @@ if ((int) Buf[0] == 0x24) {
 
                 norm = sqrt(q00 * q00 + q11 * q11 + q22 * q22 + q33 * q33);
 
-                roll_value = 180.0 * atan2(2 * (q00 * q11 + q22 * q33), 1 - 2 * (q11 * q11 + q22 * q22)) / 3.1415;       
+                roll_value = 180.0 * atan2(2 * (q00 * q11 + q22 * q33), 1 - 2 * (q11 * q11 + q22 * q22)) / 3.1415;
                 pitch_value = 180.0 * asin(2 * (q00 * q22 - q33 * q11)) / 3.1415;
                 yaw_value = 180.0 * atan2(2 * (q00 * q33 + q11 * q22), 1 - 2 * (q22 * q22 + q33 * q33)) / 3.1415;
 
@@ -102,7 +102,7 @@ if ((int) Buf[0] == 0x24) {
                 k += 4;
                 q3 = (Buf[k] << 24) + (Buf[k+1] << 16) + (Buf[k+2] << 8) + Buf[k+3];
                 k += 4;
-                
+
                 glove_finger1 = 0;
                 glove_finger2 = 0;
                 glove_finger3 = 0;
@@ -115,7 +115,7 @@ if ((int) Buf[0] == 0x24) {
                 q33 = q3 / 32768.0;
 
                 norm = sqrt(q00 * q00 + q11 * q11 + q22 * q22 + q33 * q33);
-                roll_value = 180.0 * atan2(2 * (q00 * q11 + q22 * q33), 1 - 2 * (q11 * q11 + q22 * q22)) / 3.1415;       
+                roll_value = 180.0 * atan2(2 * (q00 * q11 + q22 * q33), 1 - 2 * (q11 * q11 + q22 * q22)) / 3.1415;
                 pitch_value = 180.0 * asin(2 * (q00 * q22 - q33 * q11)) / 3.1415;
                 yaw_value = 180.0 * atan2(2 * (q00 * q33 + q11 * q22), 1 - 2 * (q22 * q22 + q33 * q33)) / 3.1415;
 
@@ -133,21 +133,21 @@ if ((int) Buf[0] == 0x24) {
                 for (j = 0; j < 3; j++)
                 {
                     gl.gyro[j] = (Buf[k] << 8) + (Buf[k+1]);
-                    if (glove_gyro[j] > 0x7fff) 
+                    if (glove_gyro[j] > 0x7fff)
                         glove_gyro[j] -= 0x10000;
                     k += 2;
                 }
                 for (j = 0; j < 3; j++)
                 {
                     gl.magn[j] = (Buf[k] << 8) + (Buf[k+1]);
-                    if (glove_magn[j] > 0x7fff) 
+                    if (glove_magn[j] > 0x7fff)
                         glove_magn[j] -= 0x10000;
                     k += 2;
                 }
                 for (j = 0; j < 3; j++)
                 {
                     gl.accel[j] = (Buf[k] << 8) + (Buf[k+1]);
-                    if (glove_accel[j]>0x7fff) 
+                    if (glove_accel[j]>0x7fff)
                         glove_accel[j] -= 0x10000;
                     k += 2;
                 }
@@ -182,19 +182,19 @@ if ((int) Buf[0] == 0x24) {
                 You will need to create new ports and send the data here to them.
                 for (j = 0; j < 3; j++){
                     gl.gyro[j] = (Buf[k] << 8) + (Buf[k+1]);
-                    if (gl.gyro[j] > 0x7fff) 
+                    if (gl.gyro[j] > 0x7fff)
                         gl.gyro[j] -= 0x10000;
                     k += 2;
                 }
                 for (j = 0; j < 3; j++){
                     gl.magn[j] = (Buf[k] << 8) + (Buf[k+1]);
-                    if (gl.magn[j] > 0x7fff) 
+                    if (gl.magn[j] > 0x7fff)
                         gl.magn[j] -= 0x10000;
                     k += 2;
                 }
                 for (j = 0; j < 3; j++){
                     gl.accel[j] = (Buf[k] << 8) + (Buf[k+1]);
-                    if (gl.accel[j] > 0x7fff) 
+                    if (gl.accel[j] > 0x7fff)
                         gl.accel[j] -= 0x10000;
                     k += 2;
                 }
@@ -203,7 +203,7 @@ if ((int) Buf[0] == 0x24) {
                     gl.fingers[y] = 0.0;
                 }
                 */
-                
+
                 glove_finger1 = 0;
                 glove_finger2 = 0;
                 glove_finger3 = 0;
@@ -230,7 +230,7 @@ if ((int) Buf[0] == 0x24) {
                 k += 2;
                 glove_finger5 = ((Buf[k] << 8) + Buf[k+1]);
                 k += 2;
-                
+
                 glove_roll = 0;
                 glove_pitch = 0;
                 glove_yaw = 0;

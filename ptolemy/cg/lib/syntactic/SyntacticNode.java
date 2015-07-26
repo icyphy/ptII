@@ -161,7 +161,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  @exception NameDuplicationException If there is a problem
      *  creating a port or attribute.
      */
-    public boolean representEntity(Entity entity) 
+    public boolean representEntity(Entity entity)
             throws IllegalActionException, NameDuplicationException {
 
         // Check to make sure node is blank.

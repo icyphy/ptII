@@ -91,7 +91,7 @@ public class ViewLayers3D extends TypedAtomicActor {
         horizontalResolution = new Parameter(this, "horizontalResolution",
                 new IntToken(400));
         horizontalResolution.setTypeEquals(BaseType.INT);
-        
+
         layerThickness = new Parameter(this, "layerThickness",
                 new DoubleToken(0.02));
         layerThickness.setTypeEquals(BaseType.DOUBLE);
@@ -153,7 +153,7 @@ public class ViewLayers3D extends TypedAtomicActor {
      *  once per iteration. This is a boolean with default false.
      */
     public Parameter iterationSynchronized;
-    
+
     /** Floating-point variable for specifying thickness of each layer.
      */
     public Parameter layerThickness;
@@ -210,7 +210,7 @@ public class ViewLayers3D extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         boolean _hasToken = layer.hasToken(0);
 
         if (_debugging) {
@@ -402,37 +402,37 @@ public class ViewLayers3D extends TypedAtomicActor {
     private static class MouseRotateView extends MouseRotate {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
-    
+
         public MouseRotateView(ViewLayers3D viewContainer) {
             super();
             _viewContainer = viewContainer;
         }
-    
+
         @Override
         public void processStimulus(java.util.Enumeration criteria) {
             if (stopped != true) {
                 _viewContainer._startRenderer();
             }
-    
+
             super.processStimulus(criteria);
-    
+
             if (stopped != true) {
                 _viewContainer._stopRenderer();
             }
         }
-    
+
         public void stopped() {
             stopped = true;
         }
-    
+
         boolean stopped = false;
-    
+
         ViewLayers3D _viewContainer;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Add the node argument as a child to the encapsulated Java3D node
      *  in this actor.
      */
@@ -442,31 +442,31 @@ public class ViewLayers3D extends TypedAtomicActor {
         }
         _userTransformation.addChild(node);
     }
-    
+
     /**
      * Add a layer to be viewed.
      * @throws IllegalActionException If there is a problem reading
      *  a parameter.
      */
     private void _addLayer() throws IllegalActionException {
-    
+
         int width = layer.getWidth();
-    
+
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         Material material = new Material();
-        
+
         DoubleToken thicknessToken = (DoubleToken)layerThickness.getToken();
-        
+
         for (int i = 0; i < width; i++) {
             BranchGroup branchGroup = new BranchGroup();
             RecordToken recordToken = (RecordToken) layer.get(i);
             StringToken layerShape = (StringToken) recordToken.get("shape");
             DoubleToken layerSize = (DoubleToken) recordToken.get("size");
             StringToken layerColor = (StringToken) recordToken.get("color");
-            
+
             Node node;
-            
-            float red = 0.0f; 
+
+            float red = 0.0f;
             float green = 0.0f;
             float blue = 0.0f;
             float alpha = 1.0f;
@@ -508,7 +508,7 @@ public class ViewLayers3D extends TypedAtomicActor {
                     green = 0.7f;
                     blue = 0.7f;
             }
-            
+
             Appearance appearance = new Appearance();
             Color color = new Color(red, green, blue, alpha);
             Color3f color3f = new Color3f(color);
@@ -516,7 +516,7 @@ public class ViewLayers3D extends TypedAtomicActor {
             appearance.setMaterial(material);
 
             float zLen = (float)thicknessToken.doubleValue()/2;
-            
+
                 node = new Box(1.0f, 1.0f, zLen, primitiveFlags, appearance);
             if (layerShape.stringValue().equals("rect")) {
                     float layerLen = (float)layerSize.doubleValue();
@@ -526,11 +526,11 @@ public class ViewLayers3D extends TypedAtomicActor {
                     float layerRadius = (float)layerSize.doubleValue();
                     node = new Cylinder(layerRadius, zLen * 2, primitiveFlags, appearance);
             }
-            
+
             Transform3D transform = new Transform3D();
             float zOffset = 0.0f;
             float xOffset = 0.0f;
-            
+
             float yOffset = (float)(thicknessToken.doubleValue() * _layerCount);
             _layerCount++;
 
@@ -660,7 +660,7 @@ public class ViewLayers3D extends TypedAtomicActor {
         if (_debugging) {
             _debug("Called _makeSceneGraphConnection()");
         }
-        
+
         _addLayer();
 
         _branchRoot.compile();
@@ -687,7 +687,7 @@ public class ViewLayers3D extends TypedAtomicActor {
             _canvas.stopRenderer();
         }
     }
-    
+
     /** The BoundingSphere. */
     private BoundingSphere _bounds;
 

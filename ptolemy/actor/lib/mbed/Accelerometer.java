@@ -38,13 +38,13 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// K64FAccelerometer 
+//// K64FAccelerometer
 
 /**
  This actor uses three output ports to output
  the x, y, and z measurements from an accelerometer.
 
- <p>The code generator supplies the method contents, thus this 
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui

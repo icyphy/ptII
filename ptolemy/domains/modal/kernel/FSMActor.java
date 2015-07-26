@@ -2465,7 +2465,7 @@ ExplicitChangeContext {
         List<Transition> transitionList = state.outgoingPort
                 .linkedRelationList();
         for (Transition transition : transitionList) {
-            
+
             _transitionBeingTested = transition;
             if (immediateOnly && !transition.isImmediate()) {
                 // Skip the transition.

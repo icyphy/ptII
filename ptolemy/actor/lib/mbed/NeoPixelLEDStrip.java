@@ -36,12 +36,12 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// NeoPixelLEDStrip 
+//// NeoPixelLEDStrip
 
 /**
  This actor uses three input ports to light up a NeoPixel LED Strip.
 
- <p>The code generator supplies the method contents, thus this 
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -74,18 +74,18 @@ public class NeoPixelLEDStrip extends TypedAtomicActor {
     ////                     ports and parameters                  ////
     /** The ledIndex input port.  If this port is connected, then its
      *  input will determine whether an output is produced in any
-     *  given firing. The type is integer array. 
+     *  given firing. The type is integer array.
      */
     public TypedIOPort ledIndex;
 
-    /** The color input port.  If this port is connected, its input will 
+    /** The color input port.  If this port is connected, its input will
      *  will determine the color of the LEDs. The type is integer array.
      */
     public TypedIOPort color;
 
     /** The clear input port.  If this port is connected, then its
-     *  input will clear 
-     *  given firing. The type is integer. 
+     *  input will clear
+     *  given firing. The type is integer.
      */
     public TypedIOPort clear;
 

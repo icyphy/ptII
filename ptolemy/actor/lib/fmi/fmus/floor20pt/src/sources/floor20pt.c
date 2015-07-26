@@ -52,7 +52,7 @@ void calculateValues(ModelInstance *comp) {
 
         fprintf(stderr, "floor20pt.c: initialize()\n");
         fflush(stderr);
-        
+
         comp->eventInfo.nextEventTimeDefined   = fmi2False;
 
         comp->eventInfo.nextEventTimeDefined   = fmi2True;
@@ -69,7 +69,7 @@ void eventUpdate(ModelInstance *comp, fmi2EventInfo *eventInfo, int isTimeEvent)
     if (isTimeEvent){
         eventInfo->nextEventTimeDefined   = fmi2True;
         eventInfo->nextEventTime          = 1 + comp->time;
-    } 
+    }
 }
 
 // called by fmi2GetReal, fmi2GetContinuousStates and fmi2GetDerivatives

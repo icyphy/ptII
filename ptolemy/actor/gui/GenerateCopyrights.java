@@ -111,13 +111,13 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "com.github.sarxos.webcam.Webcam",
                 "lib/webcam-capture-license.htm");
-        
+
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
         _addIfPresent(copyrightsMap, "com.microstar.xml.XmlParser",
                 "com/microstar/xml/aelfred-license.htm");
-        
+
         _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
                 "lib/jna-license.htm");
 
@@ -293,7 +293,7 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "ptolemy.graph.Element",
                 "ptolemy/graph/graph-license.htm");
-        
+
         _addIfPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
                 "ptolemy/gui/ExtensionFilenameFilter-license.htm");
 

@@ -168,7 +168,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param time The simulation time.
      * @param stateVariables The vector of state variables at <code>time</code>.
      * @param inputVariables The vector of input variables at <code>time</code>.
-     * @param stateVariableDerivatives The (output) vector of time rates of change of the state variables 
+     * @param stateVariableDerivatives The (output) vector of time rates of change of the state variables
      * at <code>time</code>.
      * @return Success (0 for success, else user-defined error code).
      * @exception IllegalActionException
@@ -316,7 +316,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * catch up to current time, and then set the (known) inputs of the FMU and
      * retrieve and send out any outputs for which all inputs on which the
      * output depends are known.
-     * 
+     *
      * @exception IllegalActionException If FMU indicates a failure.
      */
     public void fire() throws IllegalActionException {
@@ -385,7 +385,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Return the count of state variables.
-     * 
+     *
      * @return The number of state variables.
      */
     public final int getStateCount() {
@@ -394,7 +394,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Override the importFMU in FMUImport base class.
-     * 
+     *
      * @param originator The originator of the change request.
      * @param fmuFileParameter The .fmuFile
      * @param context The context in which the FMU actor is created.
@@ -475,7 +475,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Intitialize the internal relative quantum
         _internalRelativeQuantum = _director.getRelativeQuantum()
                 * _quantumScaleFactor;
-        // Check if the relative quantum is zero. It is guaranteed 
+        // Check if the relative quantum is zero. It is guaranteed
         // that the _quantumScaleFactor is never null.
         if (_internalRelativeQuantum == 0.0) {
             throw new IllegalActionException(this,
@@ -486,7 +486,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Initialize FMU parameters.
             if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
                 _initializeFMUParameters();
-            }              
+            }
             // Enter and exit the initialization mode.
             _fmiInitialize();
 
@@ -606,7 +606,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     startTime.getDoubleValue(), stopTime.getDoubleValue(),
                     timeValue, 0, _internalRelativeQuantum, toBeVisible,
                     loggingOn, _fmiModelDescription.guid, derivatives);
-            
+
             // Initialize FMU parameters.
             if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
                 _initializeFMUParameters();
@@ -719,7 +719,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Initialize the continuous states.
-     * 
+     *
      * @exception IllegalActionException if an exception occurs.
      */
     public void preinitialize() throws IllegalActionException {
@@ -729,7 +729,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Initialize the output list.
         _outputs = new LinkedList<Output>();
-        
+
         // Initialize map for input and continuous state indexes.
         _modelVariableIndexesOfInputsAndContinuousStates = new HashMap<String, Integer>();
 
@@ -755,10 +755,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Get the indexes of dependent variables
         _getStateDerivativesDependenciesIndexes();
-        
+
         // Get the indexes of input and state variables.
         _getIndexOfInputsAndContinuousStates();
-        
+
         // Initialize hasChanged field of model variables.
          for (int i = 0; i <  _fmiModelDescription.modelVariables.size(); i++) {
             _fmiModelDescription.modelVariables.get(i).hasChanged = true;
@@ -851,8 +851,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * <p>
      * This methods calls the FMU using JNI with different flags.
      * 0: Instantiate.
-     * 1: Initialize. 
-     * 2: Enter event mode. 
+     * 1: Initialize.
+     * 2: Enter event mode.
      * 3: Enter continuous mode.
      * 4: Get continuous states.
      * 5: Get state derivatives.
@@ -865,7 +865,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * </p>
      * @param idx The index of the FMU instance.
      * @param fla The flag to determine the FMI functions to call.
-     * @param instance The FMU instance name. 
+     * @param instance The FMU instance name.
      * @param jniResourceLocation The path to the FMU native library.
      * @param fmuResourceLocation The path to the FMU resource location.
      * @param tStart The FMU simulation start time.
@@ -908,20 +908,20 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Terminate and free the slave fmu.
-     * 
+     *
      * @exception IllegalActionException If the slave fmu cannot be
      * terminated or freed.
      */
-    public void wrapup() throws IllegalActionException {      
+    public void wrapup() throws IllegalActionException {
         if (!_useRawJNI()) {
             // Allow eventInfo to be garbaged collected.
             _eventInfo = null;
             super.wrapup();
         } else {
 
-            // By design, this method does not call super.wrapup() 
-            // when JNI is used, because this class uses a different 
-            // algorithm that is specific to QSS.  However, we need 
+            // By design, this method does not call super.wrapup()
+            // when JNI is used, because this class uses a different
+            // algorithm that is specific to QSS.  However, we need
             // to do what AtomicActor.wrapup()
             // does:
             if (_debugging) {
@@ -936,19 +936,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             // end of AtomicActor.java
             //System.out.println ("Actor: "  + this.getFullName() + " has been called "
-            //        + "to produce outputs: " + _numberOfSteps + " times.");       
+            //        + "to produce outputs: " + _numberOfSteps + " times.");
             runNativeFMU(_fmiComponentJNI, -1, null, null, null, 0.0, 0.0, 0.0,
                     0, 0.0, 0, 0, null, null, null, null, null, null, null,
                     null, 0, null, null, null, null, null);
         }
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Determine if the model description is acceptable.  
-     *  FMUQSS only works with FMI-2.0 (and later) model exchange fmus.   
+    /** Determine if the model description is acceptable.
+     *  FMUQSS only works with FMI-2.0 (and later) model exchange fmus.
      *  @param fmiModelDescription The description of the model to be checked.
      *  @return true if the model description is acceptable.
      *  @exception IOException If the model description is not acceptable
@@ -1010,7 +1010,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             FMIScalarVariable scalar = _outputs.get(index).inputStateDependentScalarVariables
                     .get(i);
             // Check whether the dependent variable which is an input or a state has changed.
-            // FIXME: Note that inputs are not observable thus we assume that when there is 
+            // FIXME: Note that inputs are not observable thus we assume that when there is
             // a quantization event then the input must have changed too.
             final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
                     .get(scalar.name);
@@ -1131,14 +1131,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         final double absoluteQuantumMinimum = 1e-20;
         for (int ii = 0; ii < stateCt; ++ii) {
             // If the relativeQuantum is greater than 0.0, then use the
-            // nominal value for the state, given by the FMU, to 
-            // calculate the absolute quantum. 
+            // nominal value for the state, given by the FMU, to
+            // calculate the absolute quantum.
             // Thus a state with nominal value 1000 will have an absolute
             // quantum 1000 times greater than a state with nominal value 1.
             final double nominalValue = _fmiModelDescription.continuousStates
                     .get(ii).nominal.doubleValue();
             double modifiedInternalAbsoluteQuantum = Math.abs(nominalValue)
-                            * _internalRelativeQuantum;         
+                            * _internalRelativeQuantum;
             if (modifiedInternalAbsoluteQuantum < absoluteQuantumMinimum) {
                     modifiedInternalAbsoluteQuantum = absoluteQuantumMinimum;
             }
@@ -1233,10 +1233,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 final Input input = _inputs.get(curIdx);
                 final IntBuffer valueReferenceInput = IntBuffer.allocate(1)
                         .put(0, (int) input.scalarVariable.valueReference);
-                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the
                 // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
                 // order. Dassault Systems was informed and will fix this in Dymola 2016.
-                // The current calling order is:  
+                // The current calling order is:
                 //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
                 // The correct calling order should be:
                 //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
@@ -1292,10 +1292,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         .get(curIdx);
                 final IntBuffer valueReferenceState = IntBuffer.allocate(1)
                         .put(0, (int) state.scalarVariable.valueReference);
-                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the
                 // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wrong calling
                 // order. Dassault Systems was informed and will fix this in Dymola 2016.
-                // The current calling order is:  
+                // The current calling order is:
                 //_fmiGetDirectionalDerivative(_fmiComponent, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
                 // The correct calling order should be:
                 //_fmiGetDirectionalDerivative(_fmiComponent, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
@@ -1349,7 +1349,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Return the derivatives of the continuous states provided by the FMU.
-     * 
+     *
      * @param numberOfStates The number of continuous states.
      * @param derivatives The state derivatives.
      * @return The state derivatives.
@@ -1485,7 +1485,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
      * Set the time of the FMU to the specified time.
-     * 
+     *
      * @param time The current simulation time.
      * @exception IllegalActionException If the FMU does not return fmiOK.
      */
@@ -1525,7 +1525,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                             .indexOf(input.scalarVariable.name));
         }
     }
-    
+
     /**
      * Get the indexes of the dependent inputs and continuous state variables.
      */
@@ -1651,7 +1651,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             int curIdx) throws IllegalActionException {
         // Here we have gotten a SmoothToken which has derivatives information. We assume
         // this token to be a quantized state since it does contain value and non-zero
-        // derivatives. 
+        // derivatives.
         // Handle cases where we have a smooth token with non-zero derivatives.
         if (token instanceof SmoothToken
                 && (((SmoothToken) token).derivativeValues() != null)) {
@@ -1693,12 +1693,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
         return false;
     }
-    
+
     /**
      * Initialize the values of the continuous state ports with their
      * dependencies and remove the direct dependency of states on inputs.
-     * 
-     * @exception IllegalActionException If no port matching the name of 
+     *
+     * @exception IllegalActionException If no port matching the name of
      * a variable declared as an input is found.
      */
     private void _initializeContinuousStates() throws IllegalActionException {
@@ -1932,12 +1932,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
 
     }
-    
+
     /**
      * Broadcast FMU outputs that are not quantized states.
      *
      * <p>FMU can produce outputs that don't correspond to states.</p>
-     * 
+     *
      * @param currentTime The current simulation time.
 
      */
@@ -1997,14 +1997,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             Time time, int index, boolean isState) throws NoRoomException,
             IllegalActionException {
         double outputQuantum = _internalRelativeQuantum/ _quantumScaleFactor;
-        // Handle outputs which are states.      
+        // Handle outputs which are states.
         if (isState) {
             double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
             final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
-                    .get(_fmiModelDescription.continuousStates.get(index).name);       
+                    .get(_fmiModelDescription.continuousStates.get(index).name);
             // We should only use the first coefficient of the the quantized state model
             // since since higher order terms are zero at quantization time.
-            double epsilon = 0;          
+            double epsilon = 0;
             if (_firstRound) {
                 prt.send(0, new SmoothToken(val, time));
                 _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
@@ -2038,14 +2038,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     return;
                 } else {
                     // Check if any of output dependents has changed.
-                    // If not then do not commit any changes. This is particularly 
+                    // If not then do not commit any changes. This is particularly
                     // important for outputs which are function of states.
-                    // For instance, suppose y = x_w and x_w is scheduled to have a 
-                    // quantization event at the end of the simulation. However, in the current 
+                    // For instance, suppose y = x_w and x_w is scheduled to have a
+                    // quantization event at the end of the simulation. However, in the current
                     // code every time we called trigger quantization events, we also updated the
                     // continuous states using the continuous state model. this in turn will
                     // change x_w causing it to produce outputs at a rate which is different
-                    // from the quantized model. therefore, by using following method, 
+                    // from the quantized model. therefore, by using following method,
                     // which checks whether dependents have changed, we can capture that.
                     if (_cancelSendModelToPort(index))
                         return;
@@ -2077,7 +2077,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         DoubleToken doubleToken = DoubleToken.convert(token);
 
         // In all cases, the first coefficient is simply the current value of
-        // the token.      
+        // the token.
         ivMdl.coeffs[0] = doubleToken.doubleValue();
 
         double[] derivatives = null;
@@ -2156,7 +2156,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
                         outPort, currentTime, qIdx, true);
             }
-            
+
 
 
             // Diagnostic output.
@@ -2197,7 +2197,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     .get(_indexesOfUpdatedModelVariables.get(i)).hasChanged = false;
         }
 
-        // Clear the list of model variables indexes so 
+        // Clear the list of model variables indexes so
         // they can be used in the next quantization.
         _indexesOfUpdatedModelVariables.clear();
     }
@@ -2226,7 +2226,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         boolean updatedInputVarMdl = false;
         for (Input input : _inputs) {
             curIdx++;
-            // Guarantee that _inputs() as the the same count of inputs 
+            // Guarantee that _inputs() as the the same count of inputs
             // as it did during _initializeQssIntegrator_inputVars().
             // If not, then index {curIdx} can be wrong.
             if (input.port.hasNewToken(0)) {
@@ -2234,7 +2234,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 final Token token = input.port.get(0);
                 if(!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
                 updatedInputVarMdl = true;
-            }       
+            }
         }
         // Make sure that the index matches the number of input variables.
         assert (_qssSolver.getInputVariableCount() == curIdx);
@@ -2279,7 +2279,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     ivMdl.toString()));
         }
     }
-    
+
     /**
      * Update the model variable field hasChanged
      * @param index The variable index.
@@ -2292,7 +2292,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (index >= 0) {
             _fmiModelDescription.modelVariables.get(index).hasChanged = value;
         }
-        
+
         // Save the indexes of the model variables which have changed
         if (index >=0 && value){
             _indexesOfUpdatedModelVariables.add(index);
@@ -2321,7 +2321,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private boolean _firstRound;
     /** The outputs of this FMU. */
     private List<Integer> _indexesOfUpdatedModelVariables;
-    
+
     /** FMU component when using JNI. */
     private int _fmiComponentJNI;
 
@@ -2336,12 +2336,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** Internal relative quantum. */
     private double _internalRelativeQuantum;
-    
+
     /** Track requests for firing. */
     private Time _lastFireAtTime;
 
     /** Record of model variable index of continuous states. */
-    private Map<String, Integer> _modelVariableIndexesOfInputsAndContinuousStates; 
+    private Map<String, Integer> _modelVariableIndexesOfInputsAndContinuousStates;
 
     /** The outputs of this FMU. */
     private List<Output> _outputs;

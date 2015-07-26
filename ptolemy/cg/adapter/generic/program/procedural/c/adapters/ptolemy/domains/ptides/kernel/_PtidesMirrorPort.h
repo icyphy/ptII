@@ -86,7 +86,7 @@ struct PtidesMirrorPort {
     char *(*getName)(struct PtidesMirrorPort *);
     void (*setName)(struct PtidesMirrorPort *, char *);
 #endif
-    
+
 #ifdef PTIDESDIRECTOR
     double delayOffset;
 #endif

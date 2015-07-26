@@ -34,7 +34,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * A test director that extends QSSDirector.
- * 
+ *
  * <p>This director consists of constructors that invoke the super
  * class and then print the classname and arguments.  It is used
  * during testing in $PTII/ptolemy/domains/de/test/RunDETestsAsQSS.tcl

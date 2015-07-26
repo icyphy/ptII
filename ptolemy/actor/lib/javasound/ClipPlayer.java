@@ -117,14 +117,14 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         playToCompletion = new Parameter(this, "playToCompletion");
         playToCompletion.setTypeEquals(BaseType.BOOLEAN);
         playToCompletion.setExpression("false");
-        
+
         outputOnlyOnStop = new Parameter(this, "outputOnlyOnStop");
         outputOnlyOnStop.setTypeEquals(BaseType.BOOLEAN);
         outputOnlyOnStop.setExpression("false");
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
-        
+
         _outputOnlyOnStop = false;
         _playToCompletion = false;
     }
@@ -143,9 +143,9 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  one has stopped.
      */
     public TypedIOPort output;
-    
+
     /** If true, only produce a single FALSE token upon stop.  Useful for
-     * chaining clips together in the SDF domain where multiple output tokens 
+     * chaining clips together in the SDF domain where multiple output tokens
      * will cause an exception to be thrown.
      */
     public Parameter outputOnlyOnStop;
@@ -163,7 +163,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  from firing. This is a boolean that defaults to false.
      */
     public Parameter playToCompletion;
-    
+
     /** Stop playback when this port receives a token of any type, if any
      * clip is playing.
      */
@@ -176,7 +176,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  In this case, check the
      *  value of the <i>path</i> attribute to make sure it is a valid URI.
      *  @param attribute The attribute that changed.
@@ -211,7 +211,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         newObject._outputEvents = new LinkedList<BooleanToken>();
         newObject._outputOnlyOnStop = false;
         newObject._playToCompletion = false;
-        
+
 
         return newObject;
     }
@@ -225,38 +225,38 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      */
     @Override
     public void fire() throws IllegalActionException {
-       
+
         super.fire();
-        
+
         fileOrURL.update();
-        
+
         // If refired to send an output, do only that.
         // This actor will be refired once per output.  Send exactly one token
-        // per refiring.  (0 tokens if outputting only on STOP and refiring 
+        // per refiring.  (0 tokens if outputting only on STOP and refiring
         // due to a START event).
         synchronized (_outputEvents) {
             if (!_outputEvents.isEmpty()) {
             // Produce all outputs that have been requested.
                 BooleanToken token = _outputEvents.get(0);
-                
+
                 if (_outputOnlyOnStop){
-                
-                    // Check for STOP (i.e. FALSE) token.  If any present, 
+
+                    // Check for STOP (i.e. FALSE) token.  If any present,
                     // produce a FALSE token on the output port
                     if (!token.booleanValue()) {
                         output.send(0, token);
                     }
                 } else {
                     output.send(0, token);
-                } 
+                }
                 _outputEvents.remove(0);
                 return;
             }
         }
-        
+
         boolean hasStop = false;
         boolean hasTrigger = false;
-        
+
         // Consume any trigger inputs
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -264,25 +264,25 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 trigger.get(i);
             }
         }
-        
+
         // If stop port has a token, stop playback of any clips and return.
         // If both stop and trigger have a token, stop playback first, then
         // start playback
-        
+
         for (int i = 0; i < stop.getWidth(); i++) {
             if (stop.hasToken(i)) {
                 hasStop = true;
                 stop.get(i);
             }
         }
-        
+
         if (hasStop) {
             for (Clip clip : _clips) {
                 if (clip.isActive()) {
                     clip.stop();
                 }
             }
-         
+
             if(!hasTrigger) {
                 return;
             }
@@ -356,9 +356,9 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                                 "Wait for completion interrupted");
                     }
                 }
-                
+
                 if (_outputOnlyOnStop){
-                    // Check for STOP (i.e. FALSE) token.  If any present, 
+                    // Check for STOP (i.e. FALSE) token.  If any present,
                     // produce a FALSE token on the output port
                     for (BooleanToken token : _outputEvents) {
                         if (!token.booleanValue()) {
@@ -369,7 +369,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                     for (BooleanToken token : _outputEvents) {
                         output.send(0, token);
                     }
-                } 
+                }
                _outputEvents.clear();
             }
         }
@@ -393,7 +393,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 _outputEvents.notifyAll();
             }
         }
-        
+
         // Don't need to refire in case of playToCompletion, since actor
         // will block waiting for a STOP output event.
         if (!_playToCompletion) {
@@ -402,7 +402,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }
-        } 
+        }
     }
 
     /** Stop audio playback and free up any audio resources used
@@ -413,7 +413,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        
+
         synchronized(_outputEvents) {
             _outputEvents.clear();
         }
@@ -439,12 +439,12 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     /** The output values to be produced on the next firing. */
     private List<BooleanToken> _outputEvents = new LinkedList<BooleanToken>();
-    
+
     /** True if an output should only be generated once the clip is finished
-     * playing or is stopped via the stop input port. 
+     * playing or is stopped via the stop input port.
      */
     private boolean _outputOnlyOnStop;
-    
+
     /** True if the actor should block until the end of the clip is reached. */
     private boolean _playToCompletion;
 }

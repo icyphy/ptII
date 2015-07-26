@@ -151,11 +151,11 @@ public class VertxBusHandler extends TypedAtomicActor {
                 JsonObject msg = new JsonObject().putString("type", "publish")
                         .putString("address", _address)
                         .putString("body", tokenString);
-                
+
                 _sendTextFrame(msg);
             }
         }
-        
+
         // send out tokens received as subscriber
         if (_buffer != null) {
             List<Token> bufferCopy = new ArrayList<Token>();
@@ -194,7 +194,7 @@ public class VertxBusHandler extends TypedAtomicActor {
 
     /** Initialize verticle, create http client and open web socket to connect
      *  to event bus.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -202,7 +202,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         _vertx = VertxFactory.newVertx();
         _client = _vertx.createHttpClient().setHost(_host).setPort(_port);
         _openWebSocket();
-        
+
         _periodicPing = _vertx.setPeriodic(3000, new Handler<Long>() {
             @Override
             public void handle(Long timerID) {
@@ -221,8 +221,8 @@ public class VertxBusHandler extends TypedAtomicActor {
     @Override
     public synchronized void wrapup() throws IllegalActionException {
         super.wrapup();
-        // From the vertx documentation: Servers, clients, event bus handlers 
-        // and timers will be automatically closed / cancelled when the 
+        // From the vertx documentation: Servers, clients, event bus handlers
+        // and timers will be automatically closed / cancelled when the
         // verticle is stopped.
         _vertx.cancelTimer(_periodicPing);
         _vertx.stop();
@@ -248,7 +248,7 @@ public class VertxBusHandler extends TypedAtomicActor {
     private void _openWebSocket() {
         if (!_stopRequested) {
             _client.connectWebsocket("/eventbus/websocket", new Handler<WebSocket>() {
-                
+
                 @Override
                 public void handle(WebSocket websocket) {
                     //register
@@ -262,7 +262,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                             public void handle(Buffer buff) {
                                 String msg = buff.toString();
                                 JsonObject received = new JsonObject(msg);
-                                
+
                                 if (_buffer == null) {
                                     _buffer = new ArrayList<Token>();
                                 }
@@ -287,7 +287,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                     }
                 }
             });
-            
+
             _client.exceptionHandler(new Handler<Throwable>() {
 
                 @Override
@@ -295,11 +295,11 @@ public class VertxBusHandler extends TypedAtomicActor {
                     _exception = event;
                     _vertx.cancelTimer(_periodicPing);
                 }
-                
+
             });
         }
     }
-    
+
     private void _sendTextFrame(JsonObject msg) throws IllegalActionException {
         synchronized(workspace()) {
             while ((_websocket == null) && !_stopRequested) {
@@ -316,7 +316,7 @@ public class VertxBusHandler extends TypedAtomicActor {
             }
         }
     }
-    
+
     private List<Token> _buffer;
 
     private HttpClient _client;

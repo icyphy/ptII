@@ -80,7 +80,7 @@ void calculateValues(ModelInstance *comp) {
         else {
             r(output_) = r(value_a_);
         }
-    }    
+    }
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
@@ -92,7 +92,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
         case value_b_:
             return r(value_b_);
         case value_a_:
-            return r(value_a_); 
+            return r(value_a_);
         default:
             return 0;
     }

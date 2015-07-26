@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @see BluetoothDevice
  */
 public class BluetoothResponseToken<T> extends BluetoothToken {
-    
+
     /**
      * Construct a token with the following parameters:
      * @param response : The response, request, or command desired. Acceptable entries are contained within the BluetoothResponse enumeration.
@@ -64,7 +64,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
         this._sourceIdentifier = sourceIdentifier;
         this._data = data;
     }
-    
+
     /**
      * Get the BluetoothResponse enum element associated with this token.
      * @return _response
@@ -72,7 +72,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
     public BluetoothResponse getResponse(){
         return this._response;
     }
-    
+
     /**
      * Get the name of the target device associated with this token.
      * @return _deviceIdentifier
@@ -80,7 +80,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
     public String getDeviceIdentifier(){
         return this._deviceIdentifier;
     }
-    
+
     /**
      * Get the name of the source device associated with this token.
      * @return _sourceIdentifier
@@ -88,7 +88,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
     public String getSourceIdentifier(){
         return this._sourceIdentifier;
     }
-    
+
     /**
      * Get the data stored within this token.
      * @return _data
@@ -96,7 +96,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
     public T getData(){
         return this._data;
     }
-    
+
     @Override
     public String toString() {
         switch(this._response){
@@ -120,7 +120,7 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
             return "nil";
         }
     }
-    
+
 
     @Override
     public BooleanToken isEqualTo(Token rightArgument)
@@ -138,10 +138,10 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
             throw new IllegalActionException("The argument must be of type BluetoothResponseToken");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private final BluetoothResponse _response;
     private final String _deviceIdentifier;
     private final String _sourceIdentifier;

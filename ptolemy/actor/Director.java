@@ -292,7 +292,7 @@ public class Director extends Attribute implements Executable {
     public Dependency delayDependency(double delay) {
         return BooleanDependency.OTIMES_IDENTITY;
     }
-    
+
     /** Return the elapsed time (in milliseconds) since the start of execution
      *  of the model. The start of execution is defined to be the time after
      *  preinitialize() and initialize() has been called for all components,
@@ -1150,7 +1150,7 @@ public class Director extends Attribute implements Executable {
 
         Time modifiedTime = _consultTimeRegulators(localClock
                 .getLocalTimeForCurrentEnvironmentTime());
-        
+
         setModelTime(modifiedTime);
         boolean noNewActors = true;
         List<TimeRegulator> regulators = getContainer().attributeList(
@@ -1695,7 +1695,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Director: Called wrapup().");
         }
-        
+
         // Collect all the exception messages that occur, but ensure that each
         // wrapup method is called.
         List<Throwable> exceptions = new LinkedList<Throwable>();

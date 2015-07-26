@@ -128,7 +128,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class PortParameter extends AbstractInitializableParameter implements
 Initializable {
-    
+
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create
@@ -144,7 +144,7 @@ Initializable {
             throws IllegalActionException, NameDuplicationException {
         this(container, name, (ParameterPort) null);
     }
-    
+
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create

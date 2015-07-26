@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
 ////WebSocketWriter
 
 /** An actor that writes information to a websocket.  Multiple writers to the
- * same URL path are allowed.  
+ * same URL path are allowed.
  *
  *  @author Elizabeth Latronico
  *  @version $Id$
@@ -69,10 +69,10 @@ public class WebSocketWriter extends TypedAtomicActor implements
     public WebSocketWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         path = new StringParameter(this, "path");
         path.setExpression("/*");
-        
+
         client = new Parameter(this, "client");
         client.setToken("true");
         // Separate menu items are available for clients and servlets.
@@ -85,8 +85,8 @@ public class WebSocketWriter extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** A flag indicating if the reader acts as a client or as part of 
+
+    /** A flag indicating if the reader acts as a client or as part of
      * the server.  True for client; false for server.
      */
     public Parameter client;
@@ -122,7 +122,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
             // TODO: Shared vs. individual
                 _endpointManager.unsubscribe(this, _URIpath.toString());
             }
-            
+
             // TODO:  Allow dynamic subscribing here
             // If the endpoint exists, service should be added as a subscriber
             // If the endpoint does not exists, a new one should be created
@@ -151,20 +151,20 @@ public class WebSocketWriter extends TypedAtomicActor implements
         newObject._URIpath = null;
         return newObject;
     }
-    
+
     /** Subscribe this service to the appropriate endpoint.
      *  @exception IllegalActionException If the parent throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         if (_endpointManager == null) {
             _endpointManager = WebSocketEndpointManager.getInstance();
         }
-        
+
         // Subscribe to this endpoint.  Creates a new endpoint if needed.
-        // Do not subscribe local clients.  The WebServer handles these, since 
+        // Do not subscribe local clients.  The WebServer handles these, since
         // it ensures that connections are only opened after it starts.
         if (! (!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
             _endpointManager.subscribe(this, _URIpath.toString());
@@ -184,15 +184,15 @@ public class WebSocketWriter extends TypedAtomicActor implements
         // Empty string tokens are acceptable
 
         if (input.hasToken(0)) {
-            
-            // Send message through endpoint.  
+
+            // Send message through endpoint.
             // TODO:  Enhance to allow waiting on connection open, buffering,...
             String message = ((StringToken) input.get(0)).stringValue();
             if (_endpoint == null) {
-                throw new IllegalActionException(this, "Cannnot connect to " 
+                throw new IllegalActionException(this, "Cannnot connect to "
                         + "websocket");
             }
-            
+
             if (!_endpoint.sendMessage(message)){
                 throw new IllegalActionException(this, "Cannot write to "
                         + "WebSocket");
@@ -208,10 +208,10 @@ public class WebSocketWriter extends TypedAtomicActor implements
     public URI getRelativePath() {
         return _URIpath;
     }
-    
-    /** Return true if this actor acts as a client; false if it acts as a 
+
+    /** Return true if this actor acts as a client; false if it acts as a
      * part of the server (responding to incoming messages).
-     * @return True if this actor acts as a client; false if it acts as a 
+     * @return True if this actor acts as a client; false if it acts as a
      * part of the server (responding to incoming messages).
      */
     @Override
@@ -230,16 +230,16 @@ public class WebSocketWriter extends TypedAtomicActor implements
     @Override
     public void onMessage(String message) {
     }
-    
-    /** Set the endpoint responsible for websocket communication.  
-     * @param endpoint  The endpoint responsible for websocket communication. 
+
+    /** Set the endpoint responsible for websocket communication.
+     * @param endpoint  The endpoint responsible for websocket communication.
      */
     @Override
     public void setEndpoint(WebSocketEndpoint endpoint) {
         _endpoint = endpoint;
     }
-    
-    /** Unsubscribe this service from the endpoint manager.  The endpoint 
+
+    /** Unsubscribe this service from the endpoint manager.  The endpoint
      * manager will close connections with no subscribers.
      * @throws IllegalActionException If thrown by the parent.
      */
@@ -253,7 +253,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
 
     /** The endpoint used for obtaining a connection to send messages through.*/
     private WebSocketEndpoint _endpoint;
-    
+
     /** A manager responsible for generating and releasing websockets. */
     private WebSocketEndpointManager _endpointManager;
 

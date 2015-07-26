@@ -43,13 +43,13 @@ NVIC_SetPriority(SysTick_IRQn, 0x2);  // SysTick set to lower priority than Wi-F
 PORTA->PCR[16] |= PORT_PCR_ISF_MASK;
 PORTA->ISFR |= (1 << 16);*/
 
-wifi = new cc3000(PTD4, PTC9, PTD0, SPI(PTD2, PTD3, PTD1), SSID, PASSWORD, WPA2, false); 
+wifi = new cc3000(PTD4, PTC9, PTD0, SPI(PTD2, PTD3, PTD1), SSID, PASSWORD, WPA2, false);
 //wifi = new cc3000(PTD4, PTC9, PTC4, SPI(PTC6, PTC7, PTC5), SSID, PASSWORD, WPA2, false);
 wifi->init();
-if (wifi->connect() == -1) 
+if (wifi->connect() == -1)
 {
     printf("Failed to connect. Please verify connection details and try again. \r\n");
-} else 
+} else
 {
     printf("IP address: %s \r\n", wifi->getIPAddress());
 }
@@ -112,7 +112,7 @@ else {
     }
     else {
         while (retval < 0) {
-            int retval = socket->receive(buf, packetSizeIn); 
+            int retval = socket->receive(buf, packetSizeIn);
         }
     }
 }

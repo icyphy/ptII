@@ -58,10 +58,10 @@ struct SDFDirector {
     char *(*getFullName)(struct SDFDirector *);
     char *(*getName)(struct SDFDirector *);
     void (*setName)(struct SDFDirector *, char *);
-#endif    
+#endif
 
     // _SDFDirector-specific fields.
-    
+
     int (*getIterations)(struct SDFDirector*);
     Time (*getModelNextIterationTime)(struct SDFDirector*);
     void (*schedule)();

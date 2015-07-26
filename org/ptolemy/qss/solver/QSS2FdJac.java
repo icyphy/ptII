@@ -44,7 +44,7 @@ import ptolemy.actor.util.Time;
  * <p><i>FdJac</i>:
  * When handling a rate-event, use the exact second derivative if provided,
  * else select the time at which to estimate the
- * second derivative for the internal, continuous state model using 
+ * second derivative for the internal, continuous state model using
  * standard finite-difference perturbation procedure.</p>
  *
  * @author Thierry S. Nouidui based on QSSFd
@@ -60,14 +60,14 @@ public final class QSS2FdJac
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
-    /** 
+    /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
     public final int getStateModelOrder() {
         return( 1 );
     }
-    
-    /** 
+
+    /**
      * Initialize object fields (QSS-specific).
      */
     public final void _initializeWorker() {
@@ -86,17 +86,17 @@ public final class QSS2FdJac
             _inputDerivsSample_xx = new double[_ivCt];
         }
 
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
 
-    /** 
+    /**
      *  Get the predicted quantization-event time for a state (QSS-specific).
-     *  
+     *
      *  @param stateIdx The state index.
-     *  @param quantEvtTimeMax The maximum quantization event time.     
+     *  @param quantEvtTimeMax The maximum quantization event time.
      */
     protected final Time _predictQuantizationEventTimeWorker(
         final int stateIdx, final Time quantEvtTimeMax) {
@@ -172,9 +172,9 @@ public final class QSS2FdJac
 
         return( predQuantEvtTime );
 
-    } 
+    }
 
-    /** 
+    /**
      * Form a new external, quantized state model (QSS-specific).
      */
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
@@ -191,10 +191,10 @@ public final class QSS2FdJac
         qStateMdl.coeffs[0] = cStateMdl.evaluate(dtStateMdl);
         qStateMdl.coeffs[1] = cStateMdl.evaluateDerivative(dtStateMdl);
 
-    }  
+    }
 
 
-    /** 
+    /**
      * Form new internal, continuous state models (QSS-specific).
      */
     protected final void _triggerRateEventWorker()
@@ -250,21 +250,21 @@ public final class QSS2FdJac
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
             cStateMdl.coeffs[2] = 0;
         }
-        
+
         // Compute the jacobian if provided and update internal states..
         if (_derivFcn.getProvidesDirectionalDerivatives()) {
-            // FIXME: This does not work yet. Dymola's FMUs seem to compute wrong 
+            // FIXME: This does not work yet. Dymola's FMUs seem to compute wrong
             // partial derivatives.
             // Update the internal, continuous state models.
             // FIXME: This is how we can retrieve du/dt .
             for (int ii = 0; ii < _ivCt; ++ii) {
-                _inputDerivsSample_xx[ii] = _ivMdls[ii].evaluateDerivative(_currSimTime);       
+                _inputDerivsSample_xx[ii] = _ivMdls[ii].evaluateDerivative(_currSimTime);
             }
             // Use exact value of second derivative if provided.
             for (int ii = 0; ii < _stateCt; ++ii) {
                 _cStateMdls[ii].coeffs[2] =  0.5*_derivFcn.evaluateDirectionalDerivatives(ii, _stateDerivs_xx,
                         _inputDerivsSample_xx);
-            }            
+            }
 
         } else {
 
@@ -296,7 +296,7 @@ public final class QSS2FdJac
                 _cStateMdls[ii].coeffs[2] = oneOverTwoDtSample * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]);
             }
         }
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
@@ -314,4 +314,4 @@ public final class QSS2FdJac
     private double[] _ivVals_xx;
 
 
-} 
+}

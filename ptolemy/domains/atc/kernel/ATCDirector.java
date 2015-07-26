@@ -1,5 +1,5 @@
 /* A director for modeling air traffic control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -60,7 +60,7 @@ public class ATCDirector extends DEDirector {
     public Receiver newReceiver() {
         return new ATCReceiver();
     }
-    
+
     /** Return an additional delay for a track to keep an aircraft in
      *  transit.
      *  @param track The track

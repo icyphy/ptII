@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
 ////
 
 /**
- Abstract simulator base class 
+ Abstract simulator base class
 
  @author Ilge Akkaya
  @version $Id$
@@ -113,11 +113,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////  
+    ////                         public variables                  ////
 
     /** State estimate output. A record token with one field per state variable */
 
-    public TypedIOPort state; 
+    public TypedIOPort state;
 
     /** An ordered array of initial state values */
     public Parameter initialState;
@@ -172,7 +172,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
             // do not reinitialize.
             TypedIOPort port = (TypedIOPort) getPort(attribute.getName());
 
-            if (port == null || !port.isInput()) { 
+            if (port == null || !port.isInput()) {
                 _requestInitialization();
             }
         }
@@ -186,11 +186,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     @Override
     public void fire() throws IllegalActionException {
         // Set the time variable.
-        
+
         if (trigger.hasToken(0)) {
             double currentTime = getDirector().getModelTime().getDoubleValue();
-            t.setToken(new DoubleToken(currentTime)); 
-            super.fire();  
+            t.setToken(new DoubleToken(currentTime));
+            super.fire();
             for (int i = 0; i < _parameterInputs.size(); i++) {
                 PortParameter s = (PortParameter) this
                         .getAttribute(_parameterInputs.get(i));
@@ -198,17 +198,17 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
             }
 
             if (_firstIteration) {
-                _initializeState(); 
-                _firstIteration = false; 
+                _initializeState();
+                _firstIteration = false;
             } else {
                 try {
-                    _propagate(); 
+                    _propagate();
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
                 }
             }
 
-            _sendStateEstimate(); 
+            _sendStateEstimate();
 
         }
     }
@@ -219,11 +219,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
      *   or if any contained actors throws it in its preinitialize() method.
      */
     @Override
-    public void preinitialize() throws IllegalActionException { 
+    public void preinitialize() throws IllegalActionException {
         if (_upToDate) {
             super.preinitialize();
             return;
-        } 
+        }
 
         // Make sure all necessary parameters are provided.
         _checkParameters();
@@ -232,11 +232,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
             _createRandomGenerator();
         }
 
-        _stateSpaceSize = _stateNames.length(); 
-        _stateVariables = new String[_stateSpaceSize]; 
+        _stateSpaceSize = _stateNames.length();
+        _stateVariables = new String[_stateSpaceSize];
 
         if (_stateSpaceSize > 0) {
-            // Set the output type according to the state variable 
+            // Set the output type according to the state variable
             _stateLabels = new String[_stateSpaceSize];
             _stateTypes = new Type[_stateSpaceSize];
             Token[] nameTokens = ((ArrayToken)_stateNames).arrayValue();
@@ -250,19 +250,19 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
                         varPar = new Parameter(this, variableName);
                         varPar.setTypeEquals(BaseType.DOUBLE);
                         varPar.setExpression("0.0");
-                    } 
-                    ((Parameter)varPar).setVisibility(Settable.NONE); 
+                    }
+                    ((Parameter)varPar).setVisibility(Settable.NONE);
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
-                } 
+                }
 
                 _stateLabels[i] = variableName;
                 _stateTypes[i] = BaseType.DOUBLE; // preset to be double
-            } 
+            }
 
             state.setTypeEquals(new RecordType(_stateLabels,
                     _stateTypes));
-        } 
+        }
 
         try {
             _workspace.getWriteAccess();
@@ -273,13 +273,13 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
 
 
             _parameterInputs = new LinkedList<String>();
-            
+
             for (Object p : this.inputPortList()) {
 
                 IOPort p1 = (IOPort) p;
                 if (p1 instanceof ParameterPort) {
                         _parameterInputs.add(p1.getName());
-                 }  
+                 }
             }
 
 
@@ -293,7 +293,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
         }
         // Preinitialize the contained model.
         super.preinitialize();
-    } 
+    }
 
     @Override
     public void wrapup() throws IllegalActionException {
@@ -308,21 +308,21 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    protected abstract void _checkParameters() throws IllegalActionException; 
+    protected abstract void _checkParameters() throws IllegalActionException;
 
     /**
      * Return the expression for a user-defined parameter.
      * @param parameterName Name of parameter
      * @return parameter expression
      * @throws IllegalActionException
-     */ 
-    protected String getUserDefinedParameterExpression(String parameterName) 
+     */
+    protected String getUserDefinedParameterExpression(String parameterName)
             throws IllegalActionException {
         Parameter param = getUserDefinedParameter(parameterName);
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter " 
+            throw new IllegalActionException("Parameter "
                     + parameterName + " value is null.");
         }
     }
@@ -332,14 +332,14 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
      * @return Parameter object
      * @throws IllegalActionException
      */
-    protected abstract Parameter getUserDefinedParameter(String parameterName) 
+    protected abstract Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException;
 
     /** Flag indicating whether the contained model is up to date. */
     protected boolean _upToDate;
 
     /** Cached State variable names */
-    protected ArrayToken _stateNames;  
+    protected ArrayToken _stateNames;
 
     /** Labels of states */
     protected String[] _stateLabels;
@@ -364,9 +364,9 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException { 
+    NameDuplicationException {
 
-        trigger = new TypedIOPort (this, "trigger", true, false); 
+        trigger = new TypedIOPort (this, "trigger", true, false);
 
         seed = new SharedParameter(this, "seed");
         seed.setExpression("0L");
@@ -392,11 +392,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
         t.setExpression("0.0");
 
 
-        //_parser = new PtParser(); 
+        //_parser = new PtParser();
         _updateEquations = new HashMap<>();
-        _updateTrees = new HashMap<>();  
+        _updateTrees = new HashMap<>();
 
-        _firstIteration = true; 
+        _firstIteration = true;
 
         _createRandomGenerator();
 
@@ -429,11 +429,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _currentState[i] = ((DoubleToken)s0.getElement(i)).doubleValue();
         }
-    } 
+    }
 
     /** Propagate particles according to the state update equations
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
      */
     private void _propagate() throws IllegalActionException, NameDuplicationException {
         Token _result;
@@ -458,36 +458,36 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
                 p.setExpression(((Double) _currentState[i]).toString());
             }
             _tokenMap.put(_stateVariables[i], new DoubleToken(
-                    _currentState[i])); 
-            // set the control input values in scope 
+                    _currentState[i]));
+            // set the control input values in scope
         }
 
         _parseTree = _updateTrees.get(PROCESS_NOISE);
         processNoiseSample = _parseTreeEvaluator.evaluateParseTree(
-                _parseTree, _scope); 
+                _parseTree, _scope);
         if (processNoiseSample == null) {
             throw new IllegalActionException(
                     "Expression processNoise yields a null result.");
         }
 
-        for (int i = 0; i < _stateSpaceSize; i++) { 
+        for (int i = 0; i < _stateSpaceSize; i++) {
             _parseTree = _updateTrees.get(_stateVariables[i]);
             _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
-                    _scope); 
+                    _scope);
 
             if (_result == null) {
                 throw new IllegalActionException(
                         "Expression yields a null result: "
                                 + _updateEquations.get(_stateVariables[i]).expression
                                 .getExpression());
-            } 
+            }
             double _meanEstimate = ((DoubleToken) _result
                     .add(new DoubleToken(0.0))).doubleValue();
             //FIXME: what if the process noise sample is not an array token?
             double processNoiseForElement = ((DoubleToken) ((ArrayToken) processNoiseSample)
                     .getElement(i)).doubleValue();
             newState[i] = _meanEstimate + processNoiseForElement;
-        } 
+        }
         _currentState = newState;
     }
 
@@ -507,15 +507,15 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
      * Generate state estimate from the current particle set and send to the stateEstimate output
      */
     private void _sendStateEstimate() throws IllegalActionException {
-        Token[] stateTokens = new Token[_stateSpaceSize]; 
+        Token[] stateTokens = new Token[_stateSpaceSize];
         for (int j = 0; j < _stateSpaceSize; j++) {
             DoubleToken sToken = new DoubleToken(_currentState[j]);
             stateTokens[j] = sToken;
         }
-        state.send(0, new RecordToken(_stateLabels, stateTokens)); 
-    } 
+        state.send(0, new RecordToken(_stateLabels, stateTokens));
+    }
 
-    private void _setUpdateEquations() 
+    private void _setUpdateEquations()
             throws NameDuplicationException, IllegalActionException {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
@@ -540,12 +540,12 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
         }
         // put an update tree for the process noise
         _updateTrees.put(PROCESS_NOISE, new PtParser()
-        .generateParseTree(getUserDefinedParameterExpression(PROCESS_NOISE))); 
+        .generateParseTree(getUserDefinedParameterExpression(PROCESS_NOISE)));
     }
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   //// 
+    ////                         private members                   ////
 
 
     //TODO: Add seed for random number generation.
@@ -563,7 +563,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     private String[] _stateVariables;
 
     /** State update equations, hashed by state variable name */
-    private HashMap<String, Expression> _updateEquations; 
+    private HashMap<String, Expression> _updateEquations;
 
     /** Names of the PortParameter inputs */
     private List<String> _parameterInputs;
@@ -576,11 +576,11 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     private HashMap<String, ASTPtRootNode> _updateTrees;
     private ParseTreeEvaluator _parseTreeEvaluator;
     private VariableScope _scope;
-    private boolean _firstIteration; 
+    private boolean _firstIteration;
 
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
-    protected static final String PROCESS_NOISE = "processNoise"; 
-    protected static final String UPDATE_POSTFIX = "_update";  
+    protected static final String PROCESS_NOISE = "processNoise";
+    protected static final String UPDATE_POSTFIX = "_update";
 
 
     private class VariableScope extends ModelScope {

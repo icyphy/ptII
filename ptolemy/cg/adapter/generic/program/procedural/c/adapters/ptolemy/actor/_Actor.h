@@ -45,7 +45,7 @@ struct Actor {
     char *(*getFullName)(struct Actor *);
     char *(*getName)(struct Actor *);
     void (*setName)(struct Actor *, char *);
-#endif    
+#endif
 
 };
 

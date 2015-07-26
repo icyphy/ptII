@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@ package org.ptolemy.optimization;
 
 /**
  * The objective function class which is used in Phase 1 of the interior point method.
- * In the interior point method, a starting point X must be a feasible point that satisfies all 
- * constraints. If the feasible point couldn't be found, the interior point method solve 
+ * In the interior point method, a starting point X must be a feasible point that satisfies all
+ * constraints. If the feasible point couldn't be found, the interior point method solve
  * the problem using this class treating the hard constraints as soft constraints.
- * 
+ *
 @author Shuhei Emoto
 @version $Id$
 @since Ptolemy II 11.0
@@ -44,12 +44,12 @@ public class ObjectiveFunctionWithSoftConstraints extends ObjectiveFunction {
     public ObjectiveFunctionWithSoftConstraints(ObjectiveFunction a_source) {
         super(a_source.currentX.length, 0);
         _source = a_source;
-        
+
         for(int i=0; i<_source.currentX.length; i++) {
             currentX[i] = _source.currentX[i];
         }
     }
-    
+
     @Override
     public boolean calcFunction(double[] x) {
         return false;
@@ -75,7 +75,7 @@ public class ObjectiveFunctionWithSoftConstraints extends ObjectiveFunction {
             if(_source.fiResults[i] <= 0.0) continue;
             f0Result += (_source.fiResults[i] * _source.fiResults[i]);
         }
-        
+
         //df(X,S) = sum(2 * conditional_fi * dfi/dx)
         for(int col=0; col<f0Gradient.length; col++) {
             f0Gradient[col] = 0;
@@ -101,8 +101,8 @@ public class ObjectiveFunctionWithSoftConstraints extends ObjectiveFunction {
             }
         }
     }
-    
-    
+
+
     /*
      * Private variables
      */

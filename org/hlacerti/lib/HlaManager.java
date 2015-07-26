@@ -246,11 +246,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
         _strucuralInformation = new HashMap<Integer,StructuralInformation>();
-        
+
         _hlaStartTime = null;
         _hlaTimeStep = null;
         _hlaLookAHead = null;
-                
+
         // HLA Federation management parameters.
         federateName = new Parameter(this, "federateName");
         federateName.setDisplayName("Federate's name");
@@ -335,14 +335,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isCreator.setExpression("false");
         isCreator.setDisplayName("Is synchronization point creator ?");
         attributeChanged(isCreator);
-       
+
         hlaTimeUnit = new Parameter(this, "hlaTimeUnit");
         hlaTimeUnit.setTypeEquals(BaseType.DOUBLE);
         hlaTimeUnit.setExpression("1.0");
         hlaTimeUnit.setDisplayName("HLA time unit");
         attributeChanged(hlaTimeUnit);
     }
-     
+
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                     ////
 
@@ -403,7 +403,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     /**
      * Double value for representing how much is a unit of time in the simulation.
-     * Has an impact on TAR/NER/RAV/UAV.     * 
+     * Has an impact on TAR/NER/RAV/UAV.     *
      */
     public Parameter hlaTimeUnit;
     ///////////////////////////////////////////////////////////////////
@@ -521,7 +521,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._isTimeRegulator = _isTimeRegulator;
         newObject._hlaTimeUnitValue = _hlaTimeUnitValue;
         newObject._noObjectDicovered = _noObjectDicovered;
-        
+
         try {
             newObject._hlaStartTime = ((DoubleToken) hlaStartTime.getToken())
                     .doubleValue();
@@ -639,7 +639,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _noObjectDicovered=true;
         return old;
     }
-    
+
     /** Launch the HLA/CERTI RTIG process as subprocess. The RTIG has to be
      *  launched before the initialization of a Federate.
      *  NOTE: if another HlaManager (e.g. Federate) has already launched a RTIG,
@@ -714,10 +714,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // GL: FIXME: Comment this until the clarification with NERA and TARA
         // and the use of TICK is made.
-        
+
 /*        if (_lastProposedTime != null) {
             if (_lastProposedTime.compareTo(proposedTime) == 0) {
-            
+
             // Even if we avoid the multiple calls of the HLA Time management
             // service for optimization, it could be possible to have events
             // from the Federation in the Federate's priority timestamp queue,
@@ -729,12 +729,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
             } catch (RTIinternalError e) {
                 throw new IllegalActionException(this, e, "RTIinternalError ");
             }
-            
+
             return _lastProposedTime;
         }
         }
-*/         
-        
+*/
+
         // If the HLA Time Management is required, ask to the HLA/CERTI
         // Federation (the RTI) the authorization to advance its time.
         if (_isTimeRegulator && _isTimeConstrained) {
@@ -916,7 +916,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // less, so we have a breakpoint time.
                 try {
                     double hlaTimeGranted = ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA).getTime();
-                    
+
                     double timeValue = hlaTimeGranted/_hlaTimeUnitValue ;
                     if(_debugging){
                         _debug("TAG for " + hlaTimeGranted+ "model moves to" + timeValue);
@@ -956,7 +956,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // Encode the value to be sent to the CERTI.
         byte[] valAttribute = MessageProcessing.encodeHlaValue(hp, in);
-        
+
         if (_debugging) {
             if (hp.useCertiMessageBuffer()) {
               _debug(this.getDisplayName()
@@ -1013,7 +1013,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         super.wrapup();
         _strucuralInformation.clear();
         _registeredObject.clear();
-        
+
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
         }
@@ -1049,7 +1049,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // Resign HLA/CERTI Federation execution.
         try {
             _rtia.resignFederationExecution(ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
-        } catch (RTIexception e) {            
+        } catch (RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
         if (_debugging) {
@@ -1104,7 +1104,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _hlaAttributesSubscribedTo.clear();
         _fromFederationEvents.clear();
         _objectIdToClassHandle.clear();
-                
+
         if (_debugging) {
             _debug("-----------------------");
         }
@@ -1184,25 +1184,25 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // received by callbacks (from the RTI) from the whole HLA/CERTI
         // Federation, are store in the _subscribedValues queue (see
         // reflectAttributeValues() in PtolemyFederateAmbassadorInner class).
-        
+
         TimedEvent event;
         Iterator<Entry<String, LinkedList<TimedEvent>>> it = _fromFederationEvents
                 .entrySet().iterator();
-        
+
         while (it.hasNext()) {
             Map.Entry<String, LinkedList<TimedEvent>> elt = it.next();
-            
+
             //multiple events can occur at the same time
             LinkedList<TimedEvent> events = elt.getValue();
             while(events.size()>0) {
-                
+
                 event = events.get(0);
-                
+
                 // Get the HLA subscriber actor destinatory of the event.
                 String identity = elt.getKey();
                 TypedIOPort tiop = _getPortFromTab(_hlaAttributesSubscribedTo.get(identity));
                 HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
-                
+
                 hs.putReflectedHlaAttribute(event);
                 if (_debugging) {
                     _debug(this.getDisplayName()
@@ -1210,7 +1210,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             + " put Event: " + event.toString() + " in "
                             + hs.getDisplayName());
                 }
-                
+
                 events.removeFirst();
             }
         }
@@ -1273,35 +1273,35 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     /** The RTIG subprocess. */
     private CertiRtig _certiRtig;
-       
+
     /**
      * Map between an Class ID given by the RTI and all we need to know
      * about it in the model
      */
     private HashMap<Integer,StructuralInformation> _strucuralInformation;
-    
-    /** 
-     * Shared HashMap for  HlaPublishers in this model 
-     * for remembering with what id an actor as been registered 
-     * (as an object instance) in the federation 
+
+    /**
+     * Shared HashMap for  HlaPublishers in this model
+     * for remembering with what id an actor as been registered
+     * (as an object instance) in the federation
      */
     private HashMap<String,Integer> _registeredObject;
-    
-    /** 
+
+    /**
      * Tha actual value for hlaTimeUnit parameter.
      */
     private double _hlaTimeUnitValue;
-    
+
     /*
     Set to false once in discoverObjectInstance and resert to true in noNewActors
     */
     private boolean _noObjectDicovered;
     ///////////////////////////////////////////////////////////////////
     ////                    private  methods                 ////
-    
+
     /**
      * Will do the initial synchronization loop among the fedeate
-     * and register the synchronization point if the federate is 
+     * and register the synchronization point if the federate is
      */
     private void _doInitialSynchronization() throws IllegalActionException {
         if (!_requireSynchronization)  {
@@ -1318,7 +1318,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
-            
+
             // Wait synchronization point callbacks.
             while (!(_federateAmbassador.synchronizationSuccess)
                     && !(_federateAmbassador.synchronizationFailed)) {
@@ -1329,13 +1329,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             e.getMessage());
                 }
             }
-            
+
             if (_federateAmbassador.synchronizationFailed) {
                 throw new IllegalActionException(this,
                         "CERTI: Synchronization error ! ");
             }
         } // End block for synchronization point creation case.
-        
+
         // Wait synchronization point announcement.
         while (!(_federateAmbassador.inPause)) {
             try {
@@ -1344,7 +1344,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 throw new IllegalActionException(this, e, e.getMessage());
             }
         }
-        
+
         // Satisfied synchronization point.
         try {
             _rtia.synchronizationPointAchieved(_synchronizationPointName);
@@ -1356,14 +1356,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
-        
+
         // Wait federation synchronization.
         while (_federateAmbassador.inPause) {
             if (_debugging) {
                 _debug(this.getDisplayName()
                         + " initialize() - Waiting for simulation phase !");
             }
-            
+
             try {
                 _rtia.tick2();
             } catch (RTIexception e) {
@@ -1371,18 +1371,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         }
     }
-    
+
     /**
      * Will enable all time regulating aspect for the federate. After this call
      * the federate as stated to the RTI if it time regulating and/or time regulator
      * and has enable asynchronous delivery for RO messages
      */
     private void _initializeTimeAspects() throws IllegalActionException {
-        
+
         // Initialize Federate timing values.
         _federateAmbassador.initializeTimeValues(_hlaStartTime,
                 _hlaLookAHead);
-        
+
         // Declare the Federate time constrained (if true).
         if (_isTimeConstrained) {
             try {
@@ -1391,17 +1391,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 throw new IllegalActionException(this, e, e.getMessage());
             }
         }
-        
+
         // Declare the Federate time regulator (if true).
         if (_isTimeRegulator) {
-            try {                
+            try {
                 _rtia.enableTimeRegulation(_federateAmbassador.logicalTimeHLA,
                         _federateAmbassador.effectiveLookAHead);
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
         }
-        
+
         // Wait the response of the RTI towards Federate time policies that has
         // been declared. The only way to get a response is to invoke the tick()
         // method to receive callbacks from the RTI. We use here the tick2()
@@ -1414,7 +1414,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     throw new IllegalActionException(this, e, e.getMessage());
                 }
             }
-            
+
             while (!(_federateAmbassador.timeRegulator)) {
                 try {
                     _rtia.tick2();
@@ -1422,7 +1422,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     throw new IllegalActionException(this, e, e.getMessage());
                 }
             }
-            
+
             if (_debugging) {
                 _debug(this.getDisplayName() + " initialize() -"
                         + " Time Management policies:" + " is Constrained = "
@@ -1430,7 +1430,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + " and is Regulator = "
                         + _federateAmbassador.timeRegulator);
             }
-            
+
             // The following service is required to allow the reception of
             // callbacks from the RTI when a Federate used the Time management.
             try {
@@ -1444,7 +1444,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
-    
+
     /*
      * This set of function is just here to hide (a bit) the fact we are using
      * an array of Object as value for  _hlaAttributesToPublish
@@ -1454,22 +1454,22 @@ public class HlaManager extends AbstractInitializableAttribute implements
     private static TypedIOPort _getPortFromTab(Object[] tab){
         return (TypedIOPort)tab[0];
     }
-    
+
     static private Type _getTypeFromTab(Object[] tab){
         return (Type)tab[1];
     }
     static private String _getClassNameFromTab(Object[] tab){
         return (String)tab[2];
     }
-        
+
     static private Integer _getClassHandleFromTab(Object[] tab){
         return (Integer)tab[3];
     }
-    
+
     static private Integer _getAttributeHandleFromTab(Object[] tab){
         return (Integer)tab[4];
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -1567,7 +1567,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
          */
         public void initializeTimeValues(Double startTime, Double lookAHead) {
             logicalTimeHLA = new CertiLogicalTime(startTime);
-            
+
             effectiveLookAHead = new CertiLogicalTimeInterval(lookAHead*_hlaTimeUnitValue);
             if(_debugging){
                 _debug("Effective HLA lookahead is " + effectiveLookAHead.toString());
@@ -1592,16 +1592,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // Get the object class handle corresponding to
                 // received "theObject" id.
                 int classHandle = _objectIdToClassHandle.get(theObject);
-                
+
                 for (int i = 0; i < theAttributes.size(); i++) {
-                    
+
                     Iterator<Entry<String, Object[]>> ot =
                             _hlaAttributesSubscribedTo.entrySet().iterator();
-                    
+
                     while (ot.hasNext()) {
                         Map.Entry<String, Object[]> elt = ot.next();
                         Object[] tObj = elt.getValue();
-                        
+
                         Time ts = null;
                         TimedEvent te = null;
                         Object value = null;
@@ -1614,10 +1614,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 && _getClassHandleFromTab(tObj) == classHandle
                                 && hs.getObjectHandle() == theObject) {
                             try {
-                                
+
                                 double timeValue =
                                         ((CertiLogicalTime) theTime).getTime()/ _hlaTimeUnitValue;
-                                
+
                                 ts = new Time(_director,timeValue);
                                 value = MessageProcessing.decodeHlaValue(hs,
                                         (BaseType) _getTypeFromTab(tObj),
@@ -1627,8 +1627,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         new Object[] {
                                             (BaseType) _getTypeFromTab(tObj),value},
                                         theObject);
-                                
-                                
+
+
                                 _fromFederationEvents.get(hs.getIdentity()).add(te);
                                 if (_debugging) {
                                     _debug(getDisplayName()
@@ -1670,47 +1670,47 @@ public class HlaManager extends AbstractInitializableAttribute implements
             /*
              * Use final members to please Java 7 because these members are
              * in the request change class, which is nested. That implies members
-             * have to be final ... 
+             * have to be final ...
             */
             final int classHandle = classHandle_;
             final String objectName = objectName_;
             final int objectHandle = objectHandle_;
-            
+
             _objectIdToClassHandle.put(objectHandle, classHandle);
-            
+
             //if we discover it means we registered
             // it meands there is a class to instanciate and then classToInstantiate is not null
-            final CompositeActor classToInstantiate = 
+            final CompositeActor classToInstantiate =
                     (CompositeActor) _strucuralInformation.get(classHandle).classToInstantiate;
             _noObjectDicovered = false;
-            //Build a change request 
+            //Build a change request
             ChangeRequest request = new ChangeRequest(this,
                     "Adding " + objectName,true) {
                         /*
                         * Sum up of the structural change :
                         * Get the class instantiate and its container
                         * If no free actor, instantiate one otherwise use an existing one
-                        * Map the actor (set its name, ObjectHandle and put it in _hlaAttributesSubscribedTo)                        
+                        * Map the actor (set its name, ObjectHandle and put it in _hlaAttributesSubscribedTo)
                         */
                         @Override
                         protected void _execute() throws IllegalActionException {
 
-                            CompositeActor container = (CompositeActor) classToInstantiate.getContainer();                 
+                            CompositeActor container = (CompositeActor) classToInstantiate.getContainer();
                             CompositeActor newActor = null;
                             try {
                                 Instantiable instance = null;
                                 StructuralInformation info = _strucuralInformation.get(classHandle);
                                 LinkedList<ComponentEntity> actors = info.freeActors;
-                                
+
                                 //if it is a new actor, then we has to connect the ports
                                 if(actors.size() == 0){
                                     instance= classToInstantiate.instantiate(container, objectName);
                                     newActor = (CompositeActor) instance;
-                                    
+
                                     LinkedList<IOPort> outputPortList= (LinkedList<IOPort>) newActor.outputPortList();
-                                    
+
                                     container.notifyConnectivityChange();
-                                    
+
                                     for(IOPort out : outputPortList){
                                         ComponentRelation r=null;
                                         HashSet<IOPort> ports = info.getPortReceiver(out.getName());
@@ -1719,7 +1719,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         if(ports == null){
                                             continue;
                                         }
-                                        
+
                                         for(IOPort recv :ports){
                                             if(r==null) {
                                                 //connect output port to new relation
@@ -1743,7 +1743,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         _debug(instance.getName() + " will do object " + objectName);
                                     }
                                 }
-                                
+
                                 //if the actor as an attribute called temp block
                                 //then set it up to the actual name
                                 {
@@ -1754,7 +1754,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         p.setExpression("\""+objectName+"\"");
                                     }
                                 }
-                                
+
                                 // List all HlaSubscriber inside the instance and set them up
                                 List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
                                 for(int  i = 0 ; i < subscribers.size() ; ++i){
@@ -1832,7 +1832,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void timeAdvanceGrant(LogicalTime theTime)
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
-            
+
             logicalTimeHLA = new CertiLogicalTime(
                      _hlaTimeUnitValue*((CertiLogicalTime) theTime).getTime());
             timeAdvanceGrant = true;
@@ -1903,12 +1903,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + " federationSynchronized() - inPause = " + inPause);
             }
         }
-        
- 
+
+
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
 
-        
+
         private void setUpHlaPublisher(RTIambassador rtia)throws NameNotFound,
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, AttributeNotDefined, SaveInProgress,
@@ -1946,7 +1946,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                 // All these information are required to publish/unpublish
                 // updated value of a HLA attribute.
-                elt.setValue(new Object[] { _getPortFromTab(tObj), 
+                elt.setValue(new Object[] { _getPortFromTab(tObj),
                     _getTypeFromTab(tObj), _getClassNameFromTab(tObj),
                         classHandle, objAttributeHandle });
             }
@@ -2008,42 +2008,42 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     e.printStackTrace();
                 }
             }
-            
+
             Iterator<Entry<String, Object[]>> it5 = _hlaAttributesToPublish
                     .entrySet().iterator();
 
             while (it5.hasNext()) {
-                
+
                 Map.Entry<String, Object[]> elt = it5.next();
-                
+
                 Object[] tObj = elt.getValue();
                 int classHandle = rtia.getObjectClassHandle(_getClassNameFromTab(tObj));
                 TypedIOPort port = _getPortFromTab(tObj);
                 HlaPublisher pub = (HlaPublisher) port.getContainer();
-                
+
                 List<IOPort> senders = port.sourcePortList();
                 for(IOPort sender : senders){
                     //we use the _federateName do deal with the fact we might run
                     //several federate from differente threads (instead of processes
                     //as it should be) then we end up with some attributes beeing
                     //not owned because another object with the same name as already
-                    //from another tread been registered. Since _federateName 
+                    //from another tread been registered. Since _federateName
                     //are unique across a federation, we are good.
-                    
-                    String senderName = _federateName+" "+sender.getContainer().getName();                    
+
+                    String senderName = _federateName+" "+sender.getContainer().getName();
 
                     if(!_registeredObject.containsKey(senderName)){
                         int myObjectInstId = -1;
                         try {
                             myObjectInstId = rtia.registerObjectInstance(classHandle,
-                                    senderName);                            
+                                    senderName);
                             _registeredObject.put(senderName,myObjectInstId);
                         } catch (ObjectClassNotPublished e) {
                             e.printStackTrace();
                         } catch (ObjectAlreadyRegistered e) {
                             e.printStackTrace();
                         }
-                    }                
+                    }
                 }
             }
         }
@@ -2073,22 +2073,22 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     //found a class that is not in the fed file, just skip it.
                     continue;
                 }
-                
+
                 try{
-                    StructuralInformation infoForThatClass = new StructuralInformation();                    
+                    StructuralInformation infoForThatClass = new StructuralInformation();
                     _strucuralInformation.put(classHandle,infoForThatClass);
                     infoForThatClass.classToInstantiate = currentClass;
                     // The attribute handle set to declare all subscribed attributes
                     // for one class.
                     AttributeHandleSet _attributesLocal = RtiFactoryFactory
                             .getRtiFactory().createAttributeHandleSet();
-                    
+
                     List<HlaSubscriber> subscribers = ((CompositeActor) currentClass).entityList(HlaSubscriber.class);
                     if(subscribers.isEmpty()){
                         //found a class whose name is in a fed, but which is empty
                         continue;
                     }
-                                        
+
                     for (HlaSubscriber sub : subscribers) {
                         int attributeHandle = rtia.getAttributeHandle(sub.getParameterName(),classHandle);
                         sub.setAttributeHandle(attributeHandle);
@@ -2098,21 +2098,21 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             _debug("Subscribe to " + sub.getParameterName() + " for class " + currentClass.getName());
                         }
                     }
-                    
+
                     rtia.subscribeObjectClassAttributes(classHandle,_attributesLocal);
-                    
+
                     LinkedList<ComponentEntity> freeActorForThatClass = new LinkedList<ComponentEntity>();
                     infoForThatClass.freeActors = freeActorForThatClass;
-                    
+
                     // currentClass.getClass() will yield a the java class TypedCompositeActor
-                    // thus calling entityList on that will give several 
-                    //actor which are a TypedCompositeActor but not a instance 
-                    //of the class. We discard elements with the test in the loop.                    
-                    List possibleEntities = container.entityList(currentClass.getClass());                   
+                    // thus calling entityList on that will give several
+                    //actor which are a TypedCompositeActor but not a instance
+                    //of the class. We discard elements with the test in the loop.
+                    List possibleEntities = container.entityList(currentClass.getClass());
                     for (int i = 0; i < possibleEntities.size(); i++) {
 
                         //discard actors whose Moml-Class does not match the name of
-                        //the class 
+                        //the class
                         NamedObj currentInstance = (NamedObj)possibleEntities.get(i);
                         String className  = currentClass.getName();
                         String instanceName = currentInstance.getClassName();
@@ -2120,17 +2120,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 instanceName.contains(className)) ){
                             continue;
                         }
-                        
-                        //get its output port and put it to the structural info 
+
+                        //get its output port and put it to the structural info
                         CompositeActor currentActor = (CompositeActor) possibleEntities.get(i);
                         LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
                         for(IOPort p : outputPortList){
                             infoForThatClass.addPortSinks(p);
                         }
-                        
+
                         //mark that actor as free
                         freeActorForThatClass.add(currentActor);
-                        
+
                         //first part of the set up for the HlaSubscriber
                         subscribers.clear();
                         subscribers = currentActor.entityList(HlaSubscriber.class);
@@ -2146,6 +2146,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 }
             } //end of "for on classes"
         } //end of function setUpSubscription
-    } //end of inner class    
+    } //end of inner class
 
 }

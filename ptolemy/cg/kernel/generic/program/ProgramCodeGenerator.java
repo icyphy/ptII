@@ -1668,7 +1668,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getContainer());
-        
+
         try {
             // Determine which variables in the model can change
             // value during execution.

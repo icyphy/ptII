@@ -403,7 +403,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int
     // print all other columns
     int j = 0;
     for (j = 0; j < numberOfFMUs; j++)
-    {   
+    {
         int k;
         fmi2Real r;
         fmi2Integer i;
@@ -496,7 +496,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int
         } // for fmus variables
     } // for fmus
 
-    
+
 
     // terminate this row
     fprintf(file, "\n");

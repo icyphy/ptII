@@ -161,7 +161,7 @@ public class OMCFMUJUnitTest {
      */
     public String modelExchange(String testName) throws Exception {
         return modelExchange(topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/auto/"
-                + testName + ".fmu", 
+                + testName + ".fmu",
                 topDirectory + "/ptolemy/actor/lib/fmi/fmus/omc/test/junit/"
                 + testName + ".csv");
     }
@@ -223,7 +223,7 @@ public class OMCFMUJUnitTest {
                     x1MaximumError = Math.max(x1MaximumError, Math.abs(x1 - x1CalculatedValue));
                     assertEquals(message, x1, x1CalculatedValue, epsilon);
                 }
-            } 
+            }
         } finally {
             if (bufferedReader != null) {
                 bufferedReader.close();
@@ -252,7 +252,7 @@ public class OMCFMUJUnitTest {
     @org.junit.Test
     public void modelExchangeLinsys2() throws Exception {
         String testName = "Linsys2";
-        // Generate the csv file and compare the results. 
+        // Generate the csv file and compare the results.
         String csvFile = modelExchange(testName);
 
         // Check the results against a calculation.
@@ -265,7 +265,7 @@ public class OMCFMUJUnitTest {
     @org.junit.Test
     public void modelExchangeLinsys() throws Exception {
         String testName = "Linsys";
-        // Generate the csv file and compare the results. 
+        // Generate the csv file and compare the results.
         String csvFile = modelExchange(testName);
 
         // Check the results against a calculation.
@@ -278,7 +278,7 @@ public class OMCFMUJUnitTest {
     @org.junit.Test
     public void modelExchangeTest1() throws Exception {
         String testName = "Test1";
-        // Generate the csv file and compare the results. 
+        // Generate the csv file and compare the results.
         String csvFile = modelExchange(testName);
 
         // Check the results against a calculation.

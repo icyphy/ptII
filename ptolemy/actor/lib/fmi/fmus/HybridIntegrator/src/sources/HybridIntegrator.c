@@ -55,7 +55,7 @@ void calculateValues(ModelInstance *comp) {
     else {
         if (hr(der_) == absent_)
             comp->eventInfo.terminateSimulation   = fmi2True;
-    }    
+    }
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives

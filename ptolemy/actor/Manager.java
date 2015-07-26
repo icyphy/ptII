@@ -279,7 +279,7 @@ public class Manager extends NamedObj implements Runnable {
 
         _executionListeners.add(new WeakReference<ExecutionListener>(listener));
     }
-    
+
     /** Return the elapsed time (in milliseconds) since the start of execution
      *  of the model. The start of execution is defined to be the time after
      *  initialize() has been called and before any component has been iterated.
@@ -576,7 +576,7 @@ public class Manager extends NamedObj implements Runnable {
             return _nameToAnalysis.get(name);
         }
     }
-    
+
     /** Get the real time at which the model began executing.
      * @return The real time at which the model began executing.
      */
@@ -798,7 +798,7 @@ public class Manager extends NamedObj implements Runnable {
             // Note that the cast is safe, as everything in Ptolemy that
             // is an actor is also a ComponentEntity.
             for (Actor actor : _actorsToInitialize) {
-                if (((ComponentEntity) actor).isOpaque()) {                    
+                if (((ComponentEntity) actor).isOpaque()) {
                         actor.getExecutiveDirector().initialize(actor);
                 }
             }

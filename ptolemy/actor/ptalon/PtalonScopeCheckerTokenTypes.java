@@ -1,5 +1,5 @@
 // $ANTLR 2.7.6 (2005-12-22): "scopeChecker.g" -> "PtalonScopeChecker.java"$
-/* 
+/*
 
  Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.

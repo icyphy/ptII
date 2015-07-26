@@ -190,20 +190,20 @@ public class UtilityFunctions {
             throws IllegalActionException {
         return type1;
     }
-    
+
     /**
      * Returns the lower triangular matrix L that satisfies LL*=A
      * @param A a positive definite matrix (implies also symmetric)
      * @return lower triangular matrix L such that A=LL*
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     public static double[][] choleskyDecomposition (double[][] A) throws IllegalActionException {
 
         if (A == null || A[0] == null || A.length != A[0].length) {
             throw new IllegalArgumentException("The input must be a square matrix.");
-        } 
+        }
         int N = A.length;
-               
+
         //A should also be positive-definite. If found not to be so, an error will be thrown.
         double[][] L = new double[N][N]; // the lower triangular Cholesky factor s.t. L*L^A
         for (int i = 0; i < N; i++) {
@@ -1261,7 +1261,7 @@ public class UtilityFunctions {
      */
     public static ArrayToken multivariateGaussian(ArrayToken mean,
             DoubleMatrixToken covariance) throws IllegalActionException {
- 
+
         // Check dimensions.
         int N = mean.length(); // size of array
         if ((covariance.getColumnCount() != N)
@@ -1291,7 +1291,7 @@ public class UtilityFunctions {
      */
     public static ArrayToken multivariateGaussian(double[] mean, double[][] S)
             throws IllegalActionException {
- 
+
         // Check dimensions.
         int N = mean.length; // size of array
         if ((S.length != N) || (S[0].length != N)) {
@@ -1308,9 +1308,9 @@ public class UtilityFunctions {
                 }
             }
         }
-        
+
         double[][] L = choleskyDecomposition(S);
-         
+
         // Draw uncorrelated samples from a standard Gaussian.
         ArrayToken uncorrelated = gaussian(0, 1, N);
         Token[] uncorrelatedTokens = uncorrelated.arrayValue();

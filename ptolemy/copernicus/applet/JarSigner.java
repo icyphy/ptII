@@ -718,13 +718,13 @@ public class JarSigner {
                         // Java 1.8
                         // javap -classpath /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/../lib/tools.jar sun.security.tools.jarsigner.SignatureFile\$Block
 
-                        //sun.security.tools.jarsigner.SignatureFile$Block(sun.security.tools.jarsigner.SignatureFile, 
-                        //        java.security.PrivateKey, 
-                        //        java.lang.String, 
-                        //        java.security.cert.X509Certificate[], boolean, 
+                        //sun.security.tools.jarsigner.SignatureFile$Block(sun.security.tools.jarsigner.SignatureFile,
+                        //        java.security.PrivateKey,
+                        //        java.lang.String,
+                        //        java.security.cert.X509Certificate[], boolean,
                         //        java.lang.String, java.security.cert.X509Certificate,
-                        //        java.lang.String, 
-                        //        com.sun.jarsigner.ContentSigner, 
+                        //        java.lang.String,
+                        //        com.sun.jarsigner.ContentSigner,
                         //        java.lang.String[], java.util.zip.ZipFile)
 
                         constructor = _findConstructor(blockClass,

@@ -134,7 +134,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        
+
         int width = input.getWidth();
         if(width != _connected.size()){
             _connected.clear();
@@ -144,7 +144,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         }
         return true;
     }
-    
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can

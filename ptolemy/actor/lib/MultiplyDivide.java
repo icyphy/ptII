@@ -154,9 +154,9 @@ public class MultiplyDivide extends TypedAtomicActor {
                     }
                 }
             }
-    
+
             Token denominator = null;
-    
+
             for (int i = 0; i < divide.getWidth(); i++) {
                 if (divide.hasToken(i)) {
                     if (denominator == null) {
@@ -166,17 +166,17 @@ public class MultiplyDivide extends TypedAtomicActor {
                     }
                 }
             }
-    
+
             if (numerator == null) {
                 if (denominator == null) {
                     return;
                 }
-    
+
                 // For the benefit of copernicus, this means that
                 // numerator always has the same type.
                 numerator = multiply.getType().convert(denominator.one());
             }
-    
+
             if (denominator != null) {
                 numerator = numerator.divide(denominator);
             }

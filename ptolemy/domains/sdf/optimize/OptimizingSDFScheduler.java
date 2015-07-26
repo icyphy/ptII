@@ -206,7 +206,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
     ////                         private methods                  ////
 
     /** Create an optimal schedule for a set of actors.
-     *   
+     *
      *  @param externalRates Map from external port to an Integer
      *   representing the number of tokens produced or consumed from
      *   that port during the course of an iteration.

@@ -16,7 +16,7 @@ void PtidesEvent_Init(struct PtidesEvent* e) {
     e->typeEvent = PTIDESEVENT;
 
     e->print = PtidesEvent_Print;
-    
+
     e->absoluteDeadline = PtidesEvent_AbsoluteDeadline;
     e->channel = PtidesEvent_Channel;
     e->equals = PtidesEvent_Equals;

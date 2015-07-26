@@ -589,7 +589,7 @@ ContinuousStatefulComponent, ContinuousStepSizeController {
                 // possible side effects... "
 
                 if (director instanceof ContinuousStatefulComponent) {
-                    ((ContinuousStatefulComponent) director).rollBackToCommittedState(); 
+                    ((ContinuousStatefulComponent) director).rollBackToCommittedState();
                 }
             }
         }

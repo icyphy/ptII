@@ -284,7 +284,7 @@ public class FMUJUnitTest {
     public void modelExchangeInc() throws Exception {
         modelExchange("incME1");
     }
-    
+
     /** Run the inc model exchange functional mock-up unit test.
      *  @exception Exception If there is a problem reading or running the test.
      */

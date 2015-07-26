@@ -165,7 +165,7 @@ import com.microstar.xml.XmlParser;
  will be set only if either the parameter did not previously exist or
  it has not been overridden. This is a rather specialized attribute
  used to update a component or model without losing previously set
- parameter values. 
+ parameter values.
  <p>
  The parse methods throw a variety of exceptions if the parsed
  data does not represent a valid MoML file or if the stream
@@ -5991,7 +5991,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // that value even if the base class later changes.
                         // if (!value.equals(previousValue)) {
                         settable.setExpression(value);
-                        
+
                         // Propagate. This has the side effect of marking
                         // the object overridden.
                         property.propagateValue();
@@ -7488,7 +7488,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  time we read an attribute.
      */
     private static MoMLParser _filterMoMLParser = null;
-    
+
     /** Count of nested group elements. */
     private int _groupCount = 0;
 
@@ -7527,7 +7527,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The original context set by setContext().
     private NamedObj _originalContext = null;
-    
+
     /** Positive if we are within a group named "doNotOverwriteOverrides".
      *  The value indicates the group count at which this was set.
      */

@@ -85,13 +85,13 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         cardinality.setExpression("SOUTH");
 
         standardDeviation = new PortParameter(this, "standardDeviation");
-        standardDeviation.setExpression("{10E-3,50E-3}"); 
+        standardDeviation.setExpression("{10E-3,50E-3}");
         cardinality = new StringAttribute(standardDeviation.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
         //_nStates = ((ArrayToken) meanToken).length();
-        _nStates = ((ArrayToken) mean.getToken()).length(); 
+        _nStates = ((ArrayToken) mean.getToken()).length();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,7 +135,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         _nStates = ((ArrayToken) mean.getToken()).length();
         _priors = new double[_nStates];
         _transitionMatrixEstimate = new double[_nStates][_nStates];
-        for (int i = 0; i < _nStates; i++) { 
+        for (int i = 0; i < _nStates; i++) {
             _priors[i] = ((DoubleToken) ((ArrayToken) prior.getToken())
                     .getElement(i)).doubleValue();
             for (int j = 0; j < _nStates; j++) {
@@ -150,7 +150,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
             _sigma = new double[_nStates][obsDim][obsDim];
             for (int i = 0; i < _nStates; i++) {
                 _sigma[i][0][0] = ((DoubleToken) ((ArrayToken) standardDeviation
-                        .getToken()).getElement(i)).doubleValue(); 
+                        .getToken()).getElement(i)).doubleValue();
                 _mu[i][0] = ((DoubleToken) ((ArrayToken) mean.getToken())
                         .getElement(i)).doubleValue();
             }
@@ -160,12 +160,12 @@ public class HMMGaussianClassifier extends ObservationClassifier {
             _sigma = new double[_nStates][obsDim][obsDim];
             for (int i = 0; i < _nStates; i++) {
                 _sigma[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviation
-                        .getToken()).getElement(i)).doubleMatrix();  
-                for (int j = 0; j < obsDim; j++) { 
+                        .getToken()).getElement(i)).doubleMatrix();
+                for (int j = 0; j < obsDim; j++) {
                     _mu[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) mean.getToken())
                             .getElement(i)).getElement(j)).doubleValue();
                 }
-            } 
+            }
         }
         if ((_nStates != _sigma.length)
                 || (_nStates != _transitionMatrixEstimate.length)) {
@@ -185,21 +185,21 @@ public class HMMGaussianClassifier extends ObservationClassifier {
 
             output.broadcast(new ArrayToken(BaseType.INT, _outTokenArray));
             likelihood.send(0, new DoubleToken(_likelihood));
-        } 
+        }
     }
 
     @Override
-    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException 
+    protected double emissionProbability(double[] y, int hiddenState) throws IllegalActionException
     {
 
         double[][] s = _sigma[hiddenState];
         double[] m = _mu[hiddenState];
 
         double[] xt = new double[y.length];
-        Token[] xmat = new Token[y.length]; 
+        Token[] xmat = new Token[y.length];
         for (int i = 0; i < y.length; i ++) {
             xt[i] = y[i] - m[i];
-            xmat[i] = new DoubleToken(xt[i]); 
+            xmat[i] = new DoubleToken(xt[i]);
         }
         MatrixToken X = MatrixToken.arrayToMatrix(xmat, y.length, 1);
         DoubleMatrixToken Covariance;
@@ -208,14 +208,14 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         } catch (IllegalArgumentException e) {
             return 0.0;
         }
-        MatrixToken Xtranspose = MatrixToken.arrayToMatrix(xmat, 1, y.length); 
+        MatrixToken Xtranspose = MatrixToken.arrayToMatrix(xmat, 1, y.length);
         Token exponent = Xtranspose.multiply(Covariance);
-        exponent = exponent.multiply(X); 
+        exponent = exponent.multiply(X);
 
         double value = ((DoubleMatrixToken) exponent)
                 .getElementAt(0, 0);
         double result = ( 1.0 / (Math.sqrt(2 * Math.PI) * DoubleMatrixMath.determinant(s))
-                * Math.exp(-0.5 * value)); 
+                * Math.exp(-0.5 * value));
 
         return result;
     }

@@ -45,14 +45,14 @@ import ptolemy.kernel.util.NamedObj;
 /**
  * Attribute that regulates the passage of time to wait for real time to catch up.
  *
- * <p>The scaleFactor parameter is here to set up how many seconds in wallclock 
- * time should pass for a single second in model time. So a scale factor of 0.5 
- * will make the model time passes twice as fast as real time, while make it 
- * equals 2 means that 2 seconds in wallclock are needed for a single unit 
+ * <p>The scaleFactor parameter is here to set up how many seconds in wallclock
+ * time should pass for a single second in model time. So a scale factor of 0.5
+ * will make the model time passes twice as fast as real time, while make it
+ * equals 2 means that 2 seconds in wallclock are needed for a single unit
  * of time in the model.</p>
- * 
+ *
  * <p>The default value is 1.</p>
- * 
+ *
  @author Edward A. Lee, Gilles Lasnier, Patricia Derler
  @version $Id$
  @since Ptolemy II 10.0
@@ -71,7 +71,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
     public SynchronizeToRealTime(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         scaleFactor = new Parameter(this,"scaleFactor");
         scaleFactor.setDisplayName("Time scale factor");
         scaleFactor.setTypeEquals(BaseType.DOUBLE);
@@ -89,7 +89,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
     public boolean noNewActors(){
         return true;
     }
-    
+
     /** Propose a time to advance to.
      *  @param proposedTime The proposed time.
      *  @return The proposed time or a smaller time.
@@ -103,34 +103,34 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
             throw new IllegalActionException(this,
                     "SynchronizeToRealTime has to be contained by an Actor");
         }
-        
+
         Director director = ((Actor) container).getDirector();
         Object mutexLockObject = director.mutexLockObject();
 
-        int depth = 0;       
+        int depth = 0;
         try {
             synchronized (mutexLockObject) {
                 while (true) {
-                    
+
                     // NOTE: We assume that the elapsed time can be
                     // safely cast to a double.  This means that
                     // the SR domain has an upper limit on running
                     // time of Double.MAX_VALUE milliseconds.
                     double elapsedTime_s = director.elapsedTimeSinceStart() / 1000.0;
                     double currentTime_s = director.getModelTime().getDoubleValue();
-                    
+
                     double scale = ((DoubleToken) scaleFactor.getToken()).doubleValue();
                     if (currentTime_s*scale <= elapsedTime_s) {
                         break;
                     }
 
                     long timeToWait_ms = (long) ((currentTime_s*scale - elapsedTime_s) * 1000.0);
-                    
+
                     if (_debugging) {
-                        _debug("Waiting for real time to pass: " + timeToWait_ms+ 
+                        _debug("Waiting for real time to pass: " + timeToWait_ms+
                                 " before " + proposedTime.getDoubleValue());
                     }
-                    
+
                     try {
                         // NOTE: The built-in Java wait() method
                         // does not release the
@@ -164,10 +164,10 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
         }
         return proposedTime;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
-    
+
     /** How many seconds in wallclock time should pass for a single
      * second in model time. So a scaleFactor of 0.5 will make the
      * model time passes twice as fast as real time, while make it

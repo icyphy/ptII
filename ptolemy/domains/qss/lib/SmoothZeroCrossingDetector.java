@@ -88,7 +88,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
-        
+
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
 
@@ -106,7 +106,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         direction.addChoice("rising");
 
         output.setTypeAtLeast(value);
-        
+
         _errorTolerance = 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
                 _errorTolerance));
@@ -121,7 +121,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
      *  "both". The default value is "both".
      */
     public StringParameter direction;
-    
+
     /** The error tolerance specifying how close the time needs to be to
      *  the zero crossing to produce the output event.
      *  This is a double with default 1e-4.
@@ -140,7 +140,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
 
     /** Output event with value 0.0 when the zero crossing occurs. */
     public TypedIOPort output;
-    
+
     /** The output value to produce when a level-crossing is detected.
      *  This can be any data type. It defaults to the same value
      *  as the <i>level</i> parameter.
@@ -219,13 +219,13 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Current time.
         Time currentTime = getDirector().getModelTime();
         if (_debugging) {
             _debug("Firing at time: " + currentTime);
         }
-        
+
         // Current input.
         DoubleToken inputToken = null;
         if (input.hasNewToken(0)) {
@@ -234,7 +234,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                 _debug("Read input: " + inputToken);
             }
         }
-        
+
         // If there is no input, then this firing must be occurring
         // in reaction to a projection for a crossing.
         if (inputToken == null && currentTime.equals(_lastFireAtTime)) {
@@ -248,7 +248,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                 }
             }
         }
-        
+
         if (inputToken instanceof SmoothToken) {
             // At this point, either a new token has arrived, or a projected crossing
             // has occurred (in which case, the value of inputToken is identically 0.0.
@@ -269,7 +269,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
                     }
                 }
             }
-            
+
             // Predict the time of a future zero crossing.
             Time future = null;
 
@@ -361,7 +361,7 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
         super.initialize();
         _previousInput = null;
         _lastFireAtTime = null;
-        
+
         if (!(getDirector() instanceof DEDirector)) {
             throw new IllegalActionException(this,
                     "SmoothZeroCrossingDetector will only work with a DE or QSS director.");
@@ -386,13 +386,13 @@ public class SmoothZeroCrossingDetector extends TypedAtomicActor {
      *  when the input value is falling.
      */
     private boolean _detectFallingCrossing;
-    
+
     /** Cache of the value of errorTolerance. */
     private double _errorTolerance;
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;
-    
+
     /** Previous input token, if any. */
     private SmoothToken _previousInput;
 }

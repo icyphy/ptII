@@ -47,7 +47,7 @@ struct IOPort {
     PblList* (*deepGetReceivers)(struct IOPort*);
     Token* (*get)(struct IOPort*, int);
     Token** (*get1)(struct IOPort*, int, int);
-    
+
     //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
     #ifdef TYPE_Boolean
     boolean (*getBoolean)(struct IOPort*, int);
@@ -58,7 +58,7 @@ struct IOPort {
     #ifdef TYPE_Double
     double (*getDouble)(struct IOPort*, int);
     #endif
-    
+
     int (*getChannelForReceiver)(struct IOPort*, struct Receiver*);
     Token* (*getInside)(struct IOPort*, int);
     PblList* (*getInsideReceivers)(struct IOPort*);
@@ -90,7 +90,7 @@ struct IOPort {
     char *(*getFullName)(struct IOPort *);
     char *(*getName)(struct IOPort *);
     void (*setName)(struct IOPort *, char *);
-#endif    
+#endif
 
 #ifdef PTIDESDIRECTOR
     double delayOffset;

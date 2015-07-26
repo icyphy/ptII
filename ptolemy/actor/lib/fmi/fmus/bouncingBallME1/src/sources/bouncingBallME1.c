@@ -1,15 +1,15 @@
 /* ---------------------------------------------------------------------------*
- * Sample implementation of an FMU - a bouncing ball. 
+ * Sample implementation of an FMU - a bouncing ball.
  * This demonstrates the use of state events and reinit of states.
  * Equations:
  *  der(h) = v;
  *  der(v) = -g;
- *  when h<0 then v := -e * v;  
+ *  when h<0 then v := -e * v;
  *  where
  *    h      height [m], used as state, start = 1
  *    v      velocity of ball [m/s], used as state
- *    der(h) velocity of ball [m/s] 
- *    der(v) acceleration of ball [m/s2] 
+ *    der(h) velocity of ball [m/s]
+ *    der(v) acceleration of ball [m/s2]
  *    g      acceleration of gravity [m/s2], a parameter, start = 9.81
  *    e      a dimensionless parameter, start = 0.7
  *

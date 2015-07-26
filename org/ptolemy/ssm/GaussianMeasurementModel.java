@@ -34,7 +34,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 A  special decorator that defines a Gaussian measurement model.
 
-@author Ilge Akkaya 
+@author Ilge Akkaya
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
@@ -43,12 +43,12 @@ A  special decorator that defines a Gaussian measurement model.
 public class GaussianMeasurementModel extends MeasurementModel {
 
     public GaussianMeasurementModel(CompositeEntity container, String name)
-            
-            
+
+
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
         _init();
-    } 
+    }
 
 
 
@@ -63,15 +63,15 @@ public class GaussianMeasurementModel extends MeasurementModel {
     public Parameter noiseCovariance;
     /**
      * The measurement equation that will refer to the state space model.
-     */ 
+     */
 
-    private void _init() throws IllegalActionException, NameDuplicationException { 
-        
+    private void _init() throws IllegalActionException, NameDuplicationException {
+
         noiseMean = new Parameter(this, "noiseMean");
         noiseMean.setExpression("0.0");
 
         noiseCovariance = new Parameter(this, "noiseCovariance");
-        noiseCovariance.setExpression("5.0"); 
-    } 
+        noiseCovariance.setExpression("5.0");
+    }
 
 }

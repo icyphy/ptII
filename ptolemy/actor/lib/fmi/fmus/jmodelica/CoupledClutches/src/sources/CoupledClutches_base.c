@@ -303,7 +303,7 @@ int jmi_new(jmi_t** jmi, jmi_callbacks_t* jmi_callbacks) {
 
 
     model_add_blocks(jmi);
-    
+
     model_init_add_blocks(jmi);
 
     /* Initialize the DAE interface */
@@ -329,7 +329,7 @@ int jmi_new(jmi_t** jmi, jmi_callbacks_t* jmi_callbacks) {
                   *model_init_eval_parameters,
                   *model_init_R0, N_eq_R0, NULL,
                   0, NULL, NULL);
-    
+
     /* Initialize the delay interface */
     jmi_init_delay_if(*jmi, N_delays, N_spatialdists, *model_init_delay, *model_sample_delay, N_delay_sw);
 

@@ -242,7 +242,7 @@ public class FMUFile {
             throws IOException {
 
         // FIXME: JModelica FMUs can have both CoSimulation and
-        // ModelExchange NodeLists, see CoupledClutches.xml.  
+        // ModelExchange NodeLists, see CoupledClutches.xml.
         // The caching is indexed on the file name, which means
         // that we cannot parse both a CS fmu and a ME fmu with
         // the same file name.
@@ -499,7 +499,7 @@ public class FMUFile {
                             .parseBoolean(cosimulation
                                     .getAttribute("canProvideMaxStepSize"));
                 }
-                
+
                 // handleIntegerTime, extension for FMI-HCS
                 // FIXME: (FABIO) These informations are temporarily here, but a new HibridCoSimulation mode
                 // must be created
@@ -508,7 +508,7 @@ public class FMUFile {
                             .parseBoolean(cosimulation
                                     .getAttribute("handleIntegerTime"));
                 }
-                
+
                 // precision, extension for FMI-HCS
                 if (fmiModelDescription.handleIntegerTime == true) {
                         if (cosimulation.hasAttribute("precision")) {
@@ -520,7 +520,7 @@ public class FMUFile {
                         .println("Warning: FMU modelDescription provides Integer representation of time, but precision is not specified");
                     }
                 }
-                
+
             }
 
             // Handle ModelExchange.
@@ -564,7 +564,7 @@ public class FMUFile {
                 }
                 // FIXME: This should be removed once fix in tools like Dymola 2015.
                 // providesDirectionalDerivative is the name specified in the standard.
-                // Some tools such as Dymola 2015 have typos which is the reason why we search 
+                // Some tools such as Dymola 2015 have typos which is the reason why we search
                 // for both providesDirectionalDerivatives and providesDirectionalDerivatives.
                 if (modelExchange.hasAttribute("providesDirectionalDerivative")) {
                     fmiModelDescription.providesDirectionalDerivative = Boolean
@@ -644,7 +644,7 @@ public class FMUFile {
         if(fmiVersion > 1.5) {
             fmiModelDescription.createStateVector();
         }
-        
+
         if (fmiVersion >= 2.0) {
             // By default each output has direct dependency from all input ports
             fmiModelDescription.addDefaultInputDependencies();

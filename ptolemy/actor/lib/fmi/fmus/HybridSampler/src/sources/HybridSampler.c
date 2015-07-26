@@ -26,7 +26,7 @@
 // - if k is the vr of a real state, then k+1 is the vr of its derivative
 #define output_ 0
 #define input_ 1
-#define sampler_ 2 
+#define sampler_ 2
 #define resolution_ 0
 #define STATES { output_ }
 
@@ -94,7 +94,7 @@ fmi2Real getEventIndicator(ModelInstance* comp, int z) {
 
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
-    
+
 }
 
 /***************************************************

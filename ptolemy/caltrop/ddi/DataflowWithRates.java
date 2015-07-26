@@ -217,7 +217,7 @@ public class DataflowWithRates extends Dataflow {
         if (freeVars != null) {
             for (Iterator iterator = freeVars.iterator(); iterator.hasNext();) {
                 String name = (String) iterator.next();
-                
+
                 if (_isBoundByPortVar(name, action)
                         || _isIn(name, action.getDecls())
                         || _isIn(name, _actor.getStateVars())) {

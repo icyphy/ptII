@@ -1218,7 +1218,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             try {
                 // See whether the container contains an instance of LevelSkippingTableauFactory.
                 NamedObj container = thisEntity.getContainer();
-                List<LevelSkippingTableauFactory> skip 
+                List<LevelSkippingTableauFactory> skip
                         = container.attributeList(LevelSkippingTableauFactory.class);
                 while(skip != null && skip.size() > 0) {
                     container = container.getContainer();
@@ -1245,7 +1245,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                         }
                     }
                 }
-                
+
                 Configuration configuration = getConfiguration();
                 // FIXME: do what with the return value?
                 configuration.openInstance(container);
@@ -3124,7 +3124,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
         return fileChooser;
     }
-    
+
     /** Set the background color of the specified component to the default,
      *  or if it is given, to the background color given in the preferences.
      *  @param component The component to set the color of.

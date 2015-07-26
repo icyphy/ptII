@@ -677,7 +677,7 @@ public final class CanvasUtilities {
      * defined in SwingConstants.
      * @param f The figure.
      * @param distance The distance.
-     * @param direction One of the eight compass directions defined in 
+     * @param direction One of the eight compass directions defined in
      * javax.swing.SwingConstants.
      */
     public static void translate(Figure f, double distance, int direction) {
@@ -691,7 +691,7 @@ public final class CanvasUtilities {
      * defined in SwingConstants. Return the same point, but modified.
      * @param p The point to be translated as a Float or Double.
      * @param distance The distance.
-     * @param direction One of the eight compass directions defined in 
+     * @param direction One of the eight compass directions defined in
      * javax.swing.SwingConstants.
      * @return The translated point.
      */
@@ -708,7 +708,7 @@ public final class CanvasUtilities {
      * defined in SwingConstants. Return the same point, but modified.
      * @param p The point to be translated as a Double.
      * @param distance The distance.
-     * @param direction One of the eight compass directions defined in 
+     * @param direction One of the eight compass directions defined in
      * javax.swing.SwingConstants.
      * @return The translated point.
      */
@@ -764,7 +764,7 @@ public final class CanvasUtilities {
      * defined in SwingConstants. Return the same point, but modified.
      * @param p The point to be translated as a float.
      * @param distance The distance.
-     * @param direction One of the eight compass directions defined in 
+     * @param direction One of the eight compass directions defined in
      * javax.swing.SwingConstants.
      * @return The translated point.
      */

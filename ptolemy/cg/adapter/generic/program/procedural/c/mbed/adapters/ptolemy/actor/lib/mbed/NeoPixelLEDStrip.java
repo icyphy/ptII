@@ -31,7 +31,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// NeoPixelLEDStrip 
+//// NeoPixelLEDStrip
 
 /**
  An adapter class for ptolemy.actor.lib.mbed.NeoPixelLEDStrip
@@ -52,7 +52,7 @@ extends NamedProgramCodeGeneratorAdapter {
     public NeoPixelLEDStrip(ptolemy.actor.lib.mbed.NeoPixelLEDStrip actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,

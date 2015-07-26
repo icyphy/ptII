@@ -26,7 +26,7 @@
 // - if k is the vr of a real state, then k+1 is the vr of its derivative
 #define output_ 0
 #define value_ 1
-#define resolution_ 0 
+#define resolution_ 0
 #define STATES { output_ }
 
 #define present_ 0
@@ -56,7 +56,7 @@ void calculateValues(ModelInstance *comp) {
 fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
     switch (vr)
     {
-        case output_:             
+        case output_:
             return r(output_);
         case value_:
             return r(value_);

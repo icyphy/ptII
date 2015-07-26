@@ -1,5 +1,5 @@
 /* A receiver for modeling air traffic control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ public class ATCReceiver extends DEReceiver {
     public ATCReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
-    
+
     /** Put a token into this receiver and post a trigger event to the director.
      *  The director will be responsible to dequeue the trigger event at
      *  the correct timestamp and microstep and invoke the corresponding actor

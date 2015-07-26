@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.ssm; 
+package org.ptolemy.ssm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,25 +45,25 @@ import ptolemy.kernel.util.NamedObj;
 /**
 An abstract decorator that defines a measurement model.
 
-@author Ilge Akkaya 
+@author Ilge Akkaya
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public abstract class MeasurementModel extends MirrorDecorator 
+public abstract class MeasurementModel extends MirrorDecorator
 implements StateSpaceActor {
     /**
      * Constructs a MeasurementModel object.
      *
      * @param container  a CompositeEntity object
      * @param name       a String indicating the decorator name
-     * @throws IllegalActionException 
-     * @throws NameDuplicationException 
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
      */
     public MeasurementModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
         _init();
     }
 
@@ -77,7 +77,7 @@ implements StateSpaceActor {
      */
     public Parameter zParameter;
 
-    
+
 
 
     @Override
@@ -103,12 +103,12 @@ implements StateSpaceActor {
         }
         _decoratedObjectsVersion = workspace().getVersion();
         List<NamedObj> objectList = new ArrayList<>();
-        CompositeEntity container = (CompositeEntity) getContainer(); 
+        CompositeEntity container = (CompositeEntity) getContainer();
         if (container != null) {
             for (Object object : container.deepEntityList()) {
                 if (object instanceof InferenceActor) {
-                    objectList.add((NamedObj)object); 
-                } 
+                    objectList.add((NamedObj)object);
+                }
             }
             _decoratedObjects = objectList;
         }
@@ -124,7 +124,7 @@ implements StateSpaceActor {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
                 if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
                     if (!found) {
-                        found = true; 
+                        found = true;
                     } else {
                         throw new IllegalActionException(this, "A StateSpaceActor "
                                 + "can be associated with exactly one StateSpaceModel "
@@ -134,7 +134,7 @@ implements StateSpaceActor {
             }
         }
         return found;
-    } 
+    }
 
     /**
      * Return the measurement postfix.
@@ -151,7 +151,7 @@ implements StateSpaceActor {
 
         zParameter = new Parameter(this,"zParameter");
         zParameter.setDisplayName("z");
-        zParameter.setExpression(""); 
+        zParameter.setExpression("");
 
         ColorAttribute color = new ColorAttribute(this,
                 "decoratorHighlightColor");

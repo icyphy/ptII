@@ -37,7 +37,7 @@ void Actor_Init(struct Actor* actor) {
     actor->getFullName = Actor_GetFullName;
     actor->getName = Actor_GetName;
     actor->setName = Actor_SetName;
-#endif    
+#endif
 
 }
 void Actor_New_Free(struct Actor* actor) {

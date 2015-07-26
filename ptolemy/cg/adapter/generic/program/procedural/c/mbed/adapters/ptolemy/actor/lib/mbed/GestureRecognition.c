@@ -9,7 +9,7 @@ double hue_val;
 /***initBlock***/
 counter = 0;
 secondCounter = 0;
-hue_val = 0; 
+hue_val = 0;
 flag = false;
 /**/
 
@@ -34,7 +34,7 @@ int deltaZ_val = 0;
 int fingerThreshold = 350;
 int thumbThreshold = 200;
 
-if (++counter >= MAX_COUNT) { 
+if (++counter >= MAX_COUNT) {
     secondCounter++;
     bool fBent[5];
 
@@ -43,27 +43,27 @@ if (++counter >= MAX_COUNT) {
     fBent[2] = finger3_val > fingerThreshold;
     fBent[3] = finger4_val > fingerThreshold;
     fBent[4] = finger5_val > thumbThreshold;
-    
+
     if (secondCounter > 3) {
         //printf("%d %d %d %d %d\r\n", fBent[0], fBent[1], fBent[2], fBent[3], fBent[4]);
         secondCounter = 0;
     }
-    // Change size based on finger gesture  
-    if (flag) {  
-        if (fBent[0] && fBent[1] && fBent[2] && (!fBent[3]) && fBent[4]) 
-            deltaSize_val = -1; 
-        else if (fBent[0] && fBent[1] && (!fBent[2]) && (!fBent[3]) && fBent[4]) 
-            deltaSize_val = 1; 
+    // Change size based on finger gesture
+    if (flag) {
+        if (fBent[0] && fBent[1] && fBent[2] && (!fBent[3]) && fBent[4])
+            deltaSize_val = -1;
+        else if (fBent[0] && fBent[1] && (!fBent[2]) && (!fBent[3]) && fBent[4])
+            deltaSize_val = 1;
         flag = !flag;
     }
     else {
         flag = !flag;
     }
-    
+
     if (fBent[0] && (fBent[1]) && (fBent[2]) && (!fBent[4]))
-        hue_val = finger4_val/1000.0;  
-    
-    //Change position. Roll, pitch, and yaw are given as degrees. 
+        hue_val = finger4_val/1000.0;
+
+    //Change position. Roll, pitch, and yaw are given as degrees.
     if (roll_val > 10 )
         deltaX_val = -1;
     else if (roll_val < -10)
@@ -76,10 +76,10 @@ if (++counter >= MAX_COUNT) {
         deltaY_val = -1;
     else if (yaw_val < -10)
         deltaY_val = 1;
-       
+
     counter = 0;
-        
-} 
+
+}
 $put(deltaSize, deltaSize_val);
 $put(deltaX, deltaX_val);
 $put(deltaY, deltaY_val);

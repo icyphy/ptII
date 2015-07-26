@@ -92,7 +92,7 @@ public interface Site {
     public Point2D getPoint(TransformContext tc, double normal);
 
     /** Get the enclosing transform context of this site.
-     *  @return The transform context   
+     *  @return The transform context
      */
     public TransformContext getTransformContext();
 

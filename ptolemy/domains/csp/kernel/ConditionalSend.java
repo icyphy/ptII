@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Nameable;
 
 /**
  Represents a guarded communication statement in which the
- communication is a send(). 
+ communication is a send().
 
  <p>Thus is represents:</p>
  <center>guard; send() =&gt; statements </center>

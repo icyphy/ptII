@@ -93,7 +93,7 @@ for(int i = yPos; i < yPos + cubeSize; i++) {
     }
 }
 //Panel 3
-bright = 1.0 / (((nCOLs-1) - zPos - (cubeSize-1) + 1) * ((nCOLs-1) - zPos - (cubeSize-1) + 1));   
+bright = 1.0 / (((nCOLs-1) - zPos - (cubeSize-1) + 1) * ((nCOLs-1) - zPos - (cubeSize-1) + 1));
 for(int i = xPos; i < xPos + cubeSize; i++) {
     for(int j = yPos; j < yPos + cubeSize; j++) {
         int led;

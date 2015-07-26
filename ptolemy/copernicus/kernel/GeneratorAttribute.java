@@ -602,7 +602,7 @@ ChangeListener {
 
                 // If we save a blank model, then there might not be a director.
                 Parameter iterations = (StringParameter) getAttribute("iterations");
-            
+
                 if (director == null) {
                     iterations.setExpression("1000");
                 } else {
