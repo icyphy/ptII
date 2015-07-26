@@ -71,7 +71,7 @@ public class ParameterPort extends TypedIOPort {
      */
     public ParameterPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	this(container, name, null);
+        this(container, name, null);
     }
 
     /** Construct a new input port in the specified container with the
@@ -99,8 +99,8 @@ public class ParameterPort extends TypedIOPort {
             // the corresponding PortParameter.
             Attribute existingParameter = container.getAttribute(name);
             if (existingParameter instanceof PortParameter) {
-        	_parameter = (PortParameter) existingParameter;
-        	_parameter._port = this;
+                _parameter = (PortParameter) existingParameter;
+                _parameter._port = this;
             } else {
                 _parameter = new PortParameter(container, name, this);
             }
@@ -145,17 +145,17 @@ public class ParameterPort extends TypedIOPort {
      *  @return The associated parameter.
      */
     public PortParameter getParameter() {
-	if (_parameter == null) {
-	    // Attempt to find the parameter.
-	    NamedObj container = getContainer();
-	    if (container != null) {
-		Attribute candidate = container.getAttribute(getName());
-		if (candidate instanceof PortParameter) {
-		    _parameter = (PortParameter)candidate;
-		    _setTypeConstraints();
-		}
-	    }
-	}
+        if (_parameter == null) {
+            // Attempt to find the parameter.
+            NamedObj container = getContainer();
+            if (container != null) {
+                Attribute candidate = container.getAttribute(getName());
+                if (candidate instanceof PortParameter) {
+                    _parameter = (PortParameter)candidate;
+                    _setTypeConstraints();
+                }
+            }
+        }
         return _parameter;
     }
 
@@ -169,11 +169,11 @@ public class ParameterPort extends TypedIOPort {
      */
     @Override
     public void setContainer(Entity entity)
-	    throws IllegalActionException, NameDuplicationException {
-	if (_settingContainer) {
-	    // Recursive call through the parameter.
-	    return;
-	}
+            throws IllegalActionException, NameDuplicationException {
+        if (_settingContainer) {
+            // Recursive call through the parameter.
+            return;
+        }
         Entity previousContainer = (Entity) getContainer();
         if (previousContainer == entity) {
             // No change.
@@ -185,13 +185,13 @@ public class ParameterPort extends TypedIOPort {
         // change that container too.
         if (_parameter != null) {
             try {
-        	_settingContainer = true;
-        	_parameter.setContainer(entity);
+                _settingContainer = true;
+                _parameter.setContainer(entity);
             } catch (KernelException ex) {
-        	super.setContainer(previousContainer);
-        	throw ex;
+                super.setContainer(previousContainer);
+                throw ex;
             } finally {
-        	_settingContainer = false;
+                _settingContainer = false;
             }
         }
         if (previousContainer == null) {

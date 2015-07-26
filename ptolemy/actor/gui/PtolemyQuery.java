@@ -163,7 +163,7 @@ ValueListener, ChangeListener, CloseListener {
         lbl.setBackground(_background);
 
         ActionableEntry actionButton = new ActionableEntry(this, name,
-        	defaultValue, actionable);
+                defaultValue, actionable);
         _addPair(name, lbl, actionButton, actionButton);
         return actionButton;
     }
@@ -1276,27 +1276,27 @@ ValueListener, ChangeListener, CloseListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-		_actionable.performAction();
-	    } catch (Exception e1) {
-		MessageHandler.error("Action failed.", e1);
-	    }
+                _actionable.performAction();
+            } catch (Exception e1) {
+                MessageHandler.error("Action failed.", e1);
+            }
         }
 
         /** Return the contents of the entry box.
          *  @see #setQueryValue(String)
          */
-	@Override
-	public String getQueryValue() {
-	    return _entryBox.getText();
-	}
+        @Override
+        public String getQueryValue() {
+            return _entryBox.getText();
+        }
 
-	/** Set the contents of the entry box.
+        /** Set the contents of the entry box.
          *  @see #getQueryValue()
          */
-	@Override
-	public void setQueryValue(String value) {
-	    _entryBox.setText(value);
-	}
+        @Override
+        public void setQueryValue(String value) {
+            _entryBox.setText(value);
+        }
 
         private Actionable _actionable;
         private JButton _button;

@@ -2863,29 +2863,29 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //////////////////////////////////////////////////////////////
                 //// group
             } else if (elementName.equals("group")) {
-        	_groupCount++;
+                _groupCount++;
                 String groupName = (String) _attributes.get("name");
 
                 if (groupName != null) {
                     if (groupName.equals("doNotOverwriteOverrides")
-                	    && _overwriteOverrides <= 0) {
-                	// E.g., if the top-level <group> has name
-                	// "doNotOverwriteOverrides", then this will be
-                	// set to 1, and any nested groups will not
-                	// affect it.
-                	_overwriteOverrides = _groupCount;
+                            && _overwriteOverrides <= 0) {
+                        // E.g., if the top-level <group> has name
+                        // "doNotOverwriteOverrides", then this will be
+                        // set to 1, and any nested groups will not
+                        // affect it.
+                        _overwriteOverrides = _groupCount;
                     } else {
-                	// Defining a namespace.
-                	_namespaces.push(_namespace);
-                	_namespaceTranslations.push(_namespaceTranslationTable);
-                	_namespacesPushed = true;
+                        // Defining a namespace.
+                        _namespaces.push(_namespace);
+                        _namespaceTranslations.push(_namespaceTranslationTable);
+                        _namespacesPushed = true;
 
-                	if (groupName.equals("auto")) {
-                	    _namespace = _AUTO_NAMESPACE;
-                	    _namespaceTranslationTable = new HashMap();
-                	} else {
-                	    _namespace = groupName;
-                	}
+                        if (groupName.equals("auto")) {
+                            _namespace = _AUTO_NAMESPACE;
+                            _namespaceTranslationTable = new HashMap();
+                        } else {
+                            _namespace = groupName;
+                        }
                     }
                 } else {
                     _namespaces.push(_DEFAULT_NAMESPACE);
@@ -5983,20 +5983,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // then set the expression only if either the parameter did not
                     // previously exist or its value has not been overridden.
                     if (_overwriteOverrides <= 0 || !previouslyExisted || !property.isOverridden()) {
-                	// NOTE: It is not correct to do nothing even
-                	// if the value is not changed.  If the value of
-                	// of an instance parameter is explicitly set,
-                	// and that value happens to be the same as the
-                	// value in the base class, then it should keep
-                	// that value even if the base class later changes.
-                	// if (!value.equals(previousValue)) {
-                	settable.setExpression(value);
-                	
-                	// Propagate. This has the side effect of marking
-                	// the object overridden.
-                	property.propagateValue();
+                        // NOTE: It is not correct to do nothing even
+                        // if the value is not changed.  If the value of
+                        // of an instance parameter is explicitly set,
+                        // and that value happens to be the same as the
+                        // value in the base class, then it should keep
+                        // that value even if the base class later changes.
+                        // if (!value.equals(previousValue)) {
+                        settable.setExpression(value);
+                        
+                        // Propagate. This has the side effect of marking
+                        // the object overridden.
+                        property.propagateValue();
 
-                	_paramsToParse.add(settable);
+                        _paramsToParse.add(settable);
                     }
                 }
             }

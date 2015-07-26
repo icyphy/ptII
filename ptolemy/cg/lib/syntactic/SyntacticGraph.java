@@ -898,7 +898,7 @@ public class SyntacticGraph extends CompositeEntity {
      *  setting the location.
      */
     public void layoutGraph() throws IllegalActionException,
-	     NameDuplicationException {
+             NameDuplicationException {
         double colpos = 10.0, coldepth = 10.0;
         for (SyntacticTerm termIt : _series) {
             coldepth = 10.0;

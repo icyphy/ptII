@@ -90,10 +90,10 @@ public class QuantizedSampler extends Transformer {
      * than 1.0, the new output will be produced. 
      */
     public Parameter quantum;
-	
+        
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-	
+        
     /** If the argument is the quantum parameter, then cache
      *  the value.   
      *  @param attribute The attribute that changed.
@@ -116,43 +116,43 @@ public class QuantizedSampler extends Transformer {
      * 
      * @throws IllegalActionException If sending an output fails.
      */
-	public void fire() throws IllegalActionException {
-		super.fire();
-		if (input.hasToken(0)) {
-			DoubleToken newInputToken = DoubleToken.convert(input.get(0));
-			if (_firstFiring){
-				// Initialize last input token with first input token received.
-				_lastInputToken = newInputToken;
-				// Send first input token received to the output port. 
-				 output.send(0, newInputToken);
-				 _firstFiring = false;
-				return;
-			}
-			final double newInput = newInputToken.doubleValue();
-			final double lastInput = _lastInputToken.doubleValue();
-			if (newInputToken instanceof SmoothToken) {
-				if (!_compareSmoothTokenDerivatives(newInputToken,
-						_lastInputToken)) {
-					// If the derivatives are different, send new token to the 
-					// output port without doing any further comparison.
-					_lastInputToken = newInputToken;
-					output.send(0, newInputToken);
-				} else {
-					// If the derivatives are the same, check if the input 
-					// has crossed the quantum.
-					if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
-						_lastInputToken = newInputToken;
-						output.send(0, newInputToken);
-					}
-				}
-			} else {
-				if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
-					_lastInputToken = newInputToken;
-					output.send(0, new DoubleToken(newInput));
-				}
-			}
-		}
-	}
+        public void fire() throws IllegalActionException {
+                super.fire();
+                if (input.hasToken(0)) {
+                        DoubleToken newInputToken = DoubleToken.convert(input.get(0));
+                        if (_firstFiring){
+                                // Initialize last input token with first input token received.
+                                _lastInputToken = newInputToken;
+                                // Send first input token received to the output port. 
+                                 output.send(0, newInputToken);
+                                 _firstFiring = false;
+                                return;
+                        }
+                        final double newInput = newInputToken.doubleValue();
+                        final double lastInput = _lastInputToken.doubleValue();
+                        if (newInputToken instanceof SmoothToken) {
+                                if (!_compareSmoothTokenDerivatives(newInputToken,
+                                                _lastInputToken)) {
+                                        // If the derivatives are different, send new token to the 
+                                        // output port without doing any further comparison.
+                                        _lastInputToken = newInputToken;
+                                        output.send(0, newInputToken);
+                                } else {
+                                        // If the derivatives are the same, check if the input 
+                                        // has crossed the quantum.
+                                        if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
+                                                _lastInputToken = newInputToken;
+                                                output.send(0, newInputToken);
+                                        }
+                                }
+                        } else {
+                                if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
+                                        _lastInputToken = newInputToken;
+                                        output.send(0, new DoubleToken(newInput));
+                                }
+                        }
+                }
+        }
     
     /**
      * Initialize this actor.
@@ -164,7 +164,7 @@ public class QuantizedSampler extends Transformer {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////	
+    ////                         private methods                   ////        
     /**
      * Compare the derivative values of two smooth token.
      * @param newToken The new input token received at the port.
@@ -172,7 +172,7 @@ public class QuantizedSampler extends Transformer {
      * @retun True if the derivatives are identical. 
      */
     private boolean _compareSmoothTokenDerivatives(DoubleToken newToken, DoubleToken lastToken){
-	    // Now we just have to check the derivatives.
+            // Now we just have to check the derivatives.
         double[] derivativesNewToken = ((SmoothToken) newToken).derivativeValues();
         double[] derivativesLastToken = ((SmoothToken) lastToken).derivativeValues();
         if (derivativesNewToken == derivativesLastToken) {
@@ -183,7 +183,7 @@ public class QuantizedSampler extends Transformer {
                 // Findbugs wants us to check for null here to avoid dereferencing
                 // a null when we check the length below.
             || derivativesNewToken == null && derivativesLastToken == null
-    	    || derivativesNewToken != null && derivativesLastToken == null) {
+                || derivativesNewToken != null && derivativesLastToken == null) {
             return false;
         }
         // Both tokens have derivatives.

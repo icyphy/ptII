@@ -382,10 +382,10 @@ public class RelationWidthInference {
                     boolean defaultInferredWidthTo1 = false;
 
                     Token defaultTo1 = ModelScope.preferenceValue(
-                	    _topLevel, "_defaultInferredWidthTo1");
+                            _topLevel, "_defaultInferredWidthTo1");
                     if (defaultTo1 instanceof BooleanToken) {
-                	defaultInferredWidthTo1 = ((BooleanToken) defaultTo1)
-                		.booleanValue();
+                        defaultInferredWidthTo1 = ((BooleanToken) defaultTo1)
+                                .booleanValue();
                     }
 
                     if (defaultInferredWidthTo1) {
@@ -407,54 +407,54 @@ public class RelationWidthInference {
                         boolean giveUp = false;
                         for (IOPort port : linkedPorts) {
                             if (port.isInsideGroupLinked(relation)) {
-                        	continue;
+                                continue;
                             } else {
-                        	if (foundOutside) {
-                        	    // relation links more than one port on the outside,
-                        	    // so there is nothing more we can do.
-                        	    giveUp = true;
-                        	    break;
-                        	}
-                        	foundOutside = true;
+                                if (foundOutside) {
+                                    // relation links more than one port on the outside,
+                                    // so there is nothing more we can do.
+                                    giveUp = true;
+                                    break;
+                                }
+                                foundOutside = true;
                             }
                         }
                         if (giveUp) {
                             Iterator deepPorts = linkedPorts.iterator();
                             while (deepPorts.hasNext()) {
-                        	if (portDetails.length() > 0) {
-                        	    portDetails.append("\n");
-                        	}
-                        	portDetails.append(((IOPort) deepPorts.next())
-                        		.getFullName());
+                                if (portDetails.length() > 0) {
+                                    portDetails.append("\n");
+                                }
+                                portDetails.append(((IOPort) deepPorts.next())
+                                        .getFullName());
                             }
 
                             String message1 = "The width of relation "
-                        	    + relation.getFullName()
-                        	    + " can not be uniquely inferred.\n";
+                                    + relation.getFullName()
+                                    + " can not be uniquely inferred.\n";
                             String message2 = "One possible solution is to create a toplevel parameter "
-                        	    + "named \"_defaultInferredWidthTo1\" with the boolean "
-                        	    + "value true.\n"
-                        	    + "Please make the width inference deterministic by"
-                        	    + " explicitly specifying the width of this relation."
-                        	    + " In the user interface, right click on the "
-                        	    + "relation, select Configure and change the width. "
-                        	    + " Note that some actors may need to have their "
-                        	    + " Java code updated to call setDefaultWidth(1) "
-                        	    + "on the output port. "
-                        	    + "The relation is deeply connected to these ports:\n"
-                        	    + portDetails.toString();
+                                    + "named \"_defaultInferredWidthTo1\" with the boolean "
+                                    + "value true.\n"
+                                    + "Please make the width inference deterministic by"
+                                    + " explicitly specifying the width of this relation."
+                                    + " In the user interface, right click on the "
+                                    + "relation, select Configure and change the width. "
+                                    + " Note that some actors may need to have their "
+                                    + " Java code updated to call setDefaultWidth(1) "
+                                    + "on the output port. "
+                                    + "The relation is deeply connected to these ports:\n"
+                                    + portDetails.toString();
                             Manager manager = ((CompositeActor) relation.toplevel())
-                        	    .getManager();
+                                    .getManager();
                             if (manager != null
-                        	    && manager.getState() != Manager.IDLE) {
-                        	throw new IllegalActionException(
-                        		relation,
-                        		message1
-                        		+ "The model is not idle, so stopping the model "
-                        		+ "might help.\n" + message2);
+                                    && manager.getState() != Manager.IDLE) {
+                                throw new IllegalActionException(
+                                        relation,
+                                        message1
+                                        + "The model is not idle, so stopping the model "
+                                        + "might help.\n" + message2);
                             }
                             throw new IllegalActionException(relation, message1
-                        	    + message2);
+                                    + message2);
                         } else {
                             relation._setInferredWidth(0);
                             unspecifiedSet.remove(relation);

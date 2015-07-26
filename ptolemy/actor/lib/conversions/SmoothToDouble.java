@@ -88,8 +88,8 @@ public class SmoothToDouble extends Converter {
         DoubleToken result = new DoubleToken(inputToken.doubleValue());
         if (_debugging) {
             _debug("Transferring input " + inputToken
-        	    + " to output " + result
-        	    + " at time " + getDirector().getModelTime());
+                    + " to output " + result
+                    + " at time " + getDirector().getModelTime());
         }
         output.send(0, result);
     }
@@ -102,7 +102,7 @@ public class SmoothToDouble extends Converter {
     public boolean prefire() throws IllegalActionException {
         if (!input.hasNewToken(0)) {
             if (_debugging) {
-        	_debug("No new input at time " + getDirector().getModelTime());
+                _debug("No new input at time " + getDirector().getModelTime());
             }
             return false;
         }

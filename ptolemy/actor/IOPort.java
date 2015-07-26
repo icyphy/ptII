@@ -315,13 +315,13 @@ public class IOPort extends ComponentPort {
         } else if (attribute == defaultValue) {
             Token value = defaultValue.getToken();
             if (value instanceof ArrayToken) {
-        	    _persistentTokens = ((ArrayToken) value).arrayValue();
-        	    _persistentTokensInside = ((ArrayToken) value).arrayValue();
-        	    _persistentToken = null;
+                    _persistentTokens = ((ArrayToken) value).arrayValue();
+                    _persistentTokensInside = ((ArrayToken) value).arrayValue();
+                    _persistentToken = null;
             } else {
-        	    _persistentToken = value;
-        	    _persistentTokens = null;
-        	    _persistentTokensInside = null;
+                    _persistentToken = value;
+                    _persistentTokens = null;
+                    _persistentTokensInside = null;
             }
         }
         super.attributeChanged(attribute);
@@ -599,10 +599,10 @@ public class IOPort extends ComponentPort {
         newObject._persistentTokens = null;
         newObject._persistentTokensInside = null;
         try {
-	    newObject.attributeChanged(newObject.defaultValue);
-	} catch (IllegalActionException e) {
-	    throw new CloneNotSupportedException("Unexpected cloning error: " + e);
-	}
+            newObject.attributeChanged(newObject.defaultValue);
+        } catch (IllegalActionException e) {
+            throw new CloneNotSupportedException("Unexpected cloning error: " + e);
+        }
 
         return newObject;
     }
@@ -1002,7 +1002,7 @@ public class IOPort extends ComponentPort {
         if (token == null) {
             token = _getPersistentValue(channelIndex, false);
             if (token == null) {
-        	throw new NoTokenException(this, "No token to return.");
+                throw new NoTokenException(this, "No token to return.");
             }
         }
 
@@ -1082,27 +1082,27 @@ public class IOPort extends ComponentPort {
         try {
             result = localReceivers[channelIndex][0].getArray(vectorLength);
             // Record the last of these received tokens if there is persistence.
-	    _recordPersistentValueIfNecessary(channelIndex, result[result.length - 1], false);
+            _recordPersistentValueIfNecessary(channelIndex, result[result.length - 1], false);
         } catch (NoTokenException ex) {
             // There are not enough tokens. If persistence has been specified,
             // or if a SmoothToken is available, then we can fill in the array.
             // But we have to do it one by one.
             result = new Token[vectorLength];
             for (int i = 0; i < vectorLength; i++) {
-        	if (localReceivers[channelIndex][0].hasToken()) {
-        	    result[i] = localReceivers[channelIndex][0].get();
-        	    _recordPersistentValueIfNecessary(channelIndex, result[i], false);
-        	} else {
-        	    result[i] = _getPersistentValue(channelIndex, false);
-        	    if (result[i] == null) {
-        		throw new NoTokenException(this,
-        			"get: Requested "
-        			+ vectorLength
-        			+ " tokens, but only "
-        			+ i
-        			+ " were available.");
-        	    }
-        	}
+                if (localReceivers[channelIndex][0].hasToken()) {
+                    result[i] = localReceivers[channelIndex][0].get();
+                    _recordPersistentValueIfNecessary(channelIndex, result[i], false);
+                } else {
+                    result[i] = _getPersistentValue(channelIndex, false);
+                    if (result[i] == null) {
+                        throw new NoTokenException(this,
+                                "get: Requested "
+                                + vectorLength
+                                + " tokens, but only "
+                                + i
+                                + " were available.");
+                    }
+                }
             }
         }
 
@@ -1231,9 +1231,9 @@ public class IOPort extends ComponentPort {
      *   if the channel index is out of range.
      */
     public Token getInside(int channelIndex)
-	    throws NoTokenException, IllegalActionException {
-	// NOTE: This code is very similar to get(int).
-	// It would be better to delegate to a shared private method.
+            throws NoTokenException, IllegalActionException {
+        // NOTE: This code is very similar to get(int).
+        // It would be better to delegate to a shared private method.
         Receiver[][] localReceivers;
 
         if (_hasPortEventListeners) {
@@ -1287,7 +1287,7 @@ public class IOPort extends ComponentPort {
         if (token == null) {
             token = _getPersistentValue(channelIndex, true);
             if (token == null) {
-        	throw new NoTokenException(this, "No token to return.");
+                throw new NoTokenException(this, "No token to return.");
             }
         }
 
@@ -1434,7 +1434,7 @@ public class IOPort extends ComponentPort {
      *  is out of range or if the port is not an input port.
      */
     public Time getModelTime(int channelIndex) throws IllegalActionException {
-	return getModelTime(channelIndex, false);
+        return getModelTime(channelIndex, false);
     }
 
     /** Return the current time associated with a certain channel.
@@ -2963,13 +2963,13 @@ public class IOPort extends ComponentPort {
     public void reset() throws IllegalActionException {
         Token value = defaultValue.getToken();
         if (value instanceof ArrayToken) {
-    	    _persistentTokens = ((ArrayToken) value).arrayValue();
-    	    _persistentTokensInside = ((ArrayToken) value).arrayValue();
-    	    _persistentToken = null;
+                _persistentTokens = ((ArrayToken) value).arrayValue();
+                _persistentTokensInside = ((ArrayToken) value).arrayValue();
+                _persistentToken = null;
         } else {
-    	    _persistentToken = value;
-    	    _persistentTokens = null;
-    	    _persistentTokensInside = null;
+                _persistentToken = value;
+                _persistentTokens = null;
+                _persistentTokensInside = null;
         }
     }
 
@@ -4797,29 +4797,29 @@ public class IOPort extends ComponentPort {
      *  value to the current time.
      *  @param channelIndex The channel.
      *  @param inside True to check an inside channel.
-     * 	@return The persistent value, or null if there isn't one.
+     *         @return The persistent value, or null if there isn't one.
      *  @throws IllegalActionException  If getting current time fails.
      */
     private Token _getPersistentValue(int channelIndex, boolean inside)
-	    throws IllegalActionException {
-	Token[] tokens = _persistentTokens;
-	if (inside) {
-	    tokens = _persistentTokensInside;
-	}
-	if (tokens != null
-		&& tokens.length > channelIndex
-		&& tokens[channelIndex] != null) {
-	    Token result = tokens[channelIndex];
-	    if (result instanceof SmoothToken) {
-		Time currentTime = getModelTime(channelIndex, inside);
-		return ((SmoothToken)result).extrapolate(currentTime);
-	    } else {
-		return result;
-	    }
-	} else if (_persistentToken != null) {
-	    return _persistentToken;
-	} 
-	return null;
+            throws IllegalActionException {
+        Token[] tokens = _persistentTokens;
+        if (inside) {
+            tokens = _persistentTokensInside;
+        }
+        if (tokens != null
+                && tokens.length > channelIndex
+                && tokens[channelIndex] != null) {
+            Token result = tokens[channelIndex];
+            if (result instanceof SmoothToken) {
+                Time currentTime = getModelTime(channelIndex, inside);
+                return ((SmoothToken)result).extrapolate(currentTime);
+            } else {
+                return result;
+            }
+        } else if (_persistentToken != null) {
+            return _persistentToken;
+        } 
+        return null;
     }
 
     /** If the port is an input, return receivers that handle incoming
@@ -5077,92 +5077,92 @@ public class IOPort extends ComponentPort {
      *   determined.
      */
     private void _recordPersistentValueIfNecessary(int channelIndex, Token token, boolean inside)
-	    throws IllegalActionException {
-	Token[] tokens = _persistentTokens;
-	if (inside) {
-	    tokens = _persistentTokensInside;
-	}
+            throws IllegalActionException {
+        Token[] tokens = _persistentTokens;
+        if (inside) {
+            tokens = _persistentTokensInside;
+        }
 
-	if (_persistentToken != null
-        	|| tokens != null
-        	|| token instanceof SmoothToken) {
-	    // Token may be persistent. Make sure there is a place to store it.
+        if (_persistentToken != null
+                || tokens != null
+                || token instanceof SmoothToken) {
+            // Token may be persistent. Make sure there is a place to store it.
             int width = getWidth();
             if (tokens == null) {
-        	tokens = new Token[width];
-        	// If a single default has been given, enter that now.
-        	if (_persistentToken != null) {
-        	    for (int i = 0; i < width; i++) {
-        		tokens[i] = _persistentToken;
-        	    }
+                tokens = new Token[width];
+                // If a single default has been given, enter that now.
+                if (_persistentToken != null) {
+                    for (int i = 0; i < width; i++) {
+                        tokens[i] = _persistentToken;
+                    }
                 }
             } else if (tokens.length != width) {
-        	// Width doesn't match previous value. Create a new array and copy
-        	// the old values into it.
-        	Token[] newArray = new Token[width];
-        	if (tokens.length < width) {
-        	    // The width has increased or is longer than the specified array.
-        	    // Copy as many as we've got.
-        	    System.arraycopy(tokens, 0, newArray, 0, tokens.length);
-        	    // For the remaining slots, we need to examine the defaultValue parameter.
-        	    Token value = defaultValue.getToken();
-        	    if (value != null && !(value instanceof ArrayToken)) {
-        		// A single default value has been given. Fill the new array with it.
-        		// Otherwise, the array will be filled with null.
-        		for (int i = tokens.length; i < width; i++) {
-        		    tokens[i] = value;
-        		}
-        	    }
-        	} else {
-        	    // The width has decreased or is shorter than the specified array.
-        	    // Copy as many as we need.
-        	    System.arraycopy(tokens, 0, newArray, 0, width);
-        	}
-        	tokens = newArray;
-        	if (_persistentToken != null) {
-        	    for (int i = 0; i < width; i++) {
-        		tokens[i] = _persistentToken;
-        	    }
+                // Width doesn't match previous value. Create a new array and copy
+                // the old values into it.
+                Token[] newArray = new Token[width];
+                if (tokens.length < width) {
+                    // The width has increased or is longer than the specified array.
+                    // Copy as many as we've got.
+                    System.arraycopy(tokens, 0, newArray, 0, tokens.length);
+                    // For the remaining slots, we need to examine the defaultValue parameter.
+                    Token value = defaultValue.getToken();
+                    if (value != null && !(value instanceof ArrayToken)) {
+                        // A single default value has been given. Fill the new array with it.
+                        // Otherwise, the array will be filled with null.
+                        for (int i = tokens.length; i < width; i++) {
+                            tokens[i] = value;
+                        }
+                    }
+                } else {
+                    // The width has decreased or is shorter than the specified array.
+                    // Copy as many as we need.
+                    System.arraycopy(tokens, 0, newArray, 0, width);
+                }
+                tokens = newArray;
+                if (_persistentToken != null) {
+                    for (int i = 0; i < width; i++) {
+                        tokens[i] = _persistentToken;
+                    }
                 }
             }
             // The single default value will continue to mark this persistent.
             // So don't set it to null.
             // _persistentToken = null;
-	}
-	if (token instanceof SmoothToken) {
-	    // Token is persistent.
-	    // If the token is generated using the expression language function
-	    // smoothToken(), then it always has time equal to the start time.
-	    // Here, we reset that time to the current time.
-	    // This also ensures that if a SmoothToken is delayed, its time
-	    // gets reset at the receiver. Notice that since tokens are
-	    // immutable, we have to create a new SmoothToken here.
-	    Time currentTime = getModelTime(channelIndex, inside);
-	    Time tokenTime = ((SmoothToken)token).getTime();
-	    if (!currentTime.equals(tokenTime)) {
-		token = new SmoothToken(
-			((SmoothToken) token).doubleValue(),
-			currentTime,
-			((SmoothToken) token).derivativeValues());
-	    }
-	    tokens[channelIndex] = token;
-	} else if (tokens != null
-		&& _persistentToken == null
-		&& tokens[channelIndex] instanceof SmoothToken) {
+        }
+        if (token instanceof SmoothToken) {
+            // Token is persistent.
+            // If the token is generated using the expression language function
+            // smoothToken(), then it always has time equal to the start time.
+            // Here, we reset that time to the current time.
+            // This also ensures that if a SmoothToken is delayed, its time
+            // gets reset at the receiver. Notice that since tokens are
+            // immutable, we have to create a new SmoothToken here.
+            Time currentTime = getModelTime(channelIndex, inside);
+            Time tokenTime = ((SmoothToken)token).getTime();
+            if (!currentTime.equals(tokenTime)) {
+                token = new SmoothToken(
+                        ((SmoothToken) token).doubleValue(),
+                        currentTime,
+                        ((SmoothToken) token).derivativeValues());
+            }
+            tokens[channelIndex] = token;
+        } else if (tokens != null
+                && _persistentToken == null
+                && tokens[channelIndex] instanceof SmoothToken) {
             // If the persistence is because of having received a SmoothToken, but we are
             // now receiving something that is not a SmoothToken, then we need to reverse the
             // persistence.
-    	    // FIXME: Potential weird corner case here where defaultValue is an array
-    	    // that is not long enough to encompass this channel.
-	    tokens[channelIndex] = null;
+                // FIXME: Potential weird corner case here where defaultValue is an array
+                // that is not long enough to encompass this channel.
+            tokens[channelIndex] = null;
         } else if (_persistentToken != null) {
             tokens[channelIndex] = token;
         }
-	if (inside) {
-	    _persistentTokensInside = tokens;
-	} else {
-	    _persistentTokens = tokens;
-	}
+        if (inside) {
+            _persistentTokensInside = tokens;
+        } else {
+            _persistentTokens = tokens;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

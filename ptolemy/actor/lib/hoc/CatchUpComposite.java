@@ -279,7 +279,7 @@ public class CatchUpComposite extends MirrorComposite {
      *  model is permitted to produce outputs.
      */
     private class CatchUpDirector extends Director implements SuperdenseTimeDirector {
-	
+        
         /** Construct an CatchUpDirector in the specified workspace with
          *  no container and an empty string as a name.
          *  @param workspace The workspace.
@@ -330,96 +330,96 @@ public class CatchUpComposite extends MirrorComposite {
             
             Director enclosingDirector = container.getExecutiveDirector();
             if (enclosingDirector == null) {
-        	throw new IllegalActionException(container, "No enclosing director!");
+                throw new IllegalActionException(container, "No enclosing director!");
             }
             int microstep = 1;
             if (enclosingDirector instanceof SuperdenseTimeDirector) {
-        	microstep = ((SuperdenseTimeDirector)enclosingDirector).getIndex();
+                microstep = ((SuperdenseTimeDirector)enclosingDirector).getIndex();
             }
             SuperdenseTime environmentTime = new SuperdenseTime(getModelTime(), microstep);
                         
             // Perform catch up iterations, if necessary.
             if (_pendingFiringTimes != null) {
-        	SuperdenseTime firstPendingFiringTime = _pendingFiringTimes.peek();
-        	while (firstPendingFiringTime != null) {
-        	    int comparison = firstPendingFiringTime.compareTo(environmentTime);
-        	    if (comparison < 0) {
-        		// Catch up iteration is needed.
-        		_pendingFiringTimes.poll();
+                SuperdenseTime firstPendingFiringTime = _pendingFiringTimes.peek();
+                while (firstPendingFiringTime != null) {
+                    int comparison = firstPendingFiringTime.compareTo(environmentTime);
+                    if (comparison < 0) {
+                        // Catch up iteration is needed.
+                        _pendingFiringTimes.poll();
 
-        		// Perform catch up firing.
-        		try {
-        		    _catchUpTime = firstPendingFiringTime.timestamp();
-        		    _microstep = firstPendingFiringTime.index();
-        		    
+                        // Perform catch up firing.
+                        try {
+                            _catchUpTime = firstPendingFiringTime.timestamp();
+                            _microstep = firstPendingFiringTime.index();
+                            
                             if (!_fireContents()) {
-                        	// Postfire returned false.
-                        	break;
+                                // Postfire returned false.
+                                break;
                             }
                             // If any output port has tokens, this is an error.
                             List<IOPort> ports = outputPortList();
                             for (IOPort port: ports) {
-                        	for (int i = 0; i < port.getWidth(); i++) {
-                        	    if (port.hasTokenInside(i)) {
-                        		throw new IllegalActionException(port,
-                        			"Illegal output during catch up iteration. "
-                        			+ "Composite actor is attempting to produce an output at time "
-                        			+ _catchUpTime
-                        			+ ", but environment time is past that at "
-                        			+ environmentTime.timestamp());
-                        	    }
-                        	}
+                                for (int i = 0; i < port.getWidth(); i++) {
+                                    if (port.hasTokenInside(i)) {
+                                        throw new IllegalActionException(port,
+                                                "Illegal output during catch up iteration. "
+                                                + "Composite actor is attempting to produce an output at time "
+                                                + _catchUpTime
+                                                + ", but environment time is past that at "
+                                                + environmentTime.timestamp());
+                                    }
+                                }
                             }
-        		} finally {
-        		    _catchUpTime = null;
-        		}
-        		
-        		// In case another catch up iteration is needed:
-        		firstPendingFiringTime = _pendingFiringTimes.peek();
-        	    } else if (comparison == 0) {
-        		// Caught up firing will satisfy the request.
-        		_pendingFiringTimes.poll();
-        		break;
-        	    } else {
-        		// Pending request is in the future.
-        		// Proceed directly to caught up firing.
-        		break;
-        	    }
-        	}
+                        } finally {
+                            _catchUpTime = null;
+                        }
+                        
+                        // In case another catch up iteration is needed:
+                        firstPendingFiringTime = _pendingFiringTimes.peek();
+                    } else if (comparison == 0) {
+                        // Caught up firing will satisfy the request.
+                        _pendingFiringTimes.poll();
+                        break;
+                    } else {
+                        // Pending request is in the future.
+                        // Proceed directly to caught up firing.
+                        break;
+                    }
+                }
             }
-        	
+                
             // Perform caught up iteration only if no catch iteration has returned
             // false from postfire().
             if (_postfireReturns == true) {
-        	_microstep = microstep;
-        	// Transfer inputs.
-        	for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
-        		.hasNext() && !_stopRequested;) {
-        	    IOPort p = (IOPort) inputPorts.next();
-        	    if (p instanceof ParameterPort) {
-        		((ParameterPort) p).getParameter().update();
-        	    } else {
-        		transferInputs(p);
-        	    }
-        	}
+                _microstep = microstep;
+                // Transfer inputs.
+                for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
+                        .hasNext() && !_stopRequested;) {
+                    IOPort p = (IOPort) inputPorts.next();
+                    if (p instanceof ParameterPort) {
+                        ((ParameterPort) p).getParameter().update();
+                    } else {
+                        transferInputs(p);
+                    }
+                }
 
-        	if (!_stopRequested) {
-        	    _fireContents();
+                if (!_stopRequested) {
+                    _fireContents();
 
-        	    // Transfer outputs.
-        	    if (!_stopRequested) {
-        		transferOutputs();
-        	    }
-        	}
-        	
-        	// If there is a pending request in the future, delegate
-        	// a fireAt() request.
+                    // Transfer outputs.
+                    if (!_stopRequested) {
+                        transferOutputs();
+                    }
+                }
+                
+                // If there is a pending request in the future, delegate
+                // a fireAt() request.
                 if (_pendingFiringTimes != null) {
                     SuperdenseTime firstPendingFiringTime = _pendingFiringTimes.peek();
                     if (firstPendingFiringTime != null
-                	    && firstPendingFiringTime.compareTo(environmentTime) > 0) {
-                	// First argument is ignored, so it can be null.
-                	fireAt(null, firstPendingFiringTime.timestamp(), firstPendingFiringTime.index());
+                            && firstPendingFiringTime.compareTo(environmentTime) > 0) {
+                        // First argument is ignored, so it can be null.
+                        fireAt(null, firstPendingFiringTime.timestamp(), firstPendingFiringTime.index());
                     }
                 }
             }
@@ -490,13 +490,13 @@ public class CatchUpComposite extends MirrorComposite {
 
             int comparison = response.compareTo(time);
             if (comparison == 0) {
-        	return time;
+                return time;
             } else {
-        	if (_pendingFiringTimes == null) {
-        	    _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
-        	}
-        	_pendingFiringTimes.add(new SuperdenseTime(time, microstep));
-        	return time;
+                if (_pendingFiringTimes == null) {
+                    _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
+                }
+                _pendingFiringTimes.add(new SuperdenseTime(time, microstep));
+                return time;
             }
         }
 
@@ -519,7 +519,7 @@ public class CatchUpComposite extends MirrorComposite {
          */
         public Time getModelTime() {
             if (_catchUpTime == null) {
-        	return super.getModelTime();
+                return super.getModelTime();
             }
             return _catchUpTime;
         }
@@ -549,9 +549,9 @@ public class CatchUpComposite extends MirrorComposite {
             // if they are (e.g. in Ptides), so we call _isEmbedded() to give
             // the subclass the option of pretending it is not embedded.
             if (isEmbedded()) {
-        	Director executiveDirector = getExecutiveDirector();
-        	if (executiveDirector instanceof SuperdenseTimeDirector) {
-        	    _microstep = ((SuperdenseTimeDirector) executiveDirector).getIndex();
+                Director executiveDirector = getExecutiveDirector();
+                if (executiveDirector instanceof SuperdenseTimeDirector) {
+                    _microstep = ((SuperdenseTimeDirector) executiveDirector).getIndex();
                 }
             }
             super.initialize();
@@ -595,22 +595,22 @@ public class CatchUpComposite extends MirrorComposite {
         //////////////////////////////////////////////////////////////
         ////                   private methods                    ////
 
-	/** Iterate the contents composite.
-	 *  @throws IllegalActionException If the composite throws it.
-	 *  @return false if postfire() returns false.
-	 */
-	private boolean _fireContents() throws IllegalActionException {
-	    if (_debugging) {
-	        _debug(new FiringEvent(this, _contents, FiringEvent.BEFORE_ITERATE, 1));
-	    }
-	    if (_contents.iterate(1) == Executable.STOP_ITERATING) {
-		_postfireReturns = false;
-	    }
-	    if (_debugging) {
-	        _debug(new FiringEvent(this, _contents, FiringEvent.AFTER_ITERATE, 1));
-	    }
-	    return _postfireReturns;
-	}
+        /** Iterate the contents composite.
+         *  @throws IllegalActionException If the composite throws it.
+         *  @return false if postfire() returns false.
+         */
+        private boolean _fireContents() throws IllegalActionException {
+            if (_debugging) {
+                _debug(new FiringEvent(this, _contents, FiringEvent.BEFORE_ITERATE, 1));
+            }
+            if (_contents.iterate(1) == Executable.STOP_ITERATING) {
+                _postfireReturns = false;
+            }
+            if (_debugging) {
+                _debug(new FiringEvent(this, _contents, FiringEvent.AFTER_ITERATE, 1));
+            }
+            return _postfireReturns;
+        }
 
         //////////////////////////////////////////////////////////////
         ////                   private variables                  ////

@@ -474,39 +474,39 @@ public class ViewLayers3D extends TypedAtomicActor {
                 red = 1.0f;
             }
             else if (layerColor.stringValue().equals("blue")) {
-            	blue = 1.0f;
+                    blue = 1.0f;
             }
             else if (layerColor.stringValue().equals("green")) {
-            	green = 1.0f;
+                    green = 1.0f;
             }
             else if (layerColor.stringValue().equals("cyan")) {
-            	green = 1.0f;
-            	blue = 1.0f;
+                    green = 1.0f;
+                    blue = 1.0f;
             }
             else if (layerColor.stringValue().equals("magenta")) {
-            	red = 1.0f;
-            	blue = 1.0f;
+                    red = 1.0f;
+                    blue = 1.0f;
             }
             else if (layerColor.stringValue().equals("yellow")) {
-            	red = 1.0f;
-            	green = 1.0f;
+                    red = 1.0f;
+                    green = 1.0f;
             }
             else if (layerColor.stringValue().equals("gray")) {
-            	red = 0.5f;
-            	green = 0.5f;
-            	blue = 0.5f;
+                    red = 0.5f;
+                    green = 0.5f;
+                    blue = 0.5f;
             }
             else if (layerColor.stringValue().equals("white")) {
-            	red = 1.0f;
-            	green = 1.0f;
-            	blue = 1.0f;
+                    red = 1.0f;
+                    green = 1.0f;
+                    blue = 1.0f;
             }
             else if (layerColor.stringValue().equals("black")) {
             }
             else {
-            	red = 0.7f;
-            	green = 0.7f;
-            	blue = 0.7f;
+                    red = 0.7f;
+                    green = 0.7f;
+                    blue = 0.7f;
             }
             
             Appearance appearance = new Appearance();
@@ -517,14 +517,14 @@ public class ViewLayers3D extends TypedAtomicActor {
 
             float zLen = (float)thicknessToken.doubleValue()/2;
             
-        	node = new Box(1.0f, 1.0f, zLen, primitiveFlags, appearance);
+                node = new Box(1.0f, 1.0f, zLen, primitiveFlags, appearance);
             if (layerShape.stringValue().equals("rect")) {
-            	float layerLen = (float)layerSize.doubleValue();
-            	node = new Box(layerLen, zLen, layerLen, primitiveFlags, appearance);
+                    float layerLen = (float)layerSize.doubleValue();
+                    node = new Box(layerLen, zLen, layerLen, primitiveFlags, appearance);
             }
             else if (layerShape.stringValue().equals("circ")) {
-            	float layerRadius = (float)layerSize.doubleValue();
-            	node = new Cylinder(layerRadius, zLen * 2, primitiveFlags, appearance);
+                    float layerRadius = (float)layerSize.doubleValue();
+                    node = new Cylinder(layerRadius, zLen * 2, primitiveFlags, appearance);
             }
             
             Transform3D transform = new Transform3D();

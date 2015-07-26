@@ -159,7 +159,7 @@ static fmi2Status setValue(portConnection* connection) {
         fmi2Flag = connection->sinkFMU->setHybridBoolean(connection->sinkFMU->component, &connection->sinkPort, 1, &tempBoolean, &tmpAbsent);
         break;
         case fmi2_String:
-        fmi2Flag = connection->sinkFMU->setHybridString(connection->sinkFMU->component, &connection->sinkPort, 1,	&tempString, &tmpAbsent);
+        fmi2Flag = connection->sinkFMU->setHybridString(connection->sinkFMU->component, &connection->sinkPort, 1,        &tempString, &tmpAbsent);
         break;
         default:
         return fmi2Error;
@@ -376,26 +376,26 @@ fmi2Boolean loggingOn, char separator) {
         }
         // Compute the maximum step size
         // (III) Legacy FMUs
-	   if (isLegacyFmu) {
-			   fmi2Status currentStatus = doStep(&fmus[legacyFmuIndex], time, stepSize, fmi2False, localTime[i], scaleFactor[legacyFmuIndex]);
-			   if (currentStatus > fmi2Warning) {
-					   printf("Could not step FMU (%s) [Legacy FMU]. Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
-					   terminateSimulation(fmus, 0, file, stepSize, nSteps);
-					   return 0;
-			   }
-			   fmi2Integer lastSuccessfulTime;
-			   currentStatus = getRealStatus(&fmus[legacyFmuIndex], fmi2LastSuccessfulTime, &lastSuccessfulTime, scaleFactor[legacyFmuIndex]);
-			   if (currentStatus > fmi2Warning) {
-					   printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
-					   terminateSimulation(fmus, 0, file, stepSize, nSteps);
-					   return 0;
-			   }
-			   fmi2Integer maxStepSize;
-			   maxStepSize = lastSuccessfulTime - time;
-			   if (maxStepSize == 0) {
-					   stepSize = min(stepSize, maxStepSize);
-			   }
-	   }
+           if (isLegacyFmu) {
+                           fmi2Status currentStatus = doStep(&fmus[legacyFmuIndex], time, stepSize, fmi2False, localTime[i], scaleFactor[legacyFmuIndex]);
+                           if (currentStatus > fmi2Warning) {
+                                           printf("Could not step FMU (%s) [Legacy FMU]. Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
+                                           terminateSimulation(fmus, 0, file, stepSize, nSteps);
+                                           return 0;
+                           }
+                           fmi2Integer lastSuccessfulTime;
+                           currentStatus = getRealStatus(&fmus[legacyFmuIndex], fmi2LastSuccessfulTime, &lastSuccessfulTime, scaleFactor[legacyFmuIndex]);
+                           if (currentStatus > fmi2Warning) {
+                                           printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
+                                           terminateSimulation(fmus, 0, file, stepSize, nSteps);
+                                           return 0;
+                           }
+                           fmi2Integer maxStepSize;
+                           maxStepSize = lastSuccessfulTime - time;
+                           if (maxStepSize == 0) {
+                                           stepSize = min(stepSize, maxStepSize);
+                           }
+           }
         // Rolling back FMUs of type (II)
         {
             fmi2Status currentStatus = rollbackFMUs(fmus);

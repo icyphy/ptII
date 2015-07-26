@@ -574,54 +574,54 @@ public class FMIModelDescription {
     public void parseDependenciese(Node node) {
         NamedNodeMap attributes = node.getAttributes();
         Long valueReference = modelVariables.get(Integer
-        		.parseInt(attributes.getNamedItem("index")
+                        .parseInt(attributes.getNamedItem("index")
                 .getNodeValue()) - 1).valueReference;
         Node dependencyNode = attributes.getNamedItem("dependencies");
         if (dependencyNode != null) {
-        	String[] dependencies = null; 
-        	List <String> inputDependencies = new LinkedList<String>();
-        	List <String> inputStateDependencies = new LinkedList<String>();
-        	if (dependencyNode.getNodeValue().trim().length() != 0){
-        		dependencies = dependencyNode.getNodeValue().trim()
+                String[] dependencies = null; 
+                List <String> inputDependencies = new LinkedList<String>();
+                List <String> inputStateDependencies = new LinkedList<String>();
+                if (dependencyNode.getNodeValue().trim().length() != 0){
+                        dependencies = dependencyNode.getNodeValue().trim()
                     .split(" ");
-        		// Create a list which contains dependent variables which are inputs.
-        		for (int j = 0; j < dependencies.length; j++) {
-        			if (modelVariables
-					.get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)){
-        				inputDependencies.add(dependencies[j]);
-        			}
-        			// Create a list which contains dependent variables which are inputs or states.
+                        // Create a list which contains dependent variables which are inputs.
+                        for (int j = 0; j < dependencies.length; j++) {
+                                if (modelVariables
+                                        .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input)){
+                                        inputDependencies.add(dependencies[j]);
+                                }
+                                // Create a list which contains dependent variables which are inputs or states.
                     if (modelVariables
                             .get(Integer.parseInt(dependencies[j]) - 1).causality.equals(Causality.input) ||
                             modelVariables
                             .get(Integer.parseInt(dependencies[j]) - 1).isState){
                         inputStateDependencies.add(dependencies[j]);
                             }
-        		}
-        	}
-        	// Create the list of dependent variables which are just inputs.
+                        }
+                }
+                // Create the list of dependent variables which are just inputs.
             for (int i = 0; i < modelVariables.size(); i++) {
                 if (modelVariables.get(i).valueReference == valueReference) {
                     modelVariables.get(i).directDependency.clear();
                     for (int j = 0; j < inputDependencies.size(); j++) {
-						for (int k = 0; k < modelVariables.size(); k++) {
-							try {
-								if ((modelVariables.get(k).valueReference == modelVariables
-										.get(Integer.parseInt(inputDependencies.get(j)) - 1).valueReference) 
-										&& modelVariables.get(k).causality.equals(Causality.input)) {
-									modelVariables.get(i).directDependency
-											.add(modelVariables.get(k).name);
-									break;
-								}
-							} catch (NumberFormatException ex) {
-								NumberFormatException nfx = new NumberFormatException(
-										"Failed to parse \"" + inputDependencies.get(j)
-												+ "\", which is the " + j
-												+ " (0-based) dependency.");
-								nfx.initCause(ex);
-								throw nfx;
-							}
-						}
+                                                for (int k = 0; k < modelVariables.size(); k++) {
+                                                        try {
+                                                                if ((modelVariables.get(k).valueReference == modelVariables
+                                                                                .get(Integer.parseInt(inputDependencies.get(j)) - 1).valueReference) 
+                                                                                && modelVariables.get(k).causality.equals(Causality.input)) {
+                                                                        modelVariables.get(i).directDependency
+                                                                                        .add(modelVariables.get(k).name);
+                                                                        break;
+                                                                }
+                                                        } catch (NumberFormatException ex) {
+                                                                NumberFormatException nfx = new NumberFormatException(
+                                                                                "Failed to parse \"" + inputDependencies.get(j)
+                                                                                                + "\", which is the " + j
+                                                                                                + " (0-based) dependency.");
+                                                                nfx.initCause(ex);
+                                                                throw nfx;
+                                                        }
+                                                }
                     }
                     
                  // Create the list of dependent variables which are just inputs and states.

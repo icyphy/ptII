@@ -1865,7 +1865,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @return The current expression as a string.
      */
     protected String _getCurrentExpression() {
-	return _currentExpression;
+        return _currentExpression;
     }
 
     /** Notify the value listeners of this variable that this variable

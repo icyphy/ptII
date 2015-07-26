@@ -213,25 +213,25 @@ public class JSAccessor extends JavaScript {
      *  @exception IllegalActionException If evaluating the script fails.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
-	super.attributeChanged(attribute);
-	if (attribute == script) {
-	    // Force the script to be marked not overridden.
-	    // In other words, each time you set the value of the script,
-	    // the new value will be assumed to be that specified by the class
-	    // of which this accessor is an instance.  This means that each time
-	    // you perform an Update on the accessor, the script will be reloaded,
-	    // even if you have overridden it.  This should be OK, since the script
-	    // is visible only in expert mode.  Failing to do this results in
-	    // an Update NOT updating the script ever, which is definitely not what
-	    // we want.
-	    attribute.setDerivedLevel(Integer.MAX_VALUE);
-	    // The above will have the side effect that a script will not be saved
-	    // when you save the model. Force it to be saved.
-	    attribute.setPersistent(true);
+        super.attributeChanged(attribute);
+        if (attribute == script) {
+            // Force the script to be marked not overridden.
+            // In other words, each time you set the value of the script,
+            // the new value will be assumed to be that specified by the class
+            // of which this accessor is an instance.  This means that each time
+            // you perform an Update on the accessor, the script will be reloaded,
+            // even if you have overridden it.  This should be OK, since the script
+            // is visible only in expert mode.  Failing to do this results in
+            // an Update NOT updating the script ever, which is definitely not what
+            // we want.
+            attribute.setDerivedLevel(Integer.MAX_VALUE);
+            // The above will have the side effect that a script will not be saved
+            // when you save the model. Force it to be saved.
+            attribute.setPersistent(true);
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
             // Update the static cached version of this variable.
             _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
-	}
+        }
     }
 
     /** Check out or update the TerraSwarm accessor repository.
@@ -379,18 +379,18 @@ public class JSAccessor extends JavaScript {
             + "</group>";
         final NamedObj context = this;
         MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
-		// Wrap this to give a more useful error message.
-		protected void _execute() throws Exception {
-		    try {
-			super._execute();
-		    } catch (Exception e) {
-			// FIXME: Can we undo?
-			throw new IllegalActionException(context, e,
-				"Failed to reload accessor. Perhaps changes are too extensive."
-				+ " Try re-importing the accessor.");
-		    }
-		}
-	    };
+                // Wrap this to give a more useful error message.
+                protected void _execute() throws Exception {
+                    try {
+                        super._execute();
+                    } catch (Exception e) {
+                        // FIXME: Can we undo?
+                        throw new IllegalActionException(context, e,
+                                "Failed to reload accessor. Perhaps changes are too extensive."
+                                + " Try re-importing the accessor.");
+                    }
+                }
+            };
         request.setUndoable(true);
         requestChange(request);
     }
@@ -494,9 +494,9 @@ public class JSAccessor extends JavaScript {
         // testing the reimportation of accessors.  See
         // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
-	if (urlSpec == null || urlSpec.trim().equals("")) {
-	    throw new IllegalActionException("No source file specified.");
-	}
+        if (urlSpec == null || urlSpec.trim().equals("")) {
+            throw new IllegalActionException("No source file specified.");
+        }
 
         URL accessorURL = null;
         try {
@@ -531,12 +531,12 @@ public class JSAccessor extends JavaScript {
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
-        	    url.openStream()));
+                    url.openStream()));
             StringBuffer contents = new StringBuffer();
             String input;
             while ((input = in.readLine()) != null) {
-        	contents.append(input);
-        	contents.append("\n");
+                contents.append(input);
+                contents.append("\n");
             }
             
             // If the spec is a JavaScript file, then do not use XSLT, but just
@@ -544,10 +544,10 @@ public class JSAccessor extends JavaScript {
             String extension = urlSpec.substring(urlSpec.lastIndexOf('.') + 1, urlSpec.length());
             extension = extension.toLowerCase().trim();
             if (extension == null || extension.equals("")) {
-        	throw new IllegalActionException("Can't tell file type from extension: " + urlSpec);
+                throw new IllegalActionException("Can't tell file type from extension: " + urlSpec);
             }
             if (extension.equals("js")) {
-        	// JavaScript specification.
+                // JavaScript specification.
                 StringBuffer result = new StringBuffer();
 
                 // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
@@ -556,50 +556,50 @@ public class JSAccessor extends JavaScript {
                 } catch (IOException ex) {
                     // FIXME: What to do here?
                     System.err.println("Cannot find PtDoc file for "
-                	    + urlSpec.trim()
-                	    + ". Importing without documentation.");
+                            + urlSpec.trim()
+                            + ". Importing without documentation.");
                 }
 
-        	result.append("<property name=\"script\" value=\"");
-        	// Since $ causes the expression parser to try to substitute a variable, we need
-        	// to escape it.
-        	String escaped = contents.toString().replace("$", "$$");
-        	result.append(StringUtilities.escapeForXML(escaped));
-        	result.append("\"/>");
-        	return result.toString();
+                result.append("<property name=\"script\" value=\"");
+                // Since $ causes the expression parser to try to substitute a variable, we need
+                // to escape it.
+                String escaped = contents.toString().replace("$", "$$");
+                result.append(StringUtilities.escapeForXML(escaped));
+                result.append("\"/>");
+                return result.toString();
             } else if (extension.equals("xml")) {
-        	// XML specification.
-        	TransformerFactory factory = TransformerFactory.newInstance();
-        	String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
-        	Source xslt = new StreamSource(FileUtilities.nameToFile(
-        		xsltLocation, null));
-        	Transformer transformer = factory.newTransformer(xslt);
-        	StreamSource source = new StreamSource(new InputStreamReader(
-        		url.openStream()));
-        	StringWriter outWriter = new StringWriter();
-        	// NOTE: Could target a DOMResult here instead, which would give
-        	// much more flexibility.
-        	StreamResult result = new StreamResult(outWriter);
-        	try {
-        	    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
-        	    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-        	    contents = outWriter.getBuffer();
-        	    transformer.transform(source, result);
-        	    contents = outWriter.getBuffer();
-        	} catch (Throwable throwable) {
-        	    IOException ioException = new IOException("Failed to parse \""
-        		    + url
-        		    + "\".");
-        	    ioException.initCause(throwable);
-        	    throw ioException;
-        	}
+                // XML specification.
+                TransformerFactory factory = TransformerFactory.newInstance();
+                String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
+                Source xslt = new StreamSource(FileUtilities.nameToFile(
+                        xsltLocation, null));
+                Transformer transformer = factory.newTransformer(xslt);
+                StreamSource source = new StreamSource(new InputStreamReader(
+                        url.openStream()));
+                StringWriter outWriter = new StringWriter();
+                // NOTE: Could target a DOMResult here instead, which would give
+                // much more flexibility.
+                StreamResult result = new StreamResult(outWriter);
+                try {
+                    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");   
+                    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+                    contents = outWriter.getBuffer();
+                    transformer.transform(source, result);
+                    contents = outWriter.getBuffer();
+                } catch (Throwable throwable) {
+                    IOException ioException = new IOException("Failed to parse \""
+                            + url
+                            + "\".");
+                    ioException.initCause(throwable);
+                    throw ioException;
+                }
                 return contents.toString();
             } else {
-        	throw new IllegalActionException("Unrecognized file extension: " + extension);
+                throw new IllegalActionException("Unrecognized file extension: " + extension);
             }
         } finally {
             if (in != null) {
-        	in.close();
+                in.close();
             }
         }
     }
@@ -625,12 +625,12 @@ public class JSAccessor extends JavaScript {
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
-        	    url.openStream()));
+                    url.openStream()));
             StringBuffer contents = new StringBuffer();
             String input;
             while ((input = in.readLine()) != null) {
-        	contents.append(input);
-        	contents.append("\n");
+                contents.append(input);
+                contents.append("\n");
             }
             return contents.toString();
         } catch (IOException ex) {
@@ -641,7 +641,7 @@ public class JSAccessor extends JavaScript {
             //throw ex;
         } finally {
             if (in != null) {
-        	in.close();
+                in.close();
             }
         }
         return "";
@@ -662,27 +662,27 @@ public class JSAccessor extends JavaScript {
      */
     public class ActionableAttribute extends StringAttribute implements Actionable {
 
-	/** Create a new actionable attribute.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @throws IllegalActionException If the base class throws it.
-	 *  @throws NameDuplicationException If the base class throws it.
-	 */
-	public ActionableAttribute(NamedObj container, String name)
-		throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+        /** Create a new actionable attribute.
+         *  @param container The container.
+         *  @param name The name.
+         *  @throws IllegalActionException If the base class throws it.
+         *  @throws NameDuplicationException If the base class throws it.
+         */
+        public ActionableAttribute(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
 
-	/** Return "Reload". */
-	@Override
-	public String actionName() {
-	    return "Reload";
-	}
+        /** Return "Reload". */
+        @Override
+        public String actionName() {
+            return "Reload";
+        }
 
-	/** Reload the accessor. */
-	@Override
-	public void performAction() throws Exception {
+        /** Reload the accessor. */
+        @Override
+        public void performAction() throws Exception {
             reload();
-	}
+        }
     }
 }

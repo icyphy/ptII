@@ -202,7 +202,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      */
     @Override
     public void uncaughtException(Thread thread, Throwable exception) {
-	_error("UNCAUGHT EXCEPTION: " + exception.getMessage(), exception);
+        _error("UNCAUGHT EXCEPTION: " + exception.getMessage(), exception);
     }
 
     /** Defer to the set message handler to

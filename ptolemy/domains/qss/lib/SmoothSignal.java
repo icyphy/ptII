@@ -126,7 +126,7 @@ public class SmoothSignal extends Transformer {
             // Collect the derivatives for updating.
             previousDerivatives = _previous.derivativeValues();
             if (previousDerivatives != null) {
-        	order = previousDerivatives.length;
+                order = previousDerivatives.length;
             }
         }
         // First pass collects the inputs and figures out how many derivatives the output will have.
@@ -136,16 +136,16 @@ public class SmoothSignal extends Transformer {
             // Do not read this in a while loop because if input is persistent,
             // it will go into an infinite loop. There always is a token.
             if (input.hasToken(i)) {
-        	received[i] = (DoubleToken)input.get(i);
+                received[i] = (DoubleToken)input.get(i);
             }
             if (received[i] instanceof SmoothToken) {
-        	double[] derivatives = ((SmoothToken)received[i]).derivativeValues();
-        	if (derivatives != null) {
-        	    int max = i + derivatives.length;
-        	    if (order < max) {
-        		order = max;
-        	    }
-        	}
+                double[] derivatives = ((SmoothToken)received[i]).derivativeValues();
+                if (derivatives != null) {
+                    int max = i + derivatives.length;
+                    if (order < max) {
+                        order = max;
+                    }
+                }
             }
         }
         // Construct a default result based on the previous output, if there is one.
@@ -154,21 +154,21 @@ public class SmoothSignal extends Transformer {
         if (_previous != null) {
             result[0] = _previous.doubleValue();
             if (previousDerivatives != null) {
-        	System.arraycopy(
-        		previousDerivatives, 0, result, 1, previousDerivatives.length);
+                System.arraycopy(
+                        previousDerivatives, 0, result, 1, previousDerivatives.length);
             }
         }
         
         // Second pass updates the value and derivatives based on inputs provided.
         for (int i = 0; i < width; i++) {
             if (received[i] != null) {
-        	result[i] = received[i].doubleValue();
-        	if (received[i] instanceof SmoothToken) {
-        	    double[] derivatives = ((SmoothToken)received[i]).derivativeValues();
-        	    if (derivatives != null && derivatives.length > 0) {
-        		System.arraycopy(derivatives, 0, result, i + 1, derivatives.length);
-        	    }
-        	}
+                result[i] = received[i].doubleValue();
+                if (received[i] instanceof SmoothToken) {
+                    double[] derivatives = ((SmoothToken)received[i]).derivativeValues();
+                    if (derivatives != null && derivatives.length > 0) {
+                        System.arraycopy(derivatives, 0, result, i + 1, derivatives.length);
+                    }
+                }
             }
         }
         _previous = new SmoothToken(result, time);
@@ -180,7 +180,7 @@ public class SmoothSignal extends Transformer {
      *   not match the width of the output.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
         _previous = null;
     }
     

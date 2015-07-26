@@ -286,8 +286,8 @@ public class Manager extends NamedObj implements Runnable {
      *  @return The time in milliseconds since the start of execution of the model.
      */
     public long elapsedTimeSinceStart() {
-	long currentTime = System.currentTimeMillis();
-	return currentTime - _afterInitTime;
+        long currentTime = System.currentTimeMillis();
+        return currentTime - _afterInitTime;
     }
 
     /** Enable or disable printing time and memory usage at the end of model
@@ -581,7 +581,7 @@ public class Manager extends NamedObj implements Runnable {
      * @return The real time at which the model began executing.
      */
     public long getRealStartTime() {
-    	return _afterInitTime;
+            return _afterInitTime;
     }
 
     /** Return the top-level composite actor for which this manager
@@ -798,8 +798,8 @@ public class Manager extends NamedObj implements Runnable {
             // Note that the cast is safe, as everything in Ptolemy that
             // is an actor is also a ComponentEntity.
             for (Actor actor : _actorsToInitialize) {
-                if (((ComponentEntity) actor).isOpaque()) {            	
-                	actor.getExecutiveDirector().initialize(actor);
+                if (((ComponentEntity) actor).isOpaque()) {                    
+                        actor.getExecutiveDirector().initialize(actor);
                 }
             }
 
