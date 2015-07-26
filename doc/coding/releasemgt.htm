@@ -138,7 +138,7 @@
       <li> Generate a list of files
 	<pre>
 	  adm/bin/ptIItxtfiles > /tmp/f
-	    egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
+	    egrep '.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 	</pre>
       </li>
 
@@ -223,12 +223,12 @@
 	  # Run addtrailingnl with adding the new lines:
 	  cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl
 	  # Run with -n and then without:
-	  cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '\.[cjh]$' | xargs $PTII/adm/bin/addtrailingnl -n
 	  cat /tmp/f | egrep makefile | xargs $PTII/adm/bin/addtrailingnl -n
 	  cat /tmp/f | egrep README | xargs $PTII/adm/bin/addtrailingnl -n
-	  cat /tmp/f | egrep '*\.htm' | xargs $PTII/adm/bin/addtrailingnl -n
-	  cat /tmp/f | egrep '*\.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
-	  cat /tmp/f | egrep '*\.xml' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '\.htm' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '\.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
+	  cat /tmp/f | egrep '\.xml' | xargs $PTII/adm/bin/addtrailingnl -n
 	</pre>
       </li>
       <li> Convert tabs with
@@ -253,7 +253,7 @@
 	  # Run rmtrailingspace with adding the new lines:
 	  cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace 
 	  # Run with -n and then without:
-	  cat /tmp/f | egrep '*\.[cjh]$' | xargs $PTII/util/testsuite/rmtrailingspace -n
+	  cat /tmp/f | egrep '\.[cjh]$' | xargs $PTII/util/testsuite/rmtrailingspace -n
 	</pre>
       </li>
 
