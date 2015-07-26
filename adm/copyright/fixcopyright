@@ -17,7 +17,7 @@
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; make cleanDerivedJavaFiles clean_shipping
 #
 #    Remove files with copyrights by others
-#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json doc/books/systems/export/WebServerDE.xml ./org/ptolemy/ptango/test/TestRunner.xml ./org/ptolemy/ptango/test/auto/WebServerDEInterleaved.xml ./org/ptolemy/ptango/test/auto/WebServerDE.xml copyright.htm configure ./ptolemy/configs/doc/copyright.htm ./ptdb/lib/db-dbxml-license.htm ./ptolemy/actor/gui/masterCopyrightStart.htm.in com
+#    rm -rf thales com/jgoodies com/jhlabs ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java org/mlc org/json doc/books/systems/export/WebServerDE.xml ./org/ptolemy/ptango/test/TestRunner.xml ./org/ptolemy/ptango/test/auto/WebServerDEInterleaved.xml ./org/ptolemy/ptango/test/auto/WebServerDE.xml copyright.htm configure ./ptolemy/configs/doc/copyright.htm ./ptdb/lib/db-dbxml-license.htm ./ptolemy/actor/gui/masterCopyrightStart.htm.in com
 #
 #    Remove the FMI .c and .h files that are copyrighted elsewhere.
 #    find . -name "fmi*.[ch]" -print -exec rm {} \;
@@ -112,29 +112,29 @@ cd $topdir
 }
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2010\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2015\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2010"
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2010/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2015/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2010"
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2014/' \
+    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2015/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -142,14 +142,14 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 199[0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2014"
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2014 /' \
+    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2015 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -157,24 +157,24 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 20[01][0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2014"
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2014 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2015 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2014"
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2014 /' \
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2015 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -182,22 +182,22 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH="Copyright \(c\) 200[0-9] "
-LOGMESSAGE="Changed copyright to 2014"
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(201[0123]\) /Copyright (c) \1-2014 /' \
+    sed 's/Copyright (c) \(201[01234]\) /Copyright (c) \1-2015 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 201[0123] "
-LOGMESSAGE="Changed copyright to 2014"
+EGREPMATCH="Copyright \(c\) 201[01234] "
+LOGMESSAGE="Changed copyright to 2015"
 
 search $@
 
