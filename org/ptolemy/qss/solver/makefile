@@ -1,6 +1,6 @@
 # Makefile for Quantized State Systems solver.
 #
-# @Version: $Id: makefile 69601 2014-07-30 13:51:01Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2014 The Regents of the University of California.
