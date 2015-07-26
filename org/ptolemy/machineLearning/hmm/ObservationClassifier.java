@@ -208,7 +208,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @param prior prior guess vectors
      * @param A transition probability matrix
      * @return An array of assigned labels to observations
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
 
     protected final int[] classifyHMM(double[][] y, double[] prior, double[][] A) throws IllegalActionException {
@@ -331,7 +331,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     /**
      * Abstract class defining the emission probability computation of the
      * latent variable.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract double emissionProbability(double[] y, int hiddenState)
             throws IllegalActionException;

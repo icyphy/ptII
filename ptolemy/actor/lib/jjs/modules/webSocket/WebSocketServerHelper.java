@@ -58,7 +58,7 @@ import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 public class WebSocketServerHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Close the web socket server.
      */

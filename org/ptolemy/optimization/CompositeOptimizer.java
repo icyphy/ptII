@@ -533,8 +533,8 @@ public class CompositeOptimizer extends ReflectComposite {
                 }
             };
 
-            if(_reusePreviousResult) {
-                if(_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
+            if (_reusePreviousResult) {
+                if (_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
                     _optInput = new double[_dimension];
                     _firstStep = false; //Keeping the optimized values for next step.
                 }

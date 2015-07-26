@@ -176,7 +176,7 @@ public class SmoothSignal extends Transformer {
     }
 
     /** Initialize this actor by clearing any stored inputs.
-     *  @throws IllegalActionException If the width of the input does
+     *  @exception IllegalActionException If the width of the input does
      *   not match the width of the output.
      */
     public void initialize() throws IllegalActionException {

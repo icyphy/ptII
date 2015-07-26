@@ -344,7 +344,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                     ////
+    ////                         public variables                  ////
 
     /** Name of the Ptolemy Federate. This parameter must contain an
      *  StringToken. */
@@ -489,7 +489,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         } else if (attribute == isCreator) {
             _isCreator = ((BooleanToken) isCreator.getToken()).booleanValue();
 
-        } else if(attribute == hlaTimeUnit){
+        } else if (attribute == hlaTimeUnit) {
             _hlaTimeUnitValue = ((DoubleToken) hlaTimeUnit.getToken()).doubleValue();
         }
         else {
@@ -634,7 +634,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     *   advance phase.
     */
     @Override
-    public boolean noNewActors(){
+    public boolean noNewActors() {
         boolean old = _noObjectDicovered;
         _noObjectDicovered=true;
         return old;
@@ -918,7 +918,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     double hlaTimeGranted = ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA).getTime();
 
                     double timeValue = hlaTimeGranted/_hlaTimeUnitValue ;
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("TAG for " + hlaTimeGranted+ "model moves to" + timeValue);
                     }
                     breakpoint = new Time(_director,timeValue);
@@ -941,7 +941,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  Federation.
      *  @param hp The HLA publisher actor (HLA attribute) to update.
      *  @param in The updated value of the HLA attribute to update.
-     *  @throws IllegalActionException If a CERTI exception is raised then
+     *  @exception IllegalActionException If a CERTI exception is raised then
      *  displayed it to the user.
      */
     void updateHlaAttribute(HlaPublisher hp, Token in,String senderName)
@@ -1005,7 +1005,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  HLA services to: unsubscribe to HLA attributes, unpublish HLA attributes,
      *  resign a Federation and destroy a Federation if the current Federate is
      *  the last participant.
-     *  @throws IllegalActionException If the parent class throws it
+     *  @exception IllegalActionException If the parent class throws it
      *  of if a CERTI exception is raised then displayed it to the user.
      */
     @Override
@@ -1142,7 +1142,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** The method {@link #_populatedHlaValueTables()} populates the tables
      *  containing information of HLA attributes required to publish and to
      *  subscribe value attributes in a HLA Federation.
-     *  @throws IllegalActionException If a HLA attribute is declared twice.
+     *  @exception IllegalActionException If a HLA attribute is declared twice.
      */
     private void _populateHlaAttributeTables() throws IllegalActionException {
         CompositeActor ca = (CompositeActor) this.getContainer();
@@ -1176,7 +1176,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  time advancement phase is saved as {@link TimedEvent} and stored in a
      *  queue. Then, every {@link TimedEvent}s are moved from this queue to the
      *  output port of their corresponding {@link HLASubscriber} actors
-     *  @throws IllegalActionException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     private void _putReflectedAttributesOnHlaSubscribers()
             throws IllegalActionException {
@@ -1194,7 +1194,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
             //multiple events can occur at the same time
             LinkedList<TimedEvent> events = elt.getValue();
-            while(events.size()>0) {
+            while (events.size()>0) {
 
                 event = events.get(0);
 
@@ -1451,22 +1451,22 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * and for _hlaAttributesSubscribedTo. So instead of using magic indexes
      * and do each time the downgrade, you can use these functions.
      */
-    private static TypedIOPort _getPortFromTab(Object[] tab){
+    private static TypedIOPort _getPortFromTab(Object[] tab) {
         return (TypedIOPort)tab[0];
     }
 
-    static private Type _getTypeFromTab(Object[] tab){
+    static private Type _getTypeFromTab(Object[] tab) {
         return (Type)tab[1];
     }
-    static private String _getClassNameFromTab(Object[] tab){
+    static private String _getClassNameFromTab(Object[] tab) {
         return (String)tab[2];
     }
 
-    static private Integer _getClassHandleFromTab(Object[] tab){
+    static private Integer _getClassHandleFromTab(Object[] tab) {
         return (Integer)tab[3];
     }
 
-    static private Integer _getAttributeHandleFromTab(Object[] tab){
+    static private Integer _getAttributeHandleFromTab(Object[] tab) {
         return (Integer)tab[4];
     }
 
@@ -1534,14 +1534,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  services provide by HLA/CERTI to publish/subscribe to HLA attributes
          *  in a HLA Federation.
          *  @param rtia
-         *  @throws NameNotFound
-         *  @throws ObjectClassNotDefined
-         *  @throws FederateNotExecutionMember
-         *  @throws RTIinternalError
-         *  @throws AttributeNotDefined
-         *  @throws SaveInProgress
-         *  @throws RestoreInProgress
-         *  @throws ConcurrentAccessAttempted
+         *  @exception NameNotFound
+         *  @exception ObjectClassNotDefined
+         *  @exception FederateNotExecutionMember
+         *  @exception RTIinternalError
+         *  @exception AttributeNotDefined
+         *  @exception SaveInProgress
+         *  @exception RestoreInProgress
+         *  @exception ConcurrentAccessAttempted
          *  All those exceptions are from the HLA/CERTI implementation.
          */
         public void initialize(RTIambassador rtia) throws NameNotFound,
@@ -1569,7 +1569,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             logicalTimeHLA = new CertiLogicalTime(startTime);
 
             effectiveLookAHead = new CertiLogicalTimeInterval(lookAHead*_hlaTimeUnitValue);
-            if(_debugging){
+            if (_debugging) {
                 _debug("Effective HLA lookahead is " + effectiveLookAHead.toString());
             }
             timeAdvanceGrant = false;
@@ -1653,7 +1653,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
             /*This may trigger, not 100% sure. If so, need to review the code
             to store RAV no matter what*/
-            if(!done){
+            if (!done) {
                 throw new FederateInternalError("Received a RAV but could not put in "
                         + "anyobject. Means the ChangeRequest has not been processed yet");
             }
@@ -1703,7 +1703,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 LinkedList<ComponentEntity> actors = info.freeActors;
 
                                 //if it is a new actor, then we has to connect the ports
-                                if(actors.size() == 0){
+                                if (actors.size() == 0) {
                                     instance= classToInstantiate.instantiate(container, objectName);
                                     newActor = (CompositeActor) instance;
 
@@ -1711,35 +1711,35 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                                     container.notifyConnectivityChange();
 
-                                    for(IOPort out : outputPortList){
+                                    for (IOPort out : outputPortList) {
                                         ComponentRelation r=null;
                                         HashSet<IOPort> ports = info.getPortReceiver(out.getName());
 
                                         //if we dont know what to do with the port, just skip it
-                                        if(ports == null){
+                                        if (ports == null) {
                                             continue;
                                         }
 
-                                        for(IOPort recv :ports){
-                                            if(r==null) {
+                                        for (IOPort recv :ports) {
+                                            if (r==null) {
                                                 //connect output port to new relation
                                                 r = container.connect(out, recv,objectName + " " + out.getName());
-                                            } else{
+                                            } else {
                                                 //connect destination to relation
                                                 recv.link(r);
                                             }
                                         }
                                     }
-                                    if(_debugging){
+                                    if (_debugging) {
                                         _debug("New object will do object " + objectName);
                                     }
 
-                                } else{
+                                } else {
                                     //retrieve and remove head
                                     instance = actors.poll();
                                     newActor = (CompositeActor) instance;
                                     newActor.setDisplayName(objectName);
-                                    if(_debugging){
+                                    if (_debugging) {
                                         _debug(instance.getName() + " will do object " + objectName);
                                     }
                                 }
@@ -1748,7 +1748,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 //then set it up to the actual name
                                 {
                                     Attribute name = newActor.getAttribute("objectName");
-                                    if(name != null){
+                                    if (name != null) {
                                         Parameter p = (Parameter) name;
                                         p.setTypeEquals(BaseType.STRING);
                                         p.setExpression("\""+objectName+"\"");
@@ -1757,7 +1757,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                                 // List all HlaSubscriber inside the instance and set them up
                                 List<HlaSubscriber> subscribers = newActor.entityList(HlaSubscriber.class);
-                                for(int  i = 0 ; i < subscribers.size() ; ++i){
+                                for (int  i = 0 ; i < subscribers.size() ; ++i) {
                                     HlaSubscriber sub = subscribers.get(i);
                                     sub.objectName.setExpression("\""+objectName+"\""); ;
                                     sub.setObjectHandle(objectHandle);
@@ -2022,7 +2022,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 HlaPublisher pub = (HlaPublisher) port.getContainer();
 
                 List<IOPort> senders = port.sourcePortList();
-                for(IOPort sender : senders){
+                for (IOPort sender : senders) {
                     //we use the _federateName do deal with the fact we might run
                     //several federate from differente threads (instead of processes
                     //as it should be) then we end up with some attributes beeing
@@ -2032,7 +2032,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                     String senderName = _federateName+" "+sender.getContainer().getName();
 
-                    if(!_registeredObject.containsKey(senderName)){
+                    if (!_registeredObject.containsKey(senderName)) {
                         int myObjectInstId = -1;
                         try {
                             myObjectInstId = rtia.registerObjectInstance(classHandle,
@@ -2064,17 +2064,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
              */
             CompositeEntity container = (CompositeEntity) getContainer();
             List<ComponentEntity> classes = container.classDefinitionList();
-            for(ComponentEntity currentClass: classes){
+            for (ComponentEntity currentClass: classes) {
 
                 int classHandle = Integer.MIN_VALUE;
-                try{
+                try {
                     classHandle = rtia.getObjectClassHandle(currentClass.getName());
-                }catch(Exception e){
+                } catch (Exception e) {
                     //found a class that is not in the fed file, just skip it.
                     continue;
                 }
 
-                try{
+                try {
                     StructuralInformation infoForThatClass = new StructuralInformation();
                     _strucuralInformation.put(classHandle,infoForThatClass);
                     infoForThatClass.classToInstantiate = currentClass;
@@ -2084,7 +2084,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             .getRtiFactory().createAttributeHandleSet();
 
                     List<HlaSubscriber> subscribers = ((CompositeActor) currentClass).entityList(HlaSubscriber.class);
-                    if(subscribers.isEmpty()){
+                    if (subscribers.isEmpty()) {
                         //found a class whose name is in a fed, but which is empty
                         continue;
                     }
@@ -2094,7 +2094,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         sub.setAttributeHandle(attributeHandle);
                         sub.setClassHandle(classHandle);
                         _attributesLocal.add(attributeHandle);
-                        if(_debugging){
+                        if (_debugging) {
                             _debug("Subscribe to " + sub.getParameterName() + " for class " + currentClass.getName());
                         }
                     }
@@ -2116,15 +2116,15 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         NamedObj currentInstance = (NamedObj)possibleEntities.get(i);
                         String className  = currentClass.getName();
                         String instanceName = currentInstance.getClassName();
-                        if(! (className.contains(instanceName) ||
-                                instanceName.contains(className)) ){
+                        if (! (className.contains(instanceName) ||
+                                instanceName.contains(className)) ) {
                             continue;
                         }
 
                         //get its output port and put it to the structural info
                         CompositeActor currentActor = (CompositeActor) possibleEntities.get(i);
                         LinkedList<IOPort> outputPortList = (LinkedList<IOPort>) currentActor.outputPortList();
-                        for(IOPort p : outputPortList){
+                        for (IOPort p : outputPortList) {
                             infoForThatClass.addPortSinks(p);
                         }
 
@@ -2141,7 +2141,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         }
                     } //end of "for on instances"
                 } //end of try
-                catch(Exception e){
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             } //end of "for on classes"

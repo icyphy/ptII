@@ -452,7 +452,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             }
             List<TypedIOPort> inputs = inputPortList();
             for (TypedIOPort input : inputs) {
-                if (removeDirectDependencyValue){
+                if (removeDirectDependencyValue) {
                     _declareDelayDependency(input, output.port, 0.0);
                 }
                 else if (!output.dependencies.contains(input)) {
@@ -1986,7 +1986,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                                                 "Could not instantiate Functional Mockup Unit (FMU).");
                         }
                 }
-                else{
+                else {
             final Time currentTime = director.getModelTime();
             final Time startTime = director.getModelStartTime();
             final Time stopTime = director.getModelStopTime();

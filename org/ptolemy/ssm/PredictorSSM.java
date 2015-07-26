@@ -70,7 +70,7 @@ implements StateSpaceActor {
 
     /**
      * Check if the Actor is associated with a unique enabled StateSpaceModel.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {

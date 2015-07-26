@@ -4798,7 +4798,7 @@ public class IOPort extends ComponentPort {
      *  @param channelIndex The channel.
      *  @param inside True to check an inside channel.
      *         @return The persistent value, or null if there isn't one.
-     *  @throws IllegalActionException  If getting current time fails.
+     *  @exception IllegalActionException  If getting current time fails.
      */
     private Token _getPersistentValue(int channelIndex, boolean inside)
             throws IllegalActionException {
@@ -5073,7 +5073,7 @@ public class IOPort extends ComponentPort {
      *  @param channelIndex The channel index.
      *  @param token The token
      *  @param inside True for an inside channel.
-     *  @throws IllegalActionException If the width of this port cannot be
+     *  @exception IllegalActionException If the width of this port cannot be
      *   determined.
      */
     private void _recordPersistentValueIfNecessary(int channelIndex, Token token, boolean inside)

@@ -445,7 +445,7 @@ public class ViewLayers3D extends TypedAtomicActor {
 
     /**
      * Add a layer to be viewed.
-     * @throws IllegalActionException If there is a problem reading
+     * @exception IllegalActionException If there is a problem reading
      *  a parameter.
      */
     private void _addLayer() throws IllegalActionException {

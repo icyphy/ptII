@@ -190,38 +190,38 @@ public class HlaSubscriber extends TypedAtomicActor {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
         }
-        else if(attribute == parameterName || attribute == objectName){
+        else if (attribute == parameterName || attribute == objectName) {
             try {
                 StringToken objNameTo = (StringToken) objectName.getToken();
                 StringToken paramNameTok = (StringToken) parameterName.getToken();
                 String param = "";
                 String objectName = "";
-                if(objNameTo == null) {
+                if (objNameTo == null) {
                     throw new IllegalActionException(this,
                         "objectName Cant be null");
                 } else {
                     objectName = objNameTo.stringValue();
                 }
-                if(paramNameTok == null) {
+                if (paramNameTok == null) {
                     throw new IllegalActionException(this,
                         "paramName Cant be null");
                 }else {
                     param = paramNameTok.stringValue();
                 }
 
-                if(!"objectName".equals(objectName) || !"parameterName".equals(param)){
+                if (!"objectName".equals(objectName) || !"parameterName".equals(param)) {
                     setDisplayName(objectName + " " +param);
                 }
 
             } catch (IllegalActionException illegalActionException) {}
-        }else if(attribute==typeSelector){
+        }else if (attribute==typeSelector) {
             String newPotentialTypeName = typeSelector.stringValue();
-            if(newPotentialTypeName == null) {
+            if (newPotentialTypeName == null) {
                 return;
             }
 
             Type newPotentialType = BaseType.forName(newPotentialTypeName);
-            if(newPotentialType != null && ! newPotentialType.equals(output.getType())){
+            if (newPotentialType != null && ! newPotentialType.equals(output.getType())) {
                 output.setTypeEquals(newPotentialType);
             }
 
@@ -265,11 +265,11 @@ public class HlaSubscriber extends TypedAtomicActor {
         //and recursively in container's container if needed
         CompositeActor ca = (CompositeActor) this.getContainer();
         List<HlaManager> hlaManagers = null;
-        while(ca != null) {
+        while (ca != null) {
             hlaManagers = ca.attributeList(HlaManager.class);
-            if(hlaManagers.size() < 1){
+            if (hlaManagers.size() < 1) {
                 ca = (CompositeActor) ca.getContainer();
-            } else{
+            } else {
                 break;
             }
         }
@@ -298,14 +298,14 @@ public class HlaSubscriber extends TypedAtomicActor {
 
                 Token content = _buildToken((Object[]) te.contents);
                 int origin = -1;
-                if(te instanceof OriginatedEvent){
+                if (te instanceof OriginatedEvent) {
                     OriginatedEvent oe = (OriginatedEvent) te;
                     origin = oe.objectID;
                 }
 
                 //either it is NOT OriginatedEvent and we let it go
                 //either it is and it has to match the origin
-                if(origin == -1 || origin == getObjectHandle()){
+                if (origin == -1 || origin == getObjectHandle()) {
                     this.outputPortList().get(0).send(0, content);
 
                     if (_debugging) {
@@ -327,7 +327,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     * Return a string that is used to identify the HlaSubscriber.
     * Should be unique if
     */
-    public String getIdentity(){
+    public String getIdentity() {
         return _getObjectName() + "-" + getParameterName();
     }
 
@@ -400,7 +400,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     /**
      * Return the kind of HLA Attribute the HLASuscriber is handling.
      */
-    public String getParameterName(){
+    public String getParameterName() {
         String parameter ="";
         try {
             parameter = ((StringToken) parameterName.getToken()).stringValue();
@@ -473,7 +473,7 @@ public class HlaSubscriber extends TypedAtomicActor {
    /**
      * Return the object name used in the HLA Federation
      */
-    private String _getObjectName(){
+    private String _getObjectName() {
         try {
             return ((StringToken) objectName.getToken()).stringValue();
         } catch (IllegalActionException illegalActionException) {

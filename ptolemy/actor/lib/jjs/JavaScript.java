@@ -942,8 +942,8 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new input port if it does not already exist.
      *  This port will have an undeclared type and no description.
      *  @param name The name of the port.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void input(String name) throws IllegalActionException,
             NameDuplicationException {
@@ -963,8 +963,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void input(String name, Object options)
             throws IllegalActionException, NameDuplicationException {
@@ -1127,8 +1127,8 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new output port if it does not already exist.
      *  Set the type to general.
      *  @param name The name of the port.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void output(String name) throws IllegalActionException,
             NameDuplicationException {
@@ -1145,8 +1145,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word.
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word.
      */
     public void output(String name, Object options)
             throws IllegalActionException, NameDuplicationException {
@@ -1191,9 +1191,9 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new parameter if it does not already exist.
      *  This parameter will have an undeclared type and no description.
      *  @param name The name of the parameter.
-     *  @throws IllegalActionException If no name is given, or if the
+     *  @exception IllegalActionException If no name is given, or if the
      *   model is executing.
-     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
     public void parameter(String name) throws IllegalActionException,
@@ -1213,8 +1213,8 @@ public class JavaScript extends TypedAtomicActor {
      *  if it does not already have a value.
      *  @param name The name of the parameter.
      *  @param options The options, or null to accept the defaults.
-     *  @throws IllegalActionException If no name is given.
-     *  @throws NameDuplicationException If the name is a reserved word, or if an attribute
+     *  @exception IllegalActionException If no name is given.
+     *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
     public void parameter(String name, Map options)
@@ -1306,7 +1306,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** If there are any pending self-produced inputs, then request a firing
      *  at the current time.
-     *  @throws IllegalActionException If the superclass throws it or the
+     *  @exception IllegalActionException If the superclass throws it or the
      *   refiring request fails.
      */
     @Override
@@ -1355,7 +1355,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Utility method to read a string from an input stream.
      *  @param stream The stream.
      *  @return The string.
-     * @throws IOException If the stream cannot be read.
+     * @exception IOException If the stream cannot be read.
      */
     public static String readFromInputStream(InputStream stream)
             throws IOException {
@@ -1413,7 +1413,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param function The function to invoke.
      *  @param milliseconds The number of milliseconds in the future to invoke it.
      *  @return A unique ID for this callback.
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     public int setInterval(final Runnable function, final int milliseconds)
             throws IllegalActionException {
@@ -1439,7 +1439,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param function The function to invoke.
      *  @param milliseconds The number of milliseconds in the future to invoke it.
      *  @return A unique ID for this callback.
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     public int setTimeout(final Runnable function, int milliseconds)
             throws IllegalActionException {
@@ -1525,7 +1525,7 @@ public class JavaScript extends TypedAtomicActor {
      *  if either the name is not a valid JavaScript identifier or it is a
      *  JavaScript keyword.
      *  @param name The name to check.
-     *  @throws IllegalActionException If the name is either not a valid
+     *  @exception IllegalActionException If the name is either not a valid
      *   identifier or is a keyword.
      */
     protected void _checkValidity(String name) throws IllegalActionException {
@@ -1559,7 +1559,7 @@ public class JavaScript extends TypedAtomicActor {
      *  If there is no such method in that context, attempt to invoke the
      *  method in the top-level context.
      *  @param methodName The method name.
-     *  @throws IllegalActionException If the method does not exist in either
+     *  @exception IllegalActionException If the method does not exist in either
      *   context, or if an error occurs invoking the method.
      */
     protected void _invokeMethodInContext(String methodName)
@@ -1667,7 +1667,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a script engine, evaluate basic function definitions,
      *  define the 'actor' variable, evaluate the script, and invoke the
      *  setup method if it exists.
-     *  @throws IllegalActionException If an error occurs.
+     *  @exception IllegalActionException If an error occurs.
      */
     private void _createEngineAndEvaluateSetup() throws IllegalActionException {
 
@@ -1805,7 +1805,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Fire me again at the current model time, one microstep later.
      *  Unlike calling the director's fireAtCurrentTime() method, this
      *  method is not affected by the current real time.
-     *  @throws IllegalActionException If the director throws it.
+     *  @exception IllegalActionException If the director throws it.
      */
     private void _fireAtCurrentTime() throws IllegalActionException {
         Director director = getDirector();
@@ -1883,7 +1883,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param milliseconds The number of milliseconds in the future to invoke it.
      *  @param id The id for the callback function.
      *  @return A unique ID for this callback.
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     private synchronized void _setTimeout(final Runnable function,
             int milliseconds, Integer id) throws IllegalActionException {
@@ -1926,7 +1926,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param typeable The object to be typed.
      *  @param options The options object.
      *         @return A Ptolemy type.
-     *  @throws IllegalActionException If the type is not supported.
+     *  @exception IllegalActionException If the type is not supported.
      */
     private Type _typeAccessorToPtolemy(String type)
             throws IllegalActionException {
@@ -2010,7 +2010,7 @@ public class JavaScript extends TypedAtomicActor {
     public class PortOrParameterProxy {
         /** Construct a proxy.
          *  @param portOrParameter The object to be proxied.
-         *  @throws IllegalActionException If the argument is neither a port nor a parameter.
+         *  @exception IllegalActionException If the argument is neither a port nor a parameter.
          */
         protected PortOrParameterProxy(NamedObj portOrParameter)
                 throws IllegalActionException {
@@ -2028,7 +2028,7 @@ public class JavaScript extends TypedAtomicActor {
         /** Add an input handler for this port.
          *  @param function The function to invoke.
          *  @return The handler handle.
-         *  @throws IllegalActionException If this proxy is not for an input port.
+         *  @exception IllegalActionException If this proxy is not for an input port.
          *  @see #removeInputHandler(Integer)
          */
         public int addInputHandler(final Runnable function)
@@ -2067,7 +2067,7 @@ public class JavaScript extends TypedAtomicActor {
          *  will have done update).
          *  @param channelIndex The channel index. This is ignored for parameters.
          *  @return The current value of the input or parameter, or null if there is none.
-         *  @throws IllegalActionException If the port is not an input port
+         *  @exception IllegalActionException If the port is not an input port
          *   or retrieving the value fails.
          */
         public Object get(int channelIndex) throws IllegalActionException {
@@ -2138,8 +2138,8 @@ public class JavaScript extends TypedAtomicActor {
         /** Expose the send() method of the port.
          *  @param channelIndex The channel index.
          *  @param data The token to send.
-         *  @throws IllegalActionException If this is a proxy for a parameter or if sending fails.
-         *  @throws NoRoomException If there is no room at the destination.
+         *  @exception IllegalActionException If this is a proxy for a parameter or if sending fails.
+         *  @exception NoRoomException If there is no room at the destination.
          */
         public void send(int channelIndex, Token data) throws NoRoomException,
                 IllegalActionException {
@@ -2244,7 +2244,7 @@ public class JavaScript extends TypedAtomicActor {
 
         /** Set the current value of the parameter.
          *  @param token The value of the parameter.
-         *  @throws IllegalActionException If the set fails or if this is a proxy for a port.
+         *  @exception IllegalActionException If the set fails or if this is a proxy for a port.
          */
         public void set(Token token) throws IllegalActionException {
             if (_parameter == null) {

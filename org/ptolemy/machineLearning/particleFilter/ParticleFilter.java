@@ -230,8 +230,8 @@ public class ParticleFilter extends AbstractParticleFilter {
 
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -276,7 +276,7 @@ public class ParticleFilter extends AbstractParticleFilter {
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
      * @return Parameter object
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     @Override
     protected Parameter getUserDefinedParameter(String parameterName)

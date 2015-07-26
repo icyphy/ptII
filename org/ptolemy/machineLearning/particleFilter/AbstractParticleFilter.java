@@ -438,8 +438,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     }
 
 
-    //////////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -450,7 +450,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * Return the expression for a user-defined parameter.
      * @param parameterName Name of parameter
      * @return parameter expression
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String getUserDefinedParameterExpression(String parameterName)
             throws IllegalActionException {
@@ -466,7 +466,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
      * @return Parameter object
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException;
@@ -475,7 +475,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * Get measurement parameter expression.
      * @param fullName Name of the measurement Parameter
      * @return A string expression
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String getMeasurementParameterExpression(String fullName)  throws IllegalActionException {
         Parameter param = getMeasurementParameter(fullName);
@@ -493,7 +493,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * @param fullName Name of measurement parameter
      * @return a Parameter object that by name reference corresponds to a
      * specific measurement.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract Parameter getMeasurementParameter(String fullName)
             throws IllegalActionException;
@@ -503,7 +503,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * @param inputName Name of noise parameter
      * @return a Parameter object that by name reference corresponds to a
      * specific noise distribution
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract Parameter getNoiseParameter(String inputName) throws IllegalActionException;
 
@@ -531,7 +531,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     /** Measurement covariance matrix. */
     protected double[][] _Sigma;
 
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void _createRandomGenerator() throws IllegalActionException {
@@ -1033,8 +1033,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         /**
          * Assign a weight to the particle that is proportional to its likelihood
          * according to all i.i.d. measurements made available to the particle filter.
-         * @throws IllegalActionException
-         * @throws NameDuplicationException
+         * @exception IllegalActionException
+         * @exception NameDuplicationException
          */
         public void assignWeight() throws IllegalActionException,
         NameDuplicationException {
@@ -1166,7 +1166,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
         /**
          * Assign a value to the particle, given the prior distribution.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public void sampleFromPrior() throws IllegalActionException {
             _parseTree = _updateTrees.get(PRIOR_NAME);
@@ -1205,8 +1205,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         /**
          * Propagate the particle value, with respect to the state-space model
          * defined by the particle filter problem.
-         * @throws NameDuplicationException
-         * @throws IllegalActionException
+         * @exception NameDuplicationException
+         * @exception IllegalActionException
          */
         public void setNextParticle() throws NameDuplicationException,
         IllegalActionException {
@@ -1273,7 +1273,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         /**
          * Set the particle to have a desired value.
          * @param l A desired particle value.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public void setValue(double[] l) throws IllegalActionException {
 

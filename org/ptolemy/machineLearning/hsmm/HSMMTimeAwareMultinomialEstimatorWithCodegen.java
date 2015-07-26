@@ -174,13 +174,13 @@ HSMMTimeAwareMultinomialEstimator {
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute == optStep) {
             _optStep = ((IntToken)optStep.getToken()).intValue();
-        } else if(attribute==optimize) {
+        } else if (attribute==optimize) {
             _useOptimization = ((BooleanToken)optimize.getToken()).booleanValue();
-        } else if(attribute==modelChecking) {
+        } else if (attribute==modelChecking) {
             _useModelChecking = ((BooleanToken)modelChecking.getToken()).booleanValue();
-        } else if(attribute==testPreset) {
+        } else if (attribute==testPreset) {
             _testPreset = ((BooleanToken)testPreset.getToken()).booleanValue();
-        } else if(attribute==minPowerThreshold) {
+        } else if (attribute==minPowerThreshold) {
             _pThreshold = ((IntToken)minPowerThreshold.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
@@ -217,7 +217,7 @@ HSMMTimeAwareMultinomialEstimator {
                     At = new double[NUM_CATEGORIES][_nStates][_nStates];
                     for (int h = 0; h < NUM_CATEGORIES; h++) {
                         for (int i =0; i < _nStates; i++) {
-                            for(int j=0; j< _nStates; j++) {
+                            for (int j=0; j< _nStates; j++) {
                                 At[h][i][j] = Atlearned[h][i][j];
                             }
                         }
@@ -230,7 +230,7 @@ HSMMTimeAwareMultinomialEstimator {
 
                     _modelCheckAll(strategy);
                 }
-            } else if (! _useOptimization){
+            } else if (! _useOptimization) {
                 Token[] optP = new Token[NUM_CATEGORIES];
                 for ( int validHour=0; validHour < NUM_CATEGORIES; validHour++) {
 
@@ -385,7 +385,7 @@ HSMMTimeAwareMultinomialEstimator {
                                     new InputStreamReader(pr.getErrorStream()));
 
                             String line = null;
-                            while( (line =err.readLine()) != null) {
+                            while ( (line =err.readLine()) != null) {
                                 System.out.println(err);
                             }
                             while ((line = in.readLine()) != null) {
@@ -393,7 +393,7 @@ HSMMTimeAwareMultinomialEstimator {
                                 if (line.equals("Result")) {
                                     double d = Double.parseDouble(in.readLine());
                                     //System.out.println(d);
-                                    if(d>_optimum) {
+                                    if (d>_optimum) {
                                         _optimum=d;
                                     }
                                     // trying to maximize
@@ -434,7 +434,7 @@ HSMMTimeAwareMultinomialEstimator {
             return start;
 
         } else {
-            try{
+            try {
                 ProcessBuilder pb = new ProcessBuilder("prism",filename.getExpression(),
                         propertyFile.getExpression(),"-const", "hTest="+hour,"-prop",""+(hour+1),"-exportresults","resultNoOpt"+hour+".txt:csv");
                 pb.directory(new File(_uri));
@@ -468,7 +468,7 @@ HSMMTimeAwareMultinomialEstimator {
         }
 
         for (int thre : possibleThresholds) {
-            try{
+            try {
                 System.out.println("model checking P=" + thre + " with " + method);
                 ProcessBuilder pb = new ProcessBuilder("prism",filename.getExpression(),
                         //propertyFile.getExpression(),
@@ -553,7 +553,7 @@ HSMMTimeAwareMultinomialEstimator {
                     hourSpecs[i] /= counts[i];
                 }
             }
-        } else if(type == SPEC_TYPE.MAXIMUM) {
+        } else if (type == SPEC_TYPE.MAXIMUM) {
             for (int i = 0; i < _observations.length; i ++) {
                 double totalPower = 0.0;
                 for (int j=0; j< _observations[i].length; j++) {
@@ -653,7 +653,7 @@ HSMMTimeAwareMultinomialEstimator {
                     guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                     A[i] = _cleanAndTruncate(A[i], threshold, precision);
                     for (int j=0; j < _nStates; j++) {
-                        if(A[i][j]>0) {
+                        if (A[i][j]>0) {
                             guard += A[i][j] + " : (s'=" + j + ") + ";
                         }
                     }
@@ -671,7 +671,7 @@ HSMMTimeAwareMultinomialEstimator {
                         guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                         A[i] = _cleanAndTruncate(A[i], threshold, precision);
                         for (int j=0; j < _nStates; j++) {
-                            if(A[i][j]>0) {
+                            if (A[i][j]>0) {
                                 guard += A[i][j] + " : (s'=" + j + ") + ";
                             }
                         }
@@ -709,7 +709,7 @@ HSMMTimeAwareMultinomialEstimator {
                                 guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                                 A[i] = _cleanAndTruncate(A[i], threshold, precision);
                                 for (int j=0; j < _nStates; j++) {
-                                    if(A[i][j]>0) {
+                                    if (A[i][j]>0) {
                                         guard += A[i][j] + " : (s'=" + j + ") + ";
                                     }
                                 }
@@ -739,7 +739,7 @@ HSMMTimeAwareMultinomialEstimator {
                                 guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
                                 A[i] = _cleanAndTruncate(A[i], threshold, precision);
                                 for (int j=0; j < _nStates; j++) {
-                                    if(A[i][j]>0) {
+                                    if (A[i][j]>0) {
                                         guard += A[i][j] + " : (s'=" + j + ") + ";
                                     }
                                 }
@@ -762,7 +762,7 @@ HSMMTimeAwareMultinomialEstimator {
         String priors = INDENT2 +  "[step] initState = true  -> ";
         double[] pr =_cleanAndTruncate(prior_new, threshold, precision);
         for (int i =0; i < pr.length; i++) {
-            if (pr[i]>0){
+            if (pr[i]>0) {
                 priors += pr[i] + ":(s'=" + i +")&(initState'=false) + ";
             }
         }
@@ -778,7 +778,7 @@ HSMMTimeAwareMultinomialEstimator {
     //        String priors = INDENT2 +  "[step] initState = true  -> ";
     //        double[] pr =_cleanAndTruncate(prior_new, threshold, precision);
     //        for (int i =0; i < pr.length; i++) {
-    //            if (pr[i]>0){
+    //            if (pr[i]>0) {
     //                priors += pr[i] + ":(s'=" + i +")&(initState'=false) + ";
     //            }
     //        }
@@ -811,7 +811,7 @@ HSMMTimeAwareMultinomialEstimator {
     //                guard = INDENT2 +  "[tr] d=0 & (s=" + i + ") & h = " + hour + " -> ";
     //                A[i] = _cleanAndTruncate(A[i], threshold, precision);
     //                for (int j=0; j < _nStates; j++) {
-    //                    if(A[i][j]>0) {
+    //                    if (A[i][j]>0) {
     //                        guard += A[i][j] + " : (s'=" + j + ") + ";
     //                    }
     //                }
@@ -906,7 +906,7 @@ HSMMTimeAwareMultinomialEstimator {
     /**
      * Given PMF's for multinomial estimates on each dimension of the observation model,
      * create a single joint PMF on the "sum" of observations at every time step.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private List<double[]> _computeTotalPowerConsumptionDistributions() throws IllegalActionException {
 
@@ -941,7 +941,7 @@ HSMMTimeAwareMultinomialEstimator {
             double[] raw =(double[])pmfList.remove(0);
             raw = _cleanAndTruncate( raw, threshold,precision);
 
-            for(int i = 0; i <raw.length; i++) {
+            for (int i = 0; i <raw.length; i++) {
                 if (raw[i] > 0.0 && i > PMAXi) {
                     PMAXi = i;
                 }

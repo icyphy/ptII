@@ -251,8 +251,8 @@ implements MirrorDecoratorListener{
 
     /**
      * Add all decorated ports and necessary parameters to the container.
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public void decorateContainer() {
         if (this._decorator != null) {
@@ -273,8 +273,8 @@ implements MirrorDecoratorListener{
 
     /**
      * Remove all decorated ports from the container
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public void removeDecorationsFromContainer()
             throws IllegalActionException, NameDuplicationException {

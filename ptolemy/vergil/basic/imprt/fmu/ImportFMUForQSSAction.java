@@ -101,7 +101,7 @@ public class ImportFMUForQSSAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                   ////
+    ////                         public methods                    ////
 
     /** Import a FMU. */
     public void actionPerformed(ActionEvent e) {

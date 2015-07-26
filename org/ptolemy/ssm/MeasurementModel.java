@@ -58,8 +58,8 @@ implements StateSpaceActor {
      *
      * @param container  a CompositeEntity object
      * @param name       a String indicating the decorator name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public MeasurementModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

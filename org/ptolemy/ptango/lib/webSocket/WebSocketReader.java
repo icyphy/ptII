@@ -118,7 +118,7 @@ public class WebSocketReader extends TypedAtomicActor implements
         if (attribute == path) {
             // Unsubscribe from previous path (if any)
             if (_URIpath != null && !_URIpath.toString().isEmpty()
-                 && _endpointManager != null){
+                 && _endpointManager != null) {
             // TODO: Shared vs. individual
                 _endpointManager.unsubscribe(this, _URIpath.toString());
             }
@@ -173,7 +173,7 @@ public class WebSocketReader extends TypedAtomicActor implements
      * @return The URI associated with this service.
      */
     @Override
-    public URI getRelativePath(){
+    public URI getRelativePath() {
         return _URIpath;
     }
 
@@ -215,7 +215,7 @@ public class WebSocketReader extends TypedAtomicActor implements
         // Assume client side if no value given
         try {
             isClient = ((BooleanToken) client.getToken()).booleanValue();
-        } catch(IllegalActionException e){};
+        } catch (IllegalActionException e){};
         return isClient;
     }
 

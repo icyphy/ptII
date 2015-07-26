@@ -1839,7 +1839,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         // the delay offset.
         Attribute setDelayOffsetManually = namedObj.getAttribute("NoSafeToProcessAnalysis");
         if (setDelayOffsetManually != null) {
-            if( ((Parameter)setDelayOffsetManually).getValueAsString().equals("true")) {
+            if (((Parameter)setDelayOffsetManually).getValueAsString().equals("true")) {
                 return;
             }
         }

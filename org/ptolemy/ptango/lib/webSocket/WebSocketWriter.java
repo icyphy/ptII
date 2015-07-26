@@ -193,7 +193,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
                         + "websocket");
             }
 
-            if (!_endpoint.sendMessage(message)){
+            if (!_endpoint.sendMessage(message)) {
                 throw new IllegalActionException(this, "Cannot write to "
                         + "WebSocket");
             }
@@ -220,7 +220,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
         // Assume client side if no value given
         try {
             isClient = ((BooleanToken) client.getToken()).booleanValue();
-        } catch(IllegalActionException e){};
+        } catch (IllegalActionException e){};
         return isClient;
     }
 
@@ -241,7 +241,7 @@ public class WebSocketWriter extends TypedAtomicActor implements
 
     /** Unsubscribe this service from the endpoint manager.  The endpoint
      * manager will close connections with no subscribers.
-     * @throws IllegalActionException If thrown by the parent.
+     * @exception IllegalActionException If thrown by the parent.
      */
     @Override
     public void wrapup() throws IllegalActionException {

@@ -394,7 +394,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     //        double[] sortArray= new double[A.length];
     //        double[] orig= new double[A.length];
     //        for (int i = 0; i < A.length; i++) {
-    //            for(int  j=0; j <A[0].length; j++) {
+    //            for (int  j=0; j <A[0].length; j++) {
     //                sortArray[i] += A[i][j];
     //                orig[i] = sortArray[i];
     //            }

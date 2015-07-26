@@ -657,7 +657,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
     /** If there is an input available on impulse port, handle it.
      *  @return If an input was seen on the impulse port.
-     *  @throws IllegalActionException If reading the input fails.
+     *  @exception IllegalActionException If reading the input fails.
      */
     private boolean _handleImpulse() throws IllegalActionException {
         // Be sure to use hasNewToken() here, or could repeatedly get impulses.
@@ -707,7 +707,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  match that of the most recently seen input, then set the input
      *  variable model of the solver using the provided input data.
      *  @return True if a new unique input is seen.
-     *  @throws IllegalActionException If the input cannot be read.
+     *  @exception IllegalActionException If the input cannot be read.
      */
     private boolean _handleInput()
             throws IllegalActionException {
@@ -775,7 +775,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  @param derivatives The input to this integrator, which represents the
      *   derivative of the state and possibly higher-order derivatives.
      *  @param currentTime The current time.
-     *  @throws IllegalActionException If the solver throws an exception when
+     *  @exception IllegalActionException If the solver throws an exception when
      *   triggering a rate event.
      */
     private void _setInputModel(SmoothToken derivatives, Time currentTime) throws IllegalActionException {
@@ -814,7 +814,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  @param derivatives The input to this integrator, which represents the
      *   derivative of the state and possibly higher-order derivatives.
      *  @param currentTime The current time.
-     *  @throws IllegalActionException If the solver throws an exception when
+     *  @exception IllegalActionException If the solver throws an exception when
      *   triggering a rate event.
      */
     private void _setInputModel(double[] derivatives, Time currentTime) throws IllegalActionException {

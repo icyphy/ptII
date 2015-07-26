@@ -31,7 +31,7 @@ package org.ptolemy.qss.util;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DerivativeFunction
 
 /** Provide an interface for representing derivative functions.
@@ -94,7 +94,7 @@ public interface DerivativeFunction {
     * @param uu The vector of input variables at <code>time</code>.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
     * @return Success (0 for success, else user-defined error code).
-    * @throws IllegalActionException If derivatives cannot be evaluated.
+    * @exception IllegalActionException If derivatives cannot be evaluated.
     */
     public int evaluateDerivatives(final Time time, double[] xx, double[] uu,
             final double[] xdot) throws IllegalActionException;
@@ -111,7 +111,7 @@ public interface DerivativeFunction {
      * @param xx_dot The vector of state derivatives.
      * @param uu_dot The vector of input derivatives.
      * @return The directional derivative (see fmi2GetDirectionalDerivatives in FMI specification).
-     * @throws IllegalActionException If directional derivatives cannot be evaluated.
+     * @exception IllegalActionException If directional derivatives cannot be evaluated.
      */
     public double evaluateDirectionalDerivatives(int idx, double[] xx_dot,
             double[] uu_dot) throws IllegalActionException;

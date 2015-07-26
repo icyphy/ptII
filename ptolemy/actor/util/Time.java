@@ -683,33 +683,33 @@ public class Time implements Comparable {
 
         // Note: a time value of a Time object can be either positive infinite
         // or negative infinite.
-        if( time._isNegativeInfinite ) {
-            if( _isNegativeInfinite ) {
+        if (time._isNegativeInfinite ) {
+            if (_isNegativeInfinite ) {
                 throw new ArithmeticException(
                     "Subtracting negative infinity from negative infinity yields an invalid time.");
             }
             return( Double.POSITIVE_INFINITY );
         }
 
-        if( time._isPositiveInfinite ) {
-            if( _isPositiveInfinite ) {
+        if (time._isPositiveInfinite ) {
+            if (_isPositiveInfinite ) {
                 throw new ArithmeticException(
                     "Subtracting positive infinity from positive infinity yields an invalid time.");
             }
             return( Double.NEGATIVE_INFINITY );
         }
 
-        if( _isPositiveInfinite ) {
+        if (_isPositiveInfinite ) {
             return( Double.POSITIVE_INFINITY );
         }
 
-        if( _isNegativeInfinite ) {
+        if (_isNegativeInfinite ) {
             return( Double.NEGATIVE_INFINITY );
         }
 
         // Handle case of different resolutions.
         final double resolution = _timeResolution();
-        if( resolution != time._timeResolution() ) {
+        if (resolution != time._timeResolution() ) {
             final double thisValue = getDoubleValue();
             final double thatValue = time.getDoubleValue();
             return( thisValue - thatValue );

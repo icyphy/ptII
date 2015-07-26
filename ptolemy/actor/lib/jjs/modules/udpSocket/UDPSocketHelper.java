@@ -60,7 +60,7 @@ import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 public class UDPSocketHelper extends VertxHelperBase {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Close the UDP socket with a given port number.
      *  @param port The port number.

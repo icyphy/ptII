@@ -271,7 +271,7 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
     /**
      * Sample next state given current state.
      * @return Next state index.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected abstract int _propagateState() throws IllegalActionException;
 

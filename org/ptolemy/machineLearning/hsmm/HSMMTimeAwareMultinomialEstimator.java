@@ -158,7 +158,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             At = new double[NUM_CATEGORIES][_nStates][_nStates];
             for (int h = 0; h < NUM_CATEGORIES; h++) {
                 for (int i =0; i < _nStates; i++) {
-                    for(int j=0; j< _nStates; j++) {
+                    for (int j=0; j< _nStates; j++) {
                         At[h][i][j] = Atlearned[h][i][j];
                     }
                 }
@@ -174,8 +174,8 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
     /**
      * Send the learned matrix to the output.
-     * @throws NoRoomException
-     * @throws IllegalActionException
+     * @exception NoRoomException
+     * @exception IllegalActionException
      */
     public void _sendEmpiricalMatrix() throws NoRoomException, IllegalActionException {
 

@@ -183,7 +183,7 @@ public class JSAccessor extends JavaScript {
      *  read, parsed or closed.
      *  @exception TransformerConfigurationException If a factory cannot
      *  be created from the xslt file.
-     *  @throws IllegalActionException If no source file is specified.
+     *  @exception IllegalActionException If no source file is specified.
      */
     public static String accessorToMoML(final String urlSpec)
             throws IOException, TransformerConfigurationException, IllegalActionException {
@@ -551,7 +551,7 @@ public class JSAccessor extends JavaScript {
                 StringBuffer result = new StringBuffer();
 
                 // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
-                try{
+                try {
                     result.append(_getPtDoc(urlSpec.trim()));
                 } catch (IOException ex) {
                     // FIXME: What to do here?
@@ -665,8 +665,8 @@ public class JSAccessor extends JavaScript {
         /** Create a new actionable attribute.
          *  @param container The container.
          *  @param name The name.
-         *  @throws IllegalActionException If the base class throws it.
-         *  @throws NameDuplicationException If the base class throws it.
+         *  @exception IllegalActionException If the base class throws it.
+         *  @exception NameDuplicationException If the base class throws it.
          */
         public ActionableAttribute(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {

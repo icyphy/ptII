@@ -167,8 +167,8 @@ public class ImportAccessorAction extends AbstractAction {
         }
     }
 
-    ////////////////////////////////////////////////////////////
-    ////          private methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private void _updateComboBox(JComboBox box, Query query) {
         box.removeAllItems();
@@ -205,7 +205,7 @@ public class ImportAccessorAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    private variables                      ////
+    ////                         private variables                 ////
 
     /** The top-level window of the contents to be exported. */
     BasicGraphFrame _frame;

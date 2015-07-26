@@ -61,7 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class VertxHelper {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
     /** Create a VertxHelper instance as a client-side web socket for
      * each JavaScript instance.
      *
@@ -226,7 +226,7 @@ public class VertxHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                        ////
+    ////                         private methods                   ////
     /**
      * Private constructor for VertxHelper to open a
      * client-side web socket and add a ping to keep the websocket open.

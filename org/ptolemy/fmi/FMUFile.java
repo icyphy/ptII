@@ -641,7 +641,7 @@ public class FMUFile {
         // can retrieve correct inputStateDepentScalarVariables
         // information an create the appropriate vector of input and state
         // dependent variables.
-        if(fmiVersion > 1.5) {
+        if (fmiVersion > 1.5) {
             fmiModelDescription.createStateVector();
         }
 

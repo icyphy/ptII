@@ -83,8 +83,8 @@ public class WebSocketEndpoint implements OnTextMessage {
     /** Close the connection. _connection will be assigned to null in onClose(),
      * which is invoked automatically after a close().
      */
-    public void close(){
-        if (_connection != null){
+    public void close() {
+        if (_connection != null) {
             _connection.close();
         }
     }
@@ -167,7 +167,7 @@ public class WebSocketEndpoint implements OnTextMessage {
         if (_isOpen && _connection != null) {
             try {
                 _connection.sendMessage(message);
-            }catch(IOException e) {
+            } catch (IOException e) {
                 return false;
             }
         } else {

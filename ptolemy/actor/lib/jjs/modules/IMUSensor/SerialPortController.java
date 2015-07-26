@@ -24,7 +24,7 @@
  */
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
-/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ///// SerialPortController
 
 /**
@@ -52,7 +52,7 @@ public class SerialPortController {
     private ReaderM h1;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Base constructor. No input values */
     public SerialPortController() {

@@ -136,7 +136,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
         super.prefire();
 
         int width = input.getWidth();
-        if(width != _connected.size()){
+        if (width != _connected.size()) {
             _connected.clear();
             for (int i = 0; i < width; i++) {
                 _connected.add(true);

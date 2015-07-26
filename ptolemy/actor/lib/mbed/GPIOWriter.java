@@ -115,16 +115,16 @@ public class GPIOWriter extends Sink {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        if(input.hasToken(0)){
-            if(((BooleanToken) input.get(0)).booleanValue() == true)
+        if (input.hasToken(0)) {
+            if (((BooleanToken) input.get(0)).booleanValue() == true)
 
-                if(((IntToken)BoardPortNumber.getToken()).intValue() == 0){
+                if (((IntToken)BoardPortNumber.getToken()).intValue() == 0) {
                     _GPIOState.fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");
                 }
-                else if(((IntToken) BoardPortNumber.getToken()).intValue() == 1){
+                else if (((IntToken) BoardPortNumber.getToken()).intValue() == 1) {
                     _GPIOState.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
                 }
-                else{
+                else {
                     _GPIOState.fillColor.setToken("{0.0, 0.0, 1.0, 1.0}");
                 }
             else

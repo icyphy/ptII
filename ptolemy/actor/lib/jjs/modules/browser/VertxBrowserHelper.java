@@ -52,7 +52,7 @@ import org.vertx.java.core.http.HttpServerResponse;
 public class VertxBrowserHelper {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Create a web server that serves the specified string.
      *  @param currentObj The JavaScript object on which this method is called.
@@ -64,7 +64,7 @@ public class VertxBrowserHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** A http server that gets and sets responses.
      */

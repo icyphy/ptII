@@ -195,7 +195,7 @@ public class UtilityFunctions {
      * Returns the lower triangular matrix L that satisfies LL*=A
      * @param A a positive definite matrix (implies also symmetric)
      * @return lower triangular matrix L such that A=LL*
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public static double[][] choleskyDecomposition (double[][] A) throws IllegalActionException {
 

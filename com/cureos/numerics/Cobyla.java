@@ -912,12 +912,12 @@ public class Cobyla {
                                     double beta = tot / temp;
                                     ////////////////////////////////////////////
                                     //When temp is quite small, alpha and beta must be set to approximated value.
-                                    if(temp<1.0E-200) {
+                                    if (temp<1.0E-200) {
                                         temp = sp+tot;
                                         alpha = sp/temp;
                                         beta = tot/temp;
                                         double prop = Math.sqrt(alpha*alpha+beta*beta);
-                                        if(prop<1.0E-200) {
+                                        if (prop<1.0E-200) {
                                             alpha = 1; beta = 0;
                                         } else {
                                             temp /= prop;

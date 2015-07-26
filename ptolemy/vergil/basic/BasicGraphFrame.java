@@ -1220,7 +1220,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 NamedObj container = thisEntity.getContainer();
                 List<LevelSkippingTableauFactory> skip
                         = container.attributeList(LevelSkippingTableauFactory.class);
-                while(skip != null && skip.size() > 0) {
+                while (skip != null && skip.size() > 0) {
                     container = container.getContainer();
                     if (container == null) {
                         // This should not occur.

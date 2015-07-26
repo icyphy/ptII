@@ -86,7 +86,7 @@ public class SynchronizeToRealTime extends AbstractInitializableAttribute
      * This class does not create change request for new actor in proposeTime.
      * Always return true then.
      */
-    public boolean noNewActors(){
+    public boolean noNewActors() {
         return true;
     }
 

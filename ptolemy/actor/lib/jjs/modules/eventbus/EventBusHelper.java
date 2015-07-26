@@ -128,7 +128,7 @@ public class EventBusHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Publish text data onto the Vertx event bus.
      *  @param address The address, (topic, channel name, stream ID,...)
@@ -240,7 +240,7 @@ public class EventBusHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Create the Vertx instance we will use.
      *  @param clusterPort The port to listen for cluster information.

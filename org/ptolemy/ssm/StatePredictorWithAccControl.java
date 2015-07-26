@@ -158,7 +158,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
             ArrayToken uArray = (ArrayToken) arrayOfControl.getElement(0);
             _uValue = new double[arrayOfControl.length()][uArray.length()];
             for (int i = 0; i < _uValue.length; i++) {
-                for(int it_u =0; it_u < _uValue[0].length; it_u++) {
+                for (int it_u =0; it_u < _uValue[0].length; it_u++) {
                     uArray = (ArrayToken) arrayOfControl.getElement(i);
                     _uValue[i][it_u] = ((DoubleToken) uArray.getElement(it_u)).doubleValue();
                 }
@@ -168,7 +168,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
         if (currentState.hasToken(0)) {
             _currentState = new double[_labels.length];
             RecordToken incoming = (RecordToken) currentState.get(0);
-            for(int it=0; it<_labels.length; it++) {
+            for (int it=0; it<_labels.length; it++) {
                 _currentState[it] = ((DoubleToken) incoming.get(_labels[it])).doubleValue();
             }
         }
@@ -176,7 +176,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
         calcPredict();
         predictedStates.send(0, new ArrayToken(_predictedStates));
         DoubleMatrixToken[] jacobianResult = new DoubleMatrixToken[_jacobianOfStates.length];
-        for(int i=0; i<jacobianResult.length; i++) {
+        for (int i=0; i<jacobianResult.length; i++) {
             jacobianResult[i] = new DoubleMatrixToken(_jacobianOfStates[i]);
         }
         jacobianOfStates.send(0, new ArrayToken(jacobianResult));
@@ -214,7 +214,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
         result_values[1] = new DoubleToken(_currentState[1] + _currentState[3] + 0.5*_uValue[0][1]);
         result_values[2] = new DoubleToken(_currentState[2] + _uValue[0][0]);
         result_values[3] = new DoubleToken(_currentState[3] + _uValue[0][1]);
-        for(int it_val=4; it_val<result_values.length; it_val++) {
+        for (int it_val=4; it_val<result_values.length; it_val++) {
             result_values[it_val] = new DoubleToken(_currentState[it_val]);
         }
         _predictedStates[predict_step] = new RecordToken(_labels, result_values);
@@ -224,8 +224,8 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
         // (0   0.5 0 0 ....0 )
         // (1     0 0 0 ....0 )
         // (0     1 0 0 ....0 )
-        for(int row=0; row<_jacobianOfStates[0].length; row++) {
-            for(int col=0; col<_jacobianOfStates[0][0].length; col++) {
+        for (int row=0; row<_jacobianOfStates[0].length; row++) {
+            for (int col=0; col<_jacobianOfStates[0][0].length; col++) {
                 _jacobianOfStates[predict_step][row][col] = 0;
             }
         }
@@ -242,7 +242,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
             result_values[1] = new DoubleToken(result_values[1].doubleValue() + result_values[3].doubleValue() + 0.5*_uValue[control_step][1]);
             result_values[2] = new DoubleToken(result_values[2].doubleValue() + _uValue[control_step][0]);
             result_values[3] = new DoubleToken(result_values[3].doubleValue() + _uValue[control_step][1]);
-            for(int it_val=4; it_val<result_values.length; it_val++) {
+            for (int it_val=4; it_val<result_values.length; it_val++) {
                 result_values[it_val] = new DoubleToken(result_values[it_val].doubleValue());
             }
             _predictedStates[predict_step] = new RecordToken(_labels, result_values);
@@ -252,8 +252,8 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
             // (0 0 0 0 1 0 0 0 ... 0 )
             // (0 0 0 0 0 1 0 0 ... 0 )
             double[][] dUm_dU = new double[2][_uValue.length*_uValue[0].length];
-            for(int row=0; row<dUm_dU.length; row++) {
-                for(int col=0; col<dUm_dU[0].length; col++) {
+            for (int row=0; row<dUm_dU.length; row++) {
+                for (int col=0; col<dUm_dU[0].length; col++) {
                     dUm_dU[row][col] = 0;
                 }
                 dUm_dU[row][control_step*2+row] = 1;
@@ -280,8 +280,8 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
             //// calculate dXn_dU = dXn/dXn-1*(dXn-1/dU) + dXn/dUm*(dUm/dU)
             double[][] dXn_dU_via_Xn_1 = DoubleMatrixMath.multiply(dXn_dXn_1, _jacobianOfStates[predict_step-1]);
             double[][] dXn_dU_via_Um = DoubleMatrixMath.multiply(dXn_dUm, dUm_dU);
-            for(int row=0; row<_jacobianOfStates[0].length; row++) {
-                for(int col=0; col<_jacobianOfStates[0][0].length; col++) {
+            for (int row=0; row<_jacobianOfStates[0].length; row++) {
+                for (int col=0; col<_jacobianOfStates[0][0].length; col++) {
                     _jacobianOfStates[predict_step][row][col] = dXn_dU_via_Xn_1[row][col] + dXn_dU_via_Um[row][col];
                 }
             }

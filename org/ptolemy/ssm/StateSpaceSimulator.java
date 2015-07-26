@@ -113,7 +113,7 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      * Check if the Actor is associated with a unique enabled StateSpaceModel. Ideally,
      * here, we would also be checking whether the enabled decorator provides the parameters
      * expected by the actor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {

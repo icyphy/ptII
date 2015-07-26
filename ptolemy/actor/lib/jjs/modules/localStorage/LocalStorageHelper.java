@@ -64,7 +64,7 @@ public class LocalStorageHelper {
      *            The default Mqtt file persistance
      * @param containerActorName
      *            Container's name plus the actors' display name
-     * @throws MqttPersistenceException
+     * @exception MqttPersistenceException
      */
     public LocalStorageHelper(String persistenceDirectory,
             String containerActorName) throws MqttPersistenceException {
@@ -86,8 +86,8 @@ public class LocalStorageHelper {
                 dateFormat.format(date));
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Take a key and return its value from the local storage if the key exists,
@@ -96,7 +96,7 @@ public class LocalStorageHelper {
      * @param key
      *            The key for the value to be returned.
      * @return The string value associated with the key.
-     * @throws MqttPersistenceException
+     * @exception MqttPersistenceException
      * @see #setItem(String, String)
      */
     public String getItem(String key) throws MqttPersistenceException {
@@ -116,8 +116,8 @@ public class LocalStorageHelper {
      *            The key to be stored.
      * @param value
      *            The string value associated with the key.
-     * @throws MqttPersistenceException
-     * @throws IOException
+     * @exception MqttPersistenceException
+     * @exception IOException
      * @see #getItem(String)
      */
     public void setItem(String key, String value)
@@ -133,7 +133,7 @@ public class LocalStorageHelper {
      *
      * @param key
      *            The key to be removed.
-     * @throws MqttPersistenceException
+     * @exception MqttPersistenceException
      */
     public void removeItem(String key) throws MqttPersistenceException {
         if (_mqttLocalStorage.containsKey(key)) {
@@ -144,7 +144,7 @@ public class LocalStorageHelper {
     /**
      * Remove all keys in the local storage.
      *
-     * @throws MqttPersistenceException
+     * @exception MqttPersistenceException
      */
     public void clear() throws MqttPersistenceException {
         _mqttLocalStorage.clear();
@@ -156,7 +156,7 @@ public class LocalStorageHelper {
      * @param n
      *            Index for the key to be returned.
      * @return The key with index n.
-     * @throws MqttException
+     * @exception MqttException
      */
     public String key(Integer n) throws MqttException {
         Enumeration keys = _mqttLocalStorage.keys();
@@ -181,7 +181,7 @@ public class LocalStorageHelper {
      * Return the number of keys stored in the local storage.
      *
      * @return The number of keys stored.
-     * @throws MqttPersistenceException
+     * @exception MqttPersistenceException
      */
     public Integer length() throws MqttPersistenceException {
         Enumeration keys = _mqttLocalStorage.keys();
@@ -195,7 +195,7 @@ public class LocalStorageHelper {
         return cnt;
     }
 
-    // /////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // // private fields ////
 
     /** Instance of MqttDefaultFilePersistence imported from Paho MQTT */

@@ -511,15 +511,15 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                     } else if (p.getName().equals(GRADIENT_CONSTRAINTS_PORT_NAME)) {
                         if (p.hasTokenInside(0)) {
                             Token[] dgx_token = ((ArrayToken)(p.getInside(0))).arrayValue();
-                            if(dgx!=null) {
+                            if (dgx!=null) {
                                 for (int i = 0; i < dgx_token.length; i++) {
                                     double[][] dgix = ((DoubleMatrixToken)dgx_token[i]).doubleMatrix(); //This matrix should be row matrix (1 X N).
-                                    for(int j=0; j < dgix[0].length; j++) {
+                                    for (int j=0; j < dgix[0].length; j++) {
                                         dgx[i][j] = dgix[0][j];
                                     }
                                 }
                             }
-                        } else if(dgx!=null) {
+                        } else if (dgx!=null) {
                             throw new IllegalActionException(
                                     getContainer(),
                                     "Cannot read token from "
@@ -530,12 +530,12 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                         if (p.hasTokenInside(0)) {
                             DoubleMatrixToken dfx_token = ((DoubleMatrixToken)(p.getInside(0)));
                             double[][] dfx_matrix = dfx_token.doubleMatrix(); //This matrix should be row matrix (1 X N).
-                            if(dfx!=null) {
+                            if (dfx!=null) {
                                 for (int i = 0; i < dfx_matrix[0].length; i++) {
                                     dfx[i] = dfx_matrix[0][i];
                                 }
                             }
-                        } else if(dfx!=null) {
+                        } else if (dfx!=null) {
                             throw new IllegalActionException(
                                     getContainer(),
                                     "Cannot read token from "
@@ -550,8 +550,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
         @Override
         public void fire() throws IllegalActionException {
             boolean need_to_initialize = false;
-            if(_reusePreviousResult) {
-                if(_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
+            if (_reusePreviousResult) {
+                if (_firstStep||(_optInput==null)||(_optInput.length!=_dimension)) {
                     _optInput = new double[_dimension];
                     _firstStep = false; //Keeping the optimized values for next step.
                     need_to_initialize = true; //initialization of objective function class will be called later.
@@ -569,7 +569,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             // If _useGradient is false, we use Cobyla library(Cobyla.FindMinimum)
             // to solve given problem.
             // If _useGradient is true, we use Barrier Method.
-            if(!_useGradient) {
+            if (!_useGradient) {
                 boolean[] terminateArray = new boolean[1];
                 terminateArray[0] = _stopRequested;
                 int nVariables = _dimension;
@@ -617,7 +617,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                 }
             } else {
                 // optimization by Barrier Method
-                if(need_to_initialize) {
+                if (need_to_initialize) {
                     //////////////////////////////////////////////////////
                     // Creating objective function Class
                     _objectiveFunction = new ObjectiveFunction(_dimension, _numConstraints) {
@@ -626,20 +626,20 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                             try {
                                 f0Result = oneStepIteration(x, fiResults, f0Gradient, fiGradients);
                                 //constraints must be minus value (g(x) < 0) in the BarrierMethod class.
-                                for(int i=0; i<fiResults.length; i++) {
+                                for (int i=0; i<fiResults.length; i++) {
                                     fiResults[i] = -fiResults[i];
-                                    for(int j=0; j<fiGradients[i].length; j++) {
+                                    for (int j=0; j<fiGradients[i].length; j++) {
                                         fiGradients[i][j] = -fiGradients[i][j];
                                     }
                                 }
                                 if (_mode == MAXIMIZE) {
                                    // minimize -f(x) = maximize f(x)
                                     f0Result = -f0Result;
-                                    for(int i=0; i<f0Gradient.length; i++) {
+                                    for (int i=0; i<f0Gradient.length; i++) {
                                         f0Gradient[i] = -f0Gradient[i];
                                     }
                                 }
-                                if(_stopRequested) return false;
+                                if (_stopRequested) return false;
                             } catch (IllegalActionException iae) {
                                 iae.printStackTrace();
                             }
@@ -649,8 +649,8 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
 
                     //To estimate Hessian, compute objectiveFunction at several points.
                     double[] searchX = new double[_objectiveFunction.currentX.length];
-                    for(int count=0; count<_optInput.length; count++) {
-                        for(int i=0; i<_optInput.length; i++) { //Set Initial Value
+                    for (int count=0; count<_optInput.length; count++) {
+                        for (int i=0; i<_optInput.length; i++) { //Set Initial Value
                             searchX[i] = 0;
                         }
                         searchX[count] = _rhobeg;
@@ -664,11 +664,11 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                 opt.setTolerance(_rhoend);
                 opt.setMaxIterationNum(_maxEvaluations);
                 //Set Initial Value
-                for(int i=0; i<_optInput.length; i++) {
+                for (int i=0; i<_optInput.length; i++) {
                     _objectiveFunction.currentX[i] = _optInput[i];
                 }
                 int returnCode = opt.optimize(_objectiveFunction);
-                for(int i=0; i<_optInput.length; i++) {
+                for (int i=0; i<_optInput.length; i++) {
                     _optInput[i] = _objectiveFunction.currentX[i];
                 }
             }

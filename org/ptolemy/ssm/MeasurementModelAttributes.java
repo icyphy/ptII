@@ -73,8 +73,8 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
      *
      * @param target  The object being decorated.
      * @param name    The decorator name.
-     * @throws IllegalActionException If the superclass throws it.
-     * @throws NameDuplicationException If the superclass throws it.
+     * @exception IllegalActionException If the superclass throws it.
+     * @exception NameDuplicationException If the superclass throws it.
      */
     public MeasurementModelAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
