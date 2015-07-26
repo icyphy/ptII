@@ -1,6 +1,6 @@
 # Makefile for Java Ptolemy II Functional Mock-up Unit (FMU) 
 #
-# @Author: cxh (makefile only)
+# @Author: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -31,10 +31,11 @@
 
 FMU_NAME = AMS_AMSSim
 
-OTHER_OTHER_FILES_TO_BE_JARED =
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	AMS_AMSSim.mo \
+	AMS_AMSSimToFMU
 
 include ../fmus.mk
-
 
 # To test this:
 fmuCheck:

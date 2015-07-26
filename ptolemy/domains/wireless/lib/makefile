@@ -91,6 +91,7 @@ MISC_FILES = 	test
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	bluetooth \
 	network \
 	tinyOS \
 	'CollisionDetector$$1.class' \

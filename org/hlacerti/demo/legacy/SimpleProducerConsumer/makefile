@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/SimpleProducerConsumer
+ME =        org/hlacerti/demo/legacy/SimpleProducerConsumer
 
 # Root of the Java directory
-ROOT =      ../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 

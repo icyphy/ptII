@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2013-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,10 +31,9 @@
 
 ME =        org/hlacerti/demo
 
-DIRS =  billard \
-	MultiDataTypes \
-        SimpleProducerConsumerMulti	\
-        SynchronizeToRealTime
+DIRS = 2Billes2Fed BillardHit ModelUpdater \
+	MultiDataTypes SimpleProducerConsumerMulti SynchronizeToRealTime \
+	billard legacy
 
 # Root of the Java directory
 ROOT =      ../../..
@@ -50,11 +49,14 @@ PTPACKAGE =     demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	billard/billard.jar \
-        MultiDataTypes/MultiDataTypes.jar \
+	2Billes2Fed/2Billes2Fed.jar \
+	BillardHit/BillardHit.jar \
+	ModelUpdater/ModelUpdater.jar \
+	MultiDataTypes/MultiDataTypes.jar \
 	SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.jar \
-        SynchronizeToRealTime/SynchronizeToRealTime.jar
-
+	SynchronizeToRealTime/SynchronizeToRealTime.jar \
+	billard/billard.jar \
+	legacy/legacy.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 

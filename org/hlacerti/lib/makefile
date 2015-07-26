@@ -76,9 +76,11 @@ MISC_FILES = test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    'CertiRtig$$_StreamReaderThread.class' \
-    'HlaManager$$PtolemyFederateAmbassadorInner.class' 
-
+	'CertiRtig$$_StreamReaderThread.class' \
+	'HlaManager$$PtolemyFederateAmbassadorInner.class' \
+	'HlaManager$$1.class' \
+	'HlaManager$$PtolemyFederateAmbassadorInner$$1.class' \
+	'HlaSubscriber$$1.class'
 JCLASS = $(JSRCS:%.java=%.class)
 
 

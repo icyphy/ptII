@@ -51,15 +51,12 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	RunDETestsAsQSS.tcl
+	RunDETestsAsQSS.tcl \
+	testDefs.tcl
 
 JSRCS = \
 	CancelFireAtTest.java \
 	SuperdenseTimeTest.java
-
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

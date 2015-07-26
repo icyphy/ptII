@@ -70,7 +70,14 @@ OTHER_FILES_TO_BE_JARED = \
 	embeddedCodeActorTest.xml \
 	neoPixDemo.xml \
 	neoPixDemoK64F.xml \
-	neoPixDemoK64F_IndexColor.xml
+	neoPixDemoK64F_IndexColor.xml \
+	FSMDrivenLED.xml \
+	Simple_LED.xml \
+	VerySimple_LED.xml \
+	completeCubeCustom.xml \
+	completeCubeCustomFSM.xml \
+	cubeDemoK64F_sizePosHueFSM.xml \
+	cubeLibraryTester.xml
 
 EXTRA_SRCS =	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)

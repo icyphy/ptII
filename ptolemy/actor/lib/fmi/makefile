@@ -68,6 +68,7 @@ MISC_FILES = test doc fmus fmipp ma ma2 maHybrid
 OPTIONAL_FILES = \
 	demo \
 	doc \
+	jni \
 	'FMUImport$$1.class' \
 	'FMUImport$$Input.class' \
 	'FMUImport$$Output.class' \

@@ -69,7 +69,8 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	$(DIRS) \
 	demo \
-	'PolyRoot$$_BracketType.class'
+	'PolyRoot$$_BracketType.class' \
+	'PolynomialRoot$$_BracketType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

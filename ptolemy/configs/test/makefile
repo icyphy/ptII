@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2013 The Regents of the University of California.
+# @Copyright (c) 1997-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -78,6 +78,7 @@ MISC_FILES =	alljtests.tcl junit
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ValidatingXMLParser$$1.class' \
 	'ValidatingXMLParser$$MoMLEntityResolver.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)

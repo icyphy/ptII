@@ -50,7 +50,9 @@ OTHER_FILES_TO_BE_JARED = \
 	Ros.xml \
 	RosPublisher.xml \
 	RosSubscriber.xml \
-	ScarabGoalPublisher.xml
+	ScarabGoalPublisher.xml \
+	ScarabArrowKeyController.xml \
+	ScarabHueController.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

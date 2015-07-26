@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2012-2014 The Regents of the University of California.
+# @Copyright (c) 2012-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,10 +51,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	CompositeOptimizer.java  \
-	CompositeOptimizerUsingGradient.java  \
-	BarrierMethod.java  \
-	ObjectiveFunction.java
+	ApproximatedObjectiveFunction.java \
+	BarrierMethod.java \
+	CompositeOptimizer.java \
+	CompositeOptimizerUsingGradient.java \
+	ObjectiveFunction.java \
+	ObjectiveFunctionWithSoftConstraints.java
 
 OTHER_FILES_TO_BE_JARED = \
 	CompositeOptimizerIcon.xml \
@@ -78,7 +80,13 @@ OPTIONAL_FILES = \
 	'CompositeOptimizer$$1.class' \
 	'CompositeOptimizer$$OptimizerComposite.class' \
 	'CompositeOptimizer$$OptimizerDirector$$1.class' \
-	'CompositeOptimizer$$OptimizerDirector.class'
+	'CompositeOptimizer$$OptimizerDirector.class' \
+	'CompositeOptimizerUsingGradient$$1.class' \
+	'CompositeOptimizerUsingGradient$$OptimizerComposite.class' \
+	'CompositeOptimizerUsingGradient$$OptimizerDirector$$1.class' \
+	'CompositeOptimizerUsingGradient$$OptimizerDirector$$2.class' \
+	'CompositeOptimizerUsingGradient$$OptimizerDirector.class' \
+	'ObjectiveFunctionForPhaseI.class'
 
 KRUFT =
 

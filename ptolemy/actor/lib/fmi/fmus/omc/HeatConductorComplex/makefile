@@ -55,4 +55,14 @@ CFILES = \
 	HeatConductorComplex_functions.c \
 	HeatConductorComplex_records.c
 
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	HeatConductorComplex.mo \
+	HeatConductorComplex.mos \
+	HeatConductorComplex.xml \
+	HeatConductorComplexSDF.xml
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC2_FILES = fmuCheck
+
 include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuCS.mk

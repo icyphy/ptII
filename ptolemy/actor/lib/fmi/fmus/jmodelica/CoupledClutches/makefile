@@ -31,6 +31,10 @@
 
 FMU_NAME = CoupledClutches
 
+OTHER_OTHER_FILES_TO_BE_JARED = \
+	CoupledClutches.mo \
+	CoupledClutchesToFMU
+
 include ../fmus.mk
 
 # To test this:

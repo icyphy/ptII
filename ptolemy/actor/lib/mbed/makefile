@@ -60,7 +60,16 @@ JSRCS = \
 	SensorDataCalibration.java \
 
 OTHER_FILES_TO_BE_JARED = \
-	mbed.xml
+	mbed.xml \
+	AccelerometerIcon.xml \
+	CC3000ControlIcon.xml \
+	CC3000ModuleIcon.xml \
+	GestureRecognitionIcon.xml \
+	HSBtoRGBIcon.xml \
+	LEDCubeUpdateIcon.xml \
+	NeoPixelLEDStripIcon.xml \
+	PacketToSensorDataIcon.xml \
+	SensorDataCalibrationIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

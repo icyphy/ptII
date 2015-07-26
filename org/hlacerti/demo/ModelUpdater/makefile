@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II - HLA/CERTI demos
+# Makefile for Ptolemy II ModelUpdater demo
 #
-# @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,78 +26,64 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/legacy/MultiProducerConsumer
+ME =		org/hlacerti/demo/ModelUpdater
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =		../../../../
 
-CLASSPATH = $(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     MultiProducerConsumer
-PTCLASSJAR =    $(PTPACKAGE).jar
+PTPACKAGE = 	ModelUpdater
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = 
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	consumer1.xml \
-	consumer2.xml \
-	prodcons3.xml \
-	prodcons4.xml \
-	producer5.xml \
-	producer6.xml \
-	MultiProducerConsumer.xml \
-	MultiProducerConsumer.fed
+	README.txt \
+	oneModelUpdate.py \
+	updateHLASubscriber.sh
 
-EXTRA_SRCS = \
-    $(OTHER_FILES_TO_BE_JARED) \
-
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-
-install: all
+install: all $(PTCLASSJAR)
 
 demo: demo_ptolemy demo_vergil
 
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer ModelUpdater.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" consumer1.xml
-	"$(PTII)/bin/ptolemy" consumer2.xml
-	"$(PTII)/bin/ptolemy" MultiProducerConsumer.xml
-	"$(PTII)/bin/ptolemy" prodcons3.xml
-	"$(PTII)/bin/ptolemy" prodcons4.xml
-	"$(PTII)/bin/ptolemy" producer5.xml
-	"$(PTII)/bin/ptolemy" producer6.xml
+	"$(PTII)/bin/ptolemy" ModelUpdater.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" consumer1.xml
-	"$(PTII)/bin/vergil" consumer2.xml
-	"$(PTII)/bin/VERGIL" MultiProducerConsumer.xml
-	"$(PTII)/bin/vergil" prodcons3.xml
-	"$(PTII)/bin/vergil" prodcons4.xml
-	"$(PTII)/bin/vergil" producer5.xml
-	"$(PTII)/bin/vergil" producer6.xml
+	"$(PTII)/bin/vergil" ModelUpdater.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

@@ -78,7 +78,6 @@ JSRCS = \
 	AbstractPlaceableActor.java \
 	AbstractPlaceableJavaSE.class \
 	ArrayOfRecordsPane.java \
-	AWTContainer.class \
 	AWTContainer.java \
 	AbstractPlaceableJavaSE.java \
 	BrowserEffigy.java \
@@ -306,6 +305,7 @@ OPTIONAL_FILES = \
 	'PtolemyQuery$$5.class' \
 	'PtolemyQuery$$6.class' \
 	'PtolemyQuery$$7.class' \
+	'PtolemyQuery$$ActionableEntry.class' \
 	'PtolemyQuery$$HierarchicalConfigurer.class' \
 	'PtolemyTop$$ViewMenuListener.class' \
 	'RunTableau$$Factory.class' \
