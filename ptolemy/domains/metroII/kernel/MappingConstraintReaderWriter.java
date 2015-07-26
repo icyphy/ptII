@@ -1,6 +1,6 @@
 /* MappingConstraintReaderWriter provides methods to read or write mapping constraints from or to a csv file.
 
-Copyright (c) 2012-2014 The Regents of the University of California.
+Copyright (c) 2012-2015 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this

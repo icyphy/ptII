@@ -1,6 +1,6 @@
 /* Output elements of date (year, month, day, hour, etc.) from date.
 
-   @Copyright (c) 2008-2014 The Regents of the University of California.
+   @Copyright (c) 2008-2015 The Regents of the University of California.
    All rights reserved.
 
    Permission is hereby granted, without written agreement and without

@@ -1,6 +1,6 @@
 /* Model how a variable changes with time, using a polynomial.
 
-Copyright (c) 2014 The Regents of the University of California.
+Copyright (c) 2014-2015 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
