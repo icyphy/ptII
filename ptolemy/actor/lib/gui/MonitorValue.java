@@ -182,7 +182,7 @@ public class MonitorValue extends Sink implements PortablePlaceable {
         if (input.hasToken(i)) {
             Token token = input.get(i);
             return token;
-        } 
+        }
         return null;
     }
 

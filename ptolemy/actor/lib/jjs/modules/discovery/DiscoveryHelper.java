@@ -225,9 +225,9 @@ public class DiscoveryHelper {
                 StringTokenizer tokenizer = new StringTokenizer(line, " ");
                 String token, name, ip;
 
-                // Example arp data:  
+                // Example arp data:
                 // <incomplete> for not-found MACs
-                // EPSON3FDF60 (192.168.5.2) at ac:18:26:3f:bf:20 [ether] on 
+                // EPSON3FDF60 (192.168.5.2) at ac:18:26:3f:bf:20 [ether] on
                 //  eth0
                 // NAUSPIT8 (192.168.5.9) at <incomplete> on eth0
                 // The host machine will not be listed
@@ -303,7 +303,7 @@ public class DiscoveryHelper {
                         if (index != 2) {
                             object.put("mac", "Host machine");
                         } else {
-                            // MAC address is fixed # of chars after IP address 
+                            // MAC address is fixed # of chars after IP address
                             object.put("mac",
                                     line.substring(index + 22, index + 39));
                         }
@@ -338,7 +338,7 @@ public class DiscoveryHelper {
 
             // Sample nmap output:
             // Starting Nmap 6.47 ( http://nmap.org ) at 2015-05-02 18:08 Eastern Daylight Time
-            // 
+            //
             // Nmap scan report for EPSON3FBF20 (192.168.5.1)
             // Host is up (0.12s latency).
             // MAC Address: AD:19:27:3E:BE:21 (Seiko Epson)
@@ -348,7 +348,7 @@ public class DiscoveryHelper {
             // Nmap done: 256 IP addresses (5 hosts up) scanned in 13.59 seconds
 
             while ((line = stdOut.readLine()) != null) {
-                // Look for "Nmap scan"                 
+                // Look for "Nmap scan"
                 if (line.startsWith("Nmap scan")) {
                     readDeviceNmap(line, stdOut);
                 }

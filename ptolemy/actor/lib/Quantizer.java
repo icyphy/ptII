@@ -101,7 +101,7 @@ public class Quantizer extends Transformer {
         levels = new Parameter(this, "levels");
         levels.setExpression("{-1.0, 1.0}");
         levels.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        
+
         delta = new Parameter(this, "delta");
         delta.setExpression("1.0");
         delta.setTypeEquals(BaseType.DOUBLE);

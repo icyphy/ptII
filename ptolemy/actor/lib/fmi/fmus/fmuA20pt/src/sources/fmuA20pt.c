@@ -68,7 +68,7 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent) {
             eventInfo->nextEventTimeDefined   = fmi2True;
             eventInfo->nextEventTime          = 1 + comp->time;
         }
-    } 
+    }
 }
 
 // We are adding fmi2GetMaxStepSize as a global, so we need to set up the exports.

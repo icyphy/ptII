@@ -74,7 +74,7 @@ public class PtolemyWebSocketServlet extends WebSocketServlet {
     public WebSocket doWebSocketConnect(HttpServletRequest request,
             String protocol) {
         return _endpoint;
-        
+
         // TODO:  How to have messages go directly to the endpoint then?
         // Open connection here?
         // Call endpoint.onOpen()?  Or is that called somehow by the connection?
@@ -83,7 +83,7 @@ public class PtolemyWebSocketServlet extends WebSocketServlet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The endpoint (WebSocket implementer) associated with this servlet. */
     private WebSocketEndpoint _endpoint;
 }

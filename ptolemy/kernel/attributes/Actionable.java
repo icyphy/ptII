@@ -41,7 +41,7 @@ package ptolemy.kernel.attributes;
  @Pt.AcceptedRating Red (cxh)
  */
 public interface Actionable {
-    
+
     /** Return the name of the action.
      *  @return The name of the action.
      */

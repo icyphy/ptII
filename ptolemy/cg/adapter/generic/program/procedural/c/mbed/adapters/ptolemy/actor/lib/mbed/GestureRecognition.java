@@ -52,7 +52,7 @@ extends NamedProgramCodeGeneratorAdapter {
     public GestureRecognition(ptolemy.actor.lib.mbed.GestureRecognition actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,

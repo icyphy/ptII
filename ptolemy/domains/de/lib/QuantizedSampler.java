@@ -47,9 +47,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  value since the last input.
  *
  *  <p>This quantizer is designed to take an input signal and send it to its output port
- *  if the signal has changed by more than a quantum relative to the last signal seen 
+ *  if the signal has changed by more than a quantum relative to the last signal seen
  *  at the input port.</p>
- * 
+ *
  *  <p>The number of outputs produced by this actor is dependent on the
  *  input values, so it should not be used with domains like SDF.</p>
  *
@@ -87,15 +87,15 @@ public class QuantizedSampler extends Transformer {
 
     /** The quantum. The default value is a double with
      * the value 1.0, which means that if the input changes by more
-     * than 1.0, the new output will be produced. 
+     * than 1.0, the new output will be produced.
      */
     public Parameter quantum;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-        
+
     /** If the argument is the quantum parameter, then cache
-     *  the value.   
+     *  the value.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If there is a problem
      *  getting the value of the quantum parameter.
@@ -112,8 +112,8 @@ public class QuantizedSampler extends Transformer {
 
     /**
      * Produce an output equal to the input if the input has crossed
-     * the quantum; otherwise, produce no output. 
-     * 
+     * the quantum; otherwise, produce no output.
+     *
      * @throws IllegalActionException If sending an output fails.
      */
         public void fire() throws IllegalActionException {
@@ -123,7 +123,7 @@ public class QuantizedSampler extends Transformer {
                         if (_firstFiring){
                                 // Initialize last input token with first input token received.
                                 _lastInputToken = newInputToken;
-                                // Send first input token received to the output port. 
+                                // Send first input token received to the output port.
                                  output.send(0, newInputToken);
                                  _firstFiring = false;
                                 return;
@@ -133,12 +133,12 @@ public class QuantizedSampler extends Transformer {
                         if (newInputToken instanceof SmoothToken) {
                                 if (!_compareSmoothTokenDerivatives(newInputToken,
                                                 _lastInputToken)) {
-                                        // If the derivatives are different, send new token to the 
+                                        // If the derivatives are different, send new token to the
                                         // output port without doing any further comparison.
                                         _lastInputToken = newInputToken;
                                         output.send(0, newInputToken);
                                 } else {
-                                        // If the derivatives are the same, check if the input 
+                                        // If the derivatives are the same, check if the input
                                         // has crossed the quantum.
                                         if (Math.abs(newInput - lastInput) > Math.abs((_quantum))) {
                                                 _lastInputToken = newInputToken;
@@ -153,7 +153,7 @@ public class QuantizedSampler extends Transformer {
                         }
                 }
         }
-    
+
     /**
      * Initialize this actor.
      */
@@ -162,14 +162,14 @@ public class QuantizedSampler extends Transformer {
         _lastInputToken = null;
         _firstFiring = true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////        
+    ////                         private methods                   ////
     /**
      * Compare the derivative values of two smooth token.
      * @param newToken The new input token received at the port.
      * @param newToken The last input token seen at the port.
-     * @retun True if the derivatives are identical. 
+     * @retun True if the derivatives are identical.
      */
     private boolean _compareSmoothTokenDerivatives(DoubleToken newToken, DoubleToken lastToken){
             // Now we just have to check the derivatives.
@@ -207,7 +207,7 @@ public class QuantizedSampler extends Transformer {
 
     /** Quantum. */
     private double _quantum;
-    
+
     /** Flag to indicate first firing. */
     private boolean _firstFiring;
 }

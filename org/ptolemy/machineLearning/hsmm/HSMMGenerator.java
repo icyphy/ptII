@@ -46,10 +46,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
- 
+
 /**
 <p> An abstract class that implements a Bayesian network used to simulate
-an Explicit-Duration Hidden Markov Model.  
+an Explicit-Duration Hidden Markov Model.
  @author Ilge Akkaya
  @version $Id$
  @since Ptolemy II 10.0
@@ -84,7 +84,7 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
             .setExpression("SOUTH");
         new SingletonParameter(statePriors.getPort(), "_showName")
         .setToken(BooleanToken.TRUE);
-        
+
         durationProbabilities = new PortParameter(this, "durationProbabilities");
         durationProbabilities.setTypeEquals(BaseType.DOUBLE_MATRIX);
         durationProbabilities.setExpression("[0,1.0;1.0,0]");
@@ -105,17 +105,17 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
         trigger.setMultiport(true);
         new SingletonParameter(trigger, "_showName")
         .setToken(BooleanToken.TRUE);
-        
+
         observation = new TypedIOPort(this, "observation", false, true);
         observation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         new SingletonParameter(observation, "_showName")
         .setToken(BooleanToken.TRUE);
-        
+
         hiddenState = new TypedIOPort(this, "hiddenState", false, true);
         hiddenState.setTypeEquals(new ArrayType(BaseType.INT));
         new SingletonParameter(hiddenState, "_showName")
         .setToken(BooleanToken.TRUE);
-        
+
         windowSize = new Parameter(this,"windowSize");
         windowSize.setTypeEquals((BaseType.INT));
         windowSize.setExpression("100");
@@ -139,7 +139,7 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
 
     /** Transition Probability matrix estimate. */
     public PortParameter transitionMatrix;
- 
+
     /** Prior state distribution. */
     public PortParameter statePriors;
 
@@ -153,12 +153,12 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
     public TypedIOPort hiddenState;
 
     /** Generation window size. */
-    public Parameter windowSize; 
+    public Parameter windowSize;
 
     /** Power limit on generation window. */
     public PortParameter powerUpperBound;
 
-    
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HSMMGenerator newObject = (HSMMGenerator) super
@@ -169,7 +169,7 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
         newObject._D = null;
         newObject._x0 = null;
         newObject._A = null;
-        
+
         return newObject;
     }
     @Override
@@ -240,8 +240,8 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
                 }
             }
         } else if (attribute == windowSize) {
-            IntToken wx = ((IntToken) windowSize.getToken()); 
-            _windowSize = wx.intValue(); 
+            IntToken wx = ((IntToken) windowSize.getToken());
+            _windowSize = wx.intValue();
         } else if (attribute == statePriors) {
             ArrayToken statePriorsToken = ((ArrayToken) statePriors.getToken());
             int nStates = statePriorsToken.length();
@@ -268,25 +268,25 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
      */
     protected abstract int _sampleDurationForState();
 
-    /** 
+    /**
      * Sample next state given current state.
      * @return Next state index.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    protected abstract int _propagateState() throws IllegalActionException; 
-    
+    protected abstract int _propagateState() throws IllegalActionException;
+
     /**
      * Sample state at this iteration from the state prior.
      * @return The hidden state at this iteration
      */
     protected abstract int _sampleHiddenStateFromPrior();
-     
+
     /**
      * Sample duration value from prior duration distribution.
      * @return sampled duration value
      */
-    protected abstract int _sampleDurationFromPrior(); 
-    
+    protected abstract int _sampleDurationFromPrior();
+
     /** Duration priors: an nStates-by-nDurations matrix. */
     protected double[] _durationPriors;
 
@@ -298,27 +298,27 @@ public abstract class HSMMGenerator extends TypedAtomicActor {
     protected double[][] _D = null;
     /** maximum duration ( in time steps).  */
     protected double[] _x0;
-     
+
     /** Cached transition matrix value. */
     protected double[][] _A;
-    
+
     /** Boolean indicating the first iteration of the generator. */
     protected boolean _firstIteration = true;
-    
+
     /** Cardinality of state space. */
     protected int _nStates;
-    
+
     /** Cardinality of the support of duration distribution. */
     protected int _maxDuration;
     /** Duration variable: d(t). */
     protected int _dt;
-    
+
     /** State variable: x(t). */
     protected int _xt;
-    
+
     /** Generation window size. */
     protected int _windowSize;
-    
+
     /** In the presence of window-based constraints, number of runs allowable
      * until valid trace found.
      */

@@ -69,10 +69,10 @@ public class WebSocketReader extends TypedAtomicActor implements
     public WebSocketReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         path = new StringParameter(this, "path");
         path.setExpression("/*");
-        
+
         client = new Parameter(this, "client");
         client.setToken("true");
         // Separate menu items are available for clients and servlets.
@@ -85,15 +85,15 @@ public class WebSocketReader extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
-    /** A flag indicating if the reader acts as a client or as part of 
+
+    /** A flag indicating if the reader acts as a client or as part of
      * the server.  True for client; false for server.
      */
     public Parameter client;
 
     /** A port that outputs each message received from the websocket. */
     public TypedIOPort output;
-    
+
     /** The URL affiliated with the websocket.  Can refer to a locally
      * hosted websocket or a remotely hosted websocket.  Locally hosted
      * websockets have paths of the form /* such as / or /mysocket
@@ -122,12 +122,12 @@ public class WebSocketReader extends TypedAtomicActor implements
             // TODO: Shared vs. individual
                 _endpointManager.unsubscribe(this, _URIpath.toString());
             }
-            
+
             // TODO:  Allow dynamic subscribing here, vs. only in initialize()
             // If the endpoint exists, service should be added as a subscriber
             // If the endpoint does not exists, a new one should be created
             // and started ONLY if the model is currently executing
-            
+
             String pathValue = ((StringToken) path.getToken()).stringValue();
             _URIpath = WebSocketEndpointManager.pathToURI(pathValue);
         } else {
@@ -167,8 +167,8 @@ public class WebSocketReader extends TypedAtomicActor implements
         }
 
         _message = null;
-    }  
-    
+    }
+
     /** Get the URI associated with this service.
      * @return The URI associated with this service.
      */
@@ -178,14 +178,14 @@ public class WebSocketReader extends TypedAtomicActor implements
     }
 
     /** Remember the time at which this actor was initialized in order to
-     *  request firings at a particular time. Subscribe this service to the 
+     *  request firings at a particular time. Subscribe this service to the
      *  appropriate endpoint.
      *  @exception IllegalActionException If the parent throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         if (_endpointManager == null) {
             _endpointManager = WebSocketEndpointManager.getInstance();
         }
@@ -199,14 +199,14 @@ public class WebSocketReader extends TypedAtomicActor implements
         _initializeRealTime = System.currentTimeMillis() - 100;
 
         // Subscribe to this endpoint.  Creates a new endpoint if needed.
-        // Do not subscribe local clients.  The WebServer handles these, since 
+        // Do not subscribe local clients.  The WebServer handles these, since
         // it ensures that connections are only opened after it starts.
         if (! (!WebSocketEndpointManager.isRemoteURI(_URIpath) && isClient())) {
             _endpointManager.subscribe(this, _URIpath.toString());
         }
     }
-    
-    /** Return true if this actor acts as a client; false if it acts as a 
+
+    /** Return true if this actor acts as a client; false if it acts as a
      * part of the server (responding to incoming messages).
      */
     @Override
@@ -252,15 +252,15 @@ public class WebSocketReader extends TypedAtomicActor implements
             }
         }
     }
-    
+
     /** Do nothing here.  The reader does not send messages and therefore
      * does not need a reference to its endpoint.
      */
     @Override
     public void setEndpoint(WebSocketEndpoint endpoint) {
     }
-    
-    /** Unsubscribe this service from the endpoint manager.  The endpoint 
+
+    /** Unsubscribe this service from the endpoint manager.  The endpoint
      * manager will close connections with no subscribers.
      */
     @Override
@@ -277,7 +277,7 @@ public class WebSocketReader extends TypedAtomicActor implements
     /** The model time at which this actor was last initialized. */
     private Time _initializeModelTime;
 
-    /** The real time at which this actor was last initialized, in milliseconds. 
+    /** The real time at which this actor was last initialized, in milliseconds.
      */
     private long _initializeRealTime;
 

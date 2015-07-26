@@ -1,4 +1,4 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * fmi.h
  * Struct with the corresponding function pointers for FMI 2.0.
  * Copyright QTronic GmbH. All rights reserved.
@@ -71,7 +71,7 @@ typedef struct {
     ****************************************************/
     fmi2SetRealInputDerivativesTYPE  *setRealInputDerivatives;
     fmi2GetRealOutputDerivativesTYPE *getRealOutputDerivatives;
-    fmi2DoStepTYPE                   *doStep;    
+    fmi2DoStepTYPE                   *doStep;
     fmi2CancelStepTYPE               *cancelStep;
     fmi2GetStatusTYPE                *getStatus;
     fmi2GetRealStatusTYPE            *getRealStatus;

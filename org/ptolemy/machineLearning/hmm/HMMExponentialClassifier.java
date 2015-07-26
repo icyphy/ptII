@@ -155,7 +155,7 @@ public class HMMExponentialClassifier extends ObservationClassifier {
             double m = _lambda[hiddenState];
             return m * Math.exp(-m * y[0]);
         } else {
-            throw new IllegalActionException( this.getClassName() 
+            throw new IllegalActionException( this.getClassName()
                     + " supports single dimensional distributions only.");
         }
     }

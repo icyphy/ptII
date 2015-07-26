@@ -45,7 +45,7 @@ import ptolemy.util.StreamExec;
 /** Generate a Functional Mockup Interface Master Algorithm (FMIMA) description of a model.
 *  This is a subclass ProceduralCodeGenerator, which extends ProgramCodeGenerator, which
 *  extends GenericCodeGenerator.
-*  <p>To generate C-code from a Ptolemy II model, using the Master Algorithm 
+*  <p>To generate C-code from a Ptolemy II model, using the Master Algorithm
 *  implemented by this code generator, use:
 *  <pre>
 $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
@@ -80,7 +80,7 @@ public class FMIMAHybridCodeGenerator extends FMIMACodeGenerator {
     ////                         protected methods                 ////
 
     // FIXME: Is there anything specific in this method? If not, erase it.
-    
+
     /** Generate FMIMA and append it to the given string buffer.
      *  Write the code to the directory specified by the <i>codeDirectory</i>
      *  parameter.  The file name is a sanitized version of the model

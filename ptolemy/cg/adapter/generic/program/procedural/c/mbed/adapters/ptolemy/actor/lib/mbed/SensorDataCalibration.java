@@ -52,7 +52,7 @@ extends NamedProgramCodeGeneratorAdapter {
     public SensorDataCalibration(ptolemy.actor.lib.mbed.SensorDataCalibration actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,

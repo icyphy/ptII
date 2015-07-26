@@ -722,7 +722,7 @@ public class OMCCommand implements IOMCCommand {
                 }
             }
         } catch (Throwable throwable) {
-            // Catch a throwable here and maybe avoid 
+            // Catch a throwable here and maybe avoid
             // FindBugs REC: RuntimeException capture.
             throw new IllegalActionException(null, throwable,
                     "Failed to modify component. Values: " + values

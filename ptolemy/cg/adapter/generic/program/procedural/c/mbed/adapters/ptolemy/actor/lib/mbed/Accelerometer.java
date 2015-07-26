@@ -52,7 +52,7 @@ extends NamedProgramCodeGeneratorAdapter {
     public Accelerometer(ptolemy.actor.lib.mbed.Accelerometer actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,

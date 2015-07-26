@@ -55,7 +55,7 @@ char* pbl_c_id = "$Id$";
 #ifndef __MBED__
 #include <memory.h>
 #endif
-#endif 
+#endif
 
 #ifndef __APPLE__
 #ifndef PT_DOES_NOT_HAVE_MALLOC_H

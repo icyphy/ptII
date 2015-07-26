@@ -43,13 +43,13 @@ void initialize(ModelInstance* comp, fmiEventInfo* eventInfo) {
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmiEventInfo* eventInfo) {
     i(counter_) += 1;
-    if (i(counter_) == 13) 
+    if (i(counter_) == 13)
         eventInfo->terminateSimulation = fmiTrue;
     else {
         eventInfo->upcomingTimeEvent   = fmiTrue;
         eventInfo->nextEventTime       = 1 + comp->time;
     }
-} 
+}
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"

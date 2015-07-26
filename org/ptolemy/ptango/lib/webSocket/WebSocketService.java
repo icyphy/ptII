@@ -56,21 +56,21 @@ public interface WebSocketService {
 
     /** Get the URI associated with this service.*/
     public URI getRelativePath();
-    
+
     /** Return true if the service is acting as a client; false if the service
      * is acting as part of the server.
      * @return  True if the service is acting as a client; false if the service
      * is acting as part of the server.
      */
     public boolean isClient();
-    
+
     /** Notify service of a WebSocket message event.
      * @param message The message that was received
      */
     public void onMessage(String message);
 
     /** Set the endpoint responsible for this service's communication.
-     *  @param endpoint The endpoint.   
+     *  @param endpoint The endpoint.
      */
     public void setEndpoint(WebSocketEndpoint endpoint);
 }

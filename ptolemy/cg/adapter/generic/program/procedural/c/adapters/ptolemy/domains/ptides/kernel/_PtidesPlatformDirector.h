@@ -56,7 +56,7 @@ struct PtidesPlatformDirector {
     char *(*getName)(struct PtidesPlatformDirector *);
     void (*setName)(struct PtidesPlatformDirector *, char *);
 #endif
-    
+
     // _PtidesPlatformDirector-specific field.
     struct Director* (*_getEmbeddedPtidesDirector)(struct PtidesPlatformDirector*);
 

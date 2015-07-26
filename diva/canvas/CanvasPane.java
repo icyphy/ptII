@@ -90,7 +90,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     }
 
     /** Return whether or not this pane is antialiased.
-     *  @return true if the pane is antialiased.   
+     *  @return true if the pane is antialiased.
      */
     public final boolean isAntialiasing() {
         return _antialias;
@@ -417,8 +417,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     /** Scale this pane the given amount.
      * @param xcenter The x value of the point to scale about.
      * @param ycenter The y value of the point to scale about.
-     * @param xscale The x amount of which to scale by. 
-     * @param yscale The y amount of which to scale by. 
+     * @param xscale The x amount of which to scale by.
+     * @param yscale The y amount of which to scale by.
      */
     public void scale(double xcenter, double ycenter, double xscale,
             double yscale) {

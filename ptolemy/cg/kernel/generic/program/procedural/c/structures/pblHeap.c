@@ -48,7 +48,7 @@ char* pblHeap_c_id = "$Id$";
 #include <malloc.h>
 #endif
 #endif
-#endif 
+#endif
 
 #include "pbl.h"
 

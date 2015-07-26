@@ -32,7 +32,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 
 /**
- * Extension to add to an TimedEvent in oder to give to the HLASubscriber the 
+ * Extension to add to an TimedEvent in oder to give to the HLASubscriber the
  * object's id which is reponsible for the update
  * @author David C&#244;me
  */
@@ -42,10 +42,10 @@ public class OriginatedEvent extends TimedEvent{
         super(time, obj);
         objectID = federate;
     }
-    
+
     // the object id which is responsible for the UAV
     public int objectID;
-    
+
     @Override
     public boolean equals(Object originatedEvent) {
         if(!super.equals(originatedEvent)) {
@@ -60,5 +60,5 @@ public class OriginatedEvent extends TimedEvent{
                 return false;
             }
         }
-    } 
+    }
 }

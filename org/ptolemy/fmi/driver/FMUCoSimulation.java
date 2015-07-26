@@ -214,7 +214,7 @@ public class FMUCoSimulation extends FMUDriver {
             // This could cause problems, but mainly we want to be
             // sure that we differentiate between the
             // fmiComponentEnvironment and the fmiComponent.
-            
+
             // We use FMUAllocateMemory so that we can retain a reference
             // to the allocated memory and the memory does not get gc'd.
             Pointer fmiEnvironment = fmiModelDescription.getFMUAllocateMemory().apply(

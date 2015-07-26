@@ -72,7 +72,7 @@ public interface DerivativeFunction {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
-    /** 
+    /**
     * Evaluate the derivative function. An implementation of this function
     * is expected to fill in the xdot array with values calculated using the
     * time, xx, and uu input arrays. A caller of this function is expected
@@ -94,17 +94,17 @@ public interface DerivativeFunction {
     * @param uu The vector of input variables at <code>time</code>.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
     * @return Success (0 for success, else user-defined error code).
-    * @throws IllegalActionException If derivatives cannot be evaluated. 
+    * @throws IllegalActionException If derivatives cannot be evaluated.
     */
     public int evaluateDerivatives(final Time time, double[] xx, double[] uu,
             final double[] xdot) throws IllegalActionException;
 
     /**
      * Evaluate directional derivative function. An implementation of this function
-     * is expected to return the directional derivative of a state derivative with index idx 
+     * is expected to return the directional derivative of a state derivative with index idx
      * calculated using the xx_dot, and uu_dot input arrays. A caller of this function is expected
-     * to provide an xx_dot array, and an uu_dot array. The length of the uu_dot array should equal 
-     * the value returned by getInputVariableCount(), and the length of the xx_dot arrays should equal 
+     * to provide an xx_dot array, and an uu_dot array. The length of the uu_dot array should equal
+     * the value returned by getInputVariableCount(), and the length of the xx_dot arrays should equal
      * the value returned by getStateCount().
      *
      * @param idx The state derivative index.
@@ -135,7 +135,7 @@ public interface DerivativeFunction {
      */
     public boolean getProvidesDirectionalDerivatives();
 
-    /** 
+    /**
      * Return the count of state variables.
      *
      * <p>Expect <code>0 &lt; this.getStateCt()</code>.</p>

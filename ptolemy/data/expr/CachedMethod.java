@@ -553,7 +553,7 @@ public class CachedMethod {
                 throw new IllegalActionException(null,
                         "No such key: " + argValues[1]);
             }
-            
+
             return ConversionUtilities.convertJavaTypeToToken(result);
         } else if (isFunction()) {
             int num = argValues.length;

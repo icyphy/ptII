@@ -18,8 +18,8 @@ import java.io.OutputStream;
  */
 public class SerialBean {
 
-    public int baudRate = 115200;    
-    
+    public int baudRate = 115200;
+
     String PortName;
     CommPortIdentifier portId;
     SerialPort serialPort;
@@ -38,9 +38,9 @@ public class SerialBean {
      */
     public SerialBean(int PortID) {
         String OS = System.getProperty("os.name").toLowerCase();
-        if(OS.indexOf("win") >= 0){        
+        if(OS.indexOf("win") >= 0){
                 // In a windows environment, use the following
-                PortName = "COM" + PortID;                
+                PortName = "COM" + PortID;
         }
         else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("mac") >= 0){
                 // In a linux (also, Mac?) environment, use the following
@@ -142,7 +142,7 @@ public class SerialBean {
      */
     public void closePort() {
                                 RT.read = false;
-                          try { 
+                          try {
                                         in.close();
                                         out.close();
                                 } catch(Exception e) {}

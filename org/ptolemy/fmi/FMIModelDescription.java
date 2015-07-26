@@ -101,7 +101,7 @@ public class FMIModelDescription {
      * representing time as multiples of m.
      */
     public boolean handleIntegerTime = false;
-    
+
     /**
      * For the IBM/UCB proposed extension to FMI 2.0, there is a capability flag
      * handleIntegerTime that indicates that the time inside the FMU is
@@ -110,7 +110,7 @@ public class FMIModelDescription {
      * m used to represent Time from the FMU.
      */
     public Integer precision = 0;
-    
+
     /**
      * For FMI 2.0 and greater, the XML file may specify that the FMU supports
      * providing directional derivatives state. This defaults to false if not
@@ -162,7 +162,7 @@ public class FMIModelDescription {
 
     /** The list of ScalarVariable elements. */
     public List<FMIScalarVariable> modelVariables = new LinkedList<FMIScalarVariable>();
-    
+
     /** The list of ScalarVariable elements name. */
     public List<String> modelVariablesNames = new LinkedList<String>();
 
@@ -578,7 +578,7 @@ public class FMIModelDescription {
                 .getNodeValue()) - 1).valueReference;
         Node dependencyNode = attributes.getNamedItem("dependencies");
         if (dependencyNode != null) {
-                String[] dependencies = null; 
+                String[] dependencies = null;
                 List <String> inputDependencies = new LinkedList<String>();
                 List <String> inputStateDependencies = new LinkedList<String>();
                 if (dependencyNode.getNodeValue().trim().length() != 0){
@@ -607,7 +607,7 @@ public class FMIModelDescription {
                                                 for (int k = 0; k < modelVariables.size(); k++) {
                                                         try {
                                                                 if ((modelVariables.get(k).valueReference == modelVariables
-                                                                                .get(Integer.parseInt(inputDependencies.get(j)) - 1).valueReference) 
+                                                                                .get(Integer.parseInt(inputDependencies.get(j)) - 1).valueReference)
                                                                                 && modelVariables.get(k).causality.equals(Causality.input)) {
                                                                         modelVariables.get(i).directDependency
                                                                                         .add(modelVariables.get(k).name);
@@ -623,14 +623,14 @@ public class FMIModelDescription {
                                                         }
                                                 }
                     }
-                    
+
                  // Create the list of dependent variables which are just inputs and states.
                     for (int j = 0; j < inputStateDependencies.size(); j++) {
                         for (int k = 0; k < modelVariables.size(); k++) {
                             try {
                                 if ((modelVariables.get(k).valueReference == modelVariables
                                         .get(Integer.parseInt(inputStateDependencies.get(j)) - 1).valueReference) &&
-                                        (modelVariables.get(k).isState || modelVariables.get(k).causality.equals(Causality.input))) 
+                                        (modelVariables.get(k).isState || modelVariables.get(k).causality.equals(Causality.input)))
                                          {
                                     modelVariables.get(i).inputStateDependentScalarVariables
                                             .add(modelVariables.get(k));
@@ -646,7 +646,7 @@ public class FMIModelDescription {
                             }
                         }
                     }
-       
+
                 }
             }
         }
@@ -686,28 +686,28 @@ public class FMIModelDescription {
 
         /** The set of input ports on which the state depends. */
         public Set<TypedIOPort> dependencies;
-        
+
         /** The list of dependent ScalarVariable elements. */
         public LinkedList<FMIScalarVariable> dependentScalarVariables;
-                
+
         /** The flag which indicates a change of a state. */
         public boolean hasChanged;
-        
+
         /** The last double output seen. */
         public double lastDoubleOutput;
-        
+
         /** The name of the continuous state variable. */
         public String name;
 
         /** The nominal value for this variable, or null if it is not given. */
         public Double nominal;
-        
+
         /** The Ptolemy state port for this state. */
         public TypedIOPort port;
-        
+
         /** The FMI scalar variable for this state. */
         public FMIScalarVariable scalarVariable;
-        
+
         /** The start value for this variable, or null if it is not given. */
         public Double start;
 

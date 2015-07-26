@@ -52,7 +52,7 @@ extends NamedProgramCodeGeneratorAdapter {
     public PacketToSensorData(ptolemy.actor.lib.mbed.PacketToSensorData actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,

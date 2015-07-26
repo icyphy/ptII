@@ -42,8 +42,8 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 /**
  This actor uses three input ports (hue, saturation, brightness) and
  outputs R,G,B values for an LED.
- 
- <p>The code generator supplies the method contents, thus this 
+
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -69,7 +69,7 @@ public class HSBtoRGB extends TypedAtomicActor {
         saturation = new TypedIOPort(this, "saturation", true, false);
         saturation.setTypeEquals(BaseType.DOUBLE);
         brightness = new TypedIOPort(this, "brightness", true, false);
-        brightness.setTypeEquals(BaseType.DOUBLE); 
+        brightness.setTypeEquals(BaseType.DOUBLE);
         r = new TypedIOPort(this, "r", false, true);
         r.setTypeEquals(BaseType.DOUBLE);
         g = new TypedIOPort(this, "g", false, true);

@@ -272,7 +272,7 @@ public class ExportModelJUnitTest {
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
 
-                // HLA Models that have links to other demos.                          
+                // HLA Models that have links to other demos.
                 "org/hlacerti/demo/legacy/CoSimulation/CoSimulation.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos and does not work
@@ -295,7 +295,7 @@ public class ExportModelJUnitTest {
                 "FMUSimulationX", // 32-bit only
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
-                "HappySadStock.xml", // Run only if there is a Hue on the local network.           
+                "HappySadStock.xml", // Run only if there is a Hue on the local network.
                 "HierarchyFlattening.xml", // gt
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.

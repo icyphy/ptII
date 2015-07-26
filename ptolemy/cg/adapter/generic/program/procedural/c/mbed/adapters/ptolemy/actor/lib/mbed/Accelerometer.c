@@ -16,9 +16,9 @@ float faX, faY, faZ;
 acc.getX(&faX);
 acc.getY(&faY);
 acc.getZ(&faZ);
-$put(x, faX); 
-$put(y, faY); 
-$put(z, faZ); 
+$put(x, faX);
+$put(y, faY);
+$put(z, faZ);
 /**/
 
 /***wrapupBlock***/

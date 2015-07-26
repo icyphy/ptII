@@ -516,7 +516,7 @@ bool PtidesDirector__IsSafeToProcess(struct PtidesDirector* director, struct Pti
     }
 
     // FIXME: Missing: Throttling actors with maximum future events parameter.
-    
+
     double delayOffset = -DBL_MAX;
     Time eventTimestamp = event->timeStamp(event);
     struct IOPort* port = event->ioPort(event);

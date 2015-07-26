@@ -536,10 +536,10 @@ public class FMIScalarVariable {
 
     /** The input ports on which an output has a direct dependence. */
     public Set<String> directDependency;
-    
+
     /** The Model Description for this variable. */
     public FMIModelDescription fmiModelDescription;
-    
+
     /** The boolean attribute for variable value changed. */
     public boolean hasChanged = true;
 

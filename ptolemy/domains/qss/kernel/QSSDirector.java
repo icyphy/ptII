@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  * A director that extends the discrete-event model of computation
  * to include a Quantized-State System (QSS) solver to perform integration.
  * This solver performs using a discrete-event style, quantizing the magnitude
- * of signals rather than the time, as done by a conventional ODE solver. 
+ * of signals rather than the time, as done by a conventional ODE solver.
  * The <i>absoluteQuantum</i> and <i>relativeQuantum</i> parameters determine
  * the quantization granularity.  For information about QSS, see
  * {@link QSSIntegrator} and {@link QSSBase}.
@@ -104,7 +104,7 @@ public class QSSDirector extends DEDirector {
         super(container, name);
         _initSolverParameters();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -130,11 +130,11 @@ public class QSSDirector extends DEDirector {
      *  absoluteQuantum to be used.
      */
     public Parameter relativeQuantum;
-    
+
     /** The quantum scale factor to use for QSS integrations under the control
-     *  of this director. This value is used to scale the value of the absolute and 
-     *  relative quantum to achieve a finer quantization. This is a double which 
-     *  value must be greater than 0.0 and less or equal to 1.0. 
+     *  of this director. This value is used to scale the value of the absolute and
+     *  relative quantum to achieve a finer quantization. This is a double which
+     *  value must be greater than 0.0 and less or equal to 1.0.
      */
     public Parameter quantumScaleFactor;
 
@@ -212,7 +212,7 @@ public class QSSDirector extends DEDirector {
         // This method is final for performance reason.
         return _absoluteQuantum;
     }
-    
+
     /** Return the value of the relativeQuantum parameter.
      *  @return The relative quantum.
      */
@@ -220,7 +220,7 @@ public class QSSDirector extends DEDirector {
         // This method is final for performance reason.
         return _relativeQuantum;
     }
-    
+
     /** Return the value of the quantumScaleFactor parameter.
      *  @return The state output threshold quantum.
      */
@@ -292,18 +292,18 @@ public class QSSDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Initialize parameters. Set all parameters to their default values.
      *  @throws NameDuplicationException If adding parameters fails.
      *  @throws IllegalActionException If setting parameters fails.
      */
     private void _initSolverParameters()
-            throws IllegalActionException, NameDuplicationException {        
+            throws IllegalActionException, NameDuplicationException {
         // The following is probably not needed.
         // The errors it catches only occur with interaction with
         // the continuous domain.
         enforceMicrostepSemantics.setVisibility(Settable.EXPERT);
-        
+
         absoluteQuantum = new Parameter(this, "absoluteQuantum");
         absoluteQuantum.setExpression("1e-4");
         absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
@@ -315,15 +315,15 @@ public class QSSDirector extends DEDirector {
         relativeQuantum = new Parameter(this, "relativeQuantum");
         relativeQuantum.setExpression("0.0");
         relativeQuantum.setTypeEquals(BaseType.DOUBLE);
-        
-        
+
+
         QSSSolver = new StringParameter(this, "QSSSolver");
         configureSolverParameter(QSSSolver, "QSS1");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                 ////
-    
+
     /** The absolute quantum for state resolution. */
     private double _absoluteQuantum;
 
@@ -332,8 +332,8 @@ public class QSSDirector extends DEDirector {
 
     /** The relative quantum for state resolution. */
     private double _relativeQuantum;
-        
+
     /** The package name for the solvers supported by this director. */
     private static String _solverClasspath = "org.ptolemy.qss.solver.";
-    
+
 }

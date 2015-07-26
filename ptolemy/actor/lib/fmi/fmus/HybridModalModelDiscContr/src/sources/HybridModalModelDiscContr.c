@@ -72,7 +72,7 @@ void calculateValues(ModelInstance *comp) {
             r(output_) = r(value_b_);
             hr(output_) = present_;
         }
-    }    
+    }
 }
 
 // called by fmiGetReal, fmiGetContinuousStates and fmiGetDerivatives
@@ -106,7 +106,7 @@ fmi2Real getEventIndicator(ModelInstance* comp, int z) {
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
     fmi2Boolean isPresent = (hr(input_) - 0.5) < 0;
-    
+
     if (isPresent) {
         if (i(n_) == 0) i(n_) = 1;
         else if (i(n_) == 1) i(n_) = 0;

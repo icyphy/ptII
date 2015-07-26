@@ -563,7 +563,7 @@ ValueListener, ChangeListener, CloseListener {
 
         // Attach the entry to the attribute by registering a listener.
         attribute.addValueListener(this);
-        
+
         // If the attribute is a Variable, set a weak dependency to avoid
         // warnings if the attribute changes containers.
         // See https://projects.ecoinformatics.org/ecoinfo/issues/6681.

@@ -232,9 +232,9 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected double emissionProbability(double[] y, int hiddenState) 
+    protected double emissionProbability(double[] y, int hiddenState)
             throws IllegalActionException {
-        if (y.length == 1) { 
+        if (y.length == 1) {
             return _B[hiddenState][(int) y[0]];
         } else {
             throw new IllegalActionException(this.getClassName() + " is only compatible with single dimensional distributions");

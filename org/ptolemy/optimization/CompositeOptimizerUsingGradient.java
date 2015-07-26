@@ -69,9 +69,9 @@ To use the composite optimizer, construct an SDF model on the inside
 that operates on the x input to output four values: (i) an intermediate
 result, that is a function of x and possibly other inputs, (ii) a
 double array containing the values of the constraints, calculated for
-the specific x input, (iii) a double matrix that is a gradient of a 
+the specific x input, (iii) a double matrix that is a gradient of a
 function of x, and (iv) an array of double matrices that is a gradient of
-the constraints. If the gradients (iii) and (iv) can't be defined, un-check 
+the constraints. If the gradients (iii) and (iv) can't be defined, un-check
 the parameter "useGradient" in expert mode so that (iii) and (iv) are not used.
 <p>
 In the case that the objective function is only a function of x, the
@@ -93,10 +93,10 @@ functions of functional languages, but unlike those, the
 contained actor need not be functional. That is, it can have
 state.
 <p>
-If the gradients are used (the parameter "useGradient" is checked), 
-Barrier Method is used as the solver. Barrier Method performs optimization 
-efficiently using gradients and estimating the hessian of the objective function 
-and the constraints. If the parameter "useGradient" is un-checked, 
+If the gradients are used (the parameter "useGradient" is checked),
+Barrier Method is used as the solver. Barrier Method performs optimization
+efficiently using gradients and estimating the hessian of the objective function
+and the constraints. If the parameter "useGradient" is un-checked,
 current implementation uses Cobyla as the solver. Cobyla implements
 the trust-region-reflective algorithm and performs a type of gradient
 descent optimization, ideal for objective functions that are non-convex
@@ -401,7 +401,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             intermediate_dgx.setName(GRADIENT_CONSTRAINTS_PORT_NAME);
             intermediate_dgx.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
             intermediate_dgx.setOutput(true);
-            
+
             // hide the mirror ports in top level composite
             hideMirrorPort(INTERMEDIATE_VALUE_PORT_NAME);
             hideMirrorPort(CONSTRAINTS_PORT_NAME);
@@ -436,7 +436,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
         }
 
         /** iterate inner model one step */
-        private double oneStepIteration (double[] x, double[] gx, double[] dfx, double[][] dgx) 
+        private double oneStepIteration (double[] x, double[] gx, double[] dfx, double[][] dgx)
                 throws IllegalActionException {
             DoubleToken[] xTokens = new DoubleToken[x.length];
             for (int i = 0; i < xTokens.length; i++) {
@@ -564,9 +564,9 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             }
             //The flag "_firstIteration" should be true before an optimize function is called.
             _firstIteration = true;
-            
+
             //////////////////////////////////////////////////////////////////////
-            // If _useGradient is false, we use Cobyla library(Cobyla.FindMinimum) 
+            // If _useGradient is false, we use Cobyla library(Cobyla.FindMinimum)
             // to solve given problem.
             // If _useGradient is true, we use Barrier Method.
             if(!_useGradient) {
@@ -646,7 +646,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                             return true;
                         }
                     };
-                    
+
                     //To estimate Hessian, compute objectiveFunction at several points.
                     double[] searchX = new double[_objectiveFunction.currentX.length];
                     for(int count=0; count<_optInput.length; count++) {
@@ -664,7 +664,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
                 opt.setTolerance(_rhoend);
                 opt.setMaxIterationNum(_maxEvaluations);
                 //Set Initial Value
-                for(int i=0; i<_optInput.length; i++) { 
+                for(int i=0; i<_optInput.length; i++) {
                     _objectiveFunction.currentX[i] = _optInput[i];
                 }
                 int returnCode = opt.optimize(_objectiveFunction);
@@ -674,7 +674,7 @@ public class CompositeOptimizerUsingGradient extends ReflectComposite {
             }
 //            System.out.println("itration "+iteration_counter+" steps.");
             //////////////////////////////////////////////////////
-            
+
             _firstIteration = true;
 
             DoubleToken[] outTokens = new DoubleToken[_dimension];

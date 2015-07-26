@@ -92,7 +92,7 @@ public class ParameterPort extends TypedIOPort {
         setInput(true);
         setMultiport(false);
         _parameter = parameter;
-        
+
         if (_parameter == null) {
             // This is apparently being created directly, e.g. in MoML, rather than
             // the preferred way of creating a PortParameter. Create or capture
@@ -227,7 +227,7 @@ public class ParameterPort extends TypedIOPort {
             }
         }
     }
-    
+
     /** Set the name, and propagate the name change to the
      *  associated parameter.  If a null argument is given, then the
      *  name is set to an empty string.

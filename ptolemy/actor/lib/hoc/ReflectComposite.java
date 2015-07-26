@@ -517,7 +517,7 @@ public class ReflectComposite extends TypedCompositeActor implements
             entity.exportMoML(output, depth);
         }
     }
-    
+
     /** Return true if the specified inside port should be mirrored.
      *  This base class returns true if the inside port is an instance
      *  of MirrorPort.

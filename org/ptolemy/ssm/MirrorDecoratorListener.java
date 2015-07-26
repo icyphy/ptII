@@ -30,18 +30,18 @@ package org.ptolemy.ssm;
 import ptolemy.data.expr.Parameter;
 
 public interface MirrorDecoratorListener {
- 
+
 
     /**  The event that is sent by the mirror decorator  and processed
-     *  by the listener. 
+     *  by the listener.
      *  @param eventType The type of the event.
      *  @param p The parameter subject to change.
      */
     public void event(MirrorDecorator ssm, DecoratorEvent eventType, Parameter p);
 
- 
+
     /** The event that is sent by the mirror decorator  and processed
-     *  by the listener. 
+     *  by the listener.
      *  @param eventType The type of the event.
      *  @param portName Name of changing port.
      */

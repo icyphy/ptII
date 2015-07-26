@@ -72,7 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  The <i>impulse</i> and <i>initialState</i> inputs
  ports must be known, however, before an output can be produced.
  The effect of data at these inputs on the output is instantaneous.</p>
- 
+
  <p>For different ODE solving methods, the functionality
  of an integrator may be different. The delegation and strategy design
  patterns are used in this class, the abstract ODESolver class, and the

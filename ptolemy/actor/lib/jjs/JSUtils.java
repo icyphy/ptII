@@ -40,13 +40,13 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  */
 public class JSUtils {
 
-    /** Attempt to safely cast the given object into a given class. 
+    /** Attempt to safely cast the given object into a given class.
      *  If the object is null, then the cast is considered unsafe. Additionally,
      *  if the argument allowEmpty is set to false, then only consider the cast
-     *  safe if the object is not empty. If the cast is safe, return the object, 
+     *  safe if the object is not empty. If the cast is safe, return the object,
      *  return null otherwise. Note that no ClassCastException is thrown by
      *  this method. If the cast fails, it returns null.
-     * 
+     *
      * @param obj The object to be cast.
      * @param objClass The class to cast the object to.
      * @param allowEmpty Whether empty objects are desired.
@@ -115,13 +115,13 @@ public class JSUtils {
         return checkSafety(obj, objClass, false);
     }
 
-    /** Test whether a given object can be safely cast into a given class. 
+    /** Test whether a given object can be safely cast into a given class.
     *  If the object is null, then the cast is considered unsafe. Additionally,
     *  if the argument allowEmpty is set to false, then only consider the cast
-    *  safe if the object is not empty. If the cast is safe, return true, 
+    *  safe if the object is not empty. If the cast is safe, return true,
     *  return false otherwise. Note that no ClassCastException is thrown by
     *  this method. If the cast fails, it returns false.
-    * 
+    *
     * @param obj The object to be cast.
     * @param objClass The class to cast the object to.
     * @param allowEmpty Whether empty objects are desired.

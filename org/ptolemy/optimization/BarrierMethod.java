@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ import ptolemy.math.DoubleMatrixMath;
  * BarrierMethod.
  * Convex Optimization P.583, 11.3.The Barrier method
  * This class solves min(BarrierFunction B = f0(x)-(1/t)sum(log(-fi(x)))) using Newton decrement.
- * 
+ *
  * @author Shuhei Emoto
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -43,7 +43,7 @@ import ptolemy.math.DoubleMatrixMath;
  * @Pt.AcceptedRating
  */
 public class BarrierMethod  {
-    
+
     //////////////////////////////////////////
     //public methods
 
@@ -54,11 +54,11 @@ public class BarrierMethod  {
      * @throws IllegalActionException
      */
     public int optimize(ObjectiveFunction objective) throws IllegalActionException {
-        
+
         int returnVal = FAILED_MAX_ITERATION_LIMIT;
         ////////////////////////////////////////////////////
         //Phase I: Search for a feasible initial point.
-        //To reduce computational complexity, 
+        //To reduce computational complexity,
         //we at first search feasible points using approximated objective function.
         for(int count=0; count<5; count++) {
             ApproximatedObjectiveFunction approxObjective = new ApproximatedObjectiveFunction(objective);
@@ -88,7 +88,7 @@ public class BarrierMethod  {
             returnVal = optimizationOfGivenPhase(objectivePh1, 1, 50, 100.0);
         } else {
             //given starting point is already feasible
-            returnVal = CONVERGED; 
+            returnVal = CONVERGED;
         }
         if(_flagDebugPrint) {
             System.out.print("Phase1: "+objective.iterationCounter);
@@ -169,7 +169,7 @@ public class BarrierMethod  {
     public void setTolerance(double tolerance) {
         _tolerance = tolerance;
     }
-    
+
     /////////////////////////////////////
     //public variables
     /////////////////////////////////////
@@ -177,7 +177,7 @@ public class BarrierMethod  {
     public static final int FAILED_MAX_ITERATION_LIMIT = 1;
     public static final int FAILED_IMPOSSIBLE_TO_REMAIN_WITHIN_FEASIBLE = 2;
     public static final int TERMINATED_BY_USER = 3;
-    
+
     //////////////////////////////////////
     //private methods
     //////////////////////////////////////
@@ -196,7 +196,7 @@ public class BarrierMethod  {
         }
         return brCost;
     }
-    
+
     /**
      * calculate Gbr = t*g0 + SUM(-1/fi(x) * gi)
      * @param objective :  date set of gradients, and results of the cost function and constraints.
@@ -220,7 +220,7 @@ public class BarrierMethod  {
         }
         return gradient;
     }
-   
+
     /**
      * calculate Hbr = t*H0 + SUM(-1/fi(x) * Hi) + SUM(1/fi(x)^2 * gi*giT)
      * @param objective: date set of Hessians, gradients, and results of the cost function and constraints.
@@ -246,7 +246,7 @@ public class BarrierMethod  {
                 }
             }
         }
-        
+
         double[][] GradSum = new double[HessSum.length][HessSum[0].length];
         for (int i = 0; i < fiX.length; i++) {
             // calculate gi*giT *(1/fi)*(1/fi)
@@ -314,7 +314,7 @@ public class BarrierMethod  {
         }
         return true;
     }
-    
+
     /**
      *  compute inner loop of Barrier method.
      * @param objective : data set of the cost function, constraints function, etc.
@@ -400,13 +400,13 @@ public class BarrierMethod  {
 
             // scaling the solution of the Newton method.
             dx = DoubleMatrixMath.multiply(dx, scaleMatrix);
-            
+
             ////////////////////////////////////////////////////////////////////
             // line search and update
             double stepSize = 1.0;
             ////////////////////////////////////////////////////////
             // To reduce the number of evaluation (firing of ptolemy model),
-            // at first we search the stepSize which satisfies all constraints using approximated objective functions. 
+            // at first we search the stepSize which satisfies all constraints using approximated objective functions.
             // Approximated function calculates the new constraints using current gradients of Fi.
             for(int i=0; i<objective.fiResults.length; i++) {
                 //calculate approximated Fi. (dfi = grad*dx*s)
@@ -420,7 +420,7 @@ public class BarrierMethod  {
                 }
             }
             ////////////////////////////////////////////////////////
-            
+
             //calculate the current cost of Barrier Function.
             double F0X = calculateBarrierFunction(objective, t);
             double[] previosX = objective.getCurrentPoint(); //copy the previous value.
@@ -442,7 +442,7 @@ public class BarrierMethod  {
                         System.out.println(objective.iterationCounter+" f0:"+objective.f0Result+"\t currentCost:"+currentCost+"\t meanDiff:"+_meanDiffOfCost);
                     }
                     if(phase==1) {
-                        //If there is no solution which satisfies all constraints, 
+                        //If there is no solution which satisfies all constraints,
                         //phase 1 will repeat at the same cost and not finish.
                         //TODO: It needs the method to check the feasibility of given optimization problem.
                         _meanDiffOfCost = Math.abs(currentCost-_previousCost)+0.5*_meanDiffOfCost;
@@ -483,7 +483,7 @@ public class BarrierMethod  {
         }
         return ret;
     }
-    
+
     /**
      * Compute phase1 or 2 of Barrier method. Which phase will be executed is defined by argument "phase".
      * @param objective : Objective Function class which defines objective functions.
@@ -493,7 +493,7 @@ public class BarrierMethod  {
      */
     private int optimizationOfGivenPhase(ObjectiveFunction objective, int phase, int maxIterationNum, double initialT) throws IllegalActionException {
         //set the parameter which defines the gap of constraints. t will increase through the iteration.
-        double t = initialT; 
+        double t = initialT;
 
         for (int outerIt = 0; ; outerIt++) {
             if(outerIt>maxIterationNum) {
@@ -514,7 +514,7 @@ public class BarrierMethod  {
     }
 
     /**
-     * Calculate step vector of Newton decrement solving the KKT system 
+     * Calculate step vector of Newton decrement solving the KKT system
      * without constraint:
      * H.v  = -g, <br>
      * (H: hessian matrix,  g: gradient vector)
@@ -582,12 +582,12 @@ public class BarrierMethod  {
 
     /////////////////////////////////////////////
     // private variables
-    
+
     private static final double _MIN_STEP_SIZE = 1.0E-20;
     private static final int _INNER_LOOP_FINISH = -1;
     private double _alpha = 0.05;
     private double _beta = 0.5;
-    private boolean _flagDebugPrint = false; 
+    private boolean _flagDebugPrint = false;
     private int _maxIterationNum = 50;
     private int _maxIterationInLineSearch = 250;
     private double _mu = 10.0;

@@ -67,7 +67,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * Neither START nor FINAL is associated with any state event.
  * </p>
  *
- * <p> To understand the transition table of the FSM, 
+ * <p> To understand the transition table of the FSM,
  * {@link #startOrResume(LinkedList)}.</p>
  *
  *

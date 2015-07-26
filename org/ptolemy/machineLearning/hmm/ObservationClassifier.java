@@ -109,7 +109,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        input = new TypedIOPort(this, "input", true, false); 
+        input = new TypedIOPort(this, "input", true, false);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
@@ -172,7 +172,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
         super.fire();
 
         if (input.hasToken(0)) {
-            // Read input ports 
+            // Read input ports
             Token observationArray = input.get(0);
             _classificationLength = ((ArrayToken) observationArray).length();
             if (((ArrayToken)observationArray).getElementType().isCompatible(BaseType.DOUBLE)) {
@@ -191,11 +191,11 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                     }
                 }
             }
-           
+
 
             // Get Observation Values as doubles
             //FIXME: should the observations  allowed to be vectors of doubles, too?
-            
+
         } else {
             _observations = null;
         }
@@ -208,13 +208,13 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
      * @param prior prior guess vectors
      * @param A transition probability matrix
      * @return An array of assigned labels to observations
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
 
-    protected final int[] classifyHMM(double[][] y, double[] prior, double[][] A) throws IllegalActionException { 
-         
-        int nStates = _nStates;  
-        
+    protected final int[] classifyHMM(double[][] y, double[] prior, double[][] A) throws IllegalActionException {
+
+        int nStates = _nStates;
+
         double[][] alphas = new double[y.length][nStates];
         double[][] gamma = new double[y.length][nStates];
         // do this with org.apache.commons.math3.distribution
@@ -331,9 +331,9 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     /**
      * Abstract class defining the emission probability computation of the
      * latent variable.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    protected abstract double emissionProbability(double[] y, int hiddenState) 
+    protected abstract double emissionProbability(double[] y, int hiddenState)
             throws IllegalActionException;
 
     /** length of the observation array to be classified. */

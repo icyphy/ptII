@@ -52,8 +52,8 @@ import ptolemy.math.DoubleMatrixMath;
 /**
 The class which calculates Mutual Information
 
-<p> This class calculates mutual information between the inference represented by particles 
-and the observation using a zeroth-order Gaussian approximation to the entropy expression 
+<p> This class calculates mutual information between the inference represented by particles
+and the observation using a zeroth-order Gaussian approximation to the entropy expression
 that is approximated over a subset of particles. See references for
 further details on the theory.
 
@@ -164,7 +164,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         super.wrapup();
         _firstStep = true;
     }
-    
+
     /**
      * The computed mutual information between particle sets.
      */
@@ -206,7 +206,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < _nRobots; j++) {
-                //To be modified: This equation must refer to the measurement equation of sensors 
+                //To be modified: This equation must refer to the measurement equation of sensors
                 //defined by StateSpaceModel.
                 gaussianMeans[i][j] = Math.sqrt(
                         Math.pow(_px[i] - robotX[j], 2)
@@ -268,7 +268,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         output.setTypeEquals(BaseType.DOUBLE);
 
         _firstStep = true;
-        
+
         _covariance = 2.0; //This parameter should be defined by StateSpaceModel.
     }
 

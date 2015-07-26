@@ -478,7 +478,7 @@ public class ProcessDirector extends Director {
         // set itself is modified. We could get a
         // ConcurrentModificationException.
 
-        // However, we were getting a ConcurrentModificationException anyway 
+        // However, we were getting a ConcurrentModificationException anyway
         // on terra, to replicate: (cd $PTII/ptolemy/domains/sysml/test/junit; make)
         // Also, Coverity scan pointed out that we were accessing
         // _activeThreads without getting a lock here.  So, we lock and

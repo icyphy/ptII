@@ -34,7 +34,7 @@ package org.ptolemy.qss.util;
 //// PolynomialRoot
 
 
-/** 
+/**
  * Find roots of polynomials.
  *
  * <p>Stand-alone utility functions.</p>
@@ -54,7 +54,7 @@ public final class PolynomialRoot {
     ////                         public methods
 
 
-    /** 
+    /**
      * Find the smallest positive real root of a second-order (quadratic) equation.
      *
      * <p>Equation is
@@ -122,10 +122,10 @@ public final class PolynomialRoot {
 
         return( minPosRoot );
 
-        } 
+        }
 
 
-    /** 
+    /**
      * Find the smallest positive real root of a third-order (cubic) equation.
      *
      * <p>Equation is
@@ -346,7 +346,7 @@ public final class PolynomialRoot {
         final double minPosRoot = (xL>0 && Math.abs(yL)<Math.abs(yR)) ? xL : xR;
         return( minPosRoot );
 
-    }  
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -389,7 +389,7 @@ public final class PolynomialRoot {
 
     return( bracketType );
 
-    }  
+    }
 
 
-}  
+}

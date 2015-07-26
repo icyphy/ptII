@@ -140,7 +140,7 @@ To see an example of the consequences, see the demo
 <a href="$PTII/ptolemy/domains/qss/demo/HelloWorld/HelloWorld_Propagate.xml">$PTII/ptolemy/domains/qss/demo/HelloWorld/HelloWorld_Propagate.xml</a>.
 <p>
 The frequency with which the output <i>q</i> of this integrator
-is produced depends on the <i>solver</i> choice and the 
+is produced depends on the <i>solver</i> choice and the
 <i>absoluteQuantum</i> and <i>relativeQuantum</i> parameter values.
 These determine when a quantization event occurs, as explained above.
 The <i>quantum</i> is equal to the larger of <i>absoluteQuantum</i>
@@ -218,20 +218,20 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
         absoluteQuantum = new Parameter(this, "absoluteQuantum");
         absoluteQuantum.setTypeEquals(BaseType.DOUBLE);
-        
+
         relativeQuantum = new Parameter(this, "relativeQuantum");
         relativeQuantum.setTypeEquals(BaseType.DOUBLE);
-        
+
         impulse = new TypedIOPort(this, "impulse", true, false);
         impulse.setTypeEquals(BaseType.DOUBLE);
         StringAttribute cardinality = new StringAttribute(impulse, "_cardinal");
         cardinality.setExpression("SOUTH");
         new SingletonParameter(impulse, "_showName").setToken(BooleanToken.TRUE);
-        
+
         propagateInputDerivatives = new Parameter(this, "propagateInputDerivatives");
         propagateInputDerivatives.setTypeEquals(BaseType.BOOLEAN);
         propagateInputDerivatives.setExpression("true");
-        
+
         exactInputs = new Parameter(this, "exactInputs");
         exactInputs.setTypeEquals(BaseType.BOOLEAN);
         exactInputs.setExpression("false");
@@ -245,7 +245,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  that the quantum is specified by the director.
      */
     public Parameter absoluteQuantum;
-    
+
     /** Indicator of whether the inputs are exact. Set this to true if
      *  the inputs to this integrator specify all non-zero derivatives.
      *  That is, if the input is a DoubleToken, this should be interpreted
@@ -263,7 +263,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
     /** Output (the quantized state). */
     public TypedIOPort q;
-    
+
     /** If true (the default), then derivative information from the input will be
      *  produced on the outputs, and an output will be produced whenever
      *  an input is received. If false, then no derivative information is provided
@@ -272,7 +272,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  trigger a quantization event.
      */
     public Parameter propagateInputDerivatives;
-    
+
     /** If specified, the relative quantum for this integrator.
      *  If the value here is greater than zero, then the quantum
      *  that this integrator uses will be the larger of the
@@ -290,7 +290,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  "QSS2", and "QSS3".
      */
     public StringParameter solver;
-    
+
     /** Input (the derivative). */
     public TypedIOPort u;
 
@@ -326,21 +326,21 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Set the derivative equal to the input.
      *  @return Success (0 for success, else user-defined error code).
      */
     @Override
     public int evaluateDerivatives(Time time, double[] xx, double[] uu,
             double[] xdot) throws IllegalActionException {
-        
+
         // Check assumptions.
         assert (xx.length == 1);
         assert (xdot.length == 1);
 
         // The derivative is equal to the input.
         xdot[0] = uu[0];
-        
+
         return 0;
     }
 
@@ -389,7 +389,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 // If advancing to time triggers a quantization event, then the returned list
                 // will be non-empty.
                 List<Integer> events = _qssSolver.advanceToTime(currentTime);
-                
+
                 // Flag to produce output.
                 produceOutput = !events.isEmpty();
                 if (_debugging && produceOutput) {
@@ -414,7 +414,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             // from reading the input above, if input was read. Otherwise,
             // it has derivative information from previous inputs.
             double currentValue = _qssSolver.getStateModel(0).coeffs[0];
-            
+
             if (hasInput) {
                 // If there is an input, then we might be producing an output
                 // at a time other than the time of a quantization event.
@@ -487,10 +487,10 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _previousInput = null;
         _previousInputTime = null;
-        
+
         // Get director and check its type.
         Director director = getDirector();
         if (!(director instanceof QSSDirector)) {
@@ -525,13 +525,13 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 break;
         default: throw new IllegalActionException(this, "Unsupported solver order: " + _solverOrder);
         }
-        
+
         if (((BooleanToken)exactInputs.getToken()).booleanValue()) {
             _qssSolver.setExactInputs(true);
         } else {
             _qssSolver.setExactInputs(false);
         }
-        
+
         // Find the quanta.
         double absoluteQuantumValue;
         DoubleToken quantum = (DoubleToken)absoluteQuantum.getToken();
@@ -559,7 +559,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // For QSS1, any derivatives of the input are ignored, so the input
         // model order should be zero as well.
         _maximumInputOrder = _qssSolver.getStateModelOrder();
-        
+
         // Set up the solver to use this actor to specify the number of states (1)
         // and input variables (1), and to use this actor to calculate the derivative
         // of the states.
@@ -580,10 +580,10 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             double[] derivatives = ((SmoothToken)xInitValue).derivativeValues();
             _setInputModel(derivatives, currentTime);
         }
-        
+
         // To make sure this actor fires at the start time, request a firing.
         getDirector().fireAtCurrentTime(this);
-        
+
         _firstRound = true;
         _lastFireAtTime = null;
         _inputChanged = 0;
@@ -608,7 +608,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         Time currentTime = getDirector().getModelTime();
-        
+
         // Predict the next quantization event time.
         if (_previousInputTime == null || _previousInputTime.compareTo(currentTime) < 0) {
             _inputChanged = 0;
@@ -671,7 +671,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 // Need to get the internal state model at the current time.
                 Time currentTime = getDirector().getModelTime();
                 double previousState = _qssSolver.evaluateStateModelContinuous(0, currentTime);
-                
+
                 // Update the state with the impulse value.
                 double currentState = previousState + impulseValue;
                 // Note that the following call sets flags indicating that new
@@ -690,7 +690,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 }
 
                 _qssSolver.triggerQuantizationEvents(true);
-                
+
                 if (_debugging) {
                     _debug("-- Due to impulse input, change state from "
                             + previousState
@@ -702,7 +702,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         }
         return false;
     }
-    
+
     /** If an input is present, read it. If its value and time do not
      *  match that of the most recently seen input, then set the input
      *  variable model of the solver using the provided input data.
@@ -754,13 +754,13 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
                 _previousInput = new SmoothToken(inputValue, currentTime, null);
             }
             _setInputModel(_previousInput, currentTime);
-            
+
             return true;
         }
         // Return false if there is no new input u and no new impulse input.
         return false;
     }
-    
+
     /** Predict the next quantization event time.
      *  @param currentTime The current time.
      *  @return The next quantization event time, or the director's stop time
@@ -799,7 +799,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             }
         }
         inputModel.tMdl = currentTime;
-        
+
         // Since there is a new input distinct from the previous, we
         // have a new rate. Trigger a rate event.
         try {
@@ -838,7 +838,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             }
         }
         inputModel.tMdl = currentTime;
-        
+
         // Since there is a new input distinct from the previous, we
         // have a new rate. Trigger a rate event.
         try {
@@ -862,13 +862,13 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;
-    
+
     /** Maximum input order. */
     private Integer _maximumInputOrder;
 
     /** Previous input token, if any. */
     private SmoothToken _previousInput;
-    
+
     /** Time of previous input token, if any. */
     private Time _previousInputTime;
 
@@ -877,7 +877,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  <i>QSSSolver</i> parameter of the director.
      */
     private QSSBase _qssSolver = null;
-    
+
     /** The order of the solver. This is 0, 1, 2, or 3,
      *  where 0 delegates to the director.
      */

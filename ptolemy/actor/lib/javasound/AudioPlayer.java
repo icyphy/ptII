@@ -43,7 +43,7 @@ import ptolemy.media.javasound.LiveSound;
 //// AudioPlayer
 
 /**
- This actor reads audio samples and plays them. 
+ This actor reads audio samples and plays them.
 
  <p>Specifically, the input stream that this actor reads is
  interpreted as consisting of audio samples. This actor writes this

@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  will continually update the picture with new data.   If the size of the
  input image changes, then a new Picture object is created.  This class
  will only accept an ImageToken on its input.
- 
+
  Note that this class does not work well when executed within Eclipse. In Eclipse, the
  Swing event thread blocks "waiting for: OGLRenderQueue$QueueFluher", and spends most of its
  time blocked rather than rendering. Hence, we do not get smooth updates of images.

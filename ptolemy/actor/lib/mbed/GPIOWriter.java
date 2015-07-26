@@ -69,9 +69,9 @@ public class GPIOWriter extends Sink {
     public GPIOWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         BoardPortNumber = new Parameter(this, "BoardPortNumber");
-       
+
         _GPIOIcon = new EditorIcon(this, "_icon");
         _GPIOState = new RectangleAttribute(_GPIOIcon, "_led_");
         _GPIOState.width.setToken("75.0");
@@ -85,14 +85,14 @@ public class GPIOWriter extends Sink {
     ////                     ports and parameters                  ////
 
 
-    /** This is the GPIO port to write to. This only serves a 
+    /** This is the GPIO port to write to. This only serves a
      *  purpose for code generation.
      */
     public Parameter BoardPortNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -108,7 +108,7 @@ public class GPIOWriter extends Sink {
         return newObject;
     }
 
-    /** Change the color of the actor depending on if true or false 
+    /** Change the color of the actor depending on if true or false
      *  was sent to the actor.
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
@@ -132,11 +132,11 @@ public class GPIOWriter extends Sink {
         }
         return super.postfire();
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     private RectangleAttribute _GPIOState;
-    
+
     private EditorIcon _GPIOIcon;
 }

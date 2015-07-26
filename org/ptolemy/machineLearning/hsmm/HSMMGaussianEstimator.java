@@ -101,11 +101,11 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 true);
         new SingletonParameter(covariance, "_showName")
         .setToken(BooleanToken.TRUE);
-        
+
         mean = new TypedIOPort(this, "mean", false, true);
         new SingletonParameter(mean, "_showName")
         .setToken(BooleanToken.TRUE);
-        
+
         meanVectorGuess = new Parameter(this, "meanVectorGuess");
         meanVectorGuess
                 .setExpression("{{0.0, 0.0},{0.0, 50.0},{50.0, 0.0},{50.0, 50.0}}");
@@ -119,7 +119,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
         _mu0 = new double[4][2];
 
     }
- 
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -149,11 +149,11 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 _mu0 = new double[nS][1];
                 for (int i = 0; i < nS; i++) {
                     _mu0[i][0] = ((DoubleToken) ((ArrayToken) meanVectorGuess
-                            .getToken()).getElement(i)).doubleValue(); 
-                } 
+                            .getToken()).getElement(i)).doubleValue();
+                }
             } else {
                 _obsDimension = ((ArrayToken)((ArrayToken) meanVectorGuess.getToken()).getElement(0)).length();
-                _mu0 = new double[nS][_obsDimension]; 
+                _mu0 = new double[nS][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     for (int j = 0; j < _obsDimension; j++) {
                         _mu0[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) meanVectorGuess
@@ -175,16 +175,16 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
                 _sigma0 = new double[nS][1][1];
                 for (int i = 0; i < nS; i++) {
                     _sigma0[i][0][0] = ((DoubleToken) ((ArrayToken) standardDeviationGuess
-                            .getToken()).getElement(i)).doubleValue(); 
-                } 
+                            .getToken()).getElement(i)).doubleValue();
+                }
             } else {
                 _obsDimension = ((DoubleMatrixToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(0)).getColumnCount();
-                _sigma0 = new double[nS][_obsDimension][_obsDimension]; 
-                for (int i = 0; i < nS; i++) { 
+                _sigma0 = new double[nS][_obsDimension][_obsDimension];
+                for (int i = 0; i < nS; i++) {
                     _sigma0[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
-                            .getToken()).getElement(i)).doubleMatrix(); 
+                            .getToken()).getElement(i)).doubleMatrix();
                 }
-            } 
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -260,7 +260,7 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
             priorEstimates.send(0, new ArrayToken(pTokens));
             durationEstimates.send(0, new DoubleMatrixToken(D_new));
             clusterAssignments.send(0, new ArrayToken(cTokens));
-            durationPriorEstimates.send(0, new ArrayToken(dTokens)); 
+            durationPriorEstimates.send(0, new ArrayToken(dTokens));
         } else {
             System.err.println("EM Algorithm did not converge!");
         }
@@ -390,9 +390,9 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     }
 
     //    private double[][] _sortMeans(double[][] A) {
-    //        // sort the means lexicographically. 
-    //        double[] sortArray= new double[A.length]; 
-    //        double[] orig= new double[A.length]; 
+    //        // sort the means lexicographically.
+    //        double[] sortArray= new double[A.length];
+    //        double[] orig= new double[A.length];
     //        for (int i = 0; i < A.length; i++) {
     //            for(int  j=0; j <A[0].length; j++) {
     //                sortArray[i] += A[i][j];
@@ -401,9 +401,9 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     //        }
     //        Arrays.sort(sortArray);
     //        double[][] newArray = new double[A.length][A[0].length];
-    //        for (int i = 0; i < sortArray.length; i++) { 
+    //        for (int i = 0; i < sortArray.length; i++) {
     //            double s = sortArray[i];
-    //            for (int j= 0; j < sortArray.length; j++) { 
+    //            for (int j= 0; j < sortArray.length; j++) {
     //                if (Math.abs(s-orig[j]) < 1E-6) {
     //                    newArray[i] = A[j];
     //                    continue;

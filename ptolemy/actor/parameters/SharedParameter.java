@@ -506,7 +506,7 @@ public class SharedParameter extends Parameter implements Initializable {
      */
     public synchronized Collection sharedParameterSet() {
         // If we call clone(), then _sharedParameterSet could be null.
-        if (workspace().getVersion() != _sharedParameterSetVersion 
+        if (workspace().getVersion() != _sharedParameterSetVersion
             || _sharedParameterSet == null) {
             try {
                 workspace().getReadAccess();

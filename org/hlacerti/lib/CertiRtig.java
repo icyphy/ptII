@@ -191,23 +191,23 @@ public class CertiRtig extends NamedObj {
         // CERTI-specific values to the values from the environment.
         // Under RHEL, rtig is possibly linked with libraries in
         // Matlab, so we need to be sure to include DYLD_LIBRARY_PATH,
-        // LD_LIBRARY_PATH or PATH from the environment.  
+        // LD_LIBRARY_PATH or PATH from the environment.
         String pathSeparator = System.getProperty("path.separator");
         _environmentArray = new String[1];
         String osName = StringUtilities.getProperty("os.name");
 
         System.out.println("CertRtig: the os.name property is: " + osName);
-        
+
         // Only set the environment variable that is appropriate for
         // the platform.
-        if (osName.startsWith("Mac OS X")) { 
+        if (osName.startsWith("Mac OS X")) {
             String dyldLibraryPath = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
             String dyldVariable = System.getenv("DYLD_LIBRARY_PATH");
             if (dyldVariable != null) {
                 dyldLibraryPath += pathSeparator + dyldVariable;
             }
             _environmentArray[0] = dyldLibraryPath;
-        } else if (osName.startsWith("Windows")) { 
+        } else if (osName.startsWith("Windows")) {
             String path = "PATH=" + certiHome + "/bin";
             String pathVariable = System.getenv("PATH");
             if (pathVariable != null) {

@@ -533,7 +533,7 @@ public class ClassChanges extends MoMLFilterSimple {
 
         _classChanges.put("ptolemy.vergil.basic.export.html.HTMLPageAssembler",
                 "ptolemy.vergil.basic.export.html.jsoup.HTMLPageAssembler");
-        
+
         //Move hlaptolemy classes from $PTII/ptolemy.apps to $PTII/org
         {
             String[] hlaPt2Classes={"HlaPublisher","HlaManager","HlaSubscriber"};

@@ -46,16 +46,16 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** A timed actor that accepts DateTokens on the input. If the date in 
- *  the DateToken is in the future, the output is generated at this 
- *  future date. If the date is in the past, an exception is thrown. 
+/** A timed actor that accepts DateTokens on the input. If the date in
+ *  the DateToken is in the future, the output is generated at this
+ *  future date. If the date is in the past, an exception is thrown.
  *  The output is a DateToken with the system time obtained when producing
  *  the output. Internally, the input date is converted to model time, which
- *  is used in the local clock of the director. 
+ *  is used in the local clock of the director.
  *  Because we are using system time here, the output time will not be
  *  exact and the output DateToken will not be exactly the same as the
  *  DateToken received on the input.
- *  
+ *
  *  Using this actor makes sense in models that synchronize to real time
  *  (e.g. in the DE domain by enabling the synchronizeToRealTime property).
  * @author Patricia Derler
@@ -111,7 +111,7 @@ public class DateToEvent extends Transformer {
     /** Read date tokens from the input and store them until the real
      *  time equals the date in the token. If the date token on the input
      *  contains a date in the past, an exception is thrown.
-     *  @exception IllegalActionException Thrown if the input date in the date 
+     *  @exception IllegalActionException Thrown if the input date in the date
      *  token lies in the past.
      */
     @Override

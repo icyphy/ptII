@@ -108,8 +108,8 @@ void calculateValues(ModelInstance *comp) {
         r(status_) = r(input_);
         hr(status_) = hr(input_);
 
-        comp->eventInfo.nextEventTime = comp->time; 
-    }   
+        comp->eventInfo.nextEventTime = comp->time;
+    }
     else {
         if (hr(input_) == present_) {
             addEvent(r(input_), comp->time);

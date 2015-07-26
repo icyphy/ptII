@@ -39,10 +39,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// CC3000Control
 
 /**
- This actor outputs tokens with information to control the CC3000 
+ This actor outputs tokens with information to control the CC3000
  WiFi Module.
 
- <p>The code generator supplies the method contents, thus this 
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -63,14 +63,14 @@ public class CC3000Control extends TypedAtomicActor {
     public CC3000Control(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         packetsOut = new TypedIOPort(this, "packetsOut", false, true);
-        packetsOut.setTypeEquals(new ArrayType(BaseType.INT)); 
-        //packetsOut.setTypeAtLeast(BaseType.BOOLEAN); 
+        packetsOut.setTypeEquals(new ArrayType(BaseType.INT));
+        //packetsOut.setTypeAtLeast(BaseType.BOOLEAN);
         sendStatus = new TypedIOPort(this, "sendStatus", false, true);
-        sendStatus.setTypeEquals(BaseType.BOOLEAN); 
+        sendStatus.setTypeEquals(BaseType.BOOLEAN);
         totalPackets = new TypedIOPort(this, "totalPackets", false, true);
-        totalPackets.setTypeEquals(BaseType.INT); 
+        totalPackets.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ public class CC3000Control extends TypedAtomicActor {
      */
     public TypedIOPort sendStatus;
 
-    /** The totalPackets output port. The type is int. 
+    /** The totalPackets output port. The type is int.
      */
     public TypedIOPort totalPackets;
 }

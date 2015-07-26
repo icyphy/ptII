@@ -58,11 +58,11 @@ import ptolemy.math.DoubleMatrixMath;
  <pre>
  X_{t+1} = f(X_t, U_t)
  </pre>
- where X is the state vector, U is the input vector. 
- This actor reads a single record(x, y) from the port "current_state" 
+ where X is the state vector, U is the input vector.
+ This actor reads a single record(x, y) from the port "current_state"
  and an array of vector(vx, vy) from the port "control_inputs".
  Output is an array of state(x, y) whose length is "prediction horizon".
- If the length of control_inputs is shorter than prediction horizon, 
+ If the length of control_inputs is shorter than prediction horizon,
  the last value of cotrol_inputs is used until the step of prediction horizon.
 
  @author Shuhei Emoto
@@ -94,7 +94,7 @@ public class StatePredictorWithControl extends TypedAtomicActor {
 
         // an array of state of a robot.
         currentState = new TypedIOPort(this, "current_state", true, false);
-        //FIXME: Labels of robot's state should be defined by StateSpaceModel. 
+        //FIXME: Labels of robot's state should be defined by StateSpaceModel.
         ArrayToken names = new ArrayToken("{\"x\",\"y\"}");
         String stateName;
         _labels = new String[names.length()];
@@ -109,20 +109,20 @@ public class StatePredictorWithControl extends TypedAtomicActor {
         // an array of predicted states of a robot.
         predictedStates = new TypedIOPort(this, "predicted_states", false, true);
         predictedStates.setTypeEquals(new ArrayType(new RecordType(_labels, _types)));
-        
+
         // an array of jacobian of states.
         jacobianOfStates = new TypedIOPort(this, "jacobianOfStates", false, true);
         jacobianOfStates.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
-        
+
         _timeHorizon = 1;
         timeHorizon = new Parameter(this, "prediction horizon");
         timeHorizon.setExpression("1");
         timeHorizon.setTypeEquals(BaseType.INT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /** 
+    /**
      * The time-horizon which defines the number of steps of prediction.
      */
     public Parameter timeHorizon;
@@ -144,12 +144,12 @@ public class StatePredictorWithControl extends TypedAtomicActor {
 
     /**
      * jacobian of predicted states (dX/dU).
-     * this port output array of matrix {dX1/dU, dX2/dU, ..., dXn/dU} 
+     * this port output array of matrix {dX1/dU, dX2/dU, ..., dXn/dU}
      * where Xn means predicted states of n-Step later and U means control input (matrix [U1, U2, ..., Un]).
      */
     public TypedIOPort jacobianOfStates;
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
    @Override
@@ -194,7 +194,7 @@ public class StatePredictorWithControl extends TypedAtomicActor {
             _timeHorizon = ((IntToken) timeHorizon.getToken()).intValue();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int  _timeHorizon;
@@ -204,7 +204,7 @@ public class StatePredictorWithControl extends TypedAtomicActor {
     private double[][] _uValue;
     private RecordToken[] _predictedStates;
     private double[][][] _jacobianOfStates;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void calcPredict() throws IllegalActionException {
@@ -232,7 +232,7 @@ public class StatePredictorWithControl extends TypedAtomicActor {
             _jacobianOfStates[predict_step][row][row] = 1;
         }
         ////////////////////////////////////
-        
+
 //        double control_step_prop = ((double)_uValue.length)/((double)_timeHorizon);
         for (predict_step = 1; predict_step < _timeHorizon; predict_step++) {
 //            int control_step = (int)Math.floor(control_step_prop*predict_step);
@@ -269,7 +269,7 @@ public class StatePredictorWithControl extends TypedAtomicActor {
                 }
             }
             ////result matrix is below. (When predict_step = 2).
-            // (1 0 1 0 1 0 0 0 ....0 ) 
+            // (1 0 1 0 1 0 0 0 ....0 )
             // (0 1 0 1 0 1 0 0 ....0 )
             ////////////////////////////////////
         }

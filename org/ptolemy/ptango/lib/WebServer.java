@@ -363,7 +363,7 @@ public class WebServer extends AbstractInitializableAttribute {
         if (_debugging) {
             _debug("Initializing web server.");
         }
-        
+
         if (_endpointManager == null) {
             _endpointManager = WebSocketEndpointManager.getInstance();
         }
@@ -371,7 +371,7 @@ public class WebServer extends AbstractInitializableAttribute {
         // Remember local websocket services so the websockets can be
         // opened after the web server is started and its port number determined
         HashSet<WebSocketService> servicesToOpen = new HashSet();
-        
+
         int preferredPortValue = WebServerUtilities.DEFAULT_PORT_NUMBER;
 
         if (preferredPort != null && !preferredPort.getExpression().isEmpty()) {
@@ -453,7 +453,7 @@ public class WebServer extends AbstractInitializableAttribute {
                 WebSocketService service = (WebSocketService) entity;
                 boolean isLocal = !WebSocketEndpointManager
                         .isRemoteURI(service.getRelativePath());
-                
+
                 // If local and client side, remember, in order to open after
                 // the server has started
                 if (isLocal && service.isClient()){
@@ -579,11 +579,11 @@ public class WebServer extends AbstractInitializableAttribute {
 
             // Open all local web sockets
             _endpointManager.openLocalServices(servicesToOpen, actualPort);
-            
-            // TODO:  How to handle server-side sockets?  This would work 
+
+            // TODO:  How to handle server-side sockets?  This would work
             // for client sockets.  Do server-side sockets need the URI to be
             // changed to the localhost://?
-        
+
 
         } catch (Exception e) {
             throw new IllegalActionException(this, e,
@@ -634,7 +634,7 @@ public class WebServer extends AbstractInitializableAttribute {
 
     /** A flag indicating if dynamic port allocation is enabled. */
     private boolean _dynamicPortSelection;
-    
+
     /** A manager responsible for generating and releasing websockets. */
     private WebSocketEndpointManager _endpointManager;
 

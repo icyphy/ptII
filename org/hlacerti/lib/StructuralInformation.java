@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * Utility class for storing all we need to know about a given class
- * Is used in the HlaManager in a HashMap 
+ * Is used in the HlaManager in a HashMap
  * @author David Come
  */
 public class StructuralInformation {
@@ -48,7 +48,7 @@ public class StructuralInformation {
     public StructuralInformation(){
         freeActors = new LinkedList<ComponentEntity>();
         _relations = new HashMap<String,HashSet<IOPort>>();
-    }       
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         Public variables                  ////
     /*
@@ -56,12 +56,12 @@ public class StructuralInformation {
     that have not been binded to an object instance from the federation).
     */
     public LinkedList<ComponentEntity> freeActors;
-    
+
     /*
     The class to instanticate
     */
     public ComponentEntity classToInstantiate;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         Public functions                  ////
 
@@ -71,21 +71,21 @@ public class StructuralInformation {
     public HashSet<IOPort> getPortReceiver(String name){
         return _relations.get(name);
     }
-    
-    /** 
+
+    /**
      * Add for the given all its receiving ports
     */
     public void addPortSinks(IOPort port){
         if(!_relations.containsKey(port.getName())){
             _relations.put(port.getName(), new HashSet<IOPort>());
-        }       
+        }
         _relations.get(port.getName()).addAll(port.sinkPortList());
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /*
-    * For a given output port, all the inputs ports 
-    * that will receive a token from it. The key is the 
+    * For a given output port, all the inputs ports
+    * that will receive a token from it. The key is the
     * output port's name.
     */
     private HashMap<String,HashSet<IOPort>> _relations;

@@ -131,7 +131,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     public Parameter bootstrap;
 
     /** Low-variance resampler */
-    public Parameter lowVarianceSampler;  
+    public Parameter lowVarianceSampler;
 
     public TypedIOPort particleInput;
 
@@ -144,7 +144,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
     /** State estimate output. A record token with one field per state variable */
 
-    public TypedIOPort stateEstimate; 
+    public TypedIOPort stateEstimate;
 
     /** The value of current time. This parameter is not visible in
      *  the expression screen except in expert mode. Its value initially
@@ -201,7 +201,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
             // do not reinitialize.
             TypedIOPort port = (TypedIOPort) getPort(attribute.getName());
 
-            if (port == null || !port.isInput()) { 
+            if (port == null || !port.isInput()) {
                 _requestInitialization();
             }
         }
@@ -218,17 +218,17 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
         if (particleInput.hasToken(0)) {
             double currentTime = getDirector().getModelTime().getDoubleValue();
-            t.setToken(new DoubleToken(currentTime)); 
+            t.setToken(new DoubleToken(currentTime));
 
             try {
 
                 _initializeParticles();
 
-                super.fire(); 
+                super.fire();
 
                 for (int i = 0; i < _Nstep ; i++) {
                     _propagate();
-                    _normalizeWeights(); 
+                    _normalizeWeights();
                     if (_doBootstrap) {
                         _resample();
                     } else if (_getEffectiveSampleSize() < 0.5 * Nparticles) {
@@ -257,7 +257,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         if (_upToDate) {
             super.preinitialize();
             return;
-        } 
+        }
 
         // Make sure all necessary parameters are provided.
         _checkParameters();
@@ -267,7 +267,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
         }
 
         int m = inputPortList().size(); // number of control inputs
-        _stateSpaceSize = _stateNames.length(); 
+        _stateSpaceSize = _stateNames.length();
         if (_stateSpaceSize > 0) {
             // Set the output type according to the state variables
             _particleLabels = new String[_stateSpaceSize + 1];
@@ -286,8 +286,8 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
                         varPar = new Parameter(this, variableName);
                         varPar.setTypeEquals(BaseType.DOUBLE);
                         varPar.setExpression("0.0");
-                    } 
-                    ((Parameter)varPar).setVisibility(Settable.NONE); 
+                    }
+                    ((Parameter)varPar).setVisibility(Settable.NONE);
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
                 }
@@ -317,13 +317,13 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
             _stateVariables = new String[_stateSpaceSize];
 
             _updateEquations = new HashMap<>();
-            _updateTrees = new HashMap<>(); 
+            _updateTrees = new HashMap<>();
 
             _setUpdateEquations();
 
             // Inputs-make connections
             String[] inputs = new String[m];
-            _inputRelations = new IORelation[m]; 
+            _inputRelations = new IORelation[m];
             int inputIndex = 0;
             _controlInputs = new HashMap<String, Double>();
             _parameterInputs = new LinkedList<String>();
@@ -358,9 +358,9 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
             }
 
             // Connect state feedback expressions.
-            for (int i = 0; i < _stateVariables.length; i++) { 
+            for (int i = 0; i < _stateVariables.length; i++) {
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = 
+                    Parameter stateUpdateSpec =
                             (Parameter) getUserDefinedParameter(_stateVariables[i]
                                     + UPDATE_POSTFIX);
                     Set<String> freeIdentifiers = stateUpdateSpec
@@ -369,8 +369,8 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
                     if (freeIdentifiers.contains(inputs[k])) {
                         TypedIOPort port = new TypedIOPort(
                                 _updateEquations.get(_stateVariables[i]),
-                                inputs[k], 
-                                true, 
+                                inputs[k],
+                                true,
                                 false);
 
                         port.link(_inputRelations[k]);
@@ -397,21 +397,21 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    protected abstract void _checkParameters() throws IllegalActionException; 
+    protected abstract void _checkParameters() throws IllegalActionException;
 
     /**
      * Return the expression for a user-defined parameter.
      * @param parameterName Name of parameter
      * @return parameter expression
      * @throws IllegalActionException
-     */ 
-    protected String getUserDefinedParameterExpression(String parameterName) 
+     */
+    protected String getUserDefinedParameterExpression(String parameterName)
             throws IllegalActionException {
         Parameter param = getUserDefinedParameter(parameterName);
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter " 
+            throw new IllegalActionException("Parameter "
                     + parameterName + " value is null.");
         }
     }
@@ -421,7 +421,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
      * @return Parameter object
      * @throws IllegalActionException
      */
-    protected abstract Parameter getUserDefinedParameter(String parameterName) 
+    protected abstract Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException;
 
 
@@ -498,7 +498,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException { 
+    NameDuplicationException {
 
         bootstrap = new Parameter(this, "bootstrap");
         bootstrap.setTypeEquals(BaseType.BOOLEAN);
@@ -506,7 +506,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
         lowVarianceSampler = new Parameter(this, "lowVarianceSampler");
         lowVarianceSampler.setTypeEquals(BaseType.BOOLEAN);
-        lowVarianceSampler.setExpression("false"); 
+        lowVarianceSampler.setExpression("false");
 
         particleOutput = new TypedIOPort(this, "particleOutput", false, true);
         //particleOutput.setTypeEquals(BaseType.DOUBLE);
@@ -568,7 +568,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
         // get input particles and set length of array.
         ArrayToken particleArray = (ArrayToken) particleInput.get(0);
-        Nparticles = particleArray.length(); 
+        Nparticles = particleArray.length();
         particles = new Particle[Nparticles];
         // let prior distribution be N(0,1) for now.
         RecordToken t = (RecordToken) particleArray.getElement(0);
@@ -578,7 +578,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
             t = (RecordToken) particleArray.getElement(i);
             for (int k = 0; k < _stateVariables.length; k++) {
                 value[k] = ((DoubleToken)t.get(_stateVariables[k])).doubleValue();
-            } 
+            }
             particles[i] = new Particle(value.length);
             particles[i].setValue(value);
             particles[i].setWeight(((DoubleToken)t.get("weight")).doubleValue());
@@ -696,7 +696,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
 
     }
 
-    private void _setUpdateEquations() 
+    private void _setUpdateEquations()
             throws NameDuplicationException, IllegalActionException {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
@@ -736,13 +736,13 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     private boolean _doBootstrap;
 
     /** Boolean choice to use a low-variance sampler for sampling particles */
-    private boolean _lowVarianceSampler;  
+    private boolean _lowVarianceSampler;
 
     /** Internal particle representation that has memory of 1 in time */
     private Particle[] particles;
 
     /** Number of particles to be used by the particle filter estimators */
-    private int Nparticles; 
+    private int Nparticles;
 
     //TODO: Add seed for random number generation.
     private Random _random;
@@ -771,13 +771,13 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
     private ASTPtRootNode _parseTree;
     private HashMap<String, ASTPtRootNode> _updateTrees;
     private ParseTreeEvaluator _parseTreeEvaluator;
-    private VariableScope _scope; 
+    private VariableScope _scope;
     private int _Nstep;
- 
+
 
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
     protected static final String PROCESS_NOISE = "processNoise";
-    protected static final String MEASUREMENT_NOISE = "measurementCovariance"; 
+    protected static final String MEASUREMENT_NOISE = "measurementCovariance";
     protected static final String UPDATE_POSTFIX = "_update";
     protected static final String MEASUREMENT_POSTFIX = "_m";
     protected static final String PRIOR_NAME = "prior";
@@ -795,7 +795,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
             for (int i = 0; i < p.getSize(); i++) {
                 this._particleValue[i] = tempParticle[i];
             }
-        } 
+        }
 
         public boolean adjustWeight(double w) {
             // normalize weight
@@ -845,7 +845,7 @@ public abstract class AbstractPredictor extends TypedCompositeActor {
                     p.setExpression(((Double) _particleValue[i]).toString());
                 }
                 _tokenMap.put(_stateVariables[i], new DoubleToken(
-                        _particleValue[i])); 
+                        _particleValue[i]));
                 // set the control input values in scope
                 for (String controlVarName : _controlInputs.keySet()) {
 

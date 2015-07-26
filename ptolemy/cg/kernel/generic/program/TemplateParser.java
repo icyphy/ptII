@@ -1776,7 +1776,7 @@ public class TemplateParser {
         }
     }
 
-    //mbed method to get and free token to fix memory leak 
+    //mbed method to get and free token to fix memory leak
     private String _replaceGetAndFree(String parameter)
             throws IllegalActionException {
         // e.g. $get(input#channel, offset); or
@@ -1819,7 +1819,7 @@ public class TemplateParser {
                 .getAdapter(port);
 
             return processCode(portAdapter.generateGetAndFree(channel, offset));
-        
+
     }
 
 

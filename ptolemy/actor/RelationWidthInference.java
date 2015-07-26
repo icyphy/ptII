@@ -378,7 +378,7 @@ public class RelationWidthInference {
                 }
 
                 while (!unspecifiedSet.isEmpty()) {
-                    
+
                     boolean defaultInferredWidthTo1 = false;
 
                     Token defaultTo1 = ModelScope.preferenceValue(
@@ -397,7 +397,7 @@ public class RelationWidthInference {
                         StringBuffer portDetails = new StringBuffer();
                         IORelation relation = unspecifiedSet.iterator().next();
                         List<IOPort> linkedPorts = relation.deepLinkedPortList();
-                        
+
                         // Look for a special case where a relation is linking a multiport
                         // inside a composite to the inside of one or more multiports that are
                         // not connected to anything on the outside. In this case, the width

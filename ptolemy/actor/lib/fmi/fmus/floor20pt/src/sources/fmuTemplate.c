@@ -537,10 +537,10 @@ fmi2Status fmi2SetString (fmi2Component c, const fmi2ValueReference vr[], size_t
 fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
     ModelInstance *source = (ModelInstance*)c;
     int i;
-    
+
     // allocating memory for pointers in ModelInstance struct
     ModelInstance *dest;
-    
+
     if (!*FMUstate) {
         dest = (ModelInstance *)source->functions->allocateMemory(1, sizeof(ModelInstance));
         dest->r = (fmi2Real *)source->functions->allocateMemory(NUMBER_OF_REALS, sizeof(fmi2Real));
@@ -553,26 +553,26 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
     else {
         dest = (ModelInstance *)*FMUstate;
     }
-    
-    
+
+
     if (NUMBER_OF_REALS > 0) {
         for (i = 0; i < NUMBER_OF_REALS; i++) {
             dest->r[i] = source->r[i];
         }
     }
-    
+
     if (NUMBER_OF_INTEGERS > 0) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
             dest->i[i] = source->i[i];
         }
     }
-    
+
     if (NUMBER_OF_BOOLEANS > 0) {
         for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
             dest->b[i] = source->b[i];
         }
     }
-    
+
     if (NUMBER_OF_STRINGS > 0) {
         for (i = 0; i < NUMBER_OF_STRINGS; i++) {
             if (dest->s[i])
@@ -581,22 +581,22 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
     }
-    
+
     if (NUMBER_OF_EVENT_INDICATORS > 0) {
         for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
             dest->r[i] = source->r[i];
         }
     }
-    
+
     *FMUstate = (fmi2FMUstate)dest;
-    
+
     return fmi2OK;
 }
 
 fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
     ModelInstance *dest = (ModelInstance*)c;
     // allocating memory for pointers in ModelInstance struct
-    
+
     ModelInstance* source = (ModelInstance*) FMUstate;
     int i;
     if (NUMBER_OF_REALS > 0) {
@@ -626,7 +626,7 @@ fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
             dest->r[i] = source->r[i];
         }
     }
-    
+
     return fmi2OK;
 }
 

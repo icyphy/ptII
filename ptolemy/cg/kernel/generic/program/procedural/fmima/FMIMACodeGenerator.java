@@ -139,7 +139,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
         code.append(comment("Generated from ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java _generateCode"));
 
         // Copy the .c and .h files from $PTII/ptolemy/actor/lib/fmi/ma.
-        
+
         String directory = codeDirectory.stringValue();
         if (!directory.endsWith("/")) {
             directory += "/";
@@ -257,7 +257,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
 
         super._writeMakefile(container, currentDirectory);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -265,7 +265,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
      *  We use a end of line character so that the files we generate
      *  have the proper end of line character for use by other native tools.
      */
-    
+
     protected String _pathToSupportFiles;
-    
+
 }

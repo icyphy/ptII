@@ -88,7 +88,7 @@ are known.
  @Pt.AcceptedRating Red (neuendor)
  */
 public class CatchUpComposite extends MirrorComposite {
-    
+
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -111,7 +111,7 @@ public class CatchUpComposite extends MirrorComposite {
     /** Construct a CatchUpComposite in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  
+     *  use the default workspace.
      *  @param workspace The workspace that will list the actor.
      *  @exception IllegalActionException If the container is incompatible
      *   with this actor.
@@ -211,10 +211,10 @@ public class CatchUpComposite extends MirrorComposite {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The contained composite actor. */
     private MirrorComposite.MirrorCompositeContents _contents;
-    
+
     /** The default value icon.  This is static so that we avoid doing
      *  string concatenation each time we construct this object.
      */
@@ -233,7 +233,7 @@ public class CatchUpComposite extends MirrorComposite {
             + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
             + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
             + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n";
-    
+
     /** The director. */
     private CatchUpDirector _director;
 
@@ -254,10 +254,10 @@ public class CatchUpComposite extends MirrorComposite {
         _director = new CatchUpDirector(workspace());
         _director.setContainer(this);
         _director.setName("CatchUpDirector");
-        
+
         // Create the composite actor for the contents.
         _contents = new MirrorComposite.MirrorCompositeContents(this, "Contents");
-        
+
         // Override the default icon.
         _attachText("_iconDescription", _defaultIcon);
     }
@@ -279,7 +279,7 @@ public class CatchUpComposite extends MirrorComposite {
      *  model is permitted to produce outputs.
      */
     private class CatchUpDirector extends Director implements SuperdenseTimeDirector {
-        
+
         /** Construct an CatchUpDirector in the specified workspace with
          *  no container and an empty string as a name.
          *  @param workspace The workspace.
@@ -327,7 +327,7 @@ public class CatchUpComposite extends MirrorComposite {
             // own director.
             CompositeActor container = (CompositeActor) getContainer();
             _postfireReturns = true;
-            
+
             Director enclosingDirector = container.getExecutiveDirector();
             if (enclosingDirector == null) {
                 throw new IllegalActionException(container, "No enclosing director!");
@@ -337,7 +337,7 @@ public class CatchUpComposite extends MirrorComposite {
                 microstep = ((SuperdenseTimeDirector)enclosingDirector).getIndex();
             }
             SuperdenseTime environmentTime = new SuperdenseTime(getModelTime(), microstep);
-                        
+
             // Perform catch up iterations, if necessary.
             if (_pendingFiringTimes != null) {
                 SuperdenseTime firstPendingFiringTime = _pendingFiringTimes.peek();
@@ -351,7 +351,7 @@ public class CatchUpComposite extends MirrorComposite {
                         try {
                             _catchUpTime = firstPendingFiringTime.timestamp();
                             _microstep = firstPendingFiringTime.index();
-                            
+
                             if (!_fireContents()) {
                                 // Postfire returned false.
                                 break;
@@ -373,7 +373,7 @@ public class CatchUpComposite extends MirrorComposite {
                         } finally {
                             _catchUpTime = null;
                         }
-                        
+
                         // In case another catch up iteration is needed:
                         firstPendingFiringTime = _pendingFiringTimes.peek();
                     } else if (comparison == 0) {
@@ -387,7 +387,7 @@ public class CatchUpComposite extends MirrorComposite {
                     }
                 }
             }
-                
+
             // Perform caught up iteration only if no catch iteration has returned
             // false from postfire().
             if (_postfireReturns == true) {
@@ -411,7 +411,7 @@ public class CatchUpComposite extends MirrorComposite {
                         transferOutputs();
                     }
                 }
-                
+
                 // If there is a pending request in the future, delegate
                 // a fireAt() request.
                 if (_pendingFiringTimes != null) {
@@ -614,19 +614,19 @@ public class CatchUpComposite extends MirrorComposite {
 
         //////////////////////////////////////////////////////////////
         ////                   private variables                  ////
-        
+
         /** The time that the inside model should see as the current time
          *  during a "catch up" iteration, or null if there is no catch
          *  up iteration in progress.
          */
         private Time _catchUpTime;
-        
+
         /** The current microstep. */
         protected int _microstep = 1;
 
         /** A sorted list of times of pending fireAt() requests. */
         private PriorityQueue<SuperdenseTime> _pendingFiringTimes;
-        
+
         /** Indicator that the inside model returned false in postfire. */
         private boolean _postfireReturns = true;
     }

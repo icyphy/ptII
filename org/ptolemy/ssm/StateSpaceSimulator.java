@@ -1,5 +1,5 @@
 /* A State space model simulator.
- 
+
  Copyright (c) 2009-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- */ 
+ */
 package org.ptolemy.ssm;
 
 import org.ptolemy.machineLearning.particleFilter.AbstractStateSpaceSimulator;
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
 An actor that simulates a state space model that decorates itself.
 Defines an initial value for the state and simulates the model from there.
 
-@author Ilge Akkaya 
+@author Ilge Akkaya
 @version $Id$
 @since Ptolemy II 10.1
 @Pt.ProposedRating Red (ilgea)
@@ -57,14 +57,14 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
     public StateSpaceSimulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _decorator = null;  
-    } 
+        _decorator = null;
+    }
 
     public StateSpaceSimulator(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
-        super(workspace); 
-        _decorator = null; 
-    } 
+        super(workspace);
+        _decorator = null;
+    }
 
 
 
@@ -73,13 +73,13 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      */
     @Override
     protected void _checkParameters() throws IllegalActionException {
-        // Check state variable names. 
+        // Check state variable names.
 
-        if (validUniqueDecoratorAssociationExists()) { 
-            Parameter stateVariableNames = 
+        if (validUniqueDecoratorAssociationExists()) {
+            Parameter stateVariableNames =
                     (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
-            int n = _stateNames.length(); 
+            int n = _stateNames.length();
             if (n < 1) {
                 throw new IllegalActionException(this, "There must be at "
                         + "least one state variable for the state space model.");
@@ -91,9 +91,9 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
                 if (name.equals("")) {
                     throw new IllegalActionException(this, "A state variable "
                             + "name should not be an empty string.");
-                } 
+                }
                 // Check state equations.
-                String equation = name + "_update"; 
+                String equation = name + "_update";
                 if (this.getUserDefinedParameter(equation) == null) {
                     throw new IllegalActionException(
                             this,
@@ -113,7 +113,7 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      * Check if the Actor is associated with a unique enabled StateSpaceModel. Ideally,
      * here, we would also be checking whether the enabled decorator provides the parameters
      * expected by the actor.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
@@ -131,22 +131,22 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
                                 + "at a time.");
                     }
                 }
-            }  
+            }
         }
         return found;
     }
 
     @Override
-    protected Parameter getUserDefinedParameter(String eqnName) 
+    protected Parameter getUserDefinedParameter(String eqnName)
             throws IllegalActionException {
 
         if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName); 
-            return ((Parameter)attr); 
+            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName);
+            return ((Parameter)attr);
         } else {
             throw new IllegalActionException("No decorator found!");
         }
-    }  
+    }
 
-    private StateSpaceModel _decorator;  
+    private StateSpaceModel _decorator;
 }

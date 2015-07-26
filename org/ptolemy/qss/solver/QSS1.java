@@ -54,14 +54,14 @@ public final class QSS1
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
-    /** 
+    /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
     public final int getStateModelOrder() {
         return( 0 );
     }
-    
-    /** 
+
+    /**
      * Initialize object fields (QSS-specific).
      */
     public final void _initializeWorker() {
@@ -78,15 +78,15 @@ public final class QSS1
             _ivVals_xx = new double[_ivCt];
         }
 
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
 
-    /** 
+    /**
      *  Get the predicted quantization-event time for a state (QSS-specific).
-     *  
+     *
      *  @param stateIdx The state index.
      *  @param quantEvtTimeMax The maximum quantization event time.
      */
@@ -175,11 +175,11 @@ public final class QSS1
 
         return( predQuantEvtTime );
 
-    }  
+    }
 
-    /** 
+    /**
      * Form a new external, quantized state model (QSS-specific).
-     * 
+     *
      *  @param stateIdx The state index.
      */
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
@@ -194,10 +194,10 @@ public final class QSS1
         qStateMdl.tMdl = _currSimTime;
         qStateMdl.coeffs[0] = cStateMdl.evaluate(_currSimTime);
 
-    }  
+    }
 
 
-    /** 
+    /**
      * Form new internal, continuous state models (QSS-specific).
      */
     protected final void _triggerRateEventWorker()
@@ -249,8 +249,8 @@ public final class QSS1
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
         }
 
-    } 
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
@@ -265,4 +265,4 @@ public final class QSS1
     private double[] _ivVals_xx;
 
 
-} 
+}

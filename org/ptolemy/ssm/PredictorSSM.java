@@ -1,5 +1,5 @@
 package org.ptolemy.ssm;
-  
+
 import org.ptolemy.machineLearning.particleFilter.AbstractPredictor;
 
 import ptolemy.data.ArrayToken;
@@ -19,28 +19,28 @@ implements StateSpaceActor {
     public PredictorSSM(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _decorator = null; 
-    } 
+        _decorator = null;
+    }
 
     public PredictorSSM(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
-        super(workspace); 
+        super(workspace);
         _decorator = null;
-    } 
- 
+    }
+
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
     @Override
     protected void _checkParameters() throws IllegalActionException {
-        // Check state variable names. 
+        // Check state variable names.
 
-        if (validUniqueDecoratorAssociationExists()) { 
-            Parameter stateVariableNames = 
+        if (validUniqueDecoratorAssociationExists()) {
+            Parameter stateVariableNames =
                     (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
-            int n = _stateNames.length(); 
+            int n = _stateNames.length();
             if (n < 1) {
                 throw new IllegalActionException(this, "There must be at "
                         + "least one state variable for the state space model.");
@@ -52,9 +52,9 @@ implements StateSpaceActor {
                 if (name.equals("")) {
                     throw new IllegalActionException(this, "A state variable "
                             + "name should not be an empty string.");
-                } 
+                }
                 // Check state equations.
-                String equation = name + "_update"; 
+                String equation = name + "_update";
                 if (this.getUserDefinedParameter(equation) == null) {
                     throw new IllegalActionException(
                             this,
@@ -65,12 +65,12 @@ implements StateSpaceActor {
                                     + name + ".");
                 }
             }
-        } 
+        }
     }
 
     /**
      * Check if the Actor is associated with a unique enabled StateSpaceModel.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
@@ -94,16 +94,16 @@ implements StateSpaceActor {
     }
 
     @Override
-    protected Parameter getUserDefinedParameter(String eqnName) 
+    protected Parameter getUserDefinedParameter(String eqnName)
             throws IllegalActionException {
 
         if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName); 
-            return ((Parameter)attr); 
+            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName);
+            return ((Parameter)attr);
         } else {
             throw new IllegalActionException("No decorator found!");
         }
-    } 
+    }
 
     private StateSpaceModel _decorator;
 

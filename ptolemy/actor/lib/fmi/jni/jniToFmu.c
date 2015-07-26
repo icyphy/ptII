@@ -194,7 +194,7 @@ static const char* fmi2StatusToString(fmi2Status status) {
 ///\param idx FMU instance index.
 //////////////////////////////////////////////////////////////////////////////
 static void freeLib(int idx) {
-#ifdef _MSC_VER        
+#ifdef _MSC_VER
         FreeLibrary(fmuInstances[idx]->handle);
 #else
         dlclose(fmuInstances[idx]->handle);
@@ -235,12 +235,12 @@ static void wrapup(int idx) {
                 if (fmuInstances[idx]->c != NULL) {
                         //FIXME: what should we use to release the FMU?
                         //free(fmuInstances[idx]->c);
-                        // freeInstance seem to work on Windows 
+                        // freeInstance seem to work on Windows
                         // It doesn't seem to work on linux
                         // If there is a crash then we will have to
-                        // selectively use freeInstance on Windows 
+                        // selectively use freeInstance on Windows
                         // and free on Linux to release the FMU.
-                        // freeInstance seems to be sensitive the the license which 
+                        // freeInstance seems to be sensitive the the license which
                         // was used to export the FMUs.
                         fmuInstances[idx]->freeInstance(fmuInstances[idx]->c);
                         fmuInstances[idx]->c = NULL;
@@ -528,10 +528,10 @@ static double jcalcJac(int idx, int n_xx, double tmp_xx[], jlong tmp_xx_refs[],
                         for (i = 0; i < n_xx; i++) {
                                 xx_dot[i] = (fmi2Real) tmp_xx[i];
                                 vKnownRef[0] = (fmi2ValueReference) tmp_xx_refs[i];
-                                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the 
+                                // FIXME: The calling order of _fmiGetDirectionalDerivative is not according to the
                                 // Standard. This was modified to accommodate Dymola 2015 FD01's FMUs which have a wron calling
                                 // order. Dassault Systems was informed and will fix this in Dymola 2016.
-                                // The current calling order is:  
+                                // The current calling order is:
                                 //fmuInstances[idx]->fmiFlag = fmuInstances[idx]->getDirectionalDerivative(fmuInstances[idx]->c, vKnownRef, 1, vUnKnownRef, 1, dvKnown, dvUnknown);
                                 // The correct calling order should be:
                                 //fmuInstances[idx]->fmiFlag = fmuInstances[idx]->getDirectionalDerivative(fmuInstances[idx]->c, vUnknownRef, 1, vKnownRef, 1, dvKnown, dvUnknown);
@@ -695,7 +695,7 @@ static void* getAdr(int idx, const char* name) {
         char *buf;
         buf = (char*) malloc(strlen(name) + 4);
         sprintf(buf, "%s%s", "fmi2", name);
-#ifdef _MSC_VER        
+#ifdef _MSC_VER
         fp = GetProcAddress(fmuInstances[idx]->handle, buf);
         if (!fp) {
                 //FIXME: Free the buffer causes the code to crash?
@@ -741,7 +741,7 @@ static void* getAdr(int idx, const char* name) {
 ///\param idx FMU instance index.
 //////////////////////////////////////////////////////////////////////////////
 static int loadLib(int idx) {
-#ifdef _MSC_VER        
+#ifdef _MSC_VER
         fmuInstances[idx]->handle = LoadLibrary(
                 fmuInstances[idx]->fmuNativeLibraryLocation);
 #else
@@ -761,8 +761,8 @@ static int loadLib(int idx) {
 /// \param idx Index of the FMU instance.
 /// \param fla Flag to determine the FMI functions to call.
 ///            0: Instantiate.
-///            1: Initialize. 
-///            2: Enter event mode. 
+///            1: Initialize.
+///            2: Enter event mode.
 ///            3: Enter continuous mode.
 ///            4: Get continuous states.
 ///            5: Get state derivatives.
@@ -837,7 +837,7 @@ int runNativeFMU(JNIEnv * env,
                 memcpy(p, &callbacks, sizeof *p);
 
                 fmuInstances[_c->index]->callbacks = p;
-                
+
                 // get global parameters
                 fmuInstances[_c->index]->startTime = tStart;
                 fmuInstances[_c->index]->stopTime = tEnd;
@@ -1272,8 +1272,8 @@ int runNativeFMU(JNIEnv * env,
 /// \param idx Index of the FMU instance.
 /// \param fla Flag to determine the FMI functions to call.
 ///            0: Instantiate.
-///            1: Initialize. 
-///            2: Enter event mode. 
+///            1: Initialize.
+///            2: Enter event mode.
 ///            3: Enter continuous mode.
 ///            4: Get continuous states.
 ///            5: Get state derivatives.
@@ -1338,8 +1338,8 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImport_runNativeFMU(JNIEnv * env,
 /// \param idx Index of the FMU instance.
 /// \param fla Flag to determine the FMI functions to call.
 ///            0: Instantiate.
-///            1: Initialize. 
-///            2: Enter event mode. 
+///            1: Initialize.
+///            2: Enter event mode.
 ///            3: Enter continuous mode.
 ///            4: Get continuous states.
 ///            5: Get state derivatives.

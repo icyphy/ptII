@@ -236,15 +236,15 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         persistentInputs = new Parameter(this, "persistentInputs");
         persistentInputs.setTypeEquals(BaseType.BOOLEAN);
         persistentInputs.setExpression("false");
-        
+
         // FIXME: removeDirectDependency allows to remove all dependencies between input and outputs of an FMU.
         // This is relevant for FMUs 1.0 for model-exchange or co-simulation which do in general not
         // provide input/output dependency information causing to introduce micro step delay if used in feedback loop. This also temporary
         // addresses the limitation of the causality analysis of Ptolemy II which acts at the actor level rather
         // than at the port level. In Ptolemy II, If one input of an actor, has direct dependency with one output,
-        // then if that output is connected to any other input which does not have any direct dependency, 
-        // then Ptolemy II will trigger a wrong exception, saying that a feedback back loop is found. 
-        // removeDirectDependency should be used with caution. 
+        // then if that output is connected to any other input which does not have any direct dependency,
+        // then Ptolemy II will trigger a wrong exception, saying that a feedback back loop is found.
+        // removeDirectDependency should be used with caution.
         removeDirectDependency = new Parameter(this,"removeDirectDependency");
         removeDirectDependency.setTypeEquals(BaseType.BOOLEAN);
         removeDirectDependency.setExpression("false");
@@ -293,12 +293,12 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      * mode because normally a user should not be allowed to change it.
      */
     public Parameter modelExchange;
-    
+
     /**
      * If true, then this, then the dependency of all inputs
      * on outputs are removed. This is particularly useful for FMI 1.0
      * which do not declare any input/output dependency forcing to add
-     * microstep delays to the system even when not needed.     
+     * microstep delays to the system even when not needed.
      * */
     public Parameter removeDirectDependency;
 
@@ -975,13 +975,13 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
          */
 
         int index = -1;
-        
+
         ////////////////
         // Get the outputs from the FMU and produce them..
         for (Output output : _getOutputs()) {
 
                 index++;
-                
+
             TypedIOPort port = output.port;
 
             if (_debugging) {
@@ -1088,13 +1088,13 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     if (_useRawJNI()) {
                         final long[] ooRef = { scalarVariable.valueReference };
                         final double[] oo = new double[1];
-                        
+
                         runNativeFMU(_fmiJNIComponent, 8, null, null, null,
                                 0.0, 0.0, currentTime.getDoubleValue(), 0, 0.0,
                                 0, 1, null, null, null, null, null, null, oo,
                                 ooRef, 0, null, null, null, null, null);
                         result = oo[0];
-                        
+
                     } else {
                         result = scalarVariable.getDouble(_fmiComponent);
                     }
@@ -1113,7 +1113,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                                                                 _outputs.get(index).lastDoubleOutput = result;
                                                         }
                                                 }
-                                        }                                          
+                                        }
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     if (_useRawJNI()) {
                         throw new IllegalActionException(this,
@@ -1190,7 +1190,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         public List<FMIScalarVariable> getInputDependencyList(
                 FMIScalarVariable scalar) {
             List<FMIScalarVariable> inputVariables = new ArrayList<FMIScalarVariable>();
-        
+
             if (scalar != null) {
                 for (String inputScalarName : scalar.directDependency) {
                     for (FMIScalarVariable inputVar : _fmiModelDescription.modelVariables) {
@@ -1271,13 +1271,13 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         if (_debugging) {
             _debugToStdOut("FMIImport.initialize() method called.");
         }
-        
+
         // Set a flag so the first call to fire() can do appropriate
         // initialization.
         _firstFire = true;
         _firstFireInIteration = true;
         _newStates = null;
-        
+
         // Set the parameters of the FMU.
         // Loop through the scalar variables and find a scalar
         // variable that has variability == "parameter" and is not an
@@ -1344,7 +1344,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     }
                 }
             }
-        }     
+        }
         if (_useRawJNI()) {
             // initialization.
             final Time currentTime = getDirector().getModelTime();
@@ -1366,7 +1366,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     currentTime.getDoubleValue(), 0, 0.0, 0, 0, null, null,
                     null, null, null, null, null, null, 0, null, null, null,
                     null, null);
-        } 
+        }
         else {
             Director director = getDirector();
             Time startTime = director.getModelStartTime();
@@ -1530,22 +1530,22 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         _numberOfStateEvents = 0;
         _numberOfStepEvents = 0;
         _numberOfTimeEvents = 0;
-        
+
         // Initialize parameters used for the case where the QSS director is used.
         // This will be used to determine whether outputs need to be quantized.
         _useQSS = false;
         Director director = getDirector();
         if ((director instanceof QSSDirector)) {
             _useQSS = true;
-            // Get the quantum which will be used to determine whether 
+            // Get the quantum which will be used to determine whether
             // outputs should be produced or not.
             _outputQuantum = ((QSSDirector)getDirector()).getRelativeQuantum();
-            // Check if the relative quantum is zero and assert if that is the case. 
+            // Check if the relative quantum is zero and assert if that is the case.
             if (_outputQuantum == 0.0) {
                 throw new IllegalActionException(this,
                         "The relative quantum of the QSSDirector cannot be null.");
             }
-            
+
         }
 
         if (_useRawJNI()) {
@@ -1568,7 +1568,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                                        + " About to load " + installLibrary);
                     }
                     // This will load the library from $PTII/lib/libFMUImport.jnilib or .so.
-                    UtilityFunctions.loadLibrary(installLibrary); 
+                    UtilityFunctions.loadLibrary(installLibrary);
                 } catch (Throwable installThrowable) {
                     throw new IllegalActionException(this, installThrowable, "Failed to load " + installLibrary
                             + " Also tried to load " + buildLibrary + ", which threw: " + buildThrowable);
@@ -2001,7 +2001,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             }
             // Initialize number of continuous states.
             double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
-            
+
             // Instantiate FMU
             _fmiJNIComponent = runNativeFMU(0, 0, modelIdentifier, fmuLibPath,
                     _fmiModelDescription.fmuResourceLocation,
@@ -2211,7 +2211,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         super.wrapup();
     }
 
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -4279,7 +4279,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             throw new IllegalActionException("Type " + type + " not supported.");
         }
     }
-    
+
     /** Return true if we use use raw JNI instead of JNA.
      *  @return true if raw JNI should be used.
      *  @exception IllegalActionException If there is a problem
@@ -4567,7 +4567,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
         }
     }
 
-    
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -4715,7 +4715,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
-    
+
     /** The output quantum if QSS is used. */
     public double _outputQuantum;
 
@@ -4745,7 +4745,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** Boolean indicating whether the director uses an error tolerance. */
     private byte _toleranceControlled;
-    
+
     /**
      * Indicator that we use the QSSDirector
      */

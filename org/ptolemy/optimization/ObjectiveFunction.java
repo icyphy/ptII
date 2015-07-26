@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@ import ptolemy.math.DoubleMatrixMath;
  * The class which defines the objective function and constraint functions.
  * In the Composite Optimizer actor, this class is declared and method "calcFunction" is implemented.
  * BarrierMethod calls method "calcFuncInternal" during optimization.
- * 
+ *
 @author Shuhei Emoto
 @version $Id$
 @since Ptolemy II 11.0
@@ -43,7 +43,7 @@ import ptolemy.math.DoubleMatrixMath;
 abstract class ObjectiveFunction {
     /**
      * Constructor of ObjectiveFunction.
-     * In the constructor, double arrays for fi_results, gradients, 
+     * In the constructor, double arrays for fi_results, gradients,
      * and hessians are allocated.
      */
     public ObjectiveFunction(int dimensionX, int numOfConstraints) {
@@ -60,7 +60,7 @@ abstract class ObjectiveFunction {
         iterationCounter = 0;
         stopRequested = false;
         quasiNewtonMethod = true;
-        
+
         for(int i=0; i<dimensionX; i++) {
             currentX[i] = 0.0;
         }
@@ -78,7 +78,7 @@ abstract class ObjectiveFunction {
 
     /**
      * Objective function and constraint functions.
-     * In this function, all results(f0_result, fi_results) 
+     * In this function, all results(f0_result, fi_results)
      * and gradients(f0_gradient, fi_gradients) must be updated.
      * @param x : input variables
      * @return If calculation was terminated by user input, return "false".
@@ -106,9 +106,9 @@ abstract class ObjectiveFunction {
         for(int i=0; i<fiResults.length; i++) {
             fiResults[i] += _fiRelax[i];
         }
-        
+
         if(iterationCounter==0) {
-            //Copy all previous values 
+            //Copy all previous values
             for(int i=0; i<fiGradients.length; i++) {
                 for(int it=0; it<fiGradients[i].length; it++) {
                     _fiGradientsPrevious[i][it] = fiGradients[i][it];
@@ -148,10 +148,10 @@ abstract class ObjectiveFunction {
     }
 
     /*
-     * Public Variables 
+     * Public Variables
      */
     public double f0Result;            //Results of objective function.
-    public double[] fiResults;   //Results of constraint functions. An array length is m, the number of constraints. 
+    public double[] fiResults;   //Results of constraint functions. An array length is m, the number of constraints.
     public double[] f0Gradient;        //Gradient of result of f0. An array length is n, the number of variables of objective function.
     public double[][] fiGradients;     //Gradients of constraints. The number of col is n.
     public double[][] f0Hessian;       //Hessian of f0. Lengths of array is [n][n]
@@ -176,7 +176,7 @@ abstract class ObjectiveFunction {
             }
         }
     }
-    
+
     /*
      * Private Methods
      */
@@ -188,12 +188,12 @@ abstract class ObjectiveFunction {
         System.out.println();
     }
     /**
-     * Update estimates of Hessian. 
+     * Update estimates of Hessian.
      * This function is based on quasi-Newton method BFGS.
      */
     private boolean updateHessian() {
-        // 
-        //Hessian of f0 
+        //
+        //Hessian of f0
         double[] dg0 = new double[f0Gradient.length];
         for(int it=0; it<dg0.length; it++) {
             dg0[it] = f0Gradient[it] - _f0GradientPrevious[it];
@@ -206,7 +206,7 @@ abstract class ObjectiveFunction {
         if(!is_hessian_calculated) {
             //TODO: We should store previous values and update when dx and dg have grown lager.
         }
-        
+
         //Hessian of fi
         for(int i=0; i<fiHessians.length; i++) {
             double[] dgi = new double[fiGradients[i].length];
@@ -220,7 +220,7 @@ abstract class ObjectiveFunction {
         }
         return is_hessian_calculated; //if at least one of the hessians are not calculated, return false.
     }
-    
+
     /**
      * implementation of quasi-newton method(BFGS)
      * @param est_hessian_current : estimated hessian matrix which is updated in this function.
@@ -281,8 +281,8 @@ abstract class ObjectiveFunction {
 
 /**
  * The objective function class which is used in Phase 1 of the interior point method.
- * In the interior point method, a starting point X must be a feasible point that satisfies all 
- * constraints. To find the feasible point, the interior point method calculate Phase 1 
+ * In the interior point method, a starting point X must be a feasible point that satisfies all
+ * constraints. To find the feasible point, the interior point method calculate Phase 1
  * using this class.
  * @author shuhei emoto
  */
@@ -290,13 +290,13 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
     public ObjectiveFunctionForPhaseI(ObjectiveFunction a_source) {
         super(a_source.currentX.length+1, a_source.fiResults.length);
         _source = a_source;
-        
+
         for(int i=0; i<_source.currentX.length; i++) {
             currentX[i] = _source.currentX[i];
         }
         currentX[currentX.length-1] = 0;
     }
-        
+
     @Override
     public boolean calcFunction(double[] x) {
         return false;
@@ -344,7 +344,7 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
             }
         }
     }
-    
+
     /**
      * check the termination criteria in phase I
      * @return : true if all of constraints are negative and Phase I should finish.
@@ -368,7 +368,7 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
             }
         }
     }
-    
+
     /**
      * set initial residual value s
      * @param tolerance : the value which defines margin from constraints.
@@ -384,7 +384,7 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
         //check X0 feasibility
         return currentX[currentX.length-1] < 0;
     }
-    
+
     /*
      * Private variables
      */

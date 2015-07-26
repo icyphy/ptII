@@ -48,7 +48,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException; 
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -81,13 +81,13 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         timestamps = new TypedIOPort(this, "timestamps", true, false);
         timestamps.setTypeEquals(new ArrayType(BaseType.INT));
         empiricalStartTimes = new TypedIOPort(this, "empiricalStartTimes", false, true);
-        empiricalStartTimes.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX)); 
+        empiricalStartTimes.setTypeEquals(new ArrayType(BaseType.DOUBLE_MATRIX));
 
         transitionMatrixEstimationMethod = new StringParameter(this,
                 "transitionMatrixEstimationMethod");
         transitionMatrixEstimationMethod.setExpression(INTERPOLATE);
         transitionMatrixEstimationMethod.addChoice(INTERPOLATE);
-        transitionMatrixEstimationMethod.addChoice(FORCE_SELF); 
+        transitionMatrixEstimationMethod.addChoice(FORCE_SELF);
         transitionMatrixEstimationMethod.addChoice(FORCE_ZERO);
         transitionMatrixEstimationMethod.addChoice(NO_ACTION);
         transitionMatrixEstimationMethod.addChoice(SELF_AND_ZERO);
@@ -97,10 +97,10 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     /** Array of observation timestamps as UNIX timestamps */
     public TypedIOPort timestamps;
 
-    /** Transition Matrix partitioning options. 
-     * Force self transition asserts a self transition with probability 1 
+    /** Transition Matrix partitioning options.
+     * Force self transition asserts a self transition with probability 1
      * if no information has been learned for the state. Interpolate: Assigns
-     * uniform probabilities to any state that has Hamming distance less than 
+     * uniform probabilities to any state that has Hamming distance less than
      * two to the current state. */
     public Parameter transitionMatrixEstimationMethod;
 
@@ -114,8 +114,8 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             super.attributeChanged(attribute);
         }
     }
-    
-    
+
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HSMMTimeAwareMultinomialEstimator newObject = (HSMMTimeAwareMultinomialEstimator) super
@@ -124,30 +124,30 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
         newObject.Atlearned = null;
         newObject.incompleteCategories = null;
         newObject._hourOfDay = null;
-        
+
         return newObject;
     }
-    
+
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
         TimeZone tz = new SimpleTimeZone(0,"GMT");
 
-        if (timestamps.hasToken(0)) { 
+        if (timestamps.hasToken(0)) {
             Token[] tsTokens = ((ArrayToken)timestamps.get(0)).arrayValue();
             if (tsTokens.length != clusters.length) {
                 throw new IllegalActionException("Timestamp array length must be equal"
                         + "to the training sequence length.");
-            } 
+            }
 
             // generate a start time distribution given the timestamps.
             _hourOfDay = new int[tsTokens.length];
-            for ( int i = 0; i < tsTokens.length ; i++) { 
+            for ( int i = 0; i < tsTokens.length ; i++) {
                 DateToken dt = new DateToken(((IntToken)tsTokens[i]).intValue(),
-                        DateToken.PRECISION_SECOND,tz); 
+                        DateToken.PRECISION_SECOND,tz);
                 _hourOfDay[i] = dt.getHour();
             }
-            // find the transition times in the cluster assignments and build an 
+            // find the transition times in the cluster assignments and build an
             // empirical distribution for the state transition times.
 
             // hourly empirical distributions
@@ -165,13 +165,13 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
             }
 
             for (int i = 0 ; i < NUM_CATEGORIES; i++) {
-                _calculateTransitionScheme(_method,i); 
+                _calculateTransitionScheme(_method,i);
             }
 
             _sendEmpiricalMatrix();
         }
     }
-    
+
     /**
      * Send the learned matrix to the output.
      * @throws NoRoomException
@@ -180,42 +180,42 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     public void _sendEmpiricalMatrix() throws NoRoomException, IllegalActionException {
 
         Token[] Atokens = new Token[NUM_CATEGORIES];
-        for (int i = 0 ; i < NUM_CATEGORIES; i++) { 
+        for (int i = 0 ; i < NUM_CATEGORIES; i++) {
             Atokens[i] = new DoubleMatrixToken(At[i]);
         }
 
         empiricalStartTimes.send(0, new ArrayToken(Atokens));
     }
-    
+
     /**
      * Learn the transition probability matrix for each hour, from timestamped data.
      */
     protected void _learnAt() {
         incompleteCategories = new HashSet<int[]>();
-        Atlearned = new double[NUM_CATEGORIES][_nStates][_nStates]; 
+        Atlearned = new double[NUM_CATEGORIES][_nStates][_nStates];
         int prevState = clusters[0];
         for (int i = 1 ; i < clusters.length; i++) {
             if (clusters[i] != prevState) {
                 //transition
-                Atlearned[_hourOfDay[i]][prevState][clusters[i]]++; 
+                Atlearned[_hourOfDay[i]][prevState][clusters[i]]++;
             }
             prevState = clusters[i];
         }
 
         // for each hour, set the learned matrices
         for (int i = 0 ; i < NUM_CATEGORIES; i++) {
-            for (int j = 0 ; j < _nStates; j++) { 
+            for (int j = 0 ; j < _nStates; j++) {
                 double sum = 0.0;
-                for (int k=0; k < _nStates; k ++) { 
+                for (int k=0; k < _nStates; k ++) {
                     sum += Atlearned[i][j][k];
-                } 
+                }
                 if ( Math.abs(sum) > 1E-5) {
-                    for (int k=0; k < _nStates; k ++) { 
+                    for (int k=0; k < _nStates; k ++) {
                         Atlearned[i][j][k]/= sum;
                     }
-                } else { 
+                } else {
                     int[] cat = {i,j}; // at category i, from state j, not enough info.
-                    incompleteCategories.add(cat); 
+                    incompleteCategories.add(cat);
                 }
             }
         }
@@ -229,7 +229,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     protected void _calculateTransitionScheme(String method, int category) {
         double[][] Asub = At[category];
         for (int[] A : incompleteCategories) {
-            if (A[0] == category) { 
+            if (A[0] == category) {
                 int j = A[1];
                 switch (method) {
                 case INTERPOLATE:
@@ -241,10 +241,10 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                             allowedTransitionIndices.add(b);
                         }
                     }
-                    for (int b : allowedTransitionIndices) { 
+                    for (int b : allowedTransitionIndices) {
                         Asub[j][b] = 1.0/allowedTransitionIndices.size();
-                    } 
-                    break; 
+                    }
+                    break;
                 case FORCE_SELF:
                     Asub[j][j] = 1.0;
                     break;
@@ -264,12 +264,12 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
                 default:
                     Asub[j][0] = 1.0;
                     break;
-                }  
-            }  
+                }
+            }
         }
         At[category] = Asub;
     }
-    
+
     /**
      * Count number of 1's in integer's bit representation
      * (MIT HAKMEM Count algorithm.)
@@ -278,8 +278,8 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
      */
     private int _bitCount( int xor)
     {
-        int oneCount = 0; 
-        oneCount = xor - ((xor >> 1) & 033333333333) 
+        int oneCount = 0;
+        oneCount = xor - ((xor >> 1) & 033333333333)
                 - ((xor >> 2) & 011111111111);
         return ((oneCount + (oneCount >> 3)) & 030707070707) % 63;
     }
@@ -287,7 +287,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     /** Number of partitions in the probability transition matrix. */
     protected final int NUM_CATEGORIES = 24;
 
-    /** Completion strategy for A set to interpolation, that is, a uniform distribuition 
+    /** Completion strategy for A set to interpolation, that is, a uniform distribuition
      * on all states that have
      * Hamming distance <= 1 to the binary representation of the source state. */
     protected static final String INTERPOLATE = "Interpolate";
@@ -302,15 +302,15 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
     /** Time-dependent transition probability matrix*/
     protected double[][][] At;
-    
+
     /** The learned transition probability matrix: before completion strategy is applied. */
     protected double[][][] Atlearned;
 
     /** Hour categories for which At has not enough information. */
-    protected Set<int[]> incompleteCategories; 
-    
+    protected Set<int[]> incompleteCategories;
+
     /** hour of day for input observations. */
-    protected int[] _hourOfDay; 
+    protected int[] _hourOfDay;
     String _method;
 
 

@@ -43,7 +43,7 @@ struct AtomicActor {
     char *(*getFullName)(struct AtomicActor *);
     char *(*getName)(struct AtomicActor *);
     void (*setName)(struct AtomicActor *, char *);
-#endif    
+#endif
 
     // _AtomicActor-specific fields.  Note that _CompositeActor.h has
     // similar fields, but in different slots.

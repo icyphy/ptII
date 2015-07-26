@@ -74,7 +74,7 @@ import ptolemy.util.FileUtilities;
  of the minimal byte support in Ptolemy or JAVA.
  The size of the input matrix should be the same as the parameters blockHeight
  and blockWidth.</p>
- 
+
  <p>The codebook is specified as a binary file that will be read during
  initialization.  This file actually contains five sets of codebooks and
  lookups tables.  The first set is for 2x1 blocks, the second is for 2x2
@@ -101,7 +101,7 @@ import ptolemy.util.FileUtilities;
  codebook = 256 blocks x 32 bytes = 8192 bytes
  lookup tables = 65536 entries x 1 byte = 65536 bytes
  </pre>
- 
+
  <p>The supplied codebook was trained using images from the
  USC image archive and is suitable for most general applications.</p>
 

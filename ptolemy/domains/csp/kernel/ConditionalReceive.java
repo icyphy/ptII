@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Nameable;
  the conditional send could "go away". If it is unable to register itself as
  the first branch to try, it again starts trying to rendezvous from the
  beginning.</p>
- 
+
  <p><i>Case 3:</i> If there is neither a put or a
  conditional send waiting, it sets a
  flag in the receiver that a conditional receive is trying to rendezvous. It

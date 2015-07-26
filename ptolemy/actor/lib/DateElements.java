@@ -114,7 +114,7 @@ public class DateElements extends TypedAtomicActor {
         timeZoneOffset.setTypeEquals(BaseType.INT);
         new SingletonParameter(timeZoneOffset, "_showName")
                 .setToken(BooleanToken.TRUE);
-        
+
         timeInMillis = new TypedIOPort(this, "timeInMillis", false, true);
         timeInMillis.setTypeEquals(BaseType.LONG);
         new SingletonParameter(timeInMillis, "_showName")
@@ -160,7 +160,7 @@ public class DateElements extends TypedAtomicActor {
     /** Nanosecond of date received on input.
      */
     public TypedIOPort nanosecond;
-    
+
     /** Time in UTC milliseconds since epoch.
      */
     public TypedIOPort timeInMillis;

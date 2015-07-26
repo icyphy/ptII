@@ -1,5 +1,5 @@
 /* A model of a track in air traffic control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -71,7 +71,7 @@ public class Track extends TypedAtomicActor implements Rejecting{
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1.0");
     }
-    
+
     /** The input port.  The type is not specified. */
     public TypedIOPort input;
 
@@ -80,7 +80,7 @@ public class Track extends TypedAtomicActor implements Rejecting{
 
     /** The delay.  The default is 1.0 */
     public Parameter delay;
-    
+
     @Override
     public boolean reject(Token token, IOPort port) {
         return (_inTransit != null);
@@ -118,13 +118,13 @@ public class Track extends TypedAtomicActor implements Rejecting{
             director.fireAt(this, _transitExpires);
         }
     }
-    
+
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
         _inTransit = null;
     }
-    
+
     private Token _inTransit;
     private Time _transitExpires;
 }

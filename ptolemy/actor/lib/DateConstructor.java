@@ -118,12 +118,12 @@ public class DateConstructor extends TypedAtomicActor {
 
         useTimeInMillis = new Parameter(this, "useTimeInMillis", new BooleanToken(false));
         useTimeInMillis.setTypeEquals(BaseType.BOOLEAN);
-        
+
         timeInMillis = new PortParameter(this, "timeInMillis", new IntToken(0));
         timeInMillis.setTypeEquals(BaseType.LONG);
         new SingletonParameter(timeInMillis.getPort(), "_showName")
                 .setToken(BooleanToken.TRUE);
-        
+
         precision = new StringParameter(this, "precision");
         precision.addChoice("second");
         precision.addChoice("millisecond");
@@ -180,7 +180,7 @@ public class DateConstructor extends TypedAtomicActor {
      *  January 1, 1970.
      */
     public PortParameter timeInMillis;
-    
+
     /** Use the time in milliseconds. The default value is false,
      *  which means that the timeAsLongValue will be set according the
      *  year, month, day etc and adjusted according to the precision.
@@ -232,15 +232,15 @@ public class DateConstructor extends TypedAtomicActor {
         if (timeZoneValue != null) {
             // If offset is negative, it will already have a - sign
             // Just need to add + sign for positive offsets
-            timeZone = TimeZone.getTimeZone("GMT" 
+            timeZone = TimeZone.getTimeZone("GMT"
                     + (timeZoneValue < 0 ? "" : "+")
                     + String.format("%04d", timeZoneValue));
         }
-        
+
         long timeAsLongValue = _getLongValue(timeInMillis);
         int microsecondValue = _getIntValue(microsecond);
         int nanosecondValue = _getIntValue(nanosecond);
-        
+
         if (!((BooleanToken)useTimeInMillis.getToken()).booleanValue()) {
             int yearValue = _getIntValue(year);
             int monthValue = _getIntValue(month);
@@ -249,7 +249,7 @@ public class DateConstructor extends TypedAtomicActor {
             int minuteValue = _getIntValue(minute);
             int secondValue = _getIntValue(second);
             int millisecondValue = _getIntValue(millisecond);
-            
+
             Calendar c = Calendar.getInstance(timeZone);
             c.set(Calendar.YEAR, yearValue);
             c.set(Calendar.MONTH, monthValue);
@@ -277,10 +277,10 @@ public class DateConstructor extends TypedAtomicActor {
 
         output.send(0, dateToken);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     private Integer _getIntValue(PortParameter portParameter) throws IllegalActionException {
         Integer value = null;
         if (portParameter.getToken() != null) {
@@ -296,7 +296,7 @@ public class DateConstructor extends TypedAtomicActor {
         // }
         return value;
     }
-    
+
     private Long _getLongValue(PortParameter portParameter) throws IllegalActionException {
         Long value = null;
         if (portParameter.getToken() != null) {
@@ -312,5 +312,5 @@ public class DateConstructor extends TypedAtomicActor {
         // }
         return value;
     }
-    
+
 }

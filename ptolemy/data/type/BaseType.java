@@ -297,7 +297,7 @@ public abstract class BaseType implements Type {
     public Type one() {
         return this;
     }
-    
+
     /** Return a new type which represents the type that results from
      *  subtracting a token of this type and a token of the given
      *  argument type.

@@ -74,8 +74,8 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
         case input_a_:
             return r(input_a_);
         case input_b_:
-            return r(input_b_);            
-        case output_:            
+            return r(input_b_);
+        case output_:
             return r(output_);
         default:
             return 0;

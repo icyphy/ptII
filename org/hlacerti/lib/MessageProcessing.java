@@ -112,7 +112,7 @@ public class MessageProcessing {
                             + " is not handled ");
         }
     }
-    
+
     /** This generic method call the {@link EncodingHelpers} API or the
      *  {@link MessageBuffer} API provided by CERTI to handle data encoding
      *  operation for updated value of HLA attribute that will be published
@@ -173,7 +173,7 @@ public class MessageProcessing {
                                 + " in ByteArrayOutputStream, reason: "
                                 + e.getMessage());
             }
-            
+
             // Write the output stream in an array of bytes.
             encodedValue = bos.toByteArray();
 
@@ -212,9 +212,9 @@ public class MessageProcessing {
                             + " is not handled  " );
         }
 
-            // Here we are sure that we don't deal with HLA  event CERTI MessageBuffer, 
+            // Here we are sure that we don't deal with HLA  event CERTI MessageBuffer,
             // so just return the encoded value as array
             // of bytes.
-            return encodedValue; 
+            return encodedValue;
     }
 }

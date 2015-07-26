@@ -161,7 +161,7 @@ public class HMMMultinomialClassifier extends ObservationClassifier {
         if (y.length == 1) {
             return _B[hiddenState][(int) y[0]];
         } else {
-            throw new IllegalActionException(this, this.getClassName() + 
+            throw new IllegalActionException(this, this.getClassName() +
                     " supports single dimensional distributions.");
         }
     }

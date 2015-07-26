@@ -134,7 +134,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     public Parameter bootstrap;
 
     /** Low-variance resampler. */
-    public Parameter lowVarianceSampler; 
+    public Parameter lowVarianceSampler;
     /**
      * Number of internal particles used to estimate the posterior distribution.
      */
@@ -152,7 +152,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
     /** State estimate output. A record token with one field per state variable */
 
-    public TypedIOPort stateEstimate; 
+    public TypedIOPort stateEstimate;
 
     /** The value of current time. This parameter is not visible in
      *  the expression screen except in expert mode. Its value initially
@@ -219,7 +219,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             // do not reinitialize.
             TypedIOPort port = (TypedIOPort) getPort(attribute.getName());
 
-            if (port == null || !port.isInput()) { 
+            if (port == null || !port.isInput()) {
                 _requestInitialization();
             }
         }
@@ -254,11 +254,11 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         // The Sequential Monte Carlo algorithm
         try {
             if (_firstIteration) {
-                _initializeParticles(); 
+                _initializeParticles();
                 _firstIteration = false;
 
             } else {
-                _propagate(); 
+                _propagate();
             }
 
             _normalizeWeights();
@@ -285,7 +285,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         if (_upToDate) {
             super.preinitialize();
             return;
-        } 
+        }
 
         // Make sure all necessary parameters are provided.
         _checkParameters();
@@ -295,8 +295,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         }
 
         int m = inputPortList().size(); // number of inputs
-        _stateSpaceSize = _stateNames.length(); 
-        _stateVariables = new String[_stateSpaceSize]; 
+        _stateSpaceSize = _stateNames.length();
+        _stateVariables = new String[_stateSpaceSize];
 
         if (_stateSpaceSize > 0) {
             // Set the output type according to the state variables
@@ -315,8 +315,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                         varPar = new Parameter(this, variableName);
                         varPar.setTypeEquals(BaseType.DOUBLE);
                         varPar.setExpression("0.0");
-                    } 
-                    ((Parameter)varPar).setVisibility(Settable.NONE); 
+                    }
+                    ((Parameter)varPar).setVisibility(Settable.NONE);
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
                 }
@@ -334,7 +334,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                     _particleLabels, _particleTypes));
             stateEstimate.setTypeEquals(new RecordType(_stateLabels,
                     _stateTypes));
-        } 
+        }
 
         try {
             _workspace.getWriteAccess();
@@ -346,7 +346,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
             int inputIndex = 0;
             // Inputs-make connections
             String[] inputs = new String[m];
-            _inputRelations = new IORelation[m];  
+            _inputRelations = new IORelation[m];
             _parameterInputs = new LinkedList<String>();
 
             // get all the inputs and classify according to them
@@ -387,13 +387,13 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                 zm.variableName.setExpression(inputName);
                 zm.input.link(_inputRelations[inputIndex]);
                 inputIndex++;
-                // FIXME: different noise for all inputs 
+                // FIXME: different noise for all inputs
             }
 
             // Connect state feedback expressions.
-            for (int i = 0; i < _stateVariables.length; i++) { 
+            for (int i = 0; i < _stateVariables.length; i++) {
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = 
+                    Parameter stateUpdateSpec =
                             (Parameter) getUserDefinedParameter(_stateVariables[i]
                                     + UPDATE_POSTFIX);
                     Set<String> freeIdentifiers = stateUpdateSpec
@@ -402,8 +402,8 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                     if (freeIdentifiers.contains(inputs[k])) {
                         TypedIOPort port = new TypedIOPort(
                                 _updateEquations.get(_stateVariables[i]),
-                                inputs[k], 
-                                true, 
+                                inputs[k],
+                                true,
                                 false);
 
                         port.link(_inputRelations[k]);
@@ -424,7 +424,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     }
 
 
-    /** 
+    /**
      * Get input type by name reference
      * @param inputName The name of the input
      * @return an InputType object indicating the type of input
@@ -444,21 +444,21 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    protected abstract void _checkParameters() throws IllegalActionException; 
+    protected abstract void _checkParameters() throws IllegalActionException;
 
     /**
      * Return the expression for a user-defined parameter.
      * @param parameterName Name of parameter
      * @return parameter expression
      * @throws IllegalActionException
-     */ 
-    protected String getUserDefinedParameterExpression(String parameterName) 
+     */
+    protected String getUserDefinedParameterExpression(String parameterName)
             throws IllegalActionException {
         Parameter param = getUserDefinedParameter(parameterName);
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter " 
+            throw new IllegalActionException("Parameter "
                     + parameterName + " value is null.");
         }
     }
@@ -468,13 +468,13 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      * @return Parameter object
      * @throws IllegalActionException
      */
-    protected abstract Parameter getUserDefinedParameter(String parameterName) 
+    protected abstract Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException;
 
     /**
      * Get measurement parameter expression.
      * @param fullName Name of the measurement Parameter
-     * @return A string expression 
+     * @return A string expression
      * @throws IllegalActionException
      */
     protected String getMeasurementParameterExpression(String fullName)  throws IllegalActionException {
@@ -482,13 +482,13 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter " 
+            throw new IllegalActionException("Parameter "
                     + fullName + " value is null.");
         }
     }
 
 
-    /** 
+    /**
      * Returns a parameter value corresponding to a measurement.
      * @param fullName Name of measurement parameter
      * @return a Parameter object that by name reference corresponds to a
@@ -600,7 +600,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException { 
+    NameDuplicationException {
 
         bootstrap = new Parameter(this, "bootstrap");
         bootstrap.setTypeEquals(BaseType.BOOLEAN);
@@ -644,7 +644,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
 
         _measurementParameters = new HashMap<String, Parameter>();
-        _measurementValues = new HashMap<String, Token>(); 
+        _measurementValues = new HashMap<String, Token>();
         _parser = new PtParser();
         _measurementTypes = new HashMap<>();
         _updateEquations = new HashMap<>();
@@ -661,12 +661,12 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
         _parseTreeEvaluator = new ParseTreeEvaluator();
         _scope = new VariableScope();
-        
+
         Director d = new DEDirector(this, "DEDirector");
         d.setPersistent(false);
         this.setDirector(d);
 
-        
+
         //((Parameter)this.getAttribute("_isOpaque")).setExpression("true");
         // icon
         _attachText("_iconDescription", "<svg>\n"
@@ -727,18 +727,18 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         double[] cumulativeSums = new double[Nparticles + 1];
         Particle[] previousParticles = new Particle[Nparticles];
         cumulativeSums[0] = 0;
-        for (int i = 0; i < Nparticles; i++) { 
+        for (int i = 0; i < Nparticles; i++) {
             cumulativeSums[i + 1] = cumulativeSums[i] + particles[i].getWeight();
             previousParticles[i] = particles[i];
         }
-        
+
         if (cumulativeSums[Nparticles ] < 1.0) {
             double wt = 1.0/Nparticles;
             for (Particle p: particles ) {
                 p.setWeight(wt);
             }
             cumulativeSums = new double[Nparticles + 1];
-            for (int i = 0; i < Nparticles; i++) { 
+            for (int i = 0; i < Nparticles; i++) {
                 cumulativeSums[i + 1] = cumulativeSums[i] + particles[i].getWeight();
                 previousParticles[i] = particles[i];
             }
@@ -810,7 +810,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
 
     }
 
-    private void _setMeasurementEquations(String inputName) 
+    private void _setMeasurementEquations(String inputName)
             throws IllegalActionException, NameDuplicationException {
         Expression measurementEquation = new Expression(this,
                 inputName + "_equation");
@@ -824,12 +824,12 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
         Expression measurementNoise = new Expression(this,
                 inputName + "_noise");
         measurementNoise.expression
-        .setExpression(getNoiseParameter(inputName).getExpression()); 
+        .setExpression(getNoiseParameter(inputName).getExpression());
         _noiseEquations.put(inputName, measurementNoise);
-        _measurementTypes.put(inputName, measurementEquation.output.getType()); 
-    } 
+        _measurementTypes.put(inputName, measurementEquation.output.getType());
+    }
 
-    private void _setUpdateEquations() 
+    private void _setUpdateEquations()
             throws NameDuplicationException, IllegalActionException {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
@@ -868,7 +868,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
      */
     private int[] _subsampleIndices() {
         int N = Noutput;
-        int[] outputIndices = new int[N]; 
+        int[] outputIndices = new int[N];
         double randomValue;
         int intervalIndex;
         double[] cumulativeSums = new double[Nparticles + 1];
@@ -924,7 +924,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     private boolean _doBootstrap;
 
     /** Boolean choice to use a low-variance sampler for sampling particles */
-    private boolean _lowVarianceSampler; 
+    private boolean _lowVarianceSampler;
     /** List that holds the measurement equation expression objects */
     private HashMap<String,Expression> _measurementEquations;
 
@@ -953,7 +953,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     private String[] _stateVariables;
 
     /** State update equations, hashed by state variable name. */
-    private HashMap<String, Expression> _updateEquations; 
+    private HashMap<String, Expression> _updateEquations;
 
     /** Names of the PortParameter inputs. */
     private List<String> _parameterInputs;
@@ -979,7 +979,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     /** Process Noise identifier. */
     protected static final String PROCESS_NOISE = "processNoise";
     /** Noise covariance identifier. */
-    protected static final String MEASUREMENT_NOISE = "noiseCovariance"; 
+    protected static final String MEASUREMENT_NOISE = "noiseCovariance";
     /** Update variable postfix. */
     protected static final String UPDATE_POSTFIX = "_update";
     /** Measurement variable postfix. */
@@ -997,7 +997,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
          * Measurement
          */
         MEASUREMENT_INPUT,
-        /** 
+        /**
          * Control
          */
         CONTROL_INPUT
@@ -1068,12 +1068,12 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                             .generateParseTree(measurementEquation.expression
                                     .getExpression());
                     Token e = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope); 
+                            _parseTree, _scope);
 
                     Expression noiseEq = _noiseEquations.get(inputName);
                     _parseTree = _parser
                             .generateParseTree(noiseEq.expression
-                                    .getExpression()); 
+                                    .getExpression());
                     Token n = _parseTreeEvaluator.evaluateParseTree(
                             _parseTree, _scope);
 
@@ -1084,7 +1084,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                                         .getExpression());
                     }
                     // TODO: Do not do this for every particle!
-                    Type t = _measurementTypes.get(inputName);    
+                    Type t = _measurementTypes.get(inputName);
                     if (t.equals(BaseType.UNKNOWN)) {
                         t = e.getType();
                         _measurementTypes.put(inputName, t);
@@ -1101,7 +1101,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                             _weight *= 1.0 / (Math.sqrt(2 * Math.PI) * _sigma*_sigma)
                                     * Math.exp(-Math
                                             .pow(zt - _mean, 2)
-                                            / (2 * Math.pow(_sigma, 2))); 
+                                            / (2 * Math.pow(_sigma, 2)));
 
                         } else {
                             MatrixToken zt = (MatrixToken) _measurementValues
@@ -1125,7 +1125,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                         }
                     }
 
-                } 
+                }
             }
         }
 
@@ -1233,29 +1233,29 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                     p.setExpression(((Double) _particleValue[i]).toString());
                 }
                 _tokenMap.put(_stateVariables[i], new DoubleToken(
-                        _particleValue[i])); 
-                // set the control input values in scope 
+                        _particleValue[i]));
+                // set the control input values in scope
             }
 
             _parseTree = _updateTrees.get(PROCESS_NOISE);
             processNoiseSample = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _scope); 
+                    _parseTree, _scope);
             if (processNoiseSample == null) {
                 throw new IllegalActionException(
                         "Expression processNoise yields a null result.");
             }
 
-            for (int i = 0; i < _stateSpaceSize; i++) { 
+            for (int i = 0; i < _stateSpaceSize; i++) {
                 _parseTree = _updateTrees.get(_stateVariables[i]);
                 _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
-                        _scope); 
+                        _scope);
 
                 if (_result == null) {
                     throw new IllegalActionException(
                             "Expression yields a null result: "
                                     + _updateEquations.get(_stateVariables[i]).expression
                                     .getExpression());
-                } 
+                }
                 double _meanEstimate = ((DoubleToken) _result
                         .add(new DoubleToken(0.0))).doubleValue();
                 //FIXME: what if the process noise sample is not an array token?

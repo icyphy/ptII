@@ -61,7 +61,7 @@ public class WebSocketEndpoint implements OnTextMessage {
        _isOpen = false;
        _subscribers = new HashSet();
    }
-    
+
     /** Create a new WebSocketEndpoint with the given parent service.
      * @param service  The WebSocketService to be notified of messages.
      */
@@ -79,7 +79,7 @@ public class WebSocketEndpoint implements OnTextMessage {
     public void addSubscriber(WebSocketService service) {
         _subscribers.add(service);
     }
-    
+
     /** Close the connection. _connection will be assigned to null in onClose(),
      * which is invoked automatically after a close().
      */
@@ -95,7 +95,7 @@ public class WebSocketEndpoint implements OnTextMessage {
     public int getSubscriberCount() {
         return _subscribers.size();
     }
-    
+
     /** Return true if the connection is open; false otherwise.
      * @return True if the connection is open; false otherwise.
      */
@@ -103,8 +103,8 @@ public class WebSocketEndpoint implements OnTextMessage {
         return _isOpen;
     }
 
-    /** Upon close, set the connection to null.  Note that the connection might 
-     *  be closed unexpectedly and close() is not necessarily called. 
+    /** Upon close, set the connection to null.  Note that the connection might
+     *  be closed unexpectedly and close() is not necessarily called.
      *  Synchronized so that onOpen() and onClose() can't be interleaved.
      *  @param statusCode The status code of the closed connection.
      *  @param statusMessage The status message of the closed connection.
@@ -146,18 +146,18 @@ public class WebSocketEndpoint implements OnTextMessage {
     public void removeSubscriber(WebSocketService service) {
         _subscribers.remove(service);
     }
-    
+
     /** Send the given message.  If the connection is not open, return false.
-     *  If the connection is not open, there are multiple potential options: 
+     *  If the connection is not open, there are multiple potential options:
      *  the sender could block, messages could be buffered, messages could be
      *  discarded, or some combination.  Currently, messages are discarded.
-     *  Synchronized so that only one sender can write to the websocket at a 
-     *  time.  Returns true if the message was successfully sent; false 
+     *  Synchronized so that only one sender can write to the websocket at a
+     *  time.  Returns true if the message was successfully sent; false
      *  otherwise.
      *  @param message The message to send.
      *  @return True if the message was successfully sent; false otherwise.
      */
-    // TODO:  Could enhance by trying to open connection if closed. 
+    // TODO:  Could enhance by trying to open connection if closed.
     // TODO:  Enhance this to handle waiting on connection, buffering, etc.
     // SENT
     // BUFFERED
@@ -183,9 +183,9 @@ public class WebSocketEndpoint implements OnTextMessage {
 
     /** The WebSocket connection */
     private Connection _connection;
-    
+
     /** An exception that might be thrown when connecting.  */
-    // TODO:  Do something with this exception?  
+    // TODO:  Do something with this exception?
     Exception _connectionException;
 
     /** Flag indicating if the connection is open. */

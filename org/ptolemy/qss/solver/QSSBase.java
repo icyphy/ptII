@@ -183,7 +183,7 @@ import ptolemy.actor.util.Time;
  *
  *
  * <h2>A tour of the public API</h2>
- * 
+ *
  * <p>The simplest use of this class is as follows. First, initialize the solver
  * as follows:
  * <ol>
@@ -296,7 +296,7 @@ import ptolemy.actor.util.Time;
  * <h2>References</h2>
  * <ol>
  * <li> [Kofman-Junco-2001].
- * Kofman, E. and S. Junco (2001). "Quantized-State Systems: 
+ * Kofman, E. and S. Junco (2001). "Quantized-State Systems:
  * A {DEVS} Approach for Continuous System Simulation."
  * Trans. of The Society for Modeling and Simulation International 18(1): 2-8.</li>
  *
@@ -319,13 +319,13 @@ import ptolemy.actor.util.Time;
  * A Comparative Study between DASSL and QSS - Work in Progress Paper,"
  * Workshop on Equation-Based Object-Oriented Modeling Languages and Tools (EOOLT),
  * Oslo, Norway, Linkoping University.</li>
- * 
+ *
  * <li> [Migoni-2013].
  * Gustavo Migoni, Mario Bortolotto, Ernesto Kofman, and Francois E. Cellier,
  * "Linearly implicit quantization-based integration methods for stiff ordinary
  * differential equations",
  * Simulation Modelling Practice and Theory, v.35, pp.118-136, 2013.</li>
- * 
+ *
  * </ol>
  *
  * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui, Edward A. Lee
@@ -620,7 +620,7 @@ public abstract class QSSBase {
      *  This is a convenience method wrapping a sequence of calls to
      *  more detailed methods.
      *  </p>
-     *  
+     *
      *  @param derivativeFunction The object implementing the
      *   function that provides the derivatives for
      *   state variables that this solver is responsible for integrating.
@@ -800,7 +800,7 @@ public abstract class QSSBase {
             }
         }
         return( -1 );
-    }  
+    }
 
     /** Return array of booleans indicating all states that need a quantization-event.
      *
@@ -858,7 +858,7 @@ public abstract class QSSBase {
         }
 
         return( predQuantEvtTime );
-    }  
+    }
 
     /** Get the earliest predicted quantization-event time for all states.
      *
@@ -881,7 +881,7 @@ public abstract class QSSBase {
         }
 
         return( predQuantEvtTime );
-    }  
+    }
 
 
     /** Get the earliest predicted quantization-event time for all states.
@@ -911,7 +911,7 @@ public abstract class QSSBase {
 
         return( predQuantEvtTime );
 
-    } 
+    }
 
     /** Set or reset the integrator's current time.
      *  This method sets flags indicating that a rate event is needed
@@ -927,7 +927,7 @@ public abstract class QSSBase {
 
         _currSimTime = newSimTime;
     }
-    
+
     /** Indicate whether inputs are exact. Calling this with a true argument
      *  asserts that all non-zero derivatives of the input model are provided.
      *  By default, this solver will assume that a zero value for derivatives
@@ -1016,7 +1016,7 @@ public abstract class QSSBase {
 
         // Save reference to model.
         _ivMdls[ivIdx] = ivMdl;
-    }  
+    }
 
 
     // TODO: Add method that allows user to indicate when a state variable is not
@@ -1070,7 +1070,7 @@ public abstract class QSSBase {
         _dqRelTols[stateIndex] = relativeTolerance;
         _dqs[stateIndex] = findQuantum(stateIndex);
 
-    }  
+    }
 
 
     /** Set the parameters used to determine the quantum for all states.
@@ -1148,7 +1148,7 @@ public abstract class QSSBase {
         //   To keep consistent with the constant coefficient of the
         // external, quantized state model.
         _dqs[stateIdx] = findQuantum(stateIdx);
-    } 
+    }
 
     // TODO: Consider adding a method that sets all the state variables from a vector.
 
@@ -1222,7 +1222,7 @@ public abstract class QSSBase {
         // when there's a rate-event.  If the step induces a rate-event, will
         // expect user to call method triggerRateEvt().
 
-    } 
+    }
 
     /** Get a string representation of the model for a state.
      *
@@ -1295,7 +1295,7 @@ public abstract class QSSBase {
 
         // Set status to note satisfied needs.
         _need_quantEvts[stateIdx] = false;
-    }  
+    }
 
 
     /** Form new external, quantized state models.
@@ -1421,7 +1421,7 @@ public abstract class QSSBase {
 
         // Set status to note satisfied needs.
         _need_rateEvt = false;
-    }  
+    }
 
     /** Validate the QSS integrator has been properly set up.
      *
@@ -1576,7 +1576,7 @@ public abstract class QSSBase {
 
         return( dt );
 
-    }  
+    }
 
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
@@ -1640,7 +1640,7 @@ public abstract class QSSBase {
             // I would like to return POSITIVE_INFINITY whenever qea==0, regardless of
             // qeb. But this makes the Lorenz model, for example, useless. In such a feedback
             // loop, derivatives are not known initially. Moreover, they are never known fully.
-            // 
+            //
             // Note that an alternate approach when {qea==0} would be to use
             // the QSS1 solution.  However, leave that decision up to caller.
             dt = Double.POSITIVE_INFINITY;
@@ -1671,7 +1671,7 @@ public abstract class QSSBase {
 
         return( dt );
 
-    }  
+    }
 
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
@@ -1726,7 +1726,7 @@ public abstract class QSSBase {
 
         return( dt );
 
-    }  
+    }
 
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
@@ -1808,7 +1808,7 @@ public abstract class QSSBase {
         }
 
         return( dt );
-    }  
+    }
 
     /** Form a new external, quantized state model (QSS-specific).
      *
@@ -1882,7 +1882,7 @@ public abstract class QSSBase {
         assert( _stateCt > 0 );
         assert( _ivCt >= 0 );
 
-    }  
+    }
 
 
     /** Initialize fields related to tracking the state.
@@ -1930,7 +1930,7 @@ public abstract class QSSBase {
             _need_quantEvts[ii] = true;
         }
 
-    }  
+    }
 
 
     /** Initialize fields related to the input variables.
@@ -1948,7 +1948,7 @@ public abstract class QSSBase {
             _ivMdls = new ModelPolynomial[_ivCt];
         }
 
-    } 
+    }
 
 
     /** Initialize fields related to quantization.
@@ -1985,7 +1985,7 @@ public abstract class QSSBase {
         // That would give individual methods the ability to set their own default tolerances.
         // For example, QSS2 might have different "good defaults" than QSS1.
 
-    }  
+    }
 
 
     /** Initialize fields related to tracking time.
@@ -2046,7 +2046,7 @@ public abstract class QSSBase {
         // clear.
         constMdl.tMdl = _currSimTime;
 
-    }  
+    }
 
 
     /** Validate the QSS integrator has been properly set up.
@@ -2118,11 +2118,11 @@ public abstract class QSSBase {
 
         // Report valid.
         return( null );
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
-    
+
     // Identify specific member of the QSS family.
     private final int _qStateMdlOrder = getStateModelOrder();
 
@@ -2144,4 +2144,4 @@ public abstract class QSSBase {
     private Time[] _predQuantEvtTimes;  // Predicted quantization-event time for each state.
     private boolean[] _need_predQuantEvtTimes;  // True if need to recalculate the
     // predicted quantization-event time for the state.
-}  
+}

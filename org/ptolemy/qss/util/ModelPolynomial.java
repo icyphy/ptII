@@ -48,7 +48,7 @@ import ptolemy.actor.util.Time;
  * <li><i>t</i>, time of interest.</li>
  * <li><i>dt = t - tMdl</i>, time difference.</li>
  * <li><i>tMdl</i>, time of model formation.</li>
- * <li><i>c0, c1, c2, ...</i>, model coefficients. 
+ * <li><i>c0, c1, c2, ...</i>, model coefficients.
  * The first coefficient is the value of <i>x</i> at <i>tMdl</i>.
  * The remaining coefficients are related to derivatives of
  * <i>x</i> at <i>tMdl</i> by
@@ -111,7 +111,7 @@ import ptolemy.actor.util.Time;
 public final class ModelPolynomial {
 
 
-    /** 
+    /**
      * Construct a <code>ModelPolynomial</code>.
      *
      * @param maxOrder Maximum order of the polynomial (0=constant, 1=line, etc).
@@ -131,7 +131,7 @@ public final class ModelPolynomial {
     ////                         public methods
 
 
-    /** 
+    /**
      * Claim write access.
      *
      * @return Count of all unique claims of write access (including caller).
@@ -140,7 +140,7 @@ public final class ModelPolynomial {
         return(++_writerCt);
     }
 
-    /** 
+    /**
      * Evaluate the model at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the model.
@@ -150,13 +150,13 @@ public final class ModelPolynomial {
         return(
             this.evaluate(simTime.subtractToDouble(tMdl))
             );
-    }  
+    }
 
-    /** 
+    /**
      * Evaluate the model at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the model.
-     * @return The model evaluated at a delta-time.     
+     * @return The model evaluated at a delta-time.
      */
     public final double evaluate(final double dt) {
 
@@ -201,10 +201,10 @@ public final class ModelPolynomial {
 
         return( val );
 
-    }  
+    }
 
 
-    /** 
+    /**
      * Evaluate d{model}/d{t} at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the derivative.
@@ -214,10 +214,10 @@ public final class ModelPolynomial {
         return(
             this.evaluateDerivative(simTime.subtractToDouble(tMdl))
             );
-    } 
+    }
 
 
-    /** 
+    /**
      * Evaluate d{model}/d{t} at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
@@ -265,10 +265,10 @@ public final class ModelPolynomial {
 
         return( deriv );
 
-    }  
+    }
 
 
-    /** 
+    /**
      * Evaluate d^2{model}/d{t}^2 at a simulation time.
      *
      * @param simTime Simulation time at which to evaluate the derivative.
@@ -278,10 +278,10 @@ public final class ModelPolynomial {
         return(
             this.evaluateDerivative2(simTime.subtractToDouble(tMdl))
             );
-    } 
+    }
 
 
-    /** 
+    /**
      * Evaluate d^2{model}/d{t}^2 at a delta-time.
      *
      * @param dt Difference (simTime - tMdl) at which to evaluate the derivative.
@@ -330,20 +330,20 @@ public final class ModelPolynomial {
 
         return( deriv2 );
 
-    } 
-    
-    /** 
+    }
+
+    /**
      * Get the maximum order of the polynomial.
-     * 
+     *
      * @return The maximum order of the polynomial.
      */
     public final int getMaximumOrder() {
         return(_maxCoeffIdx);
     }
 
-    /** 
+    /**
      * Find out how many objects claim write access.
-     * 
+     *
      * @return The number of objects that claim write access.
      */
     public final int getWriterCount() {
@@ -358,9 +358,9 @@ public final class ModelPolynomial {
     }
 
 
-    /** 
+    /**
      * Return a string representation of the model.
-     * 
+     *
      * @return The string representation of the model.
      */
     public final String toString() {
@@ -393,7 +393,7 @@ public final class ModelPolynomial {
                 res_sb.append(res);
             }
 
-            // Add higher-order terms.        
+            // Add higher-order terms.
             for( int ii=2; ii<=_maxCoeffIdx; ++ii ) {
                 if( coeffs[ii] != 0 ) {
                     //res += String.format(" %+.4g*%s^%d", coeffs[ii], dtStr, ii);
@@ -406,7 +406,7 @@ public final class ModelPolynomial {
 
         return( res_sb.toString() );
 
-    } 
+    }
 
 
     ///////////////////////////////////////////////////////////////////

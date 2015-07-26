@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  Encode an input sequence with a convolutional code. The inputs and
- outputs are booleans. 
+ outputs are booleans.
 
  <p>The input sequence
  enters a shift register, and the contents of the shift register are

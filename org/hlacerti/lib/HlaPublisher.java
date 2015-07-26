@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  * federation and need to match the Federate Object Model (FOM) specified for
  * the Federation. The data type of the input port has to be the same type of
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM. 
+ * attribute object class describes in the FOM.
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id$
@@ -70,7 +70,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaPublisher extends TypedAtomicActor {
-    
+
     /** Construct the HlaPublisher actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -86,7 +86,7 @@ public class HlaPublisher extends TypedAtomicActor {
         // The single output port of the actor.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        
+
         classObjectHandle = new Parameter(this, "classObjectHandle");
         classObjectHandle.setDisplayName("Object class in FOM");
         classObjectHandle.setTypeEquals(BaseType.STRING);
@@ -138,7 +138,7 @@ public class HlaPublisher extends TypedAtomicActor {
         } else if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
-        } 
+        }
         super.attributeChanged(attribute);
     }
 
@@ -202,7 +202,7 @@ public class HlaPublisher extends TypedAtomicActor {
             }
         }
     }
-    
+
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message
@@ -221,5 +221,5 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
-    
+
 }

@@ -60,14 +60,14 @@ public final class QSS3Fd
     ////                         public methods
 
 
-    /** 
+    /**
      * Get the order of the external, quantized state models exposed by the integrator.
      */
     public final int getStateModelOrder() {
         return( 2 );
     }
 
-    /** 
+    /**
      * Initialize object fields (QSS-specific).
      */
     public final void _initializeWorker() {
@@ -86,16 +86,16 @@ public final class QSS3Fd
             _ivVals_xx = new double[_ivCt];
         }
 
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
-    /** 
+    /**
      *  Get the predicted quantization-event time for a state (QSS-specific).
-     *  
+     *
      *  @param stateIdx The state index.
-     *  @param quantEvtTimeMax The maximum quantization event time.     
+     *  @param quantEvtTimeMax The maximum quantization event time.
      */
     protected final Time _predictQuantizationEventTimeWorker(
         final int stateIdx, final Time quantEvtTimeMax) {
@@ -171,11 +171,11 @@ public final class QSS3Fd
 
         return( predQuantEvtTime );
 
-    } 
+    }
 
-    /** 
+    /**
      *  Form a new external, quantized state model (QSS-specific).
-     * 
+     *
      *  @param stateIdx The state index.
      */
     protected final void _triggerQuantizationEventWorker(final int stateIdx) {
@@ -193,10 +193,10 @@ public final class QSS3Fd
         qStateMdl.coeffs[1] = cStateMdl.evaluateDerivative(dtStateMdl);
         qStateMdl.coeffs[2] = cStateMdl.evaluateDerivative2(dtStateMdl) / 2;
 
-    }  
+    }
 
 
-    /** 
+    /**
      * Form new internal, continuous state models (QSS-specific).
      */
     protected final void _triggerRateEventWorker()
@@ -313,7 +313,7 @@ public final class QSS3Fd
                 (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii] - _rtDerivs_xx[ii]*dtSample2);
         }
 
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
@@ -331,4 +331,4 @@ public final class QSS3Fd
     private double[] _ivVals_xx;
 
 
-}  
+}

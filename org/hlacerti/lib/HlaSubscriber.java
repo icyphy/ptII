@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
  * federation and need to match the Federate Object Model (FOM) specified for
  * the Federation. The data type of the output port has to be the same type of
  * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM. 
+ * attribute object class describes in the FOM.
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id$
@@ -88,7 +88,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaSubscriber extends TypedAtomicActor {
-    
+
     /** Construct a HlaSubscriber actor.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -102,15 +102,15 @@ public class HlaSubscriber extends TypedAtomicActor {
         super(container, name);
 
         // The single output port of the actor.
-        output = new TypedIOPort(this, "output", false, true);        
-        typeSelector = new StringParameter(this, "typeSelector");        
+        output = new TypedIOPort(this, "output", false, true);
+        typeSelector = new StringParameter(this, "typeSelector");
         typeSelector.setDisplayName("type of the parameter");
         //types available for tokens
         typeSelector.addChoice("int");
         typeSelector.addChoice("double");
         typeSelector.addChoice("string");
         typeSelector.addChoice("boolean");
-        
+
         //If the user were to change the output port's type directly,
         //we want to change on the type selector
         //Also usefull for setting a value to typeSelector after reading the MomL file
@@ -120,32 +120,32 @@ public class HlaSubscriber extends TypedAtomicActor {
                 typeSelector.setExpression(event.getNewType().toString());
             }
         });
-        
+
         //set handle to impossible values
         _attributeHandle=Integer.MIN_VALUE;
         _classHandle=Integer.MIN_VALUE;
         _objectHandle=Integer.MIN_VALUE;
-        
+
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
         useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
         attributeChanged(useCertiMessageBuffer);
-                
+
         objectName = new Parameter(this, "objectName");
         objectName.setVisibility(Settable.NOT_EDITABLE);
         objectName.setDisplayName("Object name provided by the RTI");
         objectName.setTypeEquals(BaseType.STRING);
         objectName.setExpression("\"objectName\"");
-        
+
         parameterName = new Parameter(this, "parameterName");
         parameterName.setDisplayName("Name of the parameter to receive");
         parameterName.setTypeEquals(BaseType.STRING);
         parameterName.setExpression("\"parameterName\"");
-        
+
         attributeChanged(objectName);
         attributeChanged(parameterName);
-        
+
         _reflectedAttributeValues = new LinkedList<TimedEvent>();
         _useCertiMessageBuffer = false;
     }
@@ -163,14 +163,14 @@ public class HlaSubscriber extends TypedAtomicActor {
      * The HLA Parameter the HLASubscriber is interested in.
      */
     public Parameter parameterName;
-    
-   /** 
+
+   /**
      *  Name of the object who owns the attribute
-     */ 
+     */
     public Parameter objectName;
-    
+
     /**
-     * Parameter used to set up the type of the output port. Synched with  
+     * Parameter used to set up the type of the output port. Synched with
      * outport port's type (changes go both way).
      */
     public StringParameter typeSelector;
@@ -208,24 +208,24 @@ public class HlaSubscriber extends TypedAtomicActor {
                 }else {
                     param = paramNameTok.stringValue();
                 }
-                
+
                 if(!"objectName".equals(objectName) || !"parameterName".equals(param)){
                     setDisplayName(objectName + " " +param);
                 }
-                
+
             } catch (IllegalActionException illegalActionException) {}
         }else if(attribute==typeSelector){
             String newPotentialTypeName = typeSelector.stringValue();
             if(newPotentialTypeName == null) {
                 return;
             }
-            
+
             Type newPotentialType = BaseType.forName(newPotentialTypeName);
             if(newPotentialType != null && ! newPotentialType.equals(output.getType())){
                 output.setTypeEquals(newPotentialType);
             }
-            
-            
+
+
         }
         super.attributeChanged(attribute);
     }
@@ -240,15 +240,15 @@ public class HlaSubscriber extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         //take care of all public members ?
         HlaSubscriber newObject = (HlaSubscriber) super.clone(workspace);
-        
+
         //take care of private members
-        newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();        
+        newObject._reflectedAttributeValues = new LinkedList<TimedEvent>();
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
-        
+
         newObject.setAttributeHandle(getAttributeHandle());
         newObject.setClassHandle(getClassHandle());
         newObject.setObjectHandle(Integer.MIN_VALUE);
-        
+
         return newObject;
     }
 
@@ -295,7 +295,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         while (it.hasNext()) {
             TimedEvent te = it.next();
             if (te.timeStamp.compareTo(currentTime) == 0) {
-                
+
                 Token content = _buildToken((Object[]) te.contents);
                 int origin = -1;
                 if(te instanceof OriginatedEvent){
@@ -304,18 +304,18 @@ public class HlaSubscriber extends TypedAtomicActor {
                 }
 
                 //either it is NOT OriginatedEvent and we let it go
-                //either it is and it has to match the origin 
+                //either it is and it has to match the origin
                 if(origin == -1 || origin == getObjectHandle()){
                     this.outputPortList().get(0).send(0, content);
-                    
+
                     if (_debugging) {
                         _debug(this.getDisplayName()
                                 + " Called fire() - An updated value"
                                 + " of the HLA attribute \"" + getParameterName() + " from "
-                                + origin  
+                                + origin
                                 + "\" has been sent at \"" + te.timeStamp + "\" ("
                                 +content.toString()+")");
-                        
+
                     } //end debug
                 } //end test fire
             it.remove();
@@ -324,7 +324,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     } //end of fire
 
     /*
-    * Return a string that is used to identify the HlaSubscriber. 
+    * Return a string that is used to identify the HlaSubscriber.
     * Should be unique if
     */
     public String getIdentity(){
@@ -394,9 +394,9 @@ public class HlaSubscriber extends TypedAtomicActor {
      */
     public boolean useCertiMessageBuffer() throws IllegalActionException {
         return _useCertiMessageBuffer;
-    }   
-    
-    
+    }
+
+
     /**
      * Return the kind of HLA Attribute the HLASuscriber is handling.
      */
@@ -408,12 +408,12 @@ public class HlaSubscriber extends TypedAtomicActor {
         }
         return parameter;
     }
-    
-    
-    @Override 
+
+
+    @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        
+
         //set handle to impossible values
         setAttributeHandle(Integer.MIN_VALUE);
         setClassHandle(Integer.MIN_VALUE);
@@ -480,7 +480,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         }
         return "";
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -490,21 +490,21 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
-    
+
     /**
      * Handle provided by the RTI for the attribute the object is publishing
      */
     private int _attributeHandle;
-    
+
     /*
-    * Handle provided by the RTI for the class ob the object 
+    * Handle provided by the RTI for the class ob the object
     * owning the attribute we are receiving
     */
     private int _classHandle;
-    
+
     /**
-     * Handle provided by the RTI for the object owning the attribute we are 
-     * publishing 
+     * Handle provided by the RTI for the object owning the attribute we are
+     * publishing
      */
     private int _objectHandle;
 }

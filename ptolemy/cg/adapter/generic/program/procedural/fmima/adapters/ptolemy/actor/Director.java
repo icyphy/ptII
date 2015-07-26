@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Code generator adapter for generating FMIMA code for Director.
- * 
+ *
  * @see GenericCodeGenerator
  * @author Christopher Brooks
  * @version $Id$
@@ -65,7 +65,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
          * Construct the code generator adapter associated with the given director.
          * Note before calling the generate*() methods, you must also call
          * setCodeGenerator(GenericCodeGenerator).
-         * 
+         *
          * @param director
          *            The associated director.
          */
@@ -82,7 +82,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
          * for SDF and Giotto directors, the firings of actors observe the
          * associated schedule. In addition, some special handling is needed, e.g.,
          * the iteration limit in SDF and time advancement in Giotto.
-         * 
+         *
          * @return The generated code.
          * @exception IllegalActionException
          *                If the adapter associated with an actor throws it while
@@ -114,7 +114,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
-        
+
                 while (actors.hasNext()) {
 
                         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
@@ -133,17 +133,17 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                         + "].component = initializeFMU(&fmus[" + actor.getName()
                                         + "], visible, loggingOn, nCategories, categories);\n");
                 }
-                
+
                 HashMap<Node, FMIScalarVariable> node2Scalar = new HashMap<Node, FMIScalarVariable>();
                 HashMap<Node, TypedIOPort> node2Port = new HashMap<Node, TypedIOPort>();
                 HashMap<TypedIOPort, FMIScalarVariable> port2Scalar = new HashMap<TypedIOPort, FMIScalarVariable>();
-                HashMap<TypedIOPort, Node> port2Node = new HashMap<TypedIOPort, Node>(); 
-                
+                HashMap<TypedIOPort, Node> port2Node = new HashMap<TypedIOPort, Node>();
+
                 DirectedGraph graph = new DirectedGraph();
-                
+
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
-                
+
                 // Add all the nodes to the graph
                 while (actors.hasNext()) {
 
@@ -151,7 +151,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                         .next();
                         for (TypedIOPort port : actor.portList()) {
                                 for (FMIScalarVariable scalar : actor.getScalarVariables()) {
-                                        if ((scalar.causality == Causality.input ||  scalar.causality == Causality.output) 
+                                        if ((scalar.causality == Causality.input ||  scalar.causality == Causality.output)
                                                         && scalar.name.equals(port.getName())) {
                                                 Node node = new Node(port);
                                                 port2Scalar.put(port, scalar);
@@ -159,16 +159,16 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                                 port2Node.put(port, node);
                                                 node2Port.put(node, port);
                                                 graph.addNode(node);
-                                        }                                
+                                        }
                                 }
                         }
                 }
-                
+
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
 
                 // Add edges to the graph
-                                
+
                 // Iterate through the actors and generate connection list.
                 while (actors.hasNext()) {
 
@@ -196,30 +196,30 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                         // Add all the edges due to topological dependencies
                         for (TypedIOPort input : actor.inputPortList()) {
-                                Node sink = port2Node.get(input);                                
+                                Node sink = port2Node.get(input);
                                 List<TypedIOPort> connected_ports = input.connectedPortList();
                                 for (TypedIOPort output : connected_ports) {
                                         if (output.isOutput()) {
-                                                Node source = port2Node.get(output);                                        
+                                                Node source = port2Node.get(output);
                                                 graph.addEdge(source, sink);
                                         }
                                 }
                         }
                 }
-                
+
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
-                
+
                 Collection<Node> nodeCollection = graph.nodes();
-                
+
         // It is ok to have an empty graph for testing purposes, try
         //   cd ptolemy/cg/kernel/generic/program/procedural/fmima/test
-        //   $PTII/bin/ptjacl FMIMACodeGenerator.tcl 
+        //   $PTII/bin/ptjacl FMIMACodeGenerator.tcl
                 //if (nodeCollection.size() == 0) {
                 //        throw new IllegalActionException(adapter.getComponent(), "The GRAPH is empty");
                 //}
-                
-                
+
+
 
                 // If diagram contains cycles, throw an exception
                 if (graph.isAcyclic() == false) {
@@ -232,7 +232,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 List<Node> sortedGraph = graph.topologicalSort(nodeCollection);
                 // Add the sorted connections
                 int connectionIndex = 0;
-                                
+
                 for (Node sourceNode : sortedGraph) {
                         if (node2Port.get(sourceNode).isOutput()) {
                                 Collection<Node> successors = graph.successors(sourceNode);
@@ -295,8 +295,8 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                 }
                         }
                 }
-                        
-                        
+
+
 
 
                 // Generate the end of the main() method.

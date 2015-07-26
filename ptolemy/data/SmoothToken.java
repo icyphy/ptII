@@ -76,7 +76,7 @@ import ptolemy.kernel.util.IllegalActionException;
    Again, if the times of the two tokens are not equal, then the one with the lesser
    time will be extrapolated to the larger time before being multiplied, and the time
    of the result will be the larger time.
-   If a SmoothToken is multiplied by a DoubleToken, then the derivatives 
+   If a SmoothToken is multiplied by a DoubleToken, then the derivatives
    of the DoubleToken are assumed to be zero.
    <p>
    Division works similarly:</p>
@@ -122,7 +122,7 @@ public class SmoothToken extends DoubleToken {
     public SmoothToken(double value) {
         this(value, Time.ZERO, null);
     }
-        
+
     /** Construct a SmoothToken with the specified value at time zero
      *  and the specified derivatives.
      *  This constructor does not copy the derivatives argument, so it is up
@@ -177,7 +177,7 @@ public class SmoothToken extends DoubleToken {
                 System.arraycopy(x, 1, _derivatives, 0, nDer);
             }
     }
-    
+
     /** Construct a SmoothToken from the specified string, which specifies only
      *  a value. The resulting token will have no derivatives and will represent
      *  a sample at time zero.
@@ -220,7 +220,7 @@ public class SmoothToken extends DoubleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
     /** Given an array of Tokens and a time, align them by
      *  extrapolating all tokens that are instances of
      *  SmoothToken to that time, and returning
@@ -272,7 +272,7 @@ public class SmoothToken extends DoubleToken {
         Token[] result = align(args, latestTime);
         return result;
     }
-    
+
     /** Given two SmoothTokens, align them by finding the maximum time
      *  of the tokens, extrapolating the other token to that time, and returning
      *  an array of tokens with the extrapolated values and derivatives.
@@ -325,7 +325,7 @@ public class SmoothToken extends DoubleToken {
         }
         return _derivatives;
     }
-    
+
     /** Return true if the argument's class is SmoothToken and it has the
      *  same value and derivatives as this token.
      *  Note that this ignores the time of the tokens.
@@ -360,7 +360,7 @@ public class SmoothToken extends DoubleToken {
             return false;
             }
     }
-    
+
     /** Return a SmoothToken at the specified time whose value and derivatives
      *  are the result of extrapolating this token to the specified time.
      *  @param time The time to which to extrapolate this token.
@@ -388,7 +388,7 @@ public class SmoothToken extends DoubleToken {
                 coef[0] = _value;
                 System.arraycopy(_derivatives, 0, coef, 1, _derivatives.length);
 
-                // Create vector with factorial coefficients times dt 
+                // Create vector with factorial coefficients times dt
                 // raised to the corresponding power.
                 double[] fact = new double[coef.length];
                 fact[0] = 1;
@@ -421,17 +421,17 @@ public class SmoothToken extends DoubleToken {
     public static int getOrderLimit(){
         return _maxOrder;
     }
-    
+
     /** Return the time for which the values of this smooth token are valid.
      *  @return The time of this token.
      */
     public Time getTime() {
         return _time;
     }
-    
+
     /** Return the hash code for the SmoothToken object. If two SmoothToken
      *  objects have the same double value and their derivatives
-     *  have the same hashCode, then the two SmoothTokens will have 
+     *  have the same hashCode, then the two SmoothTokens will have
      *  the same hashcode.
      *  @return The hash code for this SmoothToken object.
      */
@@ -444,7 +444,7 @@ public class SmoothToken extends DoubleToken {
         }
         return hashCode;
     }
-    
+
     /** Return true if the token is nil, (aka null or missing).
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token is the {@link #NIL} token.
@@ -510,7 +510,7 @@ public class SmoothToken extends DoubleToken {
         }
         _maxOrder = maxOrder;
     }
-    
+
     /** Return a SmoothToken with the specified value at time zero and no derivatives.
      *  This function gets registered by PtParser, after which it becomes
      *  available in the expression language.
@@ -566,7 +566,7 @@ public class SmoothToken extends DoubleToken {
             derivatives.append(Double.toString(_derivatives[i]));
         }
         derivatives.append("}");
-            return "smoothToken(" 
+            return "smoothToken("
                     + super.toString()
                     + ", "
                     + derivatives.toString()
@@ -595,7 +595,7 @@ public class SmoothToken extends DoubleToken {
      *  then its value is simply added to the value of this token, and
      *  a new SmoothToken is returned with the sum value, time, and the derivatives
      *  of this token. If the argument is a SmoothToken, then this token and
-     *  the argument are first aligned using 
+     *  the argument are first aligned using
      *  {@link ptolemy.data.SmoothToken#align(SmoothToken, SmoothToken)},
      *  and then added.  The returned SmoothToken
      *  will have the maximum of the number of derivatives of this token and
@@ -611,10 +611,10 @@ public class SmoothToken extends DoubleToken {
         if (rightArgument instanceof SmoothToken) {
             // First align the tokens.
             SmoothToken[] aligned = align(this, (SmoothToken)rightArgument);
-            
+
             // Compute the sum of the values.
             final double sum = aligned[0].doubleValue() + aligned[1].doubleValue();
-            
+
             // Compute the derivatives of the result.
             double[] derivatives = aligned[1].derivativeValues();
             if (derivatives == null) {
@@ -736,7 +736,7 @@ public class SmoothToken extends DoubleToken {
         // All derivatives are close.
         return BooleanToken.TRUE;
     }
-    
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is SmoothToken.
      *  @param rightArgument The token to compare to this token.
@@ -770,12 +770,12 @@ public class SmoothToken extends DoubleToken {
         if (rightArgument instanceof SmoothToken) {
             // First align the tokens.
             SmoothToken[] aligned = align(this, (SmoothToken)rightArgument);
-            
+
             double x = aligned[0].doubleValue();
             double y = aligned[1].doubleValue();
             double product = x*y;
             double[] derivatives = aligned[1].derivativeValues();
-            
+
             // Check whether one or both tokens lack derivatives.
             if (aligned[0]._derivatives == null || aligned[0]._derivatives.length == 0) {
                 // x lacks derivatives.
@@ -801,7 +801,7 @@ public class SmoothToken extends DoubleToken {
                 // Both have derivatives.
                 // Multiply the tokens as if they were Taylor polynomials.
 
-                // Build arrays whose elements are the coefficients of the polynomials.        
+                // Build arrays whose elements are the coefficients of the polynomials.
                 double[] p1 = new double[aligned[0]._derivatives.length+1];
                 double[] p2 = new double[derivatives.length + 1];
                 p1[0] = x;
@@ -833,7 +833,7 @@ public class SmoothToken extends DoubleToken {
             return new SmoothToken(product, _time, result);
         }
     }
-    
+
     /** Multiply two polynomials.
      *  @param p1 First polynomial.
      *  @param p2 Second polynomial
@@ -841,7 +841,7 @@ public class SmoothToken extends DoubleToken {
      */
     protected static double[] _multiplyPolynomials(
             final double[] p1, final double[] p2){
-    
+
         double[] res = new double[(p1.length-1) + (p2.length-1) + 1];
         // Set all coefficients to zero.
         for(int i = 0; i < res.length; i++){
@@ -862,7 +862,7 @@ public class SmoothToken extends DoubleToken {
         return res;
     }
 
-    
+
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
      *  the type of the argument is a DoubleToken.
@@ -880,7 +880,7 @@ public class SmoothToken extends DoubleToken {
 
             double[] xderivatives = aligned[0].derivativeValues();
             double[] yderivatives = aligned[1].derivativeValues();
-            
+
             if (yderivatives == null) {
                 // Just use the xderivatives.
                 // This should be safe because, by policy, their value is immutable.
@@ -919,15 +919,15 @@ public class SmoothToken extends DoubleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    /* Maximum order of the token. 
-     * 
+    /* Maximum order of the token.
+     *
      * A token with _maxOrder=3 will have a value and three derivatives.
      */
     static int _maxOrder = 3;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The derivatives. */
     private double[] _derivatives;
 

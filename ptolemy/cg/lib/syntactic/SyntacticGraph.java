@@ -1176,7 +1176,7 @@ public class SyntacticGraph extends CompositeEntity {
      *  @param ochan The output channel for port oport.
      *  @param iport The input port whose channel is to be determined.
      *  @return input channel on iport or null.
-     *  @exception IllegalActionException If thrown while getting 
+     *  @exception IllegalActionException If thrown while getting
      *  the receivers.
      */
     protected Integer _getInputChannel(Port oport, int ochan, Port iport)

@@ -18,7 +18,7 @@
 #define  hr(vr) comp->hr[vr]
 #define  hi(vr) comp->hi[vr]
 #define  hb(vr) comp->hb[vr]
-#define  hs(vr) comp->hs[vr] 
+#define  hs(vr) comp->hs[vr]
 #define pos(z) comp->isPositive[z]
 #define copy(vr, value) setString(comp, vr, value)
 

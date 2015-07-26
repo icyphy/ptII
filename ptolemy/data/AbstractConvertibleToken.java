@@ -103,7 +103,7 @@ public abstract class AbstractConvertibleToken extends Token {
                         "add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            return rightArgument.addReverse(this);            
+            return rightArgument.addReverse(this);
         } else {
             // The types are incomparable.
             // However, if the rightArgument is a composite type, then

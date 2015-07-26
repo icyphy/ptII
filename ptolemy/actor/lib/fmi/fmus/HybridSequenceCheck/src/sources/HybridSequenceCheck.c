@@ -114,7 +114,7 @@ void parseSequence(ModelInstance *comp) {
         int idx_v_e = i;
 
         // Parse the time instant
-        while (sequence[i] != ':') {            
+        while (sequence[i] != ':') {
             i++;
         }
         idx_t_e = i;

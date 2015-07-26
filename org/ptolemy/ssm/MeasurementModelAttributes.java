@@ -24,7 +24,7 @@
  COPYRIGHTENDKEY
 
  */
-package org.ptolemy.ssm; 
+package org.ptolemy.ssm;
 
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
      */
     public MeasurementModelAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
-        super(target, decorator); 
+        super(target, decorator);
         _addedContainerParameters = new ArrayList<>();
     }
 
@@ -78,7 +78,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
      */
     public MeasurementModelAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(target, name); 
+        super(target, name);
         _addedContainerParameters = new ArrayList<>();
     }
 
@@ -103,9 +103,9 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
                                 containerParam = new Parameter(this.getContainer(), name);
                                 _addedContainerParameters.add(name);
                                 containerParam.setExpression(thisParam.getExpression());
-                                containerParam.setVisibility(Settable.NONE); 
+                                containerParam.setVisibility(Settable.NONE);
                                 thisParam.setVisibility(Settable.NONE);
-                            } 
+                            }
                         }
                     }
                 }
@@ -121,11 +121,11 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
-        MeasurementModelAttributes result = (MeasurementModelAttributes) super.clone(workspace); 
+        MeasurementModelAttributes result = (MeasurementModelAttributes) super.clone(workspace);
         result._addedContainerParameters = null;
         return result;
     }
- 
+
     @Override
     public void decorateContainer() {
         super.decorateContainer();
@@ -133,10 +133,10 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
 
     }
 
- 
+
     @Override
-    public void removeDecorationsFromContainer() 
-            throws IllegalActionException, NameDuplicationException { 
+    public void removeDecorationsFromContainer()
+            throws IllegalActionException, NameDuplicationException {
         super.removeDecorationsFromContainer();
         removeStateSpaceVariablesFromContainer();
     }
@@ -151,27 +151,27 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
             try {
                 if (stateVariableNames.getToken() != null) {
 
-                    Token[] tokens = ((ArrayToken)stateVariableNames.getToken()).arrayValue(); 
+                    Token[] tokens = ((ArrayToken)stateVariableNames.getToken()).arrayValue();
                     synchronized (this.getContainer().attributeList()) {
                         for (Token t : tokens) {
                             String name = ((StringToken)t).stringValue();
                             if (_addedContainerParameters.contains(name)) {
-                                Parameter containerParam = (Parameter) this.getContainer().getAttribute(name); 
+                                Parameter containerParam = (Parameter) this.getContainer().getAttribute(name);
 
                                 if (containerParam != null) {
                                     this.getContainer().removeAttribute(containerParam);
                                     _addedContainerParameters.remove(name);
-                                } 
+                                }
                             }
-                        } 
+                        }
                     }
                 }
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
-            } 
+            }
         }
-    } 
+    }
     /** Cached list of parameters added to the container by this decorator*/
-    private List<String> _addedContainerParameters; 
+    private List<String> _addedContainerParameters;
 }
 

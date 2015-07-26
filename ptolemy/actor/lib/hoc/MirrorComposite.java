@@ -139,7 +139,7 @@ public class MirrorComposite extends ReflectComposite {
     private void _init() {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
     }
-    
+
     /** Return true if the specified inside port should be mirrored.
      *  This overrides the base class to return true for all ports
      *  unless the port is an instance of ParameterPort and the

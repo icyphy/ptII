@@ -158,7 +158,7 @@ public class SmoothSignal extends Transformer {
                         previousDerivatives, 0, result, 1, previousDerivatives.length);
             }
         }
-        
+
         // Second pass updates the value and derivatives based on inputs provided.
         for (int i = 0; i < width; i++) {
             if (received[i] != null) {
@@ -174,7 +174,7 @@ public class SmoothSignal extends Transformer {
         _previous = new SmoothToken(result, time);
         output.send(0, _previous);
     }
-    
+
     /** Initialize this actor by clearing any stored inputs.
      *  @throws IllegalActionException If the width of the input does
      *   not match the width of the output.
@@ -183,7 +183,7 @@ public class SmoothSignal extends Transformer {
         super.initialize();
         _previous = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

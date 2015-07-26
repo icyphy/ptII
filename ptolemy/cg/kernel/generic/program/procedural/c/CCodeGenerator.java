@@ -662,8 +662,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             if (defineEmptyToken) {
                 sharedStream.append("extern Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
-                codeC.append("Token emptyToken;" 
-                        + comment("Used by *_delete() and others.") + _eol); 
+                codeC.append("Token emptyToken;"
+                        + comment("Used by *_delete() and others.") + _eol);
             }
             codeH.append(sharedStream.toString());
         }
@@ -2500,7 +2500,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     CCode.append("struct CompositeActor* "
                             + CodeGeneratorAdapter.generateName(containedActor)
                             + ";" + _eol + comment("Struct in CCcodeGenerator Kevin"));
-                
+
                 HCode.append("extern struct CompositeActor* "
                         + CodeGeneratorAdapter.generateName(containedActor)
                         + ";" + _eol);

@@ -40,11 +40,11 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 //// GestureRecognition
 
 /**
- This actor uses eight input ports that receives values from the five finger 
- bend sensors and quaternion data of a dataglove and outputs information to 
- update the color, size and position of LEDs in the mbed LED Cube Demo. 
- 
- <p>The code generator supplies the method contents, thus this 
+ This actor uses eight input ports that receives values from the five finger
+ bend sensors and quaternion data of a dataglove and outputs information to
+ update the color, size and position of LEDs in the mbed LED Cube Demo.
+
+ <p>The code generator supplies the method contents, thus this
  class has no methods.</p>
 
  @author Robert Bui
@@ -65,23 +65,23 @@ public class GestureRecognition extends TypedAtomicActor {
     public GestureRecognition(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         finger1 = new TypedIOPort(this, "finger1", true, false);
         finger1.setTypeEquals(BaseType.INT);
         finger2 = new TypedIOPort(this, "finger2", true, false);
-        finger2.setTypeEquals(BaseType.INT); 
+        finger2.setTypeEquals(BaseType.INT);
         finger3 = new TypedIOPort(this, "finger3", true, false);
-        finger3.setTypeEquals(BaseType.INT); 
+        finger3.setTypeEquals(BaseType.INT);
         finger4 = new TypedIOPort(this, "finger4", true, false);
-        finger4.setTypeEquals(BaseType.INT); 
+        finger4.setTypeEquals(BaseType.INT);
         finger5 = new TypedIOPort(this, "finger5", true, false);
-        finger5.setTypeEquals(BaseType.INT); 
+        finger5.setTypeEquals(BaseType.INT);
         roll = new TypedIOPort(this, "roll", true, false);
-        roll.setTypeEquals(BaseType.INT); 
+        roll.setTypeEquals(BaseType.INT);
         pitch = new TypedIOPort(this, "pitch", true, false);
-        pitch.setTypeEquals(BaseType.INT); 
+        pitch.setTypeEquals(BaseType.INT);
         yaw = new TypedIOPort(this, "yaw", true, false);
-        yaw.setTypeEquals(BaseType.INT); 
+        yaw.setTypeEquals(BaseType.INT);
         deltaSize = new TypedIOPort(this, "deltaSize", false, true);
         deltaSize.setTypeEquals(BaseType.INT);
         deltaX = new TypedIOPort(this, "deltaX", false, true);
@@ -91,7 +91,7 @@ public class GestureRecognition extends TypedAtomicActor {
         deltaZ = new TypedIOPort(this, "deltaZ", false, true);
         deltaZ.setTypeEquals(BaseType.INT);
         hue = new TypedIOPort(this, "hue", false, true);
-        hue.setTypeEquals(BaseType.DOUBLE);  
+        hue.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

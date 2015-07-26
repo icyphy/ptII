@@ -117,11 +117,11 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 _mu0 = new double[nS][1];
                 for (int i = 0; i < nS; i++) {
                     _mu0[i][0] = ((DoubleToken) ((ArrayToken) meanVectorGuess
-                            .getToken()).getElement(i)).doubleValue(); 
-                } 
+                            .getToken()).getElement(i)).doubleValue();
+                }
             } else {
                 _obsDimension = ((ArrayToken)((ArrayToken) meanVectorGuess.getToken()).getElement(0)).length();
-                _mu0 = new double[nS][_obsDimension]; 
+                _mu0 = new double[nS][_obsDimension];
                 for (int i = 0; i < nS; i++) {
                     for (int j = 0; j < _obsDimension; j++) {
                         _mu0[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) meanVectorGuess
@@ -143,16 +143,16 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 _sigma0 = new double[nS][1][1];
                 for (int i = 0; i < nS; i++) {
                     _sigma0[i][0][0] = ((DoubleToken) ((ArrayToken) standardDeviationGuess
-                            .getToken()).getElement(i)).doubleValue(); 
-                } 
+                            .getToken()).getElement(i)).doubleValue();
+                }
             } else {
                 _obsDimension = ((DoubleMatrixToken)((ArrayToken) standardDeviationGuess.getToken()).getElement(0)).getColumnCount();
-                _sigma0 = new double[nS][_obsDimension][_obsDimension]; 
-                for (int i = 0; i < nS; i++) { 
+                _sigma0 = new double[nS][_obsDimension][_obsDimension];
+                for (int i = 0; i < nS; i++) {
                     _sigma0[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviationGuess
-                            .getToken()).getElement(i)).doubleMatrix(); 
+                            .getToken()).getElement(i)).doubleMatrix();
                 }
-            } 
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -209,7 +209,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         Token[] mTokens = new Token[_nStates];
         Token[] sTokens = new Token[_nStates];
         Token[] pTokens = new Token[_nStates];
-         
+
 
         for (int i = 0; i < _nStates; i++) {
             if (_obsDimension > 1) {
@@ -223,7 +223,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 mTokens[i] = new DoubleToken(m_new[i][0]);
                 sTokens[i] = new DoubleToken(Math.sqrt(s_new[i][0][0]));
             }
-            
+
             pTokens[i] = new DoubleToken(prior_new[i]);
         }
         mean.send(0, new ArrayToken(mTokens));
@@ -235,7 +235,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected double emissionProbability(double[] y, int hiddenState) 
+    protected double emissionProbability(double[] y, int hiddenState)
             throws IllegalActionException {
 
         double[][] s = _sigma[hiddenState];
@@ -244,7 +244,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     }
 
     @Override
-    protected boolean _checkForConvergence(int iterations) { 
+    protected boolean _checkForConvergence(int iterations) {
         if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
                 || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
             // if no convergence in 10 iterations, issue warning message.
@@ -256,9 +256,9 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 prior_new = _priors;
                 System.out.println("Failed");
                 throw new InternalErrorException("EM did not converge in " + iterations + " iterations.");
-               
+
             } else if (_randomize) {
-                
+
                 for (int j = 0 ; j < _obsDimension; j++) {
                     // randomize means
                     double minO = _observations[0][j];

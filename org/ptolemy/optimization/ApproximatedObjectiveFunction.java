@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@ import ptolemy.math.DoubleMatrixMath;
  * The class which defines the objective function and constraint functions.
  * This class approximate given objective function as a QP problem.
  * BarrierMethod calls method "calcFuncInternal" during optimization.
- * 
+ *
 @author Shuhei Emoto
 @version $Id$
 @since Ptolemy II 11.0
@@ -42,7 +42,7 @@ import ptolemy.math.DoubleMatrixMath;
  */
 /**
  * The class of approximated objective function.
- * In this class, non-linear multivariate function is approximated 
+ * In this class, non-linear multivariate function is approximated
  * using hessians and gradients.
  * F0(X+dx) = F0(X) + 1/2 * dxT*H0*dx + g0*dx
  * Fi(X+dx) = Fi(X) + gi*dx
@@ -93,7 +93,7 @@ class ApproximatedObjectiveFunction extends ObjectiveFunction{
 
         /////////////////////////////////////////
         ///// result of objective function///////
-        // f(x+dx) = f(x)+(1/2)(dxT*H*dx)+g*dx 
+        // f(x+dx) = f(x)+(1/2)(dxT*H*dx)+g*dx
         double[] Qx = DoubleMatrixMath.multiply(dx, f0Hessian);
         f0Result = _source.f0Result;
         for(int i=0; i<Qx.length; i++) {
@@ -106,7 +106,7 @@ class ApproximatedObjectiveFunction extends ObjectiveFunction{
         // Hessian(x+dx) = Hessian(x) was already copied in the constructor.
 
         ///////////////////////////////////////////////////
-        ////// Inequality constraints: 
+        ////// Inequality constraints:
         for(int i=0; i<fiResults.length; i++) {
             // fi(x+dx) = fi(x)+(1/2)(dxT*H*dx)+g*dx
             Qx = DoubleMatrixMath.multiply(dx,  fiHessians[i]);

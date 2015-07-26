@@ -126,7 +126,7 @@ public class ConversionUtilities {
      * conversion is possible, then this method will simply return an
      * ObjectToken wrapping the object.
      * @param object The object that is a Java type to be converted.
-     * The value of this parameter might be null, in which case an 
+     * The value of this parameter might be null, in which case an
      * ObjectToken with a null v
      * @exception IllegalActionException If the selected conversion fails.
      * @return A new token.
@@ -135,7 +135,7 @@ public class ConversionUtilities {
             throws ptolemy.kernel.util.IllegalActionException {
         ptolemy.data.Token returnValue = null;
 
-        // FIXME: Object could be null. What to do here? 
+        // FIXME: Object could be null. What to do here?
         // Return null? Throw an exception?
         if (object instanceof ptolemy.data.Token) {
             returnValue = (ptolemy.data.Token) object;

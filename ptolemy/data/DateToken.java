@@ -179,7 +179,7 @@ public class DateToken extends AbstractConvertibleToken implements
                             + "format: " + dateString + " is not formatted as "
                             + _SIMPLE_DATE_FORMAT);
                 }
-                
+
                 String timeZoneOffset = value.substring(24, 29);
                 _timeZone = TimeZone.getTimeZone("GMT" + timeZoneOffset);
                 calendar.setTimeZone(_timeZone);
@@ -290,7 +290,7 @@ public class DateToken extends AbstractConvertibleToken implements
         }
         return _calendar;
     }
-    
+
     /** Create a DateToken with a value.
      *  @param value The date specified in a format acceptable
      *  to java.text.DateFormat.
@@ -309,7 +309,7 @@ public class DateToken extends AbstractConvertibleToken implements
         Calendar calendar = getCalendarInstance();
         return calendar.get(Calendar.DAY_OF_MONTH);
     }
-    
+
     /** Get the day of week.
      * @return The day of week.
      */
@@ -445,8 +445,8 @@ public class DateToken extends AbstractConvertibleToken implements
         Calendar calendar = getCalendarInstance();
         return calendar.get(Calendar.YEAR);
     }
-    
-    
+
+
 
     /** Check whether the value of this token is strictly greater than
      *  that of the argument token.  The argument and this token are
@@ -566,7 +566,7 @@ public class DateToken extends AbstractConvertibleToken implements
     public boolean isNil() {
         return _isNil;
     }
-    
+
     /** Return the value of the token as a String.
      *  @return The string value, which is the same as
      *  the value returned by {@link #toString()}, except
@@ -655,8 +655,8 @@ public class DateToken extends AbstractConvertibleToken implements
                 this, rightArgument));
     }
 
-    /** The isCloseTo() method brings both tokens to the same precision. 
-     *  Then compute difference between time value in given lower precision. 
+    /** The isCloseTo() method brings both tokens to the same precision.
+     *  Then compute difference between time value in given lower precision.
      *  If difference is less than epsilon (casted to an int), return true.
      *  @param token The token to compare to this token
      *  @param epsilon the epsilon
@@ -671,18 +671,18 @@ public class DateToken extends AbstractConvertibleToken implements
         // epsilon to a long, then this might make sense?
         // However, double is not losslessly convertible to long?
         // Probably throw an IllegalActionException here.
-        
+
         // Patricia Derler - first version of an implementation of isCloseTo below.
-        // First get both tokens to the same precision. Then compare the difference. 
+        // First get both tokens to the same precision. Then compare the difference.
         // If difference is less than epsilon (casted to an int), return true.
-        
+
         DateToken dateToken = null;
         if (token instanceof StringToken) {
             dateToken = new DateToken(((StringToken)token).stringValue());
         } else if (token instanceof DateToken) {
             dateToken = (DateToken) token;
         } else {
-            throw new IllegalActionException(null, "Cannot compute _isCloseTo for DateToken and " 
+            throw new IllegalActionException(null, "Cannot compute _isCloseTo for DateToken and "
                     + token.getType());
         }
         long dateValue = dateToken._value;

@@ -41,7 +41,7 @@ void IOPort_Init(struct IOPort* port) {
     port->deepGetReceivers = IOPort_DeepGetReceivers;
     port->get = IOPort_Get;
     port->get1 = IOPort_Get1;
-    
+
     //MEMORY_FIX: getBoolean, getInt, getDouble, which free the Token and return payload
     #ifdef TYPE_Boolean
     port->getBoolean = IOPort_GetBoolean;
@@ -52,7 +52,7 @@ void IOPort_Init(struct IOPort* port) {
     #ifdef TYPE_Double
     port->getDouble = IOPort_GetDouble;
     #endif
-    
+
     port->getChannelForReceiver = IOPort_GetChannelForReceiver;
     port->getInside = IOPort_GetInside;
     port->getInsideReceivers = IOPort_GetInsideReceivers;

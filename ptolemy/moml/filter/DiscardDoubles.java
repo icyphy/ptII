@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  A simple sink actor that consumes and discards double input tokens.
 
- <p>The primary use of this actor is that it is used 
+ <p>The primary use of this actor is that it is used
  when the MoML filter replaces plotters.  A Discard actor
  is not sufficient because the type of the input is general.
  If backward type propagation is in use, a Discard actor

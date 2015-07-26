@@ -594,7 +594,7 @@ public class IOPort extends ComponentPort {
         newObject._widthEqualToPort = new HashSet<IOPort>();
         newObject._defaultWidth = -1;
         newObject._communicationAspects = new ArrayList();
-        
+
         newObject._persistentToken = null;
         newObject._persistentTokens = null;
         newObject._persistentTokensInside = null;
@@ -1267,7 +1267,7 @@ public class IOPort extends ComponentPort {
         } finally {
             _workspace.doneReading();
         }
-        
+
         // Find the first non-null token in the receiver group.
         Token token = null;
         for (int j = 0; j < localReceivers[channelIndex].length; j++) {
@@ -4818,7 +4818,7 @@ public class IOPort extends ComponentPort {
             }
         } else if (_persistentToken != null) {
             return _persistentToken;
-        } 
+        }
         return null;
     }
 
@@ -5260,7 +5260,7 @@ public class IOPort extends ComponentPort {
 
     /** Value of defaultValue if it is a scalar. */
     private Token _persistentToken;
-    
+
     /** Value of defaultValue (if it is an array) or the most recently received value
      *  indexed by channel.
      */
