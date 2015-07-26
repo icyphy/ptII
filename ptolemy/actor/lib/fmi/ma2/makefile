@@ -2,7 +2,7 @@
 
 # @Authors: Fabian Stanke, Christopher Brooks
 #
-# @Version: $Id: makefile 70106 2014-09-22 23:18:09Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2014 The Regents of the University of California.
 # All rights reserved.

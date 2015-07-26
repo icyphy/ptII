@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks (makefile only)
 #
-# @Version: $Id: fmus.mk 71624 2015-02-19 00:50:20Z mwetter@lbl.gov $
+# @Version: $Id$
 #
 # @Copyright (c) 2013-2014 The Regents of the University of California.
 # All rights reserved.

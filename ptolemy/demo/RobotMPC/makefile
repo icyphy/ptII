@@ -1,6 +1,6 @@
 # Makefile for Ptolemy models of a Simulated robot intruder detection system
 #
-# @Version: $Id: makefile 70349 2014-10-12 22:45:57Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2015 The Regents of the University of California.

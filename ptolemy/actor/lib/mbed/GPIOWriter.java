@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  any form acceptable to the platform or a file name.</p>
 
  @author Kevin Albers
- @version $Id: GPIOWriter.java 72079 2015-04-23 03:06:41Z cxh $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)

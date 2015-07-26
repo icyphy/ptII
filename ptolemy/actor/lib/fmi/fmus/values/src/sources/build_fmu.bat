@@ -1,6 +1,6 @@
 rem @echo off 
 rem ------------------------------------------------------------
-rem $Id: build_fmu.bat 69602 2014-07-30 14:20:15Z cxh $
+rem $Id$
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
 

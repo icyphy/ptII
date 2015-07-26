@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: CCGAuto.tcl 67778 2013-10-26 15:50:13Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2009-2013 The Regents of the University of California.
 # All rights reserved.

@@ -66,7 +66,7 @@
  *  @output {boolean} connected Output `true` on connected and `false` on disconnected.
  *  @output {JSON} received The data received from the web socket server.
  *  @author Hokeun Kim, Marcus Pan, Edward A. Lee
- *  @version $Id: WebSocketClient.js 189 2015-06-17 19:33:04Z mpanj@seas.upenn.edu $
+ *  @version $Id$
  */
 
 var WebSocket = require('webSocket');

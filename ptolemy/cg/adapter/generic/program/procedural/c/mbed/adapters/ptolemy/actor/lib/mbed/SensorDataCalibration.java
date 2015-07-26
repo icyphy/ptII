@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  An adapter class for ptolemy.actor.lib.mbed.SensorDataCalibration
 
  @author Robert Bui
- @version $Id: SensorDataCalibration.java 71957 2015-04-27 03:03:57Z robert.bui@berkeley.edu $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)

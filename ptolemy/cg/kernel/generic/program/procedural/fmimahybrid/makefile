@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen using C for the Functional Mockup-Interface Master Algorithm Hybrid
 #
-# @Version: $Id: makefile 67778 2013-10-26 15:50:13Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2014 The Regents of the University of California

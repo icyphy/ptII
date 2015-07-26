@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks, based on auto.tcl by Edward A. Lee
 #
-# @Version: $Id: auto.tcl 71213 2015-01-07 03:12:09Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2000-2015 The Regents of the University of California.
 # All rights reserved.

@@ -42,7 +42,7 @@ import ptolemy.actor.lib.jjs.HelperBase;
    Creates only one static Vert.x core that is accessible to its subclasses.
 
    @author Hokeun Kim
-   @version $Id: VertxHelperBase.java 72160 2015-04-29 09:58:26Z hokeunkim $
+   @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)

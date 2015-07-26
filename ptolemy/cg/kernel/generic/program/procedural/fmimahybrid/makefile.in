@@ -2,7 +2,7 @@
 
 # Functional Mockup Unit (FMU) Master Algorithm in C
 
-# $Id: makefile.in 71467 2015-01-28 02:35:29Z marten $
+# $Id$
 
 # The CodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory

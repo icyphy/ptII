@@ -1,5 +1,5 @@
 # Template makefile from ptolemy/cg/adapter/generic/program/procedural/c/mbed/makefile.in
-# $Id: makefile.in 71707 2015-03-10 03:30:01Z naren.vasanad@berkeley.edu $
+# $Id$
 # The CodeGenerator class subsitutes strings like "SimpleFSM" with
 # the value of parameters and writes the results in the directory
 # where the source code is created.

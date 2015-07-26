@@ -47,7 +47,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
  class has no methods.</p>
 
  @author Robert Bui
- @version $Id: HSBtoRGB.java 71956 2015-04-15 03:03:01Z robert.bui@berkeley.edu $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (robert.bui)
  @Pt.AcceptedRating red (robert.bui)

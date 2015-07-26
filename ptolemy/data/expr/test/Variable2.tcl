@@ -2,7 +2,7 @@
 #
 # @Author: Edward A. Lee
 #
-# @Version $Id: Variable.tcl 67778 2013-10-26 15:50:13Z cxh $
+# @Version $Id$
 #
 # @Copyright (c) 1997-2015 The Regents of the University of California.
 # All rights reserved.
