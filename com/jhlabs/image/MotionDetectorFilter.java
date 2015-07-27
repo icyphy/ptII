@@ -58,9 +58,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-import com.github.sarxos.webcam.util.jh.JHBlurFilter;
-import com.github.sarxos.webcam.util.jh.JHGrayFilter;
-
 /** A motion detector image filter.
  *  This filter compares each image to be filtered against the previously
  *  provided image to be filtered. If enough of the pixels differ by enough,
@@ -326,10 +323,10 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
     private Point _cog = null;
 
     /** Blur filter instance. */
-    private final JHBlurFilter _blur = new JHBlurFilter(6, 6, 1);
+    private final BoxBlurFilter _blur = new BoxBlurFilter(6, 6, 1);
 
     /** Gray filter instance. */
-    private final JHGrayFilter _gray = new JHGrayFilter();
+    private final GrayFilter _gray = new GrayFilter();
 
     /** Indicator that motion has been detected by the filter operation. */
     private boolean _motion = false;
