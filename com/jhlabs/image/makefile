@@ -36,7 +36,7 @@ DIRS =
 # Root of Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTWEBCAMCAPTURE_JARS)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
