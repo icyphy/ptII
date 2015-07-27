@@ -17,6 +17,7 @@
 //
 (function ( rootDir, modulePaths, hooks ) {
 
+
   var File = java.io.File,
     FileReader = java.io.FileReader,
     BufferedReader = java.io.BufferedReader;
@@ -73,7 +74,8 @@
     return "" + file.canonicalPath.replaceAll("\\\\","/"); 
   };
 
-  var resolveModuleToFile = function ( moduleName, parentDir ) {
+  var resolveModuleToFile = function ( moduleName, parentDir, modulePaths ) {
+  
     // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
     // var file = new File(moduleName);
     // if ( file.exists() ) {
@@ -133,7 +135,7 @@
   /*
    require() function implementation
    */
-  var _require = function( parentFile, path ) {
+  var _require = function( parentFile, path, modulePaths ) {
     var file,
 	canonizedFilename,
 	moduleInfo,
@@ -143,7 +145,7 @@
 	tail = '})',
 	line = null;
     
-    file = resolveModuleToFile(path, parentFile);
+    file = resolveModuleToFile(path, parentFile, modulePaths);
     if ( !file ) {
       var errMsg = '' + fmt("require() failed to find matching file for module '%s' " + 
                             "in working directory '%s' ", [path, parentFile.canonicalPath]);
@@ -219,7 +221,7 @@
 
   var _requireClosure = function( parent ) {
     return function( path ) {
-      var module = _require( parent, path );
+      var module = _require( parent, path, modulePaths );
       return module.exports;
     };
   };
