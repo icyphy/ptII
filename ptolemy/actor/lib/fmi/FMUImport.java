@@ -1098,23 +1098,26 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
                     } else {
                         result = scalarVariable.getDouble(_fmiComponent);
                     }
-                    token = new DoubleToken(result);
-                                        if (_useQSS) {
-                                                if (_firstFire) {
-                                                        _outputs.get(index).lastDoubleOutput = result;
-                                                }
-                                                // Produce an output if the quantum has been crossed.
-                                                else {
-                                                        double epsilon = Math.abs(_outputQuantum
-                                                                        * output.lastDoubleOutput);
-                                                        if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
-                                                                continue;
-                                                        } else {
-                                                                _outputs.get(index).lastDoubleOutput = result;
-                                                        }
-                                                }
-                                        }
-                } else if (scalarVariable.type instanceof FMIStringType) {
+					token = new DoubleToken(result);
+					if (_useQSS) {
+						double epsilon = 0.0;
+						if (_firstFire) {
+							_outputs.get(index).lastDoubleOutput = result;
+							epsilon = Math.abs(_outputQuantum
+									* output.lastDoubleOutput);
+						}
+						// Produce an output if the quantum has been crossed.
+						else {
+							if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
+								continue;
+							} else {
+								_outputs.get(index).lastDoubleOutput = result;
+								epsilon = Math.abs(_outputQuantum
+										* output.lastDoubleOutput);
+							}
+						}
+					}
+				} else if (scalarVariable.type instanceof FMIStringType) {
                     if (_useRawJNI()) {
                         throw new IllegalActionException(this,
                                 "Using raw JNI is not supported with strings.");
