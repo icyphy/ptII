@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FilterCamera" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MotionDetector" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={505, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 275, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -20,20 +20,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies one of many available image filters to a sequence of images&#10;captured from the camera.&#10;&#10;See also:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 200.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MotionDetector">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FilterCamera">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 245.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="MotionDetector.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="FilterCamera.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -53,6 +45,14 @@
             </property>
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies one of many available image filters to a sequence of images&#10;captured from the camera.&#10;&#10;See also:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 195.0]">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
@@ -69,7 +69,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 120.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -83,7 +83,7 @@
         </property>
         <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 130.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -105,11 +105,11 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 120.0]">
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{Black = 0x880000, White = 0xffdddd, LowerThreshold = 127, UpperThreshold = 127}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{PixelThreshold = 25, AreaThreshold = 0.2}">
         </property>
-        <property name="filter" class="ptolemy.data.expr.StringParameter" value="Threshold">
+        <property name="filter" class="ptolemy.data.expr.StringParameter" value="MotionDetector">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
