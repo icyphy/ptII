@@ -607,6 +607,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
+	org/jhlabs/jhlabs.jar \
 	org/json/json.jar \
 	ptolemy/actor/lib/aspect/aspect.jar \
 	ptolemy/actor/lib/aspect/demo/demo.jar \

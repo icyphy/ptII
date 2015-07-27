@@ -115,6 +115,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
+        _addIfPresent(copyrightsMap, "com.jhlabs.image.AbstractBufferedImageOp",
+                "com/jhlabs/jhlabs-license.htm");
+            
         _addIfPresent(copyrightsMap, "com.microstar.xml.XmlParser",
                 "com/microstar/xml/aelfred-license.htm");
 
@@ -949,7 +952,9 @@ public class GenerateCopyrights {
                     "Similar to BSD.  No use of sponsor name in advertising" },
             { "jetty", " ", " ", "Y", "Y", "Apache License + Eclipse" },
             { "jgoodies", " ", " ", "Y", "Y", "3 Clause BSD" },
+            { "jhlabs", " ", " ", "Y", " ", "Apache License" },
             { "jimblacklerUtils", " ", " ", "Y", "Y", "Public Domain" },
+            { "jjs", " ", " ", "Y", " ", "BSD-like" },
             { "jmf", " ", "Y", " ", " ", "Oracle" },
             { "jna", " ", " ", "Y", "Y",
                     "Apache License + GNU Lesser General Public" },
@@ -967,8 +972,10 @@ public class GenerateCopyrights {
             { "mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Oracle" },
             { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
             { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
+            { "netty", " ", " ", " ", "Y ", "Apache" },
             { "opencv", " ", " ", "Y", " ", "" },
             { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
+            { "org.eclipse.paho.client.mqttv3", " ", " ", " ", "Y", "Eclipse" },
             { "oscP5", " ", " ", " ", "Y ",
                     "GNU Lesser General Public License 3.0" },
             { "protobuf", " ", " ", "Y", "Y", "BSD 3-Clause" },
