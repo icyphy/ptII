@@ -13,6 +13,9 @@ The filters provided by this implementation are:
   * _BloomThreshold_: The bloom threshold. This is an int that defaults to 255, which disables bloom.
   * _Radius_: The radius, in pixels. This is an int that defaults to 10.
   * _Sides_: The number of sides of the aperture. This is an int that defaults to 5.
+* __MotionDetector__: Detect motion and indicate it on the image.
+  * _PixelThreshold_: Intensity threshold whereby a pixel is deemed to different (an int 0 - 255, with default 25).
+  * _AreaThreshold_: The percentage threshold of image that has different pixels for motion to be detected (a double 0-100, with default 0.2).
 * __Solarize__: Solarize an image.
 * __Threshold__: Threshold pixels in an image, based on their brightness. Options:
   * _LowerThreshold_: The threshold below which pixels become _Black_. This is an int that defaults to 127.
@@ -38,7 +41,7 @@ var filters = {};
  *  @return An array of filter names.
  */
 exports.filters = function() {
-    return ['Gray', 'Invert', 'LensBlur', 'Solarize', 'Threshold'];
+    return ['Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
 }
 
 /** Invoke the named filter on the specified image with the specified
