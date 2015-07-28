@@ -81,7 +81,6 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/audio/audio.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/browser/browser.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar" />
@@ -1790,17 +1789,6 @@
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.txt"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.json"/>
       </fileset>
     </jar>
 
