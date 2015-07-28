@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FFTTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -41,10 +41,10 @@ executed in a separate thread.</text>
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, -3, 819, 570}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 22, 838, 634}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -67,6 +67,16 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 70.0">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model sometimes fails in the tests.  On 7/28/15:&#10;&#10;Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 384.&#10;Value was: 16.6263194154644. Should have been: 1.2808501005489&#10;  in .FFTTest.TMCompositeFacade.Test">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 400.0]">
+        </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.15625, 254.328125}">
+    </property>
     <entity name="TMCompositeFacade" class="ptolemy.actor.TypedCompositeActor">
         <property name="executionTime" class="ptolemy.data.expr.Parameter" value="0.25">
         </property>
@@ -77,8 +87,6 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -100,68 +108,26 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="output"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
-                </property>
-            </port>
         </entity>
         <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
             <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 200.0">
             </property>
-            <port name="multiply" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="divide" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
             <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="47.0, 248.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/tm/test/auto/FFTTestData2.txt&quot;)))">
@@ -170,22 +136,26 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 200.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="input" relation="relation4"/>
         <link port="FFT.input" relation="relation"/>
@@ -199,7 +169,7 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         <link port="Test.input" relation="relation2"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="0.0078125">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.0078125">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
@@ -208,13 +178,6 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 190.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="atomic composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 190.0">
@@ -224,8 +187,6 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -254,28 +215,18 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="pi/64.0">
+            </property>
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 132.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-            <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+            <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
                     </property>
@@ -299,55 +250,41 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 141.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-            <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
             </property>
-            <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
             </property>
-            <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
+            <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="0.3">
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="266.0, 204.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="Copy1:relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="input" relation="relation"/>
         <link port="output" relation="relation4"/>
@@ -367,18 +304,16 @@ the point of this test is to smoke test TMCompositeFacade.</text></svg></configu
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 45.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="340.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="TMCompositeFacade.input" relation="relation3"/>
     <link port="Clock.output" relation="relation"/>
