@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2014 The Regents of the University of California.
+# @Copyright (c) 1997-2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = cureos jgoodies microstar
+DIRS = cureos jhlabs jgoodies microstar
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -51,6 +51,7 @@ install: subinstall
 # want make checkjunk to report an error on them.
 MISC_FILES = \
 	cureos \
+	jhlabs \
 	jgoodies \
 	microstar 
 
