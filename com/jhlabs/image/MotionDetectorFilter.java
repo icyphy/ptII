@@ -71,7 +71,7 @@ import java.awt.image.BufferedImage;
  *  <li> <i>AreaThreshold</i>: The percentage threshold of image
  *       that has different pixels for motion to be detected
  *       (a double 0-100, with default 0.2).
- *  
+ *  </ul>
  *  The implementation is taken from the webcam-capture package by
  *  Bartosz Firyn (SarXos), available from:
  *    https://github.com/sarxos/webcam-capture
