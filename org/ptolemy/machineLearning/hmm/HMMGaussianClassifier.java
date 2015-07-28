@@ -83,10 +83,10 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         StringAttribute cardinality = new StringAttribute(mean.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
-
-        standardDeviation = new PortParameter(this, "standardDeviation");
-        standardDeviation.setExpression("{10E-3,50E-3}");
-        cardinality = new StringAttribute(standardDeviation.getPort(),
+ 
+        covariance = new PortParameter(this, "covariance");
+        covariance.setExpression("{10E-3,50E-3}"); 
+        cardinality = new StringAttribute(covariance.getPort(), 
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 
@@ -104,7 +104,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
     /**
      * Standard deviation parameter array for the Gaussian distribution.
      */
-    public PortParameter standardDeviation;
+    public PortParameter covariance;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -126,7 +126,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         super.fire();
 
         mean.update();
-        standardDeviation.update();
+        covariance.update();
         transitionMatrix.update();
         prior.update();
 
@@ -149,7 +149,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
             _mu = new double[_nStates][obsDim];
             _sigma = new double[_nStates][obsDim][obsDim];
             for (int i = 0; i < _nStates; i++) {
-                _sigma[i][0][0] = ((DoubleToken) ((ArrayToken) standardDeviation
+                _sigma[i][0][0] = ((DoubleToken) ((ArrayToken) covariance
                         .getToken()).getElement(i)).doubleValue();
                 _mu[i][0] = ((DoubleToken) ((ArrayToken) mean.getToken())
                         .getElement(i)).doubleValue();
@@ -159,7 +159,7 @@ public class HMMGaussianClassifier extends ObservationClassifier {
             _mu = new double[_nStates][obsDim];
             _sigma = new double[_nStates][obsDim][obsDim];
             for (int i = 0; i < _nStates; i++) {
-                _sigma[i] = ((DoubleMatrixToken) ((ArrayToken) standardDeviation
+                _sigma[i] = ((DoubleMatrixToken) ((ArrayToken) covariance
                         .getToken()).getElement(i)).doubleMatrix();
                 for (int j = 0; j < obsDim; j++) {
                     _mu[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) mean.getToken())
