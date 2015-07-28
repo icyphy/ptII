@@ -759,7 +759,6 @@ PTJAI_PACKAGES
 PTJAI_DIR
 PTJACL_JAR
 PTJACL_DIR
-PTIMUSENSOR_DIR
 PTITEXTPDF_PACKAGES
 PTITEXTPDF_JAR
 PTITEXTPDF_DIR
@@ -9908,9 +9907,6 @@ PTLEGO_DIR=
 #
 PTCOMM_DIR=
 
-# PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
-PTIMUSENSOR_DIR=
-
 if test ! -d "$RXTX_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RXTX_USER_DIR is not present,
     so we need not find rxtx." >&5
@@ -10003,13 +9999,11 @@ if test "$RXTX_PRESENT" = "yes"; then
     # Subdirectories that contains Java Communications API specific code
     PTLEGO_DIR=lego
     PTCOMM_DIR=comm
-    PTIMUSENSOR_DIR=IMUSensor
     # PTRXTX_PACKAGES is used in ptII/doc/makefile
-    PTRXTX_PACKAGES="ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor"
+    PTRXTX_PACKAGES="ptolemy.actor.lib.io.comm"
 else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
     updateExcludes "ptolemy/actor/lib/io/comm/"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/IMUSensor/"
 fi
 
 #--------------------------------------------------------------------
@@ -14238,9 +14232,6 @@ fi
 
 
 # PTITEXTPDF_PACKAGES is used in ptII/doc/makefile if iTextjar is found
-
-
-# PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
 
 
 # Set to ptjacl and used in
