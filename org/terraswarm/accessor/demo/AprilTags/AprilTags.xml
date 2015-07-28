@@ -1,0 +1,146 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AprilTags" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={505, 22, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects AprilTags in a video feed from the camera.&#10;It modifies the camera image to outline the tag, indicate its center,&#10;and indicate its ID.&#10;&#10;To run this, you have separately install a modified version of the&#10;AprilTags code by Edwin Olson. This has to be a separate install, because&#10;(sadly) the code is GPL'd.  See:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 200.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="http://ptolemy.eecs.berkeley.edu/~eal/aprilTags/">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 330.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.eecs.berkeley.edu/~eal/aprilTags/index.html#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 310}">
+            </property>
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 130.0]">
+        </property>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 22, 640, 524}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; * &#10; *  @accessor Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *  @output image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode. Otherwise, use open-loop mode.&#10; *  @parameter {string} camera The name of the camera to use. A list of available cameras is presented as options.&#10; *  @parameter {string} viewSize The view size to use for capture, in pixels. A list of available view sizes for the selected camara is presented as options.&#10; */&#10;var cameras = require(&quot;cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function() {&#10;  input('trigger');&#10;  output('image');&#10;  parameter('triggered', {'type':'boolean', 'value':true});&#10;  parameter('camera', {'type':'string', 'value':cameras.defaultCamera(), 'options':cameras.cameras()});&#10;  // NOTE: The following assumes that setup() is reinvoked whenever a parameter value changes,&#10;  // since the camera will change and so will the available options.&#10;  camera = new cameras.Camera(getParameter('camera'));&#10;  parameter('viewSize', {'type':'string', 'value':camera.getViewSize(), 'options':camera.viewSizes()});&#10;}&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function() {&#10;  camera.setViewSize(getParameter('viewSize'));&#10;  camera.open();&#10;  if (getParameter('triggered')) {&#10;    handle = addInputHandler('trigger', function() {&#10;      send('image', camera.snapshot());&#10;    });&#10;  } else {&#10;    camera.on('image', function(image) {&#10;      send('image', image);&#10;    });&#10;  }&#10;}&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function() {&#10;  camera.removeAllListeners('image');&#10;  if (handle != null) {&#10;    removeInputHandler(handle);&#10;  }&#10;  camera.close();&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/cameras/Camera.js">
+        </property>
+        <property name="triggered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="camera" class="ptolemy.data.expr.StringParameter" value="default camera">
+        </property>
+        <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 130.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="image" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var imageFilters = require('aprilTags');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    input('options', {'value':{}});&#10;    parameter('filter', {'type':'string', 'value':'Threshold', 'options':imageFilters.filters()});&#10;}&#10;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var token = get('input');&#10;        var image = token.asAWTImage();&#10;        var result = imageFilters.filter(image, getParameter('filter'), options);&#10;        send('output', result);&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 120.0]">
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{Black = 0x880000, White = 0xffdddd, LowerThreshold = 127, UpperThreshold = 127}">
+        </property>
+        <property name="filter" class="ptolemy.data.expr.StringParameter" value="AprilTag">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+    <link port="Camera.trigger" relation="relation"/>
+    <link port="Camera.image" relation="relation2"/>
+    <link port="JavaScript.input" relation="relation2"/>
+    <link port="JavaScript.output" relation="relation3"/>
+</entity>
