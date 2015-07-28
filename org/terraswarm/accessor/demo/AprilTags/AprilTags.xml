@@ -63,7 +63,7 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 22, 640, 524}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 22, 91, 44}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -97,7 +97,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var imageFilters = require('aprilTags');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    input('options', {'value':{}});&#10;    parameter('filter', {'type':'string', 'value':'Threshold', 'options':imageFilters.filters()});&#10;}&#10;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var token = get('input');&#10;        var image = token.asAWTImage();&#10;        var result = imageFilters.filter(image, getParameter('filter'), options);&#10;        send('output', result);&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var imageFilters = require('aprilTags');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    input('options', {'value':{}});&#10;}&#10;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var token = get('input');&#10;        var image = token.asAWTImage();&#10;        var result = imageFilters.filter(image, options);&#10;        send('output', result);&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -108,8 +108,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 120.0]">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{Black = 0x880000, White = 0xffdddd, LowerThreshold = 127, UpperThreshold = 127}">
-        </property>
-        <property name="filter" class="ptolemy.data.expr.StringParameter" value="AprilTag">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
