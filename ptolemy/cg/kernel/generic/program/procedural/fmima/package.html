@@ -6,26 +6,26 @@
   <body>
     <p>Generate code for the Functional Mockup Unit Master Algorithm (FMIMA).</p>
 
-    <p><b>This is a work in progress and does not generate working code.</b></p>
+    <p>Two master algorithms are available:
+    <ul>
+    <li>FMI 2.0 CoSimulation MA</li>
+    <li>FMI Hybrid MA</li>
+    </ul>
+    </p>
 
-    <p>This code generator will implement an algorithm defined in
+    <p>These code generators use the algorithm defined in
       <br>David Broman, Christopher Brooks, Lev Greenberg, Edward A. Lee, Michael Masin, Stavros Tripakis and Michael Wetter, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-153.html">Determinate Composition of FMUs for Co-Simulation</a>," EECS Department
       University of California, Berkeley
       Technical Report No. UCB/EECS-2013-153
       August 18, 2013.  Which is a version of a <a href="https://dl.acm.org/citation.cfm?id=2555756">EMSOFT '13 paper</a>.</p>
+
+    <p>In the FMI Hybrid MA, time is represented as an integer, where all the FMUs <b>must</b> agree on the same time precision.</p>
 
     <h2>Resources</h2>
     <ul>
       <li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/CodeGeneration">CHESS Code Generation Wiki</a></li>
       <li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU">CHESS FMU Wiki</a></li>
     </ul>
-
-    <h2>Sample Invocation of the FMI MA code generator</h2>
-    <pre>
-      $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fmima \
-      -generatorPackagelist generic.program.procedural.fmima \
-      $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/FMUIncScale20pt.xml
-    </pre>
 
     <h2>Overview</h2>
     <p>The <code>ptolemy.cg</code> has a lot of classes, but the FMIMA work consists of only a few classes.</p>
@@ -48,21 +48,28 @@
       bash-3.2$ 
     </pre>
 
-    <h2>Invoking</h2>
+    <h2>Invocation of the FMI MA code generators</h2>
+    
     <p>The main entry point is <code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code>.  When the code generator is invoked, that class is instantiated.</p>
+
+    <p>Run <code>$PTII/bin/ptcg -help</code> to see other command line arguments.</p> 
 
     <p>Below is the command to run a sample model:</p>
 
+    <h3>Invoking FMI 2.0 CoSimulation MA</h3>
     <pre>
       $PTII/bin/ptcg -language fmima $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/emsoft2013.xml
     </pre>
 
-    <p>Run <code>$PTII/bin/ptcg -help</code> to see other command line arguments.</p> 
+    <h3>Invoking FMI Hybrid MA</h3>
+    <pre>
+      $PTII/bin/ptcg -language fmima -dialect hybrid $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/Test4.xml
+    </pre>
 
     <h2>How it works</h2>
-    <p>In a nut shell, the code iterates through the model, finding actors and attributes.  An adapter class is searched for that will handle each actor and attribute.  If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
+    <p>In a nut shell, the code iterates through the model, finding actors and attributes. An adapter class is searched for that will handle each actor and attribute. If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
 
-    <h3>What to modify</h3>
+    <h4>What to modify</h4>
     <dl>
       <dt><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code></dt>
       <dd>Copies the C files in <code>$PTII/ptolemy/actor/lib/fmi/ma/includes/</code> and <code>shared/</code></dd>
@@ -70,31 +77,6 @@
       <dd>The template file that includes the body of the Master Algorithm.</dd>
     </dl>
 
-
-    <h2>What needs to be done</h2>
-    <ol>
-      <li>Currently, the MA code that is generated works with
-        FMI-2.0RC1pt, it does not work with FMI-2.0pt.
-
-        <br>Solution: Update the files listed in "What to modify" above</li>
-
-      <li><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/makefile.in</code>
-        has the names of the actors hard wired in.
-
-        <br>Solution: Modify the code generator so that main() passes these arguments to the appropriate function.</li>
-
-      <li><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/FMUImport.java</code>
-        has the class names hardwired in.
-
-        <br>Solution: We need to determine actors are upstream and
-        downstream and update the connections array
-        accordingly.  It is probably better to do this at a higher level than FMUImport, perhaps the $PTII/ptolemy/cg/./adapter/generic/program/procedural/adapters/ptolemy/actor/sched/StaticSchedulingDirector.java.
-        <br> One idea is to create a similar model that has a
-        Ramp->Scale-Display and invoke the C code generator on it (See
-        $PTII/ptolemy/cg/README.html) and see how that does it.
-      </li>
-
-    </ol>
     <p>
       @since Ptolemy II 10.0
   </body>
