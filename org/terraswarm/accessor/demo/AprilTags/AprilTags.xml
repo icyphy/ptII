@@ -25,7 +25,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects AprilTags in a video feed from the camera.&#10;It modifies the camera image to outline the tag, indicate its center,&#10;and indicate its ID.&#10;&#10;To run this, you have separately install a modified version of the&#10;AprilTags code by Edwin Olson. This has to be a separate install, because&#10;(sadly) the code is GPL'd.  See:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, 195.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -69,7 +69,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 60.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -96,19 +96,44 @@
             </property>
         </port>
     </entity>
-    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var aprilTags = require('aprilTags');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    output('tags');&#10;    input('options', {'value':{}});&#10;}&#10;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var token = get('input');&#10;        var image = token.asAWTImage();&#10;        var result =aprilTags.filter(image, options);&#10;        send('output', result);&#10;        var tags = aprilTags.tags();&#10;        if (tags) {&#10;            send('tags', tags);&#10;        }&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={603, 469, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="AprilTags" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var aprilTags = require('aprilTags');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    output('tags');&#10;    input('options', {'value':{}});&#10;}&#10;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var token = get('input');&#10;        var image = token.asAWTImage();&#10;        var result =aprilTags.filter(image, options);&#10;        send('output', result);&#10;        var tags = aprilTags.tags();&#10;        if (tags) {&#10;            send('tags', tags);&#10;        }&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;}&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/image/AprilTags.js">
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 140.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 120.0]">
-        </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{TagFamily = &quot;Tag36h11&quot;}">
-        </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -116,46 +141,21 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
-            </property>
-        </port>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={362, 571, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{455, 170}">
-        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="ImageDisplay.input" relation="relation3"/>
+    <link port="ImageDisplay.input" relation="relation2"/>
     <link port="Camera.trigger" relation="relation"/>
-    <link port="Camera.image" relation="relation2"/>
-    <link port="JavaScript.input" relation="relation2"/>
-    <link port="JavaScript.output" relation="relation3"/>
-    <link port="JavaScript.tags" relation="relation4"/>
-    <link port="Display.input" relation="relation4"/>
+    <link port="Camera.image" relation="relation5"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="AprilTags.input" relation="relation5"/>
+    <link port="AprilTags.output" relation="relation2"/>
+    <link port="AprilTags.tags" relation="relation3"/>
 </entity>
