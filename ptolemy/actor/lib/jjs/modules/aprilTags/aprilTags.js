@@ -40,3 +40,16 @@ exports.filter = function(image, options) {
     // The second (null) argument declines to give a destination image.
     return filter.filter(image, null);
 }
+
+/** Return an array of tags detected by the most recent call to filter().
+ *  The returned value is null if there has been no call to filter().
+ *  Otherwise, it is an array of objects with the following fields:
+ *  <ul>
+ *  <li> id: The ID of the detected tag.
+ *  <li> center: An array with two doubles giving the center of the tag in pixel coordinates.
+ *  </ul>
+ *  @return The detected tags.
+ */
+exports.tags = function() {
+    return filter.tags();
+}
