@@ -21,6 +21,9 @@
 
     <p>The only difference among <em>FMI 2.0 CoSimulation MA</em> and <em>FMI Hybrid MA</em> is the representation of time. In the FMI Hybrid MA, time is represented as an integer, where all the FMUs <b>must</b> agree on the same time precision.</p>
 
+    <p>The Hybrid FMUs are located in <code>$PTII/ptolemy/actor/lib/fmi/fmus/Hybrid*</code>
+
+     
     <h2>Resources</h2>
     <ul>
       <li><a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/CodeGeneration">CHESS Code Generation Wiki</a></li>
@@ -65,6 +68,13 @@
     <pre>
       $PTII/bin/ptcg -language fmima -dialect hybrid $PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/test/auto/Test4.xml
     </pre>
+
+    <p>In Test4.c you can find the MA, while in results.cv there is
+    the output of the simulation. The output show all the interface
+    signals of all the FMUs and therefore it is a little bit hard to
+    read at a first glance. However the name of the signals are
+    self-explanatory and you can easily understand the signal
+    traces.</p>
 
     <h2>How it works</h2>
     <p>In a nut shell, the code iterates through the model, finding actors and attributes. An adapter class is searched for that will handle each actor and attribute. If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
