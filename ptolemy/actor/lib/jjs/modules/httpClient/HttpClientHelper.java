@@ -265,7 +265,8 @@ public class HttpClientHelper extends VertxHelperBase {
 
                 String contentType = headers.get("Content-Type");
                 boolean isText = (contentType == null)
-                        | (contentType.startsWith("text"));
+                        || (contentType.startsWith("text"))
+                        || (contentType.startsWith("application/json"));
                 boolean isMultipart = (contentType != null)
                         && (contentType.startsWith("multipart"));
                 if (isMultipart) {
