@@ -1103,8 +1103,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 						double epsilon = 0.0;
 						if (_firstFire) {
 							_outputs.get(index).lastDoubleOutput = result;
-							epsilon = Math.abs(_outputQuantum
-									* output.lastDoubleOutput);
+							epsilon = Math.abs(_outputQuantum * result);
 						}
 						// Produce an output if the quantum has been crossed.
 						else {
@@ -1112,8 +1111,7 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 								continue;
 							} else {
 								_outputs.get(index).lastDoubleOutput = result;
-								epsilon = Math.abs(_outputQuantum
-										* output.lastDoubleOutput);
+								epsilon = Math.abs(_outputQuantum * result);
 							}
 						}
 					}
