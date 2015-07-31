@@ -81,7 +81,7 @@ the least upper bound of the entire collection.</p>
 - a description of the JSON format.</p>
 
 @see TokenToJSON
-@author  Marten Lohstroh, Contributor: Beth Latronico
+@author  Marten Lohstroh and Edward A. Lee, Contributor: Beth Latronico
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (marten)
@@ -114,12 +114,55 @@ public class JSONToToken extends Converter {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        Token token =  _parseJSON(((StringToken) input.get(0)).stringValue());
+        Token token =  parseJSON(((StringToken) input.get(0)).stringValue());
         if (token == null) {
                 throw new IllegalActionException(this,
                         "Unable to parse JSON data: " + input);
         }
         output.send(0, token);
+    }
+
+    /**
+     * Parse the input string and return a token representation of the data.
+     * A JSON object is converted to a RecordToken, a JSON array to an ArrayToken,
+     * a string to a StringToken, "true" and "false" to BooleanToken, and an empty
+     * string, "nil", or "null" to a nil token.
+     * @param input An input string that contains JSON-formatted data
+     * @return A Token that represents the JSON-formatted input string
+     * @exception IllegalActionException If the given input string cannot be parsed.
+     */
+    public static Token parseJSON(String input) throws IllegalActionException {
+        try {
+            input = input.trim();
+            if (input.length() == 0 || input.equals("nil") || input.equals("null")) {
+                return Token.NIL;
+            } else if (input.startsWith("{") && input.endsWith("}")) {
+                return _scanJSONObject(new JSONObject(input));
+            } else if (input.startsWith("[") && input.endsWith("]")) {
+                return _scanJSONArray(new JSONArray(input));
+            } else if (input.startsWith("\"") && input.endsWith("\"")) {
+                return new StringToken(input.substring(1, input.length() - 1));
+            } else if (input.equals("true")) {
+                return BooleanToken.TRUE;
+            } else if (input.equals("false")) {
+                return BooleanToken.FALSE;
+            } else {
+                // Last remaining possibility is a number.
+                try {
+                    int result = Integer.parseInt(input);
+                    return new IntToken(result);
+                } catch (NumberFormatException ex) {
+                    try {
+                        double result = Double.parseDouble(input);
+                        return new DoubleToken(result);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalActionException("Invalid JSON: " + input); 
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            throw new IllegalActionException("Invalid JSON: " + input + "\n" + e.getMessage());
+        }
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -143,29 +186,6 @@ public class JSONToToken extends Converter {
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
-    }
-
-    /**
-     * Parse the input string by instantiating a new JSONObject, then translate
-     * the JSONObject to a Token and return it.
-     * @param input An input string that contains JSON-formatted data
-     * @return A Token that represents the JSON-formatted input string
-     * @exception IllegalActionException If the given input string cannot be parsed.
-     */
-    public static Token _parseJSON(String input) throws IllegalActionException {
-        try {
-            input = input.trim();
-            if (input.length() == 0 || input.equals("nil")) {
-                return Token.NIL;
-            }
-            if (input.charAt(0) == '{') {
-                return _scanJSONObject(new JSONObject(input));
-            } else {
-                return _scanJSONArray(new JSONArray(input));
-            }
-        } catch (JSONException e) {
-            return null;
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
