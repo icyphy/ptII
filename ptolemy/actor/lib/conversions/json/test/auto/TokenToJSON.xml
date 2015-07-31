@@ -4,13 +4,13 @@
 <entity name="TokenToJSON" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 849, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[615, 764]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8080590406924">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7277251426050829">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{164.3888513744331, 114.63226545405348}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-170.1648318343834, 159.94726562499994}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -78,12 +78,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="String">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-560.0, 595.0]">
-        </property>
-    </property>
-    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Null">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-560.0, 695.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
@@ -271,21 +265,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-465.0, 655.0}">
         </property>
     </entity>
-    <entity name="Const11" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="null">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-530.0, 750.0}">
-        </property>
-    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[0,1,2,3,4,5,6,7,8,9]&quot;}">
         </property>
@@ -337,7 +316,7 @@
         </property>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[true]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;true&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -347,7 +326,7 @@
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[16]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;16&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -357,7 +336,7 @@
         </property>
     </entity>
     <entity name="Test8" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[10000000000000000]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;10000000000000000&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -367,7 +346,7 @@
         </property>
     </entity>
     <entity name="Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[3.14159265]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;3.14159265&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -377,27 +356,13 @@
         </property>
     </entity>
     <entity name="Test10" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[\&quot;PtolemyPtolemyPtolemy\&quot;]&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;\&quot;PtolemyPtolemyPtolemy\&quot;&quot;}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 655.0]">
-        </property>
-    </entity>
-    <entity name="Test11" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;[null]&quot;}">
-        </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 750.0]">
-        </property>
-    </entity>
-    <entity name="TokenToJSON11" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 750.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -433,8 +398,6 @@
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -454,8 +417,6 @@
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TokenToJSON.input" relation="relation2"/>
     <link port="TokenToJSON.output" relation="relation"/>
@@ -486,7 +447,6 @@
     <link port="TokenToJSON10.input" relation="relation15"/>
     <link port="TokenToJSON10.output" relation="relation28"/>
     <link port="Const10.output" relation="relation15"/>
-    <link port="Const11.output" relation="relation17"/>
     <link port="Test.input" relation="relation"/>
     <link port="Test2.input" relation="relation4"/>
     <link port="Test3.input" relation="relation9"/>
@@ -497,8 +457,5 @@
     <link port="Test8.input" relation="relation22"/>
     <link port="Test9.input" relation="relation25"/>
     <link port="Test10.input" relation="relation28"/>
-    <link port="Test11.input" relation="relation31"/>
-    <link port="TokenToJSON11.input" relation="relation17"/>
-    <link port="TokenToJSON11.output" relation="relation31"/>
     <link port="Const.output" relation="relation2"/>
 </entity>

@@ -30,19 +30,12 @@ package ptolemy.actor.lib.conversions.json;
 
 import java.util.Set;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DateToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.ObjectToken;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
@@ -54,14 +47,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 An actor that converts a Token into a StringToken containing JSON-formatted
 data. Nested structures in ArrayToken or RecordToken translate into
-correspondingly nested JSON output. If the input Token is not a structured
-type, the value of the Token is wrapped into an array of size one.
+correspondingly nested JSON output.
 
 <p><a href="http://www.json.org/">http://www.json.org/</a>
 - a description of the JSON format.</p>
 
 @see JSONToToken
-@author  Marten Lohstroh
+@author  Marten Lohstroh and Edward A. Lee
 @version $Id$
 @since Ptolemy II 10.0
 @Pt.ProposedRating Yellow (marten)
@@ -86,6 +78,46 @@ public class TokenToJSON extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Construct a string that represents the argument in JSON format.
+     *  If the argument is a RecordToken, then a JSON object is returned
+     *  (a string that starts with '{' and ends with '}').
+     *  If the argument is an ArrayToken, then a JSON array is returned
+     *  (a string that starts with '[' and ends with ']').
+     *  In both cases, the contents of the record and array are constructed
+     *  recursively.
+     *  If the argument is any of the ScalarTokens, then a string representation
+     *  of the number or boolean is returned.
+     *  If the argument is null or a nil token, then the string "null" is returned.
+     *  If the argument is a StringToken, return its value (with quotation marks).
+     *  If the argument is a MatrixToken, then the matrix is represented as a
+     *  JSON array with the elements in row-scanned order (raster scan).
+     *
+     *  @param input Data to represent in JSON.
+     *  @return a string that represent the input in JSON format
+     *  @exception IllegalActionException If the Token found on the input cannot
+     *  be expressed in JSON format
+     */
+    public static String constructJSON(Token input) throws IllegalActionException {
+        if (input == null || input.isNil()) {
+            return "null";
+        } else if (input instanceof LongToken) {
+            // The 'L' suffix is not supported in JSON.
+            String result = input.toString();
+            return result.substring(0, result.length() - 1);
+        } else if (input instanceof ScalarToken || input instanceof StringToken) {
+            return input.toString();
+        } else if (input instanceof ArrayToken) {
+            return _scanArrayToken((ArrayToken) input);
+        } else if (input instanceof MatrixToken) {
+            return _scanArrayToken(((MatrixToken)input).toArray());
+        } else if (input instanceof RecordToken) {
+            return _scanRecordToken((RecordToken) input);
+        } else {
+            throw new IllegalActionException(
+                    "Conversion to JSON not supported for: " + input.toString());
+        }
+    }
+
     /** Read a Token from the input and produce a corresponding JSON-formatted
      *  string on the output.
      *  @exception IllegalActionException If the input Token cannot be
@@ -94,7 +126,7 @@ public class TokenToJSON extends Converter {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        output.send(0, constructJSONString(input.get(0)));
+        output.send(0, new StringToken(constructJSON(input.get(0))));
     }
 
     /** Return false if the input port has no token, otherwise return
@@ -107,39 +139,6 @@ public class TokenToJSON extends Converter {
             return false;
         }
         return super.prefire();
-    }
-
-    /** Construct a StringToken that represents the input in JSON format.
-     *  Populate a JSONObject or JSONArray by recursively scanning the input.
-     *  If the input is not a structured type, wrap the the value in a
-     *  JSONArray. Then convert the populated JSON structure into a StringToken
-     *  and return it.
-     *  @param input an arbitrary Token
-     *  @return a StringToken that represent the input in JSON format
-     *  @exception IllegalActionException If the Token found on the input cannot
-     *  be expressed in JSON format
-     */
-    public Token constructJSONString(Token input) throws IllegalActionException {
-        try {
-            if (input.getType().equals(BaseType.NIL)) {
-                return new StringToken("");
-            }
-            if (input instanceof ArrayToken) {
-                return new StringToken(_scanArrayToken((ArrayToken) input)
-                        .toString());
-            } else if (input instanceof RecordToken) {
-                return new StringToken(_scanRecordToken((RecordToken) input)
-                        .toString());
-            } else {
-                // wrap single value into json array
-                Object[] wrapper = new Object[1];
-                wrapper[0] = _mapTokenToValue(input);
-                return new StringToken(new JSONArray(wrapper).toString());
-            }
-        } catch (JSONException e) {
-            throw new IllegalActionException(
-                    "Unable to convert Token into JSON string.");
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -155,87 +154,50 @@ public class TokenToJSON extends Converter {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Map an given Token to the corresponding Java Object and return it.
-     *  @param token An arbitrary Token
-     *  @return An Object representing the value of the given input Token
-     *  @exception JSONException If unable to instantiate a new JSONObject
-     *  or JSONArray
-     *  @exception IllegalActionException If the given Token cannot be
-     *  expressed in JSON.
+    /** Iterate over the elements in an ArrayToken and return a string starting
+     *  with '[' and ending with ']' that has the JSON representation of the elements
+     *  of the array separated by ",".
+     *
+     *  @param token An ArrayToken.
+     *  @return A JSON representation of the array.
+     *  @exception IllegalActionException If an element of the array cannot be expressed in JSON.
      */
-    private Object _mapTokenToValue(Token token) throws IllegalActionException,
-    JSONException {
-
-        // The value can be any of these types:
-        // Boolean, Number, String, or the JSONObject.NULL
-        if (token instanceof RecordToken) {
-            return _scanRecordToken((RecordToken) token);
-        } else if (token instanceof ArrayToken) {
-            return _scanArrayToken((ArrayToken) token);
-        } else {
-            Object o;
-            if (token instanceof BooleanToken) {
-                o = ((BooleanToken) token).booleanValue();
-            } else if (token instanceof IntToken) {
-                o = ((IntToken) token).intValue();
-            } else if (token instanceof LongToken) {
-                o = ((LongToken) token).longValue();
-            } else if (token instanceof DoubleToken) {
-                o = ((DoubleToken) token).doubleValue();
-            } else if (token instanceof StringToken) {
-                o = ((StringToken) token).stringValue();
-            } else if (token instanceof DateToken) {
-                o = ((DateToken) token).stringValue();
-            } else if (token.equals(new ObjectToken(null))) {
-                o = JSONObject.NULL;
-            } else {
-                throw new IllegalActionException("Unable to map token of type "
-                        + token.getClass().toString() + " to value.");
+    private static String _scanArrayToken(ArrayToken token) throws IllegalActionException {
+        StringBuffer result = new StringBuffer("[");
+        boolean first = true;
+        for (Token element : token.arrayValue()) {
+            if (!first) {
+                result.append(",");
             }
-            return o;
+            first = false;
+            result.append(constructJSON(element));
         }
+        result.append("]");
+        return result.toString();
     }
 
-    /** Iterate over the elements inside an ArrayToken and put them inside a
-     *  new JSONArray. Apply recursion for ArrayTokens and RecordTokens.
+    /** Iterate over the fields in an RecordToken and return a string starting
+     *  with '{' and ending with '}' that has the JSON representation of the fields
+     *  of the record separated by ", ".
      *
-     *  @param token An ArrayToken
-     *  @return An JSONArray containing the values corresponding to those found
-     *  in the given ArrayToken
-     *  @exception JSONException If unable to instantiate a new JSONObject
-     *  or JSONArray
-     *  @exception IllegalActionException If a value inside the given
-     *  ArrayToken cannot be expressed in JSON.
+     *  @param token A RecordToken.
+     *  @return A JSON representation of the record.
+     *  @exception IllegalActionException If a field of the record cannot be expressed in JSON.
      */
-    private JSONArray _scanArrayToken(ArrayToken token) throws JSONException,
-    IllegalActionException {
-        int i = 0;
-        Object[] array = new Object[token.length()];
-
-        for (Token t : token.arrayValue()) {
-            array[i] = _mapTokenToValue(t);
-            i++;
-        }
-        return new JSONArray(array);
-    }
-
-    /** Iterate over the elements inside an RecordToken and put them inside a
-     *  new JSONObject. Apply recursion for ArrayTokens and RecordTokens.
-     *
-     *  @param token An RecordToken
-     *  @return An JSONArray containing the values corresponding to those found
-     *  in the given RecordToken
-     *  @exception JSONException If unable to instantiate a new JSONObject
-     *  or JSONArray
-     *  @exception IllegalActionException If a value inside the given
-     *  RecordToken cannot be expressed in JSON.
-     */
-    private JSONObject _scanRecordToken(RecordToken token)
-            throws JSONException, IllegalActionException {
-        JSONObject object = new JSONObject();
+    private static String _scanRecordToken(RecordToken token) throws IllegalActionException {
+        StringBuffer result = new StringBuffer("{");
+        boolean first = true;
         for (String label : token.labelSet()) {
-            object.put(label, _mapTokenToValue(token.get(label)));
+            if (!first) {
+                result.append(",");
+            }
+            first = false;
+            result.append("\"");
+            result.append(label);
+            result.append("\":");
+            result.append(constructJSON(token.get(label)));
         }
-        return object;
+        result.append("}");
+        return result.toString();
     }
 }
