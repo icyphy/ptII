@@ -1996,7 +1996,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             Time time) throws NoRoomException,
             IllegalActionException {
         // Send model to a connected port only.
-        if (prt.getWidth()>0) prt.send(0, new SmoothToken(val, time));
+        if (prt.getWidth() > 0) prt.send(0, new SmoothToken(val, time));
     }
 
     /**
