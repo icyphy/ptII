@@ -590,6 +590,10 @@ ALLPACKAGES = \
 	$(VISUALSENSEPACKAGES) \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
+	com.jhlabs.composite \
+	com.jhlabs.image \
+	com.jhlabs.math \
+	com.jhlabs.vecmath \
 	doc.doclets \
 	org.ptolemy.qss \
 	org.ptolemy.qss.solver \
