@@ -46,7 +46,7 @@
   <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
 
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
-  <property name="javadoc.packagenames" value="diva.*,lbnl.*,org.hlacerti.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+  <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
   <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
   <property name="jsdoc.home" value="vendors/jsdoc" />
