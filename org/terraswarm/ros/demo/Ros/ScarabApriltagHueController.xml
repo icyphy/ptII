@@ -4,13 +4,13 @@
 <entity name="ScarabApriltagHueController" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 124, 972, 658}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 152, 972, 658}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 569]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.000000000000006">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000062">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{148.56219059406004, 81.35017017326734}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{148.56219059406004, 81.35017017326737}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -90,7 +90,7 @@
         </property>
         <property name="trigger" class="ptolemy.actor.parameters.PortParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 135.0]">
         </property>
         <port name="bridgeIPAddress" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -376,30 +376,34 @@
             </property>
         </port>
     </entity>
-    <entity name="ScarabAprilTagHue2" class="org.terraswarm.accessor.JSAccessor">
+    <entity name="Engine" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var moveResultHandle, tagDetectionsMappedHandle, tfHandle, sendToTagHandle;&#10;var cameraCoords;&#10;var currentTag = {id: 0};&#10;&#10;//vars to enumerate options for sendToTag function&#10;var current = 0;&#10;var next = 1;&#10;&#10;var unreachableCount = 0;&#10;&#10;exports.setup = function() {&#10;   input('moveResult', {type: 'JSON', value: {}});&#10;   input('pose', {type: 'JSON', value: {}});&#10;   input('tagDetectionsMapped', {type: 'JSON', value: {}});&#10;   input('tf', {type: 'JSON', value: {}});//frame transforms&#10;   output('waypoint', {type: 'JSON'});//pose msg to publish to /goal topic&#10;   output('cancelWaypoint', {type: 'JSON'});//abort msg to publish to /move/cancel topic&#10;   output('lightID', {type: 'int'});&#10;   output('hue', {type: 'int'});//hue of a Hue bulb&#10;   output('on', {type: 'boolean'});&#10;   output('trigger');&#10;   parameter('stopAtTagDuration', {type: 'number', value: 1000}); //time to spend at each tag before moving in ms&#10;   parameter('robotDistanceFromTag', {type: 'number', value: 0.1}); //distance from robot to tag in m &#10;   parameter('goalTolerance', {type: 'number', value: 0.2}); //the tolerance in distance (m) to conclude a robot has reached a tag&#10;   parameter('mapFrame', {type: 'string', value: 'map_hokuyo'});&#10;   parameter('cameraFrame', {type: 'string', value: 'foscam'});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;   tfHandle = addInputHandler('tf', tfHandler);&#10;   tagDetectionsMappedHandle = addInputHandler('tagDetectionsMapped', &#10;         tagDetectionsMappedHandler);&#10;   moveResultHandle = addInputHandler('moveResult', moveResultHandler);&#10;}&#10;/** search transfroms for camera coords. Removes input handler after set */&#10;function tfHandler() {&#10;   console.log('looking for camera to  map transform');&#10;   //check transforms for camera pose&#10;   var transforms = get('tf').msg.transforms;&#10;   var map_frame = getParameter('mapFrame');&#10;   var camera_frame = getParameter('cameraFrame');&#10;   for (var i = 0; i &lt; transforms.length; i++) {&#10;      if (transforms[i].header.frame_id == map_frame &amp;&amp; &#10;         transforms[i].child_frame_id == camera_frame) {&#10;         cameraCoords = {&quot;x&quot;: transforms[i].transform.translation.x,&#10;                         &quot;y&quot;: transforms[i].transform.translation.y};&#10;         console.log(&quot;set camera coords&quot;);&#10;         //only need to set this once&#10;         removeInputHandler(tfHandle);&#10;      }&#10;   }&#10;&#10;}&#10;/**&#10; Only need a handle once. sendToTag is called next by the MoveStatusHandler&#10;*/&#10;function tagDetectionsMappedHandler() {&#10;   if (!cameraCoords) {&#10;      console.log('received tag detections but not camera coords yet. Will wait.');&#10;      return;&#10;   }&#10;   sendToTag(next, getParameter('robotDistanceFromTag'));&#10;   removeInputHandler(tagDetectionsMappedHandle);&#10;}&#10;  &#10;/** Checks the move status of the hfn goal/status topic. The status is &#10;  defined by the ROS actionlib and the ROS message at scarab_msgs/action/Move.action&#10;  If hfn goal is reached, check that tag is really within tolerance of the robot. &#10;  If not, resend to robot to current tag.&#10;*/&#10;  &#10;function moveResultHandler() {&#10;   var moveResult = get('moveResult').msg;&#10;   console.log(moveResult);&#10;   var moveStatus = get('moveResult').msg.result.final_status;&#10;   var goalID  = moveResult.goal_id;//id of goal&#10;   var finalStatus = moveResult.result.final_status//integer reporting status&#10;   var robotDistanceFromTag = getParameter('robotDistanceFromTag');&#10;   //moveStatus mapping: 0=FINISHED, 1=TIMEOUT, 2=STUCK, 3=NOTREADY, 4=UNREACHABLE&#10;   if (moveStatus == 0) {&#10;   //success&#10;      flashLight(currentTag.id);&#10;      unreachableCount = 0;&#10;      sendToTag(next);&#10;      sendToTagHandle = setTimeout(sendToTag, getParameter('stopAtTagDuration'), next, robotDistanceFromTag);&#10;      console.log('robot reached waypoint successfully. sending to next tag');&#10;   } else if (finalStatus == 4) {&#10;   //waypoint is unreachable. tag localization may not be accurate, resulting in a tag location deep in occupied space.  &#10;   //abort current waypoint and send new one with increased distance between waypoint and tag&#10;      cancelWaypoint();&#10;      unreachableCount++;&#10;      sendToTag(current, unreachableCount * robotDistanceFromTag);&#10;      console.log('waypoint cannot be reached. sending new one with increased distance betweeen waypoint and tag');&#10;    } else {&#10;     //problem encountered. abort previous goals and  send to current tag again. &#10;      cancelWaypoint();&#10;      sendToTag(current, robotDistanceFromTag);&#10;      console.log('robot is either stuck, not ready or too slow. sending waypoint again');&#10;   }&#10;}&#10;&#10;/** Utility functions to flash lights */&#10;function flashLight(id) {&#10;   send('lightID', id);&#10;   send('hue', 62580 * id/3);&#10;   send('on', true);&#10;   send('trigger', true);&#10;   setTimeout(offLight, 2000, id);&#10;}&#10;&#10;function offLight(id) {&#10;   send('lightID', id);&#10;   send('on', false);&#10;   send('trigger', true);&#10;}&#10;&#10;   &#10;/** Assume currentTag is still in the frame and get nextTag by ascending ID.&#10;    If stayOnCurrentTag is defined and true, nextTag is the current tag.&#10;    If can't get currentTag, set nextTag to the first tag. &#10;    Send to nextTag's position. &#10;    tag0 is on the robot. &#10;*/ &#10;function sendToTag(currentOrNext, distanceFromTag) {&#10;   var input = get('tagDetectionsMapped');  &#10;   console.log(input);&#10;   if (!input.msg) {&#10;      console.log('No detections received yet. Will check again');&#10;      setTimeout('sendToTag', 1000);&#10;      return;&#10;   }&#10;   if (!cameraCoords) {&#10;      console.log('No camera coords yet.  Will check again');&#10;      setTimeout('sendToTag', 1000);&#10;      return;&#10;   }&#10;&#10;   var detections = input.msg.detections;&#10;   detections.sort(function(a, b) {return a.id &gt; b.id});&#10;   console.log('got detections');&#10;&#10;   for (var i = 0; i &lt; detections.length; i++) {&#10;      if (detections[i].id == currentTag.id) {&#10;         if (currentOrNext == current) { &#10;            currentTag = detections[i];&#10;         } else {&#10;            currentTag = detections[(i+1) % detections.length];&#10;         }&#10;         break;&#10;      }&#10;      //current tag no longer exists. set to tag with smallest id.&#10;      //don't send to tag0 (on the robot)&#10;      if (i == detections.length - 1) {&#10;         currentTag = detections[1];&#10;      }&#10;   } &#10;   //tag frame: facing tag, x-&gt;right, y-&gt;up, z-&gt;toward you&#10;   //robot frame: facing robot, x-&gt;toward you, y-&gt;right, z-&gt;up&#10;   //send robot to face tag with separation specified by parameter, in the line from the camera to the tag&#10;   //format data accoding to ROS pose datatype, (cartesian position and quaternion orientation)&#10;   tagX = currentTag.pose.pose.position.x;&#10;   tagY = currentTag.pose.pose.position.y;&#10;   cameraX = cameraCoords.x;&#10;   cameraY = cameraCoords.y;&#10;&#10;   //get unit vector of direction from tag to camera&#10;   deltaX = cameraX - tagX;&#10;   deltaY = cameraY - tagY;&#10;   deltaLength = distance(deltaX, 0, deltaY, 0);&#10;&#10;   theta = Math.atan2(deltaY, deltaX) + Math.PI;&#10;&#10;   goal = {&#10;      pose: {&#10;         position: {&#10;            x: tagX + (distanceFromTag * deltaX / deltaLength), &#10;            y: tagY + (distanceFromTag * deltaY / deltaLength),&#10;            z: 0&#10;         },&#10;         orientation: {&#10;            x: 0,&#10;            y: 0,&#10;            z: Math.sin(0.5*theta),  &#10;            w: Math.cos(0.5*theta)&#10;         }&#10;      }&#10;   }&#10;   console.log('waypoint sent to tag ' + currentTag.id);&#10;   send('waypoint', goal); &#10;&#10;}&#10;&#10;function cancelWaypoint() {&#10;   //blank info aborts all goals for all time. This is fine, since we only send one goal at a time.&#10;   msg = {&#10;      stamp: {&#10;         secs: 0,&#10;         nsecs: 0&#10;      },&#10;      id: ''&#10;   }&#10;   send('cancelWaypoint', msg);&#10;}&#10;&#10;exports.wrapup = function() {&#10;   //abort all goals&#10;   cancelWaypoint();&#10;   //remove input handlers&#10;   if (moveResultHandle) {&#10;     removeInputHandler(moveResultHandle);&#10;   } &#10;   if (tagDetectionsMappedHandle) {&#10;     removeInputHandler(tagDetectionsMappedHandle);&#10;   } &#10;   if (tfHandle) {&#10;     removeInputHandler(tfHandle);&#10;   } &#10;   if (sendToTagHandle) {&#10;     removeInputHandler(sendToTagHandle);&#10;   } &#10;}&#10;&#10;/** utlity function to return distance between two points */&#10;function distance(x1, x2, y1, y2) {&#10;   return Math.sqrt(&#10;      Math.pow(x2 - x1, 2) + Math.pow(y2 -y1, 2)&#10;   );&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/ScarabApriltagHue.js">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 130.0]">
         </property>
-        <property name="moveResult" class="ptolemy.actor.parameters.PortParameter" value="{msg = {header = {frame_id = &quot;&quot;, seq = 11, stamp = {nsecs = 570055963, secs = 1438376652}}, result = {final_status = 2}, status = {goal_id = {id = &quot;/goal_to_action-12-1438376649.508&quot;, stamp = {nsecs = 508109092, secs = 1438376649}}, status = 4, text = &quot;&quot;}}, op = &quot;publish&quot;, topic = &quot;/move/result&quot;}">
+        <property name="moveResult" class="ptolemy.actor.parameters.PortParameter" value="{}">
         </property>
         <property name="pose" class="ptolemy.actor.parameters.PortParameter" value="{}">
         </property>
-        <property name="tagDetectionsMapped" class="ptolemy.actor.parameters.PortParameter" value="{msg = {detections = {{id = 3, pose = {header = {frame_id = &quot;map&quot;, seq = 0, stamp = {nsecs = 545180985, secs = 1438376743}}, pose = {orientation = {w = 0.4637971533465, x = 0.4487209057516, y = 0.4943346108364, z = 0.5823873640613}, position = {x = 0.0016089868859, y = 1.349173655305, z = 0.3147991072638}}}, size = 0}, {id = 2, pose = {header = {frame_id = &quot;map&quot;, seq = 0, stamp = {nsecs = 545180985, secs = 1438376743}}, pose = {orientation = {w = 0.0526055698149, x = 0.069408555757, y = 0.6958223587647, z = 0.7129139860147}, position = {x = -0.8706418552579, y = -1.8056226037577, z = 0.6742905498527}}}, size = 0}, {id = 1, pose = {header = {frame_id = &quot;map&quot;, seq = 0, stamp = {nsecs = 545180985, secs = 1438376743}}, pose = {orientation = {w = 0.2243460359841, x = 0.2295477938274, y = 0.6534901615062, z = 0.6855124180507}, position = {x = 0.3577545643082, y = -0.0454586160378, z = 0.2168897241393}}}, size = 0}}}, op = &quot;publish&quot;, topic = &quot;/tag_detections_mapped&quot;}">
+        <property name="tagDetectionsMapped" class="ptolemy.actor.parameters.PortParameter" value="{}">
         </property>
-        <property name="tf" class="ptolemy.actor.parameters.PortParameter" value="{msg = {transforms = {{child_frame_id = &quot;foscam&quot;, header = {frame_id = &quot;map&quot;, seq = 0, stamp = {nsecs = 545180985, secs = 1438376743}}, transform = {rotation = {w = 0.2564405745195, x = -0.4690682834498, y = -0.5812973264011, z = 0.6134383388088}, translation = {x = 3.2419852456869, y = 2.5758044026654, z = 0.9513458799544}}}}}, op = &quot;publish&quot;, topic = &quot;/tf&quot;}">
+        <property name="tf" class="ptolemy.actor.parameters.PortParameter" value="{}">
         </property>
         <property name="stopAtTagDuration" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
-        <property name="robotDistanceFromTag" class="ptolemy.data.expr.Parameter" value="0.2">
+        <property name="robotDistanceFromTag" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <property name="goalTolerance" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
-        <property name="mapFrame" class="ptolemy.data.expr.StringParameter" value="map">
+        <property name="mapFrame" class="ptolemy.data.expr.StringParameter" value="map_hokuyo">
         </property>
         <property name="cameraFrame" class="ptolemy.data.expr.StringParameter" value="foscam">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 115.0]">
         </property>
         <port name="moveResult" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -472,27 +476,13 @@
             </property>
         </port>
     </entity>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[65.0, 65.0]">
-        </vertex>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[150.0, 215.0]">
-        </vertex>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{10.0, 165.0}">
-        </vertex>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -502,26 +492,28 @@
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="RosSubscriber_tf.received" relation="relation"/>
-    <link port="Hue2.lightID" relation="relation5"/>
-    <link port="Hue2.hue" relation="relation7"/>
-    <link port="Hue2.on" relation="relation8"/>
+    <link port="Hue2.lightID" relation="relation7"/>
+    <link port="Hue2.hue" relation="relation8"/>
+    <link port="Hue2.on" relation="relation9"/>
     <link port="Hue2.trigger" relation="relation10"/>
     <link port="RosSubscriber_tag_detections_mapped.received" relation="relation4"/>
-    <link port="RosSubscriber_moveResult.received" relation="relation9"/>
+    <link port="RosSubscriber_moveResult.received" relation="relation2"/>
     <link port="RosSubscriber_pose.received" relation="relation3"/>
-    <link port="RosPublisher_goal.toSend" relation="relation2"/>
+    <link port="RosPublisher_goal.toSend" relation="relation5"/>
     <link port="RosPublisher_cancelWaypoint.toSend" relation="relation6"/>
-    <link port="ScarabAprilTagHue2.moveResult" relation="relation9"/>
-    <link port="ScarabAprilTagHue2.pose" relation="relation3"/>
-    <link port="ScarabAprilTagHue2.tagDetectionsMapped" relation="relation4"/>
-    <link port="ScarabAprilTagHue2.tf" relation="relation"/>
-    <link port="ScarabAprilTagHue2.waypoint" relation="relation2"/>
-    <link port="ScarabAprilTagHue2.cancelWaypoint" relation="relation6"/>
-    <link port="ScarabAprilTagHue2.lightID" relation="relation5"/>
-    <link port="ScarabAprilTagHue2.hue" relation="relation7"/>
-    <link port="ScarabAprilTagHue2.on" relation="relation8"/>
-    <link port="ScarabAprilTagHue2.trigger" relation="relation10"/>
+    <link port="Engine.moveResult" relation="relation2"/>
+    <link port="Engine.pose" relation="relation3"/>
+    <link port="Engine.tagDetectionsMapped" relation="relation4"/>
+    <link port="Engine.tf" relation="relation"/>
+    <link port="Engine.waypoint" relation="relation5"/>
+    <link port="Engine.cancelWaypoint" relation="relation6"/>
+    <link port="Engine.lightID" relation="relation7"/>
+    <link port="Engine.hue" relation="relation8"/>
+    <link port="Engine.on" relation="relation9"/>
+    <link port="Engine.trigger" relation="relation10"/>
 </entity>
