@@ -588,6 +588,7 @@ FULL_11_0_JARS = \
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
+	com/jhlabs/jhlabs.jar \
 	contrib/contrib.jar \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
@@ -607,7 +608,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
-	org/jhlabs/jhlabs.jar \
 	org/json/json.jar \
 	ptolemy/actor/lib/aspect/aspect.jar \
 	ptolemy/actor/lib/aspect/demo/demo.jar \
