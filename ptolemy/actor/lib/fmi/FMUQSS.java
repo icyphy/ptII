@@ -1934,7 +1934,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Broadcast FMU outputs that are not quantized states.
+     * Produce FMU outputs that are not quantized states.
      *
      * <p>FMU can produce outputs that don't correspond to states.</p>
      *
@@ -1986,78 +1986,93 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Send output and state model to the port.
+     * Send model to a connected port.
      *
      * @param val The values to be sent.
      * @param prt The port where values will be sent.
-     * @param index The index of an output or continuous state.
-     * @param isState The flag to indicate if continuous state.
+     * @param time The time when value is sent.
      */
-    private void _sendModelToPort(final double[] val, final TypedIOPort prt,
-            Time time, int index, boolean isState) throws NoRoomException,
+    private void _sendModelToConnectedPort(final double[] val, final TypedIOPort prt,
+            Time time) throws NoRoomException,
             IllegalActionException {
-        double outputQuantum = _internalRelativeQuantum/ _quantumScaleFactor;
-        // Handle outputs which are states.
-        if (isState) {
-            double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
-            final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
-                    .get(_fmiModelDescription.continuousStates.get(index).name);
-            // We should only use the first coefficient of the the quantized state model
-            // since since higher order terms are zero at quantization time.
-            double epsilon = 0;
-            if (_firstRound) {
-                prt.send(0, new SmoothToken(val, time));
-                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
-                epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
-                // Update model variable hasChanged field.
-                _updateModelVariableAttribute(modVarIdx, true);
-            } else {
-                if (Math.abs(val[0] - lastqSta) <= Math.abs(epsilon)) {
-                    // Update model variable hasChanged field.
-                    _updateModelVariableAttribute(modVarIdx, false);
-                    return;
-                } else {
-                    prt.send(0, new SmoothToken(val, time));
-                    // Update model variable hasChanged field.
-                    _updateModelVariableAttribute(modVarIdx, true);
-                    _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
-                    epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
-                }
-            }
-        }
-        // Handle outputs which are not states.
-        else {
-            double epsilon = 0;
-            double lastDblOut = _outputs.get(index).lastDoubleOutput;
-            if (_firstRound) {
-                prt.send(0, new SmoothToken(val, time));
-                _outputs.get(index).lastDoubleOutput = val[0];
-                epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
-            } else {
-                if (Math.abs(val[0] - lastDblOut) <= Math.abs(epsilon)) {
-                    return;
-                } else {
-                    // Check if any of output dependents has changed.
-                    // If not then do not commit any changes. This is particularly
-                    // important for outputs which are function of states.
-                    // For instance, suppose y = x_w and x_w is scheduled to have a
-                    // quantization event at the end of the simulation. However, in the current
-                    // code every time we called trigger quantization events, we also updated the
-                    // continuous states using the continuous state model. this in turn will
-                    // change x_w causing it to produce outputs at a rate which is different
-                    // from the quantized model. therefore, by using following method,
-                    // which checks whether dependents have changed, we can capture that.
-                    if (_cancelSendModelToPort(index))
-                        return;
-                    prt.send(0, new SmoothToken(val, time));
-                    _outputs.get(index).lastDoubleOutput = val[0];
-                    epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
-                }
-            }
-        }
+        // Send model to a connected port only.
+        if (prt.getWidth()>0) prt.send(0, new SmoothToken(val, time));
     }
 
-    /** Populate the specified model with data from the specified token.
+    /**
+	 * Send output and state model to the port.
+	 *
+	 * @param val The values to be sent.
+	 * @param prt The port where values will be sent.
+	 * @param index The index of an output or continuous state.
+	 * @param isState The flag to indicate if continuous state.
+	 */
+	private void _sendModelToPort(final double[] val, final TypedIOPort prt,
+	        Time time, int index, boolean isState) throws NoRoomException,
+	        IllegalActionException {
+	    double outputQuantum = _internalRelativeQuantum/ _quantumScaleFactor;
+	    // Handle outputs which are states.
+	    if (isState) {
+	        double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
+	        final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
+	                .get(_fmiModelDescription.continuousStates.get(index).name);
+	        // We should only use the first coefficient of the the quantized state model
+	        // since since higher order terms are zero at quantization time.
+	        double epsilon = 0;
+	        if (_firstRound) {
+	        	_sendModelToConnectedPort(val, prt, time );
+	            prt.send(0, new SmoothToken(val, time));
+	            _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
+	            epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
+	            // Update model variable hasChanged field.
+	            _updateModelVariableAttribute(modVarIdx, true);
+	        } else {
+	            if (Math.abs(val[0] - lastqSta) <= Math.abs(epsilon)) {
+	                // Update model variable hasChanged field.
+	                _updateModelVariableAttribute(modVarIdx, false);
+	                return;
+	            } else {
+	            	_sendModelToConnectedPort(val, prt, time );
+	                // Update model variable hasChanged field.
+	                _updateModelVariableAttribute(modVarIdx, true);
+	                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
+	                epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
+	            }
+	        }
+	    }
+	    // Handle outputs which are not states.
+	    else {
+	        double epsilon = 0;
+	        double lastDblOut = _outputs.get(index).lastDoubleOutput;
+	        if (_firstRound) {
+	        	_sendModelToConnectedPort(val, prt, time );
+	            _outputs.get(index).lastDoubleOutput = val[0];
+	            epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
+	        } else {
+	            if (Math.abs(val[0] - lastDblOut) <= Math.abs(epsilon)) {
+	                return;
+	            } else {
+	                // Check if any of output dependents has changed.
+	                // If not then do not commit any changes. This is particularly
+	                // important for outputs which are function of states.
+	                // For instance, suppose y = x_w and x_w is scheduled to have a
+	                // quantization event at the end of the simulation. However, in the current
+	                // code every time we called trigger quantization events, we also updated the
+	                // continuous states using the continuous state model. this in turn will
+	                // change x_w causing it to produce outputs at a rate which is different
+	                // from the quantized model. therefore, by using following method,
+	                // which checks whether dependents have changed, we can capture that.
+	                if (_cancelSendModelToPort(index))
+	                    return;
+	                _sendModelToConnectedPort(val, prt, time );
+	                _outputs.get(index).lastDoubleOutput = val[0];
+	                epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
+	            }
+	        }
+	    }
+	}
+
+	/** Populate the specified model with data from the specified token.
      *  If the token is a SmoothToken, then insert in the model any derivatives
      *  that might be given in the token, and set any remaining derivatives
      *  required by the model to zero. Otherwise, set any derivatives
@@ -2152,10 +2167,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
 
             // Send model to the port
-            if (outPort.getWidth() > 0) {
-                _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
+            _sendModelToPort(_qssSolver.getStateModel(qIdx).coeffs,
                         outPort, currentTime, qIdx, true);
-            }
 
 
 
