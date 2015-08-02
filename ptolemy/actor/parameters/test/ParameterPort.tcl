@@ -108,3 +108,12 @@ test Port-13.2 {Clone a ParameterPort in a class} {
     list [$result size]
 } {0}
 
+
+######################################################################
+####
+#
+test ParameterPort-14 {Type constraints should be the same} {
+    # Success is not throwing an exception.
+    set args [java::new {String[]} {0}] 
+    java::call ptolemy.actor.parameters.test.CloneTest main $args
+} {}
