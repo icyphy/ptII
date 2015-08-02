@@ -524,6 +524,10 @@ public class JSAccessor extends JavaScript {
                 }
             }
         }
+        if (accessorURL == null) {
+            throw new IOException("Failed to find accessor file: " + urlSpec.trim() 
+                    + "\nWhich is converted to: " + accessorURL);
+        }
 
         final URL url = accessorURL;
         BufferedReader in = null;
