@@ -951,9 +951,13 @@ ValueListener, ChangeListener, CloseListener {
     public static Color preferredBackgroundColor(Object object) {
         Color background = Color.white;
 
-        if (object instanceof Parameter) {
-            if (((Parameter) object).isStringMode()) {
+        if (object instanceof Variable) {
+            if (((Variable) object).isStringMode()) {
                 background = _STRING_MODE_BACKGROUND_COLOR;
+                if (((Variable)object).getAttribute("_JSON") != null) {
+                    // String needs to be JSON. Use a different color.
+                    background = _JSON_MODE_BACKGROUND_COLOR;
+                }
             }
         }
 
@@ -1208,6 +1212,9 @@ ValueListener, ChangeListener, CloseListener {
 
     // Indicator that this is an open dialog reporting an erroneous entry.
     private boolean _isOpenErrorWindow = false;
+
+    // Background color for JSON string mode edit boxes.
+    private static Color _JSON_MODE_BACKGROUND_COLOR = new Color(0xFFFFE0); // Light yellow
 
     // Background color for string mode edit boxes.
     //private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR = new Color(200, 10,

@@ -186,6 +186,7 @@ extend = function(exportsExtending) {
 /** Get data from an input.
  *  @param name The name of the input (a string).
  *  @param channel The (optional) channel number, where null is equivalent to 0.
+ *  @return The value received on the input, or null if no value is received.
  */
 function get(name, channel) {
     if (typeof name !== 'string') {
@@ -198,11 +199,12 @@ function get(name, channel) {
     // Give channel a default value of 0.
     channel = (typeof channel !== 'undefined') ? channel : 0;
     var result = proxy.get(channel);
-    return convertFromToken(result);
+    return convertFromToken(result, proxy.isJSON());
 }
 
 /** Get data from a parameter.
  *  @param name The name of the parameter (a string).
+ *  @return The value of the parameter, or null if it has no value.
  */
 function getParameter(name) {
     if (typeof name !== 'string') {
@@ -215,7 +217,7 @@ function getParameter(name) {
     // Give channel a default value of 0.
     channel = (typeof channel !== 'undefined') ? channel : 0;
     var result = proxy.get(channel);
-    return convertFromToken(result);
+    return convertFromToken(result, proxy.isJSON());
 }
 
 /** Specify that a derived accessor implements a specified base accessor interface.
@@ -318,7 +320,12 @@ function send(name, value, channel) {
     } else {
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') ? channel : 0;
-        var token = convertToToken(value);
+        var token;
+        if (proxy.isJSON()) {
+            token = new StringToken(JSON.stringify(value));
+        } else {
+            token = convertToToken(value);
+        }
         proxy.send(channel, token);
     }
 }
@@ -396,13 +403,21 @@ var JSONToToken = Java.type('ptolemy.actor.lib.conversions.json.JSONToToken');
  *  Otherwise, just return the value.
  *  @param value The token to convert.
  */
-function convertFromToken(value) {
+function convertFromToken(value, isJSON) {
     // If the value is not a Token, just return it.
     if (!(value instanceof Token)) {
         return value;
     } else if (value instanceof DoubleToken) {
         return value.doubleValue();
     } else if (value instanceof StringToken) {
+        if (isJSON) {
+            var json = value.stringValue();
+            if (json.trim() == '') {
+                // Empty string.
+                return null;
+            }
+            return JSON.parse(value.stringValue());
+        }
         return value.stringValue();
     } else if (value instanceof IntToken) {
         return value.intValue();
@@ -411,7 +426,7 @@ function convertFromToken(value) {
     } else if (value instanceof ArrayToken) {
         var result = [];
         for (var i = 0; i < value.length(); i++) {
-            result[i] = convertFromToken(value.getElement(i));
+            result[i] = convertFromToken(value.getElement(i), false);
         }
         return result;
     } else if (value instanceof RecordToken) {
@@ -419,7 +434,7 @@ function convertFromToken(value) {
         var labelSet = value.labelSet();
         // "for each" is a Nashorn extension for iterating over Java collections.
         for each (label in value.labelSet()) {
-            result[label] = convertFromToken(value.get(label));
+            result[label] = convertFromToken(value.get(label), false);
         }
         return result;
     } else if (value instanceof DateToken) {

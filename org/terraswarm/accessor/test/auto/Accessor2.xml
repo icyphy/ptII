@@ -64,10 +64,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 275.0}">
         </property>
     </entity>
-    <entity name="Accessor2" class="org.terraswarm.accessor.jjs.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	function fire() {&#10;	  var value = get('typelessInput');&#10;	  send('typelessOutput', value);&#10;	  value = get('quasiTypelessInput');&#10;	  send('quasiTypelessOutput', value);&#10;	}&#10;	// &#10;  ">
+    <entity name="Accessor2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var value = get('typelessInput');&#10;	  send('typelessOutput', value);&#10;	  value = get('quasiTypelessInput');&#10;	  send('quasiTypelessOutput', value);&#10;	}&#10;	// &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/Accessor2.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor2.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It checks that inputs and outputs without types are handled correctly.&#10;	&#10;  ">
