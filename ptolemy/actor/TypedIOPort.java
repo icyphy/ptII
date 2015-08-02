@@ -1026,6 +1026,17 @@ public class TypedIOPort extends IOPort implements Typeable {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
 
+        /** Return true if this type term refers to the same port as the argument.
+         *  @param object The object to compare against.
+         */
+        @Override
+        public boolean equals(Object object) {
+            if (object instanceof TypeTerm) {
+                return TypedIOPort.this.equals(((TypeTerm)object).getAssociatedObject());
+            }
+            return false;
+        }
+        
         /** Return this TypedIOPort.
          *  @return A TypedIOPort.
          */
@@ -1056,6 +1067,13 @@ public class TypedIOPort extends IOPort implements Typeable {
             }
 
             return new InequalityTerm[0];
+        }
+        
+        /** Return a hashcode for this object that matches equals().
+         */
+        @Override
+        public int hashCode() {
+            return TypedIOPort.this.hashCode();
         }
 
         /** Reset the variable part of this type to the specified type.
