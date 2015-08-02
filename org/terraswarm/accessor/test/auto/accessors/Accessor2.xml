@@ -25,7 +25,7 @@ It checks that inputs and outputs without types are handled correctly.
   </description>
   <script type="text/javascript">
     // <![CDATA[
-	function fire() {
+	exports.fire = function() {
 	  var value = get('typelessInput');
 	  send('typelessOutput', value);
 	  value = get('quasiTypelessInput');

@@ -70,6 +70,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
@@ -240,15 +241,6 @@ import ptolemy.util.StringUtilities;
    }
    </pre>
    <p>will send a count of firings to the output named "output".</p>
-   <p>
-   Notice that you may name ports or parameters of this actor in such
-   a way as to shadow objects in the global scope. For example,
-   JavaScript provides a JSON object that you can use to operate
-   on JSON strings, for example with the function JSON.parse().
-   However, if you name a port or parameter "JSON", then any reference
-   to JSON in your fire() method, for example, will refer to the port
-   and not to the global object.  To explicitly refer
-   to the global object, use the syntax "this.JSON".</p>
    <p>
    In addition, the symbols "actor" and "accessor" are defined to be the instance of
    this actor. In JavaScript, you can invoke methods on it.
@@ -966,7 +958,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name, Object options)
+    public void input(String name, Map options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running and use a change
         // request if so.
@@ -1015,16 +1007,11 @@ public class JavaScript extends TypedAtomicActor {
         if (options instanceof Map) {
             Object type = ((Map) options).get("type");
             if (type instanceof String) {
-                Type ptType = _typeAccessorToPtolemy((String) type);
+                Type ptType = _typeAccessorToPtolemy((String) type, port);
                 port.setTypeEquals(ptType);
                 _setOptionsForSelect(port, options);
                 if (parameter != null) {
                     parameter.setTypeEquals(ptType);
-                    /** The following doesn't work. Not persistent.
-                    if (ptType == BaseType.STRING) {
-                    parameter.setStringMode(true);
-                    }
-                    */
                 }
             } else if (type != null) {
                 throw new IllegalActionException(this, "Unsupported type: "
@@ -1148,7 +1135,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name, Object options)
+    public void output(String name, Map options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running a use a change
         // request if so.
@@ -1165,10 +1152,10 @@ public class JavaScript extends TypedAtomicActor {
                         + name);
             }
         }
-        if (options instanceof Map) {
+        if (options != null) {
             Object type = ((Map) options).get("type");
             if (type instanceof String) {
-                port.setTypeEquals(_typeAccessorToPtolemy((String) type));
+                port.setTypeEquals(_typeAccessorToPtolemy((String) type, port));
                 _setOptionsForSelect(port, options);
             } else {
                 if (type == null) {
@@ -1230,24 +1217,9 @@ public class JavaScript extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "Must specify a name to create a parameter.");
         }
-        // Find the type, if it is specified.
-        Type ptType = null;
-        if (options != null) {
-            Object type = options.get("type");
-            if (type instanceof String) {
-                ptType = _typeAccessorToPtolemy((String) type);
-            } else if (type != null) {
-                throw new IllegalActionException(this, "Unsupported type: "
-                        + type);
-            }
-        }
         Attribute parameter = getAttribute(name);
         if (parameter == null) {
-            if (ptType == BaseType.STRING) {
-                parameter = new StringParameter(this, name);
-            } else {
-                parameter = new Parameter(this, name);
-            }
+            parameter = new Parameter(this, name);
         } else {
             if (parameter == script) {
                 // FIXME: Should instead do a name transformation?
@@ -1259,6 +1231,15 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         if (options != null) {
+            // Find the type, if it is specified.
+            Type ptType = null;
+            Object type = options.get("type");
+            if (type instanceof String) {
+                ptType = _typeAccessorToPtolemy((String) type, parameter);
+            } else if (type != null) {
+                throw new IllegalActionException(this, "Unsupported type: "
+                        + type);
+            }
             if (ptType != null) {
                 ((Parameter) parameter).setTypeEquals(ptType);
                 _setOptionsForSelect(parameter, options);
@@ -1816,6 +1797,27 @@ public class JavaScript extends TypedAtomicActor {
         director.fireAt(this, currentTime);
     }
 
+    /** If the second argument is true, mark the first argument
+     *  as requiring its value to be JSON. The mark has the form
+     *  of a (non-persistent) singleton parameter named "_JSON".
+     *  
+     *  @param typeable The object to mark.
+     *  @param JSONmode Whether to mark it.
+     *  @throws NameDuplicationException Not thrown.
+     *  @throws IllegalActionException If adding the mark fails.
+     */
+    private void _markJSONmode(NamedObj typeable, boolean JSONmode)
+            throws NameDuplicationException, IllegalActionException {
+        if (JSONmode) {
+            // Put in a hint that the string value needs to be JSON.
+            SingletonAttribute mark = new SingletonAttribute(typeable, "_JSON");
+            mark.setPersistent(false);
+            if (typeable instanceof PortParameter) {
+                _markJSONmode(((PortParameter)typeable).getPort(), true);
+            }
+        }
+    }
+
     /** Invoke the specified function, then schedule another call to this
      *  same method after the specified number of milliseconds, using the specified
      *  id for the timeout function.
@@ -1842,8 +1844,14 @@ public class JavaScript extends TypedAtomicActor {
         }
     }
 
-    private void _setOptionsForSelect(NamedObj typeable, Object options) {
-        if (options instanceof Map) {
+    /** If the options argument inlucdes an "options" field, then use that field
+     *  to add choices to the parameter given by the first argument. The value of
+     *  options field should be an array of strings.
+     *  @param typeable A Parameter or a ParameterPort. Other types are ignored.
+     *  @param options The options argument for an input or parameter specification.
+     */
+    private void _setOptionsForSelect(NamedObj typeable, Map options) {
+        if (options != null) {
             Object possibilities = ((Map) options).get("options");
             if (possibilities instanceof ScriptObjectMirror) {
                 // Possibilities are specified.
@@ -1868,6 +1876,34 @@ public class JavaScript extends TypedAtomicActor {
                     }
                 }
             }
+        }
+    }
+
+    /** Put the argument in string mode. If the argument is a parameter,
+     *  do that directly. Otherwise, if it is ParameterPort, then put its associated
+     *  parameter in string mode. Otherwise, do nothing.
+     *  @param typeable A Parameter or ParameterPort.
+     *  @param JSONmode True to indicate that the string needs to be JSON.
+     *  @throws IllegalActionException If the marker attribute cannot be added.
+     */
+    private void _setStringMode(NamedObj typeable, boolean JSONmode)
+            throws NameDuplicationException, IllegalActionException {
+        Parameter parameter = null;
+        if (typeable instanceof Parameter) {
+            parameter = (Parameter)typeable;
+        } else if (typeable instanceof ParameterPort) {
+            parameter = ((ParameterPort)typeable).getParameter();
+            _markJSONmode(parameter, JSONmode);
+        } else if (JSONmode) {
+            // Argument must be a simple port.
+            _markJSONmode(typeable, JSONmode);
+        }
+        if (parameter != null) {
+            /** The following doesn't work. Not persistent.
+            parameter.setStringMode(true);
+            */
+            new SingletonAttribute(parameter, "_stringMode");
+            _markJSONmode(parameter, JSONmode);
         }
     }
 
@@ -1922,21 +1958,24 @@ public class JavaScript extends TypedAtomicActor {
     }
 
     /** Convert an accessor type definition into a Ptolemy type.
+     *  If the specified type is "JSON" or "string", then the parameter
+     *  is put into string mode.
      *  @param type The type designation.
      *  @param typeable The object to be typed.
-     *  @param options The options object.
-     *         @return A Ptolemy type.
+     *  @return The Ptolemy II type.
      *  @exception IllegalActionException If the type is not supported.
      */
-    private Type _typeAccessorToPtolemy(String type)
-            throws IllegalActionException {
+    private Type _typeAccessorToPtolemy(String type, NamedObj typeable)
+            throws IllegalActionException, NameDuplicationException {
         if (type.equals("number")) {
             return (BaseType.DOUBLE);
         } else if (type.equals("JSON")) {
-            return (BaseType.GENERAL);
+            _setStringMode(typeable, true);
+            return (BaseType.STRING);
         } else if (type.equals("int")) {
             return (BaseType.INT);
         } else if (type.equals("string")) {
+            _setStringMode(typeable, false);
             return (BaseType.STRING);
         } else if (type.equals("boolean")) {
             return (BaseType.BOOLEAN);
@@ -2070,7 +2109,7 @@ public class JavaScript extends TypedAtomicActor {
          *  @exception IllegalActionException If the port is not an input port
          *   or retrieving the value fails.
          */
-        public Object get(int channelIndex) throws IllegalActionException {
+        public Token get(int channelIndex) throws IllegalActionException {
             if (_parameter != null) {
                 Token token = _parameter.getToken();
                 if (token == null || token.isNil()) {
@@ -2114,6 +2153,17 @@ public class JavaScript extends TypedAtomicActor {
                         }
                     }
                 }
+            }
+        }
+        
+        /** Return true if the port or parameter value is required to be JSON.
+         *  @return True for JSON ports and parameters.
+         */
+        public boolean isJSON() {
+            if (_parameter != null) {
+                return (_parameter.getAttribute("_JSON") != null);
+            } else {
+                return (_port.getAttribute("_JSON") != null);
             }
         }
 

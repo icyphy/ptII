@@ -1,6 +1,9 @@
 /**
 Module to filter images. This module provides some set of named image filters,
-the list of which is provided by the filters() function.
+the list of which is provided by the filters() function. Since many of the
+filters have options that require colors, this module also provides a utility
+function rgb(red, green, blue) that takes three arguments in the range of 0 to 255 and
+returns a color number compatible with the color options.
  
 This implementation uses code by Jerry Huxtable, licensed under
 the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
@@ -20,8 +23,16 @@ The filters provided by this implementation are:
 * __Threshold__: Threshold pixels in an image, based on their brightness. Options:
   * _LowerThreshold_: The threshold below which pixels become _Black_. This is an int that defaults to 127.
   * _UpperThreshold_: The threshold above which pixels become _White_. This is an int that defaults to 127.
-  * _Black_: The color produced for pixels below _LowerThreshold_. This is an int that defaults to 0x000000.
-  * _White_: The color produced for pixels above _UpperThreshold_. This is an int that defaults to 0xFFFFFF.
+  * _Black_: The color produced for pixels below _LowerThreshold_. This is color (see below) that defaults to black.
+  * _White_: The color produced for pixels above _UpperThreshold_. This is color (see below) that defaults to white.
+
+For options that specify a color, the color may be given as an integer where bits 24-31
+represent alpha, bits 16-23 represent red, bits 8-15 represent green, and bits 0-7 represent blue.
+Alternatively, the color may be given as a string of the form of a hexadecimal number,
+e.g. "0xff0000" for red, a standard color name, e.g. "red", or a CSS-style color specification,
+e.g. "#FF0000" for red. The color names supported are black, blue, cyan, darkGray, gray, green,
+lightGray, magenta, orange, pink, red, white, and yellow.
+
 @module image
 @authors Edward A. Lee
 @copyright http://terraswarm.org/accessors/copyright.txt
