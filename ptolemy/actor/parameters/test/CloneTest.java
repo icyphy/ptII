@@ -31,6 +31,7 @@ import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.ArrayContains;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 
@@ -57,13 +58,17 @@ public class CloneTest {
         TypedAtomicActor actor = new ArrayContains(compositeEntity, "myActor");
         TypedAtomicActor clone = (TypedAtomicActor)actor.clone(workspace);
 
-        List masterConstraints = actor.typeConstraintList();
+        List<Inequality> masterConstraints = actor.typeConstraintList();
         System.out.println(masterConstraints.size() + " master type constraints:");
-        masterConstraints.forEach(System.out::println);
+        for (Inequality inequality : masterConstraints) {
+            System.out.println(inequality);
+        }
 
-        List cloneConstraints = clone.typeConstraintList();
+        List<Inequality> cloneConstraints = clone.typeConstraintList();
         System.out.println("\n\n" + cloneConstraints.size() + " clone type constraints:");
-        cloneConstraints.forEach(System.out::println);
+        for (Inequality inequality : cloneConstraints) {
+            System.out.println(inequality);
+        }
         System.out.println("\n\n");
         
         if (masterConstraints.size() != cloneConstraints.size()) {
