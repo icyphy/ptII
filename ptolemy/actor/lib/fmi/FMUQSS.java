@@ -472,16 +472,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _firstRound = true;
         // Initialize the quantum scale factor
         _quantumScaleFactor = _director.getQuantumScaleFactor();
-        // Intitialize the internal relative quantum
+        // Initialize the internal relative quantum
         _internalRelativeQuantum = _director.getRelativeQuantum()
                 * _quantumScaleFactor;
-        // Check if the relative quantum is zero. It is guaranteed
-        // that the _quantumScaleFactor is never null.
-        if (_internalRelativeQuantum == 0.0) {
-            throw new IllegalActionException(this,
-                    "The relative quantum of the QSSDirector cannot be null.");
-        }
-
         if (!_useRawJNI()) {
             // Initialize FMU parameters.
             if (((BooleanToken) initFMUParameters.getToken()).booleanValue() && !_useRawJNI() ) {
@@ -2010,7 +2003,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	private void _sendModelToPort(final double[] val, final TypedIOPort prt,
 	        Time time, int index, boolean isState) throws NoRoomException,
 	        IllegalActionException {
-	    double outputQuantum = _internalRelativeQuantum/ _quantumScaleFactor;
 	    // Handle outputs which are states.
 	    if (isState) {
 	        double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
@@ -2047,7 +2039,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	        if (_firstRound) {
 	        	_sendModelToConnectedPort(val, prt, time );
 	            _outputs.get(index).lastDoubleOutput = val[0];
-	            epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
+	            epsilon = Math.abs(_outputQuantum * _outputs.get(index).lastDoubleOutput);
 	        } else {
 	            if (Math.abs(val[0] - lastDblOut) <= Math.abs(epsilon)) {
 	                return;
@@ -2066,7 +2058,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	                    return;
 	                _sendModelToConnectedPort(val, prt, time );
 	                _outputs.get(index).lastDoubleOutput = val[0];
-	                epsilon = Math.abs(outputQuantum * _outputs.get(index).lastDoubleOutput);
+	                epsilon = Math.abs(_outputQuantum * _outputs.get(index).lastDoubleOutput);
 	            }
 	        }
 	    }
@@ -2358,6 +2350,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** The outputs of this FMU. */
     private List<Output> _outputs;
+    
+    /** The quantum for FMU outputs which are not state. */
+    private double _outputQuantum;
 
     /** The QSS solver for this actor.
      *  It is an instance of the class given by the

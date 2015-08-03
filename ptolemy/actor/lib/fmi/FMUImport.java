@@ -1540,13 +1540,8 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
             _useQSS = true;
             // Get the quantum which will be used to determine whether
             // outputs should be produced or not.
-            _outputQuantum = ((QSSDirector)getDirector()).getRelativeQuantum();
-            // Check if the relative quantum is zero and assert if that is the case.
-            if (_outputQuantum == 0.0) {
-                throw new IllegalActionException(this,
-                        "The relative quantum of the QSSDirector cannot be null.");
-            }
-
+            _outputQuantum = Math.max(((QSSDirector)getDirector()).getRelativeQuantum(), 
+            		((QSSDirector)getDirector()).getAbsoluteQuantum());
         }
 
         if (_useRawJNI()) {
@@ -4338,6 +4333,9 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
      * to a double for easy comparison.
      */
     protected double _fmiVersion;
+    
+    /** The output quantum if QSS is used. */
+    protected double _outputQuantum;
 
     /** For model exchange, the FMU state variables. */
     protected DoubleBuffer _states;
@@ -4716,9 +4714,6 @@ ContinuousStepSizeController, ContinuousStatefulComponent {
 
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
-
-    /** The output quantum if QSS is used. */
-    public double _outputQuantum;
 
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
