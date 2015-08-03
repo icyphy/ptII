@@ -25,12 +25,12 @@ import java.awt.image.*;
  */
 public class CircleFilter extends TransformFilter {
 
-	private float radius = 10;
-	private float height = 20;
+	private float radius = 100;
+	private float height = 200;
 	private float angle = 0;
 	private float spreadAngle = (float)Math.PI;
 	private float centreX = 0.5f;
-	private float centreY = 0.5f;
+	private float centreY = 1.0f;
 
 	private float icentreX;
 	private float icentreY;
