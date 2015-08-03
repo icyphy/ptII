@@ -476,6 +476,13 @@ public class JSAccessor extends JavaScript {
      *  <p>If the <i>urlSpec</i> is not found, then the TerraSwarm
      *  accessor repo will be checked out or updated.</p>
      *
+     *  <p>After the repo is loaded or updated, if url starts with
+     *  http://terraswarm.org/accessors/ or
+     *  https://terraswarm.org/accessors/, and the corresponding file
+     *  in the local svn accessors repo directory exists, then the
+     *  file in the local svn directory is used instead of the file
+     *  from the website.</p>
+     *
      *  @param url The URL of the accessor.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
@@ -527,6 +534,25 @@ public class JSAccessor extends JavaScript {
         if (accessorURL == null) {
             throw new IOException("Failed to find accessor file: " + urlSpec.trim() 
                     + "\nWhich is converted to: " + accessorURL);
+        }
+
+        // Use the local file if possible.  See the method comment for
+        // details.
+
+        // A possible enhancement would be to check the mod times of
+        // the website and the local file and act accordingly.
+        // Another enhancement would be to add a parameter to control
+        // this functionality.
+        if (urlSpec.startsWith("https://terraswarm.org/accessors/")
+                || urlSpec.startsWith("http://terraswarm.org/accessors/")) {
+            String target = "//terraswarm.org/accessors/";
+            String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
+            File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
+            if (urlSpecLocalFile.exists()) {
+                System.out.println("JSAccessor: urlSpec is " + urlSpec
+                        + ", but " + urlSpecLocalFile + " exists, so " + urlSpecLocalFile + " is being read.");
+                accessorURL = urlSpecLocalFile.toURI().toURL();
+            }
         }
 
         final URL url = accessorURL;
