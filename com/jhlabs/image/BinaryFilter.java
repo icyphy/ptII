@@ -16,9 +16,8 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.*;
-import java.awt.image.*;
-import com.jhlabs.math.*;
+import com.jhlabs.math.BinaryFunction;
+import com.jhlabs.math.BlackFunction;
 
 /**
  * The superclass for some of the filters which work on binary images.

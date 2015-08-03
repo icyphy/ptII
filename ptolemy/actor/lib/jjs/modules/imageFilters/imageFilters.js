@@ -9,6 +9,48 @@ This implementation uses code by Jerry Huxtable, licensed under
 the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
 The code is available at http://www.jhlabs.com/ip/filters/download.html.
 The filters provided by this implementation are:
+* __Average__: Average the 3x3 neighbourhood of each pixel, providing a simple blur.
+* __BicubicScale__: Scale an image using bi-cubic interpolation.
+  * _Height_: The height of the result image, in pixels. Defaults to 256.
+  * _Width_: The width of the result image, in pixels. Defaults to 256.
+* __Block__: Pixellate an image.
+  * _BlockSize_: The size of the blocks.
+* __Border__: Put a border around the image.
+  * _BorderColor_: The color (see below) for the border. This defaults to white.
+  * _BottomBorder_: The width of the bottom border, in pixels. This defaults to 10.
+  * _LeftBorder_: The width of the left border, in pixels. This defaults to 10.
+  * _RightBorder_: The width of the right border, in pixels. This defaults to 10.
+  * _TopBorder_: The width of the top border, in pixels. This defaults to 10.
+* __BoxBlur__: Box blur the image.
+  * _HRadius_: The horizontal radius, in pixels. This defaults to 10.
+  * _VRadius_: The vertical radius, in pixels. This defaults to 10.
+  * _Iterations_: The number of iterations. This defaults to 1, but larger integers will approximate Gaussian blur.
+* __Bump__: A simple embossing filter.
+* __ChannelMix__: Mix the red, green and blue channels of an image into each other.
+  The default options are {"IntoR": 255, "IntoG": 255, "IntoB": 255, "BlueGreen": 127, "GreenRed": 127, "RedBlue": 127},
+  which inverts the colors while preserving the original brightness.
+  * _IntoB_: How much of the blue in the output is taken from red and green.
+    255 means all of it, and 0 means none of it (all the original blue is preserved).
+  * _IntoG_: How much of the green in the output is taken from red and blue.
+    255 means all of it, and 0 means none of it (all the original green is preserved).
+  * _IntoR_: How much of the red in the output is taken from blue and green.
+    255 means all of it, and 0 means none of it (all the original red is preserved).
+  * _BlueGreen_: Proportion of blue vs. green that goes into red.
+     0 means only blue and 255 means only green.
+  * _GreenRed_: Proportion of green vs. red that goes into blue.
+     0 means only green and 255 means only red.
+  * _RedBlue_: Proportion of red vs. blue that goes into green.
+     0 means only red and 255 means only green.
+* __Chrome__: Create a chrome effect on the image.
+  * _Amount_: The amount of the effect. This ranges from 0.0 to 1.0 and defaults to 0.5.
+  * _Exposure_: The exposure, ranging from 0.0 (black image) to 1.0 (maximum, the default).
+* __Circle__: Wrap an image around a circular arc.
+  * _Angle_: The starting angle of the arc, in radians. This defaults to 0.0.
+  * _Height_: The height of the arc, in pixels. This defaults to 200.
+  * _Radius_: The radius of the inner arc, in pixels. This defaults to 100.
+  * _CentreX_: The horizontal center of the arc, as a fraction of the width. This ranges from 0.0 to 1.0 and defaults to 0.5.
+  * _CentreY_: The vertical center of the arc, as a fraction of the width. This ranges from 0.0 to 1.0 and defaults to 1.0.
+  * _SpreadAngle_: The spread angle of the arc, in radians. This defaults to $PI.
 * __Gray__: Gray out an image by averaging each pixel with white.
 * __Invert__: Invert the colors of an image.
 * __LensBlur__: Simulate a lens blur. Options:
@@ -52,7 +94,9 @@ var filters = {};
  *  @return An array of filter names.
  */
 exports.filters = function() {
-    return ['Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
+    return ['Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
+            'Bump', 'ChannelMix',
+            'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
 }
 
 /** Invoke the named filter on the specified image with the specified

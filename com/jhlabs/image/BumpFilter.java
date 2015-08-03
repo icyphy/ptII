@@ -16,7 +16,6 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.image.*;
 
 /**
  * A simple embossing filter. 
