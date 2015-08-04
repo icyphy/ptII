@@ -314,6 +314,7 @@ public class ExportModelJUnitTest {
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RecordManipulation", // Python demo pops up a dialog.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
+                "RobotPFChase.xml", // Needs the KeyValue model running.
                 "Ros.xml", // This demo has links to the demo that are to run
                 "RosPublisher.xml", // RosSubscriber needs to run.
                 "RosSubscriber.xml", // RosPublisher needs to run.
