@@ -8,7 +8,7 @@
  * the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
  * The code is available at [http://www.jhlabs.com/ip/filters].
  *
- * The filters provided by this implementation are listed below,
+ * The filters provided by this implementation include at least the ones listed below,
  * with options in the sublist (if there are options):
  * * __Average__: Average the 3x3 neighbourhood of each pixel, providing a simple blur.
  * * __BicubicScale__: Scale an image using bi-cubic interpolation.
@@ -52,6 +52,24 @@
  *   * _CentreX_: The horizontal center of the arc, as a fraction of the width. This ranges from 0.0 to 1.0 and defaults to 0.5.
  *   * _CentreY_: The vertical center of the arc, as a fraction of the width. This ranges from 0.0 to 1.0 and defaults to 1.0.
  *   * _SpreadAngle_: The spread angle of the arc, in radians. This defaults to $PI.
+ * * __ColorHalftone__:
+ *   * _DotRadius_: The size of the dots, in pixels. This defaults to 2.0.
+ *   * _CyanScreenAngle_: The angle of the cyan screen, in radians. This defaults to 1.885 (108 degrees).
+ *   * _MagentaScreenAngle_: The angle of the magenta screen, in radians. This defaults to 2.827 (162 degrees).
+ *   * _YellowScreenAngle_: The angle of the yellow screen, in radians. This defaults to 1.571 (90 degrees).
+ * * __Contour___: Draw contours on an image at given changes in brightness levels.
+ *   * _Levels_: The number of levels into which to divide the image. This defaults to 5.
+ *   * _Scale_: The scale factor to apply to the brightness before leveling. This defaults to 1.
+ *   * _Offset_: An offset to apply to the brightness. This defaults to 0.
+ *   * _ContourColor_: The color to use in drawing the contours. This defaults to "black" (see below for color specs).
+ * * __Contrast__: Change the brightness and contrast of an image.
+ *   * _Brightness_: The brightness scale factor. This defaults to 1.0, which makes no change in brightness.
+ *   * _Contrast_: The contrast scale factor. This defaults to 1.0, which makes no change in contrast.
+ * * __Crop__: Crop an image.
+ *   * _X_: The starting horizontal position, in pixels. This defaults to 0.
+ *   * _Y_: The starting vertical position, in pixels. This defaults to 0.
+ *   * _Width_: The width, in pixels. This defaults to 128.
+ *   * _Height_: The height, in pixels. This defaults to 128.
  * * __Gray__: Gray out an image by averaging each pixel with white.
  * * __Invert__: Invert the colors of an image.
  * * __LensBlur__: Simulate a lens blur. Options:
