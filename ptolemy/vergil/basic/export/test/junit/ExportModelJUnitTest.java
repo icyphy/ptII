@@ -341,6 +341,7 @@ public class ExportModelJUnitTest {
                 "ptolemy/domains/ptides/demo/VertxDemo/Publisher2.xml", // Requires that other demos run.
                 "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
                 "VideoCapture.xml", // Requires a video camera.
+                "WebSocketClient.xml", // Times out unless the server is running.
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
