@@ -76,7 +76,7 @@
  * e.g. "#FF0000" for red. The color names supported are black, blue, cyan, darkGray, gray, green,
  * lightGray, magenta, orange, pink, red, white, and yellow.
  * 
- * @module image
+ * @module imageFilters
  * @authors Edward A. Lee
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
