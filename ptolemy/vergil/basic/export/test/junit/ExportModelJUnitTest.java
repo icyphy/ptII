@@ -325,6 +325,7 @@ public class ExportModelJUnitTest {
                 "SmartChaseWithSmartIntruder.xml", // Needs the KeyValue model running.
                 "SmartIntruder.xml", // Needs the KeyValue model running.
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
+                "SwarmAcousticService.xml", // Times out while connecting to a port
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
                 "TokenTransmissionTime.xml", // This demo has links to the demo that are to run
