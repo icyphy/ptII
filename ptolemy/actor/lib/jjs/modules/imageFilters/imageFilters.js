@@ -1,15 +1,15 @@
 /**
- * Module to filter images. This module provides some set of named image filters,
- * the list of which is provided by the filters() function. Since many of the
- * filters have options that require colors, this module also provides a utility
- * function rgb(red, green, blue) that takes three arguments in the range of 0 to 255 and
- * returns a color number compatible with the color options.
+ * Module to filter images. This module provides a set of image filters,
+ * each realized by calling the {@link filter} function, passing it an input
+ * image, a filter name, and optional filter options.
+ * The list of available filters is provided by the {@link filters} function.
  *  
  * This implementation uses code by Jerry Huxtable, licensed under
- * the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
- * The code is available at http://www.jhlabs.com/ip/filters/download.html.
+ * the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+ * The code is available at [http://www.jhlabs.com/ip/filters].
  *
- * The filters provided by this implementation are:
+ * The filters provided by this implementation are listed below,
+ * with options in the sublist (if there are options):
  * * __Average__: Average the 3x3 neighbourhood of each pixel, providing a simple blur.
  * * __BicubicScale__: Scale an image using bi-cubic interpolation.
  *   * _Height_: The height of the result image, in pixels. Defaults to 256.
@@ -96,7 +96,7 @@ var filters = {};
  */
 exports.filters = function() {
     return ['Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
-            'Bump', 'ChannelMix',
+            'Bump', 'ChannelMix', 'Chrome', 'Circle',
             'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
 }
 
