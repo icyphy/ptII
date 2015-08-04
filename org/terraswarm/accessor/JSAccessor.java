@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -154,12 +155,12 @@ public class JSAccessor extends JavaScript {
     public StringAttribute accessorSource;
 
     /** If true, then check out the TerraSwarm accessors svn
-     *  repository when the accessor is reloaded.  This repository is
-     *  not currently publically readable.  This parameter is a
-     *  boolean, and the initial default value is true.  This
-     *  parameter is a shared parameter, meaning that changing it for
-     *  any one instance in a model will change it for all instances
-     *  in the model.
+     *  repository when the accessor is reloaded and run ant to build
+     *  the PtDoc files.  This repository is not currently publically
+     *  readable.  This parameter is a boolean, and the initial
+     *  default value is true.  This parameter is a shared parameter,
+     *  meaning that changing it for any one instance in a model will
+     *  change it for all instances in the model.
      */
     public SharedParameter checkoutOrUpdateAccessorsRepository;
 
@@ -242,13 +243,13 @@ public class JSAccessor extends JavaScript {
             return;
         }
 
+        File accessorsRepoDirectory = new File(JSAccessor._accessorDirectory(), "accessors");
         final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
         try {
             List execCommands = new LinkedList();
             // If the org/terraswarm/accessor/accessors directory
             // exists, then run svn update, otherwise try to check out
             // the repo.
-            File accessorsRepoDirectory = new File(JSAccessor._accessorDirectory(), "accessors");
 
             if (accessorsRepoDirectory.isDirectory()) {
                 exec.setWorkingDirectory(accessorsRepoDirectory);
@@ -275,7 +276,26 @@ public class JSAccessor extends JavaScript {
             ioException.initCause(throwable);
             throw ioException;
         }
+
+        // If the accessors/web directory exists, run ant there.
+        File accessorsRepoWebDirectory = new File(accessorsRepoDirectory, "web");
+        if (accessorsRepoWebDirectory.isDirectory()) {
+            try {
+                StringBufferExec antExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+                antExec.setWorkingDirectory(accessorsRepoWebDirectory);
+                List execCommands = new LinkedList();
+                execCommands.add("ant");
+                antExec.setCommands(execCommands);
+                antExec.setWaitForLastSubprocess(true);
+                antExec.start();
+            } catch (Throwable throwable) {
+                System.err.println("Warning: Failed to run \"ant\" in " + accessorsRepoWebDirectory
+                        + ".  Defaulting to using the documentation from the website."
+                        + "Error message was: " + throwable);
+            }
+        }
     }
+
     /** Handle an accessor-specific MoMLChangeRequest.
      *
      *  In the postParse() phase, the _location and accessorSource
@@ -483,7 +503,7 @@ public class JSAccessor extends JavaScript {
      *  file in the local svn directory is used instead of the file
      *  from the website.</p>
      *
-     *  @param url The URL of the accessor.
+     *  @param urlSpec The URL of the accessor.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
      *  @exception IOException If the urlSpec cannot be converted, opened
@@ -538,23 +558,8 @@ public class JSAccessor extends JavaScript {
 
         // Use the local file if possible.  See the method comment for
         // details.
-
-        // A possible enhancement would be to check the mod times of
-        // the website and the local file and act accordingly.
-        // Another enhancement would be to add a parameter to control
-        // this functionality.
-        if (urlSpec.startsWith("https://terraswarm.org/accessors/")
-                || urlSpec.startsWith("http://terraswarm.org/accessors/")) {
-            String target = "//terraswarm.org/accessors/";
-            String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
-            File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
-            if (urlSpecLocalFile.exists()) {
-                System.out.println("JSAccessor: urlSpec is " + urlSpec
-                        + ", but " + urlSpecLocalFile + " exists, so " + urlSpecLocalFile + " is being read.");
-                accessorURL = urlSpecLocalFile.toURI().toURL();
-            }
-        }
-
+        accessorURL = _getLocalURL(urlSpec, accessorURL);
+        
         final URL url = accessorURL;
         BufferedReader in = null;
         try {
@@ -632,6 +637,40 @@ public class JSAccessor extends JavaScript {
         }
     }
 
+    /** If the URL can be found locally, return it, otherwise return
+     *  the value of the passed in URL.
+     *
+     *  @param urlSpec The String URL of the accessor or *PtDoc.xml file.
+     *  @param accessorOrPtDocURL The proposed URL of the accessor or *PtDoc.xml file.
+     *  @return If the urlSpec matches
+     *  https*://(www\.)*terraswarm.org/accessors and the
+     *  corresponding file can be found in the directory returned by
+     *  _accessorDirectory(), then return a URL that refers to the
+     *  local file.  Otherwise, return the value of the
+     *  accessorOrPtDocURL argument.
+     *  @exception IOException If thrown while getting the accessor directory.
+     *  @exception MalformedURLException if throw while creating a URL.
+     */
+    private static URL _getLocalURL(String urlSpec, URL accessorOrPtDocURL) throws IOException, MalformedURLException {
+        // See the class comment for more information.
+
+        // A possible enhancement would be to check the mod times of
+        // the website and the local file and act accordingly.
+        // Another enhancement would be to add a parameter to control
+        // this functionality.
+        if (urlSpec.matches("https*://(www\\.)*terraswarm.org/accessors/.*")) {
+            String target = "terraswarm.org/accessors/";
+            String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
+            File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
+            if (urlSpecLocalFile.exists()) {
+                System.out.println("JSAccessor: urlSpec is " + urlSpec
+                        + ", but " + urlSpecLocalFile + " exists, so " + urlSpecLocalFile + " is being read.");
+                accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
+            }
+        }
+        return accessorOrPtDocURL;
+    }
+
     /** Get the PtDoc for an accessor or create a link to a html file.
      *
      *  Given a urlSpec for foo.js, look for PtDoc.xml.  If it is found,
@@ -647,9 +686,14 @@ public class JSAccessor extends JavaScript {
     private static String _getPtDoc(String urlSpec) throws IOException {
         // By definition, this must be called on a url that ends with .js
         // FIXME: what happens with a JarURL?
-        String baseName = urlSpec.substring(0, urlSpec.length() - 3);
+        String ptDocSpec = urlSpec.substring(0, urlSpec.length() - 3) + "PtDoc.xml";
 
-        final URL url = FileUtilities.nameToURL(baseName + "PtDoc.xml" , null, null);
+        URL url = FileUtilities.nameToURL(ptDocSpec , null, null);
+
+        // Look for a local version of the PtDoc file.
+        // This assumes that getAccessorsRepository() was previously invoked.
+        url = _getLocalURL(ptDocSpec, url);
+
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
