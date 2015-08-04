@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ChannelMix" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ColorHalftone" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 230, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={505, 22, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -25,7 +25,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies a ChannelMix filter&#10;to a video stream from the camera.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies a ColorHalftone filter&#10;to a video stream from the camera.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[135.0, 10.0]">
         </property>
@@ -33,9 +33,9 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The options in this ImageFilter&#10;match the default options for the&#10;filter. Feel free to experiment with them.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The options in this ImageFilter&#10;match the default options for the&#10;ColorHalftone filter. Feel free to&#10;experiment with them.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[220.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[260.0, 175.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -48,13 +48,13 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 640, 524}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 640, 524}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 500]">
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 120.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -90,15 +90,15 @@
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/image/ImageFilter.js">
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;IntoR&quot;: 255, &quot;IntoG&quot;: 255, &quot;IntoB&quot;: 255, &quot;BlueGreen&quot;: 127, &quot;GreenRed&quot;: 127, &quot;RedBlue&quot;: 127}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;DotRadius&quot;: 2, &quot;CyanScreenAngle&quot;: 1.885, &quot;MagentaScreenAngle&quot;: 2.827, &quot;YellowScreenAngle&quot;: 1.571}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="filter" class="ptolemy.data.expr.Parameter" value="ChannelMix">
+        <property name="filter" class="ptolemy.data.expr.Parameter" value="ColorHalftone">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 120.0]">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>

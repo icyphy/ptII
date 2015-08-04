@@ -25,7 +25,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies a Gray filter&#10;to a video stream from the camera,&#10;which averages each pixel with white.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies a Circle filter&#10;to a video stream from the camera.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[135.0, 10.0]">
         </property>
@@ -33,9 +33,9 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Gray filter has&#10;no options.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The options in this ImageFilter&#10;match the default options for the&#10;Circle filter. Feel free to&#10;experiment with them.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[250.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[265.0, 175.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -48,7 +48,7 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 24, 640, 524}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 640, 524}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
