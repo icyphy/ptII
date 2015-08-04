@@ -488,7 +488,7 @@
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8989012036347311">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{93.88867885044635, -368.45410156250006}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{93.88867885044613, -368.4541015625003}">
                 </property>
                 <property name="transGuess" class="ptolemy.data.expr.Parameter" value="[0.9,0.1,0.0;0.1,0.8,0.1;0.1,0.1,0.8]">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -506,7 +506,7 @@
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-535.0, -685.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, -750.0}">
                     </property>
                 </property>
                 <property name="stdDevEstimate" class="ptolemy.data.expr.Parameter" value="{0.0096763770441, 0.0346413475215, 0.02960950756}">
@@ -525,7 +525,7 @@
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-205.0, -685.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-535.0, -685.0}">
                     </property>
                 </property>
                 <property name="meanEstimate" class="ptolemy.data.expr.Parameter" value="{0.0502800748481, 0.1345436034311, 0.2893313876298}">
@@ -544,7 +544,7 @@
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-535.0, -655.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -685.0}">
                     </property>
                 </property>
                 <property name="transEstimate" class="ptolemy.data.expr.Parameter" value="[0.9494526004438, 0.0400037428803, 0.0105436566759; 0.2006586138099, 0.7355111857435, 0.0638302004466; 0.0269667894517, 0.4591387819139, 0.5138944286344]">
@@ -563,7 +563,7 @@
                     </property>
                     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -655.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-535.0, -655.0}">
                     </property>
                 </property>
                 <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -597,7 +597,7 @@
                 </property>
                 <port name="train" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-530.0, -275.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-530.0, -270.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -624,7 +624,7 @@
                 </port>
                 <port name="test" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-150.0, -415.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-165.0, -410.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -677,15 +677,15 @@
                     </property>
                 </port>
                 <entity name="Average" class="ptolemy.actor.lib.Average">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-175.0, -180.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-190.0, -45.0}">
                     </property>
                 </entity>
                 <entity name="Average2" class="ptolemy.actor.lib.Average">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -25.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, 45.0}">
                     </property>
                 </entity>
                 <entity name="Average3" class="ptolemy.actor.lib.Average">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -285.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, -135.0}">
                     </property>
                 </entity>
                 <entity name="HMMGaussianClassifier" class="org.ptolemy.machineLearning.hmm.HMMGaussianClassifier">
@@ -695,9 +695,11 @@
                     </property>
                     <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{0.0516270095228, 0.1553606646471, 0.3868376192341}">
                     </property>
+                    <property name="covariance" class="ptolemy.actor.parameters.PortParameter" value="{0.0104551148655, 0.0250705918115, 0.044098880455}">
+                    </property>
                     <property name="standardDeviation" class="ptolemy.actor.parameters.PortParameter" value="{0.0104551148655, 0.0250705918115, 0.044098880455}">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-65.0, -415.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -400.0}">
                     </property>
                     <port name="priorDistribution" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
@@ -726,6 +728,8 @@
                     </port>
                     <port name="standardDeviation" class="ptolemy.actor.parameters.ParameterPort">
                         <property name="input"/>
+                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                        </property>
                         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </port>
@@ -737,7 +741,7 @@
                     </property>
                     <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, -415.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -270.0}">
                     </property>
                 </entity>
                 <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -749,7 +753,7 @@
                     </property>
                     <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, -100.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-190.0, -280.0}">
                     </property>
                 </entity>
                 <entity name="HMMGaussianEstimator" class="org.ptolemy.machineLearning.hmm.HMMGaussianEstimator">
@@ -767,13 +771,13 @@
                     </property>
                     <property name="standardDeviationGuess" class="ptolemy.data.expr.Parameter" value="stdDevGuess">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-455.0, -275.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{-455.0, -270.0}">
                     </property>
                 </entity>
                 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
                     <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{65, -305}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -410.0}">
                     </property>
                 </entity>
                 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -781,7 +785,7 @@
                     </property>
                     <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, -305.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, -410.0}">
                     </property>
                     <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -793,67 +797,71 @@
 </plot>?>
                     </configure>
                 </entity>
-                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average2.output&quot;,x=-275.0,y=-25.0}, tail={id=&quot;HMMGaussianClassifier.standardDeviation&quot;,x=-65.0,y=-415.0}, points={-45.0,-25.0} } }">
-                    </property>
-                </relation>
                 <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average3.output&quot;,x=-275.0,y=-285.0}, tail={id=&quot;HMMGaussianClassifier.transitionMatrix&quot;,x=-65.0,y=-415.0}, points={-75.0,-285.0} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average3.output&quot;,x=-290.0,y=-135.0}, tail={id=&quot;HMMGaussianClassifier.transitionMatrix&quot;,x=-35.0,y=-400.0}, points={-45.0,-135.0} } }">
                     </property>
                 </relation>
                 <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average.output&quot;,x=-175.0,y=-180.0}, tail={id=&quot;HMMGaussianClassifier.mean&quot;,x=-65.0,y=-415.0}, points={-55.0,-180.0} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average.output&quot;,x=-190.0,y=-45.0}, tail={id=&quot;HMMGaussianClassifier.mean&quot;,x=-35.0,y=-400.0}, points={-25.0,-45.0} } }">
                     </property>
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
-                    <vertex name="vertex1" value="{-225.0, -180.0}">
+                    <vertex name="vertex1" value="{-240.0, -280.0}">
                     </vertex>
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average.input&quot;,x=-175.0,y=-180.0}, tail={id=&quot;relation12.vertex1&quot;,x=-225.0,y=-180.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.mean&quot;,x=-455.0,y=-275.0}, tail={id=&quot;relation12.vertex1&quot;,x=-225.0,y=-180.0}, points={-325.0,-275.0,-325.0,-180.0} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average.input&quot;,x=-190.0,y=-45.0}, tail={id=&quot;relation12.vertex1&quot;,x=-240.0,y=-280.0}, points={-240.0,-45.0} },{ head={id=&quot;HMMGaussianEstimator.mean&quot;,x=-455.0,y=-270.0}, tail={id=&quot;relation12.vertex1&quot;,x=-240.0,y=-280.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=-190.0,y=-280.0}, tail={id=&quot;relation12.vertex1&quot;,x=-240.0,y=-280.0}, points={} } }">
                     </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
-                    <vertex name="vertex1" value="{-515.0, -275.0}">
+                    <vertex name="vertex1" value="{-515.0, -270.0}">
                     </vertex>
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;train._location&quot;,x=-530.0,y=-275.0}, tail={id=&quot;relation4.vertex1&quot;,x=-515.0,y=-275.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.input&quot;,x=-455.0,y=-275.0}, tail={id=&quot;relation4.vertex1&quot;,x=-515.0,y=-275.0}, points={} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;train._location&quot;,x=-530.0,y=-270.0}, tail={id=&quot;relation4.vertex1&quot;,x=-515.0,y=-270.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.input&quot;,x=-455.0,y=-270.0}, tail={id=&quot;relation4.vertex1&quot;,x=-515.0,y=-270.0}, points={} } }">
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;test._location&quot;,x=-150.0,y=-415.0}, tail={id=&quot;HMMGaussianClassifier.input&quot;,x=-65.0,y=-415.0}, points={} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;test._location&quot;,x=-165.0,y=-410.0}, tail={id=&quot;HMMGaussianClassifier.input&quot;,x=-35.0,y=-400.0}, points={} } }">
                     </property>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average2.input&quot;,x=-275.0,y=-25.0}, tail={id=&quot;HMMGaussianEstimator.standardDeviation&quot;,x=-455.0,y=-275.0}, points={-340.0,-25.0,-340.0,-265.0} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average2.input&quot;,x=-290.0,y=45.0}, tail={id=&quot;HMMGaussianEstimator.standardDeviation&quot;,x=-455.0,y=-270.0}, points={-340.0,45.0,-340.0,-260.0} } }">
                     </property>
                 </relation>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average3.input&quot;,x=-275.0,y=-285.0}, tail={id=&quot;HMMGaussianEstimator.transitionMatrix&quot;,x=-455.0,y=-275.0}, points={} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average3.input&quot;,x=-290.0,y=-135.0}, tail={id=&quot;HMMGaussianEstimator.transitionMatrix&quot;,x=-455.0,y=-270.0}, points={-465.0,-135.0} } }">
                     </property>
                 </relation>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                     </property>
-                    <vertex name="vertex1" value="{15.0, -415.0}">
+                    <vertex name="vertex1" value="{90.0, -410.0}">
                     </vertex>
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=140.0,y=-270.0}, tail={id=&quot;relation7.vertex1&quot;,x=90.0,y=-410.0}, points={90.0,-270.0} },{ head={id=&quot;HMMGaussianClassifier.output&quot;,x=-35.0,y=-400.0}, tail={id=&quot;relation7.vertex1&quot;,x=90.0,y=-410.0}, points={} },{ head={id=&quot;ArrayToSequence.input&quot;,x=140.0,y=-410.0}, tail={id=&quot;relation7.vertex1&quot;,x=90.0,y=-410.0}, points={} } }">
+                    </property>
                 </relation>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToSequence.output&quot;,x=140.0,y=-410.0}, tail={id=&quot;SequencePlotter.input&quot;,x=255.0,y=-410.0}, points={} } }">
+                    </property>
+                </relation>
+                <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Average2.output&quot;,x=-290.0,y=45.0}, tail={id=&quot;HMMGaussianClassifier.covariance&quot;,x=-35.0,y=-400.0}, points={-15.0,45.0} } }">
+                    </property>
                 </relation>
                 <link port="train" relation="relation4"/>
                 <link port="test" relation="relation2"/>
                 <link port="Average.input" relation="relation12"/>
                 <link port="Average.output" relation="relation15"/>
                 <link port="Average2.input" relation="relation3"/>
-                <link port="Average2.output" relation="relation6"/>
+                <link port="Average2.output" relation="relation8"/>
                 <link port="Average3.input" relation="relation5"/>
                 <link port="Average3.output" relation="relation13"/>
                 <link port="HMMGaussianClassifier.transitionMatrix" relation="relation13"/>
                 <link port="HMMGaussianClassifier.input" relation="relation2"/>
                 <link port="HMMGaussianClassifier.output" relation="relation7"/>
                 <link port="HMMGaussianClassifier.mean" relation="relation15"/>
-                <link port="HMMGaussianClassifier.standardDeviation" relation="relation6"/>
+                <link port="HMMGaussianClassifier.covariance" relation="relation8"/>
                 <link port="Test.input" relation="relation7"/>
                 <link port="Test2.input" relation="relation12"/>
                 <link port="HMMGaussianEstimator.input" relation="relation4"/>
