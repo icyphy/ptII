@@ -116,7 +116,7 @@ function httpRequest(url, method, properties, body, timeout) {
     }
     var connection = theURL.openConnection();
 
-    for (key in properties) {
+    for (var key in properties) {
         connection.setRequestProperty(key, properties[key]);
     }
 
