@@ -363,8 +363,6 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/jjs.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/"/>
 
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/external/external.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/external"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/jjs.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/audio/audio.jar"
