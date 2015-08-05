@@ -248,7 +248,7 @@ public class DiscoveryHelper {
                     JSONObject object;
                     for (String key : ipMap.keySet()) {
                         object = ipMap.get(key);
-                        if (object.get("IPaddress").toString()
+                        if (object.get("IPAddress").toString()
                                 .equalsIgnoreCase(ip)) {
                             token = (String) tokenizer.nextElement();
                             token = (String) tokenizer.nextElement();
@@ -295,7 +295,7 @@ public class DiscoveryHelper {
             while ((line = stdOut.readLine()) != null) {
                 for (String key : ipMap.keySet()) {
                     object = ipMap.get(key);
-                    index = line.indexOf(object.getString("IPaddress"));
+                    index = line.indexOf(object.getString("IPAddress"));
                     if (index != -1) {
                         // The Interface: IP entry the host machine.  Its mac
                         // is not listed.  Would need ipconfig /all to get it
@@ -419,7 +419,7 @@ public class DiscoveryHelper {
                         System.out.println("Device available at " + testIP);
                     }
                     try {
-                        device = new JSONObject("{\"IPaddress\": " + testIP
+                        device = new JSONObject("{\"IPAddress\": " + testIP
                                 + "," + "\"name\": \"Host machine\""
                                 + ", \"mac\": \"Host machine\"}");
                     } catch (JSONException e) {
@@ -463,7 +463,7 @@ public class DiscoveryHelper {
             // Reply from 192.168.5.19: bytes=32 time=4ms TTL=64
 
             // If the device is on and available, the second line should
-            // be of the form:  Reply from IPaddress: bytes=n
+            // be of the form:  Reply from IPAddress: bytes=n
             // Look for "bytes=" (other responses may contain just "bytes")
             if (data.length() > 0) {
                 int found = data.indexOf("bytes=");
@@ -477,7 +477,7 @@ public class DiscoveryHelper {
                                 + testIP);
                     }
                     try {
-                        device = new JSONObject("{\"IPaddress\": " + testIP
+                        device = new JSONObject("{\"IPAddress\": " + testIP
                                 + "," + "\"name\": " + name
                                 + ", \"mac\": \"Unknown\"}");
                     } catch (JSONException e) {
@@ -544,7 +544,7 @@ public class DiscoveryHelper {
                                 + ", mac: " + mac + " , ip: " + ip);
                     }
 
-                    JSONObject device = new JSONObject("{ \"IPaddress\": " + ip
+                    JSONObject device = new JSONObject("{ \"IPAddress\": " + ip
                             + ", " + "\"name\": " + name
                             + ", \"mac\": Unknown }");
                     // Have to put MAC separately due to colons in MAC
@@ -578,10 +578,10 @@ public class DiscoveryHelper {
 
         /** Create a new runnable to execute a ping.
          *
-         * @param ipAddress  The IP address to ping.
+         * @param IPAddress  The IP address to ping.
          */
-        public PingLinuxRunnable(String ipAddress) {
-            testIP = ipAddress;
+        public PingLinuxRunnable(String IPAddress) {
+            testIP = IPAddress;
         }
 
         /** Execute a ping and save info from any device found.
@@ -608,10 +608,10 @@ public class DiscoveryHelper {
 
         /** Create a new runnable to execute a ping.
          *
-         * @param ipAddress  The IP address to ping.
+         * @param IPAddress  The IP address to ping.
          */
-        public PingWindowsRunnable(String ipAddress) {
-            testIP = ipAddress;
+        public PingWindowsRunnable(String IPAddress) {
+            testIP = IPAddress;
         }
 
         /** Execute a ping and save info from any device found.
