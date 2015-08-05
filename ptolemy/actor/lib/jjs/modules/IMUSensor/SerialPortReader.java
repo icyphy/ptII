@@ -38,31 +38,21 @@ import gnu.io.UnsupportedCommOperationException;
 ///// SerialPortReader
 
 /**
- *	SerialPortReader is a class meant for reading in bytes from the serial port connection
- *	and providing them to the ReaderM class for decoding of the unique packet format used
- *	by the IMU sensors
+ * SerialPortReader is a class meant for reading in bytes from the
+ * serial port connection and providing them to the ReaderM class for
+ * decoding of the unique packet format used by the IMU sensors.
  *
- *	@author Hunter Massey
- *	@version $Id$
- *	@see SerialPortController, ReaderM
- *	@Pt.ProposedRating Yellow Hunter
- *	@Pt.AcceptedRating
-*/
-
+ * @author Hunter Massey
+ * @version $Id$
+ * @see SerialPortController, ReaderM
+ * @Pt.ProposedRating Yellow Hunter
+ * @Pt.AcceptedRating
+ */
 public class SerialPortReader extends Thread {
 
-    private boolean threadIsActive; // A boolean stating whether the read thread is active
-    private BufferedInputStream inStream; // An InputStream connected to serialPort
-    private CommPortIdentifier commID; // The communication port identifier used to open serialPort
-    private LinkedBlockingQueue<Character> charBuf; // A concurrent Queue implementation for storing read characters
-    private SerialPort serialPort; // The serialPort object referencing the incoming serial connection
-    private String portName; // The name of the serial port that serialPort is to connect to - varies by OS
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
-
-    /** Constructor for SerialPortReader - determines OS and chooses serial port name prefix accordingly
-    */
+    /** Construct a serial port reader.
+     *  Determines OS and chooses serial port name prefix accordingly.
+     */
     public SerialPortReader() {
         String OS = System.getProperty("os.name").toLowerCase();
         if (OS.indexOf("win") >= 0) {
@@ -78,8 +68,13 @@ public class SerialPortReader extends Thread {
         charBuf = new LinkedBlockingQueue<Character>();
     }
 
-    /**	Initialize the serial port and connect a BufferedInputStream to the serialPort
-    */
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+
+    /**	Initialize the serial port and connect a BufferedInputStream to the serialPort.
+     *  @param portNumber The number of theport   
+     */
     public int init(int portNumber) {
         portName += portNumber;
         try {
@@ -123,9 +118,11 @@ public class SerialPortReader extends Thread {
         return 1;
     }
 
-    /** Run method for this class. Starts a thread that constantly reads in from serial port stream
-     *	A BufferedInputStream connected to the serial port is read into a LinkedBlockingQueue
-    */
+    /** Run method for this class. Starts a thread that constantly
+     *	reads in from serial port stream A BufferedInputStream
+     *	connected to the serial port is read into a
+     *	LinkedBlockingQueue.
+     */
     @Override
     public void run() {
         threadIsActive = true;
@@ -148,7 +145,8 @@ public class SerialPortReader extends Thread {
         }
     }
 
-    /** Takes the next single value from the buffer of Characters read from the inputstream
+    /** Takes the next single value from the buffer of Characters read
+     *	from the input stream.
      *	@return the character read from serial port as a String
     */
     public String readFromPort() {
@@ -162,9 +160,9 @@ public class SerialPortReader extends Thread {
         return returnVal;
     }
 
-    /**	Closes the serial port connection
+    /**	Closes the serial port connection.
      *	Called by class that owns this object to stop serial port connection
-    */
+     */
     public void closePort() {
         stopThread();
         try {
@@ -178,11 +176,39 @@ public class SerialPortReader extends Thread {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
 
-    /** Sets the boolean controlling the main reader thread's while loop to false
-     *	Called when we wish to close the program's connection to the serial port
+    /** Sets the boolean controlling the main reader thread's while
+     *	loop to false Called when we wish to close the program's
+     *	connection to the serial port.
     */
     private void stopThread() {
         threadIsActive = false;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    /** A boolean stating whether the read thread is active. */
+    private boolean threadIsActive; 
+
+    /** An InputStream connected to serialPort. */
+    private BufferedInputStream inStream; 
+
+    /**  The communication port identifier used to open serialPort. */
+    private CommPortIdentifier commID; 
+
+    /**  A concurrent Queue implementation for storing read
+     *  characters.
+     */
+    private LinkedBlockingQueue<Character> charBuf; 
+
+    /** The serialPort object referencing the incoming serial
+     * connection.
+     */
+    private SerialPort serialPort; 
+
+    /** The name of the serial port that serialPort is to connect to -
+     * varies by OS.
+     */
+    private String portName; 
 
 }
