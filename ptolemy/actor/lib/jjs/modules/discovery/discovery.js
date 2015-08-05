@@ -4,7 +4,7 @@
  *  connected to the local network.  Command syntax is adjusted for OS 
  *  differences.
  *  
- *  It implements the discover(IPaddress) method required by the device 
+ *  It implements the discover(IPAddress) method required by the device 
  *  discovery accessor, and returns a JSON object containing a list of device
  *  IP addresses, and names and MAC addresses when available.
  *  
@@ -35,16 +35,16 @@ function DiscoveryService() {
 	
 	/** Discover devices on the local area network.
 	 * 
-	 * @param IPaddress The IP address of the host machine.
+	 * @param IPAddress The IP address of the host machine.
 	 * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
 	 */
-	this.discoverDevices = function(IPaddress, discoveryMethod) {
+	this.discoverDevices = function(IPAddress, discoveryMethod) {
 		
 		var devices;
 		if (typeof discoveryMethod !== undefined) {
-			devices = helper.discoverDevices(IPaddress, discoveryMethod);
+			devices = helper.discoverDevices(IPAddress, discoveryMethod);
 		} else {
-			devices = helper.discoverDevices(IPaddress, "ping");
+			devices = helper.discoverDevices(IPAddress, "ping");
 		}
 		
 		// Use JSON.parse() here, since discoverDevices() returns a string

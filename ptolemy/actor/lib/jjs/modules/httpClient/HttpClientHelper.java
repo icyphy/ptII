@@ -166,9 +166,16 @@ public class HttpClientHelper extends VertxHelperBase {
         // NOTE: Documentation of Vertx 2.15 is wrong.
         // The argument is a path with a query, not a URI.
         String uri = urlSpec.get("path") + query;
+        
+        String protocol = (String) urlSpec.get("protocol");
 
         // FIXME: How do we set the protocol?
         // It is specified in urlSpec.get("protocol").
+        
+        // If https, client should use SSL
+        if (urlSpec.get("protocol").toString().equalsIgnoreCase("https")) {
+            client.setSSL(true);
+        }
 
         Object complete = options.get("outputCompleteResponseOnly");
         if (complete instanceof Boolean && !(Boolean) complete) {
