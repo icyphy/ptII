@@ -16,9 +16,11 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 /**
  * A filter to add a border around an image using the supplied Paint, which may be null for no painting.
@@ -45,7 +47,7 @@ public class BorderFilter extends AbstractBufferedImageOp {
      * @param bottomBorder the bottom border value
      * @param borderPaint the paint with which to fill the border
      */
-    public BorderFilter( int leftBorder, int topBorder, int rightBorder, int bottomBorder, Paint borderPaint ) {
+    public BorderFilter(int leftBorder, int topBorder, int rightBorder, int bottomBorder, Paint borderPaint) {
         this.leftBorder = leftBorder;
         this.topBorder = topBorder;
         this.rightBorder = rightBorder;
@@ -143,7 +145,7 @@ public class BorderFilter extends AbstractBufferedImageOp {
      * @param borderPaint the paint with which to fill the border
      * @see #getBorderPaint
      */
-    public void setBorderPaint( Paint borderPaint ) {
+    public void setBorderPaint(Paint borderPaint) {
         this.borderPaint = borderPaint;
     }
 
@@ -156,41 +158,43 @@ public class BorderFilter extends AbstractBufferedImageOp {
         return borderPaint;
     }
 
-    public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
+    @Override
+    public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         int width = src.getWidth();
         int height = src.getHeight();
 
         // Modification by Edward A. Lee:
-        if ( dst == null ) {
+        if (dst == null) {
             int type = src.getType();
             if (type == 0) {
                 // Type 0 is not known.
                 type = BufferedImage.TYPE_INT_ARGB;
             }
-            dst = new BufferedImage( width+leftBorder+rightBorder, height+topBorder+bottomBorder, type );
+            dst = new BufferedImage(width + leftBorder + rightBorder, height + topBorder + bottomBorder, type);
         }
         Graphics2D g = dst.createGraphics();
         if (borderPaint == null) {
             borderPaint = Color.WHITE;
         }
-        if ( borderPaint != null ) {
-            g.setPaint( borderPaint );
+        if (borderPaint != null) {
+            g.setPaint(borderPaint);
             // Original was buggy here. Fixed by Edward A. Lee.
-            if ( leftBorder > 0 )
-                g.fillRect( 0, 0, leftBorder, height+topBorder+bottomBorder );
-            if ( rightBorder > 0 )
-                g.fillRect( width+leftBorder, 0, rightBorder, height+topBorder+bottomBorder );
-            if ( topBorder > 0 )
-                g.fillRect( leftBorder, 0, width, topBorder );
-            if ( bottomBorder > 0 )
-                g.fillRect( leftBorder, height+topBorder, width, bottomBorder );
+            if (leftBorder > 0)
+                g.fillRect(0, 0, leftBorder, height + topBorder + bottomBorder);
+            if (rightBorder > 0)
+                g.fillRect(width + leftBorder, 0, rightBorder, height + topBorder + bottomBorder);
+            if (topBorder > 0)
+                g.fillRect(leftBorder, 0, width, topBorder);
+            if (bottomBorder > 0)
+                g.fillRect(leftBorder, height + topBorder, width, bottomBorder);
         }
         // Original was buggy here. Fixed by Edward A. Lee.
-        g.drawRenderedImage( src, AffineTransform.getTranslateInstance( leftBorder, topBorder ) );
+        g.drawRenderedImage(src, AffineTransform.getTranslateInstance(leftBorder, topBorder));
         g.dispose();
         return dst;
     }
 
+    @Override
     public String toString() {
         return "Distort/Border...";
     }

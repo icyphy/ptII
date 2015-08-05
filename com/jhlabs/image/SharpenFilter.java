@@ -16,24 +16,19 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.image.*;
-
 /**
  * A filter which performs a simple 3x3 sharpening operation.
  */
 public class SharpenFilter extends ConvolveFilter {
-	
-	private static float[] sharpenMatrix = {
-		 0.0f, -0.2f,  0.0f,
-		-0.2f,  1.8f, -0.2f,
-		 0.0f, -0.2f,  0.0f
-	};
 
-	public SharpenFilter() {
-		super(sharpenMatrix);
-	}
+    private static float[] sharpenMatrix = { 0.0f, -0.2f, 0.0f, -0.2f, 1.8f, -0.2f, 0.0f, -0.2f, 0.0f };
 
-	public String toString() {
-		return "Blur/Sharpen";
-	}
+    public SharpenFilter() {
+        super(sharpenMatrix);
+    }
+
+    @Override
+    public String toString() {
+        return "Blur/Sharpen";
+    }
 }

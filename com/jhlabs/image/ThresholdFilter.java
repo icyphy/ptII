@@ -16,8 +16,6 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-
-
 /**
  * A filter which performs a threshold operation on an image.
  */
@@ -138,12 +136,14 @@ public class ThresholdFilter extends PointFilter {
         return black;
     }
 
+    @Override
     public int filterRGB(int x, int y, int rgb) {
-        int v = PixelUtils.brightness( rgb );
-        float f = ImageMath.smoothStep( lowerThreshold, upperThreshold, v );
-        return (rgb & 0xff000000) | (ImageMath.mixColors( f, black, white ) & 0xffffff);
+        int v = PixelUtils.brightness(rgb);
+        float f = ImageMath.smoothStep(lowerThreshold, upperThreshold, v);
+        return (rgb & 0xff000000) | (ImageMath.mixColors(f, black, white) & 0xffffff);
     }
 
+    @Override
     public String toString() {
         return "Stylize/Threshold...";
     }

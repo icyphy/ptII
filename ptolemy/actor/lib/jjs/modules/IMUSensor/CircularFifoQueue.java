@@ -47,8 +47,7 @@ import java.util.Queue;
  * @since 4.0
  * @version $Id$
  */
-public class CircularFifoQueue<E> extends AbstractCollection<E>
-    implements Queue<E>, Serializable {
+public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<E>, Serializable {
 
     /** Serialization version. */
     private static final long serialVersionUID = -8423413834657610406L;
@@ -257,7 +256,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
         if (index < 0 || index >= sz) {
             throw new NoSuchElementException(
                     String.format("The specified index (%1$d) is outside the available range [0, %2$d)",
-                                  Integer.valueOf(index), Integer.valueOf(sz)));
+                            Integer.valueOf(index), Integer.valueOf(sz)));
         }
 
         final int idx = (start + index) % maxElements;
@@ -274,10 +273,12 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
      * @return true, always
      * @throws NullPointerException  if the given element is null
      */
+    @Override
     public boolean offer(E element) {
         return add(element);
     }
 
+    @Override
     public E poll() {
         if (isEmpty()) {
             return null;
@@ -285,6 +286,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
         return remove();
     }
 
+    @Override
     public E element() {
         if (isEmpty()) {
             throw new NoSuchElementException("queue is empty");
@@ -292,6 +294,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
         return peek();
     }
 
+    @Override
     public E peek() {
         if (isEmpty()) {
             return null;
@@ -299,6 +302,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
         return elements[start];
     }
 
+    @Override
     public E remove() {
         if (isEmpty()) {
             throw new NoSuchElementException("queue is empty");
@@ -358,10 +362,12 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
             private int lastReturnedIndex = -1;
             private boolean isFirst = full;
 
+            @Override
             public boolean hasNext() {
                 return isFirst || index != end;
             }
 
+            @Override
             public E next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
@@ -372,6 +378,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
                 return elements[lastReturnedIndex];
             }
 
+            @Override
             public void remove() {
                 if (lastReturnedIndex == -1) {
                     throw new IllegalStateException();

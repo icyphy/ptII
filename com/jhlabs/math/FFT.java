@@ -23,26 +23,26 @@ public class FFT {
     protected float[] w2;
     protected float[] w3;
 
-    public FFT( int logN ) {
+    public FFT(int logN) {
         // Prepare the weighting factors
         w1 = new float[logN];
         w2 = new float[logN];
         w3 = new float[logN];
         int N = 1;
-        for ( int k = 0; k < logN; k++ ) {
+        for (int k = 0; k < logN; k++) {
             N <<= 1;
             double angle = -2.0 * Math.PI / N;
-            w1[k] = (float)Math.sin(0.5 * angle);
+            w1[k] = (float) Math.sin(0.5 * angle);
             w2[k] = -2.0f * w1[k] * w1[k];
-            w3[k] = (float)Math.sin(angle);
+            w3[k] = (float) Math.sin(angle);
         }
     }
 
-    private void scramble( int n, float[] real, float[] imag ) {
+    private void scramble(int n, float[] real, float[] imag) {
         int j = 0;
 
-        for ( int i = 0; i < n; i++ ) {
-            if ( i > j ) {
+        for (int i = 0; i < n; i++) {
+            if (i > j) {
                 float t;
                 t = real[j];
                 real[j] = real[i];
@@ -60,10 +60,10 @@ public class FFT {
         }
     }
 
-    private void butterflies( int n, int logN, int direction, float[] real, float[] imag ) {
+    private void butterflies(int n, int logN, int direction, float[] real, float[] imag) {
         int N = 1;
 
-        for ( int k = 0; k < logN; k++ ) {
+        for (int k = 0; k < logN; k++) {
             float w_re, w_im, wp_re, wp_im, temp_re, temp_im, wt;
             int half_N = N;
             N <<= 1;
@@ -72,8 +72,8 @@ public class FFT {
             wp_im = direction * w3[k];
             w_re = 1.0f;
             w_im = 0.0f;
-            for ( int offset = 0; offset < half_N; offset++ ) {
-                for( int i = offset; i < n; i += N ) {
+            for (int offset = 0; offset < half_N; offset++) {
+                for (int i = offset; i < n; i += N) {
                     int j = i + half_N;
                     float re = real[j];
                     float im = imag[j];
@@ -89,21 +89,21 @@ public class FFT {
                 w_im = w_im * wp_re + wt * wp_im + w_im;
             }
         }
-        if ( direction == -1 ) {
+        if (direction == -1) {
             float nr = 1.0f / n;
-            for ( int i = 0; i < n; i++ ) {
+            for (int i = 0; i < n; i++) {
                 real[i] *= nr;
                 imag[i] *= nr;
             }
         }
     }
 
-    public void transform1D( float[] real, float[] imag, int logN, int n, boolean forward ) {
-        scramble( n, real, imag );
-        butterflies( n, logN, forward ? 1 : -1, real, imag );
+    public void transform1D(float[] real, float[] imag, int logN, int n, boolean forward) {
+        scramble(n, real, imag);
+        butterflies(n, logN, forward ? 1 : -1, real, imag);
     }
 
-    public void transform2D( float[] real, float[] imag, int cols, int rows, boolean forward ) {
+    public void transform2D(float[] real, float[] imag, int cols, int rows, boolean forward) {
         int log2cols = log2(cols);
         int log2rows = log2(rows);
         int n = Math.max(rows, cols);
@@ -111,26 +111,26 @@ public class FFT {
         float[] itemp = new float[n];
 
         // FFT the rows
-        for ( int y = 0; y < rows; y++ ) {
-            int offset = y*cols;
-            System.arraycopy( real, offset, rtemp, 0, cols );
-            System.arraycopy( imag, offset, itemp, 0, cols );
+        for (int y = 0; y < rows; y++) {
+            int offset = y * cols;
+            System.arraycopy(real, offset, rtemp, 0, cols);
+            System.arraycopy(imag, offset, itemp, 0, cols);
             transform1D(rtemp, itemp, log2cols, cols, forward);
-            System.arraycopy( rtemp, 0, real, offset, cols );
-            System.arraycopy( itemp, 0, imag, offset, cols );
+            System.arraycopy(rtemp, 0, real, offset, cols);
+            System.arraycopy(itemp, 0, imag, offset, cols);
         }
 
         // FFT the columns
-        for ( int x = 0; x < cols; x++ ) {
+        for (int x = 0; x < cols; x++) {
             int index = x;
-            for ( int y = 0; y < rows; y++ ) {
+            for (int y = 0; y < rows; y++) {
                 rtemp[y] = real[index];
                 itemp[y] = imag[index];
                 index += cols;
             }
             transform1D(rtemp, itemp, log2rows, rows, forward);
             index = x;
-            for ( int y = 0; y < rows; y++ ) {
+            for (int y = 0; y < rows; y++) {
                 real[index] = rtemp[y];
                 imag[index] = itemp[y];
                 index += cols;
@@ -138,7 +138,7 @@ public class FFT {
         }
     }
 
-    private int log2( int n ) {
+    private int log2(int n) {
         int m = 1;
         int log2n = 0;
 

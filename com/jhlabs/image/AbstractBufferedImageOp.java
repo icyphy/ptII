@@ -16,9 +16,14 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorModel;
 import java.lang.reflect.Field;
 
 /**
@@ -26,23 +31,28 @@ import java.lang.reflect.Field;
  */
 public abstract class AbstractBufferedImageOp implements BufferedImageOp, Cloneable {
 
+    @Override
     public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCM) {
-        if ( dstCM == null )
+        if (dstCM == null)
             dstCM = src.getColorModel();
-        return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()), dstCM.isAlphaPremultiplied(), null);
+        return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()),
+                dstCM.isAlphaPremultiplied(), null);
     }
 
-    public Rectangle2D getBounds2D( BufferedImage src ) {
+    @Override
+    public Rectangle2D getBounds2D(BufferedImage src) {
         return new Rectangle(0, 0, src.getWidth(), src.getHeight());
     }
 
-    public Point2D getPoint2D( Point2D srcPt, Point2D dstPt ) {
-        if ( dstPt == null )
+    @Override
+    public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
+        if (dstPt == null)
             dstPt = new Point2D.Double();
-        dstPt.setLocation( srcPt.getX(), srcPt.getY() );
+        dstPt.setLocation(srcPt.getX(), srcPt.getY());
         return dstPt;
     }
 
+    @Override
     public RenderingHints getRenderingHints() {
         return null;
     }
@@ -59,11 +69,11 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
      * @return the pixels
      * @see #setRGB
      */
-    public int[] getRGB( BufferedImage image, int x, int y, int width, int height, int[] pixels ) {
+    public int[] getRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
         int type = image.getType();
-        if ( type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB )
-            return (int [])image.getRaster().getDataElements( x, y, width, height, pixels );
-        return image.getRGB( x, y, width, height, pixels, 0, width );
+        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
+            return (int[]) image.getRaster().getDataElements(x, y, width, height, pixels);
+        return image.getRGB(x, y, width, height, pixels, 0, width);
     }
 
     /**
@@ -77,19 +87,19 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
      * @param pixels  the array of pixels to set
      * @see #getRGB
      */
-    public void setRGB( BufferedImage image, int x, int y, int width, int height, int[] pixels ) {
+    public void setRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
         int type = image.getType();
-        if ( type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB )
-            image.getRaster().setDataElements( x, y, width, height, pixels );
+        if (type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB)
+            image.getRaster().setDataElements(x, y, width, height, pixels);
         else
-            image.setRGB( x, y, width, height, pixels, 0, width );
+            image.setRGB(x, y, width, height, pixels, 0, width);
     }
 
+    @Override
     public Object clone() {
         try {
             return super.clone();
-        }
-        catch ( CloneNotSupportedException e ) {
+        } catch (CloneNotSupportedException e) {
             return null;
         }
     }
@@ -101,7 +111,7 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
      *  e.g. "red", or a CSS-style color specification, e.g. "#FF0000" for red.
      *  The color names supported are black, blue, cyan, darkGray, gray, green,
      *  lightGray, magenta, orange, pink, red, white, and yellow.
-     * 
+     *
      * @param colorSpec The string color specification.
      * @param defaultColor The default color to return if the string is malformed.
      * @return An integer color representation.

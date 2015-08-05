@@ -16,9 +16,12 @@ limitations under the License.
 
 package com.jhlabs.composite;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.color.*;
+import java.awt.Composite;
+import java.awt.CompositeContext;
+import java.awt.RenderingHints;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 
 /**
  * A special Composite used for drawing "marching ants". It draws the ants at the 127 contour of the alpha channel of the source.
@@ -26,95 +29,100 @@ import java.awt.color.*;
  */
 public final class ContourComposite implements Composite {
 
-	private int offset;
+    private int offset;
 
-	public ContourComposite( int offset ) {
-		this.offset = offset;
-	}
+    public ContourComposite(int offset) {
+        this.offset = offset;
+    }
 
-	public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
-		return new ContourCompositeContext( offset, srcColorModel, dstColorModel );
-	}
+    @Override
+    public CompositeContext createContext(ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints) {
+        return new ContourCompositeContext(offset, srcColorModel, dstColorModel);
+    }
 
-	public int hashCode() {
-		return 0;
-	}
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 
-	public boolean equals(Object o) {
-		if (!(o instanceof ContourComposite))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ContourComposite))
+            return false;
+        return true;
+    }
 
 }
 
 class ContourCompositeContext implements CompositeContext {
 
-	private int offset;
+    private int offset;
 
-	public ContourCompositeContext( int offset, ColorModel srcColorModel, ColorModel dstColorModel ) {
-		this.offset = offset;
-	}
+    public ContourCompositeContext(int offset, ColorModel srcColorModel, ColorModel dstColorModel) {
+        this.offset = offset;
+    }
 
-	public void dispose() {
-	}
-	
-	public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
-		int x = src.getMinX();
-		int y = src.getMinY();
-		int w = src.getWidth();
-		int h = src.getHeight();
+    @Override
+    public void dispose() {
+    }
 
-		int[] srcPix = null;
-		int[] srcPix2 = null;
-		int[] dstInPix = null;
-		int[] dstOutPix = new int[w*4];
+    @Override
+    public void compose(Raster src, Raster dstIn, WritableRaster dstOut) {
+        int x = src.getMinX();
+        int y = src.getMinY();
+        int w = src.getWidth();
+        int h = src.getHeight();
 
-		for ( int i = 0; i < h; i++ ) {
-			srcPix = src.getPixels(x, y, w, 1, srcPix);
-			dstInPix = dstIn.getPixels(x, y, w, 1, dstInPix);
+        int[] srcPix = null;
+        int[] srcPix2 = null;
+        int[] dstInPix = null;
+        int[] dstOutPix = new int[w * 4];
 
-			int lastAlpha = 0;
-			int k = 0;
-			for ( int j = 0; j < w; j++ ) {
-				int alpha = srcPix[k+3];
-				int alphaAbove = i != 0 ? srcPix2[k+3] : alpha;
+        for (int i = 0; i < h; i++) {
+            srcPix = src.getPixels(x, y, w, 1, srcPix);
+            dstInPix = dstIn.getPixels(x, y, w, 1, dstInPix);
 
-				if ( i != 0 && j != 0 && ((alpha ^ lastAlpha) & 0x80) != 0 || ((alpha ^ alphaAbove) & 0x80) != 0 ) {
-					if ((offset+i+j)%10 > 4) {
-						dstOutPix[k] = 0x00;
-						dstOutPix[k+1] = 0x00;
-						dstOutPix[k+2] = 0x00;
-					} else {
-						dstOutPix[k] = 0xff;
-						dstOutPix[k+1] = 0xff;
-						dstOutPix[k+2] = 0x7f;
-					}
-					dstOutPix[k+3] = 0xff;
-				} else {
-					dstOutPix[k] = dstInPix[k];
-					dstOutPix[k+1] = dstInPix[k+1];
-					dstOutPix[k+2] = dstInPix[k+2];
-//					if ( dstOut == dstIn )
-						dstOutPix[k] = 0xff;
-						dstOutPix[k+1] = 0;
-						dstOutPix[k+2] = 0;
-						dstOutPix[k+3] = 0;
-//					else
-//						dstOutPix[k+3] = dstInPix[k+3];
-				}
+            int lastAlpha = 0;
+            int k = 0;
+            for (int j = 0; j < w; j++) {
+                int alpha = srcPix[k + 3];
+                int alphaAbove = i != 0 ? srcPix2[k + 3] : alpha;
 
-				lastAlpha = alpha;
-				k += 4;
-			}
+                if (i != 0 && j != 0 && ((alpha ^ lastAlpha) & 0x80) != 0 || ((alpha ^ alphaAbove) & 0x80) != 0) {
+                    if ((offset + i + j) % 10 > 4) {
+                        dstOutPix[k] = 0x00;
+                        dstOutPix[k + 1] = 0x00;
+                        dstOutPix[k + 2] = 0x00;
+                    } else {
+                        dstOutPix[k] = 0xff;
+                        dstOutPix[k + 1] = 0xff;
+                        dstOutPix[k + 2] = 0x7f;
+                    }
+                    dstOutPix[k + 3] = 0xff;
+                } else {
+                    dstOutPix[k] = dstInPix[k];
+                    dstOutPix[k + 1] = dstInPix[k + 1];
+                    dstOutPix[k + 2] = dstInPix[k + 2];
+                    //					if ( dstOut == dstIn )
+                    dstOutPix[k] = 0xff;
+                    dstOutPix[k + 1] = 0;
+                    dstOutPix[k + 2] = 0;
+                    dstOutPix[k + 3] = 0;
+                    //					else
+                    //						dstOutPix[k+3] = dstInPix[k+3];
+                }
 
-			dstOut.setPixels(x, y, w, 1, dstOutPix);
+                lastAlpha = alpha;
+                k += 4;
+            }
 
-			int[] t = srcPix;
-			srcPix = srcPix2;
-			srcPix2 = t;
-			y++;
-		}
-	}
+            dstOut.setPixels(x, y, w, 1, dstOutPix);
+
+            int[] t = srcPix;
+            srcPix = srcPix2;
+            srcPix2 = t;
+            y++;
+        }
+    }
 
 }

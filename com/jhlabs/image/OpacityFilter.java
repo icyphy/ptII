@@ -16,60 +16,58 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.*;
-import java.awt.image.*;
-
 /**
  * Sets the opacity (alpha) of every pixel in an image to a constant value.
  */
 public class OpacityFilter extends PointFilter {
-	
-	private int opacity;
-	private int opacity24;
 
-	/**
-	 * Construct an OpacityFilter with 50% opacity.
-	 */
-	public OpacityFilter() {
-		this(0x88);
-	}
+    private int opacity;
+    private int opacity24;
 
-	/**
-	 * Construct an OpacityFilter with the given opacity (alpha).
-	 * @param opacity the opacity (alpha) in the range 0..255
-	 */
-	public OpacityFilter(int opacity) {
-		setOpacity(opacity);
-	}
+    /**
+     * Construct an OpacityFilter with 50% opacity.
+     */
+    public OpacityFilter() {
+        this(0x88);
+    }
 
-	/**
-	 * Set the opacity.
-	 * @param opacity the opacity (alpha) in the range 0..255
-     * @see #getOpacity
-	 */
-	public void setOpacity(int opacity) {
-		this.opacity = opacity;
-		opacity24 = opacity << 24;
-	}
-	
-	/**
-	 * Get the opacity setting.
-	 * @return the opacity
-     * @see #setOpacity
-	 */
-	public int getOpacity() {
-		return opacity;
-	}
-	
-	public int filterRGB(int x, int y, int rgb) {
-		if ((rgb & 0xff000000) != 0)
-			return (rgb & 0xffffff) | opacity24;
-		return rgb;
-	}
+    /**
+     * Construct an OpacityFilter with the given opacity (alpha).
+     * @param opacity the opacity (alpha) in the range 0..255
+     */
+    public OpacityFilter(int opacity) {
+        setOpacity(opacity);
+    }
 
-	public String toString() {
-		return "Colors/Transparency...";
-	}
+    /**
+     * Set the opacity.
+     * @param opacity the opacity (alpha) in the range 0..255
+    * @see #getOpacity
+     */
+    public void setOpacity(int opacity) {
+        this.opacity = opacity;
+        opacity24 = opacity << 24;
+    }
+
+    /**
+     * Get the opacity setting.
+     * @return the opacity
+    * @see #setOpacity
+     */
+    public int getOpacity() {
+        return opacity;
+    }
+
+    @Override
+    public int filterRGB(int x, int y, int rgb) {
+        if ((rgb & 0xff000000) != 0)
+            return (rgb & 0xffffff) | opacity24;
+        return rgb;
+    }
+
+    @Override
+    public String toString() {
+        return "Colors/Transparency...";
+    }
 
 }
-

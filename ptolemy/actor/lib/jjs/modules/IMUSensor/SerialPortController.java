@@ -20,13 +20,9 @@
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-// ENHANCEMENTS, OR MODIFICATIONS. 
+// ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
-
-import java.awt.EventQueue;
-import ptolemy.actor.lib.jjs.modules.IMUSensor.ReaderM;
-import ptolemy.actor.lib.jjs.modules.IMUSensor.CircularFifoQueue;
 
 /////////////////////////////////////////////////////////////////////////
 ///// SerialPortController
@@ -36,7 +32,7 @@ import ptolemy.actor.lib.jjs.modules.IMUSensor.CircularFifoQueue;
  *	II. This thread keeps an object of type ReaderM that starts a thread and continuously reads from
  *	the serial port that the sensor is connected on.
  *
- *	
+ *
  *
  *	@author Hunter Massey and Rajesh Kuni
  *	@version $Id$
@@ -46,56 +42,53 @@ import ptolemy.actor.lib.jjs.modules.IMUSensor.CircularFifoQueue;
 */
 
 public class SerialPortController {
-    
+
     // Parameters for the program
-    private static int baudrate = 115200; 
+    private static int baudrate = 115200;
     private int r1COM;
     private static int window = 60;
     //input correct values before running
-    
+
     private ReaderM h1;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Base constructor. No input values */
-    public SerialPortController(){
+    public SerialPortController() {
     }
-	
-    /** Starts a serial port connection with comm port with number x (ex: COM8) 
+
+    /** Starts a serial port connection with comm port with number x (ex: COM8)
      *  @param x The serial port number to connect to
-    */	
-    public void start(int x){
+    */
+    public void start(int x) {
         r1COM = x;
         h1 = new ReaderM(r1COM, baudrate, window);
         h1.start();
         h1.isStart = true;
     }
 
-    /** Grab the latest unread sample from the buffer and return it. Returns latest sample 
-     *	upon call if read index has caught up to write index. 
+    /** Grab the latest unread sample from the buffer and return it. Returns latest sample
+     *	upon call if read index has caught up to write index.
      *  @return The latest unread sample, or the latest read sample if write index = read index in buffer
     */
-    public int[] getSample()
-    {
-	int[] sample = new int[9];
-	// If the collection thread has started, grab data
-	if(h1.isStart){
-		try{
-			sample = h1.getNextUnreadSample();
-		}
-		catch(Exception e){}
-	}
-	else{
-		System.out.println("getSamples called before collection started");
-	}
-	return sample;
+    public int[] getSample() {
+        int[] sample = new int[9];
+        // If the collection thread has started, grab data
+        if (h1.isStart) {
+            try {
+                sample = h1.getNextUnreadSample();
+            } catch (Exception e) {
+            }
+        } else {
+            System.out.println("getSamples called before collection started");
+        }
+        return sample;
     }
 
-
     /** Stops the reading ReaderM thread and terminates the serial connection */
-    public void stop(){
+    public void stop() {
         h1.isStart = false;
-	h1.stopRead();
+        h1.stopRead();
     }
 }

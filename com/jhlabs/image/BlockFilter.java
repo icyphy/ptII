@@ -35,7 +35,7 @@ public class BlockFilter extends AbstractBufferedImageOp {
      * Construct a BlockFilter.
      * @param blockSize the number of pixels along each block edge
      */
-    public BlockFilter( int blockSize ) {
+    public BlockFilter(int blockSize) {
         this.blockSize = blockSize;
     }
 
@@ -57,25 +57,26 @@ public class BlockFilter extends AbstractBufferedImageOp {
         return blockSize;
     }
 
-    public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
+    @Override
+    public BufferedImage filter(BufferedImage src, BufferedImage dst) {
         int width = src.getWidth();
         int height = src.getHeight();
 
-        if ( dst == null )
-            dst = createCompatibleDestImage( src, null );
+        if (dst == null)
+            dst = createCompatibleDestImage(src, null);
 
         int[] pixels = new int[blockSize * blockSize];
-        for ( int y = 0; y < height; y += blockSize ) {
-            for ( int x = 0; x < width; x += blockSize ) {
-                int w = Math.min( blockSize, width-x );
-                int h = Math.min( blockSize, height-y );
-                int t = w*h;
-                getRGB( src, x, y, w, h, pixels );
+        for (int y = 0; y < height; y += blockSize) {
+            for (int x = 0; x < width; x += blockSize) {
+                int w = Math.min(blockSize, width - x);
+                int h = Math.min(blockSize, height - y);
+                int t = w * h;
+                getRGB(src, x, y, w, h, pixels);
                 int r = 0, g = 0, b = 0;
                 int argb;
                 int i = 0;
-                for ( int by = 0; by < h; by++ ) {
-                    for ( int bx = 0; bx < w; bx++ ) {
+                for (int by = 0; by < h; by++) {
+                    for (int bx = 0; bx < w; bx++) {
                         argb = pixels[i];
                         r += (argb >> 16) & 0xff;
                         g += (argb >> 8) & 0xff;
@@ -83,23 +84,23 @@ public class BlockFilter extends AbstractBufferedImageOp {
                         i++;
                     }
                 }
-                argb = ((r/t) << 16) | ((g/t) << 8) | (b/t);
+                argb = ((r / t) << 16) | ((g / t) << 8) | (b / t);
                 i = 0;
-                for ( int by = 0; by < h; by++ ) {
-                    for ( int bx = 0; bx < w; bx++ ) {
+                for (int by = 0; by < h; by++) {
+                    for (int bx = 0; bx < w; bx++) {
                         pixels[i] = (pixels[i] & 0xff000000) | argb;
                         i++;
                     }
                 }
-                setRGB( dst, x, y, w, h, pixels );
+                setRGB(dst, x, y, w, h, pixels);
             }
         }
 
         return dst;
     }
 
+    @Override
     public String toString() {
         return "Pixellate/Mosaic...";
     }
 }
-
