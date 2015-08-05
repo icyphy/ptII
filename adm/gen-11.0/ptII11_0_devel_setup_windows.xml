@@ -413,8 +413,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules/webSocket"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/webSocketClient/webSocketClient.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules/webSocketClient"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/node/node.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/node/"/>
             
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jmf/jmf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jmf"/>
