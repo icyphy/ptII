@@ -36,9 +36,9 @@ import java.util.List;
 
 import javax.swing.tree.TreePath;
 
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
-import diva.gui.toolbox.JContextMenu;
 
 ///////////////////////////////////////////////////////////////////
 //// PTreeMenuCreator

@@ -35,6 +35,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import diva.canvas.Figure;
+import diva.canvas.toolbox.SVGUtilities;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeRenderer;
 import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.Entity;
@@ -54,11 +59,6 @@ import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.ShadowRenderer;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.SVGUtilities;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.NodeRenderer;
 
 ///////////////////////////////////////////////////////////////////
 //// IconController

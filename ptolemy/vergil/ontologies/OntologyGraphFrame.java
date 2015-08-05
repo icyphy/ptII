@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import diva.graph.GraphPane;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.CompositeEntity;
@@ -37,7 +38,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import diva.graph.GraphPane;
 
 /** A graph editor frame for ontology models. Given a composite entity and
  *  a tableau, it creates an editor and populates the menus and toolbar. This

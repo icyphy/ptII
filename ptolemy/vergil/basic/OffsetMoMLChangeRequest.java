@@ -37,17 +37,17 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import diva.canvas.Figure;
+import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
-import diva.canvas.Figure;
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// OffsetMoMLChangeRequest

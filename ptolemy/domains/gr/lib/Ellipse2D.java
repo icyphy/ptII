@@ -28,10 +28,10 @@
  */
 package ptolemy.domains.gr.lib;
 
+import diva.canvas.toolbox.BasicFigure;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.canvas.toolbox.BasicFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// Ellipse2D

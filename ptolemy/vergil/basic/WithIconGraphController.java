@@ -35,6 +35,13 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.Action;
 
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.graph.GraphException;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
@@ -49,13 +56,6 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.graph.GraphException;
-import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// WithIconGraphController

@@ -34,14 +34,14 @@ import java.util.Iterator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import diva.canvas.Figure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// TextIcon

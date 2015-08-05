@@ -27,13 +27,13 @@
  */
 package ptolemy.chic;
 
+import diva.graph.GraphController;
 // Diva imports
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
-import diva.graph.GraphController;
 
 // Java imports
 ///////////////////////////////////////////////////////////////////

@@ -34,12 +34,12 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.RenameDialog;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RenameDialogAction

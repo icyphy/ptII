@@ -28,14 +28,14 @@
  */
 package ptolemy.actor.lib.jai;
 
+import com.sun.media.jai.codec.TIFFEncodeParam;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import com.sun.media.jai.codec.TIFFEncodeParam;
 
 ///////////////////////////////////////////////////////////////////
 //// JAITIFFWriter

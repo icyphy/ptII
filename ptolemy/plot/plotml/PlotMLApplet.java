@@ -36,10 +36,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import com.microstar.xml.XmlException;
+
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplet;
-
-import com.microstar.xml.XmlException;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotMLApplet

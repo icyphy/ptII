@@ -30,15 +30,15 @@ package ptolemy.vergil.basic;
 import java.awt.Color;
 import java.util.List;
 
+import diva.canvas.DamageRegion;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import diva.canvas.DamageRegion;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
 
 ///////////////////////////////////////////////////////////////////
 //// BasicGraphPane

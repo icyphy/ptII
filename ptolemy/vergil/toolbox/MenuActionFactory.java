@@ -36,8 +36,8 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import ptolemy.kernel.util.NamedObj;
 import diva.gui.toolbox.JContextMenu;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// MenuActionFactory

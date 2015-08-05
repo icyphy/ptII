@@ -29,6 +29,8 @@ package ptolemy.actor.lib.joystick;
 
 import java.io.IOException;
 
+import com.centralnexus.input.JoystickListener;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -40,8 +42,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import com.centralnexus.input.JoystickListener;
 
 ///////////////////////////////////////////////////////////////////
 ////

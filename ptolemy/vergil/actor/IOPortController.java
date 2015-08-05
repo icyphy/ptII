@@ -38,6 +38,19 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.PerimeterSite;
+import diva.canvas.connector.TerminalFigure;
+import diva.canvas.interactor.CompositeInteractor;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.util.java2d.Polygon2D;
+import diva.util.java2d.ShapeUtilities;
 import ptolemy.actor.CommunicationAspect;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
@@ -61,19 +74,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.kernel.AttributeController;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.Site;
-import diva.canvas.connector.PerimeterSite;
-import diva.canvas.connector.TerminalFigure;
-import diva.canvas.interactor.CompositeInteractor;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
-import diva.util.java2d.Polygon2D;
-import diva.util.java2d.ShapeUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// IOPortController

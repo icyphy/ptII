@@ -27,13 +27,13 @@ package ptolemy.vergil.actor;
 
 import java.util.ArrayList;
 
+import diva.canvas.Site;
+import diva.canvas.connector.BasicManhattanRouter;
+import diva.canvas.connector.ManhattanConnector;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.Link;
-import diva.canvas.Site;
-import diva.canvas.connector.BasicManhattanRouter;
-import diva.canvas.connector.ManhattanConnector;
 
 ///////////////////////////////////////////////////////////////////
 //// LinkManhattanConnector

@@ -54,6 +54,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -87,10 +91,6 @@ import ptolemy.util.CancelException;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlParser;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLParser

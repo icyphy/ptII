@@ -25,17 +25,17 @@ package ptolemy.vergil.ontologies;
 
 import javax.swing.Icon;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.RoundedRectangle;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.gui.toolbox.FigureIcon;
 
 /** An icon that displays multiple concepts, in a set of rounded boxes, with
  *  the uppermost box containing the name of the set of concepts.

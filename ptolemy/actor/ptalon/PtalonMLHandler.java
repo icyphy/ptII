@@ -31,10 +31,10 @@ package ptolemy.actor.ptalon;
 
 import java.util.Hashtable;
 
+import com.microstar.xml.HandlerBase;
+
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
-
-import com.microstar.xml.HandlerBase;
 
 /**
  XML handler to be used for "configure" code when parsing a MoML model

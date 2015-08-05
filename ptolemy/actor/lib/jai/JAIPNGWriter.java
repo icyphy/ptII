@@ -28,6 +28,8 @@
  */
 package ptolemy.actor.lib.jai;
 
+import com.sun.media.jai.codec.PNGEncodeParam;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -40,8 +42,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import com.sun.media.jai.codec.PNGEncodeParam;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIPNGWriter

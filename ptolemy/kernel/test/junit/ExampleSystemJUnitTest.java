@@ -29,6 +29,7 @@
 package ptolemy.kernel.test.junit;
 
 import static org.junit.Assert.assertArrayEquals;
+
 import ptolemy.kernel.test.ExampleSystem;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

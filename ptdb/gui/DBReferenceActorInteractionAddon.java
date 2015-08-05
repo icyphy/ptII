@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptdb.gui;
 
+import diva.graph.GraphController;
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.data.expr.StringParameter;
@@ -41,7 +42,6 @@ import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorInteractionAddon;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.graph.GraphController;
 
 /**
  * Implementation of interface for interaction with actors.  This

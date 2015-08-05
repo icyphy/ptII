@@ -24,13 +24,13 @@
 
 package ptolemy.vergil.toolbox;
 
+import diva.graph.GraphController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.MoMLModelAttributeController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
-import diva.graph.GraphController;
 
 /**
  * A factory attribute that creates MoMLModelAttributeControllers.

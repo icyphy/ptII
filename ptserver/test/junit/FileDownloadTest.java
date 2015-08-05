@@ -37,10 +37,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.caucho.hessian.client.HessianProxyFactory;
+
 import ptserver.control.IServerManager;
 import ptserver.control.PtolemyServer;
-
-import com.caucho.hessian.client.HessianProxyFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// FileDownloadTest

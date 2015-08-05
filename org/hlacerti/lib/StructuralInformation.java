@@ -32,9 +32,9 @@ package org.hlacerti.lib;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.util.Workspace;
 
 
 /**

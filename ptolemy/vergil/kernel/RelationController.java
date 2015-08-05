@@ -34,6 +34,14 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.SVGUtilities;
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.util.java2d.Polygon2D;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
@@ -49,14 +57,6 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.GetDocumentationAction;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.SVGUtilities;
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
-import diva.util.java2d.Polygon2D;
 
 ///////////////////////////////////////////////////////////////////
 //// RelationController

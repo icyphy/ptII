@@ -33,6 +33,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import diva.graph.GraphEvent;
+import diva.graph.GraphUtilities;
+import diva.graph.modular.EdgeModel;
+import diva.graph.modular.MutableEdgeModel;
+import diva.graph.modular.NodeModel;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptRelation;
 import ptolemy.data.ontologies.Ontology;
@@ -48,11 +53,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import ptolemy.vergil.kernel.Link;
-import diva.graph.GraphEvent;
-import diva.graph.GraphUtilities;
-import diva.graph.modular.EdgeModel;
-import diva.graph.modular.MutableEdgeModel;
-import diva.graph.modular.NodeModel;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologyGraphModel

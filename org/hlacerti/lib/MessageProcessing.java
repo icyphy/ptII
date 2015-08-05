@@ -33,32 +33,24 @@ the copyright link on the splash page or see copyright.htm.
  */
 package org.hlacerti.lib;
 
-import hla.rti.jlc.EncodingHelpers;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.util.IllegalActionException;
-
+import java.io.IOException;
 
 import certi.communication.MessageBuffer;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import certi.rti.impl.CertiRtiAmbassador;
-import java.io.IOException;
-import ptolemy.actor.util.Time;
+import hla.rti.jlc.EncodingHelpers;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  *

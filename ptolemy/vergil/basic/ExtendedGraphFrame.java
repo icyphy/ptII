@@ -41,11 +41,11 @@ import javax.swing.InputMap;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ExtendedGraphFrame

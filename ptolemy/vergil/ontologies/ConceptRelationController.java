@@ -32,19 +32,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Stroke;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.ConceptRelation;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.basic.PopupMouseFilter;
-import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
@@ -66,6 +53,19 @@ import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
 import diva.gui.toolbox.MenuCreator;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.ConceptRelation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.basic.PopupMouseFilter;
+import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// ConceptRelationController

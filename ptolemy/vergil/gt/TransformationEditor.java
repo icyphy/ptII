@@ -91,6 +91,20 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AbstractConnector;
+import diva.canvas.connector.Connector;
+import diva.canvas.interactor.SelectionModel;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.RoundedRectangle;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.CreationAttribute;
@@ -158,20 +172,6 @@ import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MenuItemListener;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.Site;
-import diva.canvas.connector.AbstractConnector;
-import diva.canvas.connector.Connector;
-import diva.canvas.interactor.SelectionModel;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.JContextMenu;
 
 ///////////////////////////////////////////////////////////////////
 //// TransformationEditor

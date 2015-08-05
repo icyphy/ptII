@@ -37,17 +37,17 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.RoundedRectangle;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.modal.StateIcon;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.gui.toolbox.FigureIcon;
 
 /**
  An icon for a Ptera event.

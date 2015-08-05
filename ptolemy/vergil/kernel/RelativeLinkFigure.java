@@ -37,11 +37,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.RelativeLocation;
-import ptolemy.vergil.basic.BasicGraphPane;
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasPane;
@@ -49,6 +44,11 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.graph.GraphController;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RelativeLocation;
+import ptolemy.vergil.basic.BasicGraphPane;
 
 /**
  * A figure for drawing a link between a relative locatable and its referenced object.

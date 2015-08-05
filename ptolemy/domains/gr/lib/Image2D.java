@@ -31,6 +31,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
+import diva.canvas.toolbox.ImageFigure;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.domains.gr.kernel.GRActor2D;
@@ -38,7 +39,6 @@ import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.canvas.toolbox.ImageFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// Image2D

@@ -41,6 +41,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import diva.canvas.Figure;
+import diva.graph.GraphController;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.gui.ComponentDialog;
@@ -59,12 +65,6 @@ import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.IconController;
-import diva.canvas.Figure;
-import diva.graph.GraphController;
-import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologySolverGraphFrame

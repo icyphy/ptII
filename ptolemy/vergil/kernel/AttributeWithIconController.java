@@ -30,6 +30,7 @@ package ptolemy.vergil.kernel;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
+import diva.graph.GraphController;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.ChangeRequest;
@@ -38,7 +39,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeWithIconController

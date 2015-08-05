@@ -30,16 +30,16 @@ package ptolemy.vergil.basic;
 import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.NodeInteractor;
 import diva.gui.toolbox.MenuCreator;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// ParameterizedNodeController

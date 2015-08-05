@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.type.BaseType;

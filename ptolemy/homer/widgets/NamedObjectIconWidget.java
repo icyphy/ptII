@@ -30,6 +30,8 @@ import java.util.List;
 
 import org.netbeans.api.visual.widget.Scene;
 
+import diva.canvas.Figure;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.homer.kernel.PositionableElement;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -37,8 +39,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
-import diva.canvas.Figure;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// NamedObjectIconWidget

@@ -46,6 +46,8 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.api.visual.widget.Scene;
 
+import diva.graph.JGraph;
+import diva.gui.toolbox.JCanvasPanner;
 import ptolemy.actor.gui.style.NotEditableLineStyle;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
@@ -69,8 +71,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
-import diva.graph.JGraph;
-import diva.gui.toolbox.JCanvasPanner;
 
 ///////////////////////////////////////////////////////////////////
 //// HomerMainFrame

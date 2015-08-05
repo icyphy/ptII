@@ -42,6 +42,21 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sleepycat.db.DatabaseException;
+import com.sleepycat.db.Environment;
+import com.sleepycat.db.EnvironmentConfig;
+import com.sleepycat.db.LockDetectMode;
+import com.sleepycat.db.TransactionConfig;
+import com.sleepycat.dbxml.XmlContainer;
+import com.sleepycat.dbxml.XmlDocument;
+import com.sleepycat.dbxml.XmlException;
+import com.sleepycat.dbxml.XmlManager;
+import com.sleepycat.dbxml.XmlQueryContext;
+import com.sleepycat.dbxml.XmlQueryExpression;
+import com.sleepycat.dbxml.XmlResults;
+import com.sleepycat.dbxml.XmlTransaction;
+import com.sleepycat.dbxml.XmlValue;
+
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
@@ -73,21 +88,6 @@ import ptdb.common.util.Utilities;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
-
-import com.sleepycat.db.DatabaseException;
-import com.sleepycat.db.Environment;
-import com.sleepycat.db.EnvironmentConfig;
-import com.sleepycat.db.LockDetectMode;
-import com.sleepycat.db.TransactionConfig;
-import com.sleepycat.dbxml.XmlContainer;
-import com.sleepycat.dbxml.XmlDocument;
-import com.sleepycat.dbxml.XmlException;
-import com.sleepycat.dbxml.XmlManager;
-import com.sleepycat.dbxml.XmlQueryContext;
-import com.sleepycat.dbxml.XmlQueryExpression;
-import com.sleepycat.dbxml.XmlResults;
-import com.sleepycat.dbxml.XmlTransaction;
-import com.sleepycat.dbxml.XmlValue;
 
 ///////////////////////////////////////////////////////////////////
 //// OracleXMLDBConnection

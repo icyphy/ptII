@@ -34,18 +34,17 @@ import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.icon.DynamicEditorIcon;
-
 import com.sun.pdfview.PDFPage;
 import com.sun.pdfview.PDFRenderer;
 
 import diva.canvas.Figure;
 import diva.canvas.toolbox.PaintedFigure;
 import diva.util.java2d.PaintedObject;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.icon.DynamicEditorIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// PDFIcon

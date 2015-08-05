@@ -30,6 +30,10 @@ package ptolemy.vergil.ptera;
 
 import java.awt.BasicStroke;
 
+import diva.canvas.Site;
+import diva.canvas.connector.ArcConnector;
+import diva.canvas.connector.Connector;
+import diva.graph.GraphController;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.ptera.kernel.SchedulingRelation;
 import ptolemy.kernel.util.IllegalActionException;
@@ -37,10 +41,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.modal.TransitionController;
-import diva.canvas.Site;
-import diva.canvas.connector.ArcConnector;
-import diva.canvas.connector.Connector;
-import diva.graph.GraphController;
 
 /**
  The edge controller for scheduling relations in a A Ptolemy Event

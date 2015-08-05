@@ -39,12 +39,12 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.microstar.xml.XmlException;
+
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import ptolemy.plot.PlotBox;
 import ptolemy.util.StringUtilities;
-
-import com.microstar.xml.XmlException;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotMLApplication

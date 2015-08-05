@@ -37,6 +37,23 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AutonomousSite;
+import diva.canvas.connector.Connector;
+import diva.canvas.connector.ConnectorManipulator;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.MouseFilter;
+import diva.canvas.interactor.AbstractInteractor;
+import diva.canvas.interactor.CompositeInteractor;
+import diva.canvas.interactor.GrabHandle;
+import diva.canvas.interactor.Interactor;
+import diva.graph.GraphException;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.kernel.CompositeEntity;
@@ -58,23 +75,6 @@ import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.modal.modal.ModalTransitionController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.unit.ConfigureUnitsAction;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.Site;
-import diva.canvas.connector.AutonomousSite;
-import diva.canvas.connector.Connector;
-import diva.canvas.connector.ConnectorManipulator;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.event.MouseFilter;
-import diva.canvas.interactor.AbstractInteractor;
-import diva.canvas.interactor.CompositeInteractor;
-import diva.canvas.interactor.GrabHandle;
-import diva.canvas.interactor.Interactor;
-import diva.graph.GraphException;
-import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMGraphController

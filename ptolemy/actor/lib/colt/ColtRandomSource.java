@@ -29,6 +29,12 @@ package ptolemy.actor.lib.colt;
 
 import java.util.Random;
 
+import cern.jet.random.engine.DRand;
+import cern.jet.random.engine.MersenneTwister;
+import edu.cornell.lassp.houle.RngPack.RandomElement;
+import edu.cornell.lassp.houle.RngPack.Ranecu;
+import edu.cornell.lassp.houle.RngPack.Ranlux;
+import edu.cornell.lassp.houle.RngPack.Ranmar;
 import ptolemy.actor.lib.RandomSource;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.LongToken;
@@ -38,12 +44,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.engine.DRand;
-import cern.jet.random.engine.MersenneTwister;
-import edu.cornell.lassp.houle.RngPack.RandomElement;
-import edu.cornell.lassp.houle.RngPack.Ranecu;
-import edu.cornell.lassp.houle.RngPack.Ranlux;
-import edu.cornell.lassp.houle.RngPack.Ranmar;
 
 ///////////////////////////////////////////////////////////////////
 //// ColtRandomSource

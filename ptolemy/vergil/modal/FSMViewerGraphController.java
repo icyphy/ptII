@@ -27,6 +27,12 @@
  */
 package ptolemy.vergil.modal;
 
+import diva.canvas.Figure;
+import diva.canvas.interactor.SelectionDragger;
+import diva.graph.EdgeController;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.graph.NodeController;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.StateEvent;
@@ -42,12 +48,6 @@ import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.modal.modal.ModalTransitionController;
-import diva.canvas.Figure;
-import diva.canvas.interactor.SelectionDragger;
-import diva.graph.EdgeController;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.graph.NodeController;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMViewerGraphController

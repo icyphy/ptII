@@ -35,6 +35,12 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.RoundedRectangle;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -47,12 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// NameIcon

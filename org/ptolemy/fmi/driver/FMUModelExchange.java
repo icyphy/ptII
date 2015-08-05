@@ -27,7 +27,6 @@
  */
 package org.ptolemy.fmi.driver;
 
-import java.io.File;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 

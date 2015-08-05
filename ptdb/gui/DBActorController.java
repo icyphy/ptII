@@ -34,6 +34,12 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -45,12 +51,6 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.graph.GraphController;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// DBActorController

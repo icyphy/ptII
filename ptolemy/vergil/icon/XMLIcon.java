@@ -33,6 +33,14 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Iterator;
 
+import diva.canvas.Figure;
+import diva.canvas.toolbox.PaintedFigure;
+import diva.canvas.toolbox.SVGParser;
+import diva.gui.toolbox.FigureIcon;
+import diva.util.java2d.PaintedList;
+import diva.util.xml.XmlDocument;
+import diva.util.xml.XmlElement;
+import diva.util.xml.XmlReader;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,14 +52,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.PaintedFigure;
-import diva.canvas.toolbox.SVGParser;
-import diva.gui.toolbox.FigureIcon;
-import diva.util.java2d.PaintedList;
-import diva.util.xml.XmlDocument;
-import diva.util.xml.XmlElement;
-import diva.util.xml.XmlReader;
 
 ///////////////////////////////////////////////////////////////////
 //// XMLIcon
