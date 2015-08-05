@@ -365,6 +365,9 @@ The Ptiny pack is required.
 
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/jjs.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs"/>
+
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules/IMUSensor"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/audio/audio.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules/audio"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/browser/browser.jar"
