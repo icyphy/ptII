@@ -60,10 +60,8 @@ public class FBMFilter extends PointFilter implements Cloneable {
 
 	/**
 	 * Set the amount of effect.
-	 * @param amount the amount
-     * @min-value 0
-     * @max-value 1
-     * @see #getAmount
+	 * @param amount the amount, min-value 0, max-value 1
+         * @see #getAmount
 	 */
 	public void setAmount(float amount) {
 		this.amount = amount;
@@ -87,12 +85,10 @@ public class FBMFilter extends PointFilter implements Cloneable {
 	}
 	
 	/**
-     * Specifies the scale of the texture.
-     * @param scale the scale of the texture.
-     * @min-value 1
-     * @max-value 300+
-     * @see #getScale
-     */
+         * Specifies the scale of the texture.
+         * @param scale the scale of the texture, min-value 1, max-value 300+
+         * @see #getScale
+         */
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
@@ -107,12 +103,10 @@ public class FBMFilter extends PointFilter implements Cloneable {
 	}
 
 	/**
-     * Specifies the stretch factor of the texture.
-     * @param stretch the stretch factor of the texture.
-     * @min-value 1
-     * @max-value 50+
-     * @see #getStretch
-     */
+         * Specifies the stretch factor of the texture.
+         * @param stretch the stretch factor of the texture, min-value 1, max-value 50+
+         * @see #getStretch
+         */
 	public void setStretch(float stretch) {
 		this.stretch = stretch;
 	}

@@ -98,11 +98,11 @@ public class ArrayColormap implements Colormap, Cloneable {
 	/**
 	 * Set the color at "index" to "color". Entries are interpolated linearly from
 	 * the existing entries at "firstIndex" and "lastIndex" to the new entry.
-	 * firstIndex < index < lastIndex must hold.
-     * @param index the position to set
-     * @param firstIndex the position of the first color from which to interpolate
-     * @param lastIndex the position of the second color from which to interpolate
-     * @param color the color to set
+	 * firstIndex &lt; index &lt; lastIndex must hold.
+         * @param index the position to set
+         * @param firstIndex the position of the first color from which to interpolate
+         * @param lastIndex the position of the second color from which to interpolate
+         * @param color the color to set
 	 */
 	public void setColorInterpolated(int index, int firstIndex, int lastIndex, int color) {
 		int firstColor = map[firstIndex];

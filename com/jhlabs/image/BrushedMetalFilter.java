@@ -167,9 +167,7 @@ public class BrushedMetalFilter implements BufferedImageOp {
 
     /**
      * Set the horizontal size of the blur.
-     * @param radius the radius of the blur in the horizontal direction
-     * @min-value 0
-     * @max-value 100+
+     * @param radius the radius of the blur in the horizontal direction, min-value 0, max-value 100+
      * @see #getRadius
      */
     public void setRadius(int radius) {
@@ -187,9 +185,7 @@ public class BrushedMetalFilter implements BufferedImageOp {
 
     /**
      * Set the amount of noise to add in the range 0..1.
-     * @param amount the amount of noise
-     * @min-value 0
-     * @max-value 1
+     * @param amount the amount of noise, min-value 0, max-value 1
      * @see #getAmount
      */
     public void setAmount(float amount) {
@@ -207,9 +203,7 @@ public class BrushedMetalFilter implements BufferedImageOp {
 
     /**
      * Set the amount of shine to add to the range 0..1.
-     * @param shine the amount of shine
-     * @min-value 0
-     * @max-value 1
+     * @param shine the amount of shine, min-value 0, max-value 1
      * @see #getShine
      */
     public void setShine( float shine ) {

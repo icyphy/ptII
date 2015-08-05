@@ -57,10 +57,8 @@ public class FieldWarpFilter extends TransformFilter {
 
 	/**
 	 * Set the amount of warp.
-	 * @param amount the amount
-     * @min-value 0
-     * @max-value 1
-     * @see #getAmount
+	 * @param amount the amount, min-value 0, max-value 1
+         * @see #getAmount
 	 */
 	public void setAmount(float amount) {
 		this.amount = amount;

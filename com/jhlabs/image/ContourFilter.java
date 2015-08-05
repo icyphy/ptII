@@ -41,12 +41,10 @@ public class ContourFilter extends WholeImageFilter {
 	}
 	
 	/**
-     * Specifies the scale of the contours.
-     * @param scale the scale of the contours.
-     * @min-value 0
-     * @max-value 1
-     * @see #getScale
-     */
+         * Specifies the scale of the contours.
+         * @param scale the scale of the contours, min-value 0, max-value 1
+         * @see #getScale
+         */
 	public void setScale( float scale ) {
 		this.scale = scale;
 	}
