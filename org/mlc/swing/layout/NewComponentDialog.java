@@ -50,10 +50,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import bsh.Interpreter;
-
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.factories.ButtonBarFactory;
+
+import bsh.Interpreter;
 
 /**
  * When performing drag-and-drop from the component palette to the table,

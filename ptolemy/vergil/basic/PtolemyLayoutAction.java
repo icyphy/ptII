@@ -34,17 +34,6 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.kernel.undo.UndoStackAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLUndoEntry;
-import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.ActorGraphFrame;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.Site;
@@ -56,6 +45,17 @@ import diva.graph.GraphUtilities;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyLayoutAction

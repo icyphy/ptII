@@ -59,7 +59,6 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
-import ptolemy.actor.lib.fmi.FMUImport;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.SmoothToken;
 import ptolemy.data.Token;

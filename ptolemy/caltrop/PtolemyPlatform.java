@@ -44,6 +44,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import caltrop.interpreter.Context;
+import caltrop.interpreter.Function;
+import caltrop.interpreter.InterpreterException;
+import caltrop.interpreter.Procedure;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.environment.HashEnvironment;
+import caltrop.interpreter.java.ClassObject;
+import caltrop.interpreter.java.MethodObject;
+import caltrop.interpreter.util.Platform;
 import ptolemy.caltrop.util.IntegerList;
 import ptolemy.caltrop.util.PtArrayList;
 import ptolemy.caltrop.util.PtCalFunction;
@@ -61,15 +70,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-import caltrop.interpreter.Context;
-import caltrop.interpreter.Function;
-import caltrop.interpreter.InterpreterException;
-import caltrop.interpreter.Procedure;
-import caltrop.interpreter.environment.Environment;
-import caltrop.interpreter.environment.HashEnvironment;
-import caltrop.interpreter.java.ClassObject;
-import caltrop.interpreter.java.MethodObject;
-import caltrop.interpreter.util.Platform;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyPlatform

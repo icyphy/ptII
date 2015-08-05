@@ -33,13 +33,13 @@ package ptolemy.actor.lib.jjs.modules.eventbus;
 import java.util.HashMap;
 import java.util.Map;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
 import org.vertx.java.core.VertxFactory;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 ///////////////////////////////////////////////////////////////////
 //// EventBusHelper

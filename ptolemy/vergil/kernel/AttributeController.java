@@ -31,6 +31,10 @@ import java.awt.Color;
 
 import javax.swing.Action;
 
+import diva.canvas.Figure;
+import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,10 +46,6 @@ import ptolemy.vergil.basic.IconController;
 import ptolemy.vergil.basic.RemoveCustomDocumentationAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MoveAction;
-import diva.canvas.Figure;
-import diva.graph.GraphController;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeController

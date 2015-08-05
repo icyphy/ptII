@@ -27,12 +27,12 @@ package ptolemy.vergil.actor;
 
 import java.util.List;
 
+import diva.canvas.Figure;
+import diva.canvas.connector.TerminalFigure;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.PortSite;
-import diva.canvas.Figure;
-import diva.canvas.connector.TerminalFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// PortTerminal

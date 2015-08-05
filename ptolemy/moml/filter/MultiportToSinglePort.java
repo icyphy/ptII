@@ -27,9 +27,7 @@
 package ptolemy.moml.filter;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;

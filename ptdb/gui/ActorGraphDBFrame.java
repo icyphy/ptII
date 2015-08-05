@@ -49,6 +49,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import diva.gui.GUIUtilities;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.load.LoadManager;
@@ -63,7 +64,6 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorGraphDBFrame

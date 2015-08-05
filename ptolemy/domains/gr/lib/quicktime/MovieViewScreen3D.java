@@ -39,6 +39,8 @@ import javax.media.j3d.Canvas3D;
 import javax.media.j3d.ImageComponent;
 import javax.media.j3d.ImageComponent2D;
 
+import com.sun.j3d.utils.universe.SimpleUniverse;
+
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -68,8 +70,6 @@ import quicktime.std.movies.Track;
 import quicktime.std.movies.media.VideoMedia;
 import quicktime.util.QTHandle;
 import quicktime.util.RawEncodedImage;
-
-import com.sun.j3d.utils.universe.SimpleUniverse;
 
 ///////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D

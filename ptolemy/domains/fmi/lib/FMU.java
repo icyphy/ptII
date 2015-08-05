@@ -53,6 +53,11 @@ import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 import org.ptolemy.fmi.type.FMIType;
 
+import com.sun.jna.Function;
+import com.sun.jna.NativeLibrary;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -86,11 +91,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import com.sun.jna.Function;
-import com.sun.jna.NativeLibrary;
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
 
 ///////////////////////////////////////////////////////////////////
 //// FMU

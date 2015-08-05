@@ -32,15 +32,15 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import ptolemy.kernel.Relation;
-import ptolemy.vergil.basic.layout.kieler.LayoutHint;
-import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
-import ptolemy.vergil.kernel.Link;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.connector.BasicManhattanRouter;
 import diva.canvas.connector.PerimeterSite;
+import ptolemy.kernel.Relation;
+import ptolemy.vergil.basic.layout.kieler.LayoutHint;
+import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
+import ptolemy.vergil.kernel.Link;
 
 ///////////////////////////////////////////////////////////////////
 ////KielerLayoutConnector

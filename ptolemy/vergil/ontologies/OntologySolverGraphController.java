@@ -23,17 +23,17 @@
  */
 package ptolemy.vergil.ontologies;
 
+import diva.canvas.interactor.SelectionDragger;
+import diva.graph.EdgeController;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.graph.NodeController;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.basic.WithIconGraphController;
-import diva.canvas.interactor.SelectionDragger;
-import diva.graph.EdgeController;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.graph.NodeController;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologySolverGraphController

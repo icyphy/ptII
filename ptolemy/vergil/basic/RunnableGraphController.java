@@ -38,6 +38,8 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -54,8 +56,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RunnableGraphController

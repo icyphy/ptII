@@ -28,6 +28,8 @@
  */
 package ptolemy.actor.lib.jai;
 
+import com.sun.media.jai.codec.JPEGEncodeParam;
+
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -36,8 +38,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import com.sun.media.jai.codec.JPEGEncodeParam;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIJPEGWriter

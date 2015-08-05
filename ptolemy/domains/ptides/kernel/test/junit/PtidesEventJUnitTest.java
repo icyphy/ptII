@@ -29,6 +29,7 @@
 package ptolemy.domains.ptides.kernel.test.junit;
 
 import static org.junit.Assert.assertArrayEquals;
+
 import ptolemy.domains.ptides.kernel.PtidesEvent;
 
 ///////////////////////////////////////////////////////////////////

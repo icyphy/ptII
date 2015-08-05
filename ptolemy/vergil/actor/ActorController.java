@@ -34,6 +34,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.DialogTableau;
@@ -63,9 +66,6 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.RotateOrFlipPorts;
 import ptolemy.vergil.unit.ConfigureUnitsAction;
-import diva.graph.GraphController;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorController

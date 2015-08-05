@@ -37,12 +37,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import doc.tutorial.graph.ShortestPathFinder;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
-import doc.tutorial.graph.ShortestPathFinder;
 
 /** JUnit test class for ShortestPathFinder.
  *  @author Edward A. Lee

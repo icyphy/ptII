@@ -36,11 +36,11 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Stack;
 
-import ptolemy.plot.PlotBoxInterface;
-
 import com.microstar.xml.HandlerBase;
 import com.microstar.xml.XmlException;
 import com.microstar.xml.XmlParser;
+
+import ptolemy.plot.PlotBoxInterface;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotBoxMLParser

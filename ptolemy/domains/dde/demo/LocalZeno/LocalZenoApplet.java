@@ -37,22 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.IORelation;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.AWTContainer;
-import ptolemy.actor.gui.PtolemyApplet;
-import ptolemy.actor.lib.Const;
-import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.data.DoubleToken;
-import ptolemy.domains.dde.kernel.DDEDirector;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.Arrowhead;
@@ -77,6 +61,22 @@ import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.AWTContainer;
+import ptolemy.actor.gui.PtolemyApplet;
+import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.gui.TimedPlotter;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.dde.kernel.DDEDirector;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
 //// LocalZenoApplet

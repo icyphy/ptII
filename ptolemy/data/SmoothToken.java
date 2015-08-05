@@ -29,8 +29,8 @@ package ptolemy.data;
 
 import java.util.Arrays;
 
-import ptolemy.data.type.BaseType;
 import ptolemy.actor.util.Time;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////

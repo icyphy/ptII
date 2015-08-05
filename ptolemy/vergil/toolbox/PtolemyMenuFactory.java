@@ -32,11 +32,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.kernel.util.NamedObj;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.gui.toolbox.JContextMenu;
 import diva.gui.toolbox.MenuFactory;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyMenuFactory

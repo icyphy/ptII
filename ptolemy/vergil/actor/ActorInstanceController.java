@@ -29,12 +29,12 @@ package ptolemy.vergil.actor;
 
 import java.awt.event.ActionEvent;
 
+import diva.graph.GraphController;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorInstanceController

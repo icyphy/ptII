@@ -32,15 +32,15 @@ package ptolemy.caltrop.ddi;
 import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.util.IllegalActionException;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.ast.AttributeKeys;
 import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.environment.Environment;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// DDF

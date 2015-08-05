@@ -31,8 +31,8 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.util.Vector;
 
-import ptolemy.kernel.util.InternalErrorException;
 import diva.graph.JGraph;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// EditorDropTarget

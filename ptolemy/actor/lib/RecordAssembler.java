@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;

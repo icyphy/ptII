@@ -35,11 +35,11 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.Editable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ConfigureAction

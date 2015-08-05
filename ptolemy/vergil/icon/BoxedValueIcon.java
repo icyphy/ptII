@@ -31,13 +31,13 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
 
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.LabelFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// BoxedValueIcon

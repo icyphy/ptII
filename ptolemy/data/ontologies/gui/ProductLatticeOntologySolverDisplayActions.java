@@ -30,6 +30,7 @@ package ptolemy.data.ontologies.gui;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
+import diva.graph.GraphController;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologyMoMLHandler;
 import ptolemy.data.ontologies.lattice.ProductLatticeOntology;
@@ -40,7 +41,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// ProductLatticeOntologySolverDisplayActions

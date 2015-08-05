@@ -33,8 +33,6 @@ package ptolemy.actor.lib.jjs.modules.webSocket;
 import java.util.LinkedList;
 import java.util.List;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.VoidHandler;
 import org.vertx.java.core.buffer.Buffer;
@@ -42,6 +40,7 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketBase;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 import ptolemy.kernel.util.IllegalActionException;
 

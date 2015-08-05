@@ -36,6 +36,9 @@ import java.net.URL;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
+import com.sun.media.jai.codec.FileCacheSeekableStream;
+import com.sun.media.jai.codec.SeekableStream;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
@@ -44,9 +47,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import com.sun.media.jai.codec.FileCacheSeekableStream;
-import com.sun.media.jai.codec.SeekableStream;
 
 ///////////////////////////////////////////////////////////////////
 //// JAIImageReader

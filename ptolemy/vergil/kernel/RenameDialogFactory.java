@@ -35,10 +35,10 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.gui.RenameDialog;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
-import diva.gui.toolbox.JContextMenu;
 
 ///////////////////////////////////////////////////////////////////
 //// RenameDialogFactory
