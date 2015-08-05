@@ -927,7 +927,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                         .add(_hlaTimeStep)) >= 0) {
                                     if (_debugging) {
                                         _debug(this.getDisplayName()
-                                                + " proposeTime() -  call CERTI TARA -"
+                                                + " proposeTime() -  call CERTI TAR -"
                                                 + " timeAdvanceRequest("
                                                 + certiProposedTime.getTime()
                                                 + ")");
@@ -988,7 +988,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                 .add(_hlaTimeStep)) < 0) {
                                     if (_debugging) {
                                         _debug(this.getDisplayName()
-                                                + " proposeTime() -  call CERTI TARA -"
+                                                + " proposeTime() -  call CERTI TAR -"
                                                 + " timeAdvanceRequest("
                                                 + certiProposedTime.getTime()
                                                 + ")");
@@ -1060,7 +1060,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 while (proposedTime.compareTo(nextTimeStep) >= 0) {
                                     if (_debugging) {
                                         _debug(this.getDisplayName()
-                                                + " proposeTime() -  call CERTI TARA -"
+                                                + " proposeTime() -  call CERTI TAR -"
                                                 + " timeAdvanceRequest("
                                                 + certiProposedTime.getTime()
                                                 + ")");
