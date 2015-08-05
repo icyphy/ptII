@@ -91,7 +91,7 @@ jni: $(PTLIB)
 #	javah -classpath $(CLASSPATH) -o $(JNIFMU).h ptolemy.actor.lib.fmi.FMUImport
 
 $(PTLIB): $(JNISRCS)
-	$(PTCC) $(PTJNI_NO_CYGWIN) \
+	$(PTCC) $(PTJNI_NO_CYGWIN) -Wall \
 	 	-I../fmus/template/fmiv20/ \
 		"-I$(PTJAVA_HOME)/../include" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
