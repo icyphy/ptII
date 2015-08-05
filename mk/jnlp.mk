@@ -567,6 +567,7 @@ FULL_10_0_JARS = \
 FULL_11_0_JARS = \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar \
 	ptolemy/actor/lib/jjs/modules/audio/audio.jar \
 	ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/browser/browser.jar \
