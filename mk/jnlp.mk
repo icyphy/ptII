@@ -583,7 +583,6 @@ FULL_11_0_JARS = \
 	ptolemy/actor/lib/jjs/modules/localStorage/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar \
 	ptolemy/actor/lib/jjs/modules/mqtt/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/node/node.jar \
 	ptolemy/actor/lib/jjs/modules/objectAssign/objectAssign.jar \
 	ptolemy/actor/lib/jjs/modules/shell/shell.jar \
 	ptolemy/actor/lib/jjs/modules/udpSocket/udpSocket.jar \
