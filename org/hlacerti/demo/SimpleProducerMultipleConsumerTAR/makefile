@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/SimpleProducerConsumer
+ME =        org/hlacerti/demo/SimpleProducerMultipleConsumerTAR
 
 # Root of the Java directory
 ROOT =      ../../../..
@@ -41,18 +41,20 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     SimpleProducerConsumerMulti
+PTPACKAGE =     SimpleProducerMultipleConsumerTAR
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SimpleProducerConsumerMulti.xml \
-	consumerMulti.xml \
+	SimpleProducerMultipleConsumerTAR.xml \
 	producerP1.xml \
-	producerP2.xml \
-	producerP3.xml
+	consumerC1.xml \
+	consumerC2.xml \
+	consumerC3.xml \
+	consumerC4-ner.xml \
+	SimpleProducerConsumer.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -79,14 +81,10 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" consumer.xml
-	"$(PTII)/bin/ptolemy" producer.xml
-	"$(PTII)/bin/ptolemy" SimpleProducerConsumer.xml
+	"$(PTII)/bin/ptolemy" SimpleProducerMultipleConsumerTAR.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" consumer.xml
-	"$(PTII)/bin/vergil" producer.xml
-	"$(PTII)/bin/vergil" SimpleProducerConsumer.xml
+	"$(PTII)/bin/vergil" SimpleProducerMultipleConsumerTAR.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
