@@ -202,29 +202,29 @@ release_joule_remote4_test:
 
 ####
 release_terra:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc clean all src.jar
 
 release_terra_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc setup
 
 release_terra_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc remote4_Test
 
 release_terra_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc update_ftp
 
 ####
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc clean all src.jar
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc remote4_Test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc update_ftp
 
 ####
 release_windows:
@@ -851,6 +851,7 @@ JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
+	# Creating PTII_SRC_JAR: $(PTII_SRC_JAR)
 	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
@@ -3353,7 +3354,7 @@ $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "# Building in the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_11/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
