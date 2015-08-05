@@ -63,7 +63,7 @@ import java.awt.image.BufferedImage;
  *  provided image to be filtered. If enough of the pixels differ by enough,
  *  then it modifies the image to be filtered by adding a small red circle
  *  at the center of gravity of the pixels that differ by enough.
- *  
+ *
  *  The parameters of the filter are:
  *  <ul>
  *  <li> <i>PixelThreshold</i>: Intensity threshold whereby a pixel is
@@ -76,13 +76,13 @@ import java.awt.image.BufferedImage;
  *  Bartosz Firyn (SarXos), available from:
  *    https://github.com/sarxos/webcam-capture
  *  The webcam-capture package is licensed under the MIT License.
- * 
+ *
  *  The filter architecture follows the pattern defined by Jerry Huxtable
  *  in the JH Labs Java Image Processing library, available from:
  *    http://www.jhlabs.com/ip/filters
  *  and licensed under the Apache License, Version 2.0
  *  (http://www.apache.org/licenses/LICENSE-2.0).
- *  
+ *
  *  @author Bartosz Firyn (SarXos) and Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -98,13 +98,14 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
      *  the center of gravity of the motion. If the destination argument is null,
      *  then the red circle is added directly to the source, and the source is
      *  returned. Otherwise, the red circle is added to the destination image.
-     *  
+     *
      *  @param source The source image, on which motion is detected.
      *  @param destination The destination image, on which the red circle is added,
      *   or null to specify to add the circle to the source image.
      */
-    public BufferedImage filter( BufferedImage source, BufferedImage destination ) {
-        if ( destination == null ) {
+    @Override
+    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        if (destination == null) {
             // If no destination is provided, overwrite the source.
             destination = source;
         }
@@ -175,7 +176,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
 
         return destination;
     }
-    
+
     /** Get the percentage fraction of detected motion area threshold above which it is classified as
      *  "moved". Minimum value for this is 0 and maximum is 100, which corresponds to full image
      *  covered by spontaneous motion.
@@ -185,7 +186,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
     public double getAreaThreshold() {
         return _areaThreshold;
     }
-    
+
     /** Return the motion strength (0 = no motion, 100 = full image covered by motion).
      *  @return The motion area percentage.
      */
@@ -202,7 +203,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
     public int getPixelThreshold() {
         return _pixelThreshold;
     }
-    
+
     /** Return whether motion was detected in the last filter operation.
      *  @return Whether motion was detected.
      */
@@ -245,10 +246,11 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
     /** Return a string description of the filter.
      *  @return The string "MotionDetectorFilter".
      */
+    @Override
     public String toString() {
         return "MotionDetectorFilter";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -307,14 +309,14 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
         }
         return c;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Motion strength (0 = no motion, 100 = full image covered by motion). */
     private double _area = 0.0;
-    
-    /** The percentage threshold of image that has different pixels 
+
+    /** The percentage threshold of image that has different pixels
      * for motion to be detected (a double 0-100, with default 0.2).
      */
     private double _areaThreshold = 0.2;
@@ -330,12 +332,12 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
 
     /** Indicator that motion has been detected by the filter operation. */
     private boolean _motion = false;
-    
+
     /** Intensity threshold whereby a pixel is deemed to different
      * (an int 0 - 255, with default 25).
      */
     private int _pixelThreshold = 25;
-    
+
     /** Previously captured image. */
     private BufferedImage _previous = null;
 }

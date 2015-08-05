@@ -21,11 +21,10 @@ package com.jhlabs.image;
  * colors. This is similar to the ColorModel class but works with floating point values.
  */
 public interface Colormap {
-	/**
-	 * Convert a value in the range 0..1 to an RGB color.
-	 * @param v a value in the range 0..1
-	 * @return an RGB color
-	 */
-	public int getColor(float v);
+    /**
+     * Convert a value in the range 0..1 to an RGB color.
+     * @param v a value in the range 0..1
+     * @return an RGB color
+     */
+    public int getColor(float v);
 }
-

@@ -16,30 +16,27 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.*;
-import java.awt.image.*;
-
 /**
  * A filter for changing the gamma of an image.
  */
 public class GammaFilter extends TransferFilter {
 
-	private float rGamma, gGamma, bGamma;
+    private float rGamma, gGamma, bGamma;
 
     /**
      * Construct a GammaFilter.
      */
-	public GammaFilter() {
-		this(1.0f);
-	}
+    public GammaFilter() {
+        this(1.0f);
+    }
 
     /**
      * Construct a GammaFilter.
      * @param gamma the gamma level for all RGB channels
      */
-	public GammaFilter(float gamma) {
-		this(gamma, gamma, gamma);
-	}
+    public GammaFilter(float gamma) {
+        this(gamma, gamma, gamma);
+    }
 
     /**
      * Construct a GammaFilter.
@@ -47,9 +44,9 @@ public class GammaFilter extends TransferFilter {
      * @param gGamma the gamma level for the blue channel
      * @param bGamma the gamma level for the green channel
      */
-	public GammaFilter(float rGamma, float gGamma, float bGamma) {
-		setGamma(rGamma, gGamma, bGamma);
-	}
+    public GammaFilter(float rGamma, float gGamma, float bGamma) {
+        setGamma(rGamma, gGamma, bGamma);
+    }
 
     /**
      * Set the gamma levels.
@@ -58,61 +55,62 @@ public class GammaFilter extends TransferFilter {
      * @param bGamma the gamma level for the green channel
      * @see #getGamma
      */
-	public void setGamma(float rGamma, float gGamma, float bGamma) {
-		this.rGamma = rGamma;
-		this.gGamma = gGamma;
-		this.bGamma = bGamma;
-		initialized = false;
-	}
+    public void setGamma(float rGamma, float gGamma, float bGamma) {
+        this.rGamma = rGamma;
+        this.gGamma = gGamma;
+        this.bGamma = bGamma;
+        initialized = false;
+    }
 
     /**
      * Set the gamma level.
      * @param gamma the gamma level for all RGB channels
      * @see #getGamma
      */
-	public void setGamma(float gamma) {
-		setGamma(gamma, gamma, gamma);
-	}
-	
+    public void setGamma(float gamma) {
+        setGamma(gamma, gamma, gamma);
+    }
+
     /**
      * Get the gamma level.
      * @return the gamma level for all RGB channels
      * @see #setGamma
      */
-	public float getGamma() {
-		return rGamma;
-	}
-	
+    public float getGamma() {
+        return rGamma;
+    }
+
+    @Override
     protected void initialize() {
-		rTable = makeTable(rGamma);
+        rTable = makeTable(rGamma);
 
-		if (gGamma == rGamma)
-			gTable = rTable;
-		else
-			gTable = makeTable(gGamma);
+        if (gGamma == rGamma)
+            gTable = rTable;
+        else
+            gTable = makeTable(gGamma);
 
-		if (bGamma == rGamma)
-			bTable = rTable;
-		else if (bGamma == gGamma)
-			bTable = gTable;
-		else
-			bTable = makeTable(bGamma);
-	}
+        if (bGamma == rGamma)
+            bTable = rTable;
+        else if (bGamma == gGamma)
+            bTable = gTable;
+        else
+            bTable = makeTable(bGamma);
+    }
 
-	private int[] makeTable(float gamma) {
-		int[] table = new int[256];
-		for (int i = 0; i < 256; i++) {
-			int v = (int) ((255.0 * Math.pow(i/255.0, 1.0 / gamma)) + 0.5);
-			if (v > 255)
-				v = 255;
-			table[i] = v;
-		}
-		return table;
-	}
+    private int[] makeTable(float gamma) {
+        int[] table = new int[256];
+        for (int i = 0; i < 256; i++) {
+            int v = (int) ((255.0 * Math.pow(i / 255.0, 1.0 / gamma)) + 0.5);
+            if (v > 255)
+                v = 255;
+            table[i] = v;
+        }
+        return table;
+    }
 
-	public String toString() {
-		return "Colors/Gamma...";
-	}
+    @Override
+    public String toString() {
+        return "Colors/Gamma...";
+    }
 
 }
-

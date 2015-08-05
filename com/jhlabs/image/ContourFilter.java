@@ -16,131 +16,132 @@ limitations under the License.
 
 package com.jhlabs.image;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.Rectangle;
 
 /**
  * A filter which draws contours on an image at given brightness levels.
  */
 public class ContourFilter extends WholeImageFilter {
 
-	private float levels = 5;
-	private float scale = 1;
-	private float offset = 0;
-	private int contourColor = 0xff000000;
-	
-	public ContourFilter() {
-	}
+    private float levels = 5;
+    private float scale = 1;
+    private float offset = 0;
+    private int contourColor = 0xff000000;
 
-	public void setLevels( float levels ) {
-		this.levels = levels;
-	}
-	
-	public float getLevels() {
-		return levels;
-	}
-	
-	/**
-         * Specifies the scale of the contours.
-         * @param scale the scale of the contours, min-value 0, max-value 1
-         * @see #getScale
-         */
-	public void setScale( float scale ) {
-		this.scale = scale;
-	}
-	
-	/**
-     * Returns the scale of the contours.
-     * @return the scale of the contours.
-     * @see #setScale
+    public ContourFilter() {
+    }
+
+    public void setLevels(float levels) {
+        this.levels = levels;
+    }
+
+    public float getLevels() {
+        return levels;
+    }
+
+    /**
+     * Specifies the scale of the contours.
+     * @param scale the scale of the contours, min-value 0, max-value 1
+     * @see #getScale
      */
-	public float getScale() {
-		return scale;
-	}
-	
-	public void setOffset( float offset ) {
-		this.offset = offset;
-	}
-	
-	public float getOffset() {
-		return offset;
-	}
-	
-	public void setContourColor( int contourColor ) {
-		this.contourColor = contourColor;
-	}
-	
-	public int getContourColor() {
-		return contourColor;
-	}
-	
-	protected int[] filterPixels( int width, int height, int[] inPixels, Rectangle transformedSpace ) {
-		int index = 0;
-		short[][] r = new short[3][width];
-		int[] outPixels = new int[width * height];
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 
-		short[] table = new short[256];
-		int offsetl = (int)(offset * 256 / levels);
-		for ( int i = 0; i < 256; i++ )
-			table[i] = (short)PixelUtils.clamp( (int)(255 * Math.floor(levels*(i+offsetl) / 256) / (levels-1) - offsetl) );
+    /**
+    * Returns the scale of the contours.
+    * @return the scale of the contours.
+    * @see #setScale
+    */
+    public float getScale() {
+        return scale;
+    }
 
-		for (int x = 0; x < width; x++) {
-			int rgb = inPixels[x];
-			r[1][x] = (short)PixelUtils.brightness( rgb );
-		}
-		for (int y = 0; y < height; y++) {
-			boolean yIn = y > 0 && y < height-1;
-			int nextRowIndex = index+width;
-			if ( y < height-1) {
-				for (int x = 0; x < width; x++) {
-					int rgb = inPixels[nextRowIndex++];
-					r[2][x] = (short)PixelUtils.brightness( rgb );
-				}
-			}
-			for (int x = 0; x < width; x++) {
-				boolean xIn = x > 0 && x < width-1;
-				int w = x-1;
-				int e = x+1;
-				int v = 0;
-				
-				if ( yIn && xIn ) {
-					short nwb = r[0][w];
-					short neb = r[0][x];
-					short swb = r[1][w];
-					short seb = r[1][x];
-					short nw = table[nwb];
-					short ne = table[neb];
-					short sw = table[swb];
-					short se = table[seb];
+    public void setOffset(float offset) {
+        this.offset = offset;
+    }
 
-					if (nw != ne || nw != sw || ne != se || sw != se) {
-						v = (int)(scale * (Math.abs(nwb - neb) + Math.abs(nwb - swb) + Math.abs(neb - seb) + Math.abs(swb - seb)));
-//						v /= 255;
-						if (v > 255)
-							v = 255;
-					}
-				}
+    public float getOffset() {
+        return offset;
+    }
 
-				if ( v != 0 )
-					outPixels[index] = PixelUtils.combinePixels( inPixels[index], contourColor, PixelUtils.NORMAL, v );
-//					outPixels[index] = PixelUtils.combinePixels( (contourColor & 0xff)|(v << 24), inPixels[index], PixelUtils.NORMAL );
-				else
-					outPixels[index] = inPixels[index];
-				index++;
-			}
-			short[] t;
-			t = r[0];
-			r[0] = r[1];
-			r[1] = r[2];
-			r[2] = t;
-		}
-	
-		return outPixels;
-	}
+    public void setContourColor(int contourColor) {
+        this.contourColor = contourColor;
+    }
 
-	public String toString() {
-		return "Stylize/Contour...";
-	}
+    public int getContourColor() {
+        return contourColor;
+    }
+
+    @Override
+    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+        int index = 0;
+        short[][] r = new short[3][width];
+        int[] outPixels = new int[width * height];
+
+        short[] table = new short[256];
+        int offsetl = (int) (offset * 256 / levels);
+        for (int i = 0; i < 256; i++)
+            table[i] = (short) PixelUtils
+                    .clamp((int) (255 * Math.floor(levels * (i + offsetl) / 256) / (levels - 1) - offsetl));
+
+        for (int x = 0; x < width; x++) {
+            int rgb = inPixels[x];
+            r[1][x] = (short) PixelUtils.brightness(rgb);
+        }
+        for (int y = 0; y < height; y++) {
+            boolean yIn = y > 0 && y < height - 1;
+            int nextRowIndex = index + width;
+            if (y < height - 1) {
+                for (int x = 0; x < width; x++) {
+                    int rgb = inPixels[nextRowIndex++];
+                    r[2][x] = (short) PixelUtils.brightness(rgb);
+                }
+            }
+            for (int x = 0; x < width; x++) {
+                boolean xIn = x > 0 && x < width - 1;
+                int w = x - 1;
+                int v = 0;
+
+                if (yIn && xIn) {
+                    short nwb = r[0][w];
+                    short neb = r[0][x];
+                    short swb = r[1][w];
+                    short seb = r[1][x];
+                    short nw = table[nwb];
+                    short ne = table[neb];
+                    short sw = table[swb];
+                    short se = table[seb];
+
+                    if (nw != ne || nw != sw || ne != se || sw != se) {
+                        v = (int) (scale * (Math.abs(nwb - neb) + Math.abs(nwb - swb) + Math.abs(neb - seb)
+                                + Math.abs(swb - seb)));
+                        //						v /= 255;
+                        if (v > 255)
+                            v = 255;
+                    }
+                }
+
+                if (v != 0)
+                    outPixels[index] = PixelUtils.combinePixels(inPixels[index], contourColor, PixelUtils.NORMAL, v);
+                //					outPixels[index] = PixelUtils.combinePixels( (contourColor & 0xff)|(v << 24), inPixels[index], PixelUtils.NORMAL );
+                else
+                    outPixels[index] = inPixels[index];
+                index++;
+            }
+            short[] t;
+            t = r[0];
+            r[0] = r[1];
+            r[1] = r[2];
+            r[2] = t;
+        }
+
+        return outPixels;
+    }
+
+    @Override
+    public String toString() {
+        return "Stylize/Contour...";
+    }
 
 }
-
