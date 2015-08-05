@@ -63,11 +63,10 @@ public class CircleFilter extends TransformFilter {
 	}
 
 	/**
-     * Set the angle of the arc.
-     * @param angle the angle of the arc.
-     * @angle
-     * @see #getAngle
-     */
+         * Set the angle of the arc.
+         * @param angle the angle of the arc.
+         * @see #getAngle
+         */
 	public void setAngle(float angle) {
 		this.angle = angle;
 	}
@@ -82,20 +81,18 @@ public class CircleFilter extends TransformFilter {
 	}
 
 	/**
-     * Set the spread angle of the arc.
-     * @param spreadAngle the angle
-     * @angle
-     * @see #getSpreadAngle
-     */
+         * Set the spread angle of the arc.
+         * @param spreadAngle the angle
+         * @see #getSpreadAngle
+         */
 	public void setSpreadAngle(float spreadAngle) {
 		this.spreadAngle = spreadAngle;
 	}
 
 	/**
-     * Get the spread angle of the arc.
-     * @return the angle
-     * @angle
-     * @see #setSpreadAngle
+         * Get the spread angle of the arc.
+         * @return the angle
+         * @see #setSpreadAngle
      */
 	public float getSpreadAngle() {
 		return spreadAngle;
@@ -103,9 +100,8 @@ public class CircleFilter extends TransformFilter {
 
 	/**
 	 * Set the radius of the effect.
-	 * @param radius the radius
-     * @min-value 0
-     * @see #getRadius
+	 * @param radius the radius, min-value 0, 
+         * @see #getRadius
 	 */
 	public void setRadius(float radius) {
 		this.radius = radius;

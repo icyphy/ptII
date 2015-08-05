@@ -35,10 +35,8 @@ public class ColorHalftoneFilter extends AbstractBufferedImageOp {
 
 	/**
 	 * Set the pixel block size.
-	 * @param dotRadius the number of pixels along each block edge
-     * @min-value 1
-     * @max-value 100+
-     * @see #getdotRadius
+	 * @param dotRadius the number of pixels along each block edge, min-value 1, max-value 100+
+         * @see #getdotRadius
 	 */
 	public void setdotRadius( float dotRadius ) {
 		this.dotRadius = dotRadius;

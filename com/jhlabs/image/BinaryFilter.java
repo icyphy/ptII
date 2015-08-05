@@ -31,9 +31,8 @@ public abstract class BinaryFilter extends WholeImageFilter {
 
 	/**
 	 * Set the number of iterations the effect is performed.
-	 * @param iterations the number of iterations
-     * @min-value 0
-     * @see #getIterations
+	 * @param iterations the number of iterations, min-value 0
+         @see #getIterations
 	 */
 	public void setIterations(int iterations) {
 		this.iterations = iterations;

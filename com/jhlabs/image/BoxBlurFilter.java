@@ -191,8 +191,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the horizontal size of the blur.
-     * @param hRadius the radius of the blur in the horizontal direction
-     * @min-value 0
+     * @param hRadius the radius of the blur in the horizontal direction, min-value 0
      * @see #getHRadius
      */
     public void setHRadius(float hRadius) {
@@ -210,8 +209,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the vertical size of the blur.
-     * @param vRadius the radius of the blur in the vertical direction
-     * @min-value 0
+     * @param vRadius the radius of the blur in the vertical direction, min-value 0
      * @see #getVRadius
      */
     public void setVRadius(float vRadius) {
@@ -229,8 +227,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set both the horizontal and vertical sizes of the blur.
-     * @param radius the radius of the blur in both directions
-     * @min-value 0
+     * @param radius the radius of the blur in both directions, min-value 0
      * @see #getRadius
      */
     public void setRadius(float radius) {
@@ -248,8 +245,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the number of iterations the blur is performed.
-     * @param iterations the number of iterations
-     * @min-value 0
+     * @param iterations the number of iterations, min-value 0
      * @see #getIterations
      */
     public void setIterations(int iterations) {

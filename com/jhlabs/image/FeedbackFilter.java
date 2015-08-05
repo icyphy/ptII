@@ -130,9 +130,7 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
 	
 	/**
      * Set the alpha value at the first iteration.
-     * @param startAlpha the alpha value
-     * @min-value 0
-     * @max-value 1
+     * @param startAlpha the alpha value, min-value 0, max-value 1.
      * @see #getStartAlpha
      */
 	public void setStartAlpha( float startAlpha ) {
@@ -149,12 +147,10 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
 	}
 	
 	/**
-     * Set the alpha value at the last iteration.
-     * @param endAlpha the alpha value
-     * @min-value 0
-     * @max-value 1
-     * @see #getEndAlpha
-     */
+         * Set the alpha value at the last iteration.
+         * @param endAlpha the alpha value, min-value 0, max-value 1
+         * @see #getEndAlpha
+         */
 	public void setEndAlpha( float endAlpha ) {
 		this.endAlpha = endAlpha;
 	}
@@ -224,11 +220,10 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
 	}
 	
 	/**
-     * Set the number of iterations.
-     * @param iterations the number of iterations
-     * @min-value 0
-     * @see #getIterations
-     */
+         * Set the number of iterations.
+         * @param iterations the number of iterations, min-value 0
+         * @see #getIterations
+         */
 	public void setIterations( int iterations ) {
 		this.iterations = iterations;
 	}

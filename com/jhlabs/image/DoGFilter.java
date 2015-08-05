@@ -1,17 +1,17 @@
 /*
-Copyright 2006 Jerry Huxtable
+  Copyright 2006 Jerry Huxtable
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+  http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 */
 
 package com.jhlabs.image;
@@ -26,53 +26,53 @@ import com.jhlabs.composite.*;
  */
 public class DoGFilter extends AbstractBufferedImageOp {
 
-	private float radius1 = 1;
-	private float radius2 = 2;
+    private float radius1 = 1;
+    private float radius2 = 2;
     private boolean normalize = true;
     private boolean invert;
 	
-	public DoGFilter() {
-	}
+    public DoGFilter() {
+    }
 	
-	/**
-	 * Set the radius of the kernel, and hence the amount of blur. The bigger the radius, the longer this filter will take.
-	 * @param radius the radius of the blur in pixels.
-     * @min-value 0
-     * @max-value 100+
-     * @see #getRadius
-	 */
-	public void setRadius1(float radius1) {
-		this.radius1 = radius1;
-	}
+    /**
+     * Set the radius of the kernel, and hence the amount of
+     * blur. The bigger the radius, the longer this filter will
+     * take.
+     * @param radius the radius of the blur in pixels, min-value 0, max-value 100+
+     * @see #getRadius1
+     */
+    public void setRadius1(float radius1) {
+        this.radius1 = radius1;
+    }
 	
-	/**
-	 * Get the radius of the kernel.
-	 * @return the radius
-     * @see #setRadius
-	 */
-	public float getRadius1() {
-		return radius1;
-	}
+    /**
+     * Get the radius of the kernel.
+     * @return the radius
+     * @see #setRadius1
+     */
+    public float getRadius1() {
+        return radius1;
+    }
 
-	/**
-	 * Set the radius of the kernel, and hence the amount of blur. The bigger the radius, the longer this filter will take.
-	 * @param radius the radius of the blur in pixels.
-     * @min-value 0
-     * @max-value 100+
-     * @see #getRadius
-	 */
-	public void setRadius2(float radius2) {
-		this.radius2 = radius2;
-	}
+    /**
+     * Set the radius of the kernel, and hence the amount of
+     * blur. The bigger the radius, the longer this filter will
+     * take.
+     * @param radius2 the radius of the blur in pixels, min-value 0, max-value 100+.
+     * @see #getRadius2
+     */
+    public void setRadius2(float radius2) {
+        this.radius2 = radius2;
+    }
 	
-	/**
-	 * Get the radius of the kernel.
-	 * @return the radius
-     * @see #setRadius
-	 */
-	public float getRadius2() {
-		return radius2;
-	}
+    /**
+     * Get the radius of the kernel.
+     * @return the radius
+     * @see #setRadius2
+     */
+    public float getRadius2() {
+        return radius2;
+    }
 	
     public void setNormalize( boolean normalize ) {
         this.normalize = normalize;
@@ -141,7 +141,7 @@ public class DoGFilter extends AbstractBufferedImageOp {
         return image2;
     }
 
-	public String toString() {
-		return "Edges/Difference of Gaussians...";
-	}
+    public String toString() {
+        return "Edges/Difference of Gaussians...";
+    }
 }

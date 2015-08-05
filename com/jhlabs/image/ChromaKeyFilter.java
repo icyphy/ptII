@@ -35,7 +35,7 @@ public class ChromaKeyFilter extends AbstractBufferedImageOp {
 
 	/**
 	 * Set the tolerance of the image in the range 0..1.
-	 * *arg tolerance The tolerance
+	 * @param hTolerance The tolerance
 	 */
 	public void setHTolerance( float hTolerance ) {
 		this.hTolerance = hTolerance;

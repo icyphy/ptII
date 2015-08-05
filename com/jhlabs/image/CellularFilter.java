@@ -81,9 +81,7 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 	
 	/**
      * Specifies the scale of the texture.
-     * @param scale the scale of the texture.
-     * @min-value 1
-     * @max-value 300+
+     * @param scale the scale of the texture, min-value 1, max-value 300+
      * @see #getScale
      */
 	public void setScale(float scale) {
@@ -101,9 +99,7 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 
 	/**
      * Specifies the stretch factor of the texture.
-     * @param stretch the stretch factor of the texture.
-     * @min-value 1
-     * @max-value 50+
+     * @param stretch the stretch factor of the texture, min-value 1, max-value 50+
      * @see #getStretch
      */
 	public void setStretch(float stretch) {
@@ -122,7 +118,6 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 	/**
      * Specifies the angle of the texture.
      * @param angle the angle of the texture.
-     * @angle
      * @see #getAngle
      */
 	public void setAngle(float angle) {
@@ -244,9 +239,7 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 
 	/**
      * Specifies the turbulence of the texture.
-     * @param turbulence the turbulence of the texture.
-     * @min-value 0
-     * @max-value 1
+     * @param turbulence the turbulence of the texture, min-value 0, max-value 1
      * @see #getTurbulence
      */
 	public void setTurbulence(float turbulence) {
@@ -264,9 +257,7 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 
 	/**
 	 * Set the amount of effect.
-	 * @param amount the amount
-     * @min-value 0
-     * @max-value 1
+	 * @param amount the amount, min-value 0, max-value 1
      * @see #getAmount
 	 */
 	public void setAmount(float amount) {

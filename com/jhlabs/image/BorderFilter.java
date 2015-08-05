@@ -68,8 +68,7 @@ public class BorderFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the border size on the left edge.
-     * @param leftBorder the number of pixels of border to add to the edge
-     * @min-value 0
+     * @param leftBorder the number of pixels of border to add to the edge, min-value 0
      * @see #getLeftBorder
      */
     public void setLeftBorder(int leftBorder) {
@@ -87,8 +86,7 @@ public class BorderFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the border size on the right edge.
-     * @param rightBorder the number of pixels of border to add to the edge
-     * @min-value 0
+     * @param rightBorder the number of pixels of border to add to the edge, min-value 0
      * @see #getRightBorder
      */
     public void setRightBorder(int rightBorder) {
@@ -106,8 +104,7 @@ public class BorderFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the border size on the top edge.
-     * @param topBorder the number of pixels of border to add to the edge
-     * @min-value 0
+     * @param topBorder the number of pixels of border to add to the edge, min-value 0
      * @see #getTopBorder
      */
     public void setTopBorder(int topBorder) {
@@ -125,8 +122,7 @@ public class BorderFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the border size on the bottom edge.
-     * @param bottomBorder the number of pixels of border to add to the edge
-     * @min-value 0
+     * @param bottomBorder the number of pixels of border to add to the edge, min-value 0
      * @see #getBottomBorder
      */
     public void setBottomBorder(int bottomBorder) {

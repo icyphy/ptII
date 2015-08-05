@@ -42,9 +42,7 @@ public class CausticsFilter extends WholeImageFilter {
 
     /**
      * Specifies the scale of the texture.
-     * @param scale the scale of the texture.
-     * @min-value 1
-     * @max-value 300+
+     * @param scale the scale of the texture, min-value 1, max-value 300+
      * @see #getScale
      */
     public void setScale(float scale) {
@@ -62,9 +60,7 @@ public class CausticsFilter extends WholeImageFilter {
 
     /**
      * Set the brightness.
-     * @param brightness the brightness.
-     * @min-value 0
-     * @max-value 1
+     * @param brightness the brightness, min-value 0, max-value 1
      * @see #getBrightness
      */
     public void setBrightness(int brightness) {
@@ -82,9 +78,7 @@ public class CausticsFilter extends WholeImageFilter {
 
     /**
      * Specifies the turbulence of the texture.
-     * @param turbulence the turbulence of the texture.
-     * @min-value 0
-     * @max-value 1
+     * @param turbulence the turbulence of the texture, min-value 0, max-value 1
      * @see #getTurbulence
      */
     public void setTurbulence(float turbulence) {
@@ -102,9 +96,7 @@ public class CausticsFilter extends WholeImageFilter {
 
     /**
      * Set the amount of effect.
-     * @param amount the amount
-     * @min-value 0
-     * @max-value 1
+     * @param amount the amount, min-value 0, max-value 1
      * @see #getAmount
      */
     public void setAmount(float amount) {
@@ -122,9 +114,7 @@ public class CausticsFilter extends WholeImageFilter {
 
     /**
      * Set the dispersion.
-     * @param dispersion the dispersion
-     * @min-value 0
-     * @max-value 1
+     * @param dispersion the dispersion, min-value 0, max-value 1
      * @see #getDispersion
      */
     public void setDispersion(float dispersion) {
