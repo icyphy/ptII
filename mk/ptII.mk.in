@@ -646,6 +646,9 @@ PTITEXTPDF_JAR =	@PTITEXTPDF_JAR@
 # PTITEXTPDF_PACKAGES is used in ptII/doc/makefile if iTextjar is found
 PTITEXTPDF_PACKAGES =	@PTITEXTPDF_PACKAGES@
 
+# PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
+PTIMUSENSOR_DIR=	@PTIMUSENSOR_DIR@
+
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
 PTJACL_DIR =	@PTJACL_DIR@
