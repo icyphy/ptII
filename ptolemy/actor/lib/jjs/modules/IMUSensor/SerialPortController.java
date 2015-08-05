@@ -28,39 +28,31 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
 ///// SerialPortController
 
 /**
- *	This class provides a set of functions for use with an IMUSensor accessor from within Ptolemy
- *	II. This thread keeps an object of type ReaderM that starts a thread and continuously reads from
- *	the serial port that the sensor is connected on.
+ * This class provides a set of functions for use with an
+ * IMUSensor accessor from within Ptolemy II. This thread keeps
+ * an object of type ReaderM that starts a thread and
+ * continuously reads from the serial port that the sensor is
+ * connected on.
  *
- *
- *
- *	@author Hunter Massey and Rajesh Kuni
- *	@version $Id$
- *	@see ReaderM
- *	@Pt.ProposedRating Yellow Hunter
- *	@Pt.AcceptedRating
-*/
-
+ * @author Hunter Massey and Rajesh Kuni
+ * @version $Id$
+ * @see ReaderM
+ * @Pt.ProposedRating Yellow Hunter
+ * @Pt.AcceptedRating
+ */
 public class SerialPortController {
-
-    // Parameters for the program
-    private static int baudrate = 115200;
-    private int r1COM;
-    private static int window = 60;
-    //input correct values before running
-
-    private ReaderM h1;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
 
     /** Base constructor. No input values */
     public SerialPortController() {
     }
 
-    /** Starts a serial port connection with comm port with number x (ex: COM8)
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+    /** Starts a serial port connection with comm port with number x
+     *  (ex: COM8).
      *  @param x The serial port number to connect to
-    */
+     */
     public void start(int x) {
         r1COM = x;
         h1 = new ReaderM(r1COM, baudrate, window);
@@ -68,9 +60,11 @@ public class SerialPortController {
         h1.isStart = true;
     }
 
-    /** Grab the latest unread sample from the buffer and return it. Returns latest sample
-     *	upon call if read index has caught up to write index.
-     *  @return The latest unread sample, or the latest read sample if write index = read index in buffer
+    /** Grab the latest unread sample from the buffer and return
+     *	it. Returns latest sample upon call if read index has caught
+     *	up to write index.
+     *  @return The latest unread sample, or the latest read sample if
+     *  write index = read index in buffer
     */
     public int[] getSample() {
         int[] sample = new int[9];
@@ -86,9 +80,22 @@ public class SerialPortController {
         return sample;
     }
 
-    /** Stops the reading ReaderM thread and terminates the serial connection */
+    /** Stops the reading ReaderM thread and terminates the serial
+     * connection.
+     */
     public void stop() {
         h1.isStart = false;
         h1.stopRead();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    // Parameters for the program.
+    private static int baudrate = 115200;
+    private int r1COM;
+    private static int window = 60;
+
+    //input correct values before running
+    private ReaderM h1;
 }
