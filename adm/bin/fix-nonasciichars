@@ -1,0 +1,114 @@
+#!/bin/sh
+# Fix non-ascii chars
+#  $Id: fix-files 54724 2009-06-26 22:49:21Z cxh $
+#
+# Use $PTII/adm/bin/ptnonasciichars to find files with non-ascii chars
+# First, run
+#   cat /tmp/f | egrep ".[ch]$" | xargs adm/bin/ptnonasciichars
+# Then:
+# $PTII/adm/bin/fix-nonasciichars  `cat /tmp/f | egrep ".[ch]$" | xargs adm/bin/ptnonasciichars | awk -F : '{print $1}'`
+
+printonly=no
+
+while getopts nd-- opt
+do
+    case $opt in
+	d) 	set -x;;
+	n) 	printonly=yes;;
+	\?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
+		echo " -n  Print only, do not modify any files "
+		echo " -d  debug"
+		exit 3;;
+    esac
+done
+shift `expr $OPTIND - 1`
+
+filesupdated=/tmp/rmtrailingspace_filesupdated.$$
+
+search() {
+topdir=`pwd`
+echo "************ $EGREPMATCH: $topdir"
+
+for fullfile in $@
+do
+    cd $topdir
+    echo "Now processing: $fullfile"
+    pcregrep "$EGREPMATCH" $fullfile
+    retval=$?
+    if [ $retval = 0 ]; then
+	# There was a difference, so we might want to check this sucker out
+	file=`basename $fullfile`
+	dirname=`dirname $fullfile`
+	cd $dirname
+	if [ -d SCCS -o -d RCS ]; then
+	    echo "Error: SCCS or RCS directory"
+	    exit 2
+	fi
+	doit
+	if [ "$printonly" = "no" ]; then
+	    cp /tmp/fix-files.tmp $file
+	    if [ -d .svn ]; then
+		echo "NOT doing a svn commit, did a copy"
+		#svn commit -m "$LOGMESSAGE" $file 
+	        echo $fullfile >> $filesupdated
+	    fi	
+	else
+	    echo "Would update and commit"
+	fi	
+    fi
+done
+rm -f /tmp/fix-files.tmp
+cd $topdir
+}
+
+doit() {
+    perl -pe 's/\xa9/(c)/' < $file | > /tmp/fix-files.tmp
+
+        diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='\xa9'
+LOGMESSAGE='Replace non-ascii copyright with (c)'
+
+search $@
+
+doit() {
+    # \357\277\275
+    perl -pe 's/\xef\xbf\xbd/(c)/' < $file > /tmp/fix-files.tmp
+
+        diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='\xef'
+LOGMESSAGE='Replace non-ascii copyright with (c)'
+
+search $@
+
+doit() {
+    # \342\200\234
+    perl -pe 's/\xe2\x80\x9c/"/' < $file > /tmp/fix-files.tmp
+
+        diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='\xe2'
+LOGMESSAGE='Replace non-ascii backquote with single quote'
+
+search $@
+
+doit() {
+    # \342\200\235
+    perl -pe 's/\xe2\x80\x9d/"/' < $file > /tmp/fix-files.tmp
+
+        diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='\xe2'
+LOGMESSAGE='Replace non-ascii backquote with single quote'
+
+search $@
+
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+
+rm -f $TMPFILE $filesupdated
+
