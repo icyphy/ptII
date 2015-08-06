@@ -2,7 +2,7 @@
  * Model Execution Interface. This header file must be utilized both by the
  * model and by the simulation engine.
  *
- * Copyright © 2008-2009, MODELISAR consortium. All rights reserved.
+ * Copyright (c) 2008-2009, MODELISAR consortium. All rights reserved.
  *
  * This file is licensed by the copyright holders under the BSD License
  * (http://www.opensource.org/licenses/bsd-license.html):

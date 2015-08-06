@@ -362,7 +362,7 @@ FMI2_Export fmi2Status fmi2GetDirectionalDerivative(fmi2Component c,
         const fmi2Real dvKnown[], fmi2Real dvUnknown[]) {
     printf("tankOpen.c: fmiGetDirectionalDerivative() called, even though the FMU does not provide them.\n");
     // The standard 2.0, RC 1 says on p. 26:
-    // If the capability attribute “providesDirectionalDerivative” is true,
+    // If the capability attribute "providesDirectionalDerivative" is true,
     // fmiGetDirectionalDerivative computes a linear combination of the partial derivatives of h
     // with respect to the selected input variables
     return fmi2Error;

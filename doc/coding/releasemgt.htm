@@ -231,6 +231,15 @@
 	  cat /tmp/f | egrep '\.xml' | xargs $PTII/adm/bin/addtrailingnl -n
 	</pre>
       </li>
+      <li> Replace non-ascii characters in .c, .h and .java files:
+        <pre>
+          cat /tmp/f | egrep "\.([ch]|java)$" | xargs adm/bin/ptnonasciichars
+        </pre>
+        and then
+        <pre>
+          $PTII/adm/bin/fix-nonasciichars  `cat /tmp/f | egrep "\.([ch]|java)$" | xargs adm/bin/ptnonasciichars | awk -F : '{print $1}'`
+          </pre>
+      </li>
       <li> Convert tabs with
 	<code>$PTII/adm/bin/rmtabs</code>
 	<pre>

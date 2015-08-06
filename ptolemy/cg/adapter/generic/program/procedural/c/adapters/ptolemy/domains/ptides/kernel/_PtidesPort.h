@@ -14,7 +14,7 @@
    includes because _PtidesDirector.h includes _PtidesPort.h, which
    resulted in:
 
-   commons/_PtidesDirector.h:78: warning: ‘struct PtidesPort’ declared inside parameter list
+   commons/_PtidesDirector.h:78: warning: struct PtidesPort declared inside parameter list
    commons/_PtidesDirector.h:78: warning: its scope is only this definition or declaration, which is probably not what you want
 */
 //#include "_PtidesDirector.h"
