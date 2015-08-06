@@ -69,7 +69,7 @@
 /* Under Linux, compile with -fvisibility=hidden, see
    https://www.gnu.org/software/gnulib/manual/html_node/Exported-Symbols-of-Shared-Libraries.html
 */
-#if !defined(FMI_Export) 
+#if !defined(FMI_Export)
 #if !defined(FMI_FUNCTION_PREFIX)
   #if defined _WIN32 || defined __CYGWIN__
   /* Note: both gcc & MSVC on Windows support this syntax. */
