@@ -1,0 +1,7 @@
+#!/bin/sh
+# Find all the non-ascii chars in the files named as arguments.
+
+# Check to see if pcregrep is present.
+type pcregrep >/dev/null 2>&1 || { echo >&2 "pcregrep is not present.  Under Mac OS X, install with sudo -i port install pcre  Aborting."; exit 1; }
+
+pcregrep --color='auto' -n "[\x80-\xFF]" $@
