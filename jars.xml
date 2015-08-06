@@ -81,31 +81,8 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/audio/audio.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/browser/browser.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/cameras/cameras.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/discovery/discovery.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/dsp/dsp.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/dsp/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/httpClient/httpClient.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/localStorage/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/mqtt/mqtt/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/objectAssign/objectAssign.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/shell/shell.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/udpSocket/udpSocket.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/webSocket/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/webSocketClient/webSocketClient.jar" />
+    <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/modules.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
     <include name="ptolemy/actor/lib/joystick/joystick.jar" />
@@ -1794,264 +1771,29 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar -->
+    <!-- ptolemy/actor/lib/jjs/modules/demo/demo.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/IMUSensor/*.json"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.xml"/>
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jjs/modules/audio/audio.jar -->
+        <!-- ptolemy/actor/lib/jjs/modules/modules.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/audio/audio.jar"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/modules.jar"
 	 >
       <fileset dir="${basedir}">
-	<!-- include name="ptolemy/actor/lib/jjs/modules/audio/*.class"/ -->
-	<include name="ptolemy/actor/lib/jjs/modules/audio/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/audio/*.json"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/*.class"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/*.json"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.xml"/>
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jjs/modules/browser/browser.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/browser/browser.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/browser/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/browser/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/browser/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/browser/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/cameras/cameras.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/cameras/cameras.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/cameras/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/cameras/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/cameras/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/cameras/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/discovery/discovery.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/discovery/discovery.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/discovery/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/discovery/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/discovery/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/discovery/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    
-    <!-- ptolemy/actor/lib/jjs/modules/dsp/dsp.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/dsp/dsp.jar"
-	 >
-      <fileset dir="${basedir}">
-	<!-- include name="ptolemy/actor/lib/jjs/modules/dsp/*.class"/ -->
-	<include name="ptolemy/actor/lib/jjs/modules/dsp/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/dsp/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/dsp/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/dsp/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/dsp/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/eventbus/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/eventbus/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/eventbus/*.json"/>
-      </fileset>
-    </jar>
-    
-    <!-- ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/eventbus/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/httpClient/httpClient.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/httpClient/httpClient.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/httpClient/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/httpClient/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/httpClient/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/localStorage/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/localStorage/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/localStorage/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/localStorage/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/localStorage/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/localStorage/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-
-    <!-- ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/mqtt/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/mqtt/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/mqtt/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/mqtt/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/mqtt/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/mqtt/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/objectAssign/objectAssign.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/objectAssign/objectAssign.jar"
-	 >
-      <fileset dir="${basedir}">
-	<!-- include name="ptolemy/actor/lib/jjs/modules/objectAssign/*.class"/ -->
-	<include name="ptolemy/actor/lib/jjs/modules/objectAssign/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/objectAssign/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/shell/shell.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/shell/shell.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/shell/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/shell/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/shell/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/udpSocket/udpSocket.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/udpSocket/udpSocket.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/udpSocket/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/udpSocket/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/udpSocket/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/vertxEventBus/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/webSocket/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/webSocket/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/webSocket/*.json"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/webSocket/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/webSocket/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/webSocket/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/jjs/modules/webSocketClient/webSocketClient.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/webSocketClient/webSocketClient.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/webSocketClient/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/webSocketClient/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/webSocketClient/*.json"/>
-      </fileset>
-    </jar>
 
     <!-- ptolemy/actor/lib/jmf/jmf.jar -->
     <jar defaultexcludes="yes"
