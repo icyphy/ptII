@@ -2,11 +2,11 @@
  * Module to filter images. This module provides a set of image filters,
  * each realized by calling the {@link filter} function, passing it an input
  * image, a filter name, and optional filter options.
- * The list of available filters is provided by the {@link filters} function.
+ * The list of available filters is provided by the {@link filters()} function.
  *  
  * This implementation uses code by Jerry Huxtable, licensed under
  * the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
- * The code is available at [http://www.jhlabs.com/ip/filters].
+ * The code is available at [http://www.jhlabs.com/ip/filters](http://www.jhlabs.com/ip/filters).
  *
  * The filters provided by this implementation include at least the ones listed below,
  * with options in the sublist (if there are options):
@@ -115,6 +115,7 @@ var filters = {};
 exports.filters = function() {
     return ['Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
             'Bump', 'ChannelMix', 'Chrome', 'Circle',
+            'ColorHalftone', 'Contour', 'Contrast', 'Crop',
             'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
 }
 
@@ -128,6 +129,7 @@ exports.filters = function() {
  *  @return The filtered image.
  */
 exports.filter = function(image, filterName, options) {
+    image = image.asAWTImage();
     var filter = filters[filterName];
     if (! filter) {
         var Filter = Java.type('com.jhlabs.image.' + filterName + 'Filter');

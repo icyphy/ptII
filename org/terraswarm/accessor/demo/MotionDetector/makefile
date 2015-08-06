@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Camera demo
+# Makefile for Ptolemy II MotionDetector demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/Camera
+ME =		org/terraswarm/accessor/demo/MotionDetector
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,15 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Camera
+PTPACKAGE = 	MotionDetector
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Camera.xml \
-	CaptureOpenLoop.xml
-	
+	MotionDetector.xml
+		
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -72,16 +71,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Camera.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer MotionDetector.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Camera.xml
+	"$(PTII)/bin/ptolemy" MotionDetector.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Camera.xml
+	"$(PTII)/bin/vergil" MotionDetector.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
