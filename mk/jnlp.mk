@@ -567,31 +567,8 @@ FULL_10_0_JARS = \
 FULL_11_0_JARS = \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/IMUSensor/IMUSensor.jar \
-	ptolemy/actor/lib/jjs/modules/audio/audio.jar \
-	ptolemy/actor/lib/jjs/modules/browser/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/browser/browser.jar \
-	ptolemy/actor/lib/jjs/modules/cameras/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/cameras/cameras.jar \
-	ptolemy/actor/lib/jjs/modules/discovery/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/discovery/discovery.jar \
-	ptolemy/actor/lib/jjs/modules/dsp/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/dsp/dsp.jar \
-	ptolemy/actor/lib/jjs/modules/eventbus/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/eventbus/eventbus.jar \
-	ptolemy/actor/lib/jjs/modules/httpClient/httpClient.jar \
-	ptolemy/actor/lib/jjs/modules/localStorage/localStorage.jar \
-	ptolemy/actor/lib/jjs/modules/localStorage/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/mqtt/mqtt.jar \
-	ptolemy/actor/lib/jjs/modules/mqtt/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/objectAssign/objectAssign.jar \
-	ptolemy/actor/lib/jjs/modules/shell/shell.jar \
-	ptolemy/actor/lib/jjs/modules/udpSocket/udpSocket.jar \
-	ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/vertxEventBus/vertxEventBus.jar \
-	ptolemy/actor/lib/jjs/modules/webSocket/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/webSocket/webSocket.jar \
-	ptolemy/actor/lib/jjs/modules/webSocketClient/webSocketClient.jar \
+	ptolemy/actor/lib/jjs/modules/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/qss/demo/demo.jar \
 	$(PTPAHO_MQTT_JAR) \
