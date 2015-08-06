@@ -187,6 +187,18 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
         return _areaThreshold;
     }
 
+    /** Return center of gravity of motion detected by the most recent invocation
+     *  of filter(), or null if no motion was detected.
+     *  @return The center of gravity of motion (in pixels).
+     */
+    public Point getCOG() {
+        if (_motion) {
+            return _cog;
+        } else {
+            return null;
+        }
+    }
+    
     /** Return the motion strength (0 = no motion, 100 = full image covered by motion).
      *  @return The motion area percentage.
      */

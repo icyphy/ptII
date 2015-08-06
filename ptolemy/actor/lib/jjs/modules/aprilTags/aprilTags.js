@@ -27,6 +27,7 @@ var filter = new Filter();
  *  @return The filtered image.
  */
 exports.filter = function(image, options) {
+    image = image.asAWTImage();
     if (options) {
         for (var optionName in options) {
             // Look for a setter function for the option.

@@ -12,7 +12,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 
 package com.jhlabs.image;
 
@@ -31,7 +31,7 @@ public class ContourFilter extends WholeImageFilter {
     public ContourFilter() {
     }
 
-    public void setLevels(float levels) {
+    public void setLevels( float levels ) {
         this.levels = levels;
     }
 
@@ -44,20 +44,20 @@ public class ContourFilter extends WholeImageFilter {
      * @param scale the scale of the contours, min-value 0, max-value 1
      * @see #getScale
      */
-    public void setScale(float scale) {
+    public void setScale( float scale ) {
         this.scale = scale;
     }
 
     /**
-    * Returns the scale of the contours.
-    * @return the scale of the contours.
-    * @see #setScale
-    */
+     * Returns the scale of the contours.
+     * @return the scale of the contours.
+     * @see #setScale
+     */
     public float getScale() {
         return scale;
     }
 
-    public void setOffset(float offset) {
+    public void setOffset( float offset ) {
         this.offset = offset;
     }
 
@@ -65,45 +65,47 @@ public class ContourFilter extends WholeImageFilter {
         return offset;
     }
 
-    public void setContourColor(int contourColor) {
+    public void setContourColor( int contourColor ) {
         this.contourColor = contourColor;
+    }
+
+    public void setContourColor( String contourColor ) {
+        this.contourColor = stringToColor(contourColor, 0);
     }
 
     public int getContourColor() {
         return contourColor;
     }
 
-    @Override
-    protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
+    protected int[] filterPixels( int width, int height, int[] inPixels, Rectangle transformedSpace ) {
         int index = 0;
         short[][] r = new short[3][width];
         int[] outPixels = new int[width * height];
 
         short[] table = new short[256];
-        int offsetl = (int) (offset * 256 / levels);
-        for (int i = 0; i < 256; i++)
-            table[i] = (short) PixelUtils
-                    .clamp((int) (255 * Math.floor(levels * (i + offsetl) / 256) / (levels - 1) - offsetl));
+        int offsetl = (int)(offset * 256 / levels);
+        for ( int i = 0; i < 256; i++ )
+            table[i] = (short)PixelUtils.clamp( (int)(255 * Math.floor(levels*(i+offsetl) / 256) / (levels-1) - offsetl) );
 
         for (int x = 0; x < width; x++) {
             int rgb = inPixels[x];
-            r[1][x] = (short) PixelUtils.brightness(rgb);
+            r[1][x] = (short)PixelUtils.brightness( rgb );
         }
         for (int y = 0; y < height; y++) {
-            boolean yIn = y > 0 && y < height - 1;
-            int nextRowIndex = index + width;
-            if (y < height - 1) {
+            boolean yIn = y > 0 && y < height-1;
+            int nextRowIndex = index+width;
+            if ( y < height-1) {
                 for (int x = 0; x < width; x++) {
                     int rgb = inPixels[nextRowIndex++];
-                    r[2][x] = (short) PixelUtils.brightness(rgb);
+                    r[2][x] = (short)PixelUtils.brightness( rgb );
                 }
             }
             for (int x = 0; x < width; x++) {
-                boolean xIn = x > 0 && x < width - 1;
-                int w = x - 1;
+                boolean xIn = x > 0 && x < width-1;
+                int w = x-1;
                 int v = 0;
 
-                if (yIn && xIn) {
+                if ( yIn && xIn ) {
                     short nwb = r[0][w];
                     short neb = r[0][x];
                     short swb = r[1][w];
@@ -114,16 +116,15 @@ public class ContourFilter extends WholeImageFilter {
                     short se = table[seb];
 
                     if (nw != ne || nw != sw || ne != se || sw != se) {
-                        v = (int) (scale * (Math.abs(nwb - neb) + Math.abs(nwb - swb) + Math.abs(neb - seb)
-                                + Math.abs(swb - seb)));
+                        v = (int)(scale * (Math.abs(nwb - neb) + Math.abs(nwb - swb) + Math.abs(neb - seb) + Math.abs(swb - seb)));
                         //						v /= 255;
                         if (v > 255)
                             v = 255;
                     }
                 }
 
-                if (v != 0)
-                    outPixels[index] = PixelUtils.combinePixels(inPixels[index], contourColor, PixelUtils.NORMAL, v);
+                if ( v != 0 )
+                    outPixels[index] = PixelUtils.combinePixels( inPixels[index], contourColor, PixelUtils.NORMAL, v );
                 //					outPixels[index] = PixelUtils.combinePixels( (contourColor & 0xff)|(v << 24), inPixels[index], PixelUtils.NORMAL );
                 else
                     outPixels[index] = inPixels[index];
@@ -139,9 +140,9 @@ public class ContourFilter extends WholeImageFilter {
         return outPixels;
     }
 
-    @Override
     public String toString() {
         return "Stylize/Contour...";
     }
 
 }
+

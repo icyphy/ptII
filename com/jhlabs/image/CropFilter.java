@@ -12,7 +12,7 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
+ */
 
 package com.jhlabs.image;
 
@@ -35,7 +35,7 @@ public class CropFilter extends AbstractBufferedImageOp {
      * Construct a CropFilter.
      */
     public CropFilter() {
-        this(0, 0, 32, 32);
+        this(0, 0, 128, 128);
     }
 
     /**
@@ -124,25 +124,19 @@ public class CropFilter extends AbstractBufferedImageOp {
         return height;
     }
 
-    @Override
-    public BufferedImage filter(BufferedImage src, BufferedImage dst) {
-        src.getWidth();
-        src.getHeight();
-
-        if (dst == null) {
+    public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
+        if ( dst == null ) {
             ColorModel dstCM = src.getColorModel();
-            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(width, height),
-                    dstCM.isAlphaPremultiplied(), null);
+            dst = new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(width, height), dstCM.isAlphaPremultiplied(), null);
         }
 
         Graphics2D g = dst.createGraphics();
-        g.drawRenderedImage(src, AffineTransform.getTranslateInstance(-x, -y));
+        g.drawRenderedImage( src, AffineTransform.getTranslateInstance(-x, -y) );
         g.dispose();
 
         return dst;
     }
 
-    @Override
     public String toString() {
         return "Distort/Crop";
     }
