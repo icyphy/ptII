@@ -133,7 +133,7 @@ bool SDFDirector_Prefire(struct SDFDirector* director) {
 //                        continue;
 //                }
 
-        // FIXME : idem que pour le postfire : créer une hashmap
+        // FIXME : idem que pour le postfire : croer une hashmap
 //                int threshold = DFUtilities.getTokenConsumptionRate(inputPort);
         int threshold = 1;
 
