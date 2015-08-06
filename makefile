@@ -281,6 +281,7 @@ CLEAN_SHIPPING_FILES = \
 		lbnl/lib/util/libbcvtb.so \
 		lib/cachedir \
 		mk/ptII.mk \
+		org/terraswarm/accessor/accessors \
 		ptKeystore \
 		ptolemy/apps \
 		ptolemy/actor/lib/ptp \
