@@ -35,6 +35,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '.keystore$' \
 	| egrep -v 'JavaAppLauncher$' \
 	| egrep -v 'JavaApplicationStub$' \
+	| egrep -v '/jquery/' \
 	| egrep -v 'Localizable.strings$'  \
 	| egrep -v '\.lib$'  \
 	| egrep -v '\.m$' \
@@ -45,6 +46,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.mov$' \
 	| egrep -v '\.mtl$' \
         | egrep -v '\.ncb$' \
+	| egrep -v '/node_modules/' \
 	| egrep -v '\.nqc$' \
         | egrep -v '\.o$' \
         | egrep -v '\.opt$' \
