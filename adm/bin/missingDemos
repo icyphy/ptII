@@ -5,11 +5,13 @@
 # 2) For each demo/ directory in models.txt, look for .xml files that are not listed
 #
 
+exitCode=0
+
 verbose=no
 if [ "$1" = "-v" ]; then
     verbose=yes
 else
-    echo "# $0: Use $0 -v to generate html suitable for completeDemos.htm"
+    echo "## $0: Use $0 -v to generate html suitable for completeDemos.htm"
 fi
 
 modelsFile=$PTII/ptolemy/configs/doc/models.txt
@@ -19,10 +21,22 @@ cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i
 
 # Look for demo directories that are not listed in completeDemos
 demos2=/tmp/missingDemos.demos2.$$
-(cd $PTII; find . -name demo -type d | egrep -v '(adm|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/diva/canvas/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|ptolemy/apps)' > $demos2
+(cd $PTII; find . -name demo -type d | egrep -v '(adm|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/.*/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|ptolemy/apps)' > $demos2
 
-echo "# Demo directories that are not listed in $PTII/ptolemy/configs/doc/completeDemos.htm"
-comm -3 $demos1 $demos2
+echo "### Demo directories that are not listed in $PTII/ptolemy/configs/doc/completeDemos.htm"
+demos3=/tmp/missingDemos.demos3.$$
+comm -3 $demos1 $demos2 | awk '{print $1}' > $demos3
+
+for demo in `cat $demos3`
+do
+    grep "<!--.*$demo" $PTII/ptolemy/configs/doc/completeDemos.htm >& /dev/null
+    status=$?
+    if [ $status -eq 1 ]; then
+        echo "The $demo directory is not found in completeDemo.htm"
+        echo "    <!-- ../../../$demo -->"
+        exitCode=2
+    fi        
+done
 
 # Script that prints out html for the demos.
 # $demos is the list of .xml files for which we are to print demos.
@@ -30,17 +44,22 @@ function demoHTML {
     if [ $1 = "yes" ]; then 
         if [ ! -z "$2" ]; then
             foundDemo=no
-            for demo in $2
+            shift
+            for demo in $@
             do                 
                 demoDirectory=`dirname $demo`
                 demoName=`basename $demoDirectory`
-                if [ $demo = "$demoDirectory/$demoName.xml" ]; then
+                #if [ $demo = "$demoDirectory/$demoName.xml" ]; then
                    echo "      <li><a href=\"../../../$demo\">$demoName</a>(New in Ptolemy II 11.0)</li>"
+                   echo "or"
+                   echo "      <!-- ../../../$demo -->"
+                   exitCode=3
                    foundDemo=yes
-                fi
+                #fi
             done
             if [ $foundDemo = "no" ]; then
                 echo "      <!-- Did not find demo with the same name as the directory? -->"
+                exitCode=4
             fi
         fi
     fi
@@ -57,6 +76,7 @@ if [ $verbose = "yes" ]; then
 
         if [ -z "$demos" ]; then
             echo "$demoDirectory contains no subdirectories with models."
+            exitCode=5
             continue;
         fi
 
@@ -72,14 +92,20 @@ if [ $verbose = "yes" ]; then
             egrep "<!--.*$demo" $PTII/ptolemy/configs/doc/completeDemos.htm  >& /dev/null
             status=$?
             if [ $status -eq 1 ]; then
-                missingDemos="$missingDemos $demo"
+                egrep "$demo" $PTII/ptolemy/configs/doc/completeDemos.htm  | grep -v '<!--' >& /dev/null
+                status=$?
+                if [ $status -eq 1 ]; then
+                    missingDemos="$missingDemos $demo"
+                fi
             fi
         done
 
         if [ ! -z "$demos" -a -z "$missingDemos" ]; then
             echo "$demoDirectory contains demos that are in completeDemos.htm, but commented out."
+            exitCode=6
         else
             echo "demos: $demos, missingDemos: $missingDemos"
+            exitCode=7
 
             cat <<EOF
 
@@ -95,13 +121,13 @@ EOF
     done    
 fi
 
-echo "# Look for .xml files that are in directories listed in completeDemos,"
-echo "#  but not the .xml file itself is not listed."
+echo "### Look for .xml files that are in directories listed in completeDemos,"
+echo "###  but not the .xml file itself is not listed."
 modelsInModelsFile=/tmp/missingDemos.modelsInModelsFile.$$
 modelsInDemoDirectory=/tmp/missingDemos.modelsInDemoDirectory.$$
 for demoDirectory in `cat $demos1`
 do
-    # echo "# Checking $demoDirectory"
+    echo "## Checking $demoDirectory"
     
     individualDemoDirectories=`find $demoDirectory -type d -depth 1`
     for individualDemoDirectory in $individualDemoDirectories
@@ -109,15 +135,37 @@ do
         demoName=`basename $individualDemoDirectory`
         demoModel=`echo "$individualDemoDirectory/$demoName.xml" | sed "s@$PTII@@"`
         if [ ! -f "$PTII/$demoModel" ]; then
-            echo "$demoModel is not present"
-            demoHTML $verbose $demoModel
+            # Check to see if it is commented out.
+            grep "<!--" $PTII/ptolemy/configs/doc/completeDemos.htm | grep $demoModel >& /dev/null
+            status=$?
+            if [ $status -eq 1 ]; then
+                grep -v "<!--" $PTII/ptolemy/configs/doc/completeDemos.htm | grep $demoModel >& /dev/null
+                status=$?
+                if [ $status -eq 1 ]; then
+                    echo "$demoModel is not present"
+                    demoHTML $verbose $demoModel
+                    exitCode=8
+                fi
+            fi
         fi
 
         grep $demoModel $modelsFile >& /dev/null
         status=$?
         if [ $status -eq 1 ]; then
-            echo "$demoModel is not present in completeDemos.xml"
-            demoHTML $verbose $demoModel
+            grep -v "<!--" $PTII/ptolemy/configs/doc/completeDemos.htm | grep $demoModel >& /dev/null
+            status=$?
+            if [ $status -eq 1 ]; then
+                grep "<!--" $PTII/ptolemy/configs/doc/completeDemos.htm | grep $demoModel >& /dev/null
+                status=$?
+                if [ $status -eq 1 ]; then
+                    echo "$demoModel is not present in completeDemos.htm"
+                    demoHTML $verbose $demoModel
+                    exitCode=9
+                fi
+            else
+                echo "Error: $demoModel is not present in $modelsFile, but is present in completeDemos.htm.  Maybe you need to run: (cd $PTII/ptolemy/configs/doc; make update)?"
+                exit 10
+            fi
         fi           
     done
     # find $PTII/$demoDirectory -name "*.xml" | sed "s@$PTII/@@" > $modelsInDemoDirectory
@@ -132,3 +180,5 @@ do
 done
 
 rm -f /tmp/missingDemos.*
+
+exit $exitCode
