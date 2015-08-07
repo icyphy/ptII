@@ -31,9 +31,9 @@
 
 ME =        org/hlacerti/demo
 
-DIRS = 2Billes2Fed BillardHit ModelUpdater \
+DIRS = 2Billes2Fed Billard BillardHit ModelUpdater \
 	MultiDataTypes SimpleProducerConsumerMulti SynchronizeToRealTime \
-	billard legacy SimpleProducerMultipleConsumerTAR
+	legacy SimpleProducerMultipleConsumerTAR
 
 # Root of the Java directory
 ROOT =      ../../..
@@ -50,12 +50,12 @@ PTPACKAGE =     demo
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	2Billes2Fed/2Billes2Fed.jar \
+	Billard/Billard.jar \
 	BillardHit/BillardHit.jar \
 	ModelUpdater/ModelUpdater.jar \
 	MultiDataTypes/MultiDataTypes.jar \
 	SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.jar \
 	SynchronizeToRealTime/SynchronizeToRealTime.jar \
-	billard/billard.jar \
 	legacy/legacy.jar \
 	SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.jar
 

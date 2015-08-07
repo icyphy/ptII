@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/billard
+ME =        org/hlacerti/demo/Billard
 
 # Root of the Java directory
 ROOT =      ../../../..
@@ -41,7 +41,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     billard
+PTPACKAGE =     Billard
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
