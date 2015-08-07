@@ -116,6 +116,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ConcurrentChat.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources.xml
+$CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ThreadedComposite.xml
 $CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/CopyFile/CopyFile.xml
@@ -288,6 +289,9 @@ $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/ProbabilisticModels.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml
+$CLASSPATH/ptolemy/demo/Robot/KeyValueStoreServer.xml
+$CLASSPATH/ptolemy/demo/Robot/RandomWalkIntruder.xml
+$CLASSPATH/ptolemy/demo/Robot/Robot.xml
 $CLASSPATH/ptolemy/demo/Robot/RobotChase.xml
 $CLASSPATH/ptolemy/demo/Robot/RobotCollaborativeChase.xml
 $CLASSPATH/ptolemy/demo/Robot/RobotInLine.xml
@@ -568,6 +572,7 @@ $CLASSPATH/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/Intersections/Intersections.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml
+$CLASSPATH/ptolemy/domains/wireless/demo/Network/Network.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml
@@ -577,9 +582,6 @@ $CLASSPATH/ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
 $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
-$CLASSPATH/ptolemy/ptolemy/demo/Robot/KeyValueStoreServer.xml
-$CLASSPATH/ptolemy/ptolemy/demo/Robot/RandomWalkIntruder.xml
-$CLASSPATH/ptolemy/ptolemy/demo/Robot/Robot.xml
 $CLASSPATH/ptolemy/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
 $CLASSPATH/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml
 $CLASSPATH/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml
