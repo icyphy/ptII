@@ -56,6 +56,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MultipleNodes.xml \
 	MultipleNodesMoML.ptln \
 	MultipleNodesMoML.xml \
+	README.txt \
 	SingleNode.ptln \
 	SingleNode.xml \
 	SingleNodeMoML.ptln \
