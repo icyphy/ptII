@@ -81,7 +81,7 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
-    <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
+    <include name="ptolemy/actor/lib/jjs/modules/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/modules.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
@@ -1773,7 +1773,7 @@
 
     <!-- ptolemy/actor/lib/jjs/modules/demo/demo.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/demo/demo.jar"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.js"/>
@@ -1789,8 +1789,6 @@
 	<include name="ptolemy/actor/lib/jjs/modules/*/*.class"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/*.json"/>
-	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.xml"/>
       </fileset>
     </jar>
 
