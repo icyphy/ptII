@@ -4,7 +4,6 @@ $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
 $CLASSPATH/org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/billard/billard.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
-$CLASSPATH/org/hlacerti/demo/ModelUpdater/ModelUpdater.xml
 $CLASSPATH/org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.xml
@@ -582,12 +581,14 @@ $CLASSPATH/ptolemy/ptolemy/demo/Robot/KeyValueStoreServer.xml
 $CLASSPATH/ptolemy/ptolemy/demo/Robot/RandomWalkIntruder.xml
 $CLASSPATH/ptolemy/ptolemy/demo/Robot/Robot.xml
 $CLASSPATH/ptolemy/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
+$CLASSPATH/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml
 $CLASSPATH/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml
 $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
+$CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotHillClimbing.xml
 $CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadControl.xml
 $CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml
 $CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml
