@@ -219,5 +219,9 @@ test release-4.1 {Check for makefiles in directories that have a test/ directory
 
 
 test release-5.1 {Check for models that have $PTII in them.  They should use $CLASSPATH so that they work with jar files.} {
+    # If you get messages from grep about "No such file or directory",
+    # then it could be that the demo directory does not have a demo with the
+    # same name as the directory (ex.: foo/demo/Bar/Bar.xml).  One solution
+    # is to run $PTII/adm/bin/ptmkLiveLinkDemo
     exec make --no-print-directory --silent dollarPTII
 } {}

@@ -204,6 +204,7 @@
     <include name="ptolemy/domains/sdf/optimize/optimize.jar" />
     <include name="ptolemy/domains/sdf/optimize/demo/demo.jar" />
     <include name="ptolemy/domains/sdf/sdf.jar" />
+    <include name="ptolemy/domains/sequence/demo/demo.jar" />
     <include name="ptolemy/domains/sequence/sequence.jar" />
     <include name="ptolemy/domains/space/space.jar" />
     <include name="ptolemy/domains/sr/demo/demo.jar" />
@@ -3791,6 +3792,15 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/sequence/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/sequence/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/sequence/demo/*.xml"/>
+      </fileset>
+    </jar>
+    
     <!-- ptolemy/domains/sequence/sequence.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/sequence/sequence.jar"

@@ -48,8 +48,8 @@ JSRCS =
 
 
 OTHER_FILES_TO_BE_JARED = \
-	SendAndReceiveCnt-InDE.xml \
-	SendAndReceiveCnt-InWireless.xml
+	SendAndReceiveCnt.xml \
+	SendAndReceiveCntWireless.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

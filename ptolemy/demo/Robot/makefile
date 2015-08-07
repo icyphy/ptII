@@ -48,6 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 EXAMPLE_MODELS = \
 	KeyValueStoreServer.xml \
 	RandomWalkIntruder.xml \
+	Robot.xml \
 	RobotChase.xml \
 	RobotCollaborativeChase.xml \
 	RobotInLine.xml \
