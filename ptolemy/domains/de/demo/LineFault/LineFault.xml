@@ -2,30 +2,30 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LineFault" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="330">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[568.5, 630.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1019, 692}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1309, 874}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[806, 582]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 764]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0826899823272">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8838702291824072">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-192.407833614865, -171.3461254222974}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{606.1202570664789, 440.03320312500006}">
     </property>
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simulation models the detection of a fault, for example due to a lightning strike, at a point 20000 meters from Substation A on a power line&#10;from A to Substation B 60000 meters away.&#10;&#10;The &quot;Line Fault&quot; block generates a sequence of 11 events starting at 300 seconds and spaced 2 seconds apart representing faults. For each event &#10;this block computes the time the event will arrive at the two substations and increments the model delays by that amount.&#10;&#10;Each &quot;Substation&quot; block contains a local clock which can be synchronized to the local clock in the remote substation. When the fault events are &#10;received, each substation generates a timestamp indicating the time of receipt, TA and TB respectively. These timestamps are sent to the &quot;Compute&#10;Location of Fault&quot; block which computes the value of X, the position on the line where the fault occured.&#10;&#10;The formula for the location is: X = 0.5*[60000 -velocity*(TA-TB)]. The velocity is the velocity of light, 300000000 m/s.&#10;&#10;Clearly the error in this calculation depends on the accuracy of the two timestamps TA and TB. Any relative error between the local clocks in the &#10;substations will cause an error. Errors may be due to clock noise or an offset. For example if the relative noise error is ~5ns then the expected&#10;error in X will be ~1.5 meters. (5 ns * 3*10^8 m/s).&#10;&#10;The clock in substation A has a drift of 0 and a noise of ~5ns.&#10;The clock in substation B has a drift of -0.5 PPM and a noise of ~5ns.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-565.0, -755.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[23.5, 15.5]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +41,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(at X=20000 meters)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-90.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-95.0, -70.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="LineFaultGenerator">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -51,15 +51,23 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(at x=60000)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[5.0, -70.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[0.0, -70.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="SubstationB">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
         </property>
     </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Patricia Derler">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 840.0]">
+        </property>
+    </property>
     <entity name="LineFaultGenerator" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, -370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[393.5, 400.5]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The lineFault generator produces a series of events representing succesive&#10;faults (for example lightning strikes) 20000 meters from the end of a 60000 meter&#10;power transmission line. For each fault event, two Ptolemy events A and B&#10;are generated with model time delays of 20000/3*10^8 and 40000/3*10^8, the&#10;propagation times for an electrical disturbance to reach the ends of the power line.">
@@ -190,7 +198,7 @@
         <link port="Const.trigger" relation="relation6"/>
     </entity>
     <entity name="SubstationA" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-390.0, -360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[198.5, 410.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 88, 879, 613}, maximized=false}">
         </property>
@@ -704,6 +712,8 @@
                 </property>
                 <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -984,6 +994,8 @@
             </property>
             <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-90.0, -440.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1082,7 +1094,7 @@
         <link port="CompositeActor2.port3" relation="relation5"/>
     </entity>
     <entity name="SubstationB" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, -360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[613.5, 410.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={121, 66, 879, 613}, maximized=false}">
         </property>
@@ -1602,6 +1614,8 @@
                 </property>
                 <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
+                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -495.0}">
                     </property>
                     <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1882,6 +1896,8 @@
             </property>
             <port name="clockRate" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
+                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-90.0, -440.0}">
                 </property>
                 <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1981,7 +1997,7 @@
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-525.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[63.5, 815.5]">
         </property>
     </entity>
     <entity name="FullClockPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -1992,7 +2008,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[731, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-120.0, -60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[468.5, 710.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -2008,28 +2024,40 @@
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-385.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[203.5, 770.5]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, -65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[318.5, 705.5]">
         </property>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[318.5, 760.5]">
         </property>
     </entity>
     <entity name="ConfigurationSwitch" class="ptolemy.actor.lib.ConfigurationSwitch">
         <display name="Synchronized Clocks?"/>
-        <property name="selector" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="selector" class="ptolemy.actor.parameters.PortParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-260.0, -215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[328.5, 555.5]">
         </property>
+        <port name="trueOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <port name="falseOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-185.0, -175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[403.5, 595.5]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2039,7 +2067,7 @@
         </port>
     </entity>
     <entity name="ComputeLocationOfFault" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-195.0, -310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[393.5, 460.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 517}, maximized=false}">
         </property>
@@ -2346,7 +2374,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 186]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[533.5, 505.5]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -2356,7 +2384,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-445.0, 45.0]">
+        <vertex name="vertex1" value="[143.5, 815.5]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -2366,7 +2394,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-320.0, 0.0]">
+        <vertex name="vertex1" value="[268.5, 770.5]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
