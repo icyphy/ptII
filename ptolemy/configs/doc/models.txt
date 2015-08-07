@@ -175,7 +175,6 @@ $CLASSPATH/ptolemy/actor/ptalon/demo/EightChannelFFT/EightChannelFFT.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/GameOfLife/GameOfLife.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/MapReduce/MapReduce.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/ModelChange/ModelChange.xml
-$CLASSPATH/ptolemy/actor/ptalon/demo/MultipleNodes/MultipleNodes.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/ptinyos/SendAndReceiveCnt/SendAndReceiveCnt.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/ptinyos/SenseToLeds/SenseToLeds.xml
 $CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM.xml
@@ -488,7 +487,6 @@ $CLASSPATH/ptolemy/domains/ptides/demo/SRinPtides/SRinPtides.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/TREX/TREX.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/TTE/TTE.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/VertxDemo.xml
-$CLASSPATH/ptolemy/domains/ptides/lib/qm/demo/TCPPacketTXRX/TCPPacketTXRX.xml
 $CLASSPATH/ptolemy/domains/ptinyos/demo/CntToLeds/CntToLeds.xml
 $CLASSPATH/ptolemy/domains/ptinyos/demo/CntToLedsAndRfm/CntToLedsAndRfm.xml
 $CLASSPATH/ptolemy/domains/ptinyos/demo/HelloWorld/HelloWorld.xml
@@ -570,7 +568,6 @@ $CLASSPATH/ptolemy/domains/wireless/demo/EvaderAndPursuer/EvaderAndPursuer.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/Intersections/Intersections.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/LinkVisualizer/LinkVisualizer.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml
-$CLASSPATH/ptolemy/domains/wireless/demo/Network/Network.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/PowerVariability/PowerVariability.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml
