@@ -9,7 +9,9 @@
  * The code is available at [http://www.jhlabs.com/ip/filters](http://www.jhlabs.com/ip/filters).
  *
  * The filters provided by this implementation include at least the ones listed below,
- * with options in the sublist (if there are options):
+ * with options in the sublist (if there are options).
+ * <font color="red">FIXME:</font> <i>This list is incomplete. See
+ * $PTII/com/jhlabs/image for a complete list of filters</i>.
  * * __Average__: Average the 3x3 neighbourhood of each pixel, providing a simple blur.
  * * __BicubicScale__: Scale an image using bi-cubic interpolation.
  *   * _Height_: The height of the result image, in pixels. Defaults to 256.
@@ -70,6 +72,24 @@
  *   * _Y_: The starting vertical position, in pixels. This defaults to 0.
  *   * _Width_: The width, in pixels. This defaults to 128.
  *   * _Height_: The height, in pixels. This defaults to 128.
+ * * __Crystallize__: Apply a crystallizing effect to an image, by producing Voronoi cells filled with colours from the image.
+ *   * _Angle_: Angle of the cells in radians. Defaults to 0.0.
+ *   * _EdgeColor_: Color for the edge lines (see below). Defaults to black.
+ *   * _EdgeThickness_: Thickness of the edges. Defaults to 0.4.
+ *   * _FadeEdges_: Boolean indicating whether to fade edges. Defaults to false.
+ *   * _Scale_: Size of the cells, in pixels. Defaults to 16.
+ *   * _Stretch_: Vertical stretch of the cells. Defaults to 1.0, which does not stretch.
+ * * __Curl__: Apply a page curl effect to an image.
+ *   * _Angle_: Angle of the curl in radians. Defaults to 0.0.
+ *   * _Transition_: . Defaults to 1.0.
+
+ angle = 0;
+    private float transition = 0.0f;
+
+    private float width;
+    private float height;
+    private float radius;
+
  * * __Gray__: Gray out an image by averaging each pixel with white.
  * * __Invert__: Invert the colors of an image.
  * * __LensBlur__: Simulate a lens blur. Options:
@@ -116,6 +136,7 @@ exports.filters = function() {
     return ['Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
             'Bump', 'ChannelMix', 'Chrome', 'Circle',
             'ColorHalftone', 'Contour', 'Contrast', 'Crop',
+            'Crystallize',
             'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
 }
 
