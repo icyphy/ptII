@@ -166,7 +166,10 @@ public class SerialPortReader extends Thread {
     public void closePort() {
         stopThread();
         try {
-            inStream.close();
+            // If there is no serial port, then inStream might be null.
+            if (inStream != null) {
+                inStream.close();
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
