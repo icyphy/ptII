@@ -261,17 +261,27 @@ public class ExportModelJUnitTest {
     private boolean _runDemo(String modelPath) {
         // Pathnames that should be skipped
         String[] skip = { "ptalon/gt/demo/Adder/Adder.xml", // gt does not have a run button: "Channel index 0 is out of range, because width is only 0."
+                "2Billes2Fed.xml", // Has links to other models
                 "AirManagementSystem.xml", // Assert is thrown.
                 "AirManagementSystemCausalityLoop", // Deliberately brings up message on run.
                 "AMS_AMSSim", // FMU does not reliably build everywhere.
+                "AntennaPattern.xml", // Has links to other models
+                "AprilTags", // Uses the camera.         
+                "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
+                "demo/Camera", // Uses the camera.
+                "cameras/demo/", // Uses the camera.
+
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
-
-                // HLA Models that have links to other demos.
+                "ConstAbstractInterpretationObservable.xml", // Has links to other models
+                "ConstNonconst/Const.xml", // Has links to other models
+                "data/ontologies/demo/ConstPropagation/ConstPropagation.xml", // Has links to other models
+               // HLA Models that have links to other demos.
+                "2Billes2Fed.xml", // Has links to other models
                 "org/hlacerti/demo/legacy/CoSimulation/CoSimulation.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos and does not work
@@ -279,10 +289,12 @@ public class ExportModelJUnitTest {
                 "org/hlacerti/demo/legacy/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/SimpleProducerConsumer/SimpleProducerConsumer.xml", // Has links to other demos and does not work
 
+                "DimensionSystemExample.xml", // Has links to other models.
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
                 "DECG.xml", // This has links to the DE demos and is not runnable in itself.
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
+                "ExportExamples.xml", // Has links to other models
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU", //SimX only works under 32-bits.
                 "PhysicalPlantCausalityLoop", // Deliberately brings up message on run.  AMS
                 "ptango", // Skip running all ptango demos, they do not provide useful exportable output.
@@ -296,15 +308,21 @@ public class ExportModelJUnitTest {
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
                 "HappySadStock.xml", // Run only if there is a Hue on the local network.
                 "HierarchyFlattening.xml", // gt
+                "ImageFilters.xml", // Links to other demos.          
+                "IMUSensor.xml", // Uses the serial port.
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
                 "JMFJAI.xml", // Requires a video camera
                 "KarplusStrong.xml", // "Audio Device Unavailable"
+                "LineFault.xml", // Intentionally throws an error.
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "MapReduceDDF.xml", // Hangs.
                 "MoC.xml", // "No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported."
                 "ModularCG.xml", // cg model fails to run while exporting.
-                "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
+                "MotionDetector.xml", //Uses the camera
+                "data/ontologies/demo/ProductLattices/ProductLattices.xml", // Has links to other models
+                "PageAssembler.xml", // Has links to other models.
+                "ProbabilisticModels.xml", // Has links to other models.
                 "PtidesBasicOnePlatform.xml", // Annotation says not to run.
                 "ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml",  // Has links to pub and sub
                 "ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml",  // Subscriber needs to run
@@ -312,6 +330,7 @@ public class ExportModelJUnitTest {
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RecordManipulation", // Python demo pops up a dialog.
+                "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RobotPFChase.xml", // Needs the KeyValue model running.
                 "Ros.xml", // This demo has links to the demo that are to run
@@ -319,15 +338,19 @@ public class ExportModelJUnitTest {
                 "RosSubscriber.xml", // RosPublisher needs to run.
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
+                "SequencedActors.xml", // Has links to other models
                 "SerialPort.xml", // Requires serial port.
                 "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
                 "SmartChaseWithSmartIntruder.xml", // Needs the KeyValue model running.
                 "SmartIntruder.xml", // Needs the KeyValue model running.
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
+                "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
+
                 "SwarmAcousticService.xml", // Times out while connecting to a port
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
+                "ThreadedComposite.xml", // Has links to other demos.
                 "TokenTransmissionTime.xml", // This demo has links to the demo that are to run
                 "TunnelingBallDevice", // Annotation says that it cannot be run.
                           "Ultrasonic.xml", // Arduino only
@@ -340,6 +363,7 @@ public class ExportModelJUnitTest {
                 "ptolemy/domains/ptides/demo/VertxDemo/Subscriber.xml", // Requires that other demos run.
                 "ptolemy/domains/ptides/demo/VertxDemo/Publisher2.xml", // Requires that other demos run.
                 "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
+                "UnitSystemExample.xml", // Has links to other models.
                 "VideoCapture.xml", // Requires a video camera.
                 "WebSocketClient.xml", // Times out unless the server is running.
         };
