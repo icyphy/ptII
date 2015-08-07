@@ -57,6 +57,11 @@ OTHER_FILES_TO_BE_JARED = \
 	ChannelMix.xml \
 	Chrome.xml \
 	Circle.xml \
+	ColorHalftone.xml \
+	Contour.xml \
+	Contrast.xml \
+	Crop.xml \
+	Crystallize.xml \
 	Gray.xml \
 	Invert.xml \
 	LensBlur.xml \
