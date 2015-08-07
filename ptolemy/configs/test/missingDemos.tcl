@@ -56,3 +56,12 @@ test missingDemos-1.0 {Look for demos listed in configs/doc/demos.html that are 
     list $out $err2
 } {{} {}}
 
+test missingDemos-2.0 {Run the missingDemos script.} {
+    jdkCaptureOutAndErr {
+        exec $PTII/ptolemy/configs/test/missingDemos
+    } out err
+    puts "Stderr for '$PTII/ptolemy/configs/test/missingDemos' was\n--start--\n$err\n--end--"
+    regsub -all {make: [^']*'} $err {} err2
+    list $out $err2
+} {{} {}}
+

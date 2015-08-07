@@ -105,7 +105,8 @@ JAVAFLAGS = -Xmx4000m
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-
+runMissingDemos:
+	./missingDemos
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
