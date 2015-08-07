@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2010 The Regents of the University of California
+# @Copyright (c) 2010-2015 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	ConstAbstractInterpretationObservable.xml \
 	ConstComparatorEqualToDemo.xml \
 	ConstComparatorGTEDemo.xml \
 	ConstComparatorGreaterThanDemo.xml \

@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sequence
 
-DIRS =		kernel gui lib test
+DIRS =		kernel gui lib demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..

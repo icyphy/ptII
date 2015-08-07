@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	$(PTPACKAGE).xml \
 	BooleanSwitchDemoProductLattice.xml \
 	ConstComparatorEqualToDemo.xml \
 	ConstComparatorGreaterThanDemo.xml \

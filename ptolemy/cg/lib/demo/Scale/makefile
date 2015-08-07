@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	Scale.xml \
 	ScaleC.xml \
 	ScaleCFlat.xml \
 	ScaleJava.xml

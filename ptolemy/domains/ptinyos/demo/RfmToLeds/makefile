@@ -47,7 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	RfmToLeds-InDE.xml
+	RfmToLeds.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

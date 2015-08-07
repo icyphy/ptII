@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2009-2011 The Regents of the University of California
+# @Copyright (c) 2009-2015 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,8 +58,8 @@ OTHER_FILES_TO_BE_JARED = \
 	SimpleConstDemo.xml \
 	SimpleNonconstDemo.xml \
 	LatticeComposition.xml \
-	LatticeCompositionSolverModel.xml
-	
+	LatticeCompositionSolverModel.xml \
+	ProductLattices.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -249,7 +249,6 @@
       <!-- <li><a href="../../../ptolemy/demo/Robot/RobotCollaborativeChase.xml">Robot Collaborative Chase</a> </li> -->
       <!-- <li><a href="../../../ptolemy/demo/Robot/RobotInLine.xml">Robot In Line</a> </li> -->
       <!-- <li><a href="../../../ptolemy/demo/Robot/RobotMonitor.xml">Robot Monitor</a> </li> -->
-      <!-- <li><a href="../../../ptolemy/demo/Robot/RobotMPC.xml">RobotMPC</a> </li> -->
       <!-- ../../../ptolemy/demo/RobotMPC/RobotMPC.xml -->
       <!-- <li><a href="../../../ptolemy/demo/Robot/RobotOnCircle.xml">Robot On Circle</a> </li> -->
       <!-- <li><a href="../../../ptolemy/demo/Robot/RobotOnCircleKV.xml">Robot On Circle Key Value</a> </li> -->
@@ -285,8 +284,12 @@
     <h2><a name="csp">Communicating Sequential Processes (CSP)</a></h2>
     <ul>
       <li><a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier Synchronization</a></li>
-      <li><a href="../../../ptolemy/domains/csp/demo/BusContention/BusContention.xml">BusContention</a>(New in Ptolemy II 11.0)</li>
-      <li><a href="../../../ptolemy/domains/csp/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a>(New in Ptolemy II 11.0)</li>
+
+      <!-- There is no BusContention.xml or DiningPhilosophers.xml, the demo is .java files.
+           We list it here so that ptolemy/configs/test/missingDemos will skip it -->
+      <!-- ../../../ptolemy/domains/csp/demo/BusContention/BusContention.xml -->
+      <!-- ../../../ptolemy/domains/csp/demo/DiningPhilosophers/DiningPhilosophers.xml -->
+
       <li><a href="../../domains/csp/demo/ResourcePool/ResourcePool.xml">Resource Management</a></li>
       <li><a href="../../domains/csp/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a></li>
     </ul>
@@ -690,7 +693,6 @@
       <li><a href="../../actor/ptalon/demo/MapReduce/MapReduce.xml">MapReduce</a> 
       <li><a href="../../../ptolemy/actor/ptalon/demo/ModelChange/ModelChange.xml">ModelChange</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../ptolemy/actor/ptalon/demo/MultipleNodes/MultipleNodes.xml">MultipleNodes</a>(New in Ptolemy II 11.0)</li>
-      <li><a href="../../../ptolemy/actor/ptalon/demo/ptinyos/ptinyos.xml">ptinyos</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.xml">SmallWorld</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldFSM.xml">ParameterSweep SmallWorld FSM</a>
       <li><a href="../../actor/ptalon/demo/SmallWorld/ParameterSweepSmallWorldSDF.xml">ParameterSweep SmallWorld SDF</a>
@@ -743,8 +745,6 @@
       <li><a href="../../domains/ptides/demo/PowerPlant/PowerPlant.xml">Power Plant </a>
       <li><a href="../../domains/ptides/demo/PrintingPress/PrintingPress.xml">Printing Press </a>
       <li><a href="../../domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.xml">Synchrophasor </a>
-      <li><a href="../../../ptolemy/domains/ptinyos/demo/RfmToLeds/RfmToLeds.xml">RfmToLeds</a>(New in Ptolemy II 11.0)</li>
-      <li><a href="../../../ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/SendAndReceiveCnt.xml">SendAndReceiveCnt</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../ptolemy/domains/sequence/demo/SequencedActors/SequencedActors.xml">SequencedActors</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../ptolemy/domains/ptides/demo/SRinPtides/SRinPtides.xml">SRinPtides</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../ptolemy/domains/ptides/lib/qm/demo/TCPPacketTXRX/TCPPacketTXRX.xml">TCPPacketTXRX</a>(New in Ptolemy II 11.0)</li>
@@ -762,7 +762,11 @@
     <ul><!-- Alphabetical Please -->
       <li><a href="../../../ptolemy/domains/ptinyos/demo/CntToLeds/CntToLeds.xml">CntToLeds</a></li>
       <li><a href="../../../ptolemy/domains/ptinyos/demo/HelloWorld/HelloWorld.xml">HelloWorld</a></li>
+      <li><a href="../../../ptolemy/domains/ptinyos/demo/RfmToLeds/RfmToLeds.xml">RfmToLeds</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../ptolemy/domains/ptinyos/demo/SenseToLeds/SenseToLeds.xml">SenseToLeds</a></li>
+      <li><a href="../../../ptolemy/actor/ptalon/demo/ptinyos/SenseToLeds/SenseToLeds.xml">SensToLeds (Ptalon Version)</a></li>
+      <li><a href="../../../ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/SendAndReceiveCnt.xml">SendAndReceiveCnt</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../ptolemy/actor/ptalon/demo/ptinyos/SendAndReceiveCnt/SendAndReceiveCnt.xml">SendAndReceiveCnt (Ptalon Version)</a></li>
       <li><a href="../../../ptolemy/domains/ptinyos/demo/Surge/Surge.xml">Surge</a>(New in Ptolemy II 11.0)</li>
     </ul>
 
@@ -1352,7 +1356,7 @@ se files listed here. -->
     <h2><a name="hlacerti">High Level Architecture</a></h2>
     <ul><!-- Alphabetical Please -->
       <li><a href="../../../org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml">2Billes2Fed</a>(New in Ptolemy II 11.0)</li>
-      <li><a href="../../../org/hlacerti/demo/billard/billard.xml">billard</a>(New in Ptolemy II 11.0)</li>
+      <li><a href="../../../org/hlacerti/demo/Billard/Billard.xml">billard</a>(New in Ptolemy II 11.0)</li>
       <li><a href="../../../org/hlacerti/demo/BillardHit/BillardHit.xml">BillardHit</a>(New in Ptolemy II 11.0)</li>
       <!-- ../../../org/hlacerti/demo/legacy/legacy.xml -->
       <!-- ../../../org/hlacerti/demo/ModelUpdater/ModelUpdater.xml -->
@@ -1584,7 +1588,7 @@ nconstant Analysis</a>  </li>
       <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml">WebSocketsServerClient</a>(New in Ptolemy II 11.0)</li>
     </ul>
 
-    <!-- demos to exclude from $PTII/adm/bin/missingDemos -->
+    <!-- demos to exclude from $PTII/ptolemy/configs/test/missingDemos -->
 
     <!-- ../../../org/terraswarm/accessor/accessors/web/demo/ -->
     <!-- ../../../ptolemy/actor/lib/opencv/javacv/demo -->
