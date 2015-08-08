@@ -624,7 +624,8 @@ public class HTMLAbout {
                             Object object2 = textAttributes.nextElement();
                             if (object2 instanceof LiveLink) {
                                 LiveLink liveLink = (LiveLink)object2;
-                                if (liveLink.stringValue().contains("CLASSPATH")) {
+                                if (liveLink.stringValue().contains("CLASSPATH")
+                                        && liveLink.stringValue().endsWith(".xml")) {
                                     File liveLinkFile = liveLink.asFile();
                                     // Look for the value of $PTII and substitute in $CLASSPATH
                                     // so that we can use FileUtilities.nameToURL() from within
