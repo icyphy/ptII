@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -45,16 +46,24 @@ import javax.swing.event.HyperlinkEvent;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
+
+import ptolemy.vergil.kernel.attributes.TextAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLAbout
@@ -547,10 +556,87 @@ public class HTMLAbout {
                 // ptolemy.moml.filter.ActorIndex
                 fileWriter.write(StringUtilities.substitute(demo, ptII,
                         "$CLASSPATH") + "\n");
+                try {
+                    // Open the model, look for any LiveLinks and write them.
+                    System.out.print(".");
+                    writeLiveLinks(fileWriter, demo, ptII);
+                } catch (Throwable throwable) {
+                    System.err.println("Warning: Could not open " + demo
+                            + ".  This means that any LiveLinks in that model "
+                            + "will not be added to the list of all demos. "
+                            + "This is not a big problem and can be safely ignored.: " + throwable);
+                }
             }
         } finally {
             if (fileWriter != null) {
                 fileWriter.close();
+            }
+        }
+    }
+
+    /** Open the model, look for any LiveLinks and write their names.
+     *  @param fileWriter The FileWriter to write the file names to..
+     *  @param demo The string path to the demo to be searched for live links.
+     *  @param ptII The Ptolemy II home directory.
+     *  @exception Throwable If there is a problem opening the demo.
+     */
+    public static void writeLiveLinks(FileWriter fileWriter, String demo, String ptII) throws Throwable {
+        // Read the model file and look for LiveLinks.  This may
+        // miss some LiveLinks that are not in the toplevel model file, but
+        // it is much faster than parsing each model.
+        boolean matches = false;
+        StringBuffer demoBuffer = new StringBuffer();
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(
+                    new InputStreamReader(new File(demo).toURI().toURL().openStream()));
+
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                if (inputLine.matches(".*ptolemy.actor.gui.LiveLink.*")) {
+                    matches = true;
+                    break;
+                }
+            }
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
+
+        if (matches) {
+            Workspace workspace = new Workspace("MyWorkspace");
+            MoMLParser parser = new MoMLParser();
+            parser.resetAll();
+            List myFilters = BackwardCompatibility.allFilters();
+            MoMLParser.addMoMLFilters(myFilters, workspace);
+            NamedObj namedObj = parser.parseFile(demo);
+            if (namedObj instanceof CompositeEntity) {
+                CompositeEntity model = (CompositeEntity) namedObj;
+                Enumeration attributes = model.getAttributes();
+                while (attributes.hasMoreElements()) {
+                    Object object = attributes.nextElement();
+                    if (object instanceof TextAttribute) {
+                        TextAttribute textAttribute = (TextAttribute)object;
+                        Enumeration textAttributes = textAttribute.getAttributes();
+                        while (textAttributes.hasMoreElements()) {
+                            Object object2 = textAttributes.nextElement();
+                            if (object2 instanceof LiveLink) {
+                                LiveLink liveLink = (LiveLink)object2;
+                                if (liveLink.stringValue().contains("CLASSPATH")) {
+                                    File liveLinkFile = liveLink.asFile();
+                                    // Look for the value of $PTII and substitute in $CLASSPATH
+                                    // so that we can use FileUtilities.nameToURL() from within
+                                    // ptolemy.moml.filter.ActorIndex
+                                    fileWriter.write(StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
+                                                "$CLASSPATH") + "\n");
+                                }
+                            }
+                        }
+                    }
+                }
+                model.setContainer(null);
             }
         }
     }
