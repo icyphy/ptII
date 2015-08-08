@@ -286,7 +286,6 @@ $CLASSPATH/ptolemy/demo/AirManagementSystem/AirManagementSystem.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/AirManagementSystemCausalityLoop.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/AMS_AMSSim.xml
 $CLASSPATH/ptolemy/demo/AirManagementSystem/HeatExchangerTester.xml
-$CLASSPATH/ptolemy/demo/AirManagementSystem/NEWamsStateSpaceModel.pdf
 $CLASSPATH/ptolemy/demo/AirManagementSystem/PhysicalPlantCausalityLoop.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ContactorTester.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
@@ -361,7 +360,6 @@ $CLASSPATH/ptolemy/demo/Robot/SmartChase.xml
 $CLASSPATH/ptolemy/demo/Robot/SmartChaseWithSmartIntruder.xml
 $CLASSPATH/ptolemy/demo/Robot/SmartIntruder.xml
 $CLASSPATH/ptolemy/demo/Robot/SmartIntruder6Teams.xml
-$CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.htm
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankRefactored.xml
