@@ -55,11 +55,34 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  *  See the documentation for the JavaScript cameras module to see how to use this.
  *
+ *  <p> If invoking the constructor generates a message like:</p>
+ *  <pre>
+ *  Caused by: java.lang.RuntimeException: Library 'OpenIMAJGrabber' was not loaded successfully from file '/tmp/BridJExtractedLibraries5717506824090765864/OpenIMAJGrabber.so'
+ *  </pre>
+ *  <p>Then you may need to install some packages.  The way to diagnose this under
+ *  Linux is to unjar the webcam-capture jar and run ldd:</p>
+ *  <pre>
+ *  cd /tmp
+ *  jar -xf /home/jenkins/workspace/ptII/lib/webcam-capture-0.3.10.jar 
+ *  ldd ./com/github/sarxos/webcam/ds/buildin/lib/linux_x86/OpenIMAJGrabber.so
+ *  </pre>
+ *
+ *  <p>Then look for libraries that are listed as "not found".</p>
+ *
+ *  <p>Under Red Hat Linux, invoking Ptolemy demos that use
+ *  webcam-capture requires a 32-bit JVM.  In addition, the following
+ *  packages may need to be installed.</p>
+ *
+ *  <pre>
+ *  yum install libv4l.i686
+ *  yum install libstdc++.i686
+ *  </pre>
+ *
  *  @author Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Yellow (eal)
- *  @Pt.AcceptedRating Red (bilung)
+ *  @Pt.AcceptedRating Red (cxh)
  *
  */
 public class CameraHelper extends HelperBase implements WebcamListener {
@@ -88,6 +111,10 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             if (_webcams == null) {
                 // Refresh the list.
                 cameras();
+            }
+            if (_webcams == null) {
+                System.err.println("ptolemy/actor/lib/jjs/modules/cameras/CameraHelper.java: No Cameras were found.");
+                return;
             }
             _webcam = _webcams.get(name);
         }
@@ -126,7 +153,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     /** Close the camera.
      */
     public void close() {
-        _webcam.close();
+        if (_webcam != null) {
+            _webcam.close();
+        }
     }
 
     /** Return the system default camera name.
@@ -147,7 +176,12 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  @see #setViewSize(Map)
      */
     public String getViewSize() {
-        Dimension size = _webcam.getViewSize();
+        Dimension size = null;
+        if (_webcam != null) {
+            size = _webcam.getViewSize();
+        } else {
+            size = new Dimension(0,0);
+        }
         String result = "{\"width\":" + size.width + ", \"height\":"
                 + size.height + "}";
         return result;
@@ -160,7 +194,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     public void open() {
         // The true argument opens the camera in "asynchronous" mode, which
         // notifies this object of each new image obtained.
-        _webcam.open(true);
+        if (_webcam != null) {
+            _webcam.open(true);
+        }
     }
 
     /** Set the current view size for this camera, representing the desired size
@@ -186,7 +222,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
                     "Expected integer height specification for the view size. Got: "
                             + heightSpec);
         }
-        _webcam.setViewSize(new Dimension(width, height));
+        if (_webcam != null) {
+            _webcam.setViewSize(new Dimension(width, height));
+        }
     }
 
     /** Return the most recent image obtained by the camera, or null
@@ -195,6 +233,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *   is no image to return.
      */
     public AWTImageToken snapshot() {
+        if (_webcam == null) {
+            return null;
+        }
         if (!_webcam.isOpen()) {
             // open();
         }
@@ -214,6 +255,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  @return An array of strings representing available view sizes.
      */
     public String[] viewSizes() {
+        if (_webcam == null) {
+            return new String [] {"{ \"width\"=0, \"height\"=0 }"};
+        }
         Dimension[] sizes = _webcam.getViewSizes();
         String[] result = new String[sizes.length];
         for (int i = 0; i < sizes.length; i++) {
