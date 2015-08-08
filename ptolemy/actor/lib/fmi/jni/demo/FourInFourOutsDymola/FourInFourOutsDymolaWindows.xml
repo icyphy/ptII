@@ -42,7 +42,7 @@
         </property>
     </entity>
     <entity name="FourInFourOuts1_w" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="Z:\thierry\proj\SOEP\git\srg-soep\benchmarks\energyplus\c++\window\two-room\qss\application\envelope-hvac\experiment_runs\FourInFourOuts1_w.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/jni/demo/FourInFourOutsDymola/FourInFourOuts1_w.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
