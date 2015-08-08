@@ -9,6 +9,8 @@
     <property name="DocML view"
               class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
   </property>
+  <property name="Image viewer"
+            class="ptolemy.actor.lib.image.ImageTableau$Factory"/>
   <property name="HTML Viewer"
             class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
     <property name="Source"

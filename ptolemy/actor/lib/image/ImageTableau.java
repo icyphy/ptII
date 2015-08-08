@@ -35,6 +35,7 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.ImageTokenEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TableauFrame;
@@ -171,7 +172,7 @@ public class ImageTableau extends TokenTableau {
      */
     @Override
     public void createFrame(TableauFrame frame) throws IllegalActionException {
-        TokenEffigy effigy = (TokenEffigy) getContainer();
+        ImageTokenEffigy effigy = (ImageTokenEffigy) getContainer();
 
         if (frame == null) {
             // The second argument prevents a status bar.
@@ -179,15 +180,24 @@ public class ImageTableau extends TokenTableau {
         }
 
         setFrame(frame);
-        _picture = new Picture(_oldxsize, _oldysize);
+        ImageToken token = effigy.getImage();
+        if (token == null) {
+            _picture = new Picture(_oldxsize, _oldysize);
+        } else {
+            Image image = token.asAWTImage();
+            int width = image.getWidth(null);
+            int height = image.getHeight(null);
+            if (width > 0 && height > 0) {
+                _picture = new Picture(width, height);
+            } else {
+                _picture = new Picture(_oldxsize, _oldysize);
+            }
+        }
         frame.getContentPane().add(_picture, BorderLayout.CENTER);
 
         // Display current data.
-        Iterator tokens = effigy.getTokens().iterator();
-
-        while (tokens.hasNext()) {
-            Object token = tokens.next();
-            display((ImageToken) token);
+        if (token != null) {
+            display(token);
         }
     }
 
@@ -286,27 +296,27 @@ public class ImageTableau extends TokenTableau {
         ////                         public methods                    ////
 
         /** If the specified effigy already contains a tableau named
-         *  "tokenTableau", then return that tableau; otherwise, create
-         *  a new instance of TokenTableau in the specified
-         *  effigy, and name it "tokenTableau".  If the specified
+         *  "imageTableau", then return that tableau; otherwise, create
+         *  a new instance of ImageTableau in the specified
+         *  effigy, and name it "imageTableau".  If the specified
          *  effigy is not an instance of TokenEffigy, then do not
          *  create a tableau and return null. It is the
          *  responsibility of callers of this method to check the
          *  return value and call show().
          *
          *  @param effigy The effigy, which is expected to be a TokenEffigy.
-         *  @return An instance of TokenTableau, or null if one cannot be
+         *  @return An instance of ImageTableau, or null if one cannot be
          *    found or created.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
          */
         @Override
         public Tableau createTableau(Effigy effigy) throws Exception {
-            if (effigy instanceof TokenEffigy) {
+            if (effigy instanceof ImageTokenEffigy) {
                 // First see whether the effigy already contains an
-                // TokenTableau.
-                TokenTableau tableau = (TokenTableau) effigy
-                        .getEntity("tokenTableau");
+                // ImageTableau.
+                ImageTableau tableau = (ImageTableau) effigy
+                        .getEntity("imageTableau");
 
                 if (tableau != null) {
                     return tableau;
@@ -315,7 +325,7 @@ public class ImageTableau extends TokenTableau {
                 // NOTE: Normally need to check effigy tokens for
                 // compatibility here, but they are always compatible,
                 // so we don't bother.
-                return new TokenTableau(effigy, "tokenTableau");
+                return new ImageTableau(effigy, "imageTableau");
             }
 
             return null;

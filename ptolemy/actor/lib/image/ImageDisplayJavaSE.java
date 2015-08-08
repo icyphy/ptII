@@ -34,8 +34,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -43,9 +41,9 @@ import javax.swing.SwingUtilities;
 import ptolemy.actor.gui.AbstractPlaceableJavaSE;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.ImageTokenEffigy;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TokenEffigy;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.ImageToken;
 import ptolemy.data.Token;
@@ -322,7 +320,7 @@ ImageDisplayInterface {
     protected Container _container;
 
     /** The effigy for the image data. */
-    protected TokenEffigy _effigy;
+    protected ImageTokenEffigy _effigy;
 
     /** The frame, if one is used. */
     protected ImageWindow _imageWindowFrame;
@@ -357,7 +355,7 @@ ImageDisplayInterface {
                 }
 
                 try {
-                    _effigy = new TokenEffigy(containerEffigy,
+                    _effigy = new ImageTokenEffigy(containerEffigy,
                             containerEffigy.uniqueName("imageEffigy"));
 
                     // The default identifier is "Unnamed", which is
@@ -416,11 +414,8 @@ ImageDisplayInterface {
 
         // See also ptolemy/actor/lib/image/ImageTableau.java
         if (_imageWindowFrame != null) {
-            List tokens = new LinkedList();
-            tokens.add(in);
-
             try {
-                _effigy.setTokens(tokens);
+                _effigy.setImage((ImageToken) in);
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }

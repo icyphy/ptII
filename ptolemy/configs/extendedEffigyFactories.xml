@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
+  <entity name="Image viewer" class="ptolemy.actor.gui.ImageTokenEffigy$Factory"/>
   <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
   <!-- Web Browser should be after HTML Viewer, -->
   <!-- or it will intercept HTML pages. -->

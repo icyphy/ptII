@@ -1297,38 +1297,40 @@ public class TableauFrame extends Top {
             Tableau newTableau = getConfiguration().openModel(newURL, newURL,
                     newKey);
 
-            newTableau.getFrame().setTitle(
-                    StringUtilities.abbreviate(new File(_directory, file
-                            .getName()).toString()));
+            if (newTableau != null && newTableau.getFrame() != null) {
+                newTableau.getFrame().setTitle(
+                        StringUtilities.abbreviate(new File(_directory, file
+                                .getName()).toString()));
 
-            // If the tableau was unnamed before, then we need
-            // to close this window after doing the save.
-            Effigy effigy = getEffigy();
+                // If the tableau was unnamed before, then we need
+                // to close this window after doing the save.
+                Effigy effigy = getEffigy();
 
-            if (effigy != null) {
-                String id = effigy.identifier.getExpression();
+                if (effigy != null) {
+                    String id = effigy.identifier.getExpression();
 
-                if (id.equals("Unnamed")) {
-                    // This will have the effect of closing all the
-                    // tableaux associated with the unnamed model.
-                    effigy.setContainer(null);
+                    if (id.equals("Unnamed")) {
+                        // This will have the effect of closing all the
+                        // tableaux associated with the unnamed model.
+                        effigy.setContainer(null);
+                    }
                 }
-            }
 
-            // Change r61021 "dispose the old frame after opening a new one on call to saveAs"
-            // resulted in vergil exiting if one does
-            // 1. cd $PTII/ptolemy/domains/sdf/demo/Butterfly
-            // 2. $PTII/bin/vergil Butterfly.xml
-            // 3. File -> Save As, select Butterfly.xml, hit OK.
-            // 4. When the "Ok to overwrite" window comes up, hit Yes.
-            // 5. The vergil process exits.
-            // So, we only call dispose if the tableaus are different.
+                // Change r61021 "dispose the old frame after opening a new one on call to saveAs"
+                // resulted in vergil exiting if one does
+                // 1. cd $PTII/ptolemy/domains/sdf/demo/Butterfly
+                // 2. $PTII/bin/vergil Butterfly.xml
+                // 3. File -> Save As, select Butterfly.xml, hit OK.
+                // 4. When the "Ok to overwrite" window comes up, hit Yes.
+                // 5. The vergil process exits.
+                // So, we only call dispose if the tableaus are different.
 
-            // Check that _tableau is not null because running
-            // ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
-            // and saving BaseOptimization.xml could result in an NPE.
-            if (_tableau != null && !_tableau.equals(newTableau)) {
-                dispose();
+                // Check that _tableau is not null because running
+                // ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+                // and saving BaseOptimization.xml could result in an NPE.
+                if (_tableau != null && !_tableau.equals(newTableau)) {
+                    dispose();
+                }
             }
             return newURL;
         } catch (Exception ex) {
