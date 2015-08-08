@@ -38,7 +38,7 @@ do
     status=$?
     if [ $status -eq 1 ]; then
         echo "The $demo directory is not found in completeDemo.htm" >&2
-        echo "    <!-- ../../../$demo -->&2" >&2
+        echo "    <!-- ../../../$demo -->" >&2
         exitCode=2
     fi        
 done
