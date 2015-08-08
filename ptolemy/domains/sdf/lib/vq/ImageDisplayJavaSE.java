@@ -32,8 +32,6 @@ import java.awt.Container;
 import java.awt.Image;
 import java.awt.image.ColorModel;
 import java.awt.image.MemoryImageSource;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -150,11 +148,9 @@ ptolemy.domains.sdf.lib.vq.ImageDisplayInterface {
             Image image = _imageWindowFrame.getContentPane().createImage(imageSource);
 
             AWTImageToken token = new AWTImageToken(image);
-            List tokens = new LinkedList();
-            tokens.add(token);
 
             try {
-                _effigy.setTokens(tokens);
+                _effigy.setImage(token);
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(e);
             }

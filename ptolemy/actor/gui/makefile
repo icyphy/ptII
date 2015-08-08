@@ -115,6 +115,7 @@ JSRCS = \
 	HTMLEffigyFactory.java \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
+	ImageTokenEffigy.java \
 	InsideEntityEditorPaneFactory.java \
 	JNLPUtilities.java \
 	JVMTableau.java \
