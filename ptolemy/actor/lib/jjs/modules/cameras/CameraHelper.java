@@ -59,24 +59,27 @@ import ptolemy.kernel.util.IllegalActionException;
  *  <pre>
  *  Caused by: java.lang.RuntimeException: Library 'OpenIMAJGrabber' was not loaded successfully from file '/tmp/BridJExtractedLibraries5717506824090765864/OpenIMAJGrabber.so'
  *  </pre>
- *  <p>Then you may need to install some packages.  The way to diagnose this under
- *  Linux is to unjar the webcam-capture jar and run ldd:</p>
+ *  <p>Then under Red Hat Linux, install lib4l for 64-bit JVMs, run:</p>
+ *
+ *  <pre>
+ *  sudo yum install libstdc++.x86_64
+ *  </pre>
+ *
+ *  <p> The way to diagnose these problems under Linux is to unjar the
+ *  webcam-capture jar and run ldd:</p>
+ *
  *  <pre>
  *  cd /tmp
- *  jar -xf /home/jenkins/workspace/ptII/lib/webcam-capture-0.3.10.jar 
- *  ldd ./com/github/sarxos/webcam/ds/buildin/lib/linux_x86/OpenIMAJGrabber.so
+ *  jar -xf $PTII/lib/webcam-capture-0.3.10.jar 
+ *  ldd ./com/github/sarxos/webcam/ds/buildin/lib/linux_x64/OpenIMAJGrabber.so
  *  </pre>
  *
- *  <p>Then look for libraries that are listed as "not found".</p>
+ *  <p>Note that the webcam-capture jar contains both 32-bit and 64-bit shared 
+ *  libraries, be sure to run the ldd command on the version appropriate for your
+ *  JVM.</p>
  *
- *  <p>Under Red Hat Linux, invoking Ptolemy demos that use
- *  webcam-capture requires a 32-bit JVM.  In addition, the following
- *  packages may need to be installed.</p>
- *
- *  <pre>
- *  yum install libv4l.i686
- *  yum install libstdc++.i686
- *  </pre>
+ *  <p>Then look for libraries that are listed as "not found", then use
+ *  <code>yum search xxx</code> to find them and then install them.</p>
  *
  *  @author Edward A. Lee
  *  @version $Id$
