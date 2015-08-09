@@ -344,8 +344,7 @@ public class HTMLViewerTableau extends Tableau {
                 relativePath = relativePath.substring(1);
             }
 
-            URL anotherURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(relativePath);
+            URL anotherURL = ClassUtilities.getResource(relativePath);
 
             if (anotherURL == null && relativePath.indexOf('#') != -1) {
                 // getResource does not work on paths that look like:
@@ -381,8 +380,7 @@ public class HTMLViewerTableau extends Tableau {
         if (urlStringBase.startsWith("jar:")) {
             anotherURL = ClassUtilities.jarURLEntryResource(urlStringBase);
         } else {
-            anotherURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(urlStringBase);
+            anotherURL = ClassUtilities.getResource(urlStringBase);
         }
 
         if (anotherURL != null) {

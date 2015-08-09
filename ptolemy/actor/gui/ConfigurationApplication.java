@@ -818,8 +818,14 @@ public class ConfigurationApplication implements ExecutionListener {
                     //specURL = refClass.getClassLoader().getResource(spec);
                     // This works in Web Start, see
                     // http://download.oracle.com/javase/1.5.0/docs/guide/javaws/developersguide/faq.html#211
-                    specURL = Thread.currentThread().getContextClassLoader()
-                            .getResource(spec);
+
+                    // Unfortunately, Thread.currentThread().getContextClassLoader() can
+                    // return null.  This happened when
+                    // $CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/Sender.xml
+                    // failed and subsequent calls to openModelOrEntity() would
+                    // fail because the configuration could not be found.
+                    // So, we have our own getResource() that handles this.
+                    specURL = ClassUtilities.getResource(spec);
 
                     if (specURL == null) {
                         try {
@@ -1259,7 +1265,6 @@ public class ConfigurationApplication implements ExecutionListener {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
                     URL inURL;
-
                     try {
                         inURL = specToURL(arg);
                     } catch (IOException ex) {
