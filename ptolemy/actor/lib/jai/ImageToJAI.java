@@ -68,8 +68,8 @@ public class ImageToJAI extends Transformer {
     public ImageToJAI(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(BaseType.GENERAL);
+        output.setTypeEquals(BaseType.GENERAL);
     }
 
     /** Fire this actor.

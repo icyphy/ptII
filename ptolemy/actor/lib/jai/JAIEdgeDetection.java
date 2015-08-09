@@ -69,7 +69,7 @@ public class JAIEdgeDetection extends Transformer {
     public JAIEdgeDetection(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(BaseType.GENERAL);
         output.setTypeEquals(BaseType.OBJECT);
 
         firstMask = new StringAttribute(this, "firstMask");
