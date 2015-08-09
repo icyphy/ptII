@@ -29,6 +29,7 @@ package ptolemy.actor.gui;
 import java.awt.Frame;
 import java.net.URL;
 
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
@@ -65,8 +66,7 @@ public class QueryUtilities {
         // this class extend Query and have other classes extend it
         try {
             // Note: call Thread.currentThread() so this works in Web Start
-            URL doc = Thread.currentThread().getContextClassLoader()
-                    .getResource(urlName);
+            URL doc = ClassUtilities.getResource(urlName);
 
             // Try to use the configuration, if we can.
             boolean success = false;

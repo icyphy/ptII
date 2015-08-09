@@ -79,6 +79,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StreamExec;
@@ -3226,10 +3227,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 // If we are under WebStart or running from jar files, we
                 // will need to copy libjvm.dll.a from the jar file
                 // that gcc can find it.
-                URL libjvmURL = Thread
-                        .currentThread()
-                        .getContextClassLoader()
-                        .getResource(
+                URL libjvmURL = ClassUtilities.getResource(
                                 libjvmRelativeDirectory + "/" + libjvmFileName);
                 if (libjvmURL != null) {
                     String libjvmAbsolutePath = null;

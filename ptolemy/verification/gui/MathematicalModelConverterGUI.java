@@ -52,6 +52,7 @@ import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.verification.kernel.MathematicalModelConverter;
 import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
@@ -143,9 +144,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     // FIXME: Customize to the particular code generator.
                     // Use Thread.currentThread() so that this code will
                     // work under WebStart.
-                    URL infoURL = Thread.currentThread()
-                            .getContextClassLoader()
-                            .getResource("ptolemy/verification/README.html");
+                    URL infoURL = ClassUtilities.getResource("ptolemy/verification/README.html");
 
                     if (configuration != null) {
                         configuration.openModel(null, infoURL,

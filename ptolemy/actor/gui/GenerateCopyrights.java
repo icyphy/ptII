@@ -43,6 +43,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -793,8 +794,7 @@ public class GenerateCopyrights {
     // Ptolemy II
     private static String _findURL(String localURL) {
         try {
-            URL url = Thread.currentThread().getContextClassLoader()
-                    .getResource(localURL);
+            URL url = ClassUtilities.getResource(localURL);
             return url.toString();
         } catch (Exception ex) {
             // Ignore it and use the copyright from the website

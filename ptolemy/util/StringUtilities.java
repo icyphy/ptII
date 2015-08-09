@@ -409,9 +409,7 @@ public class StringUtilities {
                     String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
 
                     // PTII variable was not set
-                    URL namedObjURL = Thread.currentThread()
-                            .getContextClassLoader()
-                            .getResource(stringUtilitiesPath);
+                    URL namedObjURL = ClassUtilities.getResource(stringUtilitiesPath);
 
                     if (namedObjURL != null) {
                         // Get the file portion of URL

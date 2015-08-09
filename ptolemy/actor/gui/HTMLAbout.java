@@ -60,6 +60,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
@@ -966,13 +967,9 @@ public class HTMLAbout {
         boolean configurationExists = false;
 
         try {
-            URL url = Thread
-                    .currentThread()
-                    .getContextClassLoader()
-                    .getResource(
-                            "ptolemy/configs/" + configurationName
-                            + "/configuration.xml");
-
+            String spec = "ptolemy/configs/" + configurationName
+                + "/configuration.xml";
+            URL url = ClassUtilities.getResource(spec);
             if (url != null) {
                 configurationExists = true;
             }

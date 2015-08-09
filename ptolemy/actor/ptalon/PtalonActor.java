@@ -52,6 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -554,8 +555,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 }
             } catch (IllegalActionException ex) {
                 // We might be under WebStart, try it as a jar URL
-                inputURL = Thread.currentThread().getContextClassLoader()
-                        .getResource(ptalonCodeLocation.getExpression());
+                inputURL = ClassUtilities.getResource(ptalonCodeLocation.getExpression());
                 if (inputURL == null) {
                     throw new IllegalActionException(this, ex,
                             "Failed to open " + "\""

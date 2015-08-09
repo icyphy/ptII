@@ -240,6 +240,44 @@ public class ClassUtilities {
         return null;
     }
 
+    /** Get the resource.
+     *  If the current thread has a non-null context class loader,
+     *  then use it to get the resource.  Othewise, get the
+     *  NamedObj class and use that to get the resource.
+     *  This is necessary because Thread.currentThread() can return null.
+     *  @param spec The string to be found as a resource.
+     *  @return The URL
+     */
+    public static URL getResource(String spec) {
+        URL url = null;
+        // Unfortunately, Thread.currentThread().getContextClassLoader() can
+        // return null.  This happened when
+        // $CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/Sender.xml
+        // failed and subsequent calls to ConfigurationApplication.openModelOrEntity() would
+        // fail because the configuration could not be found.
+        // So, we have our own getResource() that handles this.
+
+        if (Thread.currentThread().getContextClassLoader() == null) {
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            if (classLoader != null) {
+                url = classLoader.getResource(spec);
+            } else {
+                try {
+                    Class refClass = Class.forName(
+                            "ptolemy.util.ClassUtilities");
+                    url = refClass.getClassLoader().getResource(spec);
+                } catch (Exception ex) {
+                    throw new RuntimeException("Failed to get system class loader"
+                            + " and failed to get the Class for ClassUtilities", ex);
+                }
+            }
+        } else {
+            url = Thread.currentThread().getContextClassLoader()
+                .getResource(spec);
+        }
+        return url;
+    }
+
     /** Given a dot separated classname, return the jar file or directory
      *  where the class can be found.
      *  @param necessaryClass  The dot separated class name, for example
@@ -257,14 +295,12 @@ public class ClassUtilities {
         String necessaryResource = StringUtilities.substitute(necessaryClass,
                 ".", "/") + ".class";
 
-        URL necessaryURL = Thread.currentThread().getContextClassLoader()
-                .getResource(necessaryResource);
+        URL necessaryURL = ClassUtilities.getResource(necessaryResource);
 
         if (necessaryURL == null) {
             necessaryResource = StringUtilities.substitute(necessaryClass, ".",
                     "/") + ".xml";
-            necessaryURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(necessaryResource);
+            necessaryURL = ClassUtilities.getResource(necessaryResource);
         }
         if (necessaryURL != null) {
             String resourceResults = necessaryURL.getFile();

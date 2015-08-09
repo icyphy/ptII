@@ -52,6 +52,7 @@ import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -245,8 +246,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                 // FIXME: Customize to the particular code generator.
                 // Use Thread.currentThread() so that this code will
                 // work under WebStart.
-                URL infoURL = Thread.currentThread().getContextClassLoader()
-                        .getResource("ptolemy/cg/README.html");
+                URL infoURL = ClassUtilities.getResource("ptolemy/cg/README.html");
 
                 configuration
                 .openModel(null, infoURL, infoURL.toExternalForm());

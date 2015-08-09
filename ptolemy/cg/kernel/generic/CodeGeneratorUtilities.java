@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -126,8 +127,7 @@ public class CodeGeneratorUtilities {
             } catch (Throwable throwable) {
 
                 // Try it as a resource
-                URL inputFileURL = Thread.currentThread()
-                        .getContextClassLoader().getResource(inputFileName);
+                URL inputFileURL = ClassUtilities.getResource(inputFileName);
 
                 if (inputFileURL == null) {
                     throw ex;
@@ -217,8 +217,7 @@ public class CodeGeneratorUtilities {
             throw exception;
         }
 
-        URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                .getResource(inputFileName);
+        URL inputFileURL = ClassUtilities.getResource(inputFileName);
 
         if (inputFileURL == null) {
             throw new FileNotFoundException("Failed to find '" + inputFileName

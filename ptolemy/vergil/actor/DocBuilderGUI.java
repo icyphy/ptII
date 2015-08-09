@@ -51,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -129,8 +130,7 @@ public class DocBuilderGUI extends PtolemyFrame {
                     Configuration configuration = getConfiguration();
 
                     // FIXME: Help should bring this up as well.
-                    URL infoURL = Thread.currentThread()
-                            .getContextClassLoader().getResource(infoFile);
+                    URL infoURL = ClassUtilities.getResource(infoFile);
                     configuration.openModel(null, infoURL,
                             infoURL.toExternalForm());
                 } catch (Exception ex) {

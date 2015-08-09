@@ -296,8 +296,7 @@ public class JNLPUtilities {
         URL jarURL = jarURLEntryResource(jarURLName);
 
         if (jarURL == null) {
-            jarURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(jarURLName);
+            jarURL = ClassUtilities.getResource(jarURLName);
         }
 
         if (jarURL == null) {
