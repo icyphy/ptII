@@ -309,6 +309,7 @@ public class ExportModelJUnitTest {
                 "HappySadStock.xml", // Run only if there is a Hue on the local network.
                 "HierarchyFlattening.xml", // gt
                 "ImageFilters.xml", // Links to other demos.          
+                "/ImageFilters/", // Uses the camera, which is not present on the nightly build machine.
                 "IMUSensor.xml", // Uses the serial port.
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
