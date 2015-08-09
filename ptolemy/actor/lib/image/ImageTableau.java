@@ -188,6 +188,7 @@ public class ImageTableau extends TokenTableau {
             int width = image.getWidth(null);
             int height = image.getHeight(null);
             if (width > 0 && height > 0) {
+                // FIXME: scale to fit on screen.
                 _picture = new Picture(width, height);
             } else {
                 _picture = new Picture(_oldxsize, _oldysize);
