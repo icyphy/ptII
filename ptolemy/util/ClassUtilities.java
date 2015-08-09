@@ -257,7 +257,11 @@ public class ClassUtilities {
         // fail because the configuration could not be found.
         // So, we have our own getResource() that handles this.
 
-        if (Thread.currentThread().getContextClassLoader() == null) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if (classLoader != null) {
+            url = Thread.currentThread().getContextClassLoader()
+                .getResource(spec);
+        } else {
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             if (classLoader != null) {
                 url = classLoader.getResource(spec);
@@ -271,9 +275,6 @@ public class ClassUtilities {
                             + " and failed to get the Class for ClassUtilities", ex);
                 }
             }
-        } else {
-            url = Thread.currentThread().getContextClassLoader()
-                .getResource(spec);
         }
         return url;
     }
