@@ -4071,6 +4071,7 @@
 	<include name="org/ptolemy/machineLearning/hmmAOM/*.xml"/>
 	<include name="org/ptolemy/machineLearning/hsmm/*.class"/>
 	<include name="org/ptolemy/machineLearning/hsmm/*.xml"/>
+	<include name="org/ptolemy/machineLearning/lib/*.class"/>
 	<include name="org/ptolemy/machineLearning/particleFilter/*.class"/>
 	<include name="org/ptolemy/machineLearning/particleFilter/*.xml"/>
 	<include name="org/ptolemy/machineLearning/hmm/demo/*/*.xml"/>

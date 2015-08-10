@@ -454,6 +454,7 @@ PTMACHINE_LEARNING_PACKAGES = \
 	org.ptolemy.machineLearning \
 	org.ptolemy.machineLearning.hmm \
 	org.ptolemy.machineLearning.hmmAOM \
+	org.ptolemy.machineLearning.lib \
 	org.ptolemy.optimization
 
 # JDK1.8: 	org.ptolemy.machineLearning.particleFilter, org.ptolemy.machineLearning.hsmm
