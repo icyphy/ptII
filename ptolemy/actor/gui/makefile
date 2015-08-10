@@ -42,7 +42,10 @@ ME =		ptolemy/actor/gui
 # $PTII/configure looks for lib/bsh*.jar and sets PTBSH_RUN_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTBSH_RUN_DIR is empty.
 
-DIRS = 		doc exec jnlp properties $(PTBSH_RUN_DIR) style test $(PTJACL_DIR) $(PTJYTHON_DIR)
+# PTRSYNTAXTEXTAREA_DIR is set to syntax and used in
+# $PTII/ptolemy/actor/gui/makefile if RSyntaxEditor is present.
+
+DIRS = 		doc exec jnlp properties $(PTBSH_RUN_DIR) style $(PTRSYNTAXTEXTAREA_DIR) test $(PTJACL_DIR) $(PTJYTHON_DIR)
 
 # Root of the Java directory
 ROOT =		../../..

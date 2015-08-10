@@ -919,6 +919,16 @@ PTSVG_DIR =	@PTSVG_DIR@
 # Jar file used by diva/util/java2d/svg/makefile
 PTSVG_JAR =	@PTSVG_JAR@
 
+# PTRSYNTAXTEXTAREA_DIR is set to syntax and used in
+# $PTII/ptolemy/actor/gui/makefile if RSyntaxEditor is present.
+PTRSYNTAXTEXTAREA_DIR =		@PTRSYNTAXTEXTAREA_DIR@
+
+# RSyntaxTextArea jar file, typically downloaded from Maven.
+PTRSYNTAXTEXTAREA_JAR =		@PTRSYNTAXTEXTAREA_JAR@
+
+# Java packages that use RSyntaxTextArea, typically ptolemy.actor.gui.syntax.
+PTRSYNTAXTEXTAREA_PACKAGES = 	@PTRSYNTAXTEXTAREA_PACKAGES@
+
 # PTPOWERMOCK_DIR is set to test and used in
 # $PTII/ptdb/makefile
 PTPOWERMOCK_DIR=	@PTPOWERMOCK_DIR@
