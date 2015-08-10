@@ -59,6 +59,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	PtolemyServerUsers.properties \
 	PtolemyServerUsers.properties.default \
+	PtolemyServerConfig.properties \
 	PtolemyServerConfig.properties.default
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED) \
@@ -83,8 +84,7 @@ MISC_FILES = \
 	test \
 	util
 
-OPTIONAL_FILES = \
-	PtolemyServerConfig.properties
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
