@@ -32,6 +32,9 @@ ptolemy.ptII.dir=@PTII@
 user.language=en
 user.region=US
 
+# Path to the ant binary, used while importing accessors in org/terraswarm/accessor/JSAccessor.java
+ptolemy.ant.path=@ANT_PATH@
+
 ####
 # These properties are used by PtinyOS
 #
