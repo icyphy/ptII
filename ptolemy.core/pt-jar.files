@@ -155,6 +155,7 @@
 /ptolemy/data/RecordToken.java
 /ptolemy/data/ScalarToken.java
 /ptolemy/data/ShortToken.java
+/ptolemy/data/SmoothToken.java
 /ptolemy/data/StringToken.java
 /ptolemy/data/Token.java
 /ptolemy/data/TokenUtilities.java

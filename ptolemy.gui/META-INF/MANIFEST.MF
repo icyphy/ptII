@@ -5,6 +5,7 @@ Bundle-SymbolicName: ptolemy.gui
 Bundle-Version: 10.1.0.qualifier
 Bundle-Vendor: CHESS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Eclipse-BuddyPolicy: registered
 Import-Package: com.microstar.xml;version="10.1.0",
  diva.gui;version="10.1.0",
  ptolemy.actor;version="10.1.0",

@@ -167,11 +167,6 @@
 			<locationURI>PT_LOC/ptolemy/actor/gui/GenerateCopyrights.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/ptolemy/actor/gui/HTMLAbout.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/ptolemy/actor/gui/HTMLAbout.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/ptolemy/actor/gui/HTMLEffigy.java</name>
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/actor/gui/HTMLEffigy.java</locationURI>

@@ -1,6 +1,6 @@
 /* An application that reads one or more files specified on the command line.
 
- Copyright (c) 1999-2013 The Regents of the University of California.
+ Copyright (c) 1999-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,7 +45,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
-//import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
@@ -108,14 +108,14 @@ import ptolemy.util.StringUtilities;
  <p>Note that strings need to have double quotes converted to
  <code>&amp;quot;</code> so to set a parameter named <code>c</code>
  to the string <code>"bar"</code> it might be necessary to do
- something like:
+ something like:</p>
  <pre>
  $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c "&amp;quot;bar&amp;quot;"
  </pre>
- The <code>&amp;quot;</code> is necessary to convert the double quote
+ <p>The <code>&amp;quot;</code> is necessary to convert the double quote
  to something safe to in an XML file.  The backslashes are necessary
- to protect the <code>&amp</code> and <code>;</code> from the shell
- in the shell script.
+ to protect the <code>&amp;</code> and <code>;</code> from the shell
+ in the shell script.</p>
 
  <p>Note that the ptolemy.actor.parameters.ParameterSet attribute is
  a better way to set parameters at run time.  ParameterSet is
@@ -161,6 +161,14 @@ import ptolemy.util.StringUtilities;
 
  </dl>
 
+ <p>To run this class from the command line without any of the
+ Ptolemy-specific scripts, try:</p>
+<pre>
+java -classpath $PTII ptolemy.actor.gui.ConfigurationApplication \
+   -run20x $PTII/ptolemy/configs/full/configuration.xml \
+   $PTII/ptolemy/actor/lib/test/auto/Ramp1.xml
+</pre>
+
  @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
  @version $Id$
  @since Ptolemy II 8.0
@@ -180,8 +188,7 @@ public class ConfigurationApplication implements ExecutionListener {
      * ptolemy/actor/ActorModule.properties file.</p>
      */
     public ConfigurationApplication() {
-      // FIXME : ErwinDL commented this to break dependencies at some point for initial modularization
-//        ActorModuleInitializer.initializeInjector();
+        ActorModuleInitializer.initializeInjector();
     }
 
     /** Parse the specified command-line arguments, instantiating classes
@@ -203,7 +210,7 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args)
             throws Exception {
-        this(basePath, args, new /*Graphical*/MessageHandler(),
+        this(basePath, args, MessageHandler.getMessageHandler(),
                 new SimpleErrorHandler());
     }
 
@@ -219,7 +226,7 @@ public class ConfigurationApplication implements ExecutionListener {
      */
     public ConfigurationApplication(String basePath, String[] args,
             MessageHandler messageHandler, ErrorHandler errorHandler)
-            throws Exception {
+                    throws Exception {
         this();
 
         _initializeApplication();
@@ -290,7 +297,7 @@ public class ConfigurationApplication implements ExecutionListener {
                     PtolemyPreferences preferences = PtolemyPreferences
                             .getPtolemyPreferencesWithinConfiguration(_configuration);
                     preferences.backgroundColor
-                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
 
                 }
                 if (_run20x) {
@@ -813,8 +820,14 @@ public class ConfigurationApplication implements ExecutionListener {
                     //specURL = refClass.getClassLoader().getResource(spec);
                     // This works in Web Start, see
                     // http://download.oracle.com/javase/1.5.0/docs/guide/javaws/developersguide/faq.html#211
-                    specURL = Thread.currentThread().getContextClassLoader()
-                            .getResource(spec);
+
+                    // Unfortunately, Thread.currentThread().getContextClassLoader() can
+                    // return null.  This happened when
+                    // $CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/Sender.xml
+                    // failed and subsequent calls to openModelOrEntity() would
+                    // fail because the configuration could not be found.
+                    // So, we have our own getResource() that handles this.
+                    specURL = ClassUtilities.getResource(spec);
 
                     if (specURL == null) {
                         try {
@@ -829,10 +842,12 @@ public class ConfigurationApplication implements ExecutionListener {
                             // Start cache is in a directory that has
                             // spaces in the path, which is the default
                             // under Windows.
-                            specURL = JNLPUtilities.canonicalizeJarURL(new URL(spec));
+                            specURL = JNLPUtilities.canonicalizeJarURL(new URL(
+                                    spec));
                             if (specURL == null) {
-                                throw new Exception("JNLPUtilities.canonicalizeJarURL(new URL(\"" + spec
-                                        + "\")) returned null.");
+                                throw new Exception(
+                                        "JNLPUtilities.canonicalizeJarURL(new URL(\""
+                                                + spec + "\")) returned null.");
                             }
                         }
                     }
@@ -1024,7 +1039,7 @@ public class ConfigurationApplication implements ExecutionListener {
                                 // usage for that configuration
                                 try {
                                     MoMLParser
-                                            .setErrorHandler(new IgnoreErrorHandler());
+                                    .setErrorHandler(new IgnoreErrorHandler());
                                     configuration = readConfiguration(specificationURL);
                                 } finally {
                                     MoMLParser.setErrorHandler(errorHandler);
@@ -1179,9 +1194,9 @@ public class ConfigurationApplication implements ExecutionListener {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION.getExpression()
-                            + ", Build $Id$");
+            .println("Version "
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             StringUtilities.exit(0);
@@ -1252,7 +1267,6 @@ public class ConfigurationApplication implements ExecutionListener {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
                     URL inURL;
-
                     try {
                         inURL = specToURL(arg);
                     } catch (IOException ex) {
@@ -1520,8 +1534,8 @@ public class ConfigurationApplication implements ExecutionListener {
                             .getFullName()
                             .equals(".configuration.directory.configuration.graphTableau")
                             && !tableau
-                                    .getFullName()
-                                    .equals(".configuration.directory.UserLibrary.graphTableau")) {
+                            .getFullName()
+                            .equals(".configuration.directory.UserLibrary.graphTableau")) {
                         try {
                             // Set the background to white
 
@@ -1530,11 +1544,11 @@ public class ConfigurationApplication implements ExecutionListener {
                             PtolemyPreferences preferences = PtolemyPreferences
                                     .getPtolemyPreferencesWithinConfiguration(_configuration);
                             preferences.backgroundColor
-                                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
                             frame.repaint();
                         } catch (Exception ex) {
                             System.out
-                                    .println("Failed to set the background to white.");
+                            .println("Failed to set the background to white.");
                             ex.printStackTrace();
                         }
                         ((TableauFrame) frame).printPDF();
@@ -1586,15 +1600,15 @@ public class ConfigurationApplication implements ExecutionListener {
             { "-run", "Run the models" },
             { "-run20x", "Run the models 20 times, then exit" },
             { "-runThenExit",
-                    "Run the models, then exit after the models finish." },
+            "Run the models, then exit after the models finish." },
             { "-statistics", "Open the model, print statistics and exit." },
             { "-test", "Exit after two seconds." },
             { "-version", "Print version information." } };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-            { "-class", "<classname>" },
-            { "-<parameter name>", "<parameter value>" }, };
+        { "-class", "<classname>" },
+        { "-<parameter name>", "<parameter value>" }, };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";
