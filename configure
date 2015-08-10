@@ -670,6 +670,9 @@ PTPOWERMOCK_JARS
 PTPOWERMOCK_DIR
 PTSVG_JAR
 PTSVG_DIR
+PTRSYNTAXTEXTAREA_PACKAGES
+PTRSYNTAXTEXTAREA_JAR
+PTRSYNTAXTEXTAREA_DIR
 PTPSDF_DIR
 PTPDFRENDERER_JAR
 PTPDFRENDERER_DIR
@@ -1800,6 +1803,8 @@ Optional Packages:
                           defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
+  --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
+                          defaults to \$PTII/lib/rsyntaxtextarea-2.5.7.jar
   --with-tini=DIR       use TINI from DIR,
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
@@ -12820,7 +12825,6 @@ if test -z "$PTPDFRENDERER_DIR"; then
    updateExcludes "ptolemy/vergil/pdfrenderer/"
 fi
 
-
 #--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
 #	support in Diva.  See
@@ -12878,6 +12882,64 @@ fi
 if test -z "$PTSVG_DIR"; then
    updateExcludes "diva/util/java2d/svg/"
 fi
+
+#--------------------------------------------------------------------
+#       The JavaScript Editor in ptolemy.actor.gui.syntax uses RSyntaxEditor
+#       from https://github.com/bobbylight/RSyntaxTextArea
+#--------------------------------------------------------------------
+
+# PTRSYNTAXTEXTAREA_DIR is set to syntax and used in
+# $PTII/ptolemy/actor/gui/makefile if lib/rsyntaxtextarea-*.jar is found
+PTRSYNTAXTEXTAREA_DIR=
+
+# RSyntaxTextArea jar file, typically downloaded from Maven.
+PTRSYNTAXTEXTAREA_JAR=
+
+# Java packages that use RSyntaxTextArea, typically ptolemy.actor.gui.syntax.
+PTRSYNTAXTEXTAREA_PACKAGES=
+# We only need to look for RSyntaxEditor $PTII/ptolemy/actor/gui/syntax exists
+if test ! -d "$PTII/ptolemy/actor/gui/syntax"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/ptolemy/actor/gui/syntax is not present,
+    so we need not find RSyntaxEditor." >&5
+$as_echo "$PTII/ptolemy/actor/gui/syntax is not present,
+    so we need not find RSyntaxEditor." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for RSyntaxEditor" >&5
+$as_echo_n "checking for RSyntaxEditor... " >&6; }
+
+# Check whether --with-batikjar was given.
+if test "${with_batikjar+set}" = set; then :
+  withval=$with_batikjar; PTRSYNTAXTEXTAREA_JAR=$withval
+else
+  PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.5.7.jar
+fi
+
+
+    if test -f "$PTRSYNTAXTEXTAREA_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTRSYNTAXTEXTAREA_JAR" >&5
+$as_echo "$PTRSYNTAXTEXTAREA_JAR" >&6; }; fi
+	PTRSYNTAXTEXTAREA_DIR=syntax
+        PTRSYNTAXTEXTAREA_PACKAGES=ptolemy.actor.gui.syntax
+        updateClasspath "$PTRSYNTAXTEXTAREA_JAR"
+    fi
+    if test "$PTRSYNTAXTEXTAREA_DIR" = ""; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the RSyntaxTextArea jar file
+    You need only have this jar if you are using the JavaScript syntax editors
+    in $PTII/ptolemy/actor/gui/syntax.
+    RSyntaxTextArea https://github.com/bobbylight/RSyntaxTextArea" >&5
+$as_echo "$as_me: WARNING: Failed to find the RSyntaxTextArea jar file
+    You need only have this jar if you are using the JavaScript syntax editors
+    in $PTII/ptolemy/actor/gui/syntax.
+    RSyntaxTextArea https://github.com/bobbylight/RSyntaxTextArea" >&2;}
+	PTRSYNTAXTEXTAREA_JAR=
+    fi
+fi
+
+if test -z "$PTRSYNTAXTEXTAREA_DIR"; then
+   updateExcludes "ptolemy/actor/gui/syntax"
+fi
+
 
 #--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
@@ -14539,6 +14601,16 @@ fi
 
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
 # $PTII/lib/mapss.jar was found
+
+
+# PTRSYNTAXTEXTAREA_DIR is set to syntax and used in
+# $PTII/ptolemy/actor/gui/makefile if ptolemy/actor/gui/syntax is present.
+
+
+# RSyntaxTextArea jar file, typically downloaded from Maven.
+
+
+# Java packages that use RSyntaxTextArea, typically ptolemy.actor.gui.syntax.
 
 
 # PTSVG_DIR is set to svg and used in
