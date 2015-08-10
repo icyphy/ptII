@@ -38,7 +38,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.export.web.IconLink;
+
 
 ///////////////////////////////////////////////////////////////////
 //// LiveLink
@@ -75,10 +75,11 @@ import ptolemy.vergil.basic.export.web.IconLink;
  will be used to open the URL. Note that Vergil's HTML
  viewer does not handle many modern pages well.
 
+ <p> See also ptolemy.vergil.basic.export.web.IconLink.</p>
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 10.0
- @see IconLink
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
