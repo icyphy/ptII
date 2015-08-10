@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = hmm hmmAOM hsmm particleFilter test
+DIRS = hmm hmmAOM hsmm lib particleFilter test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -58,6 +58,7 @@ PTCLASSALLJARS = \
 	hmm/hmm.jar \
 	hmmAOM/hmmAOM.jar \
 	hsmm/hsmm.jar \
+	lib/lib.jar \
 	particleFilter/particleFilter.jar
 
 JSRCS = \

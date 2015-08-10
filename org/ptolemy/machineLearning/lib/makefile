@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Ilge Akkaya
 #
-# @Copyright (c) 2007-2013 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,13 +29,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME = 		org/ptolemy/machineLearning/lib
+
 # Root of Ptolemy II directory
-ROOT = ../../../..
+ROOT = 		../../../..
 
-DIRS = demo test
-
-# $(ME) is used in ptdir.mk
-ME = org/ptolemy/machineLearning/lib
+DIRS = 
 
 CLASSPATH =	$(ROOT)
 
@@ -47,13 +46,13 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = hmm
+PTPACKAGE = lib
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AFTEFast.java
 
-OTHER_FILES_TO_BE_JARED = \ 
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -64,7 +63,8 @@ MISC_FILES = test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = demo test\
+OPTIONAL_FILES = demo test \
+	'AFTEFast$$GammatoneFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
