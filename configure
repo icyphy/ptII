@@ -8909,9 +8909,6 @@ $as_echo "$JNA_JAR" >&6; }; fi
 	if test -d "$PTII/org/terraswarm/gdp"; then
 	    PTGDP_PACKAGES="org.terraswarm.gdp org.terraswarm.gdp.apps"
         fi
-	if test -d "$PTII/ptolemy/domains/fmi"; then
-	    PTFMI_PACKAGES="$PTFMI_PACKAGES ptolemy.domains.fmi.kernel ptolemy.domains.fmi.lib"
-        fi
         updateClasspath "$JNA_JAR"
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
