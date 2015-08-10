@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.RelativeLocation;
+import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.basic.RelativeLocatable;
 
 ///////////////////////////////////////////////////////////////////

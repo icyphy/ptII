@@ -89,6 +89,7 @@ JSRCS = \
 	PopupMouseFilter.java \
 	PtolemyLayoutAction.java \
 	RelativeLocatable.java \
+	RelativeLocation.java \
 	RemoveCustomDocumentationAction.java \
 	RunnableGraphController.java \
 	SearchResultsDialog.java \
