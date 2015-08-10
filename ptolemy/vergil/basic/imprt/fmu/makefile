@@ -54,7 +54,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJARS =
 
 JSRCS = \
-	ImportFMUAsJavaFMUAction.java \
 	ImportFMUAction.java \
 	ImportFMUForQSSAction.java
 

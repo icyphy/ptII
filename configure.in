@@ -3075,9 +3075,6 @@ else
 	if test -d "$PTII/org/terraswarm/gdp"; then
 	    PTGDP_PACKAGES="org.terraswarm.gdp org.terraswarm.gdp.apps"
         fi
-	if test -d "$PTII/ptolemy/domains/fmi"; then
-	    PTFMI_PACKAGES="$PTFMI_PACKAGES ptolemy.domains.fmi.kernel ptolemy.domains.fmi.lib"
-        fi
         updateClasspath "$JNA_JAR"
     else
         AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
