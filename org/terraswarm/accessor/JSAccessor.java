@@ -280,16 +280,40 @@ public class JSAccessor extends JavaScript {
         // If the accessors/web directory exists, run ant there.
         File accessorsRepoWebDirectory = new File(accessorsRepoDirectory, "web");
         if (accessorsRepoWebDirectory.isDirectory()) {
+            String antPath = "";
             try {
                 StringBufferExec antExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
                 antExec.setWorkingDirectory(accessorsRepoWebDirectory);
                 List execCommands = new LinkedList();
-                execCommands.add("ant");
+                // $PTII/configure looks for "ant" in the path and stores it $PTII/lib/ptII.properties
+                antPath = StringUtilities.getProperty("ptolemy.ant.path");
+
+                // Common text for error messages.
+                String defaultAnt = "This property is set by $PTII/configure and stored in "
+                    + "$PTII/lib/ptII.properties.  "
+                    + "Defaulting to using \"ant\", "
+                    + "which may or may not be in your path.";
+
+                if (antPath.length() == 0) {
+                    System.out.println("The ptolemy.ant.path property was not set. "
+                            + defaultAnt);
+                    antPath = "ant";
+                } else {
+                    File antExecutableFile = new File(antPath);
+                    if (!antExecutableFile.isFile()) {
+                        System.out.println("The value of the ptolemy.ant.path property was \""
+                                + antPath + "\", which is not a file.  "
+                                + defaultAnt);
+                        antPath = "ant";
+                    }
+                }
+                execCommands.add(antPath);
                 antExec.setCommands(execCommands);
                 antExec.setWaitForLastSubprocess(true);
                 antExec.start();
             } catch (Throwable throwable) {
-                System.err.println("Warning: Failed to run \"ant\" in " + accessorsRepoWebDirectory
+                System.err.println("Warning: Failed to run \"" + antPath
+                        + "\" in " + accessorsRepoWebDirectory
                         + ".  Defaulting to using the documentation from the website."
                         + "Error message was: " + throwable);
             }
