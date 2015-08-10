@@ -975,8 +975,27 @@ See $PTII/doc/coding/maven.htm
 
   </build>
   <profiles>
+    <!-- See https://issues.apache.org/jira/browse/ODFTOOLKIT-299 -->
     <profile>
       <id>default-tools.jar</id>
+      <activation>
+        <property>
+          <name>java.vendor</name>
+          <value>Oracle Corporation</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+          <version>1.5.0</version>
+          <scope>system</scope>
+          <systemPath>$ {java.home}/../lib/tools.jar</systemPath>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile><!-- For JDK 6 and OpenJDK with Sun as java.vendor -->
+      <id>tools-Sun.jar</id>
       <activation>
         <property>
           <name>java.vendor</name>
