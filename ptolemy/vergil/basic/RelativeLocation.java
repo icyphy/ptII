@@ -1,3 +1,4 @@
+/** An attribute used to store a relative visual location. */
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
@@ -26,13 +27,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
  */
-/** An attribute used to store a relative visual location. */
-package ptolemy.kernel.util;
+
+package ptolemy.vergil.basic;
 
 import java.util.List;
 
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.vergil.basic.LocatableNodeDragInteractor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 
 /** An attribute used to store a relative visual location.
  *  The location is relative to an object specified by

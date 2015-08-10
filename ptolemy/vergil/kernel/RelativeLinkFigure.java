@@ -47,7 +47,7 @@ import diva.graph.GraphController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.RelativeLocation;
+import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.basic.BasicGraphPane;
 
 /**

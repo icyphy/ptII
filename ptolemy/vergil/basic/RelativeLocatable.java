@@ -27,8 +27,6 @@
  */
 package ptolemy.vergil.basic;
 
-import ptolemy.kernel.util.RelativeLocation;
-
 ///////////////////////////////////////////////////////////////////
 //// RelativeLocatable
 

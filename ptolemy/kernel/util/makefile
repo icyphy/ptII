@@ -89,7 +89,6 @@ JSRCS = \
 	NoSuchItemException.java \
 	PtolemyThread.java \
 	RecorderListener.java \
-	RelativeLocation.java \
 	ScopeExtender.java \
 	Settable.java \
 	Singleton.java \
