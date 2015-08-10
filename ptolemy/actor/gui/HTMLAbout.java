@@ -55,6 +55,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -63,8 +64,6 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
-
-import ptolemy.vergil.kernel.attributes.TextAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// HTMLAbout
@@ -618,13 +617,18 @@ public class HTMLAbout {
                 Enumeration attributes = model.getAttributes();
                 while (attributes.hasMoreElements()) {
                     Object object = attributes.nextElement();
-                    if (object instanceof TextAttribute) {
-                        TextAttribute textAttribute = (TextAttribute)object;
-                        Enumeration textAttributes = textAttribute.getAttributes();
-                        while (textAttributes.hasMoreElements()) {
-                            Object object2 = textAttributes.nextElement();
-                            if (object2 instanceof LiveLink) {
-                                LiveLink liveLink = (LiveLink)object2;
+                    // We could check only TextAttributes, that would
+                    // make a dependency on
+                    // ptolemy.vergil.kernel.attributes.TextAttribute.
+                    // Actor.gui does not depend on vergil.
+                    // This method is for LiveLink, which is in actor.gui,
+                    // so we should not add the dependency.
+                    if (object instanceof Attribute) {
+                        Enumeration innerAttributes = ((Attribute)object).getAttributes();
+                        while (innerAttributes.hasMoreElements()) {
+                            Object innerObject = innerAttributes.nextElement();
+                            if (innerObject instanceof LiveLink) {
+                                LiveLink liveLink = (LiveLink)innerObject;
                                 if (liveLink.stringValue().contains("CLASSPATH")
                                         && liveLink.stringValue().endsWith(".xml")) {
                                     File liveLinkFile = liveLink.asFile();
