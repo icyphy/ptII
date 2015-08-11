@@ -18,7 +18,9 @@
     </property>
    </property>
   <property name="XML view"
-            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+            class="ptolemy.actor.gui.TextEditorTableau$Factory">
+    <property name="syntaxStyle" value="text/xml"/>
+  </property>
 </property>
 <!-- Factory for ontology solver editor.  -->
 <property name="factoryOntologySolverModel" class="ptolemy.actor.gui.PtolemyTableauFactory">
@@ -36,6 +38,8 @@
     </property>
    </property>
   <property name="XML view"
-            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+            class="ptolemy.actor.gui.TextEditorTableau$Factory">
+    <property name="syntaxStyle" value="text/xml"/>
+  </property>
 </property>
 </group>

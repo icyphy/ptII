@@ -153,7 +153,7 @@ public class MatchResultTableau extends Tableau {
             super(container, name);
 
             treeViewFactory = new TreeTableau.Factory(this, "Tree View");
-            xmlViewFactory = new TextEditorTableau.Factory(this, "XML View");
+            xmlViewFactory = new TextEditorTableau.Factory(this, "XML View", "text/xml");
             javaPropertiesFactory = new JVMTableau.Factory(this,
                     "JVM Properties");
         }

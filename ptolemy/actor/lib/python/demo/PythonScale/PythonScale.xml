@@ -113,11 +113,14 @@ is displayed.</text></svg></configure>
     </property>
     <entity name="PythonActor" class="ptolemy.actor.lib.python.PythonScript">
         <property name="script" class="ptolemy.kernel.util.StringAttribute" value="class Main :&#10;  &quot;scale&quot;&#10;  def fire(self) :&#10;    if not self.input.hasToken(0) :&#10;      return&#10;    s = self.scale.getToken()&#10;    t = self.input.get(0)&#10;    self.output.broadcast(s.multiply(t))&#10;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-            </property>
+	      	<property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+	      	  <property name="note" value="NOTE: To see the script, invoke Open Actor"/>
+	      	</property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/python">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 220.0]">

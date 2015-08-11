@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Locale;
@@ -83,6 +84,88 @@ public class TextEffigy extends Effigy {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the syntax style to use for files with the given extension.
+     *  @param extension The file extension.
+     *  @return A syntax style, or none if the extension is not recognized.
+     */
+    public static String extensionToSyntaxStyle(String extension) {
+        extension = extension.trim().toLowerCase();
+        switch (extension) {
+        // The returned strings are defined in
+        // org.fife.ui.rsyntaxtextarea.SyntaxConstants
+        // but we don't want a hard dependence on an external
+        // library, so we have replicate those strings here.
+        case "c":
+            return "text/c";
+        case "clj":
+            return "text/clojure";
+        case "cpp":
+            return "text/cpp"; 
+        case "cs":
+            return "text/cs";
+        case "css":
+            return "text/css";
+        case "dtd":
+            return "text/dtd";
+        case "f":
+        case "f90":
+            return "text/fortran";
+        case "groovy":
+        case "gvy":
+        case "gy":
+            return "text/groovy";
+        case "h":
+            return "text/cpp"; 
+        case "htm":
+        case "html":
+            return "text/html";
+        case "java":
+            return "text/java";
+        case "js":
+        case "javascript":
+            return "text/javascript";
+        case "json":
+            return "text/json";
+        case "jsp":
+            return "text/jsp";
+        case "tex":
+        case "latex":
+            return "text/latex";
+        case "mk":
+            return "text/makefile";
+        case "pl":
+            return "text/perl";
+        case "php":
+            return "text/php";
+        case "properties":
+            return "text/properties";
+        case "py":
+        case "python":
+            return "text/python";
+        case "rby":
+        case "ruby":
+            return "text/ruby";
+        case "scala":
+            return "text/scala";
+        case "sh":
+            return "text/unix";
+        case "sql":
+            return "text/sql";
+        case "tcl":
+            return "text/tcl";
+        case "txt":
+            return "text/plain";
+        case "vb":
+            return "text/vb";
+        case "bat":
+            return "text/bat";
+        case "xml":
+            return "text/xml";
+        default:
+            return null;
+        }
+    }
+
     /** Return the document that this is an effigy of.
      *  @return The document, or null if none has been set.
      *  @see #setDocument(Document)
@@ -90,29 +173,84 @@ public class TextEffigy extends Effigy {
     public Document getDocument() {
         return _doc;
     }
+    
+    /** Return the syntax style for the document, if one has been identified,
+     *  and null otherwise.
+     *  @return A syntax style or null.
+     */
+    public String getSyntaxStyle() {
+        return _syntaxStyle;
+    }
+
+    /** Override the base class to compare the current text in the document
+     *  against the original text.
+     *  @return True if the data has been modified.
+     */
+    public boolean isModified() {
+        if (_originalText == null) {
+            if (_doc.getLength() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        try {
+            if (_originalText.equals(_doc.getText(0, _doc.getLength()))) {
+                return false;
+            }
+        } catch (BadLocationException e) {
+            // This should not happen.
+            return true;
+        }
+        return true;
+    }
 
     /** Create a new effigy in the given container containing the specified
      *  text.  The new effigy will have a new instance of
      *  DefaultStyledDocument associated with it.
      *  @param container The container for the effigy.
      *  @param text The text to insert in the effigy.
-     *  @return A new instance of TextEffigy.
+     *  @return A new instance of SyntaxTextEffigy.
      *  @exception Exception If the text effigy cannot be
      *   contained by the specified container, or if the specified
      *   text cannot be inserted into the document.
      */
     public static TextEffigy newTextEffigy(CompositeEntity container,
             String text) throws Exception {
+        return newTextEffigy(container, text, null);
+    }
+    
+    /** Create a new effigy in the given container containing the specified
+     *  text.  The new effigy will have a new instance of
+     *  DefaultStyledDocument associated with it.
+     *  @param container The container for the effigy.
+     *  @param text The text to insert in the effigy.
+     *  @param syntaxStyle The style of the text, for highlighting.
+     *   This can be one of the styles defined in org.fife.ui.rsyntaxtextarea.SyntaxConstants,
+     *   if that is installed,
+     *   or null or an empty string for plain text. If the style is not recognized, then
+     *   plain text will be assumed.
+     *  @return A new instance of SyntaxTextEffigy.
+     *  @exception Exception If the text effigy cannot be
+     *   contained by the specified container, or if the specified
+     *   text cannot be inserted into the document.
+     */
+    public static TextEffigy newTextEffigy(CompositeEntity container,
+            String text, String syntaxStyle) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
-        Document doc = new DefaultStyledDocument();
+        if (syntaxStyle == null || syntaxStyle.trim().equals("")) {
+            syntaxStyle = "text/plain";
+        }
+        effigy._syntaxStyle = syntaxStyle;
+        Document doc = _createDocument(syntaxStyle);
         effigy.setDocument(doc);
 
         if (text != null) {
             doc.insertString(0, text, null);
         }
-
+        effigy._originalText = text;
         return effigy;
     }
 
@@ -127,7 +265,7 @@ public class TextEffigy extends Effigy {
      *   there are no relative file references.  This is ignored in this
      *   class.
      *  @param in The input URL, or null if there is none.
-     *  @return A new instance of TextEffigy.
+     *  @return A new instance of SyntaxTextEffigy.
      *  @exception Exception If the URL cannot be read, or if the data
      *   is malformed in some way.
      */
@@ -137,13 +275,17 @@ public class TextEffigy extends Effigy {
         // Check the extension: if it looks like a binary file do not open.
         // Do not open KAR files,
         // see http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5280#c1
+        // For other extensions, determine the syntax style (a MIME type).
         //
-        // TODO: find a better way to check for binary files.
-        //
+        String syntaxStyle = "text/plain";
         if (in != null) {
             String extension = EffigyFactory.getExtension(in).toLowerCase(
                     Locale.getDefault());
-            if (extension.equals("jar") || extension.equals("kar")
+            String syntaxStyleFromExtension = extensionToSyntaxStyle(extension);
+            if (syntaxStyleFromExtension != null) {
+                syntaxStyle = syntaxStyleFromExtension;
+            } else if (extension.equals("jar") || extension.equals("kar")
+                    // TODO: find a better way to check for binary files.
                     || extension.equals("gz") || extension.equals("tar")
                     || extension.equals("zip")) {
                 return null;
@@ -153,8 +295,9 @@ public class TextEffigy extends Effigy {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
-        Document doc = new DefaultStyledDocument();
+        Document doc = _createDocument(syntaxStyle);
         effigy.setDocument(doc);
+        effigy._syntaxStyle = syntaxStyle;
 
         if (in != null) {
             // A URL has been given.  Read it.
@@ -265,7 +408,7 @@ public class TextEffigy extends Effigy {
             // No document associated.  Allow modifications.
             effigy.setModifiable(true);
         }
-
+        effigy._originalText = doc.getText(0, doc.getLength());
         return effigy;
     }
 
@@ -277,6 +420,20 @@ public class TextEffigy extends Effigy {
         _doc = document;
     }
 
+    @Override
+    public void setModified(boolean modified) {
+        super.setModified(modified);
+        if (!modified) {
+            // If someone is indicating that this is no longer modified, then reset
+            // the _originalText to equal the current text.
+            try {
+                _originalText = _doc.getText(0, _doc.getLength());
+            } catch (Exception ex) {
+                // Should not occur. Ignore. Worst case is an extra prompt to apply.
+            }
+        }
+    }
+    
     /** Write the text of the document to the specified file.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
@@ -304,9 +461,42 @@ public class TextEffigy extends Effigy {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected method                  ////
+
+    /** Create a syntax document, if possible, and otherwise a plain
+     *  document.
+     *  @param syntaxStyle The syntax style.
+     *  @return A new document.
+     */
+    protected static Document _createDocument(String syntaxStyle) {
+        Document doc = null;
+        try {
+            // Attempt to create a styled document.
+            // Use reflection here to avoid a hard dependency on an external package.
+            Class docClass = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxDocument");
+            Constructor docClassConstructor = docClass.getConstructor(String.class);
+            doc = (Document) docClassConstructor.newInstance(new Object[] {syntaxStyle});
+        } catch (Throwable ex) {
+            // Ignore and use default text editor.
+            System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+        }
+        if (doc == null) {
+           doc = new DefaultStyledDocument();
+        }
+        return doc;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    // The document associated with this effigy.
+
+    /** The document associated with this effigy. */
     private Document _doc;
+    
+    /** The original text, to determine whether it has been modified. */
+    private String _originalText;
+    
+    /** The syntax style, if one has been identified. */
+    private String _syntaxStyle;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

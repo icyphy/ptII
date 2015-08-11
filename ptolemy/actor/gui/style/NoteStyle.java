@@ -99,8 +99,7 @@ public class NoteStyle extends ParameterEditorStyle {
         Settable container = (Settable) getContainer();
         String name = container.getName();
         String noteValue = note.getExpression();
-        System.err.println("NoteStyle.addEntry(): Commented out args that prevented compilation.");
-        query.addDisplay(name, container.getDisplayName(), noteValue/*, Color.YELLOW, Color.BLACK*/);
+        query.addDisplay(name, container.getDisplayName(), noteValue, Color.YELLOW, Color.BLACK);
         query.attachParameter(container, name);
     }
 }

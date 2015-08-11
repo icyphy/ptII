@@ -30,15 +30,16 @@ package ptolemy.vergil.toolbox;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.text.Document;
 
 import ptolemy.actor.gui.TextEditor;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
 /**
- A text editor to edit a specified string attribute.
+ A text editor to edit a specified string attribute or parameter.
 
  @author Edward A. Lee
  @version $Id$
@@ -48,6 +49,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class TextEditorForStringAttributes extends TextEditor {
+    
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
      *  @param attributeToEdit The string attribute to edit.
@@ -56,11 +58,26 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  @param title The window title to use.
      */
     public TextEditorForStringAttributes(TextEditorFactory factory,
-            StringAttribute attributeToEdit, int rows, int columns, String title) {
-        super(title);
+            Attribute attributeToEdit, int rows, int columns, String title) {
+        this(factory, attributeToEdit, rows, columns, title, null);
+    }
+    
+    /** Create a annotation text editor for the specified attribute.
+     *  @param factory The factory that created this editor.
+     *  @param attributeToEdit The string attribute to edit.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @param title The window title to use.
+     */
+    public TextEditorForStringAttributes(TextEditorFactory factory,
+            Attribute attributeToEdit, int rows, int columns, String title,
+            Document document) {
+        super(title, document);
         this._factory = factory;
         _attributeToEdit = attributeToEdit;
-        text.append(_attributeToEdit.getExpression());
+        if (document == null) {
+            text.append(TextEditorTableauFactory.getTextToEdit(_attributeToEdit));
+        }
         text.setColumns(columns);
         text.setRows(rows);
 
@@ -74,6 +91,7 @@ public class TextEditorForStringAttributes extends TextEditor {
     /** Adjust the file menu so that only relevant items appear.
      *  This has to be called after pack().
      */
+    @Override
     public void adjustFileMenu() {
         // Rename Save command.
         _fileMenuItems[3].setText("Apply");
@@ -187,7 +205,7 @@ public class TextEditorForStringAttributes extends TextEditor {
     ////                         private members                   ////
     private final TextEditorFactory _factory;
 
-    private StringAttribute _attributeToEdit;
+    private Attribute _attributeToEdit;
 
     /** True if this attribute was modified and saved, which caused.
      *  the containing model to be modified.

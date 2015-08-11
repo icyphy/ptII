@@ -29,7 +29,10 @@
  */
 package ptolemy.vergil.toolbox;
 
+import java.lang.reflect.Constructor;
 import java.util.Iterator;
+
+import javax.swing.text.Document;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -38,7 +41,10 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TextEditorTableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,8 +68,8 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (ptolemy)
  @see TextEditorConfigureFactory
  */
-public class TextEditorTableauFactory extends TableauFactory implements
-TextEditorFactory {
+public class TextEditorTableauFactory extends TableauFactory
+        implements TextEditorFactory {
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -85,6 +91,8 @@ TextEditorFactory {
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setTypeEquals(BaseType.INT);
         rowsDisplayed.setExpression("40");
+        
+        syntaxStyle = new StringAttribute(this, "syntaxStyle");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,14 +102,29 @@ TextEditorFactory {
     public StringAttribute attributeName;
 
     /** The horizontal size of the display, in columns. This contains
-     *  an integer, and defaults to 40.
+     *  an integer, and defaults to 80.
      */
     public Parameter columnsDisplayed;
 
     /** The vertical size of the display, in rows. This contains an
-     *  integer, and defaults to 10.
+     *  integer, and defaults to 40.
      */
     public Parameter rowsDisplayed;
+
+    /** The style of the text to be edited. This may or may not be
+     *  supported. If the package "org.fife.ui.rsyntaxtextarea" is found in
+     *  the classpath, then the supported styles include
+     *  "text/plain", "text/c", "text/clojure", "text/cpp", "text/cs",
+     *  "text/css", "text/dtd", "text/fortran", 
+     *  "text/groovy", "text/html", "text/java", 
+     *  "text/javascript", "text/json", "text/jsp", 
+     *  "text/latex", "text/makefile", 
+     *  "text/perl", "text/php", 
+     *  "text/properties", "text/python", "text/ruby", "text/sas", 
+     *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb", 
+     *  "text/bat", and "text/xml".
+     */
+    public StringAttribute syntaxStyle;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -134,10 +157,11 @@ TextEditorFactory {
         Attribute attribute = object
                 .getAttribute(attributeName.getExpression());
 
-        if (!(attribute instanceof StringAttribute)) {
+        if (!(attribute instanceof StringAttribute)
+                && !(attribute instanceof Variable)) {
             throw new IllegalActionException(object, "Expected "
                     + object.getFullName()
-                    + " to contain a StringAttribute named "
+                    + " to contain a StringAttribute or Variable named "
                     + attributeName.getExpression() + ", but it does not.");
         }
 
@@ -149,9 +173,10 @@ TextEditorFactory {
             textEffigy = (TextEffigy) subEffigies.next();
         }
 
+        String text = getTextToEdit(attribute);
+        // If a syntaxStyle attribute is given, then use it.
         if (textEffigy == null) {
-            textEffigy = TextEffigy.newTextEffigy(effigy,
-                    ((StringAttribute) attribute).getExpression());
+            textEffigy = _newTextEffigy(effigy, text);
         }
 
         // textEffigy may already have a tableau.
@@ -167,10 +192,35 @@ TextEditorFactory {
             int numberOfRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
                     .intValue();
-            _editor = new TextEditorForStringAttributes(this,
-                    (StringAttribute) attribute, numberOfRows, numberOfColumns,
-                    "Editor for " + attributeName.getExpression() + " of "
-                            + getContainer().getFullName());
+            String name = "Editor for " + attributeName.getExpression() + " of "
+                    + getContainer().getFullName();
+            String style = syntaxStyle.getExpression();
+            if (style != null && !style.trim().equals("")) {
+                // Attempt to specify a syntax-aware text editor.
+                try {
+                    Class editorClass = Class.forName(
+                            "ptolemy.actor.gui.syntax.SyntaxTextEditorForStringAttributes");
+                    Constructor constructor = editorClass.getConstructor(
+                            new Class[] {
+                                    TextEditorFactory.class, Attribute.class,
+                                    Integer.TYPE, Integer.TYPE,
+                                    String.class, Document.class
+                                    });
+                    _editor = (TextEditorForStringAttributes) constructor.newInstance(
+                            new Object[] {
+                                    this, attribute,
+                                    numberOfRows, numberOfColumns,
+                                    name, textEffigy.getDocument()});
+                } catch (Throwable ex) {
+                    // Ignore and use default text editor.
+                    System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                }
+            }
+            if (_editor == null) {
+                _editor = new TextEditorForStringAttributes(this,
+                        attribute, numberOfRows, numberOfColumns,
+                        name, textEffigy.getDocument());
+            }
         }
 
         TextEditorTableau tableau = new TextEditorTableau(textEffigy,
@@ -191,9 +241,54 @@ TextEditorFactory {
         return null;
     }
 
+    /** Return the text value of the specified attribute.
+     *  @param attributeToEdit The attribute.
+     *  @return The text contained by this attribute, or an error message
+     *   if the attribute does not contain text.
+     */
+    public static String getTextToEdit(Attribute attributeToEdit) {
+        String textToEdit = "";
+        if (attributeToEdit instanceof StringAttribute) {
+            textToEdit = ((StringAttribute)attributeToEdit).getExpression();
+        } else if (attributeToEdit instanceof Variable) {
+            try {
+                Token token = ((Variable)attributeToEdit).getToken();
+                if (token instanceof StringToken) {
+                    textToEdit = ((StringToken)token).stringValue();
+                } else {
+                    textToEdit = "Error: Expected a String, but got: " + token.getType()
+                            + " with value " + token.toString();
+                }
+            } catch (IllegalActionException e) {
+                textToEdit = "Error retrieving the value of " + attributeToEdit.getName()
+                        + ": " + e.getMessage();
+            }
+        }
+        return textToEdit;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Create a text effigy to be contained by the specified host
+     *  effigy for the specified text.
+     *  @param effigy The host effigy.
+     *  @param text The text.
+     *  @throws Exception If the text effigy cannot be contained
+     *   by the specified container, or if the specified text cannot
+     *   be inserted into the document.
+     */
+    protected TextEffigy _newTextEffigy(Effigy effigy, String text)
+            throws Exception {
+        String style = syntaxStyle.getExpression();
+        return TextEffigy.newTextEffigy(effigy, text, style);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    // Keep track of an open editor so that it isn't opened more than
-    // once.
+    
+    /** Keep track of an open editor so that it isn't opened more than
+     *  once.
+     */
     private TextEditorForStringAttributes _editor;
 }

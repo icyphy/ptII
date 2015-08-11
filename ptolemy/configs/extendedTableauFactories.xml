@@ -7,21 +7,27 @@
   <property name="Doc Viewer"
             class="ptolemy.vergil.actor.DocTableau$Factory">
     <property name="DocML view"
-              class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+              class="ptolemy.actor.gui.TextEditorTableau$Factory">
+       <property name="syntaxStyle" value="text/xml"/>
+    </property>
   </property>
   <property name="Image viewer"
             class="ptolemy.actor.lib.image.ImageTableau$Factory"/>
   <property name="HTML Viewer"
             class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
     <property name="Source"
-              class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+              class="ptolemy.actor.gui.TextEditorTableau$Factory">
+       <property name="syntaxStyle" value="text/html"/>
+    </property>
   </property>
   <property name="Web Browser"
             class="ptolemy.actor.gui.BrowserTableau$Factory"/>
   <property name="Plotter"
             class="ptolemy.actor.gui.PlotTableau$Factory">
     <property name="PlotML view"
-              class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+              class="ptolemy.actor.gui.TextEditorTableau$Factory">
+       <property name="syntaxStyle" value="text/xml"/>
+    </property>
   </property>
   <property name="Matrix viewer"
             class="ptolemy.actor.gui.MatrixTokenTableau$Factory"/>

@@ -203,7 +203,13 @@ public class JSAccessor extends JavaScript {
             + "<entity name=\""  + instanceNameRoot
             + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
             + _accessorToMoML(urlSpec)
-            + "</entity></group>";
+            + "<property name=\"_tableauFactory\" class=\"ptolemy.vergil.toolbox.TextEditorTableauFactory\">"
+            + "  <property name=\"attributeName\" value=\"script\"/>"
+            + "  <property name=\"syntaxStyle\" value=\"text/javascript\"/>"
+            + "</property><property name=\"script\">"
+            + "  <property name=\"style\" class=\"ptolemy.actor.gui.style.NoteStyle\">"
+            + "    <property name=\"note\" value=\"NOTE: To see the script, invoke Open Actor\"/>"
+            + "</property></property></entity></group>";
     }
 
     /** React to a change in an attribute, and if the attribute is the

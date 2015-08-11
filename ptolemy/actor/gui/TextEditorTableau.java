@@ -31,10 +31,13 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
 
+import javax.swing.text.Document;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// TextEditorTableau
@@ -127,6 +130,17 @@ public class TextEditorTableau extends Tableau {
             editor.text.setEditable(flag);
         }
     }
+    
+    /** Make this tableau visible by calling setVisible(true), and
+     *  raising or deiconifying its window.
+     *  If no frame has been set, then do nothing.
+     */
+    @Override
+    public void show() {
+        super.show();
+        TextEditor editor = (TextEditor) getFrame();
+        editor.adjustFileMenu();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -156,6 +170,8 @@ public class TextEditorTableau extends Tableau {
                 // an applet
             }
 
+            syntaxStyle = new StringAttribute(this, "syntaxStyle");
+
             Class tableauClass;
             Class effigyClass;
 
@@ -172,9 +188,9 @@ public class TextEditorTableau extends Tableau {
                 }
 
                 _tableauConstructor = tableauClass.getConstructor(new Class[] {
-                        TextEffigy.class, String.class });
+                        TextEffigy.class, String.class, TextEditor.class });
                 _newTextEffigyText = effigyClass.getMethod("newTextEffigy",
-                        new Class[] { CompositeEntity.class, String.class });
+                        new Class[] { CompositeEntity.class, String.class, String.class });
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
                         URL.class });
@@ -184,6 +200,39 @@ public class TextEditorTableau extends Tableau {
                 throw new IllegalActionException(ex.toString());
             }
         }
+
+        /** Create a factory with the given name and container and syntax style.
+         *  @param container The container entity.
+         *  @param name The name of the entity.
+         *  @param style The syntax style.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name, String style)
+                throws IllegalActionException, NameDuplicationException {
+            this(container, name);
+            syntaxStyle.setExpression(style);
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         parameters                        ////
+
+        /** The style of the text to be edited. This may or may not be
+         *  supported. If the package "org.fife.ui.rsyntaxtextarea" is found in
+         *  the classpath, then the supported styles include
+         *  "text/plain", "text/c", "text/clojure", "text/cpp", "text/cs",
+         *  "text/css", "text/dtd", "text/fortran", 
+         *  "text/groovy", "text/html", "text/java", 
+         *  "text/javascript", "text/json", "text/jsp", 
+         *  "text/latex", "text/makefile", 
+         *  "text/perl", "text/php", 
+         *  "text/properties", "text/python", "text/ruby", "text/sas", 
+         *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb", 
+         *  "text/bat", and "text/xml".
+         */
+        public StringAttribute syntaxStyle;
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -220,8 +269,27 @@ public class TextEditorTableau extends Tableau {
                         .getEntity("textTableau");
 
                 if (tableau == null) {
+                    TextEditor editor = null;
+                    String style = syntaxStyle.getExpression();
+                    if (style == null || style.trim().equals("")) {
+                        style = ((TextEffigy)effigy).getSyntaxStyle();
+                    }
+                    if (style != null && !style.trim().equals("")) {
+                        // Attempt to specify a syntax-aware text editor.
+                        try {
+                            Class editorClass = Class.forName(
+                                    "ptolemy.actor.gui.syntax.SyntaxTextEditor");
+                            Constructor constructor = editorClass.getConstructor(
+                                    new Class[] {String.class, Document.class});
+                            editor = (TextEditor) constructor.newInstance(
+                                    new Object[] { "Unnamed", ((TextEffigy) effigy).getDocument()});
+                        } catch (Throwable ex) {
+                            // Ignore and use default text editor.
+                            System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                        }
+                    }
                     tableau = (TextEditorTableau) _tableauConstructor
-                            .newInstance(new Object[] { effigy, "textTableau" });
+                            .newInstance(new Object[] { effigy, "textTableau", editor });
                 }
 
                 URL url = effigy.uri.getURL();
@@ -264,7 +332,7 @@ public class TextEditorTableau extends Tableau {
                     String moml = ((PtolemyEffigy) effigy).getModel()
                             .exportMoML();
                     textEffigy = (TextEffigy) _newTextEffigyText.invoke(null,
-                            new Object[] { effigy, moml });
+                            new Object[] { effigy, moml, "text/xml" });
 
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.

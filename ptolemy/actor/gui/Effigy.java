@@ -473,6 +473,7 @@ public class Effigy extends CompositeEntity {
         // NOTE: To see who is setting this true, uncomment this:
         //if (modified == true) (new Exception("Effigy.setModified()" + this)).printStackTrace();
         masterEffigy()._modified = modified;
+        _modified = modified;
     }
 
     /** Set the effigy to be a system effigy if the given flag is true.
