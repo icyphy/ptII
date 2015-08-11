@@ -45,6 +45,8 @@ test release-1.1 {Check for missing makefiles} {
 } {./config/makefile
 ./doc/coding/templates/makefile
 ./ptolemy/actor/lib/fmi/fmipp/swig/makefile
+./ptolemy/actor/ptalon/demo/ptinyos/SendAndReceiveCnt/output/makefile
+./ptolemy/actor/ptalon/demo/ptinyos/SenseToLeds/output/makefile
 ./ptolemy/backtrack/automatic/ptolemy/actor/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/makefile
 ./ptolemy/backtrack/automatic/ptolemy/math/makefile
