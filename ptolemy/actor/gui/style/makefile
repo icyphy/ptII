@@ -57,6 +57,7 @@ JSRCS = \
 	HiddenStyle.java \
 	LineStyle.java \
 	NotEditableLineStyle.java \
+	NoteStyle.java \
 	ParameterEditorStyle.java \
 	StyleConfigurer.java \
 	TextStyle.java
