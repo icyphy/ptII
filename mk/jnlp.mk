@@ -536,6 +536,7 @@ FULL_8_1_JARS = \
 	ptolemy/data/ontologies/demo/demo.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/sequence/sequence.jar \
+	ptolemy/domains/sequence/demo/demo.jar \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 
