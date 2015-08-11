@@ -30,10 +30,11 @@ package ptolemy.vergil.toolbox;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
+import javax.swing.text.Document;
 
 import ptolemy.actor.gui.TextEditor;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
@@ -56,15 +57,31 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  @param title The window title to use.
      */
     public TextEditorForStringAttributes(TextEditorFactory factory,
-            StringAttribute attributeToEdit, int rows, int columns, String title) {
-        super(title);
+            Attribute attributeToEdit, int rows, int columns, String title) {
+        this(factory, attributeToEdit, rows, columns, title, null);
+    }
+    
+    /** Create a annotation text editor for the specified attribute.
+     *  @param factory The factory that created this editor.
+     *  @param attributeToEdit The string attribute to edit.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @param title The window title to use.
+     *  @param effigy The effigy for the text, or null if there is none.
+     */
+    public TextEditorForStringAttributes(TextEditorFactory factory,
+            Attribute attributeToEdit, int rows, int columns, String title, Document document) {
+        super(title, document);
         this._factory = factory;
         _attributeToEdit = attributeToEdit;
-        text.append(_attributeToEdit.getExpression());
+        if (document == null) {
+            String textToEdit = TextEditorTableauFactory.getTextToEdit(attributeToEdit);
+            text.append(textToEdit);
+        }
         text.setColumns(columns);
         text.setRows(rows);
 
-        // The above will mark the text object modified. Reverse this.
+        // The above will mark the text object modified. Reverse this now.
         setModified(false);
     }
 
@@ -187,7 +204,7 @@ public class TextEditorForStringAttributes extends TextEditor {
     ////                         private members                   ////
     private final TextEditorFactory _factory;
 
-    private StringAttribute _attributeToEdit;
+    private Attribute _attributeToEdit;
 
     /** True if this attribute was modified and saved, which caused.
      *  the containing model to be modified.
