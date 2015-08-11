@@ -1,6 +1,6 @@
 /* Auditory Filterbank Temporal Envelope Extraction
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,15 +52,14 @@ import ptolemy.math.SignalProcessing;
 ////FFT
 
 /**
-This actor calculates the Auditory Filterbank Temporal Envelope (AFTE) 
-features of a given audio signal. 
-
-@author Ilge Akkaya
-@version $Id$
-@since Ptolemy II 11.0
-@Pt.ProposedRating  
-@Pt.AcceptedRating  
-@see  
+ * This actor calculates the Auditory Filterbank Temporal Envelope (AFTE) 
+ * features of a given audio signal. 
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating  
+ * @Pt.AcceptedRating  
  */
 public class AFTEFast extends Transformer {
     /** Construct an actor with the given container and name.
@@ -118,32 +117,32 @@ public class AFTEFast extends Transformer {
     ////                         public variables                  ////
 
     /** 
-     * Maximum center frequency in the filterbank
+     * Maximum center frequency in the filterbank.
      */ 
     public Parameter maxFrequency;
 
     /** 
-     * Minimum center frequency in the filterbank
+     * Minimum center frequency in the filterbank.
      */ 
     public Parameter minFrequency;
 
     /** 
-     * Number of channels of the filterbank output
+     * Number of channels of the filterbank output.
      */ 
     public Parameter numberOfChannels;
 
     /**
-     * Order of the gammatone filters
+     * Order of the gammatone filters.
      */
     public Parameter filterOrder;
 
     /** 
-     * Input sampling frequency
+     * Input sampling frequency.
      */ 
     public Parameter fs;
 
     /** 
-     * Mod spec sampling frequency
+     * Mod spec sampling frequency.
      */ 
     public Parameter fmodspec;
 
@@ -157,8 +156,8 @@ public class AFTEFast extends Transformer {
     /**
      * Number of samples of overlap between adjoining sections.
      */
-
     public Parameter nOverlap;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -226,6 +225,7 @@ public class AFTEFast extends Transformer {
         _filterResult = new double[_numChannels][_transferSize]; 
         _buffering = true;
     }
+
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
@@ -290,7 +290,7 @@ public class AFTEFast extends Transformer {
 
 
     /**
-     * Multithreaded FIR Gammatone filtering 
+     * Multithreaded FIR Gammatone filtering.
      * @param input
      * @return
      * @throws IllegalActionException 
@@ -375,8 +375,9 @@ public class AFTEFast extends Transformer {
             } 
         }
     }
+
     /**
-     * Convert to Equivalent Rectangular Bandwidth (ERB) scale from Hz
+     * Convert to Equivalent Rectangular Bandwidth (ERB) scale from Hz.
      * @param frequencyInHz Frequency in Hz
      * @return frequency in ERB scale
      */

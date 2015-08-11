@@ -44,7 +44,8 @@ import gnu.io.UnsupportedCommOperationException;
  *
  * @author Hunter Massey
  * @version $Id$
- * @see SerialPortController, ReaderM
+ * @see SerialPortController
+ * @see ReaderM
  * @Pt.ProposedRating Yellow Hunter
  * @Pt.AcceptedRating
  */

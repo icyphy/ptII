@@ -71,7 +71,7 @@ public class TritoneFilter extends PointFilter {
     /**
      * Set the mid color.
      * @param midColor the mid color
-     * @see #getmidColor
+     * @see #getMidColor()
      */
     public void setMidColor(int midColor) {
         this.midColor = midColor;
@@ -80,7 +80,7 @@ public class TritoneFilter extends PointFilter {
     /**
      * Get the mid color.
      * @return the mid color
-     * @see #setmidColor
+     * @see #setMidColor(int)
      */
     public int getMidColor() {
         return midColor;
@@ -89,7 +89,7 @@ public class TritoneFilter extends PointFilter {
     /**
      * Set the high color.
      * @param highColor the high color
-     * @see #gethighColor
+     * @see #getHighColor()
      */
     public void setHighColor(int highColor) {
         this.highColor = highColor;
@@ -98,7 +98,7 @@ public class TritoneFilter extends PointFilter {
     /**
      * Get the high color.
      * @return the high color
-     * @see #sethighColor
+     * @see #setHighColor(int)
      */
     public int getHighColor() {
         return highColor;
