@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -39,7 +40,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,7 +62,7 @@ features of a given audio signal.
 @Pt.AcceptedRating  
 @see  
  */
-public class AFTEFast extends SDFTransformer {
+public class AFTEFast extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +75,7 @@ public class AFTEFast extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         output.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
 
         minFrequency = new Parameter(this, "minFrequency");
@@ -102,11 +102,15 @@ public class AFTEFast extends SDFTransformer {
         fmodspec.setExpression("3000");
         fmodspec.setTypeEquals(BaseType.INT); 
 
-        transferSize = new Parameter(this, "transferSize");
-        transferSize.setExpression("16000");
-        transferSize.setTypeEquals(BaseType.INT);
+        windowSize = new Parameter(this, "transferSize");
+        windowSize.setExpression("16000");
+        windowSize.setTypeEquals(BaseType.INT);
 
-        input_tokenConsumptionRate.setExpression("transferSize");
+        nOverlap  = new Parameter(this, "nOverlap");
+        nOverlap.setExpression("3200");
+        nOverlap.setTypeEquals(BaseType.INT);
+
+        //input_tokenConsumptionRate.setExpression("transferSize");
         //output_tokenProductionRate.setExpression("1");
     }
 
@@ -142,13 +146,19 @@ public class AFTEFast extends SDFTransformer {
      * Mod spec sampling frequency
      */ 
     public Parameter fmodspec;
- 
+
 
     /**
      * Transfer size.
      * 
      */
-    public Parameter transferSize;
+    public Parameter windowSize;
+
+    /**
+     * Number of samples of overlap between adjoining sections.
+     */
+
+    public Parameter nOverlap;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -175,8 +185,7 @@ public class AFTEFast extends SDFTransformer {
         } else if (attribute == numberOfChannels) {
             _numChannels = ((IntToken) numberOfChannels.getToken()).intValue();
         } else if (attribute == fs) {
-            _fs = ((IntToken) fs.getToken()).intValue();
-            _transferSize = (int) Math.floor(_fs/_frameRate);
+            _fs = ((IntToken) fs.getToken()).intValue(); 
         } else if (attribute == fmodspec) {
 
             int fmod = ((IntToken) fmodspec.getToken()).intValue(); 
@@ -188,11 +197,18 @@ public class AFTEFast extends SDFTransformer {
         } else if (attribute == filterOrder) {
             _filterOrder = ((IntToken) filterOrder.getToken()).intValue();
             if (_filterOrder <= 0) {
-                throw new IllegalActionException(this, "Sampling frequency was "
+                throw new IllegalActionException(this, "Filter order was "
                         + _filterOrder + " but must be greater than zero.");
             }
-        } else if (attribute == transferSize) {
-            _transferSize = ((IntToken) transferSize.getToken()).intValue();
+        } else if (attribute == windowSize) {
+            _windowSize = ((IntToken) windowSize.getToken()).intValue();
+        } else if (attribute == nOverlap) {
+            int ts = ((IntToken) nOverlap.getToken()).intValue();
+            if (_windowSize % ts != 0) {
+                throw new IllegalActionException(this, "Window size has to be an"
+                        + " integer multiple of nOverlap");
+            }
+            _transferSize = ts;
         } else {
             super.attributeChanged(attribute);
         }
@@ -208,6 +224,7 @@ public class AFTEFast extends SDFTransformer {
         _setupGammatoneFilterbank(); 
         _envelopes = new double[_numChannels][_transferSize/(_fs/_fmod)];   
         _filterResult = new double[_numChannels][_transferSize]; 
+        _buffering = true;
     }
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
@@ -216,18 +233,39 @@ public class AFTEFast extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        Token[] inTokenArray = input.get(0, _transferSize);
-        _inArray = new double[inTokenArray.length];
-
-
-        // read input
-        for (int i = 0; i < _transferSize; i++) {
-            _inArray[i] = ((DoubleToken) inTokenArray[i]).doubleValue();
+        if (_buffering) {
+            _inArray = new double[_windowSize];   
+            // place first received chunks into _inArray so that we can perform sliding window 
+            // convolutions on the first complete array
+            Token inTokenArray = input.get(0);
+            for (int j = 0; j < _transferSize; j++) {
+                _inArray[j+_framePointer*_transferSize] = ((DoubleToken)((ArrayToken) inTokenArray).
+                        getElement(j)).doubleValue();
+            }
+            _framePointer ++; 
+        } else {
+            // just remove #_nOverlap tokens and update. 
+            Token inTokenArray = input.get(0);
+            double[] incomingArray = new double[_transferSize];
+            for (int i = 0; i < _transferSize; i++) {
+                incomingArray[i] = ((DoubleToken)((ArrayToken) inTokenArray).
+                        getElement(i)).doubleValue();
+            }
+            System.arraycopy(_inArray, _transferSize, _inArray, 0, (_windowSize-_transferSize));
+            System.arraycopy(incomingArray, 0, _inArray, _transferSize, _transferSize);   
+        }
+        
+        if ( _framePointer >= _windowSize / _transferSize) {
+            _buffering = false;
+            _framePointer = 0;
+        }
+        
+        if (_buffering) {
+            return;
         }
 
         // multithreaded gammatone filtering and subsampling
         _filterInput();  
-
 
         Token[] subsampledEnvelopes = new Token[_numChannels];
         for (int i = 0; i < _numChannels; i++) {
@@ -242,7 +280,7 @@ public class AFTEFast extends SDFTransformer {
 
 
     }
-    
+
     @Override
     public boolean postfire() throws IllegalActionException { 
         _envelopes = new double[_numChannels][_inArray.length/(_fs/_fmod)];   
@@ -354,6 +392,8 @@ public class AFTEFast extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private boolean _buffering;
+
     private int _filterOrder;
 
     private int _fs;
@@ -368,7 +408,11 @@ public class AFTEFast extends SDFTransformer {
 
     private int _frameRate;
 
+    private int _framePointer;
+
     private int _transferSize;
+
+    private int _windowSize;
 
     private double[] _inArray;
 
