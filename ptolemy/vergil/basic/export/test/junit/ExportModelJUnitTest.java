@@ -265,12 +265,14 @@ public class ExportModelJUnitTest {
                 "AirManagementSystem.xml", // Assert is thrown.
                 "AirManagementSystemCausalityLoop", // Deliberately brings up message on run.
                 "AMS_AMSSim", // FMU does not reliably build everywhere.
+                "wireless/demo/AntennaPattern/AntennaModel.xml", // Used by other models.
                 "AntennaPattern.xml", // Has links to other models
                 "AprilTags", // Uses the camera.         
                 "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
                 "demo/Camera", // Uses the camera.
                 "cameras/demo/", // Uses the camera.
+                "ConstScaleZeroDemoProductLattice.xml", // Lattice, used by other models.
 
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
@@ -304,6 +306,9 @@ public class ExportModelJUnitTest {
                 "ElectricPowerSystem.xml", // Just has links to other demos.
                 "ExecDemos", // hangs
                 "FMUSimulationX", // 32-bit only
+                "FourInFourOutsDymola.xml", // Only runs under Ubuntu, not RHEL because of GLIBC problems.
+                "FourInFourOutsDymolaJNI.xml", // Only runs under Ubuntu, not RHEL because of GLIBC problems.
+                "FourInFourOutsDymolaWindows.xml", // Only runs under Windows.
                 "GeneratorContactorLoad.xml", // The GeneratorContactorLoad file is a component used inElectricPowerSystem models.
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
                 "HappySadStock.xml", // Run only if there is a Hue on the local network.
@@ -315,6 +320,7 @@ public class ExportModelJUnitTest {
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
                 "JMFJAI.xml", // Requires a video camera
                 "KarplusStrong.xml", // "Audio Device Unavailable"
+                "LatticeComposition.xml", // Intentionally throws an error.
                 "LineFault.xml", // Intentionally throws an error.
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "MapReduceDDF.xml", // Hangs.
@@ -332,6 +338,7 @@ public class ExportModelJUnitTest {
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
                 "RecordManipulation", // Python demo pops up a dialog.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
+                "ros/demo/Ros", // Need a robot.          
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RobotPFChase.xml", // Needs the KeyValue model running.
                 "Ros.xml", // This demo has links to the demo that are to run
