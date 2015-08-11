@@ -34,7 +34,9 @@
 	<property name="Tree View"
 		class="ptolemy.vergil.tree.TreeTableau$Factory" />
 	<property name="XML view"
-		class="ptolemy.actor.gui.TextEditorTableau$Factory" />
+		class="ptolemy.actor.gui.TextEditorTableau$Factory">
+      <property name="syntaxStyle" value="text/xml"/>
+    </property>
 </property>
 
 

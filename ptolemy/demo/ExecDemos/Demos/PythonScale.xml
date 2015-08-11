@@ -100,6 +100,8 @@ actor.  </text></svg></configure>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/python">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 220.0">
         </property>

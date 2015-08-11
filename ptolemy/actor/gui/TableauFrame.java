@@ -300,9 +300,8 @@ public class TableauFrame extends Top {
 
         if (effigy != null) {
             effigy.setModified(modified);
-        } else {
-            super.setModified(modified);
         }
+        super.setModified(modified);
     }
 
     /** Set the tableau associated with this frame.

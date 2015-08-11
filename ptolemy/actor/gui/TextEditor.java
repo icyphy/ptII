@@ -153,6 +153,13 @@ ImageExportable, Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Allow subclasses to adjust the file menu after packing.
+     *  This has to be called after pack().
+     *  This base class does nothing.
+     */
+    public void adjustFileMenu() {
+    }
+
     /** React to notification that an attribute or set of attributes
      *  changed.
      */
