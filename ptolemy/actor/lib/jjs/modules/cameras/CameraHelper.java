@@ -108,7 +108,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     public CameraHelper(ScriptObjectMirror currentObj, String name)
             throws IOException {
         super(currentObj);
-        if (name == null) {
+        if (name == null || name.trim().equals("")) {
             _webcam = Webcam.getDefault();
         } else {
             if (_webcams == null) {
