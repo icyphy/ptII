@@ -1550,27 +1550,31 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // and appended by {@link UtilityFunctions#loadLibrary}) for
             // portability.
 
-            String buildLibrary = "ptolemy/actor/lib/fmi/jni/libJNIFMU";
-            String installLibrary = "lib/libJNIFMU";
-            try {
-                if (_debugging) {
-                    _debugToStdOut("About to load " + buildLibrary);
-                }
-                UtilityFunctions.loadLibrary(buildLibrary);
-            } catch (Throwable buildThrowable) {
+            if (!_rawJNILibraryLoaded) {
+                String buildLibrary = "ptolemy/actor/lib/fmi/jni/libJNIFMU";
+                String installLibrary = "lib/libJNIFMU";
                 try {
                     if (_debugging) {
-                        _debugToStdOut("Loading " + buildLibrary
-                                + " failed with " + buildThrowable
-                                + " About to load " + installLibrary);
+                        _debugToStdOut("About to load " + buildLibrary);
                     }
-                    // This will load the library from $PTII/lib/libFMUImport.jnilib or .so.
-                    UtilityFunctions.loadLibrary(installLibrary);
-                } catch (Throwable installThrowable) {
-                    throw new IllegalActionException(this, installThrowable,
-                            "Failed to load " + installLibrary
-                                    + " Also tried to load " + buildLibrary
-                                    + ", which threw: " + buildThrowable);
+                    UtilityFunctions.loadLibrary(buildLibrary);
+                    _rawJNILibraryLoaded = true;
+                } catch (Throwable buildThrowable) {
+                    try {
+                        if (_debugging) {
+                            _debugToStdOut("Loading " + buildLibrary
+                                    + " failed with " + buildThrowable
+                                    + " About to load " + installLibrary);
+                        }
+                        // This will load the library from $PTII/lib/libFMUImport.jnilib or .so.
+                        UtilityFunctions.loadLibrary(installLibrary);
+                        _rawJNILibraryLoaded = true;
+                    } catch (Throwable installThrowable) {
+                        throw new IllegalActionException(this, installThrowable,
+                                "Failed to load " + installLibrary
+                                + " Also tried to load " + buildLibrary
+                                + ", which threw: " + buildThrowable);
+                    }
                 }
             }
         } else {
@@ -2000,14 +2004,25 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             // Initialize number of continuous states.
             double[] derivatives = new double[_fmiModelDescription.numberOfContinuousStates];
 
-            // Instantiate FMU
-            _fmiJNIComponent = runNativeFMU(0, 0, modelIdentifier, fmuLibPath,
-                    _fmiModelDescription.fmuResourceLocation,
-                    startTime.getDoubleValue(), stopTime.getDoubleValue(),
-                    currentTime.getDoubleValue(), 0, relativeTolerance,
-                    toBeVisible, loggingOn, _fmiModelDescription.guid,
-                    derivatives, null, null, null, null, null, null, 0, null,
-                    null, null, null, null);
+            try {
+                // Instantiate FMU
+                _fmiJNIComponent = runNativeFMU(0, 0, modelIdentifier, fmuLibPath,
+                        _fmiModelDescription.fmuResourceLocation,
+                        startTime.getDoubleValue(), stopTime.getDoubleValue(),
+                        currentTime.getDoubleValue(), 0, relativeTolerance,
+                        toBeVisible, loggingOn, _fmiModelDescription.guid,
+                        derivatives, null, null, null, null, null, null, 0, null,
+                        null, null, null, null);
+            } catch (Throwable throwable) {
+                // We catch this Throwable because if there is a problem with loading
+                // the library, then we want to throw a stack trace that includes
+                // the offending actor.
+                throw new IllegalActionException(this, throwable, "Failed to invoke the "
+                        + "runNativeFMU() method.  Try enabling \"Listen to Actor\" "
+                        + "and rerunning or setting debug to true in "
+                        + " loadLibrary() in "
+                        + "ptolemy/data/expr/UtilityFunctions.java.");
+            }
         }
     }
 
@@ -4712,6 +4727,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The workspace version at which the _outputs variable was last updated. */
     private long _outputsVersion = -1;
 
+    /** Only load the library once. */
+    private static boolean _rawJNILibraryLoaded = false;
+    
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
 

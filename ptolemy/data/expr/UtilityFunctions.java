@@ -983,16 +983,16 @@ public class UtilityFunctions {
                     // FIXME: we should also look for dylib?
                     sharedLibrarySuffix = "jnilib";
                     try {
-                        _loadLibrary(library, "jnilib", ex);
+                        _loadLibrary(debug, library, "jnilib", ex);
                     } catch (Exception exMac) {
-                        _loadLibrary(library, "dylib", ex);
+                        _loadLibrary(debug, library, "dylib", ex);
                     }
                     return;
                 } else {
                     sharedLibrarySuffix = "so";
                 }
             }
-            _loadLibrary(library, sharedLibrarySuffix, ex);
+            _loadLibrary(debug, library, sharedLibrarySuffix, ex);
         }
     }
 
@@ -2061,7 +2061,7 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Load a shared library
+    /** Load a shared library.
      *  @param library the name of the library to be loaded.  The name
      *  should not include the platform dependent suffix.
      *  @param sharedLibrarySuffix The suffix for the shared library, without the dot.
@@ -2070,7 +2070,7 @@ public class UtilityFunctions {
      *  @param throwable The throwable that occurred when System.load() or System.loadLibrary()
      *  was called.
      */
-    private static void _loadLibrary(String library,
+    private static void _loadLibrary(final boolean debug, String library,
             String sharedLibrarySuffix, Throwable throwable) {
         // We have a separate method here so that we can call it with
         // jnilib and then with dylib because under Web Start on Mac OS X 10.5
@@ -2080,9 +2080,8 @@ public class UtilityFunctions {
         String shortLibraryName = null;
 
         String osName = StringUtilities.getProperty("os.name");
-        final boolean debug = false;
         if (debug) {
-            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + ")");
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): osName: " + osName);
         }
         if (osName.startsWith("SunOS") || osName.startsWith("Linux")
                 || osName.startsWith("Mac OS X")) {
@@ -2112,6 +2111,12 @@ public class UtilityFunctions {
                         library = library.substring(0, index)
                                 + shortLibraryName;
                     }
+                } else {
+                    // Needed to find $PTII/lib/libJNIFMU.jnilib if 
+                    // actor/lib/fmi/jni/libJNIFMU.jnilib does not exist
+                    // $PTII/bin/vergil $PTII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml 
+                    library = library.substring(index + 1);
+                    shortLibraryName = library;
                 }
             }
         } else {
@@ -2140,7 +2145,15 @@ public class UtilityFunctions {
             // Ignore, the file can't be found
         }
 
+        if (debug) {
+            System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): libraryWithSuffix: " + libraryWithSuffix + " libraryPathExists" + libraryPathExists );
+        }
+
         if (libraryPath.equals(libraryWithSuffix) || !libraryPathExists) {
+            if (debug) {
+                System.out.println("UtilityFunctions._loadLibrary(" + library + ", " + sharedLibrarySuffix + "): findFile did not find the library try the short name: " + shortLibraryName);
+            }
+
             try {
                 // findFile did not find the library, so we try using
                 // just the short library name.  This is necessary
