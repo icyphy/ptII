@@ -81,7 +81,9 @@
     <include name="ptolemy/actor/lib/javasound/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/jjs.jar" />
-    <include name="ptolemy/actor/lib/jjs/modules/demo/demo.jar" />
+    <!-- Note that there is no jjs/modules/demo/ directory, but there
+         are plenty of jjs/modules/*/demo/ directories. -->
+    <include name="ptolemy/actor/lib/jjs/modules/demo.jar" />
     <include name="ptolemy/actor/lib/jjs/modules/modules.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
@@ -1772,9 +1774,11 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/lib/jjs/modules/demo/demo.jar -->
+    <!-- Note that there is no jjs/modules/demo/ directory, but there
+         are plenty of jjs/modules/*/demo/ directories. -->
+    <!-- ptolemy/actor/lib/jjs/modules/demo.jar -->
     <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/demo/demo.jar"
+	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/demo.jar"
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jjs/modules/*/demo/*/*.js"/>

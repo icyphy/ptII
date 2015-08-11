@@ -366,8 +366,11 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/jjs.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs"/>
 
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules/demo"/>
+            <!-- Note that there is no jjs/modules/demo/ directory, but there
+                 are plenty of jjs/modules/*/demo/ directories. -->
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/modules.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules"/>
 
