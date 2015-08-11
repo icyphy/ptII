@@ -63,6 +63,7 @@
     <include name="ptolemy/actor/gui/jnlp/VisualSenseApplication.jar" />
     <include name="ptolemy/actor/gui/ptjacl/ptjacl.jar" />
     <include name="ptolemy/actor/gui/run/run.jar" />
+    <include name="ptolemy/actor/gui/syntax/syntax.jar" />
     <include name="ptolemy/actor/lib/aspect/aspect.jar" />
     <include name="ptolemy/actor/lib/aspect/demo/demo.jar" />
     <include name="ptolemy/actor/lib/colt/colt.jar" />

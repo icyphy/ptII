@@ -568,11 +568,13 @@ FULL_10_0_JARS = \
 FULL_11_0_JARS = \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
+	ptolemy/actor/gui/syntax/syntax.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/qss/demo/demo.jar \
 	$(PTPAHO_MQTT_JAR) \
+	$(PTRSYNTAXTEXTAREA_JAR) \
 	$(PTVERTX_JARS)
 
 
