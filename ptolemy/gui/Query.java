@@ -314,6 +314,20 @@ public class Query extends JPanel {
      *  @return The text area that displays the value.
      */
     public JTextArea addDisplay(String name, String label, String theValue) {
+        return addDisplay(name, label, theValue, null, null);
+    }
+    
+    /** Create a simple one-line text display, a non-editable value that
+     *  is set externally using the setDisplay() method.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValue Default string to display.
+     *  @param background The background color, or null to use defaults.
+     *  @param foreground The foreground color, or null to use defaults.
+     *  @return The text area that displays the value.
+     */
+    public JTextArea addDisplay(
+            String name, String label, String theValue, Color background, Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -322,7 +336,13 @@ public class Query extends JPanel {
         // not work.
         JTextArea displayField = new JTextArea(theValue, 1, 10);
         displayField.setEditable(false);
-        displayField.setBackground(_background);
+        if (background == null) {
+            background = _background;
+        }
+        if (foreground == null) {
+            foreground = Color.BLACK;
+        }
+        displayField.setBackground(background);
         _addPair(name, lbl, displayField, displayField);
         return displayField;
     }
