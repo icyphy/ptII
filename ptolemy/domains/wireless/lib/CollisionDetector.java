@@ -130,7 +130,7 @@ import ptolemy.kernel.util.Workspace;
  is successfully received if
  <blockquote>
  <i>p</i><sub><i>i</i></sub>(<i>t</i>) &ge; <i>P</i>
- <font face="Symbol">S</font><sub>(<i>j</i> != <i>i</i>)</sub>
+ &Sigma;<sub>(<i>j</i> != <i>i</i>)</sub>
  <i>p</i><sub><i>j</i></sub>(<i>t</i>)
  </blockquote>
  for all <i>t</i> where <i>p</i><sub><i>i</i></sub>(<i>t</i>) &gt; 0,
