@@ -377,8 +377,8 @@ function setup() {exports.setup();}
 function wrapup() {exports.wrapup();}
 
 //--------------------------- Exposed Java Types -----------------------------
-var ActorToken = Java.type('ptolemy.data.ActorToken');
 var ArrayToken = Java.type('ptolemy.data.ArrayToken');
+var ActorToken = Java.type('ptolemy.data.ActorToken');
 var AWTImageToken = Java.type('ptolemy.data.AWTImageToken');
 var BaseType = Java.type('ptolemy.data.type.BaseType');
 var BooleanToken = Java.type('ptolemy.data.BooleanToken');
