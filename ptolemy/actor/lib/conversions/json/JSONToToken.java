@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DateToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
@@ -142,6 +143,8 @@ public class JSONToToken extends Converter {
                 return _scanJSONArray(new JSONArray(input));
             } else if (input.startsWith("\"") && input.endsWith("\"")) {
                 return new StringToken(input.substring(1, input.length() - 1));
+            } else if (input.startsWith("date(\"") && input.endsWith("\")")) {
+                return new DateToken(input.substring(6, input.length()-2));
             } else if (input.equals("true")) {
                 return BooleanToken.TRUE;
             } else if (input.equals("false")) {
