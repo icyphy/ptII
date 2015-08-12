@@ -92,7 +92,7 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
             text.setCaretPosition(0);
             // ((RSyntaxTextArea)text).addHyperlinkListener(this);
             text.requestFocusInWindow();
-            ((RSyntaxTextArea)text).setMarkOccurrences(true);
+            // ((RSyntaxTextArea)text).setMarkOccurrences(true);
             ((RSyntaxTextArea)text).setCodeFoldingEnabled(true);
             ((RSyntaxTextArea)text).setClearWhitespaceLinesEnabled(false);
         } else if (document != null) {
@@ -120,6 +120,7 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
         _initialSaveAsFileName = "data.txt";
 
         // Set the undo listener, with default key mappings.
-        text.getDocument().addUndoableEditListener(new UndoListener(text));
+        _undo = new UndoListener(text);
+        text.getDocument().addUndoableEditListener(_undo);
     }
 }
