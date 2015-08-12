@@ -175,7 +175,39 @@ public class JSAccessor extends JavaScript {
      *  <p>The accessor is read in from a url, processed with
      *  XSLT and MoML is returned.</p>
      *
+     *  <p>In this method, the value of the
+     *  <i>checkoutOrUpdateRepository</i> parameter is honored.</p>
+     *
      *  @param urlSpec The URL of the accessor.
+     *  @return MoML of the accessor, which is typically passed to
+     *  handleAccessorMoMLChangeRequest().
+     *  @exception IOException If the urlSpec cannot be converted,
+     *  opened read, parsed or closed.
+     *  @exception TransformerConfigurationException If a factory
+     *  cannot be created from the xslt file.
+     *  @exception IllegalActionException If no source file is
+     *  specified.
+     */
+    public static String accessorToMoML(final String urlSpec)
+            throws IOException, TransformerConfigurationException, IllegalActionException {
+        return JSAccessor.accessorToMoML(urlSpec, true);
+    }
+
+    /** Generate MoML for an Accessor.
+     *  <p>The MoML is wrapped in &lt;entity&gt;&lt;/entity&gt; and
+     *  suitable for handleAccessorMoMLChangeRequest().</p>
+     *
+     *  <p>The accessor is read in from a url, processed with
+     *  XSLT and MoML is returned.</p>
+     *
+     *  @param urlSpec The URL of the accessor.
+     *  @param obeyCheckoutOrUpdateRepositoryParameter If true, then
+     *  use the value of the <i>checkoutOrUpdateRepository</i>
+     *  parameter.  If false, then override the value of the
+     *  <i>checkoutOrUpdateRepository</i> parameter and do not
+     *  checkout or update the repository or invoke JSDoc.  During
+     *  testing, this parameter is set to false after the first reload
+     *  of an accessor so as to improve the performance of the tests.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
      *  @exception IOException If the urlSpec cannot be converted, opened
@@ -184,8 +216,9 @@ public class JSAccessor extends JavaScript {
      *  be created from the xslt file.
      *  @exception IllegalActionException If no source file is specified.
      */
-    public static String accessorToMoML(final String urlSpec)
-            throws IOException, TransformerConfigurationException, IllegalActionException {
+    public static String accessorToMoML(final String urlSpec,
+            boolean obeyCheckoutOrUpdateRepositoryParameter)
+            throws IllegalActionException, IOException, TransformerConfigurationException {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
@@ -202,7 +235,7 @@ public class JSAccessor extends JavaScript {
         return "<group name=\"auto\">\n"
             + "<entity name=\""  + instanceNameRoot
             + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
-            + _accessorToMoML(urlSpec, true)
+            + _accessorToMoML(urlSpec, obeyCheckoutOrUpdateRepositoryParameter)
             + "<property name=\"_tableauFactory\" class=\"ptolemy.vergil.toolbox.TextEditorTableauFactory\">"
             + "  <property name=\"attributeName\" value=\"script\"/>"
             + "  <property name=\"syntaxStyle\" value=\"text/javascript\"/>"
@@ -624,7 +657,9 @@ public class JSAccessor extends JavaScript {
             // to either check out or update the repo.
             if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
                 try {
-                    JSAccessor.getAccessorsRepository();
+                    if (updateRepository) {
+                        JSAccessor.getAccessorsRepository();
+                    }
                     accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
                 } catch (IOException ex2) {
                     IOException ioException = new IOException(ex.getMessage()
