@@ -275,15 +275,25 @@ void fmi2FreeInstance(fmi2Component c) {
         return;
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2FreeInstance")
 
-    if (comp->r) comp->functions->freeMemory(comp->r);
-    if (comp->i) comp->functions->freeMemory(comp->i);
-    if (comp->b) comp->functions->freeMemory(comp->b);
+    if (comp->r) {
+        comp->functions->freeMemory(comp->r);
+        comp->functions->freeMemory(comp->hr);
+    }
+    if (comp->i) {
+        comp->functions->freeMemory(comp->i);
+        comp->functions->freeMemory(comp->hi);
+    }
+    if (comp->b) {
+        comp->functions->freeMemory(comp->b);
+        comp->functions->freeMemory(comp->hb);
+    }
     if (comp->s) {
         int i;
         for (i = 0; i < NUMBER_OF_STRINGS; i++){
             if (comp->s[i]) comp->functions->freeMemory((void *)comp->s[i]);
         }
         comp->functions->freeMemory((void *)comp->s);
+        comp->functions->freeMemory((void *)comp->hs);
     }
     if (comp->isPositive) comp->functions->freeMemory(comp->isPositive);
     if (comp->instanceName) comp->functions->freeMemory((void *)comp->instanceName);

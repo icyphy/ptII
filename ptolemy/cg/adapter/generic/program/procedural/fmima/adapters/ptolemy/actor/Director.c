@@ -57,6 +57,9 @@ for (i = 0; i < NUMBER_OF_FMUS; i++) {
 if (categories) {
         free(categories);
 }
+for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+        free(fmuFileNames[i]);
+    }
 
 free( fmus);
 
