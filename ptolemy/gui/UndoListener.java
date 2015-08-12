@@ -94,6 +94,16 @@ public class UndoListener implements UndoableEditListener {
                 .getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
         actionMap.put("redo", _redoAction);
     }
+    
+    /** Perform a redo. */
+    public synchronized void redo() throws CannotUndoException {
+        _undo.redo();
+    }
+
+    /** Perform an undo. */
+    public synchronized void undo() throws CannotUndoException {
+        _undo.undo();
+    }
 
     /** Remember the edit and update the action state.
      *  @param event The event that occurred.
