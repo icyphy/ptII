@@ -32,6 +32,7 @@ import java.util.Set;
 
 import ptolemy.actor.lib.conversions.Converter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.DateToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;
@@ -104,7 +105,9 @@ public class TokenToJSON extends Converter {
             // The 'L' suffix is not supported in JSON.
             String result = input.toString();
             return result.substring(0, result.length() - 1);
-        } else if (input instanceof ScalarToken || input instanceof StringToken) {
+        } else if (input instanceof ScalarToken 
+                || input instanceof StringToken
+                || input instanceof DateToken) {
             return input.toString();
         } else if (input instanceof ArrayToken) {
             return _scanArrayToken((ArrayToken) input);
