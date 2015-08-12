@@ -77,21 +77,22 @@ public class AFTEFast extends Transformer {
         input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         output.setTypeEquals(new ArrayType(new ArrayType(BaseType.DOUBLE)));
 
-        minFrequency = new Parameter(this, "minFrequency");
-        minFrequency.setExpression("25");
-        minFrequency.setTypeEquals(BaseType.INT);
+        centerFrequencies = new Parameter(this, "centerFrequencies");
+        centerFrequencies.setTypeEquals(new ArrayType(BaseType.INT)); 
+        centerFrequencies.setExpression("{3220, 5099, 8001}");
 
-        maxFrequency = new Parameter(this, "maxFrequency");
-        maxFrequency.setExpression("1000");
-        maxFrequency.setTypeEquals(BaseType.INT);
-
-        numberOfChannels = new Parameter(this, "numberOfChannels");
-        numberOfChannels.setExpression("18");
-        numberOfChannels.setTypeEquals(BaseType.INT);
 
         filterOrder = new Parameter(this, "filterOrder");
         filterOrder.setExpression("4");
         filterOrder.setTypeEquals(BaseType.INT);
+
+        fftCoefficientsToOutput= new Parameter(this, "fftCoefficientsToOutput");
+        fftCoefficientsToOutput.setTypeEquals(new ArrayType(BaseType.INT)); 
+        fftCoefficientsToOutput.setExpression("{0,4,5,6,7,8,9,10,11,12,13,14}");
+
+        fftLength = new Parameter(this, "fftLength");
+        fftLength.setExpression("64");
+        fftLength.setTypeEquals(BaseType.INT);
 
         fs = new Parameter(this, "fs");
         fs.setExpression("48000");
@@ -119,18 +120,8 @@ public class AFTEFast extends Transformer {
     /** 
      * Maximum center frequency in the filterbank.
      */ 
-    public Parameter maxFrequency;
-
-    /** 
-     * Minimum center frequency in the filterbank.
-     */ 
-    public Parameter minFrequency;
-
-    /** 
-     * Number of channels of the filterbank output.
-     */ 
-    public Parameter numberOfChannels;
-
+    public Parameter centerFrequencies;
+ 
     /**
      * Order of the gammatone filters.
      */
@@ -141,6 +132,12 @@ public class AFTEFast extends Transformer {
      */ 
     public Parameter fs;
 
+    /**
+     * Indices of FFTCoefficients to output, normalized by dc.
+     */
+    public Parameter fftCoefficientsToOutput;
+
+    public Parameter fftLength;
     /** 
      * Mod spec sampling frequency.
      */ 
@@ -177,14 +174,25 @@ public class AFTEFast extends Transformer {
                 throw new IllegalActionException(this, "Sampling frequency was "
                         + _fs + " but must be greater than zero.");
             } 
-        } else if (attribute == minFrequency) {
-            _fMin = ((IntToken) minFrequency.getToken()).intValue();
-        } else if (attribute == maxFrequency) {
-            _fMax = ((IntToken) maxFrequency.getToken()).intValue();
-        } else if (attribute == numberOfChannels) {
-            _numChannels = ((IntToken) numberOfChannels.getToken()).intValue();
-        } else if (attribute == fs) {
+        } else if (attribute == centerFrequencies) {
+            Token[] cfs = ((ArrayToken)centerFrequencies.getToken()).arrayValue();
+
+            _centerFrequencies = new int[cfs.length];
+
+            for (int i = 0; i< cfs.length; i++) {
+                _centerFrequencies[i] = ((IntToken)cfs[i]).intValue();
+            } 
+            _numChannels = cfs.length;
+        }  else if (attribute == fs) {
             _fs = ((IntToken) fs.getToken()).intValue(); 
+        } else if (attribute == fftLength) {
+            _fftLength = ((IntToken) fftLength.getToken()).intValue(); 
+        } else if (attribute == fftCoefficientsToOutput) {
+            Token[] indices = ((ArrayToken) fftCoefficientsToOutput.getToken()).arrayValue(); 
+            _featureVector = new int[indices.length];
+            for (int i = 0; i < indices.length; i++) {
+                _featureVector[i] = ((IntToken)indices[i]).intValue();
+            }
         } else if (attribute == fmodspec) {
 
             int fmod = ((IntToken) fmodspec.getToken()).intValue(); 
@@ -222,69 +230,65 @@ public class AFTEFast extends Transformer {
         super.initialize(); 
         _setupGammatoneFilterbank(); 
         _envelopes = new double[_numChannels][_transferSize/(_fs/_fmod)];   
-        _filterResult = new double[_numChannels][_transferSize]; 
-        _buffering = true;
-    }
+        _filterResult = new double[_numChannels][_transferSize];  
+        _fftChunks = _windowSize / _transferSize;
+        _convolutionLength = _transferSize + _impulseResponses[0].length - 1;
 
+        _inArray = new double[_windowSize];   
+        _loadFilterFFTs();
+        _convolutionChunks = new double[_numChannels][_fftChunks][_convolutionLength];
+        _envelopeFFT = new double[_numChannels][_fftLength];
+    } 
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
+        _inArray = new double[_transferSize];
+        Token inTokenArray = input.get(0);
+        for (int j = 0; j < _transferSize; j++) {
+            _inArray[j] = ((DoubleToken)((ArrayToken) inTokenArray).
+                    getElement(j)).doubleValue();
+        }
 
-        if (_buffering) {
-            _inArray = new double[_windowSize];   
-            // place first received chunks into _inArray so that we can perform sliding window 
-            // convolutions on the first complete array
-            Token inTokenArray = input.get(0);
-            for (int j = 0; j < _transferSize; j++) {
-                _inArray[j+_framePointer*_transferSize] = ((DoubleToken)((ArrayToken) inTokenArray).
-                        getElement(j)).doubleValue();
+        // do the fft conv for the received chunk
+        doBlockFFT(_framePointer);
+
+        _framePointer++;
+
+        // the following will be done for all frames after the bufering is complete.
+        if (_framePointer >= _fftChunks) {
+
+            // multithreaded gammatone filtering and subsampling
+            multithreadedFeatureExtraction();  
+
+            _framePointer = _fftChunks-1;
+
+            Token[] envFFTs = new Token[_numChannels];
+            for (int i = 0; i < _numChannels; i++) {
+                Token[] ffti = new Token[_featureVector.length];
+                double DC = _envelopeFFT[i][0];
+                for (int j =0 ; j < _featureVector.length; j++) {
+                    int index = _featureVector[j];
+                    if (index == 0) {
+                        ffti[j] = new DoubleToken(_envelopeFFT[i][index]);
+                    } else {
+                        ffti[j] = new DoubleToken(_envelopeFFT[i][index]/DC);
+                    }
+
+                }
+                envFFTs[i] = new ArrayToken(ffti);
             }
-            _framePointer ++; 
-        } else {
-            // just remove #_nOverlap tokens and update. 
-            Token inTokenArray = input.get(0);
-            double[] incomingArray = new double[_transferSize];
-            for (int i = 0; i < _transferSize; i++) {
-                incomingArray[i] = ((DoubleToken)((ArrayToken) inTokenArray).
-                        getElement(i)).doubleValue();
-            }
-            System.arraycopy(_inArray, _transferSize, _inArray, 0, (_windowSize-_transferSize));
-            System.arraycopy(incomingArray, 0, _inArray, _transferSize, _transferSize);   
-        }
-        
-        if ( _framePointer >= _windowSize / _transferSize) {
-            _buffering = false;
-            _framePointer = 0;
-        }
-        
-        if (_buffering) {
-            return;
-        }
 
-        // multithreaded gammatone filtering and subsampling
-        _filterInput();  
-
-        Token[] subsampledEnvelopes = new Token[_numChannels];
-        for (int i = 0; i < _numChannels; i++) {
-            Token[] envelopei = new Token[_envelopes[i].length];
-            for (int j =0 ; j < _envelopes[i].length; j++) {
-                envelopei[j] = new DoubleToken(_envelopes[i][j]);
-            }
-            subsampledEnvelopes[i] = new ArrayToken(envelopei);
-        }
-
-        output.send(0, new ArrayToken(subsampledEnvelopes));
-
-
+            output.send(0, new ArrayToken(envFFTs)); 
+        }  
     }
 
     @Override
     public boolean postfire() throws IllegalActionException { 
-        _envelopes = new double[_numChannels][_inArray.length/(_fs/_fmod)];   
-        _filterResult = new double[_numChannels][_inArray.length]; 
+        _envelopes = new double[_numChannels][_windowSize/(_fs/_fmod)];   
+        _filterResult = new double[_numChannels][_windowSize]; 
         return super.postfire();
     }
 
@@ -295,7 +299,7 @@ public class AFTEFast extends Transformer {
      * @return
      * @throws IllegalActionException 
      */
-    private void _filterInput() throws IllegalActionException {
+    private void multithreadedFeatureExtraction() throws IllegalActionException {
 
         ExecutorService executor = Executors.newFixedThreadPool(_numChannels);
 
@@ -312,27 +316,15 @@ public class AFTEFast extends Transformer {
         } 
     }
 
-    private double[] _hilbertEnvelope(double[] signal) {
-
-        /** x[n] ---DTFT----> X(w)
-           u[n] = hilbertTransform(x[n]) ---- DTFT ---> -2*i*sgn[w]*X(w) where sgn is the sign function
-         */
-        Complex[] fftOut = SignalProcessing.FFTComplexOut(signal); 
-        int fftLength = fftOut.length;
-        for (int i = 0 ; i < fftOut.length; i++) {
-            Complex old = fftOut[i];
-            if (i > fftLength/2) {
-                fftOut[i] = new Complex(0,0);
-            } else { 
-                fftOut[i] = new Complex(-2*old.imag, 2*old.real);
-            }
+    private double[] _firEnvelope(double[] signal) {
+        double[] rectified = new double[signal.length];
+        for (int i = 0; i < signal.length; i++) {
+            rectified[i] = Math.abs(signal[i]);
         }
-
-        double [] hilbertEnvelope = ComplexArrayMath.
-                magnitude(SignalProcessing.IFFT(fftOut));
-
-        return hilbertEnvelope; // need to truncate at some point. 
+        double[] res = SignalProcessing.convolve(rectified, env_fft);
+        return Arrays.copyOfRange(res, 0, signal.length);
     }
+
 
 
     private double[] _decimateSignal( 
@@ -345,19 +337,6 @@ public class AFTEFast extends Transformer {
     private void _setupGammatoneFilterbank() {
         // compute filterbank center frequencies
 
-        double[] erbLimits = {_hz2erb(_fMin), _hz2erb(_fMax)};
-
-        double[] allFrequencies = new double[_numChannels];
-
-        double freqSpacing = (erbLimits[1] - erbLimits[0])/(_numChannels-1);
-        // linearly spaced center frequencies in ERB scale correspond to log-spacing in Hz scale.
-        for (int i = 0 ; i < _numChannels; i++) {
-            double freqInErb = erbLimits[0] + freqSpacing*i;
-            allFrequencies[i] = _erb2hz(freqInErb);
-        }
-
-
-
         int a = (int)(0.128*_fs); // minimum 128 ms window
         int nextPowerOf2 = SignalProcessing.order(a);
         int filterLength = (int) Math.pow(2,nextPowerOf2); 
@@ -365,7 +344,7 @@ public class AFTEFast extends Transformer {
 
         _impulseResponses = new double[_numChannels][filterLength];
         for (int i = 0; i < _numChannels; i++) {
-            double cfreq = allFrequencies[i];
+            double cfreq = _centerFrequencies[i];
             double b = 1.019*24.7*(4.37*cfreq/1000+1); // bandwidth 
             double gain = Math.pow((1.019*b*tpt),_filterOrder)/6; 
             for (int j =0; j < filterLength; j++) {
@@ -374,26 +353,84 @@ public class AFTEFast extends Transformer {
                         *Math.exp(-2*Math.PI*b*tstep)*Math.cos(2*Math.PI*cfreq*tstep);
             } 
         }
-    }
-
+    } 
     /**
+     * Overlap and output when frame ready to go.
+     * TODO: Don't need to do this triple sum every time we will output. 
+     * We will already have summed up the previous 5, so substract the first channle
+     * and add in the new one at the end.
+     */
+    private void overlapAndAdd(int filterIndex) {
+        synchronized (_convolutionChunks[filterIndex]) { 
+            _filterResult[filterIndex] = new double[_windowSize];
+            for ( int j = 0; j<_fftChunks; j++) {
+                int maxIndex = Math.min (_windowSize - j*_transferSize, _convolutionLength );
+                for (int k = 0 ; k < maxIndex ; k++) {
+                    _filterResult[filterIndex][j*_transferSize + k] += _convolutionChunks[filterIndex][j][k];
+                }
+            } 
+        }
+    } 
+    private void shiftChunks(int filterIndex) {
+
+        synchronized (_convolutionChunks[filterIndex]) { 
+            for ( int j=1; j<_fftChunks; j++) {
+                _convolutionChunks[filterIndex][j-1] = _convolutionChunks[filterIndex][j];
+            } 
+        }
+    }
+ 
+    /**
+<<<<<<< .mine
+     * Do FFTs on all channels for this block and save to the array
+     * @param startIndex Chunk Index
+     * @throws IllegalActionException
+=======
      * Convert to Equivalent Rectangular Bandwidth (ERB) scale from Hz.
      * @param frequencyInHz Frequency in Hz
      * @return frequency in ERB scale
+>>>>>>> .r73083
      */
-    private static double _hz2erb(double frequencyInHz) {
-        return 21.4*Math.log10(4.37e-3*frequencyInHz+1);
+    private void doBlockFFT(int startIndex) throws IllegalActionException {
+        // can be done in parallel for multiple filters
+        ExecutorService executor = Executors.newFixedThreadPool(_numChannels);
+        for (int i = 0; i < _numChannels; i++) { 
+            executor.execute(new FFTWorker(i, startIndex)); 
+        }  
+        executor.shutdown();
+        try {
+            executor.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            throw new IllegalActionException(this, "Could not shut down threadpool in 1 second.");
+        } 
     }
 
-    private static double _erb2hz(double freqInERB) {
-        return (Math.pow(10,freqInERB/21.4)-1)/4.37e-3; 
+    private double[] blockFFT(double[] chunk, int filterIndex) {
+        int fftOrder = SignalProcessing.order(SignalProcessing.nextPowerOfTwo(_convolutionLength));
+        Complex[] inputFFT = SignalProcessing.FFTComplexOut(chunk, fftOrder);
+        Complex[] result = ComplexArrayMath.multiply(inputFFT, _gammatoneImpulseResponseFFTs[filterIndex]);
+        return Arrays.copyOfRange(SignalProcessing.IFFTRealOut(result),0,_convolutionLength);
+        // place convolution result into the appropriate segment of result.        
+    }
+    /**
+     * Compute the FFTs of the impulse responses and save.
+     * Do this once in initialization.
+     */
+    private void _loadFilterFFTs() { 
+        _gammatoneImpulseResponseFFTs = new Complex[_numChannels]
+                [SignalProcessing.nextPowerOfTwo(_convolutionLength)];
+        for (int i=0; i < _numChannels; i++) {
+            _gammatoneImpulseResponseFFTs[i] = 
+                    SignalProcessing.FFTComplexOut(_impulseResponses[i], SignalProcessing.order(_convolutionLength));
+        } 
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _buffering;
+    private int _fftChunks;
 
     private int _filterOrder;
 
@@ -401,13 +438,11 @@ public class AFTEFast extends Transformer {
 
     private int _fmod; 
 
-    private int _fMin;
-
-    private int _fMax;
+    private int[] _centerFrequencies;
 
     private int _numChannels;
 
-    private int _frameRate;
+    private int _convolutionLength;
 
     private int _framePointer;
 
@@ -417,31 +452,66 @@ public class AFTEFast extends Transformer {
 
     private double[] _inArray;
 
+    private double[][][] _convolutionChunks; //indexed by filter index, chunk index;
+
     private double[][] _impulseResponses;
 
     private double[][] _filterResult;
 
     private double[][] _envelopes; 
 
+    private int[] _featureVector;
+
+    private double[][] _envelopeFFT;
+
+    private int _fftLength = 64;
+
+    private Complex[][] _gammatoneImpulseResponseFFTs;
+
+    // 256-tap low-passFIR filter with a transition band of 0.0018-0.0022
+    // this corresponds to a cut-off frequency of 100 Hz for fs = 48 kHz.
+    private final double[] env_fft = {0.00177,0.0017731,0.0017762,
+            0.0017792,0.0017823,0.0017853,0.0017883,0.0017912,0.0017942,0.0017971,0.0018,0.0018029,0.0018058,0.0018086,0.0018114,0.0018142,0.001817,0.0018198,0.0018225,0.0018252,0.0018279,0.0018306,0.0018332,0.0018358,0.0018384,0.001841,0.0018436,0.0018461,0.0018486,0.0018511,0.0018535,0.001856,0.0018584,0.0018608,0.0018631,0.0018655,0.0018678,0.0018701,0.0018724,0.0018746,0.0018769,0.0018791,0.0018812,0.0018834,0.0018855,0.0018876,0.0018897,0.0018918,0.0018938,0.0018958,0.0018978,0.0018998,0.0019017,0.0019036,0.0019055,0.0019074,0.0019092,0.001911,0.0019128,0.0019146,0.0019163,0.001918,0.0019197,0.0019214,0.0019231,0.0019247,0.0019263,0.0019278,0.0019294,0.0019309,0.0019324,0.0019339,0.0019353,0.0019367,0.0019381,0.0019395,0.0019408,0.0019421,0.0019434,0.0019447,0.0019459,0.0019472,0.0019484,0.0019495,0.0019507,0.0019518,0.0019529,0.0019539,0.001955,0.001956,0.001957,0.0019579,0.0019589,0.0019598,0.0019607,0.0019615,0.0019623,0.0019632,0.0019639,0.0019647,0.0019654,0.0019661,0.0019668,0.0019674,0.0019681,0.0019687,0.0019692,0.0019698,0.0019703,0.0019708,0.0019713,0.0019717,0.0019721,0.0019725,0.0019729,0.0019732,0.0019735,0.0019738,0.0019741,0.0019743,0.0019745,0.0019747,0.0019749,0.001975,0.0019751,0.0019752,0.0019752,0.0019753,0.0019753,0.0019752,0.0019752,0.0019751,0.001975,0.0019749,0.0019747,0.0019745,0.0019743,0.0019741,0.0019738,0.0019735,0.0019732,0.0019729,0.0019725,0.0019721,0.0019717,0.0019713,0.0019708,0.0019703,0.0019698,0.0019692,0.0019687,0.0019681,0.0019674,0.0019668,0.0019661,0.0019654,0.0019647,0.0019639,0.0019632,0.0019623,0.0019615,0.0019607,0.0019598,0.0019589,0.0019579,0.001957,0.001956,0.001955,0.0019539,0.0019529,0.0019518,0.0019507,0.0019495,0.0019484,0.0019472,0.0019459,0.0019447,0.0019434,0.0019421,0.0019408,0.0019395,0.0019381,0.0019367,0.0019353,0.0019339,0.0019324,0.0019309,0.0019294,0.0019278,0.0019263,0.0019247,0.0019231,0.0019214,0.0019197,0.001918,0.0019163,0.0019146,0.0019128,0.001911,0.0019092,0.0019074,0.0019055,0.0019036,0.0019017,0.0018998,0.0018978,0.0018958,0.0018938,0.0018918,0.0018897,0.0018876,0.0018855,0.0018834,0.0018812,0.0018791,0.0018769,0.0018746,0.0018724,0.0018701,0.0018678,0.0018655,0.0018631,0.0018608,0.0018584,0.001856,0.0018535,0.0018511,0.0018486,0.0018461,0.0018436,0.001841,0.0018384,0.0018358,0.0018332,0.0018306,0.0018279,0.0018252,0.0018225,0.0018198,0.001817,0.0018142,0.0018114,0.0018086,0.0018058,0.0018029,0.0018,0.0017971,0.0017942,0.0017912,0.0017883,0.0017853,0.0017823,0.0017792,0.0017762,0.0017731,0.00177};
+
+
     private class GammatoneFilter implements Runnable
     { 
-        private final int index;
+        private final int filterIndex;
         GammatoneFilter( int index) {
-            this.index = index; 
+            this.filterIndex = index; 
         } 
         @Override
         public void run()
         { 
-            double [] h = _impulseResponses[index];
-            double [] convResult = SignalProcessing.convolve(_inArray,h);  
-            int N = _inArray.length;
-            synchronized (_filterResult) {
-                _filterResult[index] =  Arrays.copyOfRange(convResult, 0, N);
+            overlapAndAdd(filterIndex);
+            shiftChunks(filterIndex);
+            synchronized (_envelopes[filterIndex]) {
+                _envelopes[filterIndex] = _decimateSignal(_firEnvelope(
+                        _filterResult[filterIndex]), (int)Math.floor(_fs/_fmod)); 
             }
-            synchronized (_envelopes) {
-                _envelopes[index] = _decimateSignal(_hilbertEnvelope(
-                        Arrays.copyOfRange(convResult, 0, N)), 
-                        (int)Math.floor(_fs/_fmod)); 
+            synchronized (_envelopeFFT[filterIndex]) {
+                _envelopeFFT[filterIndex] = ComplexArrayMath.magnitude(
+                        SignalProcessing.FFTComplexOut(_envelopes[filterIndex], 
+                                SignalProcessing.order(_fftLength)));
+
+            }
+        }
+    }
+
+    private class FFTWorker implements Runnable
+    { 
+        private final int filterIndex;
+        private final int blockIndex;
+        FFTWorker( int filterIndex, int blockIndex) {
+            this.filterIndex = filterIndex; 
+            this.blockIndex = blockIndex;
+        } 
+        @Override
+        public void run()
+        { 
+            synchronized ( _convolutionChunks[filterIndex][blockIndex]) {
+                _convolutionChunks[filterIndex][blockIndex] = 
+                        blockFFT(_inArray, filterIndex);
             }
         }
     }
