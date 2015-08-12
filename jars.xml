@@ -4250,12 +4250,17 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/run/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/run/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/run/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/gui/syntax/syntax.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/syntax/syntax.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/syntax/*.class"/>
       </fileset>
     </jar>
 
