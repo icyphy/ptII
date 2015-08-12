@@ -117,6 +117,7 @@ PTII_TOPDIR=	.cshrc \
 		bin \
 		build.default.xml \
 		build.xml.in \
+		cluster.xml \
 		com/cureos \
 		com/jgoodies \
 		com/jhlabs \
