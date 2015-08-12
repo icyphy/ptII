@@ -5,7 +5,10 @@ Bundle-SymbolicName: ptolemy.domains.process
 Bundle-Version: 10.1.0.qualifier
 Bundle-Vendor: CHESS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: ptolemy.actor;version="10.1.0",
+Import-Package: org.osgi.framework;version="1.7.0",
+ org.ptolemy.commons;version="10.1.0",
+ org.ptolemy.osgi;version="10.1.0",
+ ptolemy.actor;version="10.1.0",
  ptolemy.actor.util;version="10.1.0",
  ptolemy.data;version="10.1.0",
  ptolemy.data.expr;version="10.1.0",

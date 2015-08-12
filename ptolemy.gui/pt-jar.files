@@ -4,6 +4,7 @@
 /ptolemy/actor/gui/Configurer.java
 /ptolemy/actor/gui/CustomQueryBoxParameter.java
 /ptolemy/actor/gui/DialogTableau.java
+/ptolemy/actor/gui/Editable.java
 /ptolemy/actor/gui/EditorPaneFactory.java
 /ptolemy/actor/gui/EditParametersDialog.java
 /ptolemy/actor/gui/Effigy.java
@@ -14,6 +15,7 @@
 /ptolemy/actor/gui/HTMLEffigyFactory.java
 /ptolemy/actor/gui/HTMLViewer.java
 /ptolemy/actor/gui/JNLPUtilities.java
+/ptolemy/actor/gui/LiveLink.java
 /ptolemy/actor/gui/ModelDirectory.java
 /ptolemy/actor/gui/PasswordAttribute.java
 /ptolemy/actor/gui/Placeable.java

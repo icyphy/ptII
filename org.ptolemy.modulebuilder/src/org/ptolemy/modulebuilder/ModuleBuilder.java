@@ -76,7 +76,7 @@ public class ModuleBuilder {
       File projectFolder = new File(rootPath, project);
       File ptJarFile = new File(projectFolder, "pt-jar.files");
       if (ptJarFile.exists()) {
-        STGroupFile stgf = new STGroupFile("part1.stg", '$', '$');
+        STGroupFile stgf = new STGroupFile("projectWithLinkedResources.stg", '$', '$');
         ST template = stgf.getInstanceOf("projectFileTemplate");
         template.add("project", project);
         template.add("linkedFiles", readFilePaths(ptJarFile));

@@ -11,6 +11,7 @@
 /ptolemy/util/DoubleUtilities.java
 /ptolemy/util/FileUtilities.java
 /ptolemy/util/StringUtilities.java
+/ptolemy/kernel/attributes/Actionable.java
 /ptolemy/kernel/attributes/FileAttribute.java
 /ptolemy/kernel/attributes/FileOrURLAccessor.java
 /ptolemy/kernel/attributes/RequireVersion.java
