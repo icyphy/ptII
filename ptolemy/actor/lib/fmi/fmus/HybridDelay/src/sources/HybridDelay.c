@@ -79,6 +79,7 @@ void deleteQueue() {
         current = current->next;
         free(tmp);
     }
+    free(current);
 }
 
 // Ccalled by fmi2Instantiate.
@@ -93,7 +94,6 @@ void setStartValues(ModelInstance *comp) {
     hr(delay_) = present_;
     hr(status_) = absent_;
     pos(0) = fmi2False;
-    pos(1) = fmi2False;
     eventQueue = malloc(sizeof(node_t));
     eventQueue->next = NULL;
 }

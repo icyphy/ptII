@@ -52,6 +52,9 @@ parseArguments(argc, argv, &tEnd, &requiredResolution, &loggingOn, &csv_separato
     if (categories) {
         free(categories);
     }
-    free( fmus);
+    for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+        free(fmuFileNames[i]);
+    }
+    free(fmus);
     return EXIT_SUCCESS;
 /**/
