@@ -55,6 +55,8 @@ void addEvent(fmi2Real event, fmi2Integer t) {
     current->val = event;
     current->t = t;
     current->next->next = NULL;
+    current->next->val = 0;
+    current->next->t = 0;
 }
 
 fmi2Real getEvent() {
@@ -97,6 +99,7 @@ void deleteQueue() {
         current = current->next;
         free(tmp);
     }
+    free(current);
 }
 
 void parseSequence(ModelInstance *comp) {
@@ -107,36 +110,15 @@ void parseSequence(ModelInstance *comp) {
         fprintf(stderr, "HybridSequenceCheck parseSequence(): sequence was null?\n");
         return;
     }
-    for (i = 0; i < strlen(s(sequence_)); i++) {
-        int idx_t_s = i;
-        int idx_t_e = i;
-        int idx_v_s = i;
-        int idx_v_e = i;
-
-        // Parse the time instant
-        while (sequence[i] != ':') {
-            i++;
-        }
-        idx_t_e = i;
-        idx_v_s = i + 1;
-        // Parse the value
-        while (sequence[i] != ';') {
-            i++;
-        }
-        idx_v_e = i;
-
-        // extracting time (string)
-        char *st = (char*) malloc( (idx_t_e - idx_t_s) * sizeof(char) );
-        strncpy(st, sequence + idx_t_s, idx_t_e - idx_t_s);
-
-        // extracting value (string)
-        char *sv = (char*) malloc( (idx_v_e - idx_v_s) * sizeof(char));
-        strncpy(sv, sequence + idx_v_s, idx_v_e - idx_v_s);
-
-        long t = atol(st);
-        double v = atof(sv);
-        free(st);
-        free(sv);
+    char * pEnd;
+    if (sequence != "") { 
+        long t = strtol(sequence, &pEnd, 10);
+        double v = strtod(pEnd, &pEnd);
+        addEvent(v, t);
+    }
+    for (i = 1; i < strlen(s(sequence_)); i++) {
+        long t = strtol(pEnd, &pEnd, 10);
+        double v = strtod(pEnd, &pEnd);
         addEvent(v, t);
     }
 }
