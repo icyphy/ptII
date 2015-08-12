@@ -58,6 +58,9 @@ if [ file isdirectory auto/knownFailedTests ] {
     }
 }
 
+# Just in case the test fails before returning and setting the application.
+set application [java::null]
+
 if [ file isdirectory auto/nonTerminatingTests ] {
     foreach file [glob -nocomplain auto/nonTerminatingTests/*.xml] {
 	# Get the name of the current directory relative to $PTII
