@@ -167,6 +167,7 @@ public class SyntaxTextEditor extends TextEditor {
         _initialSaveAsFileName = "data.txt";
 
         // Set the undo listener, with default key mappings.
-        text.getDocument().addUndoableEditListener(new UndoListener(text));
+        _undo = new UndoListener(text);
+        text.getDocument().addUndoableEditListener(_undo);
     }
 }
