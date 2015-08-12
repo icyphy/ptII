@@ -1,0 +1,39 @@
+#!/bin/sh
+# $Id$
+# Script that gets the contents of
+# https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O OptionalJavaScriptModules.md
+# using cookies and wget and concatenates it with $PTII/doc/jsdoc/topREADMEEnd.md to create $PTII/doc/jsdoc/topREADME.md
+
+cd $PTII/doc/jsdoc
+
+cookies="$HOME/.terracookies"
+#cookies="$HOME/Downloads/cookies.txtxx"
+if [ ! -f $cookies ]; then
+    echo "$0: $cookies does not exist.  To create it download the Cookies Export plugin into Firefox, log on to the https://www.terraswarm.org and then export your cookies to that file.  Note that the account will need to remain logged in.  You could use the jenkins account."
+    echo "$0: Using the default `pwd`/OptionalJavaScriptModules.md"
+else
+
+    tmpfile=/tmp/makeptjsdocREADME.tmp
+
+    echo "$0: Attempting to get OptionalJavaScriptModules.md from the TerraSwarm wiki."
+    echo "This will fail unless you have $cookies set up."
+    echo "If it fails, then `pwd`/OptionalJavaScriptModules.md will be used."
+
+    wget --load-cookies $cookies https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O $tmpfile  2>&1 >/dev/null | grep https://www.terraswarm.org/login/?denied >& /dev/null
+    status=$?
+
+    # If access was not denied, then move what was downloaded to OptionalJavaScriptModules.md
+    if [ $status -eq 1 ]; then
+        echo "$0: Successfully downloaded OptionalJavaScriptModules.md"
+        echo "$0: Updating `pwd`/OptionalJavaScriptModules.md"
+        mv $tmpfile OptionalJavaScriptModules.md
+    else
+        echo "$0: Could not get OptionalJavaScriptModules.md.  Using the default version."
+    fi
+fi
+
+echo "$0: Creating `pwd`/topREADME.md"
+cat OptionalJavaScriptModules.md topREADMEEnd.md > topREADME.md
+
+
+    
