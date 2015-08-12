@@ -827,7 +827,14 @@ public class JavaScript extends TypedAtomicActor {
                     if (input == script.getPort()) {
                         continue;
                     }
-                    _proxies.get(input).invokeHandlers();
+                    try {
+                        _proxies.get(input).invokeHandlers();
+                    } catch (Throwable throwable) {
+                        // localFunctions.js has an undefined reference, then catch it here.
+                        throw new IllegalActionException(this, throwable,
+                                "Failed to invoke a handler on the input \""
+                                + input.getName() + "\".");
+                    }
                 }
 
                 // Invoke generic input handlers.
