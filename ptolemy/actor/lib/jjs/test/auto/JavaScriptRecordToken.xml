@@ -1,0 +1,144 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JavaScriptRecordToken" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={373, 208, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that the section of ptolemy/actor/lib/jjs/localFunctions.js&#10;that handles RecordTokens uses the Nashorn extensions uses&#10;&quot;for each&quot; instead of &quot;for&quot;. &#10;&#10;Note that JSLint may complain about &quot;for each&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 20.0]">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={590, 421, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;exports.setup = function () {&#10;	input('test');&#10;	output('output');&#10;}&#10;&#10;exports.initialize = function () {&#10;	addInputHandler('test', t);&#10;}&#10;&#10;var t = function  () {&#10;	var i= get('test');&#10;	send('output', i, 0);&#10;}&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 265.0]">
+        </property>
+        <port name="test" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={592, 193, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 245.0]">
+        </property>
+        <port name="X" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="Y" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="10">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="3">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 275.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{X = 0, Y = 10}, {X = 1, Y = 13}, {X = 2, Y = 16}, {X = 3, Y = 19}, {X = 4, Y = 22}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 200.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{X = 0, Y = 10}, {X = 1, Y = 13}, {X = 2, Y = 16}, {X = 3, Y = 19}, {X = 4, Y = 22}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 265.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[265.0, 265.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=305.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=265.0,y=265.0}, points={265.0,140.0} },{ head={id=&quot;JavaScript.test&quot;,x=320.0,y=265.0}, tail={id=&quot;relation2.vertex1&quot;,x=265.0,y=265.0}, points={} },{ head={id=&quot;Test.input&quot;,x=315.0,y=200.0}, tail={id=&quot;relation2.vertex1&quot;,x=265.0,y=265.0}, points={265.0,200.0} },{ head={id=&quot;RecordAssembler.output&quot;,x=145.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=265.0,y=265.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.X&quot;,x=145.0,y=245.0}, tail={id=&quot;Ramp.output&quot;,x=75.0,y=200.0}, points={125.0,255.0,125.0,200.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordAssembler.Y&quot;,x=145.0,y=245.0}, tail={id=&quot;Ramp2.output&quot;,x=75.0,y=275.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[395.0, 265.0]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JavaScript.output&quot;,x=320.0,y=265.0}, tail={id=&quot;relation6.vertex1&quot;,x=395.0,y=265.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=445.0,y=265.0}, tail={id=&quot;relation6.vertex1&quot;,x=395.0,y=265.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=435.0,y=205.0}, tail={id=&quot;relation6.vertex1&quot;,x=395.0,y=265.0}, points={395.0,205.0} } }">
+        </property>
+    </relation>
+    <link port="Display.input" relation="relation2"/>
+    <link port="JavaScript.test" relation="relation2"/>
+    <link port="JavaScript.output" relation="relation6"/>
+    <link port="Display2.input" relation="relation6"/>
+    <link port="RecordAssembler.output" relation="relation2"/>
+    <link port="RecordAssembler.X" relation="relation4"/>
+    <link port="RecordAssembler.Y" relation="relation5"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation5"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test2.input" relation="relation6"/>
+</entity>
