@@ -202,7 +202,7 @@ public class JSAccessor extends JavaScript {
         return "<group name=\"auto\">\n"
             + "<entity name=\""  + instanceNameRoot
             + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
-            + _accessorToMoML(urlSpec)
+            + _accessorToMoML(urlSpec, true)
             + "<property name=\"_tableauFactory\" class=\"ptolemy.vergil.toolbox.TextEditorTableauFactory\">"
             + "  <property name=\"attributeName\" value=\"script\"/>"
             + "  <property name=\"syntaxStyle\" value=\"text/javascript\"/>"
@@ -405,7 +405,9 @@ public class JSAccessor extends JavaScript {
         context.requestChange(request);
     }
 
-    /** Reload an accessor.
+    /** Reload an accessor.  The svn repository containing the
+     *  accessors is checked out or updated and JSDoc is run on the
+     *  documentation.
      *  @exception IllegalActionException If no source file is specified.
      *  @exception IOException If the urlSpec cannot be converted, opened
      *  read, parsed or closed.
@@ -413,6 +415,24 @@ public class JSAccessor extends JavaScript {
      *  be created from the xslt file.
      */
     public void reload() throws IllegalActionException, IOException, TransformerConfigurationException {
+        reload(true);
+    }
+
+    /** Reload an accessor.
+     *  @param obeyCheckoutOrUpdateRepositoryParameter If true, then use the value
+     *  of the <i>checkoutOrUpdateRepository</i> parameter.  If false,
+     *  then override the value of the
+     *  <i>checkoutOrUpdateRepository</i> parameter and do not
+     *  checkout or update the repository or invoke JSDoc.  During
+     *  testing, this parameter is set to false after the first reload
+     *  of an accessor so as to improve the performance of the tests.
+     *  @exception IllegalActionException If no source file is specified.
+     *  @exception IOException If the urlSpec cannot be converted, opened
+     *  read, parsed or closed.
+     *  @exception TransformerConfigurationException If a factory cannot
+     *  be created from the xslt file.
+     */
+    public void reload(boolean obeyCheckoutOrUpdateRepositoryParameter) throws IllegalActionException, IOException, TransformerConfigurationException {
         // This method is a separate method so that we can test it.
 
         /* No longer need the following, since we don't overwrite overrides.
@@ -423,7 +443,7 @@ public class JSAccessor extends JavaScript {
            }
         */
         String moml = "<group name=\"doNotOverwriteOverrides\">"
-            + JSAccessor._accessorToMoML(accessorSource.getExpression())
+            + JSAccessor._accessorToMoML(accessorSource.getExpression(), obeyCheckoutOrUpdateRepositoryParameter)
             + "</group>";
         final NamedObj context = this;
         MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
@@ -444,6 +464,12 @@ public class JSAccessor extends JavaScript {
     }
 
     /** Reload all the JSAccessors in a CompositeEntity.
+     *  The first time this method is invoked, the accessors
+     *  repository will be checked out or updated and JSDoc
+     *  invoked.  The second and subsequent times the method is
+     *  invoked, the checkout or update and JSDoc invocation will
+     *  not occur.  This is done so as to make testing faster.
+     *
      *  @param composite The composite that contains the JSAccessors
      *  @return true if the model contained any JSAccessors.
      *  @exception IllegalActionException If no source file is specified.
@@ -461,7 +487,19 @@ public class JSAccessor extends JavaScript {
         for (Object entity : entities) {
             if (entity instanceof JSAccessor) {
                 containsJSAccessors = true;
-                ((JSAccessor)entity).reload();
+                if (!_invokedReloadAllAccessorsOnce) {
+                    System.out.println("This is the first time that the reloadAllAccessors "
+                            + "method has been invoked in this JVM, so the the accessors "
+                            + "repo will be checked out or updated and JSDoc invoked. "
+                            + "Note that running the tests may end up invoking a new "
+                            + "JVM for each directory, so the repo may be checked out "
+                            + "or updated and JSDoc invoked more than once when the tests are run.");
+                }
+                // The first time, we checkout or update the accessors
+                // repo and invoke JSDoc.  The second and subsequent
+                // times, we do not.  This is useful for testing.
+                ((JSAccessor)entity).reload(!_invokedReloadAllAccessorsOnce);
+                _invokedReloadAllAccessorsOnce = true;
             }
         }
         return containsJSAccessors;
@@ -534,6 +572,12 @@ public class JSAccessor extends JavaScript {
      *  from the website.</p>
      *
      *  @param urlSpec The URL of the accessor.
+     *  @param updateRepository If true, then checkout or update the
+     *  accessor repository and invoke JSDoc.  During testing, this
+     *  parameter is set to false after the first reload of an
+     *  accessor so as to improve the performance of the tests.  The
+     *  <i>checkoutOrUpdateRepositoryParameter</i> is not used here
+     *  because this method is static.
      *  @return MoML of the accessor, which is typically passed to
      *  handleAccessorMoMLChangeRequest().
      *  @exception IOException If the urlSpec cannot be converted, opened
@@ -542,7 +586,8 @@ public class JSAccessor extends JavaScript {
      *  be created from the xslt file.
      *  @exception IllegalActionException If no source file is specified.
      */
-    private static String _accessorToMoML(final String urlSpec)
+    private static String _accessorToMoML(final String urlSpec,
+            final boolean updateRepository)
             throws IOException, TransformerConfigurationException, IllegalActionException {
 
         // This method is a separate method so that we can use it for
@@ -555,16 +600,26 @@ public class JSAccessor extends JavaScript {
 
         URL accessorURL = null;
         try {
-            try {
-                JSAccessor.getAccessorsRepository();
-            } catch (Throwable throwable) {
-                System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
-                        + "  This could happen if you don't have read access to the repo."
-                        + "The message was:\n"
-                        + throwable);
+            if (updateRepository) {
+                try {
+                    JSAccessor.getAccessorsRepository();
+                } catch (Throwable throwable) {
+                    System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
+                            + "  This could happen if you don't have read access to the repo."
+                            + "The message was:\n"
+                            + throwable);
+                }
             }
             accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
         } catch (IOException ex) {
+            if (!updateRepository) {
+                System.err.println("The updateRepository flag was false but "
+                        + urlSpec + " was not found, so we are trying to update "
+                        + "the repository anyway.");
+            }
+            // Note that if we get an exception, we try to do get the repository
+            // no matter what the value of updateRepository is.
+            
             // If the urlSpec could be in the accessors repo, then try
             // to either check out or update the repo.
             if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
@@ -757,6 +812,16 @@ public class JSAccessor extends JavaScript {
     /** Commands that were run to check out or update the repo. */
     private static String _commands = "";
 
+    /** If true, then checkout or update the accessors repository and
+     *  invoke JSDoc to generate the JavaScript documentation.
+     *  The value of the field is initially false, but it is set
+     *  to true after reloadAllAccessors is invoked once.
+     *  This parameter exists so that when the tests are run,
+     *  we checkout or update the repository and invoke JSDoc
+     *  only once per directory.
+     */
+    private static boolean _invokedReloadAllAccessorsOnce = false;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
