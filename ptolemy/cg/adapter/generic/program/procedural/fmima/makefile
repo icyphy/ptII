@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/fmima
 
-DIRS =		adapters demo test
+DIRS =		adapters test
 
 # Root of the Java directory
 ROOT =		../../../../../../..
@@ -53,8 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	demo/demo.jar
+	adapters/adapters.jar
 
 # Keep this list alphabetized.
 JSRCS = 
