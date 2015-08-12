@@ -806,7 +806,10 @@ public class JavaScript extends TypedAtomicActor {
                                 if (function != null) {
                                     // Remove the id before firing the function because it may
                                     // reschedule itself using the same id.
-                                    _pendingTimeoutFunctions.remove(id);
+                                    // FIXME: No, that's not right. Function may or may not
+                                    // cancel a setInterval, and if we remove the id here, we
+                                    // have no way to tell whether it cancelled it.
+                                    // _pendingTimeoutFunctions.remove(id);
                                     function.run();
                                     if (_debugging) {
                                         _debug("Invoked timeout function.");
@@ -1828,6 +1831,10 @@ public class JavaScript extends TypedAtomicActor {
     private void _runThenReschedule(final Runnable function,
             final int milliseconds, final Integer id) {
         function.run();
+        if (_pendingTimeoutFunctions.get(id) == null) {
+            // The callback function itself may cancel the interval.
+            return;
+        }
         final Runnable reschedulingFunction = new Runnable() {
             @Override
             public void run() {
