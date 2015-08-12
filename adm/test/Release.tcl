@@ -187,6 +187,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       ptolemy/domains/space/test/auto/DOP.csv} {
 ?       ptolemy/domains/space/test/auto/Placard.tex} {
 ?       ptolemy/vergil/basic/export/html/test/Butterfly.gif} {
+?       ptolemy/vergil/basic/export/test/outfile.wav} {
 ?       ptserver/test/PtolemyServer.log} {
 ?       reports} {
 ?       vendors/jogl} {
