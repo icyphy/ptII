@@ -59,6 +59,8 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     set e1 [sdfModel 5]
     set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml} [java::null]]
     set urlSpec [$accessorFile getCanonicalPath]
+
+    # This call to accessorToMoML will checkout or update the accessor repo and run JSDoc
     set changeRequestText [java::call org.terraswarm.accessor.JSAccessor accessorToMoML $urlSpec]
 
     java::call org.terraswarm.accessor.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
@@ -71,6 +73,10 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     list $moml3
 } {{<entity name="Accessor" class="org.terraswarm.accessor.JSAccessor">
     <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stringValue = get('stringInput');&#10;	  send('stringOutput', stringValue);&#10;	  var numericValue = get('numericInput');&#10;	  send('numericOutput', numericValue);&#10;	  stringValue = get('stringInputWithoutValue');&#10;	  send('stringOutputWithoutValue', stringValue);&#10;	  send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
+        <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+            <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+            </property>
+        </property>
     </property>
     <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
     </property>
@@ -101,6 +107,12 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     <property name="stringInput" class="ptolemy.actor.parameters.PortParameter" value="&quot;Foo&quot;">
     </property>
     <property name="numericInput" class="ptolemy.actor.parameters.PortParameter" value="0">
+    </property>
+    <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+        </property>
+        <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+        </property>
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 100.0}">
     </property>
@@ -147,12 +159,21 @@ test JSAccessor-1.1 {Test out importing of accessors} {
 }}
 
 # This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
-proc importAccessor {accessorFileName} {
+# @param obeyCheckoutOrUpdateRepositoryParameter If true, then use the value
+# of the <i>checkoutOrUpdateRepository</i> parameter.  If false,
+# then override the value of the
+# <i>checkoutOrUpdateRepository</i> parameter and do not
+# checkout or update the repository or invoke JSDoc.  During
+#  testing, this parameter is set to false after the first reload
+#  of an accessor so as to improve the performance of the tests.
+proc importAccessor {accessorFileName obeyCheckoutOrUpdateRepositoryParameter} {
     set e1 [sdfModel 5]
     set accessorFile [java::call ptolemy.util.FileUtilities nameToFile $accessorFileName [java::null]]
 
     set urlSpec [$accessorFile getCanonicalPath]
-    set changeRequestText [java::call org.terraswarm.accessor.JSAccessor accessorToMoML $urlSpec]
+
+    # If the second argument is false, then we don't check out the repo or run JSDoc.
+    set changeRequestText [java::call org.terraswarm.accessor.JSAccessor accessorToMoML $urlSpec $obeyCheckoutOrUpdateRepositoryParameter]
 
     java::call org.terraswarm.accessor.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
@@ -163,7 +184,7 @@ proc importAccessor {accessorFileName} {
     set entityList [$e1 entityList [java::call Class forName org.terraswarm.accessor.JSAccessor]]
     for {set i 0} {$i < [$entityList size]} {incr i} {
         set accessor [java::cast org.terraswarm.accessor.JSAccessor [$entityList get $i]]
-        $accessor reload
+        $accessor reload $obeyCheckoutOrUpdateRepositoryParameter
     }
     #puts [$accessorActor getFullName]
     #puts [$e1 exportMoML]
@@ -173,14 +194,19 @@ proc importAccessor {accessorFileName} {
 
 set accessorCount 0
 
+# No need to checkout or update the accessors repo again or run JSDoc.
+set obeyCheckoutOrUpdateRepositoryParameter 0
+
 proc importAccessors {accessorDirectory} {
     global accessorCount
+    global obeyCheckoutOrUpdateRepositoryParameter
     set files [glob $accessorDirectory/*.xml]
+    # Download the accessor repo and run JSDoc once.
     foreach file $files {
         incr accessorCount
         test JSAccessor-2.1.$accessorCount "test $file" {
             #puts $file
-            importAccessor $file
+            importAccessor $file $obeyCheckoutOrUpdateRepositoryParameter
             # Success is not throwing an exception
             list {}
         } {{}}
