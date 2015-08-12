@@ -666,11 +666,11 @@ public class JavaScript extends TypedAtomicActor {
             try {
                 _engine.eval(scriptValue);
                 _exports = _engine.eval("exports");
-            } catch (ScriptException ex) {
+            } catch (Throwable throwable) {
                 if (error.getWidth() > 0) {
-                    error.send(0, new StringToken(ex.getMessage()));
+                    error.send(0, new StringToken(throwable.getMessage()));
                 } else {
-                    throw new IllegalActionException(this, ex,
+                    throw new IllegalActionException(this, throwable,
                             "Loading input script triggers an exception.");
                 }
             }
@@ -1706,16 +1706,17 @@ public class JavaScript extends TypedAtomicActor {
             _engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js", null,
                     null));
-        } catch (ScriptException | IOException e) {
-            throw new IllegalActionException(this, e,
+        } catch (Throwable throwable) {
+            // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
+            throw new IllegalActionException(this, throwable,
                     "Failed to load localFunctions.js");
         }
         try {
             _engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
                     null));
-        } catch (ScriptException | IOException e) {
-            throw new IllegalActionException(this, e,
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
                     "Failed to load basicFunctions.js");
         }
         // Define the actor and accessor variables.
@@ -1772,8 +1773,8 @@ public class JavaScript extends TypedAtomicActor {
         try {
             _engine.eval(scriptValue);
             _exports = _engine.eval("exports");
-        } catch (ScriptException ex) {
-            throw new IllegalActionException(this, ex,
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
                     "Failed to evaluate script during initialize.");
         }
 
