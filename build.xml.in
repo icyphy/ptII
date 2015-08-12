@@ -588,7 +588,7 @@ For example:
   </target>
 
   <target name="jsdoc"
-          depends="vendors-jsdoc"
+          depends="vendors-jsdoc, jsdoc-getFromWiki"
           description="Run jsdoc to generate documentation for JavaScript files."
           >
     <echo>Invoke jsdoc to generate documentation for .js files.
@@ -612,6 +612,14 @@ For example:
       <arg value="ptolemy/actor/lib/jjs"/>
       <arg value="ptolemy/actor/lib/vertx/demo"/>
       <arg value="org/terraswarm/accessor"/>
+    </exec>
+  </target>
+
+  <target name="jsdoc-getFromWiki"
+          description="Attempt to get an Accessors-specific page from the TerraSwarm wiki."
+          >
+    <exec executable="doc/jsdoc/makeptjsdocREADME"
+      timeout="2000">
     </exec>
   </target>
 
