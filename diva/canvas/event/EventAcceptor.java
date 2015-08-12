@@ -59,7 +59,7 @@ public interface EventAcceptor extends CanvasComponent {
      *  object should test if it is enabled first, and return if not.
      *  Otherwise, it should handle the event in whatever way it thinks
      *  appropriate.
-     *  @param the event.
+     *  @param event the event.
      */
     public void dispatchEvent(AWTEvent event);
 }

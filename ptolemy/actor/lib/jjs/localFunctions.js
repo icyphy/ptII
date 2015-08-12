@@ -433,7 +433,7 @@ function convertFromToken(value, isJSON) {
         var result = {};
         var labelSet = value.labelSet();
         // "for each" is a Nashorn extension for iterating over Java collections.
-        for each (label in value.labelSet()) {
+        for (label in value.labelSet()) {
             result[label] = convertFromToken(value.get(label), false);
         }
         return result;
