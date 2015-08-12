@@ -535,9 +535,15 @@ public class TextEditor extends TableauFrame
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);
 
-        GUIUtilities.addMenuItem(_editMenu, _undoAction);
-        GUIUtilities.addMenuItem(_editMenu, _redoAction);
+        GUIUtilities.addMenuItem(_editMenu, new UndoAction());
+        GUIUtilities.addMenuItem(_editMenu, new RedoAction());
         
+        _editMenu.addSeparator();
+
+        GUIUtilities.addMenuItem(_editMenu, new CutAction());
+        GUIUtilities.addMenuItem(_editMenu, new CopyAction());
+        GUIUtilities.addMenuItem(_editMenu, new PasteAction());
+
         _editMenu.addSeparator();
         
         GUIUtilities.addMenuItem(_editMenu, _findAction);
@@ -807,14 +813,48 @@ public class TextEditor extends TableauFrame
     /** Previous search string, if any. */
     private String _previousSearch;
 
-    /** Action to redo the last undo. */
-    private Action _redoAction = new RedoAction();
-
-    /** Action to undo the last text change. */
-    private Action _undoAction = new UndoAction();
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// CopyAction
+
+    /** Copy the contents of the selection and put on clipboard. */
+    private class CopyAction extends AbstractAction {
+        public CopyAction() {
+            super("Copy");
+            putValue("tooltip", "Copy to clipboard.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_O));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            text.copy();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// CutAction
+
+    /** Cut the contents of the selection and put on clipboard. */
+    private class CutAction extends AbstractAction {
+        public CutAction() {
+            super("Cut");
+            putValue("tooltip", "Cut to clipboard.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_C));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            text.cut();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// ExportImageAction
@@ -940,6 +980,26 @@ public class TextEditor extends TableauFrame
             } catch (CannotRedoException ex) {
                 // Ignore.
             }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// PasteAction
+
+    /** Copy the contents of the selection and put on clipboard. */
+    private class PasteAction extends AbstractAction {
+        public PasteAction() {
+            super("Paste");
+            putValue("tooltip", "Paste from clipboard.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_P));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            text.paste();
         }
     }
 
