@@ -738,6 +738,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII11.0.devel/bin" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/build.default.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/build.xml.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.devel/cluster.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/com" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/config" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/configure" targetdir="$INSTALL_PATH"/>
