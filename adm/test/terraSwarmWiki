@@ -1,0 +1,29 @@
+#!/bin/sh
+# Script to check if we are set up to download from the wiki
+
+if [ $USER != terra -a $USER != cxh ]; then
+   echo "$0: User is not terra, so we are not running this test."
+   exit 0
+fi
+
+cookies="$HOME/.terracookies"
+tmpfile=/tmp/$0.$$
+
+wget --load-cookies $cookies https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O $tmpfile  2>&1 >/dev/null | grep https://www.terraswarm.org/login/?denied >& /dev/null
+status=$?
+
+if [ $status -eq 0 ]; then
+   echo "$0: Could not download from TerraSwarm:"
+   wget --load-cookies $cookies https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O $tmpfile
+   exit 2
+fi
+
+echo "# ls -l $tmpfile: "
+ls -l $tmpfile
+
+echo "# First five lines of $tmpfile:" 
+head -5 $tmpfile
+
+rm $tmpfile
+
+exit 0
