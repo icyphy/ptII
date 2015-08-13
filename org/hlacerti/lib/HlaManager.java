@@ -277,7 +277,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         attributeChanged(timeManagementService);
 
         hlaTimeStep = new Parameter(this, "hlaTimeStep");
-        hlaTimeStep.setDisplayName("If TAR is used, time step (in ms)");
+        hlaTimeStep.setDisplayName("*** If TAR is used, time step (s)");
         hlaTimeStep.setExpression("0.0");
         hlaTimeStep.setTypeEquals(BaseType.DOUBLE);
         //hlaTimeStep.setVisibility(Settable.NOT_EDITABLE);
@@ -298,13 +298,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
         attributeChanged(isTimeRegulator);
 
         hlaStartTime = new Parameter(this, "hlaStartTime");
-        hlaStartTime.setDisplayName("logical start time (in ms)");
+        hlaStartTime.setDisplayName("logical start time (s)");
         hlaStartTime.setExpression("0.0");
         hlaStartTime.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaStartTime);
 
         hlaLookAHead = new Parameter(this, "hlaLookAHead");
-        hlaLookAHead.setDisplayName("lookahead (in ms)");
+        hlaLookAHead.setDisplayName("lookahead (s)");
         hlaLookAHead.setExpression("0.1");
         hlaLookAHead.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaLookAHead);
@@ -1205,7 +1205,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // All events with timestamp tau, tau belonging to interval (currentTime, nextTimeStep],
         // that must be published have their timestamp set to nextTimeStep (they are delayed).
         if (_timeStepped) {
-            currentTime = _getNextTimeStep(_director.getModelTime());
+            Time nextTimeStep = _getNextTimeStep(_director.getModelTime());
+            if (currentTime.compareTo(nextTimeStep.subtract(_hlaTimeStep))>0)
+                currentTime = nextTimeStep; 
         }
 
         // The following operations build the different arguments required
