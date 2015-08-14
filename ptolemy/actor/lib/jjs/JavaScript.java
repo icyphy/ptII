@@ -1836,7 +1836,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param milliseconds The number of milliseconds in a period.
      *  @param id The id to use for the timeout function.
      */
-    private void _runThenReschedule(final Runnable function,
+    private synchronized void _runThenReschedule(final Runnable function,
             final int milliseconds, final Integer id) {
         function.run();
         if (_pendingTimeoutFunctions.get(id) == null) {
@@ -2157,14 +2157,16 @@ public class JavaScript extends TypedAtomicActor {
          *  @see #addInputHandler(Runnable)
          */
         public void invokeHandlers() {
-            if (_inputHandlers != null && _hasNewInput) {
-                for (Runnable function : _inputHandlers) {
-                    if (function != null) {
-                        // FIXME: Need to invoke the function so that 'this' is the exports object!
-                        function.run();
-                        if (_debugging) {
-                            _debug("Invoked handler function for "
-                                    + _port.getName());
+            synchronized(JavaScript.this) {
+                if (_inputHandlers != null && _hasNewInput) {
+                    for (Runnable function : _inputHandlers) {
+                        if (function != null) {
+                            // FIXME: Need to invoke the function so that 'this' is the exports object!
+                            function.run();
+                            if (_debugging) {
+                                _debug("Invoked handler function for "
+                                        + _port.getName());
+                            }
                         }
                     }
                 }
