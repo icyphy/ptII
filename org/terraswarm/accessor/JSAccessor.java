@@ -56,7 +56,6 @@ import ptolemy.kernel.attributes.Actionable;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -241,6 +240,7 @@ public class JSAccessor extends JavaScript {
         return "<group name=\"auto\">\n"
             + "<entity name=\""  + instanceNameRoot
             + "\" class=\"org.terraswarm.accessor.jjs.JSAccessor\">"
+            + "<property name=\"accessorSource\" value=\"" + urlSpec + "\"/>"
             + _accessorToMoML(urlSpec, obeyCheckoutOrUpdateRepositoryParameter)
             + "<property name=\"_tableauFactory\" class=\"ptolemy.vergil.toolbox.TextEditorTableauFactory\">"
             + "  <property name=\"attributeName\" value=\"script\"/>"
@@ -426,21 +426,14 @@ public class JSAccessor extends JavaScript {
                             }
                         }
                         // Set the source.
-                        Attribute source = object
-                                .getAttribute("accessorSource");
+                        Attribute source = object.getAttribute("accessorSource");
                         if (source instanceof StringAttribute) {
-                            try {
-                                ((StringAttribute) source).setExpression(urlSpec);
-                                // Have to mark persistent or the urlSpec will be assumed to be part
-                                // of the class definition and hence will not be exported to MoML.
-                                ((StringAttribute) source)
-                                        .setDerivedLevel(Integer.MAX_VALUE);
-                                ((StringAttribute) source).setPersistent(true);
-                            } catch (IllegalActionException e) {
-                                // Should not happen.
-                                throw new InternalErrorException(object, e,
-                                        "Failed to set accessorSource");
-                            }
+                            // This has already been set in the MoML.
+                            // ((StringAttribute) source).setExpression(urlSpec);
+                            // Have to mark persistent or the urlSpec will be assumed to be part
+                            // of the class definition and hence will not be exported to MoML.
+                            ((StringAttribute) source).setDerivedLevel(Integer.MAX_VALUE);
+                            ((StringAttribute) source).setPersistent(true);
                         }
                     }
                     parser.clearTopObjectsList();
