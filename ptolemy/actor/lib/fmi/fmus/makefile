@@ -44,6 +44,15 @@ FMUS_PRE_2_0_CS =	$(FMUSDK2_FMUS_1_0_CS) ballDynamics helloWorld levelStairs onO
 # Co-simulation FMUS from FMUSDK2.0.3.  These fmus should not be modified, instead copy them and change the copy.
 FMUSDK2_FMUS_2_0_CS = bouncingBall20 dq20 inc20 values20 vanDerPol20
 
+# Hybrid Cosimulation fmus
+HYBRID_FMUS_2_0_CS = \
+		HybridPerPiecCosSigGen HybridPerDiscSigGen \
+		HybridAdder HybridIntegratorReset HybridIntegrator \
+		HybridDelay HybridGain HybridConstantSignalGenerator \
+		HybridCheckEquality HybridZeroCrossingDetector \
+		HybridTriggeredConst HybridSampler HybridZeroOrderHold \
+		HybridModalModelDiscContr HybridSequenceCheck
+
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
 FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
@@ -54,12 +63,7 @@ FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
 		values20RC1 \
 		vanDerPol20RC1 floor20pt\
 		inc20pt out20pt fmuA20pt scale20pt fmuB20pt fmuC20pt \
-		fmuD20pt HybridPerPiecCosSigGen HybridPerDiscSigGen \
-		HybridAdder HybridIntegratorReset HybridIntegrator \
-		HybridDelay HybridGain HybridConstantSignalGenerator \
-		HybridCheckEquality HybridZeroCrossingDetector \
-		HybridTriggeredConst HybridSampler HybridZeroOrderHold \
-		HybridModalModelDiscContr HybridSequenceCheck
+		fmuD20pt $(HYBRID_FMUS_2_0_CS)
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
@@ -219,6 +223,18 @@ update_1_0_ME:
 update_fmusdk2:
 	@if [ "x$(FMUSDK2_FMUS)" != "x" ]; then \
 		set $(FMUSDK2_FMUS); \
+		for x do \
+			( cd $$x ; \
+			echo making update in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) clean update ;\
+			) \
+		done ; \
+	fi
+
+# Update just the Hybrid Cosimulation FMUs
+update_hybrid:
+	@if [ "x$(HYBRID_FMUS_2_0_CS)" != "x" ]; then \
+		set $(HYBRID_FMUS_2_0_CS); \
 		for x do \
 			( cd $$x ; \
 			echo making update in $(ME)/$$x ; \
