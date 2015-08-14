@@ -345,6 +345,7 @@ public class ExportModelJUnitTest {
                 "RosPublisher.xml", // RosSubscriber needs to run.
                 "RosSubscriber.xml", // RosPublisher needs to run.
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
+                "cg/lib/demo/Scale/Scale.xml", // Contains links to other demos.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SequencedActors.xml", // Has links to other models
                 "SerialPort.xml", // Requires serial port.
