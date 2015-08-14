@@ -531,6 +531,8 @@ public class TextEditor extends TableauFrame
     /** Create an edit menu.
      */
     protected void _addMenus() {
+        super._addMenus();
+        
         _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);

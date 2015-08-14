@@ -338,9 +338,6 @@ public class Query extends JPanel {
         if (background == null) {
             background = _background;
         }
-        if (foreground == null) {
-            foreground = Color.BLACK;
-        }
         displayField.setBackground(background);
         _addPair(name, lbl, displayField, displayField);
         return displayField;
