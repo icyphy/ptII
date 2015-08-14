@@ -53,6 +53,7 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -146,6 +147,11 @@ public class JSAccessor extends JavaScript {
         checkoutOrUpdateAccessorsRepository = new SharedParameter(this, "checkoutOrUpdateAccessorsRepository", getClass(),
                 "true");
         checkoutOrUpdateAccessorsRepository.setTypeEquals(BaseType.BOOLEAN);
+    }
+    
+    // Upon loading this class, change the icon loader to look for accessor icons.
+    static {
+        MoMLParser.setIconLoader(new AccessorIconLoader());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -266,6 +272,18 @@ public class JSAccessor extends JavaScript {
             // The above will have the side effect that a script will not be saved
             // when you save the model. Force it to be saved.
             attribute.setPersistent(true);
+        } else if (attribute == accessorSource) {
+            try {
+                // Create a URIAttribute so that if the icon makes external
+                // references, it can use relative file names, relative to the
+                // location of the accessor.
+                URL sourceURL = _sourceToURL(accessorSource.getExpression(), false);
+                URIAttribute uriAttribute = new URIAttribute(this, "_uri");
+                uriAttribute.setURL(sourceURL);
+            } catch (Throwable e) {
+                // Ignore. The only effect will be that icons don't load properly
+                // if they make references to external files.
+            }
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
             // Update the static cached version of this variable.
             _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
@@ -554,6 +572,77 @@ public class JSAccessor extends JavaScript {
         showName.setExpression("true");
     }
 
+    /** For the given URL specification, attempt to find a local copy of the resource
+     *  and return that if it exists. Otherwise, return the URL specified.
+     *  If updateRepository is true, or if an exception occurs accessing the URL,
+     *  then attempt to update the accessor repository on the local file system.
+     *  @param urlSpec The URL specification.
+     *  @param updateRepository True to update the repository before attempting to
+     *   find the local file.
+     *  @return The local version of the URL, or the URL given by the specification
+     *   if the local version cannot be found.
+     * @throws IllegalActionException If no urlSpec is given.
+     * @throws IOException If the URL cannot be found.
+     * @throws MalformedURLException If the URL specification is malformed.
+     */
+    protected static URL _sourceToURL(
+            final String urlSpec, final boolean updateRepository)
+            throws IllegalActionException, IOException, MalformedURLException {
+        if (urlSpec == null || urlSpec.trim().equals("")) {
+            throw new IllegalActionException("No source file specified.");
+        }
+    
+        URL accessorURL = null;
+        try {
+            if (updateRepository) {
+                try {
+                    JSAccessor.getAccessorsRepository();
+                } catch (Throwable throwable) {
+                    System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
+                            + "  This could happen if you don't have read access to the repo."
+                            + "The message was:\n"
+                            + throwable);
+                }
+            }
+            accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
+        } catch (IOException ex) {
+            if (!updateRepository) {
+                System.err.println("The updateRepository flag was false but "
+                        + urlSpec + " was not found, so we are trying to update "
+                        + "the repository anyway.");
+            }
+            // Note that if we get an exception, we try to do get the repository
+            // no matter what the value of updateRepository is.
+            
+            // If the urlSpec could be in the accessors repo, then try
+            // to either check out or update the repo.
+            if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
+                try {
+                    if (updateRepository) {
+                        JSAccessor.getAccessorsRepository();
+                    }
+                    accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
+                } catch (IOException ex2) {
+                    IOException ioException = new IOException(ex.getMessage()
+                            + "In addition, tried checking out the accessors repo with \n"
+                            + JSAccessor._commands + "\n"
+                            + "but that failed with: " + ex2.getMessage());
+                    ioException.initCause(ex2);
+                    throw ioException;
+                }
+            }
+        }
+        if (accessorURL == null) {
+            throw new IOException("Failed to find accessor file: " + urlSpec.trim() 
+                    + "\nWhich is converted to: " + accessorURL);
+        }
+    
+        // Use the local file if possible.  See the method comment for
+        // details.
+        accessorURL = _getLocalURL(urlSpec, accessorURL);
+        return accessorURL;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -619,66 +708,15 @@ public class JSAccessor extends JavaScript {
      *  be created from the xslt file.
      *  @exception IllegalActionException If no source file is specified.
      */
-    private static String _accessorToMoML(final String urlSpec,
-            final boolean updateRepository)
+    private static String _accessorToMoML(
+            final String urlSpec, final boolean updateRepository)
             throws IOException, TransformerConfigurationException, IllegalActionException {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
         // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
-        if (urlSpec == null || urlSpec.trim().equals("")) {
-            throw new IllegalActionException("No source file specified.");
-        }
-
-        URL accessorURL = null;
-        try {
-            if (updateRepository) {
-                try {
-                    JSAccessor.getAccessorsRepository();
-                } catch (Throwable throwable) {
-                    System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
-                            + "  This could happen if you don't have read access to the repo."
-                            + "The message was:\n"
-                            + throwable);
-                }
-            }
-            accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
-        } catch (IOException ex) {
-            if (!updateRepository) {
-                System.err.println("The updateRepository flag was false but "
-                        + urlSpec + " was not found, so we are trying to update "
-                        + "the repository anyway.");
-            }
-            // Note that if we get an exception, we try to do get the repository
-            // no matter what the value of updateRepository is.
-            
-            // If the urlSpec could be in the accessors repo, then try
-            // to either check out or update the repo.
-            if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
-                try {
-                    if (updateRepository) {
-                        JSAccessor.getAccessorsRepository();
-                    }
-                    accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
-                } catch (IOException ex2) {
-                    IOException ioException = new IOException(ex.getMessage()
-                            + "In addition, tried checking out the accessors repo with \n"
-                            + JSAccessor._commands + "\n"
-                            + "but that failed with: " + ex2.getMessage());
-                    ioException.initCause(ex2);
-                    throw ioException;
-                }
-            }
-        }
-        if (accessorURL == null) {
-            throw new IOException("Failed to find accessor file: " + urlSpec.trim() 
-                    + "\nWhich is converted to: " + accessorURL);
-        }
-
-        // Use the local file if possible.  See the method comment for
-        // details.
-        accessorURL = _getLocalURL(urlSpec, accessorURL);
+        URL accessorURL = _sourceToURL(urlSpec, updateRepository);
         
         final URL url = accessorURL;
         BufferedReader in = null;

@@ -60,6 +60,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	AccessorIconLoader.java \
 	JSAccessor.java
 
 OTHER_FILES_TO_BE_JARED = \
