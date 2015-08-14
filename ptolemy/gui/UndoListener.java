@@ -126,7 +126,7 @@ public class UndoListener implements UndoableEditListener {
      *  @param event The event that occurred.
      */
     @Override
-    public void undoableEditHappened(UndoableEditEvent event) {
+    public synchronized void undoableEditHappened(UndoableEditEvent event) {
         if (_compoundEdit == null) {
             _undo.addEdit(event.getEdit());
             _undoAction._updateUndoState();
