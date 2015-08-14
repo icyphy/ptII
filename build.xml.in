@@ -168,6 +168,7 @@
   <!-- Include tests that take a long time to run.
        These tests should be excluded by test.long.excludes -->
   <patternset id="test.long.includes">
+    <exclude name="**/adm/test/junit/JUnitTclTest.*" />
     <include name="**/JUnitCGJavaTest.*" />
     <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
     <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
@@ -179,6 +180,7 @@
 
   <!-- Exclude long running tests. -->
   <patternset id="test.long.excludes">
+    <exclude name="**/adm/test/junit/JUnitTclTest.*" />
     <exclude name="**/JUnitCGJavaTest.*" />
     <exclude name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
