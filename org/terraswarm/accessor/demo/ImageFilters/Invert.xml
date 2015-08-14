@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies an Invert filter&#10;to a video stream from the camera.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[135.0, 10.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[135.0, 10.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,7 +35,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Invert filter has&#10;no options.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[250.0, 170.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[250.0, 170.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -72,7 +72,83 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 130.0]">
+        </property>
+        <property name="CameraIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+                <property name="rounding" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 152, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -6.0]">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+                </property>
+            </property>
+            <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{-14.0, -17.0}">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+            </property>
+            <property name="polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -19.0]">
+                </property>
+                <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="4">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 16.0, 0.0, 12.0, -4.0, 4.0, -4.0}">
+                </property>
+            </property>
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -98,7 +174,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 120.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor filters images provided at the input to produce modified images&#10;on the output. This accessor requires an 'imageFilters' module implemented on&#10;the accessor host. The filters that are available will depend on the particular&#10;host implementation of this module and will be provided as select alternatives for the&#10;'filter' parameter. The options that each filter can accept will also depend on the&#10;module implementation on the host.  The filters that are implemented by the Ptolemy II&#10;host and their options are documented in the&#10;&lt;a href=&quot;https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/module-imageFilters.html&quot;&gt;imageFilters module&lt;/a&gt;&#10;Demos for these filters can be found in the Ptolemy II tree at&#10;org/terraswarm/accessor/demo/ImageFilters.&lt;/p&gt;">
@@ -114,6 +190,58 @@
             <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined The filtered image.">
             </property>
             <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The options controlling the filter.">
+            </property>
+        </property>
+        <property name="ImageFilterIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -27.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="90.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+                <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 152, 934, 634}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+            </property>
+            <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="Helen.jpg">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="25.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -45.0]">
+                </property>
+            </property>
+            <property name="image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                <property name="source" class="ptolemy.data.expr.FileParameter" value="HelenInverted.jpg">
+                </property>
+                <property name="scale" class="ptolemy.data.expr.Parameter" value="25.0">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -45.0]">
+                </property>
+            </property>
+            <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -22.0]">
+                </property>
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-12.0">
+                </property>
+                <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="arrowLength" class="ptolemy.data.expr.Parameter" value="4.0">
+                </property>
+                <property name="arrowWidth" class="ptolemy.data.expr.Parameter" value="8.0">
+                </property>
             </property>
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
