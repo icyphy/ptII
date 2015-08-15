@@ -962,6 +962,8 @@ public class JavaScript extends TypedAtomicActor {
      *  include documentation of this output.
      *  If a value is given, then create a PortParameter instead of
      *  an ordinary port and set its default value.
+     *  If a Parameter already exists with the same name, then convert
+     *  it to a PortParameter and preserve its value.
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
@@ -979,13 +981,32 @@ public class JavaScript extends TypedAtomicActor {
         TypedIOPort port = (TypedIOPort) getPort(name);
         PortParameter parameter = null;
         Object token = null;
+        Token previousValue = null;
         if (port == null) {
+            Attribute previous = getAttribute(name);
+            if (previous instanceof Parameter) {
+                previousValue = ((Parameter)previous).getToken();
+                // Treat an empty string as no value.
+                if (previousValue instanceof StringToken
+                        && ((StringToken)previousValue).stringValue().trim().equals("")) {
+                    previousValue = null;
+                }
+                previous.setContainer(null);
+            }
             if (!(options instanceof Map)) {
                 // No options given. Use defaults.
-                port = (TypedIOPort) newPort(name);
+                if (previousValue == null) {
+                    // No previous value, so just create an ordinary port.
+                    port = (TypedIOPort) newPort(name);
+                } else {
+                    // There is a previous value. Create a PortParameter to
+                    // preserve its value.
+                    parameter = new PortParameter(this, name);
+                }
             } else {
                 Object value = ((Map) options).get("value");
-                if (value == null) {
+                if (value == null && previousValue == null) {
+                    // No value. Use an ordinary port.
                     port = (TypedIOPort) newPort(name);
                 } else {
                     parameter = new PortParameter(this, name);
@@ -1006,7 +1027,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         } else {
-            if (port == script.getPort()) {
+            if (port == script.getPort() || port == error) {
                 throw new NameDuplicationException(this, "Name is reserved: "
                         + name);
             }
@@ -1017,6 +1038,8 @@ public class JavaScript extends TypedAtomicActor {
         if (options instanceof Map) {
             Object type = ((Map) options).get("type");
             if (type instanceof String) {
+                // The following will put the parameter in string mode,
+                // if appropriate.
                 Type ptType = _typeAccessorToPtolemy((String) type, port);
                 port.setTypeEquals(ptType);
                 _setOptionsForSelect(port, options);
@@ -1036,8 +1059,19 @@ public class JavaScript extends TypedAtomicActor {
         // string mode and type checks.
         if (parameter != null) {
             // If the parameter already has a value, allow that to prevail.
-            if (parameter.getToken() == null && token != null) {
+            if (token != null 
+                    && (parameter.getToken() == null
+                    || (parameter.isStringMode() && parameter.getExpression().equals("")))) {
                 parameter.setToken((Token) token);
+            }
+            // If there was a previous value, then override the
+            // specified value.
+            if (previousValue != null) {
+                if (parameter.isStringMode() && previousValue instanceof StringToken) {
+                    parameter.setExpression(((StringToken)previousValue).stringValue());
+                } else {
+                    parameter.setExpression(previousValue.toString());
+                }
             }
         }
         port.setInput(true);
