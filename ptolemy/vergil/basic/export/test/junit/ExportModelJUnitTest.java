@@ -336,6 +336,7 @@ public class ExportModelJUnitTest {
                 "ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml",  // Publisher needs to run.
                 "PublisherTest", // gt
                 "RealTimeComposite.xml", // "Audio Device Unavailable"
+                "TokenTransmissionTime/Sender.xml", // Requires that Receiver be running.
                 "RecordManipulation", // Python demo pops up a dialog.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
                 "ros/demo/Ros", // Need a robot.          
