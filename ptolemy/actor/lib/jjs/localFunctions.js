@@ -377,6 +377,19 @@ function setup() {exports.setup();}
 function wrapup() {exports.wrapup();}
 
 //--------------------------- Exposed Java Types -----------------------------
+// FIXME: Attempting to debug ClassNotFoundException after loading 350 models.
+try {
+    var ArrayToken2 = Java.type('ptolemy.data.ArrayToken');
+} catch (e) {
+    var message = e.message;
+    if (!message) {
+        message = e.toString();
+    }
+    var javaClassPath = java.lang.System.getProperty("java.class.path");
+    var userDir = java.lang.System.getProperty("user.dir");
+    throw new Error( "Error loading ptolemy.data.ArrayToken class" + message + " java.class.path property: " + javaClassPath + " user.dir property (current working directory): " + userDir);
+}
+
 var ArrayToken = Java.type('ptolemy.data.ArrayToken');
 var ActorToken = Java.type('ptolemy.data.ActorToken');
 var AWTImageToken = Java.type('ptolemy.data.AWTImageToken');
