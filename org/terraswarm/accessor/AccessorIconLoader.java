@@ -30,6 +30,8 @@ package org.terraswarm.accessor;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
@@ -96,8 +98,22 @@ public class AccessorIconLoader implements IconLoader {
                             URL iconURL = JSAccessor._sourceToURL(iconURLSpec, false);
                             InputStream input = iconURL.openStream();
                             MoMLParser newParser = new MoMLParser();
+                            // Mark the parser to keep track of objects created.
+                            newParser.clearTopObjectsList();
                             newParser.setContext(context);
                             newParser.parse(null, iconURL.toExternalForm(), input);
+                            // Have to mark the contents derived objects, so that
+                            // the icon is not exported with the MoML export.
+                            List<NamedObj> icons = newParser.topObjectsCreated();
+                            if (icons != null) {
+                                Iterator objects = icons.iterator();
+
+                                while (objects.hasNext()) {
+                                    NamedObj newObject = (NamedObj) objects.next();
+                                    newObject.setDerivedLevel(1);
+                                    _markContentsDerived(newObject, 1);
+                                }
+                            }
                             return;
                         } catch (Throwable ex) {
                             // Ignore and fall back to default behavior.
@@ -109,12 +125,59 @@ public class AccessorIconLoader implements IconLoader {
                 if (xmlFile != null) {
                     InputStream input = xmlFile.openStream();
                     MoMLParser newParser = new MoMLParser();
+                    // Mark the parser to keep track of objects created.
+                    newParser.clearTopObjectsList();
                     newParser.setContext(context);
                     newParser.parse(null, fileName, input);
+                    
+                    // Have to mark the contents derived objects, so that
+                    // the icon is not exported with the MoML export.
+                    List<NamedObj> icons = newParser.topObjectsCreated();
+                    if (icons != null) {
+                        Iterator objects = icons.iterator();
+
+                        while (objects.hasNext()) {
+                            NamedObj newObject = (NamedObj) objects.next();
+                            newObject.setDerivedLevel(1);
+                            _markContentsDerived(newObject, 1);
+                        }
+                    }
                 }
             }
         };
         context.requestChange(request);
         return false;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    // NOTE: The following method is largely duplicated from MoMLParser,
+    // but exposing that method is not a good idea.
+
+    /** Mark the contents as being derived objects at a depth
+     *  one greater than the depth argument, and then recursively
+     *  mark their contents derived.
+     *  This makes them not export MoML, and prohibits name and
+     *  container changes. Normally, the argument is an Entity,
+     *  but this method will accept any NamedObj.
+     *  This method also adds all (deeply) contained instances
+     *  of Settable to the _paramsToParse list, which ensures
+     *  that they will be validated.
+     *  @param object The instance that is defined by a class.
+     *  @param depth The depth (normally 0).
+     */
+    private void _markContentsDerived(NamedObj object, int depth) {
+        // NOTE: It is necessary to mark objects deeply contained
+        // so that we can disable deletion and name changes.
+        // While we are at it, we add any
+        // deeply contained Settables to the _paramsToParse list.
+        Iterator objects = object.lazyContainedObjectsIterator();
+
+        while (objects.hasNext()) {
+            NamedObj containedObject = (NamedObj) objects.next();
+            containedObject.setDerivedLevel(depth + 1);
+            _markContentsDerived(containedObject, depth + 1);
+        }
     }
 }
