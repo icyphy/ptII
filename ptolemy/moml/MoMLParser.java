@@ -54,10 +54,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlParser;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -91,6 +87,10 @@ import ptolemy.util.CancelException;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLParser
@@ -5752,7 +5752,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         } else {
             // Ordinary attribute.
             NamedObj property = null;
-
+            
             if (_current != null) {
                 property = _current.getAttribute(propertyName);
             }
@@ -5829,6 +5829,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         arguments[0] = _workspace;
                         arguments[1] = propertyName;
                         property = _createInstance(newClass, arguments);
+                        if (_topObjectsCreated != null
+                                && _current == _originalContext) {
+                            _topObjectsCreated.add(property);
+                        }
                         _toplevel = property;
                     } else {
                         // First check that there will be no name collision
@@ -5873,6 +5877,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         arguments[0] = _current;
                         arguments[1] = propertyName;
                         property = _createInstance(newClass, arguments);
+
+                        // When loading icons, the attribute may be the top-level object
+                        // in the MoML being parsed.
+                        if (_topObjectsCreated != null
+                                && _current == _originalContext) {
+                            _topObjectsCreated.add(property);
+                        }
 
                         // Why was this restricted to Directors?? Efficiency?
                         // If this creates an efficiency problem, then we should
