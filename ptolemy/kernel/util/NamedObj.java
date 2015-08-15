@@ -486,7 +486,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             newObject._hierarchyListeners = null;
 
             newObject._changeLock = new SerializableObject();
-
+            newObject._changeRequests = null;
+            
             // The clone should have its own listeners, otherwise
             // debug messages from the clone will go to the master.
             // See 8.1.0 in NamedObj.tcl. Credit: Colin Endicott
