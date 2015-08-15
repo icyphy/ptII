@@ -77,7 +77,6 @@ public class AccessorIconLoader implements IconLoader {
             
             @Override
             protected void _execute() throws Exception {
-                // TODO Auto-generated method stub
                 // Note that this duplicates code in MoMLParser._loadFileInContext(),
                 // but there seems to be no way to prevent that without breaking
                 // Kepler.
