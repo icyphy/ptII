@@ -97,7 +97,7 @@
 
   <!-- The timeout in seconds for longest running junit tests.
        See also the timeout= values in ptolemy/util/test/junit/*.java. -->
-  <property name="timeout.longest" value="14000000" />
+  <property name="timeout.longest" value="18000000" />
 
 
   <!-- Ant paths to optional jar files set by the configure script. -->
@@ -275,7 +275,6 @@
 
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
-    <exclude name="**/adm/test/junit/JUnitTclTest*" />
     <exclude name="**/HTMLAboutJUnitTest.*" />
     <exclude name="**/javasound/test/junit/JUnitTclTest.*" />
     <exclude name="**/KielerJUnitTest.*" />
@@ -297,7 +296,6 @@
   <!-- Include tests that take a long time to run.
        These tests should be excluded by test.long.excludes -->
   <patternset id="test.long.includes">
-    <exclude name="**/adm/test/junit/JUnitTclTest.*" />
     <include name="**/JUnitCGJavaTest.*" />
     <include name="**/ptolemy/actor/lib/test/junit/JUnitTclTest.*" />
     <include name="**/ptolemy/configs/test/junit/JUnitTclTest.*" />
