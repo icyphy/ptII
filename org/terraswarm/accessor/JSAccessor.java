@@ -150,7 +150,11 @@ public class JSAccessor extends JavaScript {
     
     // Upon loading this class, change the icon loader to look for accessor icons.
     static {
-        MoMLParser.setIconLoader(new AccessorIconLoader());
+        // To prevent overriding some other icon loader (e.g. Kepler),
+        // set the custom icon loader only if there isn't one already.
+        if (MoMLParser.getIconLoader() == null) {
+            MoMLParser.setIconLoader(new AccessorIconLoader());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
