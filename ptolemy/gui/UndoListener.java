@@ -163,13 +163,15 @@ public class UndoListener implements UndoableEditListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                _undo.undo();
-            } catch (CannotUndoException ex) {
-                throw new RuntimeException("Unable to undo.", ex);
+            synchronized(UndoListener.this) {
+                try {
+                    _undo.undo();
+                } catch (CannotUndoException ex) {
+                    throw new RuntimeException("Unable to undo.", ex);
+                }
+                _updateUndoState();
+                _redoAction._updateRedoState();
             }
-            _updateUndoState();
-            _redoAction._updateRedoState();
         }
 
         /** Depending on the whether the undo manager can undo, enable
@@ -196,13 +198,15 @@ public class UndoListener implements UndoableEditListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                _undo.redo();
-            } catch (CannotRedoException ex) {
-                throw new RuntimeException("Unable to redo.", ex);
+            synchronized(UndoListener.this) {
+                try {
+                    _undo.redo();
+                } catch (CannotRedoException ex) {
+                    throw new RuntimeException("Unable to redo.", ex);
+                }
+                _updateRedoState();
+                _undoAction._updateUndoState();
             }
-            _updateRedoState();
-            _undoAction._updateUndoState();
         }
 
         /** Depending on the whether the undo manager can redo, enable
