@@ -431,10 +431,16 @@ function convertFromToken(value, isJSON) {
         return result;
     } else if (value instanceof RecordToken) {
         var result = {};
-        var labelSet = value.labelSet();
+        //var labelSet = value.labelSet();
         // "for each" is a Nashorn extension for iterating over Java collections.
         // This is tested by ptolemy/actor/lib/jjs/test/auto/JavaScriptRecordToken.xml
-        for each (label in value.labelSet()) {
+        // The "for each" below causes problems with JSLint
+        //for each (label in value.labelSet()) {
+        //    result[label] = convertFromToken(value.get(label), false);
+        // So, we use an iterator instead:
+        var iterator = value.labelSet().iterator()
+        while (iterator.hasNext()) {
+            var label = iterator.next();
             result[label] = convertFromToken(value.get(label), false);
         }
         return result;
