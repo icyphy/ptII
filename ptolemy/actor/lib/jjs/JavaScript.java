@@ -1736,6 +1736,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         });
          */
+        String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
         try {
             if (_debugging) {
                 _debug("** Instantiated engine. Loading local and basic functions.");
@@ -1744,13 +1745,46 @@ public class JavaScript extends TypedAtomicActor {
             } else {
                 _engine.put("_debug", false);
             }
-            _engine.eval(FileUtilities.openForReading(
-                    "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js", null,
-                    null));
+            _engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
         } catch (Throwable throwable) {
             // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
-            throw new IllegalActionException(this, throwable,
-                    "Failed to load localFunctions.js");
+
+            if (throwable instanceof ClassNotFoundException) {
+                // FIXME: Temporary code (2015-08-15)
+                
+                // Attempting to debug why, after 348 tests, these tests
+                // can't find the Ptolemy classes:
+
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[348] ptolemy/demo/Robot/RandomWalkIntruder.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[350] ptolemy/demo/Robot/RobotChase.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[351] ptolemy/demo/Robot/RobotCollaborativeChase.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[353] ptolemy/demo/Robot/RobotMonitor.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[360] ptolemy/demo/Robot/SmartIntruder6Teams.xml
+
+                String message =  "Parsing "
+                    + localFunctionsPath
+                    + " resulted in a ClassNotFoundException?"
+                    + " Checking ClassLoaders: "
+                    + " ClassLoader.getSystemClassLoader(): "
+                    + ClassLoader.getSystemClassLoader()
+                    + " Thread.currentThread().getContextClassLoader(): "
+                    + Thread.currentThread().getContextClassLoader();
+                Class clazz = null;
+                try {
+                    clazz = Class.forName("ptolemy.data.ArrayToken");
+                } catch (ClassNotFoundException ex) {
+                    throw new IllegalActionException(this, throwable, message
+                            + "???? Failed to get ptolemy.data.ArrayToken?"
+                            + ex);
+                }
+                throw new IllegalActionException(this, throwable, message
+                        + " Class.forName(\"ptolemy.data.ArrayToken\"): "
+                        + clazz);
+                // FIXME: End of temporary code.
+            } else {
+                throw new IllegalActionException(this, throwable,
+                        "Failed to load " + localFunctionsPath + ".");
+            }
         }
         try {
             _engine.eval(FileUtilities.openForReading(
