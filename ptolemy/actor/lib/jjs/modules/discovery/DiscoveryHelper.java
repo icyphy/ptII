@@ -32,8 +32,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -65,7 +67,7 @@ public class DiscoveryHelper {
      * @return A new DiscoveryHelper.
      */
     public DiscoveryHelper() {
-        ipMap = new HashMap<String, JSONObject>();
+        _ipMap = new HashMap<String, JSONObject>();
     }
 
     /** Discover all devices that reply to a ping on the class-C local
@@ -93,8 +95,10 @@ public class DiscoveryHelper {
         if (_debugging) {
             System.out.println("DiscoveryHelper.discover(" + IPAddress + ")");
         }
-        ipMap.clear();
-        String baseIP, testIP;
+        _ipMap.clear();
+        _hostIP = IPAddress;
+        
+        String baseIP;
 
         if (IPAddress.lastIndexOf(".") > 0) {
             baseIP = IPAddress.substring(0, IPAddress.lastIndexOf("."));
@@ -110,21 +114,29 @@ public class DiscoveryHelper {
                 if (System.getProperty("os.name").substring(0, 3)
                         .equalsIgnoreCase("Win")) {
 
-                    // Run pings concurrently, in separate threads
-                    ArrayList<Thread> runnables = new ArrayList();
+                    // Run pings concurrently, in separate processes
+                    _processes = new ArrayList();
 
-                    for (int i = 0; i <= 255; i++) {
-                        testIP = baseIP + "." + i;
-                        Thread thread = new Thread(new PingWindowsRunnable(
-                                testIP));
-                        runnables.add(thread);
-                        thread.start();
+                    for (int i = 0; i <= 255; i++) {      
+                        try {
+                            Process process = Runtime.getRuntime().exec(
+                                _pingWindowsCommand + baseIP + "." + i);
+                            _processes.add(process);
+                        } catch (IOException e) {
+                            System.err.println("Error executing ping for " + 
+                                    baseIP + "." + i);
+                        }                  
                     }
 
-                    // Wait for all threads to finish
-                    for (int i = 0; i < runnables.size(); i++) {
+                    // Read all data
+                    for (int i = 0; i < _processes.size(); i++) {
+                        readPingWindows(_processes.get(i), baseIP + "." + i);
+                    }
+                    
+                    // Wait for all processes to finish
+                    for (int i = 0; i < _processes.size(); i++) {
                         try {
-                            runnables.get(i).join();
+                            _processes.get(i).waitFor();
                         } catch (InterruptedException e) {
                             // Don't wait for it if interrupted
                         }
@@ -138,21 +150,29 @@ public class DiscoveryHelper {
                                 .println("Discovery: Run pings concurrently, in separate threads. baseIP: "
                                         + baseIP);
                     }
-                    // Run pings concurrently, in separate threads
-                    ArrayList<Thread> runnables = new ArrayList();
+                    // Run pings concurrently, in separate processes
+                    _processes = new ArrayList();
 
-                    for (int i = 0; i <= 255; i++) {
-                        testIP = baseIP + "." + i;
-                        Thread thread = new Thread(
-                                new PingLinuxRunnable(testIP));
-                        runnables.add(thread);
-                        thread.start();
+                    for (int i = 0; i <= 255; i++) {      
+                        try {
+                            Process process = Runtime.getRuntime().exec(
+                                _pingLinuxCommand + baseIP + "." + i);
+                            _processes.add(process);
+                        } catch (IOException e) {
+                            System.err.println("Error executing ping for " + 
+                                    baseIP + "." + i);
+                        }                  
+                    } 
+                    
+                    // Read all data
+                    for (int i = 0; i < _processes.size(); i++) {
+                        readPingLinux(_processes.get(i), baseIP + "." + i);
                     }
 
-                    // Wait for all threads to finish
-                    for (int i = 0; i < runnables.size(); i++) {
+                    // Wait for all processes to finish
+                    for (int i = 0; i < _processes.size(); i++) {
                         try {
-                            runnables.get(i).join();
+                            _processes.get(i).waitFor();
                         } catch (InterruptedException e) {
                             // Don't wait for it if interrupted
                         }
@@ -171,9 +191,9 @@ public class DiscoveryHelper {
         JSONArray jArray = new JSONArray();
 
         // Return a string representation of a JSON array of JSON objects
-        if (ipMap.size() > 0) {
-            for (String key : ipMap.keySet()) {
-                jArray.put(ipMap.get(key));
+        if (_ipMap.size() > 0) {
+            for (String key : _ipMap.keySet()) {
+                jArray.put(_ipMap.get(key));
             }
             return jArray.toString();
         } else {
@@ -188,13 +208,42 @@ public class DiscoveryHelper {
      * @return The IP address of the host machine.
      */
     public String getHostAddress() {
-        // For a more in-depth algorithm, see:
+        // Based on:
         // http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
+        // Ignore loopback (127.*) and broadcast (255.*)
+        // Others could be private (site-local) (192.*, 10.*, 172.16.* 
+        // through 172.31.*), link local (169.254.*), or multicast
+        // (224.* through 239.*)
+        String hostAddress = "Unknown";
+        InetAddress address;
+        NetworkInterface iface;
+
         try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
+            Enumeration<NetworkInterface> interfaces = 
+                NetworkInterface.getNetworkInterfaces();
+            Enumeration<InetAddress> addresses;
+       
+            while (interfaces.hasMoreElements()) {
+                iface = interfaces.nextElement();
+                addresses = iface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    address = addresses.nextElement();
+                    hostAddress = address.getHostAddress();
+                    // Break at first non-loopback, non-multicast address
+                    if (!address.isLoopbackAddress() && 
+                            !address.isMulticastAddress() && 
+                            // Avoid addresses such as fe80:0:0:0:0:5efe:c0a8:3801%net3
+                            // Assumes IPv4 address
+                            !hostAddress.contains(":")) {
+                        return hostAddress;
+                    }
+                }
+            }
+        } catch(SocketException e) {
             return "Unknown";
         }
+        
+        return hostAddress;
     }
 
     /** Execute the arp command on a Linux platform.  The arp command finds
@@ -204,7 +253,7 @@ public class DiscoveryHelper {
      *  moment (which may be cached in the arp cache).
      */
     private void arpLinux() {
-        if (ipMap.size() == 0) {
+        if (_ipMap.size() == 0) {
             System.err
                     .println("Warning, no devices were found.  Perhaps the format returned by "
                             + _pingLinuxCommand + " is different?");
@@ -233,7 +282,7 @@ public class DiscoveryHelper {
                 // The host machine will not be listed
 
                 if (tokenizer.countTokens() >= 4) {
-                    // Check if IP address has been added to ipMap by ping
+                    // Check if IP address has been added to _ipMap by ping
                     // If not, skip this device - it's unavailable
 
                     // Tokens are: name, IP address, "at", mac
@@ -246,8 +295,8 @@ public class DiscoveryHelper {
                                 + ", mac: " + token + " ,ip: " + ip);
                     }
                     JSONObject object;
-                    for (String key : ipMap.keySet()) {
-                        object = ipMap.get(key);
+                    for (String key : _ipMap.keySet()) {
+                        object = _ipMap.get(key);
                         if (object.get("IPAddress").toString()
                                 .equalsIgnoreCase(ip)) {
                             token = (String) tokenizer.nextElement();
@@ -255,7 +304,7 @@ public class DiscoveryHelper {
                             object.put("name", name);
                             object.put("mac", token);
 
-                            ipMap.put(key, object);
+                            _ipMap.put(key, object);
                         }
                     }
                 }
@@ -277,7 +326,7 @@ public class DiscoveryHelper {
      */
 
     private void arpWindows() {
-        if (ipMap.size() == 0) {
+        if (_ipMap.size() == 0) {
             System.err
                     .println("Warning, no devices were found.  Perhaps the format returned by "
                             + _pingWindowsCommand + " is different?");
@@ -293,11 +342,11 @@ public class DiscoveryHelper {
             JSONObject object;
 
             while ((line = stdOut.readLine()) != null) {
-                for (String key : ipMap.keySet()) {
-                    object = ipMap.get(key);
+                for (String key : _ipMap.keySet()) {
+                    object = _ipMap.get(key);
                     index = line.indexOf(object.getString("IPAddress"));
                     if (index != -1) {
-                        // The Interface: IP entry the host machine.  Its mac
+                        // The Interface: IP entry is the host machine.  Its mac
                         // is not listed.  Would need ipconfig /all to get it
                         // TODO:  Do we want host mac?
                         if (index != 2) {
@@ -307,7 +356,7 @@ public class DiscoveryHelper {
                             object.put("mac",
                                     line.substring(index + 22, index + 39));
                         }
-                        ipMap.put(key, object);
+                        _ipMap.put(key, object);
                     }
                 }
             }
@@ -358,18 +407,16 @@ public class DiscoveryHelper {
         }
     }
 
-    /** Execute ping of the testIP on a Linux or Mac platform.
+    /** Read results of a ping on a Linux or Mac platform. If a device is found,
+     * add a JSON object containing the device IP address and name to _ipMap.
      *
-     * @param testIP  The IP address to ping.
-     * @return A Promise which is resolved once the ping command finishes.
+     * @param process  The process that is executing the ping.
+     * @param testIP  The IP address to base the sweep on.
      */
-    private JSONObject pingLinux(String testIP) {
+    private void readPingLinux(Process process, String testIP) {
         JSONObject device = null;
 
         try {
-            Process process = Runtime.getRuntime().exec(
-                    _pingLinuxCommand + testIP);
-
             BufferedReader stdOut = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
 
@@ -413,15 +460,21 @@ public class DiscoveryHelper {
 
                 if (found > 0) {
                     // Store IP.  Name and mac address are determined in arp
-                    // The host machine will be pingable, but will have no arp
-                    // entry, so use "Host machine" as the default name, mac
+                    // The host machine is pingable but has no arp entry
                     if (_debugging) {
                         System.out.println("Device available at " + testIP);
                     }
                     try {
-                        device = new JSONObject("{\"IPAddress\": " + testIP
-                                + "," + "\"name\": \"Host machine\""
-                                + ", \"mac\": \"Host machine\"}");
+                        if (testIP.equalsIgnoreCase(_hostIP)) {
+                            device = new JSONObject("{\"IPAddress\": " + testIP
+                                    + "," + "\"name\": \"Host machine\""
+                                    + ", \"mac\": \"Host machine\"}");
+                        } else {
+                            device = new JSONObject("{\"IPAddress\": " + testIP
+                                    + "," + "\"name\": \"Unknown\""
+                                    + ", \"mac\": \"Unknown\"}");
+                        }
+
                     } catch (JSONException e) {
                         System.err.println("Error creating JSON object "
                                 + "for device at IP " + testIP);
@@ -431,22 +484,23 @@ public class DiscoveryHelper {
         } catch (IOException e) {
             System.err.println("Error executing ping for " + testIP);
         }
-        return device;
+        // Lock _ipMap?  No two devices will have same IP address, so no
+        // collisions.
+        if (device != null) {
+            _ipMap.put(testIP, device);
+        }
     }
 
-    /** Execute ping of the testIP on a Windows platform.
+    /** Read results of a ping on a Windows platform.  If a device is found,
+     * add a JSON object containing the device IP address and name to _ipMap.
      *
+     * @param process  The process that is executing the ping.
      * @param testIP  The IP address to base the sweep on.
-     * @return If a device is found, a JSON object containing the IP address
-     * and name; null otherwise.
      */
-    private JSONObject pingWindows(String testIP) {
+    private void readPingWindows(Process process, String testIP) {
         JSONObject device = null;
 
         try {
-            Process process = Runtime.getRuntime().exec(
-                    _pingWindowsCommand + testIP);
-
             BufferedReader stdOut = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
 
@@ -487,13 +541,21 @@ public class DiscoveryHelper {
                     }
                 }
             }
+            process.destroy();
         } catch (IOException e) {
             System.err.println("Error executing ping for " + testIP);
         }
-        return device;
+        
+        // Lock _ipMap?  No two devices will have same IP address, so no
+        // collisions.
+        if (device != null) {
+            _ipMap.put(testIP, device);
+        }
+        
+        
     }
 
-    /** Read device information from a stream of Nmap output and save to ipMap.
+    /** Read device information from a stream of Nmap output and save to _ipMap.
      *
      * @param line The previous line read
      * @param stdOut The stream to read device information from.
@@ -550,7 +612,7 @@ public class DiscoveryHelper {
                     // Have to put MAC separately due to colons in MAC
                     device.put("mac", mac);
 
-                    ipMap.put(ip, device);
+                    _ipMap.put(ip, device);
                 } catch (JSONException e) {
                     System.err.println("Nmap error: Can't "
                             + "create JSON object for device at " + "IP " + ip);
@@ -564,77 +626,17 @@ public class DiscoveryHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** A map storing IP address to JSON objects with device info. */
-    private HashMap<String, JSONObject> ipMap;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** A runnable for executing a ping in a separate thread, so that
-     * pings can be concurrent.  There are separate classes for Linux and
-     * Windows so the operating system type doesn't have to be tested each ping.
-     */
-    protected class PingLinuxRunnable implements Runnable {
-
-        /** Create a new runnable to execute a ping.
-         *
-         * @param IPAddress  The IP address to ping.
-         */
-        public PingLinuxRunnable(String IPAddress) {
-            testIP = IPAddress;
-        }
-
-        /** Execute a ping and save info from any device found.
-         */
-        public void run() {
-            JSONObject device = pingLinux(testIP);
-
-            // Lock ipMap?  No two devices will have same IP address, so no
-            // collisions.
-            if (device != null) {
-                ipMap.put(testIP, device);
-            }
-        }
-
-        /** The IP address to ping.  */
-        private String testIP;
-    }
-
-    /** A runnable for executing a ping in a separate thread, so that
-     * pings can be concurrent.  There are separate classes for Linux and
-     * Windows so the operating system type doesn't have to be tested each ping.
-     */
-    protected class PingWindowsRunnable implements Runnable {
-
-        /** Create a new runnable to execute a ping.
-         *
-         * @param IPAddress  The IP address to ping.
-         */
-        public PingWindowsRunnable(String IPAddress) {
-            testIP = IPAddress;
-        }
-
-        /** Execute a ping and save info from any device found.
-         */
-        public void run() {
-            JSONObject device = pingWindows(testIP);
-
-            // Lock ipMap?  No two devices will have same IP address, so no
-            // collisions.
-            if (device != null) {
-                ipMap.put(testIP, device);
-            }
-        }
-
-        /** The IP address to ping.  */
-        private String testIP;
-    }
-
     /** The command to invoke the arp, the address resolution protocol. */
     private String _arpCommand = "arp -a";
 
     /** Flag for debugging mode. */
     private final boolean _debugging = false;
+    
+    /** The IP address of the host machine.  Used to label it as such in list.*/
+    private String _hostIP;
+    
+    /** A map storing IP address to JSON objects with device info. */
+    private HashMap<String, JSONObject> _ipMap;
 
     /** The command to invoke nmap, a network scanner, followed by a trailing
      *  space.  The nmap command is the same for all OSes.
@@ -648,4 +650,7 @@ public class DiscoveryHelper {
 
     /** Command to ping an IP address under Windows, followed by a trailing space. */
     private String _pingWindowsCommand = "ping -n 2 -a ";
+    
+    /** Set of processes started, so that we can wait for them to finish. */
+    private ArrayList<Process> _processes;
 }
