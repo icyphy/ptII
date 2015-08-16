@@ -1,4 +1,4 @@
-/* Auditory Filterbank Temporal Envelope Extraction
+/* Auditory Filterbank Temporal Envelope Calculator and Feature Exractor
 
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
@@ -49,7 +49,7 @@ import ptolemy.math.ComplexArrayMath;
 import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
-////FFT
+////AFTEFast
 
 /**
  * This actor calculates the Auditory Filterbank Temporal Envelope (AFTE) 
@@ -99,7 +99,7 @@ public class AFTEFast extends Transformer {
         fs.setTypeEquals(BaseType.INT);
 
         fmodspec = new Parameter(this, "fmodspec");
-        fmodspec.setExpression("3000");
+        fmodspec.setExpression("100");
         fmodspec.setTypeEquals(BaseType.INT); 
 
         windowSize = new Parameter(this, "transferSize");
@@ -142,7 +142,6 @@ public class AFTEFast extends Transformer {
      * Mod spec sampling frequency.
      */ 
     public Parameter fmodspec;
-
 
     /**
      * Transfer size.
@@ -285,14 +284,6 @@ public class AFTEFast extends Transformer {
         }  
     }
 
-    @Override
-    public boolean postfire() throws IllegalActionException { 
-        _envelopes = new double[_numChannels][_windowSize/(_fs/_fmod)];   
-        _filterResult = new double[_numChannels][_windowSize]; 
-        return super.postfire();
-    }
-
-
     /**
      * Multithreaded FIR Gammatone filtering.
      * @param input
@@ -322,7 +313,30 @@ public class AFTEFast extends Transformer {
             rectified[i] = Math.abs(signal[i]);
         }
         double[] res = SignalProcessing.convolve(rectified, env_fft);
-        return Arrays.copyOfRange(res, 0, signal.length);
+        return Arrays.copyOfRange(res, env_fft.length/2, signal.length+env_fft.length/2);
+    }
+    
+    private double[] _hilbertEnvelope(double[] signal) {
+
+        /** x[n] ---DTFT----> X(w)
+           u[n] = hilbertTransform(x[n]) ---- DTFT ---> -2*i*sgn[w]*X(w) where sgn is the sign function
+         */
+        Complex[] fftOut = SignalProcessing.FFTComplexOut(signal); 
+        int fftLength = fftOut.length;
+        for (int i = 0 ; i < fftOut.length; i++) {
+            Complex old = fftOut[i];
+            if (i > fftLength/2) {
+                fftOut[i] = new Complex(0,0);
+            } else { 
+                fftOut[i] = new Complex(-2*old.imag, 2*old.real);
+            }
+        }
+
+        double [] hilbertEnvelope = ComplexArrayMath.
+                magnitude(SignalProcessing.IFFT(fftOut));
+
+        // removing zero padding. 
+        return Arrays.copyOfRange(hilbertEnvelope,0,signal.length); 
     }
 
 
@@ -430,52 +444,114 @@ public class AFTEFast extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /**
+     * Number of FFT chunks per window that are used for overlap-and-add convolution.
+     */
     private int _fftChunks;
 
+    /**
+     * Gammatone filter order.
+     */
     private int _filterOrder;
 
+    /**
+     * Sampling frequency.
+     */
     private int _fs;
 
+    /**
+     * Modulation band sampling frequency.
+     */
     private int _fmod; 
 
+    /**
+     * Gammatone filterbank center frequencies.
+     */
     private int[] _centerFrequencies;
 
+    /**
+     * Number of channels in the Gammatone Filterbank.
+     */
     private int _numChannels;
 
+    /**
+     * Convolution length of gammatone filtering.
+     */
     private int _convolutionLength;
 
+    /**
+     * Convolution chunk frame index.
+     */
     private int _framePointer;
 
+    /**
+     * Input transfer size.
+     */
     private int _transferSize;
 
+    /**
+     * Processing window size ( a window consists of incoming frame padded with buffered past input tokens).
+     */
     private int _windowSize;
 
+    /**
+     * Incoming frame tokens.
+     */
     private double[] _inArray;
 
+    /**
+     * Overlap-and-add storage.
+     */
     private double[][][] _convolutionChunks; //indexed by filter index, chunk index;
 
+    /**
+     * Gammatone filterbank impulse responses.
+     */
     private double[][] _impulseResponses;
 
+    /**
+     * Result of gammatone filtering. 
+     */
     private double[][] _filterResult;
 
+    /**
+     * Modulation band envelopes of Gammatone filter outputs.
+     */
     private double[][] _envelopes; 
 
+    /**
+     * FFT indices to be included at the output feature vector per frame.
+     */
     private int[] _featureVector;
 
+    /**
+     * FFTs of the envelopes.
+     */
     private double[][] _envelopeFFT;
 
+    /**
+     * FFT Length.
+     */
     private int _fftLength = 64;
 
+    /**
+     * Gammatone impulse response FFTs for overlap-and-add convolution.
+     */
     private Complex[][] _gammatoneImpulseResponseFFTs;
 
-    // 256-tap low-passFIR filter with a transition band of 0.0018-0.0022
-    // this corresponds to a cut-off frequency of 100 Hz for fs = 48 kHz.
-    private final double[] env_fft = {0.00177,0.0017731,0.0017762,
-            0.0017792,0.0017823,0.0017853,0.0017883,0.0017912,0.0017942,0.0017971,0.0018,0.0018029,0.0018058,0.0018086,0.0018114,0.0018142,0.001817,0.0018198,0.0018225,0.0018252,0.0018279,0.0018306,0.0018332,0.0018358,0.0018384,0.001841,0.0018436,0.0018461,0.0018486,0.0018511,0.0018535,0.001856,0.0018584,0.0018608,0.0018631,0.0018655,0.0018678,0.0018701,0.0018724,0.0018746,0.0018769,0.0018791,0.0018812,0.0018834,0.0018855,0.0018876,0.0018897,0.0018918,0.0018938,0.0018958,0.0018978,0.0018998,0.0019017,0.0019036,0.0019055,0.0019074,0.0019092,0.001911,0.0019128,0.0019146,0.0019163,0.001918,0.0019197,0.0019214,0.0019231,0.0019247,0.0019263,0.0019278,0.0019294,0.0019309,0.0019324,0.0019339,0.0019353,0.0019367,0.0019381,0.0019395,0.0019408,0.0019421,0.0019434,0.0019447,0.0019459,0.0019472,0.0019484,0.0019495,0.0019507,0.0019518,0.0019529,0.0019539,0.001955,0.001956,0.001957,0.0019579,0.0019589,0.0019598,0.0019607,0.0019615,0.0019623,0.0019632,0.0019639,0.0019647,0.0019654,0.0019661,0.0019668,0.0019674,0.0019681,0.0019687,0.0019692,0.0019698,0.0019703,0.0019708,0.0019713,0.0019717,0.0019721,0.0019725,0.0019729,0.0019732,0.0019735,0.0019738,0.0019741,0.0019743,0.0019745,0.0019747,0.0019749,0.001975,0.0019751,0.0019752,0.0019752,0.0019753,0.0019753,0.0019752,0.0019752,0.0019751,0.001975,0.0019749,0.0019747,0.0019745,0.0019743,0.0019741,0.0019738,0.0019735,0.0019732,0.0019729,0.0019725,0.0019721,0.0019717,0.0019713,0.0019708,0.0019703,0.0019698,0.0019692,0.0019687,0.0019681,0.0019674,0.0019668,0.0019661,0.0019654,0.0019647,0.0019639,0.0019632,0.0019623,0.0019615,0.0019607,0.0019598,0.0019589,0.0019579,0.001957,0.001956,0.001955,0.0019539,0.0019529,0.0019518,0.0019507,0.0019495,0.0019484,0.0019472,0.0019459,0.0019447,0.0019434,0.0019421,0.0019408,0.0019395,0.0019381,0.0019367,0.0019353,0.0019339,0.0019324,0.0019309,0.0019294,0.0019278,0.0019263,0.0019247,0.0019231,0.0019214,0.0019197,0.001918,0.0019163,0.0019146,0.0019128,0.001911,0.0019092,0.0019074,0.0019055,0.0019036,0.0019017,0.0018998,0.0018978,0.0018958,0.0018938,0.0018918,0.0018897,0.0018876,0.0018855,0.0018834,0.0018812,0.0018791,0.0018769,0.0018746,0.0018724,0.0018701,0.0018678,0.0018655,0.0018631,0.0018608,0.0018584,0.001856,0.0018535,0.0018511,0.0018486,0.0018461,0.0018436,0.001841,0.0018384,0.0018358,0.0018332,0.0018306,0.0018279,0.0018252,0.0018225,0.0018198,0.001817,0.0018142,0.0018114,0.0018086,0.0018058,0.0018029,0.0018,0.0017971,0.0017942,0.0017912,0.0017883,0.0017853,0.0017823,0.0017792,0.0017762,0.0017731,0.00177};
+    /** 256-tap low-pass FIR filter with a transition band around 0.001
+    this corresponds to a cut-off frequency of 50 Hz for fs = 48 kHz. */
+    private final double[] env_fft = {0.0009237,0.00092406,0.00092442,0.00092477,0.00092512,0.00092547,0.00092582,0.00092616,0.0009265,0.00092684,0.00092717,0.0009275,0.00092783,0.00092816,0.00092848,0.0009288,0.00092912,0.00092944,0.00092975,0.00093006,0.00093037,0.00093067,0.00093097,0.00093127,0.00093157,0.00093186,0.00093215,0.00093244,0.00093273,0.00093301,0.00093329,0.00093356,0.00093384,0.00093411,0.00093438,0.00093464,0.00093491,0.00093517,0.00093542,0.00093568,0.00093593,0.00093618,0.00093642,0.00093667,0.00093691,0.00093714,0.00093738,0.00093761,0.00093784,0.00093807,0.00093829,0.00093851,0.00093873,0.00093894,0.00093916,0.00093937,0.00093957,0.00093978,0.00093998,0.00094017,0.00094037,0.00094056,0.00094075,0.00094094,0.00094112,0.0009413,0.00094148,0.00094166,0.00094183,0.000942,0.00094217,0.00094233,0.00094249,0.00094265,0.00094281,0.00094296,0.00094311,0.00094326,0.0009434,0.00094354,0.00094368,0.00094382,0.00094395,0.00094408,0.00094421,0.00094433,0.00094445,0.00094457,0.00094469,0.0009448,0.00094491,0.00094502,0.00094512,0.00094522,0.00094532,0.00094542,0.00094551,0.0009456,0.00094569,0.00094577,0.00094585,0.00094593,0.00094601,0.00094608,0.00094615,0.00094622,0.00094628,0.00094634,0.0009464,0.00094646,0.00094651,0.00094656,0.00094661,0.00094665,0.00094669,0.00094673,0.00094677,0.0009468,0.00094683,0.00094686,0.00094688,0.00094691,0.00094692,0.00094694,0.00094695,0.00094696,0.00094697,0.00094697,0.00094698,0.00094697,0.00094697,0.00094696,0.00094695,0.00094694,0.00094692,0.00094691,0.00094688,0.00094686,0.00094683,0.0009468,0.00094677,0.00094673,0.00094669,0.00094665,0.00094661,0.00094656,0.00094651,0.00094646,0.0009464,0.00094634,0.00094628,0.00094622,0.00094615,0.00094608,0.00094601,0.00094593,0.00094585,0.00094577,0.00094569,0.0009456,0.00094551,0.00094542,0.00094532,0.00094522,0.00094512,0.00094502,0.00094491,0.0009448,0.00094469,0.00094457,0.00094445,0.00094433,0.00094421,0.00094408,0.00094395,0.00094382,0.00094368,0.00094354,0.0009434,0.00094326,0.00094311,0.00094296,0.00094281,0.00094265,0.00094249,0.00094233,0.00094217,0.000942,0.00094183,0.00094166,0.00094148,0.0009413,0.00094112,0.00094094,0.00094075,0.00094056,0.00094037,0.00094017,0.00093998,0.00093978,0.00093957,0.00093937,0.00093916,0.00093894,0.00093873,0.00093851,0.00093829,0.00093807,0.00093784,0.00093761,0.00093738,0.00093714,0.00093691,0.00093667,0.00093642,0.00093618,0.00093593,0.00093568,0.00093542,0.00093517,0.00093491,0.00093464,0.00093438,0.00093411,0.00093384,0.00093356,0.00093329,0.00093301,0.00093273,0.00093244,0.00093215,0.00093186,0.00093157,0.00093127,0.00093097,0.00093067,0.00093037,0.00093006,0.00092975,0.00092944,0.00092912,0.0009288,0.00092848,0.00092816,0.00092783,0.0009275,0.00092717,0.00092684,0.0009265,0.00092616,0.00092582,0.00092547,0.00092512,0.00092477,0.00092442,0.00092406,0.0009237};
 
-
+    /**
+     * Private class that implements GammatoneFiltering threads. These are done in parallel
+     * for a given input frame.
+     * @author ilgea    
+     *
+     */
     private class GammatoneFilter implements Runnable
     { 
+        /** The index of the filter in the Gammatone filterbank. */
         private final int filterIndex;
         GammatoneFilter( int index) {
             this.filterIndex = index; 
@@ -486,10 +562,16 @@ public class AFTEFast extends Transformer {
             overlapAndAdd(filterIndex);
             shiftChunks(filterIndex);
             synchronized (_envelopes[filterIndex]) {
-                _envelopes[filterIndex] = _decimateSignal(_firEnvelope(
-                        _filterResult[filterIndex]), (int)Math.floor(_fs/_fmod)); 
+                // extract hilbert envelope of signal
+                // low-pass filter to 50 Hz ( done after Hilbert transform to avoid ringing artifacts)
+                // decimate signal down to fs=100 Hz
+                _envelopes[filterIndex] = _decimateSignal(
+                        _firEnvelope(
+                                _hilbertEnvelope(
+                        _filterResult[filterIndex])), (int)Math.floor(_fs/_fmod)); 
             }
             synchronized (_envelopeFFT[filterIndex]) {
+                // obtain FFT of the decimated signal and return magnitude.
                 _envelopeFFT[filterIndex] = ComplexArrayMath.magnitude(
                         SignalProcessing.FFTComplexOut(_envelopes[filterIndex], 
                                 SignalProcessing.order(_fftLength)));
