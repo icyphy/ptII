@@ -79,6 +79,7 @@ public class EditIconAction extends FigureAction {
         final NamedObj object = getTarget();
 
         // Do this as a change request since it may add a new icon.
+        // FIXME: This is not undoable.
         ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
             @Override
             protected void _execute() throws Exception {
@@ -92,7 +93,14 @@ public class EditIconAction extends FigureAction {
 
                 if (icon == null) {
                     icon = new EditorIcon(object, "_icon");
-                } else if (icon instanceof XMLIcon) {
+                } else if (icon.getDerivedLevel() < Integer.MAX_VALUE
+                        || !icon.isPersistent()) {
+                    
+                    // The icon is either implied by the class
+                    // or is not persistent (XMLIcon will not be
+                    // persistent as it is derived from the
+                    // _iconDescription parameter).
+                    
                     // There is an icon currently that is not custom.
                     // Without trashing the _iconDescription, we can remove
                     // this icon and replace it.

@@ -28,11 +28,18 @@
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.gui.Top;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.IconLoader;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
@@ -63,7 +70,7 @@ public class RemoveIconAction extends FigureAction {
         // Determine which entity was selected for the look inside action.
         super.actionPerformed(e);
 
-        NamedObj object = getTarget();
+        final NamedObj object = getTarget();
 
         // If the source of the event was a button, then super.actionPerformed(e)
         // will return null.  There are other reasons super.actionPerformed(e)
@@ -78,10 +85,66 @@ public class RemoveIconAction extends FigureAction {
 
                 // An XMLIcon is not a custom icon, so don't remove it.
                 if (!(icon instanceof XMLIcon)) {
-                    String moml = "<deleteProperty name=\"" + icon.getName()
-                            + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            object, moml);
+                    final String iconName = icon.getName();
+                    // FIXME: No undo!
+                    ChangeRequest request = new ChangeRequest(this, "Remove Custom Icon") {
+                        @Override
+                        protected void _execute() throws Exception {
+                            Attribute attribute = object.getAttribute(iconName);
+                            if (attribute != null) {
+                                attribute.setContainer(null);
+                            }
+                            // Restore the default icon.
+                            // FIXME: Could be an XML icon.
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    IconLoader iconLoader = MoMLParser.getIconLoader();
+                                    String className = object.getClassName();
+                                    if (iconLoader != null) {
+                                        try {
+                                            iconLoader.loadIconForClass(className, object);
+                                        } catch (Exception e) {
+                                            // Ignore. Not much we can do here anyway.
+                                            System.err.println(
+                                                    "WARNING: Failed to load icon for class "
+                                                            + className + ": " + e);
+                                        }
+                                    } else {
+                                        // This is similar to MoMLParser._loadIconForClass, but
+                                        // it seems there is no way to reuse that here.
+                                        String fileName = "$CLASSPATH/" + className.replace('.', '/') + "Icon.xml";
+                                        MoMLParser newParser = new MoMLParser(object.workspace());
+                                        newParser.setContext(object);
+                                        // Initiate tracking of objects created during the parse.
+                                        newParser.clearTopObjectsList();
+                                        try {
+                                            URL url = FileUtilities.nameToURL(fileName, null, object.getClass().getClassLoader());
+                                            newParser.parse(url, url);
+                                            // Have to mark the contents derived objects, so that
+                                            // the icon is not exported with the MoML export.
+                                            List<NamedObj> icons = newParser.topObjectsCreated();
+                                            if (icons != null) {
+                                                Iterator objects = icons.iterator();
+
+                                                while (objects.hasNext()) {
+                                                    NamedObj newObject = (NamedObj) objects.next();
+                                                    newObject.setDerivedLevel(1);
+                                                    _markContentsDerived(newObject, 1);
+                                                }
+                                            }
+                                        } catch (Exception e) {
+                                            // Ignore. Not much we can do here anyway.
+                                            System.err.println(
+                                                    "WARNING: Failed to load icon for class "
+                                                            + className + ": " + e);
+                                        }
+                                    }
+                                }
+                            };
+                            Top.deferIfNecessary(runnable);
+                        }
+                    };
                     object.requestChange(request);
                 }
             }
@@ -94,5 +157,37 @@ public class RemoveIconAction extends FigureAction {
      */
     public void setConfiguration(Configuration configuration) {
         // Do nothing.
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    // NOTE: The following method is largely duplicated from MoMLParser,
+    // but exposing that method is not a good idea.
+
+    /** Mark the contents as being derived objects at a depth
+     *  one greater than the depth argument, and then recursively
+     *  mark their contents derived.
+     *  This makes them not export MoML, and prohibits name and
+     *  container changes. Normally, the argument is an Entity,
+     *  but this method will accept any NamedObj.
+     *  This method also adds all (deeply) contained instances
+     *  of Settable to the _paramsToParse list, which ensures
+     *  that they will be validated.
+     *  @param object The instance that is defined by a class.
+     *  @param depth The depth (normally 0).
+     */
+    private void _markContentsDerived(NamedObj object, int depth) {
+        // NOTE: It is necessary to mark objects deeply contained
+        // so that we can disable deletion and name changes.
+        // While we are at it, we add any
+        // deeply contained Settables to the _paramsToParse list.
+        Iterator objects = object.lazyContainedObjectsIterator();
+
+        while (objects.hasNext()) {
+            NamedObj containedObject = (NamedObj) objects.next();
+            containedObject.setDerivedLevel(depth + 1);
+            _markContentsDerived(containedObject, depth + 1);
+        }
     }
 }
