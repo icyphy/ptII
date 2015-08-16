@@ -283,6 +283,12 @@ public class AFTEFast extends Transformer {
             output.send(0, new ArrayToken(envFFTs)); 
         }  
     }
+    
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _framePointer = 0; 
+    }
 
     /**
      * Multithreaded FIR Gammatone filtering.
