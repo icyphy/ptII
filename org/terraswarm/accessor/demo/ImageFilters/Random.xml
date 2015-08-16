@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Invert" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Random" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -9,33 +9,25 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={663, 22, 776, 638}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={657, 22, 782, 640}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[542, 528]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[548, 530]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{261.0, 254.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.0, 255.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies an Invert filter&#10;to a video stream from the camera.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo applies an randomly chosen filters&#10;to a video stream from the camera.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[135.0, 10.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Invert filter has&#10;no options.">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[250.0, 170.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-5.0, 50.0}">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -44,7 +36,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 235.0}">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -54,7 +46,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 225.0}">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -72,7 +64,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 235.0}">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -94,7 +86,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 225.0}">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor filters images provided at the input to produce modified images&#10;on the output. This accessor requires an 'imageFilters' module implemented on&#10;the accessor host. The filters that are available will depend on the particular&#10;host implementation of this module and will be provided as select alternatives for the&#10;'filter' parameter. The options that each filter can accept will also depend on the&#10;module implementation on the host.  The filters that are implemented by the Ptolemy II&#10;host and their options are documented in the&#10;&lt;a href=&quot;https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/module-imageFilters.html&quot;&gt;imageFilters module&lt;/a&gt;&#10;Demos for these filters can be found in the Ptolemy II tree at&#10;org/terraswarm/accessor/demo/ImageFilters.&lt;/p&gt;">
@@ -112,11 +104,18 @@
             <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The options controlling the filter.">
             </property>
         </property>
-        <property name="filter" class="ptolemy.actor.parameters.PortParameter" value="null">
+        <property name="filter" class="ptolemy.actor.parameters.PortParameter" value="LensBlur">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="filter" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -133,13 +132,50 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="filter" class="ptolemy.actor.parameters.ParameterPort">
+    </entity>
+    <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 135.0}">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	input('trigger');&#10;	output('filter', {'type':'string'});&#10;}&#10;&#10;var imageFilters = require('imageFilters');&#10;&#10;// Filters to exclude.&#10;var exclude = {&#10;	Average: true,&#10;	BicubicScale: true,&#10;	Border: true,&#10;	Crop: true,&#10;	Contrast: true,&#10;	MotionDetector: true&#10;}&#10;&#10;exports.fire = function() {&#10;	var filters = imageFilters.filters();&#10;	var length = filters.length;&#10;	var random = Math.floor(Math.random() * length - 0.000001);&#10;	var filter = filters[random];&#10;	if (! exclude[filter]) {&#10;		send('filter', filter);&#10;	}&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 135.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
+        <port name="filter" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 553, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 135.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -147,10 +183,23 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[240.0, 135.0]">
+        </vertex>
+    </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="ImageDisplay.input" relation="relation2"/>
     <link port="Camera.trigger" relation="relation"/>
     <link port="Camera.image" relation="relation4"/>
+    <link port="ImageFilter.filter" relation="relation6"/>
     <link port="ImageFilter.input" relation="relation4"/>
     <link port="ImageFilter.output" relation="relation2"/>
+    <link port="PoissonClock.output" relation="relation3"/>
+    <link port="JavaScript.trigger" relation="relation3"/>
+    <link port="JavaScript.filter" relation="relation6"/>
+    <link port="Display.input" relation="relation6"/>
 </entity>

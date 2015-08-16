@@ -441,9 +441,9 @@
         </property>
     </property>
     <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These Image Filter demos read data from the camera and&#10;then filter the data.&#10;&#10;Click on the links below for different Image Filter demos.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These Image Filter demos read data from the camera and&#10;then filter the data. The following demo selects a random&#10;filter an applies it to a video stream:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 5.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
@@ -603,6 +603,43 @@
             </property>
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/terraswarm/accessor/demo/ImageFilters/Crystallize.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation21" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on the links below for fixed filter demos:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 100.0]">
+        </property>
+    </property>
+    <property name="Annotation22" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Random">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 70.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Random.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/terraswarm/accessor/demo/ImageFilters/Random.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
