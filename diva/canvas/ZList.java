@@ -100,7 +100,7 @@ public interface ZList extends FigureSet {
     public Figure get(int index);
 
     /** Get the bounding box of all the figures in this list.
-     *  @param the bounding box.
+     *  @return the bounding box.
      */
     public Rectangle2D getBounds();
 

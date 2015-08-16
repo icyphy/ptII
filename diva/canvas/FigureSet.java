@@ -55,6 +55,7 @@ public interface FigureSet {
      * from front to back, but if there is a substantially more
      * efficient way of returning them, then the implementor can
      * use that.
+     * @return The iterator.
      */
     Iterator figures();
 
