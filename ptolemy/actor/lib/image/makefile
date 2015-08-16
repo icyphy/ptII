@@ -60,7 +60,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	generic.xml \
-	image.xml
+	image.xml \
+	ImageDisplayIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
