@@ -2209,9 +2209,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     + _numberOfTimeEvents);
         }
         if (_useRawJNI()) {
-            runNativeFMU(_fmiJNIComponent, -1, null, null, null, 0.0, 0.0, 0.0,
-                    0, 0.0, 0, 0, null, null, null, null, null, null, null,
-                    null, 0, null, null, null, null, null);
+            // Only invoke runNativeFMU() if we actually created a fmiJNIComponent.
+            if (_fmiJNIComponent != -1) {
+                runNativeFMU(_fmiJNIComponent, -1, null, null, null, 0.0, 0.0, 0.0,
+                        0, 0.0, 0, 0, null, null, null, null, null, null, null,
+                        null, 0, null, null, null, null, null);
+            }
         } else {
             _checkFmiCommon();
             _fmiTerminate();
@@ -4335,7 +4338,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /**
      * The index of the component.  Only used when using JNI directly.
      */
-    protected int _fmiJNIComponent;
+    protected int _fmiJNIComponent = -1;
 
     /**
      * A representation of the fmiModelDescription element of a Functional
