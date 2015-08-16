@@ -69,7 +69,7 @@ public interface Site {
      * transform context with the default normal.
      * The given context must be an enclosing
      * context of the site.
-     * @param The transformation context.
+     * @param tc The transformation context.
      * @return The point.
      */
     public Point2D getPoint(TransformContext tc);
@@ -85,7 +85,7 @@ public interface Site {
      * transform context with the given normal.
      * The given context must be an enclosing
      * context of the site.
-     * @param tx The Transform context
+     * @param tc The Transform context
      * @param normal The normal
      * @return The point.
      */
@@ -121,7 +121,7 @@ public interface Site {
      * The direction is that given by one of the static constants
      * NORTH, SOUTH, EAST, or WEST, defined in
      * <b>javax.swing.SwingConstants</b>
-     * @param The direction
+     * @param direction The direction
      * @return true if the site is normal in the given direction.
      */
     public boolean isNormal(int direction);

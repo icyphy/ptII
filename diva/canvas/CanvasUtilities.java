@@ -116,7 +116,7 @@ public final class CanvasUtilities {
      * from which the shapes are obtained and joined into a
      * more complex shape. If the iterator is empty, return
      * a very small rectangle.
-     * @param The iterator of Figures
+     * @param i The iterator of Figures
      * @return The composite shape
      */
     public static Shape computeCompositeShape(Iterator<Figure> i) {
@@ -139,7 +139,7 @@ public final class CanvasUtilities {
 
     /** Compute the bounding box of a set of connectors. The iterator
      * must contain connectors.
-     * @param the iterator of Sites
+     * @param i the iterator of Sites
      * @return The bounding box
      */
     public static Rectangle2D computeSiteBounds(Iterator<Site> i) {
@@ -182,7 +182,7 @@ public final class CanvasUtilities {
      * figures, from which the bounding boxes are obtained and joined
      * into a more complex shape. If the iterator is empty, return
      * a very small rectangle.
-     * @param The iterator of Figures.
+     * @param i The iterator of Figures.
      * @return The bounding box
      */
     public static Rectangle2D computeCompositeBounds(Iterator<Figure> i) {
@@ -250,21 +250,28 @@ public final class CanvasUtilities {
     }
 
     /** Return the point at the center of a Rectangle.
+     *  @param r The Rectangle.
+     *  @return The point at the center.
      */
     public static Point2D getCenterPoint(Rectangle2D r) {
         return new Point2D.Double(r.getCenterX(), r.getCenterY());
     }
 
     /** Return the point at the center of a figure. This is
-     * simple but so common it's worth having a method for it.
+     *  simple but so common it's worth having a method for it.
+     *  @param f The figure.
+     *  @return The point at the center.
      */
     public static Point2D getCenterPoint(Figure f) {
         return getCenterPoint(f.getBounds());
     }
 
     /** Return the point at the center of a figure, in the
-     * given transform context. This is
-     * simple but so common it's worth having a method for it.
+     *  given transform context. This is
+     *  simple but so common it's worth having a method for it.
+     *  @param f The figure.
+     *  @param root The TransformContext.
+     *  @return The point at the center.
      */
     public static Point2D getCenterPoint(Figure f, TransformContext root) {
         Point2D p = getCenterPoint(f.getBounds());
@@ -273,6 +280,8 @@ public final class CanvasUtilities {
 
     /** Return the closest direction from SwingConstants, based on the
      *  given angle.    West corresponds to 0 degrees and south is PI/2.
+     *  @param angle The angle
+     *  @return The direction, see SwingConstants
      */
     public static int getDirection(double angle) {
         angle = moduloAngle(angle);
@@ -301,6 +310,8 @@ public final class CanvasUtilities {
     /** Return an angle in radians, given a direction from SwingConstants.
      *  West corresponds to 0 degrees and south is PI/2.  The angle returned
      *  is between -PI and PI as per the normalizeAngle method.
+     *  @param direction  The direction, see SwingConstants.
+     *  @return The angle of the normal in radians.
      */
     public static double getNormal(int direction) {
         if (direction == SwingConstants.EAST) {
@@ -402,6 +413,8 @@ public final class CanvasUtilities {
     /** Return true if the given transform maps a rectangle
      * to a rectangle. If this method returns true, then passing
      * a rectangle to transform() is guaranteed to return a rectangle.
+     * @param at The AffineTransformation
+     * @return True if it is orthogonal.
      */
     public static boolean isOrthogonal(AffineTransform at) {
         int t = at.getType();
@@ -415,6 +428,8 @@ public final class CanvasUtilities {
 
     /** Return the angle between -PI and PI that corresponds to the
      *  given angle.
+     *  @param The angle
+     *  @param The modulo of the angle.
      */
     public static double moduloAngle(double angle) {
         while (angle > Math.PI) {
