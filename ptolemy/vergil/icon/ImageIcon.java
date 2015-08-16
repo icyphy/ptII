@@ -36,16 +36,17 @@ import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.ImageFigure;
-import diva.gui.toolbox.FigureIcon;
+import ptolemy.gui.Top;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.ImageFigure;
+import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageIcon
@@ -185,42 +186,57 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *   completely loaded; true otherwise.
      */
     @Override
-    public synchronized boolean imageUpdate(Image image, int infoflags, int x,
-            int y, int width, int height) {
+    public synchronized boolean imageUpdate(
+            final Image image, final int infoflags, final int x,
+            final int y, final int width, final int height) {
+        // This has to run in the swing event thread.
+        Runnable action = new Runnable() {
+            @Override
+            public void run() {
+                if ((infoflags & ImageObserver.ALLBITS) != 0) {
+                    // The image is now fully loaded.
+                    if (_scalePercentage != 0.0
+                            && _scalePercentage != _scalePercentageImplemented) {
+                        // Scaling has been deferred until the original image
+                        // was fully rendered.  Start the scaling operation again.
+                        scaleImage(_scalePercentage);
+                        // Nothing more to be done on this image.
+                        return;
+                    }
+                    // Either the image passed in is already the scaled image,
+                    // or the scaling has already been implemented.
+                    _updateFigures();
+                    return;
+                }
+
+                if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
+                    URL url = getClass().getClassLoader().getResource(
+                            "/diva/canvas/toolbox/errorImage.gif");
+                    Toolkit tk = Toolkit.getDefaultToolkit();
+                    Image errorImage = tk.getImage(url);
+                    synchronized (this) {
+                        _image = errorImage;
+                        _scaledImage = errorImage;
+                    }
+                    // Further updates will be needed when the above image
+                    // is updated. To ensure the updates are called, do this:
+                    if (tk.prepareImage(_image, -1, -1, ImageIcon.this)) {
+                        // Image has been fully prepared. Request a re-rendering.
+                        _updateFigures();
+                    }
+                    return;
+                }
+            }
+        };
+        Top.deferIfNecessary(action);
+        
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
             // The image is now fully loaded.
-            if (_scalePercentage != 0.0
-                    && _scalePercentage != _scalePercentageImplemented) {
-                // Scaling has been deferred until the original image
-                // was fully rendered.  Start the scaling operation again.
-                scaleImage(_scalePercentage);
-                // Nothing more to be done on this image.
-                return true;
-            }
-            // Either the image passed in is already the scaled image,
-            // or the scaling has already been implemented.
-            _updateFigures();
             return false;
         }
-
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
-            URL url = getClass().getClassLoader().getResource(
-                    "/diva/canvas/toolbox/errorImage.gif");
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            Image errorImage = tk.getImage(url);
-            synchronized (this) {
-                _image = errorImage;
-                _scaledImage = errorImage;
-            }
-            // Further updates will be needed when the above image
-            // is updated. To ensure the updates are called, do this:
-            if (tk.prepareImage(_image, -1, -1, this)) {
-                // Image has been fully prepared. Request a re-rendering.
-                _updateFigures();
-            }
             return true;
         }
-
         // Image is neither complete nor in error.
         // Needed to trigger further updates.
         return true;
