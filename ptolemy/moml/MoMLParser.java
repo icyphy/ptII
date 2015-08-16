@@ -668,9 +668,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    /** Clear the top objects list. The top objects list
+    /** Clear or create the top objects list. The top objects list
      *  is a list of top-level objects that this parser has
-     *  created.
+     *  created. This method has the side effect of starting the
+     *  parser recording creation of top-level objects.
      *  @see #topObjectsCreated()
      */
     public void clearTopObjectsList() {
@@ -1438,6 +1439,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #purgeModelRecord(URL)
      *  @see #purgeAllModelRecords()
      */
+    @SuppressWarnings("resource")
     public NamedObj parse(URL base, URL input) throws Exception {
         _setXmlFile(input);
 
