@@ -1881,9 +1881,10 @@ public class Query extends JPanel {
         _recalculatePreferredSize(widget);
     }
 
-    /**
-     * @param label
-     * @return
+    /** Construct a lable.
+     * @param label The text for the label.  If the value of the label
+     * argument is non-empty, then ": " is appended.
+     * @return The label.
      */
     protected JLabel _constructLabel(String label) {
         JLabel lbl;
