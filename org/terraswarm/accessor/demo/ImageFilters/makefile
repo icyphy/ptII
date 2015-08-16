@@ -65,6 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Gray.xml \
 	Invert.xml \
 	LensBlur.xml \
+	Random.xml \
 	Solarize.xml \
 	Threshold.xml
 
