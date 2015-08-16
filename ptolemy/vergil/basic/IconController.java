@@ -185,7 +185,8 @@ public class IconController extends ParameterizedNodeController {
                             }
 
                             // If the container already has an icon, do nothing.
-                            if (object.getAttribute("_icon") != null) {
+                            List icons = object.attributeList(EditorIcon.class);
+                            if (icons != null && icons.size() > 0) {
                                 return;
                             }
 

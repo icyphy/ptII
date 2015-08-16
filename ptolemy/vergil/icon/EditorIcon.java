@@ -36,19 +36,13 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
-import diva.canvas.CanvasUtilities;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.LabelFigure;
-import diva.gui.toolbox.FigureIcon;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IconAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
@@ -57,10 +51,17 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.basic.RelativeLocatable;
+import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
+import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// EditorIcon
@@ -131,7 +132,7 @@ import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
  @see EditIconTableau
  @see ptolemy.actor.gui.Configuration
  */
-public class EditorIcon extends Attribute {
+public class EditorIcon extends Attribute implements IconAttribute {
     /** Construct an icon in the specified workspace and name.
      *  This constructor is typically used in conjunction with
      *  setContainerToBe() and createFigure() to create an icon

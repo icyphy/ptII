@@ -69,6 +69,7 @@ JSRCS = \
 	ExceptionHandler.java \
 	Flowable.java \
 	HierarchyListener.java \
+	IconAttribute.java \
 	IllegalActionException.java \
 	Instantiable.java \
 	InternalErrorException.java \

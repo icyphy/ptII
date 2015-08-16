@@ -33,7 +33,9 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IconAttribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.IconLoader;
 import ptolemy.moml.MoMLParser;
@@ -75,13 +77,29 @@ public class AccessorIconLoader implements IconLoader {
             throws Exception {
         // Do this as a change request because the accessorSource attribute
         // of the accessor will not have been set yet when this is called.
+        
         ChangeRequest request = new ChangeRequest(this, "AccessorIconLoader") {
             
             @Override
             protected void _execute() throws Exception {
-                // Note that this duplicates code in MoMLParser._loadFileInContext(),
+                // Note that this duplicates some code in MoMLParser._loadFileInContext(),
                 // but there seems to be no way to prevent that without breaking
                 // Kepler.
+                
+                // If the context already has an icon, then do not load
+                // the default icon.
+                List previousIcons = context.attributeList(IconAttribute.class);
+                if (previousIcons != null) {
+                    for (Object icon : previousIcons) {
+                        if (((Attribute)icon).isPersistent()
+                                && ((Attribute)icon).getDerivedLevel() == Integer.MAX_VALUE) {
+                            // There is already an icon that will be stored with the model.
+                            return;
+                        }
+                    }
+                }
+                
+                boolean foundAnIcon = false;
                 
                 // First, if the context is an instance JSAccessor, proceed.
                 if (context instanceof JSAccessor) {
@@ -101,7 +119,7 @@ public class AccessorIconLoader implements IconLoader {
                             // Mark the parser to keep track of objects created.
                             newParser.clearTopObjectsList();
                             newParser.setContext(context);
-                            newParser.parse(null, iconURL.toExternalForm(), input);
+                            newParser.parse(iconURL, iconURL.toExternalForm(), input);
                             // Have to mark the contents derived objects, so that
                             // the icon is not exported with the MoML export.
                             List<NamedObj> icons = newParser.topObjectsCreated();
@@ -112,35 +130,45 @@ public class AccessorIconLoader implements IconLoader {
                                     NamedObj newObject = (NamedObj) objects.next();
                                     newObject.setDerivedLevel(1);
                                     _markContentsDerived(newObject, 1);
+                                    foundAnIcon = true;
                                 }
                             }
-                            return;
                         } catch (Throwable ex) {
                             // Ignore and fall back to default behavior.
                         }
                     }
                 }
-                String fileName = className.replace('.', '/') + "Icon.xml";
-                URL xmlFile = getClass().getClassLoader().getResource(fileName);
-                if (xmlFile != null) {
-                    InputStream input = xmlFile.openStream();
-                    MoMLParser newParser = new MoMLParser();
-                    // Mark the parser to keep track of objects created.
-                    newParser.clearTopObjectsList();
-                    newParser.setContext(context);
-                    newParser.parse(null, fileName, input);
-                    
-                    // Have to mark the contents derived objects, so that
-                    // the icon is not exported with the MoML export.
-                    List<NamedObj> icons = newParser.topObjectsCreated();
-                    if (icons != null) {
-                        Iterator objects = icons.iterator();
+                if (!foundAnIcon) {
+                    // Try for an icon based on the class name.
+                    String fileName = className.replace('.', '/') + "Icon.xml";
+                    URL xmlFile = getClass().getClassLoader().getResource(fileName);
+                    if (xmlFile != null) {
+                        InputStream input = xmlFile.openStream();
+                        MoMLParser newParser = new MoMLParser();
+                        // Mark the parser to keep track of objects created.
+                        newParser.clearTopObjectsList();
+                        newParser.setContext(context);
+                        newParser.parse(xmlFile, fileName, input);
+                        
+                        // Have to mark the contents derived objects, so that
+                        // the icon is not exported with the MoML export.
+                        List<NamedObj> icons = newParser.topObjectsCreated();
+                        if (icons != null) {
+                            Iterator objects = icons.iterator();
 
-                        while (objects.hasNext()) {
-                            NamedObj newObject = (NamedObj) objects.next();
-                            newObject.setDerivedLevel(1);
-                            _markContentsDerived(newObject, 1);
+                            while (objects.hasNext()) {
+                                NamedObj newObject = (NamedObj) objects.next();
+                                newObject.setDerivedLevel(1);
+                                _markContentsDerived(newObject, 1);
+                                foundAnIcon = true;
+                            }
                         }
+                    }
+                }
+                if (foundAnIcon && previousIcons != null) {
+                    // Remove previous icons.
+                    for (Object icon : previousIcons) {
+                        ((Attribute)icon).setContainer(null);
                     }
                 }
             }
@@ -150,7 +178,7 @@ public class AccessorIconLoader implements IconLoader {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private methods                   ////
     
     // NOTE: The following method is largely duplicated from MoMLParser,
     // but exposing that method is not a good idea.
