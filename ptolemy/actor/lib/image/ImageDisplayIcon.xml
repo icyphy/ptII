@@ -1,15 +1,15 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="ImageDisplayIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, 3.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="50">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="35">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -19,13 +19,13 @@
         </property>
     </property>
     <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -1.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, 2.0]">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="50">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="25.0">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -82,6 +82,6 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{12.5, 9.25}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
     </property>
 </property>
