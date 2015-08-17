@@ -98,27 +98,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import diva.canvas.CanvasComponent;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.JCanvas;
-import diva.canvas.event.EventLayer;
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
-import diva.graph.GraphEvent;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.JCanvasPanner;
-import diva.gui.toolbox.JContextMenu;
-import diva.util.Filter;
-import diva.util.UserObjectContainer;
-import diva.util.java2d.ShapeUtilities;
 import ptolemy.actor.Actor;
 import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.Director;
@@ -192,6 +171,27 @@ import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.PtolemyTreeCellRenderer;
 import ptolemy.vergil.tree.VisibleTreeModel;
+import diva.canvas.CanvasComponent;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.JCanvas;
+import diva.canvas.event.EventLayer;
+import diva.canvas.event.LayerAdapter;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphController;
+import diva.graph.GraphEvent;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.JCanvasPanner;
+import diva.gui.toolbox.JContextMenu;
+import diva.util.Filter;
+import diva.util.UserObjectContainer;
+import diva.util.java2d.ShapeUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
@@ -201,7 +201,7 @@ import ptolemy.vergil.tree.VisibleTreeModel;
  the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
  paste operations are supported using MoML.
 
- @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC), Bert Rodiers, Christian Motika
+ @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC), Bert Rodiers, Christian Motika, Daniel Crawl
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (neuendor)
@@ -209,8 +209,8 @@ import ptolemy.vergil.tree.VisibleTreeModel;
  */
 @SuppressWarnings("serial")
 public abstract class BasicGraphFrame extends PtolemyFrame implements
-Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
-MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
+        Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
+        MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
@@ -587,10 +587,10 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                             // Create external links.
                             if (duplicateRelation) {
                                 extRelations
-                                .append("<relation name=\""
-                                        + relation.getName()
-                                        + "\" class=\""
-                                        + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        .append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -654,10 +654,10 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                             // Create external links.
                             if (duplicateRelation) {
                                 intRelations
-                                .append("<relation name=\""
-                                        + relation.getName()
-                                        + "\" class=\""
-                                        + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        .append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
@@ -727,7 +727,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
             moml.append("\t<property name=\"_location\" class=\""
                     + "ptolemy.kernel.util.Location\" value=\"" + location[0]
-                            + ", " + location[1] + "\">\n");
+                    + ", " + location[1] + "\">\n");
             moml.append("\t</property>\n");
             moml.append(newPorts);
 
@@ -805,7 +805,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     container);
         } catch (Exception ex) {
             MessageHandler
-            .error("Delete failed, changeRequest was:" + moml, ex);
+                    .error("Delete failed, changeRequest was:" + moml, ex);
         }
 
         graphModel.dispatchGraphEvent(new GraphEvent(this,
@@ -820,7 +820,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
     @Override
     public void dispose() {
         if (_debugClosing) {
-            System.out.println("BasicGraphFrame.dispose() : " + this.getName());
+            System.out.println("BasicGraphFrame.dispose() : " + getName());
         }
 
         // Remove the association with the library. This is necessary to allow
@@ -868,8 +868,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      */
     public void disposeSuper() {
         if (_debugClosing) {
-            System.out.println("BasicGraphFrame.disposeSuper() : "
-                    + this.getName());
+            System.out.println("BasicGraphFrame.disposeSuper() : " + getName());
         }
 
         // This method is used by Kepler for the tabbed pane interface.
@@ -899,8 +898,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     alternateGetMoml = new StringAttribute(model,
                             "_alternateGetMomlAction");
                     alternateGetMoml
-                    .setExpression(DesignPatternGetMoMLAction.class
-                            .getName());
+                            .setExpression(DesignPatternGetMoMLAction.class
+                                    .getName());
                 }
 
                 if (model.getAttribute("_designPatternIcon") == null) {
@@ -982,8 +981,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  @see #setCenter(Point2D)
      */
     public Point2D getCenter() {
-        Rectangle2D rect = getVisibleCanvasRectangle();
-        return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
+        return _getCenter(getJGraph());
     }
 
     /** Return the size of the contents of this window.
@@ -1116,19 +1114,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  @return The rectangle representing the visible part.
      */
     public Rectangle2D getVisibleCanvasRectangle() {
-        AffineTransform current = getJGraph().getCanvasPane()
-                .getTransformContext().getTransform();
-        AffineTransform inverse;
-
-        try {
-            inverse = current.createInverse();
-        } catch (NoninvertibleTransformException e) {
-            throw new RuntimeException(e.toString());
-        }
-
-        Rectangle2D visibleRect = getVisibleRectangle();
-
-        return ShapeUtilities.transformBounds(visibleRect, inverse);
+        return _getVisibleCanvasRectangle(getJGraph());
     }
 
     /** Return the rectangle representing the visible part of the
@@ -1137,8 +1123,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  size is the size of the canvas component.
      */
     public Rectangle2D getVisibleRectangle() {
-        Dimension size = getJGraph().getSize();
-        return new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight());
+        return _getVisibleRectangle(getJGraph());
     }
 
     /** Import a design pattern into the current design.
@@ -1183,7 +1168,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     if (attribute == null
                             || !(attribute instanceof StringAttribute)
                             || !((StringAttribute) attribute).getExpression()
-                            .equals(className)) {
+                                    .equals(className)) {
                         report(new IllegalActionException("The model \"" + file
                                 + "\" is not a design pattern."));
                     } else {
@@ -1218,15 +1203,16 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             try {
                 // See whether the container contains an instance of LevelSkippingTableauFactory.
                 NamedObj container = thisEntity.getContainer();
-                List<LevelSkippingTableauFactory> skip
-                        = container.attributeList(LevelSkippingTableauFactory.class);
+                List<LevelSkippingTableauFactory> skip = container
+                        .attributeList(LevelSkippingTableauFactory.class);
                 while (skip != null && skip.size() > 0) {
                     container = container.getContainer();
                     if (container == null) {
                         // This should not occur.
                         return;
                     }
-                    skip = container.attributeList(LevelSkippingTableauFactory.class);
+                    skip = container
+                            .attributeList(LevelSkippingTableauFactory.class);
                 }
                 // If the container is a ModalModel, the also skip a level.
                 // Note that it is not enough to just check whether the name of the
@@ -1234,7 +1220,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 // are not recognized. This unfortunately creates a new dependence
                 // on the modal package.
                 if (thisEntity instanceof Actor) {
-                    Director director = ((Actor)thisEntity).getDirector();
+                    Director director = ((Actor) thisEntity).getDirector();
                     if (director instanceof QuasiTransparentDirector) {
                         if (thisEntity.getName().equals("_Controller")) {
                             container = container.getContainer();
@@ -1297,7 +1283,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 NamedObj targetContainer = target.getContainer();
                 while (targetContainer != null
                         && (locationAttribute = (Location) targetContainer
-                        .getAttribute("_location", Location.class)) == null) {
+                                .getAttribute("_location", Location.class)) == null) {
                     // FindBugs: Load of known null value.  locationAttribute is always null here.
                     // The break is unnecessary as if locationAttribute is non-null, then
                     // the body of the while loop is not executed.
@@ -1539,7 +1525,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // We catch exceptions here because this method used to
             // not throw Exceptions, and we don't want to break compatibility.
             MessageHandler
-            .error("Failed to save \"" + entity.getName() + "\".");
+                    .error("Failed to save \"" + entity.getName() + "\".");
         }
     }
 
@@ -1550,14 +1536,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  @see #getCenter()
      */
     public void setCenter(Point2D center) {
-        Rectangle2D visibleRect = getVisibleCanvasRectangle();
-        AffineTransform newTransform = getJGraph().getCanvasPane()
-                .getTransformContext().getTransform();
-
-        newTransform.translate(visibleRect.getCenterX() - center.getX(),
-                visibleRect.getCenterY() - center.getY());
-
-        getJGraph().getCanvasPane().setTransform(newTransform);
+        _setCenter(getJGraph(), center);
     }
 
     /** Set the JGraph instance that this view uses to represent the
@@ -1593,7 +1572,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  creating a parameter.
      */
     public void updateWindowAttributes() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // First, record size and position.
 
         // See "composite window size & position not always saved"
@@ -1616,101 +1595,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         // $PTII/ptolemy/actor/gt/demo/MapReduce/MapReduce
         NamedObj model = getModel();
         if (model != null) {
-
-            // If there is no parent that is a Frame, do nothing.
-            // We know that: (parent == null) || (parent instanceof Frame)
-            if (parent != null) {
-                WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
-                        .getAttribute("_windowProperties",
-                                WindowPropertiesAttribute.class);
-
-                if (properties == null) {
-                    properties = new WindowPropertiesAttribute(model,
-                            "_windowProperties");
-                }
-
-                // This method uses MoMLChangeRequest
-                properties.recordProperties((Frame) parent);
-            }
-
-            _createSizeAttribute();
-
-            // Also record zoom and pan state.
-            JCanvas canvas = getJGraph().getGraphPane().getCanvas();
-            AffineTransform current = canvas.getCanvasPane()
-                    .getTransformContext().getTransform();
-
-            // We assume the scaling in the X and Y directions are the same.
-            double scale = current.getScaleX();
-            Parameter zoom = (Parameter) model.getAttribute(
-                    "_vergilZoomFactor", Parameter.class);
-
-            boolean updateValue = false;
-            if (zoom == null || zoom.getToken() == null) {
-                // NOTE: This will not propagate.
-                zoom = new ExpertParameter(model, "_vergilZoomFactor");
-                zoom.setToken("1.0");
-                updateValue = true;
-            } else {
-                double oldZoom = ((DoubleToken) zoom.getToken()).doubleValue();
-                if (oldZoom != scale) {
-                    updateValue = true;
-                }
-            }
-
-            if (updateValue) {
-                // Don't call setToken(), instead use a MoMLChangeRequest so that
-                // the model is marked modified so that any changes are preserved.
-                //zoom.setToken(new DoubleToken(scale));
-                String moml = "<property name=\"_vergilZoomFactor\" "
-                        + " value=\"" + scale + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, model,
-                        moml);
-                request.setUndoable(true);
-                model.requestChange(request);
-
-                // Make sure the visibility is only expert.
-                zoom.setVisibility(Settable.EXPERT);
-            }
-
-            // Save the center, to record the pan state.
-            Point2D center = getCenter();
-            Parameter pan = (Parameter) model.getAttribute("_vergilCenter",
-                    Parameter.class);
-
-            updateValue = false;
-            if (pan == null || pan.getToken() == null) {
-                // NOTE: This will not propagate.
-                pan = new ExpertParameter(model, "_vergilCenter");
-                pan.setToken("{" + center.getX() + ", " + center.getY() + "}");
-                updateValue = true;
-            } else {
-                Token[] oldCenter = ((ArrayToken) pan.getToken()).arrayValue();
-                double oldCenterX = ((DoubleToken) oldCenter[0]).doubleValue();
-                double oldCenterY = ((DoubleToken) oldCenter[1]).doubleValue();
-                if (center.getX() != oldCenterX || center.getY() != oldCenterY) {
-                    updateValue = true;
-                }
-            }
-
-            if (updateValue) {
-                //Token[] centerArray = new Token[2];
-                //centerArray[0] = new DoubleToken(center.getX());
-                //centerArray[1] = new DoubleToken(center.getY());
-                //pan.setToken(new ArrayToken(centerArray));
-
-                String moml = "<property name=\"_vergilCenter\" "
-                        + " value=\"{" + center.getX() + ", " + center.getY()
-                        + "}\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, model,
-                        moml);
-                request.setUndoable(true);
-                getModel().requestChange(request);
-
-                // Make sure the visibility is only expert.
-                pan.setVisibility(Settable.EXPERT);
-            }
-        } // model == null
+            _updateWindowAttributes((Frame) parent, model, getJGraph());
+        }
     }
 
     /** Write an HTML page based on the current view of the model
@@ -1800,26 +1686,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      *  @param factor The magnification factor (relative to 1.0).
      */
     public void zoom(double factor) {
-        try {
-            _zoomFlag = true;
-            JCanvas canvas = getJGraph().getGraphPane().getCanvas();
-            AffineTransform current = canvas.getCanvasPane()
-                    .getTransformContext().getTransform();
-
-            // Save the center, so we remember what we were looking at.
-            Point2D center = getCenter();
-            current.scale(factor, factor);
-            canvas.getCanvasPane().setTransform(current);
-
-            // Reset the center.
-            setCenter(center);
-
-            if (_graphPanner != null) {
-                _graphPanner.repaint();
-            }
-        } finally {
-            _zoomFlag = false;
-        }
+        _zoom(getJGraph(), factor);
     }
 
     /** Zoom to fit the current figures.
@@ -2109,7 +1976,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
     @Override
     protected boolean _close() {
         if (_debugClosing) {
-            System.out.println("BasicGraphFrame._close() : " + this.getName());
+            System.out.println("BasicGraphFrame._close() : " + getName());
         }
 
         // See "composite window size & position not always saved"
@@ -2238,9 +2105,10 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                             // case is that we will have no Import FMU in the menu.
                             // That is better than preventing the user from opening a model.
                             System.err
-                            .println("Warning: Tried to create the an import menu item by looking for the "
-                                    + importActionClassName + " Java class, but failed: "
-                                    + throwable);
+                                    .println("Warning: Tried to create the an import menu item by looking for the "
+                                            + importActionClassName
+                                            + " Java class, but failed: "
+                                            + throwable);
                         }
                     }
                 }
@@ -2248,8 +2116,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 if (!_printedImportActionClassNamesMessage) {
                     _printedImportActionClassNamesMessage = true;
                     System.err
-                            .println("Problem reading the _importActionClassNames parameter from "
-                                    + "the configuration: " + throwable);
+                    .println("Problem reading the _importActionClassNames parameter from "
+                            + "the configuration: " + throwable);
                 }
             }
 
@@ -2389,16 +2257,31 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      */
     protected SizeAttribute _createSizeAttribute()
             throws IllegalActionException, NameDuplicationException {
+        return _createSizeAttribute(getModel());
+    }
+
+    /** Create a SizeAttribute for a specific model when it is being saved to
+     *  a file. The size recorded in the SizeAttribute is the size of the
+     *  current canvas.
+     *  @param model The model.
+     *  @return The SizeAttribute.
+     *  @exception IllegalActionException If "_vergilSize" is found but is not
+     *  an instance of SizeAttribute, or if a SizeAttribute is not accepted by
+     *  the current model.
+     *  @exception NameDuplicationException If the name "_vergilSize" is already
+     *  used when trying to create the SizeAttribute.
+     */
+    protected SizeAttribute _createSizeAttribute(NamedObj model)
+            throws IllegalActionException, NameDuplicationException {
         // Have to also record the size of the JGraph because
         // setting the size of the frame is ignored if we don't
         // also set the size of the JGraph. Why? Who knows. Swing.
-        NamedObj model = getModel();
         if (model != null) {
             SizeAttribute size = (SizeAttribute) model.getAttribute(
                     "_vergilSize", SizeAttribute.class);
 
             if (size == null) {
-                size = new SizeAttribute(getModel(), "_vergilSize");
+                size = new SizeAttribute(model, "_vergilSize");
             }
 
             size.recordSize(_getRightComponent());
@@ -2442,7 +2325,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
                 String[] attributeNames = { "_alternateGetMomlAction",
                         "_designPatternIcon", "_transformationBefore",
-                "_transformationAfter" };
+                        "_transformationAfter" };
                 for (String attributeName : attributeNames) {
                     Attribute attribute = model.getAttribute(attributeName);
                     if (attribute != null) {
@@ -2482,6 +2365,48 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
     /** Finish exporting a design pattern.
      */
     protected void _finishExportDesignPattern() {
+    }
+
+    /** Return the center location of the visible part of the pane
+     *  for a JGraph.
+     *  @param The JGraph.
+     *  @return The center of the visible part.
+     *  @see #setCenter(Point2D)
+     */
+    protected Point2D _getCenter(JGraph graph) {
+        Rectangle2D rect = _getVisibleCanvasRectangle(graph);
+        return new Point2D.Double(rect.getCenterX(), rect.getCenterY());
+    }
+
+    /** Return the rectangle representing the visible part of the
+     *  pane for a JGraph, transformed into canvas coordinates.  This is the range
+     *  of locations that are visible, given the current pan and zoom.
+     *  @param graph The JGraph.
+     *  @return The rectangle representing the visible part.
+     */
+    protected Rectangle2D _getVisibleCanvasRectangle(JGraph graph) {
+        AffineTransform current = graph.getCanvasPane().getTransformContext()
+                .getTransform();
+
+        AffineTransform inverse;
+        try {
+            inverse = current.createInverse();
+        } catch (NoninvertibleTransformException e) {
+            throw new RuntimeException(e.toString());
+        }
+
+        Rectangle2D visibleRect = _getVisibleRectangle(graph);
+        return ShapeUtilities.transformBounds(visibleRect, inverse);
+    }
+
+    /** Return the rectangle representing the visible part of the
+     *  pane for a JGraph, in pixel coordinates on the screen.
+     *  @return A rectangle whose upper left corner is at (0, 0) and whose
+     *  size is the size of the canvas component.
+     */
+    protected Rectangle2D _getVisibleRectangle(JGraph graph) {
+        Dimension size = graph.getSize();
+        return new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight());
     }
 
     /** Get the directory that was last accessed by this window.
@@ -2759,9 +2684,9 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
             _libraryContextMenuCreator = new PTreeMenuCreator();
             _libraryContextMenuCreator
-            .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+                    .addMenuItemFactory(new OpenLibraryMenuItemFactory());
             _libraryContextMenuCreator
-            .addMenuItemFactory(new DocumentationMenuItemFactory());
+                    .addMenuItemFactory(new DocumentationMenuItemFactory());
             _library.addMouseListener(_libraryContextMenuCreator);
 
             _libraryScrollPane = new JScrollPane(_library);
@@ -2809,8 +2734,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 // EditIconFrame will have a EditorIcon as a model, not a CompositeEntity.
                 _treeViewScrollPane = null;
             } else {
-                _treeViewModel = new ClassAndEntityTreeModel(
-                        getModel().toplevel());
+                _treeViewModel = new ClassAndEntityTreeModel(getModel()
+                        .toplevel());
 
                 // Second arguments prevents parameter values from showing in the library,
                 // I'm not sure if that is relevant for the hierarchy tree browser.
@@ -2825,7 +2750,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 // See _libraryScrollPane above.
                 _treeViewScrollPane.setMinimumSize(new Dimension(200, 200));
                 _treeViewScrollPane.setPreferredSize(new Dimension(200, 300));
-                _treeViewScrollPane.setBorder(BorderFactory.createEtchedBorder());
+                _treeViewScrollPane.setBorder(BorderFactory
+                        .createEtchedBorder());
                 _setBackgroundColor(_treeView);
 
                 // Make the Ptolemy model visible in the tree.
@@ -2976,18 +2902,29 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
      */
     protected void _initBasicGraphFrameSetZoomAndPan()
             throws IllegalActionException {
+        _initBasicGraphFrameSetZoomAndPane(getModel(), getJGraph());
+    }
+
+    /** Set the zoom factor and the pan for a specific model and JGraph.
+     *  @param model The model.
+     *  @param jgraph The JGraph.
+     *  @exception IllegalActionException If the zoom or pan parameters
+     *  cannot be read.
+     */
+    protected void _initBasicGraphFrameSetZoomAndPane(NamedObj model,
+            JGraph jgraph) throws IllegalActionException {
 
         // Set the zoom factor.
-        Parameter zoom = (Parameter) getModel().getAttribute(
-                "_vergilZoomFactor", Parameter.class);
+        Parameter zoom = (Parameter) model.getAttribute("_vergilZoomFactor",
+                Parameter.class);
         if (zoom != null) {
-            zoom(((DoubleToken) zoom.getToken()).doubleValue());
+            _zoom(jgraph, ((DoubleToken) zoom.getToken()).doubleValue());
             // Make sure the visibility is only expert.
             zoom.setVisibility(Settable.EXPERT);
         }
 
         // Set the pan position.
-        Parameter pan = (Parameter) getModel().getAttribute("_vergilCenter",
+        Parameter pan = (Parameter) model.getAttribute("_vergilCenter",
                 Parameter.class);
 
         if (pan != null) {
@@ -2995,7 +2932,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             Point2D center = new Point2D.Double(
                     ((DoubleToken) panToken.getElement(0)).doubleValue(),
                     ((DoubleToken) panToken.getElement(1)).doubleValue());
-            setCenter(center);
+            _setCenter(jgraph, center);
 
             // Make sure the visibility is only expert.
             pan.setVisibility(Settable.EXPERT);
@@ -3006,9 +2943,9 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // ...set the top left corner of the view to the top left corner of the model.
             // Note: This code only works for a zoom factor of 1.0, which is no problem at
             // this stage since that's the default and no zooming info was found in the model.
-            GraphPane pane = getJGraph().getGraphPane();
+            GraphPane pane = jgraph.getGraphPane();
             Rectangle2D bounds = pane.getForegroundLayer().getLayerBounds();
-            Rectangle2D visible = getVisibleRectangle();
+            Rectangle2D visible = _getVisibleRectangle(jgraph);
 
             double centerX = visible.getCenterX()
                     - (visible.getX() - bounds.getX());
@@ -3016,7 +2953,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     - (visible.getY() - bounds.getY());
 
             // Set the new center point, but add a little free space between model and border
-            setCenter(new Point2D.Double(centerX - 10.0, centerY - 10.0));
+            _setCenter(jgraph, new Point2D.Double(centerX - 10.0,
+                    centerY - 10.0));
         }
     }
 
@@ -3146,6 +3084,29 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         }
     }
 
+    /** Set the center location of the visible part of a specific pane.
+     *  This will cause the panner to center on the specified location
+     *  with the current zoom factor.
+     *  @param center The center of the visible part.
+     *  @see #getCenter()
+     */
+    protected void _setCenter(JGraph jgraph, Point2D center) {
+        Rectangle2D visibleRect = _getVisibleCanvasRectangle(jgraph);
+        AffineTransform newTransform = jgraph.getCanvasPane()
+                .getTransformContext().getTransform();
+
+        newTransform.translate(visibleRect.getCenterX() - center.getX(),
+                visibleRect.getCenterY() - center.getY());
+
+        jgraph.getCanvasPane().setTransform(newTransform);
+
+        /*
+        System.out.println("set pan to " +
+                center.getX() + " " + center.getY() + " " +
+                "for " + ((AbstractBasicGraphModel) jgraph.getGraphPane().getGraphModel()).getPtolemyModel().getFullName());
+         */
+    }
+
     /** Set the directory that was last accessed by this window.
      *  @see #getLastDirectory
      *  @param directory The directory last accessed.
@@ -3163,6 +3124,122 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         _dropTarget.setDropIntoEnabled(enable);
     }
 
+    /**
+     * Update the size, zoom and position of the window for a specific model
+     * and JGraph. This method is typically called when closing the window or
+     * writing the moml file out.
+     * @param parent The parent frame.
+     * @param model The model.
+     * @param graphThe JGraph.
+     * @exception IllegalActionException If there is a problem getting a
+     * parameter.
+     * @exception NameDuplicationException If there is a problem creating a
+     * parameter.
+     */
+    protected void _updateWindowAttributes(Frame parent, NamedObj model,
+            JGraph graph) throws IllegalActionException,
+            NameDuplicationException {
+
+        // If there is no parent that is a Frame, do nothing.
+        // We know that: (parent == null) || (parent instanceof Frame)
+        if (parent != null) {
+            WindowPropertiesAttribute properties = (WindowPropertiesAttribute) model
+                    .getAttribute("_windowProperties",
+                            WindowPropertiesAttribute.class);
+
+            if (properties == null) {
+                properties = new WindowPropertiesAttribute(model,
+                        "_windowProperties");
+            }
+
+            // This method uses MoMLChangeRequest
+            properties.recordProperties(parent);
+        }
+
+        _createSizeAttribute(model);
+
+        // Also record zoom and pan state.
+        AffineTransform current = graph.getCanvasPane().getTransformContext()
+                .getTransform();
+
+        // We assume the scaling in the X and Y directions are the same.
+        double scale = current.getScaleX();
+        Parameter zoom = (Parameter) model.getAttribute("_vergilZoomFactor",
+                Parameter.class);
+
+        boolean updateValue = false;
+        if (zoom == null || zoom.getToken() == null) {
+            // NOTE: This will not propagate.
+            zoom = new ExpertParameter(model, "_vergilZoomFactor");
+            zoom.setToken("1.0");
+            updateValue = true;
+        } else {
+            double oldZoom = ((DoubleToken) zoom.getToken()).doubleValue();
+            if (oldZoom != scale) {
+                updateValue = true;
+            }
+        }
+
+        if (updateValue) {
+            // Don't call setToken(), instead use a MoMLChangeRequest so that
+            // the model is marked modified so that any changes are preserved.
+            //zoom.setToken(new DoubleToken(scale));
+            String moml = "<property name=\"_vergilZoomFactor\" " + " value=\""
+                    + scale + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml);
+            request.setUndoable(true);
+            model.requestChange(request);
+
+            // Make sure the visibility is only expert.
+            zoom.setVisibility(Settable.EXPERT);
+
+            //System.out.println("updating zoom to " + scale + " for " + model.getFullName());
+        }
+
+        // Save the center, to record the pan state.
+        Point2D center = _getCenter(graph);
+        Parameter pan = (Parameter) model.getAttribute("_vergilCenter",
+                Parameter.class);
+
+        updateValue = false;
+        if (pan == null || pan.getToken() == null) {
+            // NOTE: This will not propagate.
+            pan = new ExpertParameter(model, "_vergilCenter");
+            pan.setToken("{" + center.getX() + ", " + center.getY() + "}");
+            updateValue = true;
+        } else {
+            Token[] oldCenter = ((ArrayToken) pan.getToken()).arrayValue();
+            double oldCenterX = ((DoubleToken) oldCenter[0]).doubleValue();
+            double oldCenterY = ((DoubleToken) oldCenter[1]).doubleValue();
+            if (center.getX() != oldCenterX || center.getY() != oldCenterY) {
+                updateValue = true;
+            }
+        }
+
+        if (updateValue) {
+            //Token[] centerArray = new Token[2];
+            //centerArray[0] = new DoubleToken(center.getX());
+            //centerArray[1] = new DoubleToken(center.getY());
+            //pan.setToken(new ArrayToken(centerArray));
+
+            String moml = "<property name=\"_vergilCenter\" " + " value=\"{"
+                    + center.getX() + ", " + center.getY() + "}\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this, model, moml);
+            request.setUndoable(true);
+            model.requestChange(request);
+
+            // Make sure the visibility is only expert.
+            pan.setVisibility(Settable.EXPERT);
+
+            /*
+            System.out.println("saving pan as " +
+                    center.getX() + " " +
+                    center.getY() +
+                    " for " + model.getFullName());
+             */
+        }
+    }
+
     /** Write the model to the specified file.  This overrides the base
      *  class to record the current size and position of the window
      *  in the model.
@@ -3177,8 +3254,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // Ignore problems here.  Errors simply result in a
             // default size and location.
             System.out
-            .println("While writing, failed to save size, position or zoom factor: "
-                    + ex);
+                    .println("While writing, failed to save size, position or zoom factor: "
+                            + ex);
         }
 
         if (_isDesignPattern()) {
@@ -3318,6 +3395,41 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
         }
 
         return moml;
+    }
+
+    /** Zoom in or out to magnify by the specified factor, from the current
+     *  magnification for a specific JGraph.
+     *  @param factor The magnification factor (relative to 1.0).
+     */
+    protected void _zoom(JGraph jgraph, double factor) {
+        try {
+            _zoomFlag = true;
+            JCanvas canvas = jgraph.getGraphPane().getCanvas();
+            AffineTransform current = canvas.getCanvasPane()
+                    .getTransformContext().getTransform();
+
+            // Save the center, so we remember what we were looking at.
+            Point2D center = _getCenter(jgraph);
+            current.scale(factor, factor);
+            canvas.getCanvasPane().setTransform(current);
+
+            /*
+            System.out.println("set zoom to " +
+                    factor + " " +
+                    "for " + ((AbstractBasicGraphModel) jgraph.getGraphPane().getGraphModel()).getPtolemyModel().getFullName());
+             */
+
+            // Reset the center.
+            _setCenter(jgraph, center);
+
+            // Only repaint the panner if it exists and is for the
+            // same JGraph.
+            if (_graphPanner != null && _graphPanner.getCanvas() == jgraph) {
+                _graphPanner.repaint();
+            }
+        } finally {
+            _zoomFlag = false;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -3561,7 +3673,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     "Copy the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
@@ -3583,7 +3695,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Cut the current selection onto the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_X, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_T));
         }
 
@@ -3666,7 +3778,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
 
             if (preferences == null) {
                 MessageHandler
-                .message("No preferences given in the configuration.");
+                        .message("No preferences given in the configuration.");
             } else {
                 // Open a modal dialog to edit the parameters.
                 new EditParametersDialog(BasicGraphFrame.this, preferences,
@@ -3690,9 +3802,9 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                     GraphModel graphModel = frame._getGraphController()
                             .getGraphModel();
                     graphModel
-                    .dispatchGraphEvent(new GraphEvent(this,
-                            GraphEvent.STRUCTURE_CHANGED, graphModel
-                            .getRoot()));
+                            .dispatchGraphEvent(new GraphEvent(this,
+                                    GraphEvent.STRUCTURE_CHANGED, graphModel
+                                            .getRoot()));
 
                     if (frame._graphPanner != null) {
                         frame._graphPanner.repaint();
@@ -3795,8 +3907,8 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 LinkedList extensions = new LinkedList();
                 extensions.add(_formatName);
                 ptFileChooser
-                .addChoosableFileFilter(new ExtensionFilenameFilter(
-                        extensions));
+                        .addChoosableFileFilter(new ExtensionFilenameFilter(
+                                extensions));
                 ptFileChooser.setCurrentDirectory(_directory);
 
                 int returnVal = ptFileChooser.showDialog(
@@ -3898,7 +4010,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Find occurrences of specified text.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4209,7 +4321,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Send to back of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_B, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_B));
         }
 
@@ -4254,7 +4366,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Bring to front of like objects");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4299,7 +4411,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             putValue("tooltip", "Paste the contents of the clipboard.");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
@@ -4332,13 +4444,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/up.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/up_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/up_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/up_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/up_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/up_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/up_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);
 
@@ -4406,13 +4518,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/print.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/print_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/print_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/print_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/print_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/print_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/print_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
         }
 
         /** Print the current layout.
@@ -4477,13 +4589,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/save.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/save_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/save_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/save_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/save_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/save_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/save_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -4546,13 +4658,13 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomin.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomin_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomin_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomin_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomin_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomin_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+=)");
 
@@ -4561,7 +4673,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // work, so we have to do it this way.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -4592,20 +4704,20 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomreset.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomreset_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomreset_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomreset_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             // Control-m is usually carriage return.  In this case, we use
             // it to mean "return the zoom to the original state".
             putValue("tooltip", description + " (Ctrl+M)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_M, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
@@ -4636,18 +4748,18 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomfit.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomfit_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomfit_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomfit_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
+                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
@@ -4678,18 +4790,18 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
             // jdk1.3/docs/guide/resources/resources.html
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/basic/img/zoomout.gif",
-                        GUIUtilities.LARGE_ICON },
-                        { "/ptolemy/vergil/basic/img/zoomout_o.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomout_o.gif",
                             GUIUtilities.ROLLOVER_ICON },
-                            { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
-                                GUIUtilities.ROLLOVER_SELECTED_ICON },
-                                { "/ptolemy/vergil/basic/img/zoomout_on.gif",
-                                    GUIUtilities.SELECTED_ICON } });
+                    { "/ptolemy/vergil/basic/img/zoomout_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/zoomout_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                    .getMenuShortcutKeyMask()));
+                            .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_U));
         }
 
@@ -4726,7 +4838,7 @@ MouseListener, MouseMotionListener, ImageExportable, HTMLExportable {
                 attribute = model.getAttribute("_layoutConfiguration");
                 if (attribute == null) {
                     MessageHandler
-                    .error("Could not create the layout configuration attribute.");
+                            .error("Could not create the layout configuration attribute.");
                     return;
                 }
             }
