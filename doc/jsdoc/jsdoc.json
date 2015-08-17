@@ -4,6 +4,6 @@
         "tags": ["accessor", "input", "output", "parameter"]
     },
     "source": {
-        "excludePattern": "vendors"
+        "excludePattern": "(vendors|node_modules)"
     }
 }
