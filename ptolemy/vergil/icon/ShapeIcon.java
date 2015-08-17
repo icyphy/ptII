@@ -145,6 +145,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         newFigure.setDashArray(_dashArray);
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
+        newFigure.rotate(_rotation);
 
         _addLiveFigure(newFigure);
 
@@ -336,6 +337,43 @@ public class ShapeIcon extends DynamicEditorIcon {
         SwingUtilities.invokeLater(doSet);
     }
 
+    /** Specify the rotation angle in radians.  This is deferred and executed
+     *  in the Swing thread.
+     *  @param angle The rotation angle in radians.
+     */
+    public void setRotation(double angle) {
+        // Avoid calling swing if things haven't actually changed.
+        if (_rotation == angle) {
+            return;
+        }
+
+        _rotation = angle;
+
+        // Update the shapes of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here where that method is trying to add to the _figures
+        // list while this method is traversing it.
+        Runnable doSet = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (_figures) {
+                    Iterator figures = _liveFigureIterator();
+
+                    while (figures.hasNext()) {
+                        BasicFigure figure = (BasicFigure)figures.next();
+                        double previousRotation = figure.getRotation();
+                        double delta = angle - previousRotation;
+                        figure.rotate(delta);
+                    }
+                }
+            }
+        };
+
+        SwingUtilities.invokeLater(doSet);
+    }
+
     /** Specify a path to display.  This is deferred and executed
      *  in the Swing thread.
      *  @param path The path to display.
@@ -391,6 +429,9 @@ public class ShapeIcon extends DynamicEditorIcon {
 
     // The specified line width.
     private float _lineWidth = 1f;
+    
+    // The rotation.
+    private double _rotation = 0.0;
 
     // The shape that is rendered.
     private Shape _shape;
