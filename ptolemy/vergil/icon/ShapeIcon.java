@@ -341,7 +341,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  in the Swing thread.
      *  @param angle The rotation angle in radians.
      */
-    public void setRotation(double angle) {
+    public void setRotation(final double angle) {
         // Avoid calling swing if things haven't actually changed.
         if (_rotation == angle) {
             return;
