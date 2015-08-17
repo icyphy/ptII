@@ -1205,9 +1205,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // All events with timestamp tau, tau belonging to interval (currentTime, nextTimeStep],
         // that must be published have their timestamp set to nextTimeStep (they are delayed).
         if (_timeStepped) {
-            Time nextTimeStep = _getNextTimeStep(_director.getModelTime());
-            if (currentTime.compareTo(nextTimeStep.subtract(_hlaTimeStep))>0)
-                currentTime = nextTimeStep; 
+            currentTime  = _getNextTimeStep(_director.getModelTime());
         }
 
         // The following operations build the different arguments required
