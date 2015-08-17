@@ -25,7 +25,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo perform simple motion detection on an image sequence.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-5.0, 50.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-5.0, 50.0}">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -34,7 +34,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 265.0}">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -44,7 +44,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 125.0}">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -62,7 +62,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 265.0}">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -100,7 +100,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 255.0}">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -133,41 +133,41 @@
     <entity name="CenterOfGravity" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 553, 259, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[259, 164]">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 185.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 190.0}">
         </property>
     </entity>
     <entity name="AreaPercentage" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 553, 259, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[259, 164]">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 265.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=250.0}, tail={id=&quot;Camera.trigger&quot;,x=175.0,y=250.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=265.0}, tail={id=&quot;Camera.trigger&quot;,x=175.0,y=265.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=175.0,y=250.0}, tail={id=&quot;MotionDetector.input&quot;,x=295.0,y=240.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=175.0,y=265.0}, tail={id=&quot;MotionDetector.input&quot;,x=300.0,y=255.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=440.0,y=125.0}, tail={id=&quot;MotionDetector.output&quot;,x=295.0,y=240.0}, points={375.0,125.0,375.0,230.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=435.0,y=125.0}, tail={id=&quot;MotionDetector.output&quot;,x=300.0,y=255.0}, points={375.0,125.0,375.0,245.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=295.0,y=240.0}, tail={id=&quot;CenterOfGravity.input&quot;,x=430.0,y=185.0}, points={390.0,240.0,390.0,185.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=300.0,y=255.0}, tail={id=&quot;CenterOfGravity.input&quot;,x=430.0,y=190.0}, points={390.0,255.0,390.0,190.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=295.0,y=240.0}, tail={id=&quot;AreaPercentage.input&quot;,x=430.0,y=250.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=300.0,y=255.0}, tail={id=&quot;AreaPercentage.input&quot;,x=430.0,y=265.0}, points={} } }">
         </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
