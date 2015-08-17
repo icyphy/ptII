@@ -1289,10 +1289,11 @@ public class JavaScript extends TypedAtomicActor {
                 _setOptionsForSelect(parameter, options);
 
             }
-            if (((Parameter) parameter).getToken() == null
+            Token previousValue = ((Parameter) parameter).getToken();
+            if (previousValue == null
                     || ((ptType == BaseType.STRING)
-                            && parameter instanceof StringParameter && (((StringParameter) parameter)
-                                .stringValue().equals("")))) {
+                            && ((Parameter) parameter).isStringMode()
+                            && (((StringToken) previousValue).stringValue().equals("")))) {
                 // The parameter does not already have a value. Set the default.
                 Object value = options.get("value");
                 if (value != null) {
