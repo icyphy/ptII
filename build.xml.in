@@ -619,7 +619,7 @@ For example:
           description="Attempt to get an Accessors-specific page from the TerraSwarm wiki."
           >
     <exec executable="doc/jsdoc/makeptjsdocREADME"
-      timeout="2000">
+      timeout="10000">
     </exec>
   </target>
 
