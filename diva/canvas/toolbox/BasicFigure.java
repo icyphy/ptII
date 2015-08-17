@@ -80,6 +80,9 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** The paint for the fill.
      */
     private Paint _fillPaint;
+    
+    /** The cumulative rotation angle since creation of the figure. */
+    private double _rotation = 0.0;
 
     /** The stroke.
      */
@@ -207,6 +210,15 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             return point;
         }
     }
+    
+    /** Get the cummulative rotation angle since creation
+     *  of the figure. This is the sum of all the angles given
+     *  to {@link #rotate(double)}.
+     *  @return The cumulative rotation angle.
+     */
+    public double getRotation() {
+        return _rotation;
+    }
 
     /** Get the shape of this figure.
      */
@@ -280,6 +292,21 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             g.draw(_shape);
         }
     }
+    
+    /** Rotate the figure through the specified angle in radians.
+     *  @param angle The angle of rotation.
+     */
+    public void rotate(double angle) {
+        // FIXME: Use some closeness criterion?
+        if (angle == 0.0) {
+            // Nothing to do.
+            return;
+        }
+        _rotation += angle;
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(angle);
+        transform(transform);
+    }
 
     /** Specify whether the figure should be centered on its origin.
      *  By default, it is.
@@ -288,6 +315,10 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  @see #getOrigin()
      */
     public void setCentered(boolean centered) {
+        if (_centered = centered) {
+            // Nothing to do.
+            return;
+        }
         repaint();
 
         Point2D point = getOrigin();
@@ -411,7 +442,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);
-        _shape = ShapeUtilities.transformModify(_shape, at);
+        _shape = ShapeUtilities.transformModify(_shape, _transform);
         repaint();
     }
 }
