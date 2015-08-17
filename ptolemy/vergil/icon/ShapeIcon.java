@@ -145,7 +145,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         newFigure.setDashArray(_dashArray);
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
-        newFigure.rotate(_rotation);
+        newFigure.setRotation(_rotation);
 
         _addLiveFigure(newFigure);
 
@@ -363,9 +363,7 @@ public class ShapeIcon extends DynamicEditorIcon {
 
                     while (figures.hasNext()) {
                         BasicFigure figure = (BasicFigure)figures.next();
-                        double previousRotation = figure.getRotation();
-                        double delta = angle - previousRotation;
-                        figure.rotate(delta);
+                        figure.setRotation(angle);
                     }
                 }
             }

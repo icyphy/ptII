@@ -81,7 +81,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     private Paint _fillPaint;
     
-    /** The cumulative rotation angle since creation of the figure. */
+    /** The angle of rotation of the figure. */
     private double _rotation = 0.0;
 
     /** The stroke.
@@ -211,10 +211,9 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
         }
     }
     
-    /** Get the cummulative rotation angle since creation
-     *  of the figure. This is the sum of all the angles given
-     *  to {@link #rotate(double)}.
+    /** Get the angle of rotation of the figure.
      *  @return The cumulative rotation angle.
+     *  @see #setRotation(double)
      */
     public double getRotation() {
         return _rotation;
@@ -293,21 +292,6 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
         }
     }
     
-    /** Rotate the figure through the specified angle in radians.
-     *  @param angle The angle of rotation.
-     */
-    public void rotate(double angle) {
-        // FIXME: Use some closeness criterion?
-        if (angle == 0.0) {
-            // Nothing to do.
-            return;
-        }
-        _rotation += angle;
-        AffineTransform transform = new AffineTransform();
-        transform.rotate(angle);
-        transform(transform);
-    }
-
     /** Specify whether the figure should be centered on its origin.
      *  By default, it is.
      *  @param centered False to make the origin of the figure, as
@@ -395,6 +379,27 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     public void setPrototypeShape(Shape s) {
         repaint();
         _shape = _transform.createTransformedShape(s);
+        repaint();
+    }
+
+    /** Set the rotation angle of the figure to the specified angle in radians.
+     *  @param angle The angle of rotation.
+     *  @see #getRotation()
+     */
+    public void setRotation(double angle) {
+        // FIXME: Use some closeness criterion?
+        if (angle == _rotation) {
+            // Nothing to do.
+            return;
+        }
+        double delta = angle - _rotation;
+        _rotation = angle;
+        // Do not modify _transform or the rotation will
+        // be applied repeatedly.
+        AffineTransform transform = new AffineTransform(_transform);
+        transform.rotate(delta);
+        repaint();
+        _shape = ShapeUtilities.transformModify(_shape, transform);
         repaint();
     }
 
