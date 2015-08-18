@@ -11,7 +11,7 @@ int i;
 fmi2Integer requiredResolution = 0;
 int loggingOn = 0;
 char csv_separator = ',';
-char **categories = NULL;
+fmi2String *categories = NULL;
 int nCategories = 0;
 fmi2Boolean visible = fmi2False;           // no simulator user interface
 
@@ -26,7 +26,7 @@ parseArguments(argc, argv, &tEnd, &requiredResolution, &loggingOn, &csv_separato
 
 /***mainEndBlock***/
 // run the simulation
-        printf("FMU Simulator: run '%s' from t=0..%d with step size h=%d, loggingOn=%d, csv separator='%c' ",
+        printf("FMU Simulator: run '%s' from t=0..%ld with step size h=%ld, loggingOn=%d, csv separator='%c' ",
                         MODEL_NAME, tEnd, requiredResolution, loggingOn, csv_separator);
     printf("log categories={ ");
         for (i = 0; i < nCategories; i++) {

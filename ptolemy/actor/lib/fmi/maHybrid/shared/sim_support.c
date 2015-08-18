@@ -381,7 +381,7 @@ static void doubleToCommaString(char* buffer, double r){
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
 // otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
-void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int resolution, FILE* file, char separator, boolean header) {
+void outputRow(FMU fmus[], int numberOfFMUs, const char* NAMES_OF_FMUS[], int time, int resolution, FILE* file, char separator, boolean header) {
 
     char buffer[32];
 
@@ -452,7 +452,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int
                     case elm_Integer:
                         fmu->getHybridInteger(c, &vr, 1, &i, &hv);
                         if (hv == 0)
-                            fprintf(file, ",%d", i);
+                            fprintf(file, ",%ld", i);
                         if (hv == 1)
                             fprintf(file, ",absent");
                         if (hv == 2)
@@ -461,7 +461,7 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int
                     case elm_Enumeration:
                         fmu->getHybridInteger(c, &vr, 1, &i, &hv);
                         if (hv == 0)
-                            fprintf(file, ",%d", i);
+                            fprintf(file, ",%ld", i);
                         if (hv == 1)
                             fprintf(file, ",absent");
                         if (hv == 2)
@@ -618,8 +618,8 @@ int error(const char* message){
     return 0;
 }
 
-void parseArguments(int argc, char *argv[], int *tEnd, int *h,
-        int *loggingOn, char *csv_separator, int *nCategories, /*const*/ fmi2String *logCategories[]) {
+void parseArguments(int argc, char *argv[], fmi2Integer *tEnd, fmi2Integer *h,
+        int *loggingOn, char *csv_separator, int *nCategories, fmi2String *logCategories[]) {
     // parse command line arguments
     if (argc > 1) {
         if (sscanf(argv[1],"%d", tEnd) != 1) {

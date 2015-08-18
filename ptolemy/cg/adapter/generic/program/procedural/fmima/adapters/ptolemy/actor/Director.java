@@ -132,8 +132,8 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         code.append("printf(\"Initializing FMU " + actor.getName()
                                         + "...\\n\");\n");
                         code.append("fmus[" + actor.getName()
-                                        + "].component = initializeFMU(&fmus[" + actor.getName()
-                                        + "], visible, loggingOn, nCategories, categories);\n");
+                                + "].component = initializeFMU(&fmus[" + actor.getName()
+                                + "], visible, loggingOn, nCategories, &categories, NAMES_OF_FMUS[" + actor.getName() + "]);\n");
                 }
 
                 HashMap<Node, FMIScalarVariable> node2Scalar = new HashMap<Node, FMIScalarVariable>();

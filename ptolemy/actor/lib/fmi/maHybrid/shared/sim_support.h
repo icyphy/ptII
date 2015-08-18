@@ -67,13 +67,13 @@
 
 void fmuLogger(fmi2Component c, fmi2String instanceName, fmi2Status status, fmi2String category, fmi2String message, ...);
 int unzip(const char *zipPath, const char *outPath);
-void parseArguments(int argc, char *argv[], int *tEnd, int *h,
+void parseArguments(int argc, char *argv[], fmi2Integer *tEnd, fmi2Integer *h,
         int *loggingOn, char *csv_separator, int *nCategories, fmi2String *logCategories[]);
 void loadFMU(FMU *fmu, const char *fmuFileName);
 #ifndef _MSC_VER
 typedef int boolean;
 #endif
-void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], int time, int resolution, FILE* file, char separator, boolean header);
+void outputRow(FMU fmus[], int numberOfFMUs, const char* NAMES_OF_FMUS[], int time, int resolution, FILE* file, char separator, boolean header);
 int error(const char *message);
 void printHelp(const char *fmusim);
 char *getTempResourcesLocation(); // caller has to free the result

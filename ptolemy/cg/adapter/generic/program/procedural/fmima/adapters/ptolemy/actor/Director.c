@@ -11,7 +11,7 @@ int i;
 double h = 0.1;
 int loggingOn = 0;
 char csv_separator = ',';
-char **categories = NULL;
+fmi2String *categories = NULL;
 int nCategories = 0;
 fmi2Boolean visible = fmi2False;           // no simulator user interface
 

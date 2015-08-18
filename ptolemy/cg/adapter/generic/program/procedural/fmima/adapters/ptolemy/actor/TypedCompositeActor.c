@@ -34,7 +34,7 @@ double tStart = 0;
 /***staticDeclareBlock***/
 
 static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible,
-                fmi2Boolean loggingOn, int nCategories, char ** categories) {
+	fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* name) {
 
         fmi2Status fmi2Flag;                     // return code of the fmu functions
 

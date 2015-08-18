@@ -382,7 +382,7 @@ static void doubleToCommaString(char* buffer, double r){
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
 // otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
-void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, FILE* file, char separator, boolean header) {
+void outputRow(FMU *fmus, int numberOfFMUs, const char* NAMES_OF_FMUS[], double time, FILE* file, char separator, boolean header) {
 
     char buffer[32];
 
@@ -452,6 +452,9 @@ void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, 
                         }
                         break;
                     case elm_Integer:
+                        fmu->getInteger(c, &vr, 1, &i);
+                        fprintf(file, "%c%d", separator, i);
+                        break;
                     case elm_Enumeration:
                         fmu->getInteger(c, &vr, 1, &i);
                         fprintf(file, "%c%d", separator, i);
