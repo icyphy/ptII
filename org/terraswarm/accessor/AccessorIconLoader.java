@@ -33,10 +33,12 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IconAttribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.IconLoader;
 import ptolemy.moml.MoMLParser;
 
@@ -86,6 +88,14 @@ public class AccessorIconLoader implements IconLoader {
                 // but there seems to be no way to prevent that without breaking
                 // Kepler.
                 
+                // Don't invoke attributeList on the Configuration or
+                // an EntityLibrary, it will try to load packages that
+                // might not exist.
+                if (context instanceof Configuration
+                        || context instanceof ptolemy.moml.EntityLibrary) {
+                    return;
+                }
+
                 // If the context already has an icon, then do not load
                 // the default icon.
                 List previousIcons = context.attributeList(IconAttribute.class);
