@@ -351,6 +351,10 @@ public final class CanvasUtilities {
 
     /** Get the point on the given rectangular shape indicated by the location
      * flag. This flag must be one of those defined in javax.swing.Constants.
+     * @param r The give rectangle
+     * @param location One of the directions (CENTER, NORTH etc.)
+     * defined in SwingConstants.
+     * @return The point.
      */
     public static Point2D getLocation(Rectangle2D r, int location) {
         double x;
@@ -429,7 +433,7 @@ public final class CanvasUtilities {
     /** Return the angle between -PI and PI that corresponds to the
      *  given angle.
      *  @param The angle
-     *  @param The modulo of the angle.
+     *  @return The modulo of the angle.
      */
     public static double moduloAngle(double angle) {
         while (angle > Math.PI) {
@@ -485,6 +489,7 @@ public final class CanvasUtilities {
      *
      * @param i An iterator over figures
      * @param region A rectangle which represents the pick or hit region
+     * @param filter The filter that is called to accept the figure.
      * @return The topmost descendent under the pick region, or null
      * there isn't one.
      */
@@ -541,6 +546,8 @@ public final class CanvasUtilities {
     /** Reverse a direction flag. The flag must one of the eight
      * compass directions defined in SwingConstants. Return the flag
      * that represents the opposite direction.
+     * @param direction One of the directions from SwingContatn
+     * @return The opposite direction.
      */
     public static int reverseDirection(int direction) {
         switch (direction) {
@@ -586,6 +593,9 @@ public final class CanvasUtilities {
      * Otherwise, AffineTransform.createTransformedShape() is used
      * to create a new shape, which is then returned.
      *
+     * @param r The rectangular shape
+     * @param at The AffineTransform
+     * @return The shape after the transformation.
      * @deprecated Use diva.util.java2d.ShapeUtilities.transformRectangle()
      * or diva.util.java2d.ShapeUtilities.transformRectangularShape()
      */
@@ -661,6 +671,9 @@ public final class CanvasUtilities {
      * transformation is used that creates and returns a new instance
      * of GeneralPath.
      *
+     * @param r The shapre
+     * @param at The AffineTransform
+     * @return The shape after the transformation.
      * @deprecated Use ShapeUtilities.transformModify()
      */
     @Deprecated
