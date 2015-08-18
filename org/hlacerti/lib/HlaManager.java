@@ -86,6 +86,8 @@ import hla.rti.jlc.EncodingHelpers;
 import hla.rti.jlc.NullFederateAmbassador;
 import hla.rti.jlc.RtiFactory;
 import hla.rti.jlc.RtiFactoryFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -781,370 +783,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // Federation (the RTI) the authorization to advance its time.
         if (_isTimeRegulator && _isTimeConstrained) {
             synchronized (this) {
-                // Build a representation of the proposedTime in HLA/CERTI.
-                CertiLogicalTime certiProposedTime = new CertiLogicalTime(
-                        proposedTime.getDoubleValue() * _hlaTimeUnitValue);
-
                 // Call the corresponding HLA Time Management service.
                 try {
                     if (_eventBased) {
-                        Time breakpoint = null;
-                        certiProposedTime = new CertiLogicalTime(
-                                proposedTime.getDoubleValue()
-                                        * _hlaTimeUnitValue);
-                        if (_hlaLookAHead > 0) {
-                            // Event-based + lookahead > 0 => NER.
-                            if (_debugging) {
-                                _debug(this.getDisplayName()
-                                        + " proposeTime() - call CERTI NER -"
-                                        + " nextEventRequest("
-                                        + certiProposedTime.getTime()
-                                        + ") with model at "
-                                        + proposedTime.getDoubleValue());
-                            }
-                            _rtia.nextEventRequest(certiProposedTime);
-                        } else {
-                            // Event-based + lookahead = 0 => NERA + NER.
-                            // Start the time advancement loop with one NERA call.
-                            if (_debugging) {
-                                _debug(this.getDisplayName()
-                                        + " proposeTime() - call CERTI NERA -"
-                                        + " nextEventRequestAvailable("
-                                        + certiProposedTime.getTime() + ")");
-                            }
-                            _rtia.nextEventRequestAvailable(certiProposedTime);
-
-                            // Wait the time grant from the HLA/CERTI Federation (from the RTI).
-                            _federateAmbassador.timeAdvanceGrant = false;
-                            while (!(_federateAmbassador.timeAdvanceGrant)) {
-                                if (_debugging) {
-                                    _debug(this.getDisplayName()
-                                            + " proposeTime() -"
-                                            + " wait CERTI TAG - "
-                                            + "timeAdvanceGrant("
-                                            + certiProposedTime.getTime()
-                                            + ") by calling tick2()");
-                                }
-
-                                try {
-                                    _rtia.tick2();
-                                } catch (RTIexception e) {
-                                    throw new IllegalActionException(this, e,
-                                            e.getMessage());
-                                }
-                            }
-
-                            // End the loop with one NER call.
-                            if (_debugging) {
-                                _debug(this.getDisplayName()
-                                        + " proposeTime() - call CERTI NER -"
-                                        + " nextEventRequest("
-                                        + certiProposedTime.getTime() + ")");
-                            }
-                            _rtia.nextEventRequest(certiProposedTime);
-
-                        }
-                        // Wait the time grant from the HLA/CERTI Federation (from the RTI).
-                        _federateAmbassador.timeAdvanceGrant = false;
-                        while (!(_federateAmbassador.timeAdvanceGrant)) {
-                            if (_debugging) {
-                                _debug(this.getDisplayName()
-                                        + " proposeTime() -"
-                                        + " wait CERTI TAG - "
-                                        + "timeAdvanceGrant("
-                                        + certiProposedTime.getTime()
-                                        + ") by calling tick2()");
-                            }
-
-                            try {
-                                _rtia.tick2();
-                            } catch (RTIexception e) {
-                                throw new IllegalActionException(this, e,
-                                        e.getMessage());
-                            }
-                        }
-
-                        // At this step we are sure that the HLA logical time of the
-                        // Federate has been updated (by the reception of the TAG callback
-                        // (timeAdvanceGrant()) and its value is the proposedTime or
-                        // less, so we have a breakpoint time.
-                        try {
-                            double hlaTimeGranted = ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA)
-                                    .getTime();
-
-                            double timeValue = hlaTimeGranted
-                                    / _hlaTimeUnitValue;
-                            if (_debugging) {
-                                _debug("TAG for " + hlaTimeGranted
-                                        + "model moves to" + timeValue);
-                            }
-                            breakpoint = new Time(_director, timeValue);
-                        } catch (IllegalActionException e) {
-                            throw new IllegalActionException(this, e,
-                                    "The breakpoint time is not a valid Ptolemy time");
-                        }
-
-                        // Store reflected attributes RAV as events on HLASubscriber actors.  
-                        _putReflectedAttributesOnHlaSubscribers();
-                        return breakpoint;
-
+                        return _eventsBasedTimeAdvance(proposedTime);
                     } else {
-                        if (_hlaTimeStep > 0) {
-                            //Definition of nextTimeStep and its certi time.                 
-                            Time nextTimeStep = _getNextTimeStep(currentTime);
-                            certiProposedTime = new CertiLogicalTime(
-                                    nextTimeStep.getDoubleValue()
-                                            * _hlaTimeUnitValue);
-
-                            if (_hlaLookAHead > 0) {
-                                // Time-stepped + lookahead > 0 => TAR.
-                                // The advance time depends on the area of proposedTime of LastFoundEvent
-                                // There are two types of events in a federate model:
-                                // - external to the model (RAV)
-                                // - internal to the model (produced by actors in the federate model).
-
-                                /*
-                                // Method 1 (this method works well. Method 2 below is a simplified version
-                                // under test yet):
-                                // There are three cases:
-                                // case 1: currentTime < proposedTime < nextTimeStep
-                                //          return currentTime
-                                // case 2: nextTimestep <= proposedTime < nextTimeStep + TimeStep
-                                //          tar(nextTimeStep), tick(), put in the queue
-                                //          return nextTimeStep
-                                // case 3: proposedTime >= nextTimeStep + TimeStep
-                                //          tar(nextTimestep), tick()
-                                //          if no RAV, nextTimeStep+=nextTimeStep
-                                //          else put them in the queue;
-
-                                // case 3:
-                                // If there is an internal event with timestamp tau in the calender queue and 
-                                // tau belongs to the [nextTimeStep+k*Ts,nextTimeStep+(k+j)*Ts), k>0, j>0
-                                //              Then TAR(nextTimeStep), ..., TAR((k+j-1)*nextTimeStep) services are called; 
-                                 
-                                while (proposedTime.compareTo(nextTimeStep
-                                        .add(_hlaTimeStep)) >= 0) {
-                                    if (_debugging) {
-                                        _debug(this.getDisplayName()
-                                                + " proposeTime() -  call CERTI TAR -"
-                                                + " timeAdvanceRequest("
-                                                + certiProposedTime.getTime()
-                                                + ")");
-                                    }
-                                    _rtia.timeAdvanceRequest(certiProposedTime);
-
-                                    // Wait the grant from the HLA/CERTI Federation (from the RTI).
-                                    _federateAmbassador.timeAdvanceGrant = false;
-                                    int cntTick = 0;
-                                    while (!(_federateAmbassador.timeAdvanceGrant)) {
-                                        if (_debugging) {
-                                            _debug(this.getDisplayName()
-                                                    + " proposeTime() -"
-                                                    + " wait CERTI TAG - "
-                                                    + "timeAdvanceGrant("
-                                                    + certiProposedTime
-                                                            .getTime()
-                                                    + ") by calling tick2()");
-                                        }
-
-                                        try {
-                                            _rtia.tick2();
-                                            cntTick++;
-                                        } catch (RTIexception e) {
-                                            throw new IllegalActionException(
-                                                    this, e, e.getMessage());
-                                        }
-                                    }
-                                 
-                                 // If there is no external event in the interval [currentTime, nextTimeStep+Ts)},
-                                 //             Then the (Ptolemy) time is advanced to (nextTimeStep+Ts); 
-                                 // Else, put the RAV  into the eventQueue                                                               
-                                 if (cntTick == 1) {
-                                        nextTimeStep = nextTimeStep
-                                                .add(_hlaTimeStep);
-                                        certiProposedTime = new CertiLogicalTime(
-                                                nextTimeStep.getDoubleValue()
-                                                        / _hlaTimeUnitValue);
-                                    } else
-                                        break;
-                                }
-
-                                // case 1:
-                                // If there is an internal event with timestamp tau in the calender queue and  
-                                // tau belongs to the interval [currentTime, nextTimeStep)} 
-                                //              Then the (Ptolemy) time is advanced to tau; 
-                                if (currentTime.compareTo(proposedTime) < 0
-                                        && proposedTime.compareTo(nextTimeStep) < 0) {
-                                    return currentTime;
-                                }
-
-                                //case 2:
-                                // If there is an internal event with timestamp tau in the calender queue and 
-                                // tau belongs to the interval [nextTimeStep, nextTimeStep+Ts)} 
-                                //              Then TAR(nextTimeStep) service is called; 
-                                if (nextTimeStep.compareTo(proposedTime) <= 0
-                                        && proposedTime.compareTo(nextTimeStep
-                                                .add(_hlaTimeStep)) < 0) {
-                                    if (_debugging) {
-                                        _debug(this.getDisplayName()
-                                                + " proposeTime() -  call CERTI TAR -"
-                                                + " timeAdvanceRequest("
-                                                + certiProposedTime.getTime()
-                                                + ")");
-                                    }
-                                    _rtia.timeAdvanceRequest(certiProposedTime);
-
-                                    // Wait the grant from the HLA/CERTI Federation (from the RTI).
-                                    _federateAmbassador.timeAdvanceGrant = false;
-                                    while (!(_federateAmbassador.timeAdvanceGrant)) {
-                                        if (_debugging) {
-                                            _debug(this.getDisplayName()
-                                                    + " proposeTime() -"
-                                                    + " wait CERTI TAG - "
-                                                    + "timeAdvanceGrant("
-                                                    + certiProposedTime
-                                                            .getTime()
-                                                    + ") by calling tick2()");
-                                        }
-
-                                        try {
-                                            _rtia.tick2();
-                                        } catch (RTIexception e) {
-                                            throw new IllegalActionException(
-                                                    this, e, e.getMessage());
-                                        }
-                                    }
-                                }
-                                // Stored reflected attributes as events on HLASubscriber actors.
-                                _putReflectedAttributesOnHlaSubscribers();
-                                return nextTimeStep;
-                                */
-
-                                //Methode 2:
-                                // two cases:
-                                // case 1: currentTime<proposedTime<nextTimeStep
-                                //         we'll consume the event and advance the ptolemy time
-                                //         so return currentTime
-                                // case 2: proposedTime>= nextTimeStep
-                                //         we should do tar at every time step 
-                                //         and see if we get a rav event or not.
-                                //         if RAV, then put them into the queue,
-                                //         else nextTimeStep+=Ts.
-                                // case 1: 
-
-                                //Methode 2 (simplified version of method 1 above; still under test):
-                                // There are three cases:
-                                // case 1: currentTime < proposedTime < nextTimeStep
-                                //          return currentTime
-                                // case 2: nextTimestep <= proposedTime 
-                                //          tar(nextTimeStep), tick()
-                                //                              if no RAV && proposedTime >=nextTimeStep+Ts, nextTimeStep+=nextTimeStep
-                                //                              else put them in the queue;
-                                //                      return nextTimeStep.
-                                //
-                                // case 1: 
-                                // If there is an internal event with timestamp tau in the calender queue and  
-                                // tau belongs to the interval [currentTime, nextTimeStep)} 
-                                //              Then the (Ptolemy) time is advanced to tau; 
-
-                                if (currentTime.compareTo(proposedTime) < 0
-                                        && proposedTime.compareTo(nextTimeStep) < 0) {
-                                    return currentTime;
-                                }
-
-                                // case 2: 
-                                // If there is an internal event with timestamp tau in the calender queue and 
-                                // tau belongs to the [nextTimeStep+k*Ts,nextTimeStep+(k+j)*Ts), k>=0, j>0
-                                //              Then TAR(nextTimeStep), ..., TAR((k+j-1)*nextTimeStep) services are called; 
-                                while (proposedTime.compareTo(nextTimeStep) >= 0) {
-                                    if (_debugging) {
-                                        _debug(this.getDisplayName()
-                                                + " proposeTime() -  call CERTI TAR -"
-                                                + " timeAdvanceRequest("
-                                                + certiProposedTime.getTime()
-                                                + ")");
-                                    }
-                                    _rtia.timeAdvanceRequest(certiProposedTime);
-
-                                    // Wait the time grant from the HLA/CERTI Federation (from the RTI).
-                                    _federateAmbassador.timeAdvanceGrant = false;
-                                    int cntTick = 0;
-                                    while (!(_federateAmbassador.timeAdvanceGrant)) {
-                                        if (_debugging) {
-                                            _debug(this.getDisplayName()
-                                                    + " proposeTime() -"
-                                                    + " wait CERTI TAG - "
-                                                    + "timeAdvanceGrant("
-                                                    + certiProposedTime
-                                                            .getTime()
-                                                    + ") by calling tick2()");
-                                        }
-
-                                        try {
-                                            _rtia.tick2();
-                                            cntTick++;
-                                        } catch (RTIexception e) {
-                                            throw new IllegalActionException(
-                                                    this, e, e.getMessage());
-                                        }
-                                    }
-
-                                    // If there is no external neither internal events in the interval [currentTime, nextTimeStep+Ts)},
-                                    //          Then the (Ptolemy) time is advanced to (nextTimeStep+Ts); 
-                                    // Else, put them (RAV or received event) into the eventQueue
-                                    if (cntTick == 1
-                                            && proposedTime
-                                                    .compareTo(nextTimeStep
-                                                            .add(_hlaTimeStep)) >= 0) {
-                                        nextTimeStep = nextTimeStep
-                                                .add(_hlaTimeStep);
-                                        certiProposedTime = new CertiLogicalTime(
-                                                nextTimeStep.getDoubleValue()
-                                                        * _hlaTimeUnitValue);
-                                    } else
-                                        break;
-                                }
-
-                                // Store reflected attributes as events on HLASubscriber actors.
-                                _putReflectedAttributesOnHlaSubscribers();
-                                return nextTimeStep;
-
-                            } else {
-                                // Time-stepped + lookahead = 0 => TARA + TAR.
-                                // Start the loop with one TARA call.
-                                if (_debugging) {
-                                    _debug(this.getDisplayName()
-                                            + " proposeTime() -"
-                                            + " wait CERTI TAG - "
-                                            + "timeAdvanceGrant("
-                                            + certiProposedTime.getTime()
-                                            + ") by calling tick2()");
-                                }
-
-                                try {
-                                    _rtia.tick2();
-                                } catch (SpecifiedSaveLabelDoesNotExist e) {
-                                    throw new IllegalActionException(this, e,
-                                            "SpecifiedSaveLabelDoesNotExist ");
-                                } catch (ConcurrentAccessAttempted e) {
-                                    throw new IllegalActionException(this, e,
-                                            "ConcurrentAccessAttempted ");
-                                } catch (RTIinternalError e) {
-                                    throw new IllegalActionException(this, e,
-                                            "RTIinternalError ");
-                                }
-                            }
-
-                            // End the loop with one TAR call.
-                            if (_debugging) {
-                                _debug(this.getDisplayName()
-                                        + " proposeTime() -  call CERTI TAR -"
-                                        + " timeAdvanceRequest("
-                                        + certiProposedTime.getTime() + ")");
-                            }
-                            _rtia.timeAdvanceRequest(certiProposedTime);
-
-                        }
+                        return _timeSteppedBasedTimeAdvance(proposedTime);
                     }
                 } catch (InvalidFederationTime e) {
                     throw new IllegalActionException(this, e,
@@ -1182,6 +826,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 + " NoSuchElementException " + " for _rtia");
                     }
                     return proposedTime;
+                } catch (SpecifiedSaveLabelDoesNotExist ex) {
+                    Logger.getLogger(HlaManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -1242,8 +888,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // To avoid CERTI exception when calling UAV service, in the case of NER or TAR
         // with lookahead > 0, we add the lookahead value to the event's timestamp.
         double messageModelTime = currentTime.getDoubleValue() + _hlaLookAHead;
-        CertiLogicalTime ct = new CertiLogicalTime(messageModelTime
-                * _hlaTimeUnitValue);
+        CertiLogicalTime ct = new CertiLogicalTime(messageModelTime * _hlaTimeUnitValue);
         if (_debugging) {
             _debug(this.getDisplayName() + " publish() -"
                     + " send (UAV) updateAttributeValues "
@@ -1398,7 +1043,254 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    private Time _eventsBasedTimeAdvance(Time proposedTime) 
+            throws IllegalActionException, InvalidFederationTime, 
+            FederationTimeAlreadyPassed, TimeAdvanceAlreadyInProgress, 
+            FederateNotExecutionMember, SaveInProgress, EnableTimeRegulationPending, 
+            EnableTimeConstrainedPending, RestoreInProgress, 
+            RTIinternalError, ConcurrentAccessAttempted, SpecifiedSaveLabelDoesNotExist {
+        
+        Time breakpoint = null;
+        CertiLogicalTime certiProposedTime = new CertiLogicalTime(
+                proposedTime.getDoubleValue() * _hlaTimeUnitValue);
+        
+        if (_hlaLookAHead > 0) {
+            // Event-based + lookahead > 0 => NER.
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " proposeTime() - call CERTI NER -"
+                        + " nextEventRequest("
+                        + certiProposedTime.getTime()
+                        + ") with model at "
+                        + proposedTime.getDoubleValue());
+            }
+            _rtia.nextEventRequest(certiProposedTime);
+        } else {
+            // Event-based + lookahead = 0 => NERA + NER.
+            // Start the time advancement loop with one NERA call.
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " proposeTime() - call CERTI NERA -"
+                        + " nextEventRequestAvailable("
+                        + certiProposedTime.getTime() + ")");
+            }
+            _rtia.nextEventRequestAvailable(certiProposedTime);
+            
+            // Wait the time grant from the HLA/CERTI Federation (from the RTI).
+            _federateAmbassador.timeAdvanceGrant = false;
+            while (!(_federateAmbassador.timeAdvanceGrant)) {
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " proposeTime() -"
+                            + " wait CERTI TAG - "
+                            + "timeAdvanceGrant("
+                            + certiProposedTime.getTime()
+                            + ") by calling tick2()");
+                }
+                
+                    _rtia.tick2();
+            }
+            
+            // End the loop with one NER call.
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " proposeTime() - call CERTI NER -"
+                        + " nextEventRequest("
+                        + certiProposedTime.getTime() + ")");
+            }
+            _rtia.nextEventRequest(certiProposedTime);            
+        }
+        
+        // Wait the time grant from the HLA/CERTI Federation (from the RTI).
+        _federateAmbassador.timeAdvanceGrant = false;
+        while (!(_federateAmbassador.timeAdvanceGrant)) {
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " proposeTime() -"
+                        + " wait CERTI TAG - "
+                        + "timeAdvanceGrant("
+                        + certiProposedTime.getTime()
+                        + ") by calling tick2()");
+            }            
+            _rtia.tick2();
+        }
+        
+        // At this step we are sure that the HLA logical time of the
+        // Federate has been updated (by the reception of the TAG callback
+        // (timeAdvanceGrant()) and its value is the proposedTime or
+        // less, so we have a breakpoint time.
+        try {
+            double hlaTimeGranted = ((CertiLogicalTime) _federateAmbassador.logicalTimeHLA)
+                    .getTime();
+            
+            double timeValue = hlaTimeGranted
+                    / _hlaTimeUnitValue;
+            if (_debugging) {
+                _debug("TAG for " + hlaTimeGranted
+                        + "model moves to" + timeValue);
+            }
+            breakpoint = new Time(_director, timeValue);
+        } catch (IllegalActionException e) {
+            throw new IllegalActionException(this, e,
+                    "The breakpoint time is not a valid Ptolemy time");
+        }
+        
+        // Store reflected attributes RAV as events on HLASubscriber actors.
+        _putReflectedAttributesOnHlaSubscribers();
+        return breakpoint;
+    }
+    
+    private Time _timeSteppedBasedTimeAdvance(Time proposedTime)            
+            throws IllegalActionException, InvalidFederationTime, 
+            FederationTimeAlreadyPassed, TimeAdvanceAlreadyInProgress, 
+            FederateNotExecutionMember, SaveInProgress, EnableTimeRegulationPending, 
+            EnableTimeConstrainedPending, RestoreInProgress, 
+            RTIinternalError, ConcurrentAccessAttempted {
 
+        Time currentTime = _director.getModelTime();
+        
+        if (_hlaTimeStep > 0) {
+            //Definition of nextTimeStep and its certi time.
+            Time nextTimeStep = _getNextTimeStep(currentTime);
+            CertiLogicalTime certiProposedTime = new CertiLogicalTime(
+                    nextTimeStep.getDoubleValue()
+                            * _hlaTimeUnitValue);
+            
+            if (_hlaLookAHead > 0) {
+                // Time-stepped + lookahead > 0 => TAR.
+                // The advance time depends on the area of proposedTime of LastFoundEvent
+                // There are two types of events in a federate model:
+                // - external to the model (RAV)
+                // - internal to the model (produced by actors in the federate model).
+                
+                //Methode 2:
+                // two cases:
+                // case 1: currentTime<proposedTime<nextTimeStep
+                //         we'll consume the event and advance the ptolemy time
+                //         so return currentTime
+                // case 2: proposedTime>= nextTimeStep
+                //         we should do tar at every time step
+                //         and see if we get a rav event or not.
+                //         if RAV, then put them into the queue,
+                //         else nextTimeStep+=Ts.
+                // case 1:
+                
+                //Methode 2 (simplified version of method 1 above; still under test):
+                // There are three cases:
+                // case 1: currentTime < proposedTime < nextTimeStep
+                //          return currentTime
+                // case 2: nextTimestep <= proposedTime
+                //          tar(nextTimeStep), tick()
+                //                              if no RAV && proposedTime >=nextTimeStep+Ts, nextTimeStep+=nextTimeStep
+                //                              else put them in the queue;
+                //                      return nextTimeStep.
+                //
+                
+                
+                // case 1:
+                // If there is an internal event with timestamp tau in the calender queue and
+                // tau belongs to the interval [currentTime, nextTimeStep)}
+                //              Then the (Ptolemy) time is advanced to tau;
+                
+                if (currentTime.compareTo(proposedTime) < 0
+                        && proposedTime.compareTo(nextTimeStep) < 0) {
+                    return currentTime;
+                }
+                
+                // case 2:
+                // If there is an internal event with timestamp tau in the calender queue and
+                // tau belongs to the [nextTimeStep+k*Ts,nextTimeStep+(k+j)*Ts), k>=0, j>0
+                //              Then TAR(nextTimeStep), ..., TAR((k+j-1)*nextTimeStep) services are called;
+                while (proposedTime.compareTo(nextTimeStep) >= 0) {
+                    if (_debugging) {
+                        _debug(this.getDisplayName()
+                                + " proposeTime() -  call CERTI TAR -"
+                                + " timeAdvanceRequest("
+                                + certiProposedTime.getTime()
+                                + ")");
+                    }
+                    _rtia.timeAdvanceRequest(certiProposedTime);
+                    
+                    // Wait the time grant from the HLA/CERTI Federation (from the RTI).
+                    _federateAmbassador.timeAdvanceGrant = false;
+                    int cntTick = 0;
+                    while (!(_federateAmbassador.timeAdvanceGrant)) {
+                        if (_debugging) {
+                            _debug(this.getDisplayName()
+                                    + " proposeTime() -"
+                                    + " wait CERTI TAG - "
+                                    + "timeAdvanceGrant("
+                                    + certiProposedTime
+                                            .getTime()
+                                    + ") by calling tick2()");
+                        }
+                        
+                        try {
+                            _rtia.tick2();
+                            cntTick++;
+                        } catch (RTIexception e) {
+                            throw new IllegalActionException(
+                                    this, e, e.getMessage());
+                        }
+                    }
+                    
+                    // If there is no external neither internal events in the interval [currentTime, nextTimeStep+Ts)},
+                    //          Then the (Ptolemy) time is advanced to (nextTimeStep+Ts);
+                    // Else, put them (RAV or received event) into the eventQueue
+                    if (cntTick == 1
+                            && proposedTime
+                                    .compareTo(nextTimeStep
+                                            .add(_hlaTimeStep)) >= 0) {
+                        nextTimeStep = nextTimeStep
+                                .add(_hlaTimeStep);
+                        certiProposedTime = new CertiLogicalTime(
+                                nextTimeStep.getDoubleValue()
+                                        * _hlaTimeUnitValue);
+                    } else
+                        break;
+                }
+                
+                // Store reflected attributes as events on HLASubscriber actors.
+                _putReflectedAttributesOnHlaSubscribers();
+                return nextTimeStep;
+                
+            } else {
+                // Time-stepped + lookahead = 0 => TARA + TAR.
+                // Start the loop with one TARA call.
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " proposeTime() -"
+                            + " wait CERTI TAG - "
+                            + "timeAdvanceGrant("
+                            + certiProposedTime.getTime()
+                            + ") by calling tick2()");
+                }
+                
+                try {
+                    _rtia.tick2();
+                } catch (SpecifiedSaveLabelDoesNotExist e) {
+                    throw new IllegalActionException(this, e,
+                            "SpecifiedSaveLabelDoesNotExist ");
+                } catch (ConcurrentAccessAttempted e) {
+                    throw new IllegalActionException(this, e,
+                            "ConcurrentAccessAttempted ");
+                } catch (RTIinternalError e) {
+                    throw new IllegalActionException(this, e,
+                            "RTIinternalError ");
+                }
+            }
+            
+            // End the loop with one TAR call.
+            if (_debugging) {
+                _debug(this.getDisplayName()
+                        + " proposeTime() -  call CERTI TAR -"
+                        + " timeAdvanceRequest("
+                        + certiProposedTime.getTime() + ")");
+            }
+            _rtia.timeAdvanceRequest(certiProposedTime);                 
+        }
+        return null;
+    }
     /** The method {@link #_populatedHlaValueTables()} populates the tables
      *  containing information of HLA attributes required to publish and to
      *  subscribe value attributes in a HLA Federation.
