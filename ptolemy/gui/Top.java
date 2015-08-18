@@ -1400,18 +1400,36 @@ public abstract class Top extends JFrame {
     // of that list is ensured, since modifications to that list occur
     // only in other places that are also synchronized on the list.
     private static void _executeDeferredActions() {
+        // Copy the list so that we do not hold the synchronization lock
+        // while executing the actions.
+        LinkedList actionsCopy = null;
         synchronized (_deferredActions) {
-            try {
-                Iterator actions = _deferredActions.iterator();
+            actionsCopy = new LinkedList(_deferredActions);
+            _actionsDeferred = false;
+            _deferredActions.clear();
+        }
+        Iterator actions = actionsCopy.iterator();
 
-                while (actions.hasNext()) {
-                    Runnable action = (Runnable) actions.next();
-                    action.run();
+        // Collect and report exceptions.
+        LinkedList<Throwable> exceptions = null;
+        while (actions.hasNext()) {
+            Runnable action = (Runnable) actions.next();
+            try {
+                action.run();
+            } catch (Throwable ex) {
+                if (exceptions == null) {
+                    exceptions = new LinkedList<Throwable>();
                 }
-            } finally {
-                _actionsDeferred = false;
-                _deferredActions.clear();
+                exceptions.add(ex);
             }
+        }
+        if (exceptions != null) {
+            StringBuffer message = new StringBuffer("Exceptions occurred in deferred actions:\n");
+            for (Throwable exception : exceptions) {
+                message.append(exception);
+                message.append("\n");
+            }
+            MessageHandler.error(message.toString(), exceptions.get(0));
         }
     }
 
