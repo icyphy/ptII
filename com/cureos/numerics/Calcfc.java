@@ -33,14 +33,16 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public interface Calcfc {
     /**
-     * The objective and constraints function evaluation method used in COBYLA2 minimization.
+     * The objective and constraints function evaluation method used
+     * in COBYLA2 minimization.
      * @param n Number of variables.
      * @param m Number of constraints.
      * @param x Variable values to be employed in function and constraints calculation.
      * @param con Calculated function values of the constraints.
      * @param terminate A boolean array that provides the terminate state. Only the first element of the array is read
      * @return Calculated objective function value.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If there is a problem
+     * calculating the COBYLA2 minimization.
      */
     double Compute(int n, int m, double[] x, double[] con, boolean[] terminate)
             throws IllegalActionException;
