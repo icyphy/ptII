@@ -848,7 +848,16 @@ public class JSAccessor extends JavaScript {
         // Look for a local version of the PtDoc file.
         // This assumes that getAccessorsRepository() was previously invoked.
         url = _getLocalURL(ptDocSpec, url);
-
+        
+        // For some reason, using an input tag results in updating
+        // the docs on reload, whereas using the previous method below
+        // does not.
+        // FIXME: What does this do if the PtDoc file is not found?
+        // or if the user doesn't have access to the SVN repo?
+        return "<input source=\""
+                + StringUtilities.escapeForXML(url.toExternalForm())
+                + "\"/>";
+        /* Old version below:
         BufferedReader in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
@@ -872,6 +881,7 @@ public class JSAccessor extends JavaScript {
             }
         }
         return "";
+        */
     }
 
     /** Cached version of the checkoutOrUpdateAccessorsRepository parameter.
