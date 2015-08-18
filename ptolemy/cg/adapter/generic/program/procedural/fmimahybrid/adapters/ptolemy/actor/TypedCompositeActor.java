@@ -201,9 +201,6 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                 codeStream.append("}\n");
                 codeStream.append("printf(\"initialization mode entered\\n\");\n");
 
-
-                codeStream.append("int _vr = 0;\n");
-                codeStream.append("fmi2Integer isPresent = 0;\n");
                 codeStream.append("switch(i) {\n");
                 int i = 0;
                 while (actors.hasNext()) {
@@ -227,22 +224,22 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                         }
 
                         if (scalar.type instanceof FMIBooleanType) {
-                                codeStream.append("fmi2Boolean tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("_vr = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmu->setHybridBoolean(fmu->component, &_vr, 1, &tmp_" + i + "_" + j + ", &isPresent);" + _eol);
-                        } else if (scalar.type instanceof FMIIntegerType) {
-                                codeStream.append("_vr = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2Integer tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setHybridInteger(fmu->component, &_vr, 1, &tmp_" + i + "_" + j + ", &isPresent);" + _eol);
-                        } else if (scalar.type instanceof FMIRealType) {
-                                codeStream.append("_vr = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2Real tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setHybridReal(fmu->component, &_vr, 1, &tmp_" + i + "_" + j + ", &isPresent);" + _eol);
-                        } else if (scalar.type instanceof FMIStringType) {
-                                codeStream.append("_vr = " + scalar.valueReference + ";\n");
-                                codeStream.append("fmi2String tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
-                                codeStream.append("fmu->setHybridString(fmu->component, &_vr, 1, &tmp_" + i + "_" + j + ", &isPresent);" + _eol);
-                        }
+                            codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                            codeStream.append("fmi2Boolean tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
+                            codeStream.append("fmu->setBoolean(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
+                    } else if (scalar.type instanceof FMIIntegerType) {
+                    		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                            codeStream.append("fmi2Integer tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
+                            codeStream.append("fmu->setInteger(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
+                    } else if (scalar.type instanceof FMIRealType) {
+                    		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                            codeStream.append("fmi2Real tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
+                            codeStream.append("fmu->setReal(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
+                    } else if (scalar.type instanceof FMIStringType) {
+                    		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                            codeStream.append("fmi2String tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
+                            codeStream.append("fmu->setString(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
+                    }
                                 }
                                 j++;
                         }

@@ -34,7 +34,7 @@ fmi2Integer tStart = 0;
 /***staticDeclareBlock***/
 
 static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible,
-fmi2Boolean loggingOn, int nCategories, char ** categories, char* name) {
+fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* name) {
     fmi2Status fmi2Flag;                     // return code of the fmu functions
     // instantiate the fmu
     fmu->callbacks.logger = fmuLogger;
@@ -181,13 +181,13 @@ int nSteps) {
     }
     // print simulation summary
     if (returnValue == 1) {
-        printf("Simulation from %d to %d terminated successful\n", tStart,
+        printf("Simulation from %ld to %ld terminated successful\n", tStart,
         tEnd);
     } else {
-        printf("Simulation from %d to %d terminated early!\n", tStart, tEnd);
+        printf("Simulation from %ld to %ld terminated early!\n", tStart, tEnd);
     }
     printf("  steps ............ %d\n", nSteps);
-    printf("  fixed step size .. %d\n", stepSize);
+    printf("  fixed step size .. %ld\n", stepSize);
     fclose(file);
     return;
 }
@@ -207,7 +207,7 @@ static fmi2Status rollbackFMUs(FMU *fmus) {
 // Determine the minimum resolution among the User-Defined and the resolution required by the FMUs
 // It also return the scaleFactor for each FMU, in order to perform conversion of time between
 // the MA resolution and the FMU resolution
-void setTimingResolutions(FMU *fmus, fmi2Integer *resolution, fmi2Integer *scaleFactor) {
+void setTimingResolutions(FMU *fmus, fmi2Integer *resolution, fmi2Integer scaleFactor[]) {
     // Determine the minimum resolution
     fmi2Integer ma_resolution = *resolution;
     for (int i = 0; i < NUMBER_OF_FMUS; i++) {
@@ -215,6 +215,8 @@ void setTimingResolutions(FMU *fmus, fmi2Integer *resolution, fmi2Integer *scale
         if (fmu.handleIntegerTime) {
             fmi2Integer fmu_resolution;
             fmi2Status currentStatus = fmu.getTimeResolution(fmu.component, &fmu_resolution);
+            if (currentStatus > fmi2OK)
+            	printf("FMU (%s) does generated an error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
             ma_resolution = min(ma_resolution, fmu_resolution);
         }
     }
@@ -224,6 +226,8 @@ void setTimingResolutions(FMU *fmus, fmi2Integer *resolution, fmi2Integer *scale
         if (fmu.handleIntegerTime) {
             fmi2Integer fmu_resolution;
             fmi2Status currentStatus = fmu.getTimeResolution(fmu.component, &fmu_resolution);
+            if (currentStatus > fmi2OK)
+            	printf("FMU (%s) does generated an error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
             fmi2Integer precision_mismatch = fmu_resolution - *resolution;
             scaleFactor[i] = (fmi2Integer) pow(10, precision_mismatch);
         }
@@ -276,20 +280,20 @@ fmi2Status doStep(FMU *fmu, fmi2Integer time, fmi2Integer stepSize, fmi2Boolean 
     return currentStatus;
 }
 
-fmi2Status getRealStatus(FMU *fmu, fmi2StatusKind fmi2LastSuccessfulTime, fmi2Integer *lastSuccessfulTime, fmi2Integer scaleFactor) {
-    fmi2Status currentStatus = fmi2OK;
-    if ((*fmu).handleIntegerTime) {
-        currentStatus = fmu->getRealStatus((*fmu).component, fmi2LastSuccessfulTime, lastSuccessfulTime);
-        *lastSuccessfulTime = *lastSuccessfulTime * scaleFactor;
-    }
-    else {
-        fmi2Real lastSuccessfulTime_tmp;
-        currentStatus = (*fmu).getRealStatus(fmu->component, fmi2LastSuccessfulTime, &lastSuccessfulTime_tmp);
-        lastSuccessfulTime_tmp = lastSuccessfulTime_tmp * scaleFactor;
-        *lastSuccessfulTime = (fmi2Integer) lastSuccessfulTime_tmp;
-    }
-    return currentStatus;
-}
+//fmi2Status getRealStatus(FMU *fmu, fmi2StatusKind fmi2LastSuccessfulTime, fmi2Integer *lastSuccessfulTime, fmi2Integer scaleFactor) {
+//    fmi2Status currentStatus = fmi2OK;
+//    if ((*fmu).handleIntegerTime) {
+//        currentStatus = fmu->getRealStatus((*fmu).component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
+//        *lastSuccessfulTime = *lastSuccessfulTime * scaleFactor;
+//    }
+//    else {
+//        fmi2Real lastSuccessfulTime_tmp;
+//        currentStatus = (*fmu).getRealStatus(fmu->component, fmi2LastSuccessfulTime, &lastSuccessfulTime_tmp);
+//        lastSuccessfulTime_tmp = lastSuccessfulTime_tmp * scaleFactor;
+//        *lastSuccessfulTime = (fmi2Integer) lastSuccessfulTime_tmp;
+//    }
+//    return currentStatus;
+//}
 
 // simulate the given FMUs from tStart = 0 to tEnd.
 static int simulate(FMU *fmus, portConnection* connections, fmi2Integer requiredResolution,
@@ -327,7 +331,7 @@ fmi2Boolean loggingOn, char separator) {
     }
 
     // Determine the simulation resolution
-    setTimingResolutions(fmus, &resolution, &scaleFactor);
+    setTimingResolutions(fmus, &resolution, scaleFactor);
 
     // output solution for time t0
     outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, 0, file, separator, TRUE);
@@ -383,8 +387,8 @@ fmi2Boolean loggingOn, char separator) {
                                            terminateSimulation(fmus, 0, file, stepSize, nSteps);
                                            return 0;
                            }
-                           fmi2Integer lastSuccessfulTime;
-                           currentStatus = getRealStatus(&fmus[legacyFmuIndex], fmi2LastSuccessfulTime, &lastSuccessfulTime, scaleFactor[legacyFmuIndex]);
+                           fmi2Real lastSuccessfulTime;
+                           currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
                            if (currentStatus > fmi2Warning) {
                                            printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
                                            terminateSimulation(fmus, 0, file, stepSize, nSteps);
@@ -413,7 +417,7 @@ fmi2Boolean loggingOn, char separator) {
                     return 0;
                 }
                 fmi2Integer stepSize_c = stepSize - (time - localTime[i]);
-                fmi2Integer stepSize_c_local = stepSize_c / scaleFactor[i];
+//                fmi2Integer stepSize_c_local = stepSize_c / scaleFactor[i];
                 if (stepSize_c >= scaleFactor[i]) {
                     localTime[i] += stepSize;
                 }

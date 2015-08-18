@@ -81,7 +81,7 @@ void loadFMU(FMU *fmu, const char *fmuFileName);
 #ifndef _MSC_VER
 typedef int boolean;
 #endif
-void outputRow(FMU *fmus, int numberOfFMUs, char* NAMES_OF_FMUS[], double time, FILE* file, char separator, boolean header);
+void outputRow(FMU *fmus, int numberOfFMUs, const char* NAMES_OF_FMUS[], double time, FILE* file, char separator, boolean header);
 int error(const char *message);
 void printHelp(const char *fmusim);
 char *getTempResourcesLocation(); // caller has to free the result
