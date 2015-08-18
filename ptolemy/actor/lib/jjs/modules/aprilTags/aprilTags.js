@@ -48,6 +48,8 @@ exports.filter = function(image, options) {
  *  <ul>
  *  <li> id: The ID of the detected tag.
  *  <li> center: An array with two doubles giving the center of the tag in pixel coordinates.
+ *  <li> perimeter: An array with four arrays, each of which gives the x and y coordinates of
+ *       a corner of the AprilTag, listed in a counter-clockwise direction.
  *  </ul>
  *  @return The detected tags.
  */
