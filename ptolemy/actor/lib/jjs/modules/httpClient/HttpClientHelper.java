@@ -30,8 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.httpClient;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -186,9 +189,16 @@ public class HttpClientHelper extends VertxHelperBase {
 
         // Handle the headers.
         Map headers = (Map) options.get("headers");
+        boolean isImage = false;
+        String imageType = "";
         if (!headers.isEmpty()) {
             for (Object key : headers.keySet()) {
                 Object value = headers.get(key);
+                if ( ( (String) key).equalsIgnoreCase("Content-Type") &&
+                        ( (String)value).startsWith("image")) {
+                    isImage = true;
+                    imageType = ((String) value).substring(6);
+                }
                 if (value instanceof String) {
                     _request.putHeader((String) key, (String) value);
                 } else if (value instanceof Integer) {
@@ -201,9 +211,50 @@ public class HttpClientHelper extends VertxHelperBase {
         }
 
         // Handle the body, if present.
-        String body = (String) options.get("body");
-        if (body != null) {
-            _request.write(body);
+        // Format any images
+        if (isImage) {
+            AWTImageToken token = (AWTImageToken) options.get("body");
+            Image image = token.getValue();
+            BufferedImage bufferedImage;
+            
+            // Convert Image to BufferedImage.  See:
+            // http://stackoverflow.com/questions/13605248/java-converting-image-to-bufferedimage
+            
+            if (image instanceof BufferedImage)
+            {
+                bufferedImage = (BufferedImage) image; 
+            } else {
+                // Create a buffered image with transparency
+                bufferedImage = new BufferedImage(image.getWidth(null), 
+                        image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+                // Draw the image on to the buffered image
+                Graphics2D bGr = bufferedImage.createGraphics();
+                bGr.drawImage(image, 0, 0, null);
+                bGr.dispose();
+            }
+         
+            // Create byte array from BufferedImage
+            // http://stackoverflow.com/questions/10142409/write-an-inputstream-to-an-httpservletresponse
+            // Check on setting the content length?
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(bufferedImage, imageType, os);
+                _request.putHeader("Content-Length", 
+                        Integer.toString(os.toByteArray().length));
+                _request.write(new Buffer(os.toByteArray()));
+
+            } catch (IOException e) {
+                _currentObj.callMember("emit", "error",
+                        "Can't write image body to HTTP request");
+            }
+        } else {
+            
+            // Otherwise, send body as string
+            String body = (String) options.get("body");
+            if (body != null) {
+                _request.write(body);
+            }
         }
     }
 
