@@ -28,14 +28,21 @@
 
 package org.ptolemy.ptango.lib;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -52,7 +59,9 @@ import ptolemy.actor.lib.MicrostepDelay;
 import ptolemy.actor.lib.TimeDelay;
 import ptolemy.actor.lib.io.FileReader;
 import ptolemy.actor.util.Time;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
@@ -165,6 +174,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         postCookies = new TypedIOPort(this, "postCookies", false, true);
         new Parameter(postCookies, "_showName").setExpression("true");
+        
+        postBody = new TypedIOPort(this, "postBody", false, true);
+        new Parameter(postBody, "_showName").setExpression("true");
 
         setCookies = new TypedIOPort(this, "setCookies", true, false);
         new Parameter(setCookies, "_showName").setExpression("true");
@@ -226,6 +238,13 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  then it is undefined which one gets the request.
      */
     public StringParameter path;
+    
+    /** An output that sends the body of the request, if any.
+     *  HTTPActor only offers a body output for POST requests.  While it is 
+     *  technically possible for a GET request to have a body, this is 
+     *  discouraged since GET requests are supposed to be idempotent.
+     */
+    public TypedIOPort postBody;
 
     /** An output that sends the cookies specified by the
      *  {@link #requestedCookies} parameter, with values
@@ -559,6 +578,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                         _debug("Sending cookies to postCookies port: "
                                 + _request.cookies);
                     }
+                }
+                if (_request.body != null) {
+                    postBody.send(0, _request.body);
                 }
             }
         }
@@ -915,7 +937,11 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     // as assignments in a get using the URL syntax ...?name=value.
                     // Note that each parameter name may have more than one value,
                     // hence the array of strings.
-                    _request.parameters = _readParameters(request);
+                    RecordToken content = _readContent(request);
+                    _request.parameters = 
+                            (RecordToken) content.get("parameters");
+                    _request.body = content.get("body");
+                            
 
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis()
@@ -1100,14 +1126,153 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          *  @return A record of parameters.
          *  @exception IllegalActionException If construction of the record token fails.
          */
-        private RecordToken _readParameters(HttpServletRequest request)
+        private RecordToken _readContent(HttpServletRequest request)
                 throws IllegalActionException {
+            
+            RecordToken parameters;
+            Token body;
+            
+            // Handle the request according to the Content-Type
+            // Note that request.getParameterMap() and request.
+            // BOTH read and consume the request body.  getParameterMap()
+            // additionally reads the URL.  Note that getParameterMap() does 
+            // NOT differentiate between parameters from the URL and those from 
+            // the body
+            
+            if (request.getContentType() != null && request.getContentType()
+                    .equalsIgnoreCase("application/x-www-form-urlencoded")) {
+                
+                // Form data:  application/x-www-form-urlencoded
+                // Use request.getParameterMap() which reads parameters from both 
+                // the URL and from the body
+                // These will be emitted on a "parameters" output port, regardless
+                // of whether the content was from the URL or the body
+                
+                parameters = _readParameterMap(request.getParameterMap());
+                body = new Token();
+                    
+            } else if (request.getContentType() != null && 
+                    request.getContentType().startsWith("image")) {
+                
+                // Images.  Supported: bmp, gif, jpg, png, and wbmp
+                // See:  https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html
+
+               try {
+                   
+                   BufferedImage image = ImageIO.read(request.getInputStream());
+                   
+                   if (image != null) {
+                       body = new AWTImageToken(image);
+                   } else {
+                       body = Token.NIL;
+                   }
+                   
+                   /*
+                    DataInputStream reader = 
+                            new DataInputStream(request.getInputStream());
+                    ArrayList bytes = new ArrayList();
+                    int numBytes;
+                    int nextByte;
+                    
+                    while ( (nextByte = reader.read()) != -1) {
+                        bytes.add(nextByte);
+                    }
+                    
+                    // Easier way to do this?
+                    IntToken[] tokens = new IntToken[bytes.size()];
+                    for (int i = 0; i < bytes.size(); i++) {
+                        
+                        System.out.println(bytes.get(i));
+                       tokens[i] = new IntToken((int) bytes.get(i));
+                    }
+                    
+                    body = new ArrayToken(tokens);
+                    */
+                    
+                    // Read any remaining URL parameters
+                    parameters = _readParameterMap(request.getParameterMap());
+                    
+               } catch(IOException e){
+                   throw new IllegalActionException("Can't read body of "
+                           + " HTTP request");
+               } 
+            } else { 
+                
+                // Anything else - Read as string
+                // Includes (among others) application/json, text/*
+
+                // TODO:  Parse JSON object from JSON?
+                
+                StringBuffer content = new StringBuffer();
+                
+                // Text or JSON - return StringToken
+                //if (request.getContentType()
+                //      .equalsIgnoreCase("application/json") || 
+                //      request.getContentType().startsWith("text")) {
+                    
+                    try {
+                        BufferedReader reader = new BufferedReader(new 
+                            InputStreamReader(request.getInputStream()));
+                        
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            content.append(line);
+                        }
+                    } catch(IOException e) { 
+                        throw new IllegalActionException("Can't read body of "
+                                + " HTTP request");
+                    }
+                  
+                
+                body = new StringToken(content.toString());
+                
+                // Read any remaining URL parameters
+                parameters = _readParameterMap(request.getParameterMap());
+                
+            }
+            
+            // TODO:  Audio and video
+            // Audio capture outputs an array of doubles - use that?
+            // for images and audio?
+            // Content-types audio/* or video/*
+            
+            // TODO:  Handle binary data - what is corresponding Ptolemy type?
+            // Array of integers?
+            
+            // TODO:  Handle multi-part requests
+           
+            String[] labels = new String[2];
+            labels[0] = "parameters";
+            labels[1] = "body";
+    
+            Token[] fields = new Token[2];
+            fields[0] = parameters;
+            fields[1] = body;
+            
+            RecordToken content = new RecordToken(labels, fields);
+            return content;
+        }
+        
+
+        /** Read the parameters from the parameter map, construct a RecordToken 
+         *  containing the parameters, and return that record token.
+         *  @param parameterMap  The HttpServletRequest's parameter map.  
+         *   Contains parameters passed as part of the URL, and may contain 
+         *   parameters from the body if the body was not previously processed.
+         *   HttpServletRequest can be of any type - i.e. both GET and POST
+         *   requests are allowed to have parameters.
+         *  @return A RecordToken of parameters.
+         *  @exception IllegalActionException If construction of the record token fails.
+         */
+        
+        private RecordToken _readParameterMap(Map<String, 
+                String[]> parameterMap) throws IllegalActionException {
             // FIXME:  This currently treats all values as StringTokens,
             // which they may not be.  How to either 1) correctly determine
             // the type of the token, or 2) create a token of unspecified
             // type but still be able to set its expression?  Class
             // Token does not have the setExpression() method
-            Map<String, String[]> parameterMap = request.getParameterMap();
+
             // Convert these parameters to a record token to send to
             // the appropriate output.
             Set<String> names = parameterMap.keySet();
@@ -1219,6 +1384,9 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  HTTP request.
      */
     protected static class HttpRequestItems {
+        /** The body of the request **/
+        public Token body;
+        
         /** Cookies associated with the request. */
         public RecordToken cookies;
 
