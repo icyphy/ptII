@@ -29,7 +29,9 @@ package ptolemy.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 ///////////////////////////////////////////////////////////////////
 //// MessageHandler
@@ -70,6 +72,20 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add the specified status handler.
+     *  @param handler The handler.
+     *  @see #status(String)
+     *  @see #removeStatusHandler(StatusHandler)
+     */
+    public static void addStatusHandler(StatusHandler handler) {
+        if (handler != null) {
+            if (_statusHandlers == null) {
+                _statusHandlers = new HashSet<StatusHandler>();
+            }
+            _statusHandlers.add(handler);
+        }
+    }
+    
     /** Defer to the set message handler to show the specified
      *  error message.
      *
@@ -157,11 +173,23 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /** Defer to the set message handler to show the specified
-     *  message.
+     *  message.  An implementation may block, for example with a modal dialog.
      *  @param info The message.
+     *  @see #status(String)
      */
     public static void message(String info) {
         _handler._message(info);
+    }
+
+    /** Remove the specified status handler.
+     *  @param handler The handler.
+     *  @see #status(String)
+     *  @see #addStatusHandler(StatusHandler)
+     */
+    public static void removeStatusHandler(StatusHandler handler) {
+        if (handler != null && _statusHandlers != null) {
+            _statusHandlers.remove(handler);
+        }
     }
 
     /** Set the message handler instance that is used by the static
@@ -194,6 +222,27 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         }
 
         return throwableType;
+    }
+    
+    /** Display a status message to the user.
+     *  This method is intended for keeping users informed of what is being done.
+     *  The message may be displayed for a very short time and may be cleared after some time.
+     *  This method is not intended for logging or for persistent messages, nor for messages
+     *  that require some acknowledgement from the user.
+     *  If a StatusHandler has been registered using #addStatusHandler(StatusHandler),
+     *  then delegate displaying the message to that status handler.
+     *  Otherwise, display on standard out.
+     *  @param message The message to display.
+     *  @see #message(String)
+     */
+    public static void status(String message) {
+        if (_statusHandlers != null && _statusHandlers.size() > 0) {
+            for (StatusHandler handler : _statusHandlers) {
+                handler.status(message);
+            }
+        } else {
+            System.out.println(message);
+        }
     }
 
     /** Handle uncaught exceptions in a standard way.
@@ -439,6 +488,10 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The message handler.
+    
+    /** The message handler. */
     private static MessageHandler _handler = new MessageHandler();
+    
+    /** The status handlers, if any. */
+    private static Set<StatusHandler> _statusHandlers;
 }
