@@ -1680,6 +1680,11 @@
 			<type>1</type>
 			<locationURI>PT_LOC/ptolemy/util/SimpleMessageHandler.java</locationURI>
 		</link>
+		<link>
+			<name>linked-src/ptolemy/util/StatusHandler.java</name>
+			<type>1</type>
+			<locationURI>PT_LOC/ptolemy/util/StatusHandler.java</locationURI>
+		</link>
 	</linkedResources>
 	<variableList>
 		<variable>

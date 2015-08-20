@@ -150,6 +150,7 @@
 /ptolemy/math/SignalProcessing.java
 /ptolemy/util/CancelException.java
 /ptolemy/util/MessageHandler.java
+/ptolemy/util/StatusHandler.java
 /ptolemy/util/SimpleMessageHandler.java
 /ptolemy/actor/lib/SequenceActor.java
 /ptolemy/actor/lib/Sink.java
