@@ -29,9 +29,7 @@ package ptolemy.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 ///////////////////////////////////////////////////////////////////
 //// MessageHandler
@@ -72,20 +70,6 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the specified status handler.
-     *  @param handler The handler.
-     *  @see #status(String)
-     *  @see #removeStatusHandler(StatusHandler)
-     */
-    public static void addStatusHandler(StatusHandler handler) {
-        if (handler != null) {
-            if (_statusHandlers == null) {
-                _statusHandlers = new HashSet<StatusHandler>();
-            }
-            _statusHandlers.add(handler);
-        }
-    }
-    
     /** Defer to the set message handler to show the specified
      *  error message.
      *
@@ -181,17 +165,6 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         _handler._message(info);
     }
 
-    /** Remove the specified status handler.
-     *  @param handler The handler.
-     *  @see #status(String)
-     *  @see #addStatusHandler(StatusHandler)
-     */
-    public static void removeStatusHandler(StatusHandler handler) {
-        if (handler != null && _statusHandlers != null) {
-            _statusHandlers.remove(handler);
-        }
-    }
-
     /** Set the message handler instance that is used by the static
      *  methods in this class.  If the given handler is null, then
      *  do nothing.
@@ -204,6 +177,15 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
+    /** Set the specified status handler, replacing any previously
+     *  set handler.
+     *  @param handler The handler, or null to set no handler.
+     *  @see #status(String)
+     */
+    public static void setStatusHandler(StatusHandler handler) {
+        _statusHandler = handler;
+    }
+    
     /** Return a short description of the throwable.
      *  @param throwable The throwable
      *  @return If the throwable is an Exception, return "Exception",
@@ -236,10 +218,8 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  @see #message(String)
      */
     public static void status(String message) {
-        if (_statusHandlers != null && _statusHandlers.size() > 0) {
-            for (StatusHandler handler : _statusHandlers) {
-                handler.status(message);
-            }
+        if (_statusHandler != null) {
+            _statusHandler.status(message);
         } else {
             System.out.println(message);
         }
@@ -493,5 +473,5 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     private static MessageHandler _handler = new MessageHandler();
     
     /** The status handlers, if any. */
-    private static Set<StatusHandler> _statusHandlers;
+    private static StatusHandler _statusHandler;
 }
