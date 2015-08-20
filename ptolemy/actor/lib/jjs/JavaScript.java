@@ -59,7 +59,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -1002,6 +1001,7 @@ public class JavaScript extends TypedAtomicActor {
                     // There is a previous value. Create a PortParameter to
                     // preserve its value.
                     parameter = new PortParameter(this, name);
+                    port = parameter.getPort();
                 }
             } else {
                 Object value = ((Map) options).get("value");
