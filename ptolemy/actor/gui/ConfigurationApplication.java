@@ -697,6 +697,9 @@ public class ConfigurationApplication implements ExecutionListener {
             try {
                 effigy = new PtolemyEffigy((ModelDirectory) directory,
                         configuration.getName());
+                // Mark this to be a system effigy so it is not deleted
+                // when an effigy it contains is deleted.
+                effigy.setSystemEffigy(true);
             } catch (NameDuplicationException ex) {
                 // Try deleting the old configuration
                 PtolemyEffigy oldEffigy = (PtolemyEffigy) ((ModelDirectory) directory)
