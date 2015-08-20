@@ -65,6 +65,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
@@ -111,9 +112,9 @@ import ptolemy.util.StringUtilities;
  */
 public class JSAccessor extends JavaScript {
 
-    /** Construct a library with the given container and name.
+    /** Construct an accessor with the given container and name.
      *  @param container The container.
-     *  @param name The name of this library.
+     *  @param name The name of this accessor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
@@ -306,6 +307,8 @@ public class JSAccessor extends JavaScript {
 
         File accessorsRepoDirectory = new File(JSAccessor._accessorDirectory(), "accessors");
         final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+        boolean newCheckout = false;
+        boolean updated = false;
         try {
             List execCommands = new LinkedList();
             // If the org/terraswarm/accessor/accessors directory
@@ -316,11 +319,14 @@ public class JSAccessor extends JavaScript {
                 exec.setWorkingDirectory(accessorsRepoDirectory);
                 execCommands.add("svn update");
                 _commands = "cd " + accessorsRepoDirectory + "\nsvn update";
+                MessageHandler.status("Updating local copy of the accessors repository.");
             } else {
+                newCheckout = true;
                 exec.setWorkingDirectory(JSAccessor._accessorDirectory());
                 String svnCommand = "svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors";
                 execCommands.add(svnCommand);
                 _commands = "cd " + JSAccessor._accessorDirectory() + "\n" + svnCommand;
+                MessageHandler.status("Checking out the accessors repository.");
             }
 
             exec.setCommands(execCommands);
@@ -328,19 +334,47 @@ public class JSAccessor extends JavaScript {
             exec.setWaitForLastSubprocess(true);
             exec.start();
             _commands += exec.buffer.toString();
+            int returnCode = exec.getLastSubprocessReturnCode();
+            if (returnCode == 0) {
+                updated = true;
+                if (newCheckout) {
+                    MessageHandler.status("Checked out accessor repository.");
+                } else {
+                    MessageHandler.status("Updated accessor repository.");
+                }
+            } else {
+                if (newCheckout) {
+                    MessageHandler.status("Failed to check out the accessors repository.");
+                    throw new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
+                            + _commands + "\n"
+                            + "The output was: " + exec.buffer);
+                } else {
+                    MessageHandler.status("Could not update the accessors repository. Using local version.");
+                }
+            }
         } catch (Throwable throwable) {
-            IOException ioException = new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
-                    + _commands + "\n"
-                    + "Perhaps you don't have read access?"
-                    + "The TerraSwarm accessors repository is under development.\n"
-                    + "The output was: " + exec.buffer);
-            ioException.initCause(throwable);
-            throw ioException;
+            if (newCheckout) {
+                MessageHandler.status("Failed to check out the accessors repository.");
+                IOException ioException = new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
+                        + _commands + "\n"
+                        + "Perhaps you don't have read access?"
+                        + "The TerraSwarm accessors repository is under development.\n"
+                        + "The output was: " + exec.buffer);
+                ioException.initCause(throwable);
+                throw ioException;
+            } else {
+                MessageHandler.status("Could not update the accessors repository. Using local version.");
+            }
+        }
+        if (!updated) {
+            // Presumably, there is no reason to update the docs, since there was no update.
+            return;
         }
 
         // If the accessors/web directory exists, run ant there.
         File accessorsRepoWebDirectory = new File(accessorsRepoDirectory, "web");
         if (accessorsRepoWebDirectory.isDirectory()) {
+            MessageHandler.status("Updating documentation for accessors.");
             String antPath = "";
             try {
                 StringBufferExec antExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
@@ -372,7 +406,17 @@ public class JSAccessor extends JavaScript {
                 antExec.setCommands(execCommands);
                 antExec.setWaitForLastSubprocess(true);
                 antExec.start();
+                if (antExec.getLastSubprocessReturnCode() == 0) {
+                    MessageHandler.status("Updated documentation for accessors.");
+                } else {
+                    MessageHandler.status("Update of documentation failed. Using default docs.");
+                    System.err.println("Failed: \"" + antPath
+                            + "\" in " + accessorsRepoWebDirectory
+                            + "\n"
+                            + "Output was: " + antExec.buffer);
+                }
             } catch (Throwable throwable) {
+                MessageHandler.status("Update of documentation failed. Using default docs.");
                 System.err.println("Warning: Failed to run \"" + antPath
                         + "\" in " + accessorsRepoWebDirectory
                         + ".  Defaulting to using the documentation from the website."
@@ -645,7 +689,7 @@ public class JSAccessor extends JavaScript {
 
     /** The directory that contains the accessors svn repository.
      *  The default value is $PTII/org/terraswarm/accessor
-     *  Note that this repo is not world readable.
+     *  Note that this svn repo is not world readable.
      *  The command to check out the repo is:
      *  <pre>
      *  cd $PTII/org/terraswarm/accessor
@@ -819,7 +863,7 @@ public class JSAccessor extends JavaScript {
             File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
             if (urlSpecLocalFile.exists()) {
                 System.out.println("JSAccessor: urlSpec is " + urlSpec
-                        + ", but " + urlSpecLocalFile + " exists, so " + urlSpecLocalFile + " is being read.");
+                        + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
                 accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
             }
         }

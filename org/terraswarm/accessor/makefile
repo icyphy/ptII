@@ -61,6 +61,7 @@ PTCLASSALLJARS =
 
 JSRCS = \
 	AccessorIconLoader.java \
+	AccessorLibrary.java \
 	JSAccessor.java
 
 OTHER_FILES_TO_BE_JARED = \
