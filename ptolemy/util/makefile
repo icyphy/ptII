@@ -59,6 +59,7 @@ JSRCS = \
 	OrderedResourceBundle.java \
 	RecursiveFileFilter.java \
 	SimpleMessageHandler.java \
+	StatusHandler.java \
 	StreamExec.java \
 	StringBufferExec.java \
 	StringUtilities.java \

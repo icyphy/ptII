@@ -41,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
@@ -60,6 +61,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.WeakHashMap;
 
 import javax.print.PrintService;
@@ -79,6 +82,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StatusHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -142,7 +146,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (janneck)
  */
 @SuppressWarnings("serial")
-public abstract class Top extends JFrame {
+public abstract class Top extends JFrame implements WindowFocusListener, StatusHandler {
+    
     /** Construct an empty top-level frame with the default status
      *  bar.  After constructing this, it is necessary to call
      *  pack() to have the menus added, and then setVisible(true)
@@ -186,6 +191,8 @@ public abstract class Top extends JFrame {
         if (PtGUIUtilities.macOSLookAndFeel()) {
             _macInitializer();
         }
+        
+        addWindowFocusListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -563,6 +570,74 @@ public abstract class Top extends JFrame {
 
         deferIfNecessary(doShow);
     }
+    
+    /** Display the specified message in the status bar.
+     *  This message will be displayed for a minimum of MINIMUM_STATUS_MESSAGE_TIME
+     *  (default one second) and for a maximum of MAXIMUM_STATUS_MESSAGE_TIME
+     *  (default 30 seconds).
+     *  If there is no status bar, print to standard out.
+     *  @param message The message.
+     */
+    public void status(final String message) {
+        if (_statusBar != null) {
+            if (_statusMessageTimer == null) {
+                // Second argument makes this a deamon thread, so it won't block exiting Vergil.
+                _statusMessageTimer = new Timer("Status message timer", true);
+            }
+            long currentTime = System.currentTimeMillis();
+            long timeSinceLastUpdate = currentTime - _lastStatusMessageUpdateTime;
+            if (timeSinceLastUpdate < MINIMUM_STATUS_MESSAGE_TIME) {
+                // Last message hasn't been displayed long enough.
+                TimerTask delayedStatus = new TimerTask() {
+                    public void run() {
+                        status(message);
+                    }
+                };
+                _statusMessageTimer.schedule(delayedStatus,
+                        MINIMUM_STATUS_MESSAGE_TIME - timeSinceLastUpdate);
+                return;
+            }
+            if (_lastStatusMessageClearingTask != null) {
+                _lastStatusMessageClearingTask.cancel();
+            }
+            _statusBar.setMessage(message);
+            _lastStatusMessageUpdateTime = currentTime;
+            _lastStatusMessageClearingTask = new TimerTask() {
+                public void run() {
+                    status("");
+                }
+            };
+            _statusMessageTimer.schedule(_lastStatusMessageClearingTask,
+                    MAXIMUM_STATUS_MESSAGE_TIME);
+        } else {
+            System.out.println(message);
+        }
+    }
+    
+    /** Register with the global message handler to receive status messages.
+     *  @see MessageHandler#status(String)
+     *  @param event The window event.
+     */
+    public void windowGainedFocus(WindowEvent event) {
+        MessageHandler.addStatusHandler(this);
+    }
+    
+    /** Unregister with the global message handler to receive status messages.
+     *  @see MessageHandler#status(String)
+     *  @param event The window event.
+     */
+    public void windowLostFocus(WindowEvent event) {
+        MessageHandler.removeStatusHandler(this);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+
+    /** Maximum amount of time that a status message is displayed in milliseconds. */
+    public static final long MAXIMUM_STATUS_MESSAGE_TIME = 30000;
+
+    /** Minimum amount of time that a status message is displayed in milliseconds. */
+    public static final long MINIMUM_STATUS_MESSAGE_TIME = 1000;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1224,7 +1299,7 @@ public abstract class Top extends JFrame {
 
     /** Indicator that a file save failed. */
     protected static final int _FAILED = 3;
-
+    
     /** Indicator that a file is saved. */
     protected static final int _SAVED = 0;
 
@@ -2089,11 +2164,17 @@ public abstract class Top extends JFrame {
     /** Flag to hide the menu bar. */
     private boolean _hideMenuBar = false;
 
-    /** The most recently entered URL in Open URL. */
-    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
-
     /** History depth. */
     private int _historyDepth = 10;
+
+    /** The most recently entered URL in Open URL. */
+    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
+    
+    /** Last status message update time. */
+    private long _lastStatusMessageUpdateTime = 0L;
+    
+    /** Last status message clearing task. */
+    private TimerTask _lastStatusMessageClearingTask = null;
 
     /** Indicator that the menu has been populated. */
     private boolean _menuPopulated = false;
@@ -2104,4 +2185,6 @@ public abstract class Top extends JFrame {
     /** True if we have printed the securityException message. */
     private static boolean _printedSecurityExceptionMessage = false;
 
+    /** Timer used for status messages. */
+    private Timer _statusMessageTimer;
 }
