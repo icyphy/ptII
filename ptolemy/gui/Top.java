@@ -572,8 +572,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     }
     
     /** Display the specified message in the status bar.
-     *  This message will be displayed for a minimum of MINIMUM_STATUS_MESSAGE_TIME
-     *  (default one second) and for a maximum of MAXIMUM_STATUS_MESSAGE_TIME
+     *  This message will be displayed for a maximum of MAXIMUM_STATUS_MESSAGE_TIME
      *  (default 30 seconds).
      *  If there is no status bar, print to standard out.
      *  @param message The message.
@@ -581,45 +580,44 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     public void status(final String message) {
         if (_statusBar != null) {
             if (_statusMessageTimer == null) {
-                // Second argument makes this a deamon thread, so it won't block exiting Vergil.
+                // Second argument makes this a daemon thread, so it won't block exiting Vergil.
                 _statusMessageTimer = new Timer("Status message timer", true);
             }
-            long currentTime = System.currentTimeMillis();
-            long timeSinceLastUpdate = currentTime - _lastStatusMessageUpdateTime;
-            if (timeSinceLastUpdate < MINIMUM_STATUS_MESSAGE_TIME) {
-                // Last message hasn't been displayed long enough.
-                TimerTask delayedStatus = new TimerTask() {
-                    public void run() {
-                        status(message);
-                    }
-                };
-                _statusMessageTimer.schedule(delayedStatus,
-                        MINIMUM_STATUS_MESSAGE_TIME - timeSinceLastUpdate);
-                return;
-            }
-            if (_lastStatusMessageClearingTask != null) {
-                _lastStatusMessageClearingTask.cancel();
-            }
-            _statusBar.setMessage(message);
-            _lastStatusMessageUpdateTime = currentTime;
-            _lastStatusMessageClearingTask = new TimerTask() {
+            // The status bar update has to be performed in the Swing event thread.
+            // NOTE: If this is called from outside the Swing event thread, then
+            // the order in which messages are reported gets messed up.
+            // The only simple solutions seems to be to call this from the Swing event thread.
+            deferIfNecessary(new Runnable() {
                 public void run() {
-                    status("");
+                    if (_lastStatusMessageClearingTask != null) {
+                        _lastStatusMessageClearingTask.cancel();
+                    }
+                    _statusBar.setMessage(message);
+                    
+                    // If the message is non-empty, schedule a clearing message.
+                    if (!message.trim().equals("")) {
+                        _lastStatusMessageClearingTask = new TimerTask() {
+                            public void run() {
+                                status("");
+                                _lastStatusMessageClearingTask = null;
+                            }
+                        };
+                        _statusMessageTimer.schedule(_lastStatusMessageClearingTask,
+                                MAXIMUM_STATUS_MESSAGE_TIME);  
+                    }
                 }
-            };
-            _statusMessageTimer.schedule(_lastStatusMessageClearingTask,
-                    MAXIMUM_STATUS_MESSAGE_TIME);
+            });
         } else {
             System.out.println(message);
         }
     }
-    
+
     /** Register with the global message handler to receive status messages.
      *  @see MessageHandler#status(String)
      *  @param event The window event.
      */
     public void windowGainedFocus(WindowEvent event) {
-        MessageHandler.addStatusHandler(this);
+        MessageHandler.setStatusHandler(this);
     }
     
     /** Unregister with the global message handler to receive status messages.
@@ -627,7 +625,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
      *  @param event The window event.
      */
     public void windowLostFocus(WindowEvent event) {
-        MessageHandler.removeStatusHandler(this);
+        MessageHandler.setStatusHandler(null);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -635,9 +633,6 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
     /** Maximum amount of time that a status message is displayed in milliseconds. */
     public static final long MAXIMUM_STATUS_MESSAGE_TIME = 30000;
-
-    /** Minimum amount of time that a status message is displayed in milliseconds. */
-    public static final long MINIMUM_STATUS_MESSAGE_TIME = 1000;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -2170,9 +2165,6 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     /** The most recently entered URL in Open URL. */
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
     
-    /** Last status message update time. */
-    private long _lastStatusMessageUpdateTime = 0L;
-    
     /** Last status message clearing task. */
     private TimerTask _lastStatusMessageClearingTask = null;
 
@@ -2181,7 +2173,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
     /** Indicator that the data represented in the window has been modified. */
     private boolean _modified = false;
-
+    
     /** True if we have printed the securityException message. */
     private static boolean _printedSecurityExceptionMessage = false;
 
