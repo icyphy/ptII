@@ -115,6 +115,11 @@
         ?>
       </configure>
     </entity>
+    
+    <!-- Standard TerraSwarm accessors. -->
+    <entity name="Accessors" class="org.terraswarm.accessor.AccessorLibrary">
+      <configure source="http://terraswarm.org/accessors/cameras/Camera.js"/>
+    </entity>
 
     <!-- Custom actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
