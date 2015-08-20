@@ -867,6 +867,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         _mousePressedLayerAdapter = null;
 
+        MouseListener mouseListeners[] = _treeView.getMouseListeners();
+        for (int i = 0; i < mouseListeners.length; i++) {
+            _treeView.removeMouseListener(mouseListeners[i]);
+        }
+        //_treeView.getCellRenderer();
+
         // Top.dispose() sets all the AbstractAction to null.
         disposeSuper();
     }
