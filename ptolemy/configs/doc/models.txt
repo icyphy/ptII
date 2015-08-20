@@ -70,6 +70,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Gray.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/ImageFilters.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Invert.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/LensBlur.xml
+$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Random.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Solarize.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Threshold.xml
 $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
