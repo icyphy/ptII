@@ -118,7 +118,7 @@
     
     <!-- Standard TerraSwarm accessors. -->
     <entity name="Accessors" class="org.terraswarm.accessor.AccessorLibrary">
-      <configure source="http://terraswarm.org/accessors/cameras/Camera.js"/>
+      <configure source="http://terraswarm.org/accessors"/>
     </entity>
 
     <!-- Custom actor library. -->
