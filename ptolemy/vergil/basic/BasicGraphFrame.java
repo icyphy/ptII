@@ -837,6 +837,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             foregroundEventLayer.removeLayerListener(_mousePressedLayerAdapter);
         }
 
+        ActionListener[] listeners = _findInLibraryEntryBox.getActionListeners();
+        if (listeners != null) {
+            int count = listeners.length;
+            for (ActionListener listener : listeners) {
+                //System.out.println("BGF.dispose(): _findInLibraryEntryBox: Removing " + listener);
+                _findInLibraryEntryBox.removeActionListener(listener);
+            }
+        }
         //int removed =
         MemoryCleaner.removeActionListeners(_toolbar);
         //System.out.println("BasicGraphFrame toolbar action listeners removed: " + removed);
