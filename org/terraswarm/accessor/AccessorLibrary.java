@@ -128,12 +128,16 @@ public class AccessorLibrary extends EntityLibrary {
                     // FIXME: This will only work if the _configureSource is
                     // "http://terraswarm.org/accessors".
                     // Second argument specifies to update the repository.
-                    URL source = JSAccessor._sourceToURL(_configureSource, true);
+                    if (!_configureSource.endsWith("/")) {
+                        _configureSource += "/";
+                    }
+                    URL source = JSAccessor._sourceToURL(_configureSource + "index.json", true);
                     
                     // Get the index at the specified location.
                     URL indexFile = new URL(source, "index.json");
                     BufferedReader in = null;
                     StringBuffer contents = new StringBuffer();
+                    MessageHandler.status("Retrieving library from " + source);
                     try {
                         in = new BufferedReader(new InputStreamReader(
                                 indexFile.openStream()));
@@ -145,31 +149,34 @@ public class AccessorLibrary extends EntityLibrary {
                         for (int i = 0; i < index.length(); ++i) {
                             Object value = index.get(i);
                             if (value instanceof String) {
-                                System.out.println("FIXME: " + value);
+                                try {
+                                    URL accessorURL = new URL(source, (String)value);
+                                    String moml = JSAccessor.accessorToMoML(accessorURL.toExternalForm(), false);
+                                    parser.parse(accessorURL, moml);
+                                } catch (Throwable ex) {
+                                    String message = "Loading accessor failed: " + value;
+                                    MessageHandler.status(message);
+                                    System.err.println(message + "\n" + ex);
+                                }
                             } else {
-                                // FIXME: What to do here?
-                                System.err.println("Cannot parse index entry: " + value);
+                                String message = "Cannot parse index entry: " + value;
+                                MessageHandler.status(message);
+                                System.err.println(message);
                             }
                         }
                     } catch (IOException ex) {
-                        // FIXME: What to do here?
-                        System.err.println("Cannot open index file: " + indexFile
-                                + "\n" + ex);
+                        String message = "Cannot open index file: " + indexFile;
+                        MessageHandler.status(message);
+                        System.err.println(message + "\n" + ex);
                     } catch (JSONException ex) {
-                        // FIXME: What to do here?
-                        System.err.println("Cannot parse index data: " + contents
-                                + "\n" + ex);
+                        String message = "Cannot open index data: " + contents;
+                        MessageHandler.status(message);
+                        System.err.println(message + "\n" + ex);
                     } finally {
                         if (in != null) {
                             in.close();
                         }
                     }
-
-                    // FIXME: This assumes the configure source is a specific accessor file,
-                    // not a library.
-                    String moml = JSAccessor.accessorToMoML(_configureSource, false);
-                    // FIXME: Need a URL base?
-                    parser.parse(moml);
                 }
 
                 if (_configureText != null && !_configureText.equals("")) {
