@@ -185,6 +185,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _createHierarchyAction = null;
         _debugMenuListener = null;
 
+        // These might not be necessary, but they probably can't hurt.
+        _controller.setFrame(null);
+        _controller = null;
+        
         super.dispose();
     }
 
