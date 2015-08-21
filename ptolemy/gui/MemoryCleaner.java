@@ -32,7 +32,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
 import javax.swing.AbstractButton;
+import javax.swing.ActionMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JToolBar;
@@ -119,6 +121,36 @@ public class MemoryCleaner {
                     if (component instanceof AbstractButton) {
                         AbstractButton b = (AbstractButton) component;
                         listenersRemoved += removeActionListeners(b);
+                    }
+                }
+            }
+        }
+        return listenersRemoved;
+    }
+
+    /**
+     * Remove ActionMapListeners from a JComponent.
+     * This is useful for removing key bindings.
+     *
+     * @param component The JComponent from which the Action in a ActionMap
+     * are to be removed.
+     * @return The number of listeners removed.
+     */
+    public static int removeActionListeners(JComponent component) {
+        int listenersRemoved = 0;
+        if (component != null) {
+            ActionMap actionMap = component.getActionMap();
+            int count = actionMap.size();
+            if (_isDebugging) {
+                System.out.println("actionMap count: " + count);
+            }
+
+            for (int a = 0; a < count; a++) {
+                Object [] keys = actionMap.keys();
+                if (keys != null) {
+                    for (int k = 0; k < keys.length; k++) {
+                        actionMap.remove(keys[k]);
+                        listenersRemoved++;
                     }
                 }
             }
