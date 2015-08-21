@@ -859,6 +859,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _rightComponent.removeMouseWheelListener(this);
             _rightComponent.removeMouseMotionListener(this);
             _rightComponent.removeMouseListener(this);
+
+            // Free up BasicGraphFrame$HierarchyTreeCellRenderer
+            MemoryCleaner.removeActionListeners(_rightComponent);
         }
 
         if (_libraryContextMenuCreator != null) {
@@ -871,7 +874,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         for (int i = 0; i < mouseListeners.length; i++) {
             _treeView.removeMouseListener(mouseListeners[i]);
         }
-        //_treeView.getCellRenderer();
+
+        _treeView.setCellRenderer(null);
+
 
         // Top.dispose() sets all the AbstractAction to null.
         disposeSuper();
