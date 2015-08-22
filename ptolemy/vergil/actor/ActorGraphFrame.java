@@ -186,9 +186,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _debugMenuListener = null;
 
         // These might not be necessary, but they probably can't hurt.
-        _controller.setFrame(null);
-        _controller = null;
-        
+        if (_controller != null) {
+            _controller.setFrame(null);
+            _controller = null;
+        }
+
         super.dispose();
     }
 
