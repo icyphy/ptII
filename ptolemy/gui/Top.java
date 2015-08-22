@@ -377,7 +377,38 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         getContentPane().removeAll();
         _disposed = true;
 
+        // Sigh.  Under Mac OS X, we need to deal with the peers by hand.
+        // This code is left commented out because it is Mac-specific and
+        // accessing ComponentPeer produces a warning.
+        
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#CPlatformWindow
+        // See http://stackoverflow.com/questions/19781877/mac-os-java-7-jdialog-dispose-memory-leak
+
+        // java.awt.peer.ComponentPeer peer = getPeer();
+
         super.dispose();
+
+        // if (peer != null) {
+        //     try {
+        //         Class<?> componentPeerClass = Class.forName("sun.lwawt.LWComponentPeer");
+        //         Field target = componentPeerClass.getDeclaredField("target");
+        //         target.setAccessible(true);
+        //         target.set(peer, null);
+
+        //         Field window = peer.getClass().getDeclaredField("platformWindow");
+        //         window.setAccessible(true);
+
+        //         Object platformWindow = window.get(peer);
+        //         target = platformWindow.getClass().getDeclaredField("target");
+        //         target.setAccessible(true);
+        //         target.set(platformWindow, null);
+
+        //     } catch (Throwable throwable) {
+        //         if (_debugClosing) {
+        //             throwable.printStackTrace();
+        //         }
+        //     }
+        // }
     }
 
     /** Exit the application after querying the user to save data.
@@ -1712,6 +1743,10 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
     /** Initialize the menus and key bindings for Mac OS X. */
     private void _macInitializer() {
+        // FIXME: This code causes a memory leak because
+        // MacOSXAdapter and JPopupMenu return retain references to
+        // ActorGraphFrame.  Also, MacOSXAdapter uses deprecated
+        // methods via reflection.
         try {
             // To set the about name, set the
             // com.apple.mrj.application.apple.menu.about.name
