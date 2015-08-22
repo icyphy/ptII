@@ -837,12 +837,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             foregroundEventLayer.removeLayerListener(_mousePressedLayerAdapter);
         }
 
-        ActionListener[] listeners = _findInLibraryEntryBox.getActionListeners();
-        if (listeners != null) {
-            int count = listeners.length;
-            for (ActionListener listener : listeners) {
-                //System.out.println("BGF.dispose(): _findInLibraryEntryBox: Removing " + listener);
-                _findInLibraryEntryBox.removeActionListener(listener);
+        if (_findInLibraryEntryBox != null) {
+            ActionListener[] listeners = _findInLibraryEntryBox.getActionListeners();
+            if (listeners != null) {
+                for (ActionListener listener : listeners) {
+                    //System.out.println("BGF.dispose(): _findInLibraryEntryBox: Removing " + listener);
+                    _findInLibraryEntryBox.removeActionListener(listener);
+                }
             }
         }
         //int removed =
@@ -870,16 +871,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         _mousePressedLayerAdapter = null;
 
-        MouseListener mouseListeners[] = _treeView.getMouseListeners();
-        for (int i = 0; i < mouseListeners.length; i++) {
-            _treeView.removeMouseListener(mouseListeners[i]);
-        }
+        if (_treeView != null) {
+            MouseListener mouseListeners[] = _treeView.getMouseListeners();
+            for (int i = 0; i < mouseListeners.length; i++) {
+                _treeView.removeMouseListener(mouseListeners[i]);
+            }
 
-        // Free up BasicGraphFrame$HierarchyTreeCellRenderer.
-        MemoryCleaner.removeActionListeners(_treeView);
-        _treeView.setCellRenderer(null);
-        _treeView.setUI(null);
-        _treeView = null;
+            // Free up BasicGraphFrame$HierarchyTreeCellRenderer.
+            MemoryCleaner.removeActionListeners(_treeView);
+            _treeView.setCellRenderer(null);
+            _treeView.setUI(null);
+            _treeView = null;
+        }
 
         // Top.dispose() sets all the AbstractAction to null.
         disposeSuper();
