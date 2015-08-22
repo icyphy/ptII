@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870580209385436">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.58614173419244, 384.7361195495161}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5861417341925, 384.736119549516}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At the right is an instance of the AudioPlayer accessor.&#10;In its original (incomplete) form for this exercise, it has no&#10;input port. It just plays a fixed sinusoidal sound when it is&#10;initialized. You should augment the accessor definition to&#10;endow it with an input, and then plug in in place of the &#10;Plotter below to generate a chirp signal.">
@@ -73,7 +73,7 @@
     <entity name="AudioPlayer" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor to play an audio signal.&#10;// FIXME: This accessor is a placeholder.&#10;// It just plays 2 seconds of fixed audio in initialize().&#10;// You should update it to accept an input and play that.&#10;&#10;// Set up the accessor.&#10;exports.setup = function() {&#10;    accessor.author('FIXME');&#10;    accessor.version('0.1 $$Date$$');&#10;    // FIXME: Define your inputs and outputs here.&#10;};&#10;&#10;var player = null;&#10;var audio = require(&quot;audio&quot;);&#10;&#10;exports.initialize = function() {&#10;    var sinusoid = new Array(128);&#10;    // As a test, produce about 2 seconds of sound in 128-sample chunks.&#10;    var n = 0;&#10;    player = new audio.Player();&#10;    for (var j = 0; j &lt; 128; j++) {&#10;        for (var i = 0; i &lt; 128; i++) {&#10;            sinusoid[i] = Math.sin(2 * Math.PI * 440 * n++/ 8000);&#10;        }&#10;        player.play(sinusoid);&#10;    }&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (player != null) {&#10;        player.stop();&#10;        player = null;&#10;    }&#10;}&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/AudioPlayer.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/audio/AudioPlayer.js">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 180.0]">
         </property>
