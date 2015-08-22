@@ -136,6 +136,20 @@ public class ImportAccessorAction extends AbstractAction {
                 "Import Accessor", query);
 
         if (dialog.buttonPressed().equals("OK")) {
+            String accessorFileName = query.getStringValue("accessor");
+            
+            // If a sublibrary is selected instead of an accessor, re-open the dialog.
+            if (!accessorFileName.endsWith(".js") && !accessorFileName.endsWith(".xml")) {
+                // Assume a sublibrary has been selected.
+                _lastLocation = query.getStringValue("location");
+                if (!_lastLocation.endsWith("/")) {
+                    _lastLocation += "/";
+                }
+                _lastLocation += accessorFileName;
+                // Re-open the dialog on the sublibrary.
+                actionPerformed(event);
+                return;
+            }
             // Get the associated Ptolemy model.
             GraphController controller = _frame.getJGraph().getGraphPane()
                     .getGraphController();
@@ -148,7 +162,7 @@ public class ImportAccessorAction extends AbstractAction {
             final double x = bounds.getWidth() / 2.0;
             final double y = bounds.getHeight() / 2.0;
 
-            final String urlSpec = _lastLocation + query.getStringValue("accessor");
+            final String urlSpec = _lastLocation + accessorFileName;
 
             // Do not add any code that modifies the MoML here,
             // instead edit org/terraswarm/accessor/JSAccessor.java so

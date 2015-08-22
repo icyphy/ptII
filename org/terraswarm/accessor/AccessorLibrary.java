@@ -120,20 +120,22 @@ public class AccessorLibrary extends EntityLibrary {
 
                 // NOTE: This does not seem like the right thing to do!
                 // removeAllEntities();
-                MoMLParser parser = new MoMLParser(workspace());
-
-                parser.setContext(this);
 
                 if (_configureSource != null && !_configureSource.equals("")) {
                     // FIXME: This will only work if the _configureSource is
-                    // "http://terraswarm.org/accessors".
-                    // Second argument specifies to update the repository.
+                    // "http://terraswarm.org/accessors" or a sublibrary.
+                    // Should be generalized to be able to list accessor
+                    // libraries from other sites.
+
+                    MoMLParser parser = new MoMLParser(workspace());
+
                     if (!_configureSource.endsWith("/")) {
                         _configureSource += "/";
                     }
+                    // Second argument specifies to update the repository.
                     URL source = JSAccessor._sourceToURL(_configureSource + "index.json", true);
                     
-                    // Get the index at the specified location.
+                    // Get the index file at the specified location.
                     URL indexFile = new URL(source, "index.json");
                     BufferedReader in = null;
                     StringBuffer contents = new StringBuffer();
@@ -149,12 +151,24 @@ public class AccessorLibrary extends EntityLibrary {
                         for (int i = 0; i < index.length(); ++i) {
                             Object value = index.get(i);
                             if (value instanceof String) {
+                                String valueString = (String)value;
+                                // Check to see whether the value specifies a sublibrary.
+                                if (!valueString.endsWith(".js") && !valueString.endsWith(".xml")) {
+                                    // Assume the entry in index.json specifies a sublibrary, not an accessor.
+                                    AccessorLibrary sublibrary = new AccessorLibrary(this, valueString);
+                                    String newConfigureSource = _configureSource + valueString;
+                                    URL newBase = new URL(newConfigureSource);
+                                    sublibrary.configure(newBase, newConfigureSource, null);
+                                    continue;
+                                }
+                                // Entry in index.json is an accessor.
+                                parser.setContext(this);
                                 try {
-                                    URL accessorURL = new URL(source, (String)value);
+                                    URL accessorURL = new URL(source, valueString);
                                     String moml = JSAccessor.accessorToMoML(accessorURL.toExternalForm(), false);
                                     parser.parse(accessorURL, moml);
                                 } catch (Throwable ex) {
-                                    String message = "Loading accessor failed: " + value;
+                                    String message = "Loading accessor failed: " + valueString;
                                     MessageHandler.status(message);
                                     System.err.println(message + "\n" + ex);
                                 }
