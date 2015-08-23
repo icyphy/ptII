@@ -309,14 +309,18 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             // Nothing to do.
             return;
         }
+        // This redefines what getOrigin() returns for the new centering or not.
+        _centered = centered;
         repaint();
 
+        // NOTE: This code used to do the following, but this results in
+        // a double application of the translation.
         // Get the original origin of the figure.
-        Point2D point = getOrigin();
+        // Point2D point = getOrigin();
         // Redefine what getOrigin() returns for the new centering or not.
-        _centered = centered;
-        CanvasUtilities.translateTo(this, point.getX(), point.getY());
-        repaint();
+        // _centered = centered;
+        // CanvasUtilities.translateTo(this, point.getX(), point.getY());
+        // repaint();
     }
 
     /** Set the compositing operation for this figure.
