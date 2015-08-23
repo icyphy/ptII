@@ -860,7 +860,8 @@ public final class CanvasUtilities {
 
     /**
      * Move a figure so that its origin is located at the given
-     * coordinates.
+     * coordinates. If the figure is centered, the origin is the
+     * center of the figure. If it is not, then the origin is 0,0.
      * @param f The figure to be moved.
      * @param x The new x location.
      * @param y The new y location.
