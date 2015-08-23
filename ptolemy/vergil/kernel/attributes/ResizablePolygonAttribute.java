@@ -214,25 +214,13 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 yPoints[j] *= scaleY;
             }
 
-            // Finally, correct if centered, and convert to int.
+            // Finally, convert to int.
             int[] xInt = new int[length / 2];
             int[] yInt = new int[length / 2];
 
-            if (_centeredValue) {
-                double xOffset = (xMin - xMax) / 2;
-                double yOffset = (yMin - yMax) / 2;
-
-                for (int i = 0; i < length / 2; i++) {
-                    xInt[i] = (int) Math.rint(xPoints[i] + xOffset);
-                    yInt[i] = (int) Math.rint(yPoints[i] + yOffset);
-                    ;
-                }
-            } else {
-                for (int i = 0; i < length / 2; i++) {
-                    xInt[i] = (int) Math.rint(xPoints[i]);
-                    yInt[i] = (int) Math.rint(yPoints[i]);
-                    ;
-                }
+            for (int i = 0; i < length / 2; i++) {
+                xInt[i] = (int) Math.rint(xPoints[i]);
+                yInt[i] = (int) Math.rint(yPoints[i]);
             }
 
             return new Polygon(xInt, yInt, length / 2);
