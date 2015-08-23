@@ -203,9 +203,15 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     @Override
     public Point2D getOrigin() {
         if (_centered) {
-            return super.getOrigin();
+            Point2D point = super.getOrigin();
+            // The following overwrites point if there is a transform.
+            _transform.transform(point, point);
+            return point;
         } else {
+            // If the figure is not centered, then the origin is always 0,0,
+            // transformed by the current transform.
             Point2D point = new Point2D.Double(0, 0);
+            // The following overwrites point if there is a transform.
             _transform.transform(point, point);
             return point;
         }
@@ -299,15 +305,18 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  @see #getOrigin()
      */
     public void setCentered(boolean centered) {
-        if (_centered = centered) {
+        if (_centered == centered) {
             // Nothing to do.
             return;
         }
         repaint();
 
+        // Get the original origin of the figure.
         Point2D point = getOrigin();
+        // Redefine what getOrigin() returns for the new centering or not.
         _centered = centered;
         CanvasUtilities.translateTo(this, point.getX(), point.getY());
+        repaint();
     }
 
     /** Set the compositing operation for this figure.
