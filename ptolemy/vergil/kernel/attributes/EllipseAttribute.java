@@ -111,13 +111,6 @@ public class EllipseAttribute extends FilledShapeAttribute {
      */
     @Override
     protected Shape _newShape() {
-        if (_centeredValue) {
-            double halfWidth = _widthValue * 0.5;
-            double halfHeight = _heightValue * 0.5;
-            return new Ellipse2D.Double(-halfWidth, -halfHeight, _widthValue,
-                    _heightValue);
-        } else {
-            return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
-        }
+        return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
     }
 }

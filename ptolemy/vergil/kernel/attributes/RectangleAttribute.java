@@ -161,10 +161,12 @@ public class RectangleAttribute extends FilledShapeAttribute {
         double width = _widthValue;
         double height = _heightValue;
 
+        /* Let Diva's notion of centering handle this.
         if (_centeredValue) {
             x = -width * 0.5;
             y = -height * 0.5;
         }
+        */
 
         if (roundingValue == 0.0) {
             return new Rectangle2D.Double(x, y, width, height);
