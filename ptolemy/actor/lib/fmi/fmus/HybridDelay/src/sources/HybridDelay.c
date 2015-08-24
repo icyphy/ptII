@@ -93,7 +93,6 @@ void setStartValues(ModelInstance *comp) {
     hr(input_) = absent_;
     hr(delay_) = present_;
     hr(status_) = absent_;
-    pos(0) = fmi2False;
     eventQueue = malloc(sizeof(node_t));
     eventQueue->next = NULL;
 }
