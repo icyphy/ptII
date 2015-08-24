@@ -622,13 +622,13 @@ void parseArguments(int argc, char *argv[], fmi2Integer *tEnd, fmi2Integer *h,
         int *loggingOn, char *csv_separator, int *nCategories, fmi2String *logCategories[]) {
     // parse command line arguments
     if (argc > 1) {
-        if (sscanf(argv[1],"%d", tEnd) != 1) {
+        if (sscanf(argv[1],"%ld", tEnd) != 1) {
             printf("error: The given end time (%s) is not a number\n", argv[1]);
             exit(EXIT_FAILURE);
         }
     }
     if (argc > 2) {
-        if (sscanf(argv[2],"%d", h) != 1) {
+        if (sscanf(argv[2],"%ld", h) != 1) {
             printf("error: The given stepsize (%s) is not a number\n", argv[2]);
             exit(EXIT_FAILURE);
         }
