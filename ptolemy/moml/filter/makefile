@@ -56,6 +56,7 @@ JSRCS = \
 	ClassChanges.java \
 	DiscardDoubles.java \
 	DiscardDoublesArray.java \
+	DiscardGenerals.java \
 	DocAttributeChanges.java \
 	GRColorChanges.java \
 	HideAnnotationNames.java \

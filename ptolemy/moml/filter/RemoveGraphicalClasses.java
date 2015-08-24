@@ -382,11 +382,12 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.domains.ptides.demo.PtidesAirplaneFuelControl.Tank",
                 "ptolemy.domains.wireless.kernel.WirelessComposite");
 
-        // FIXME: If these actors are used when enabledBackwardTypeInference
-        // is set, then the type of Discard is not the same as the type
-        // of ImageDisplay or MatrixViewer.
         _graphicalClasses.put("ptolemy.actor.lib.image.ImageDisplay",
-                "ptolemy.actor.lib.Discard");
+                "ptolemy.moml.filter.DiscardGenerals");
+
+        // FIXME: If this actors are used when enabledBackwardTypeInference
+        // is set, then the type of Discard is not the same as the type
+        // of MatrixViewer.
         _graphicalClasses.put("ptolemy.actor.lib.gui.MatrixViewer",
                 "ptolemy.actor.lib.Discard");
 
