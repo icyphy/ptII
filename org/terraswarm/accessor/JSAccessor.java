@@ -295,9 +295,12 @@ public class JSAccessor extends JavaScript {
         }
     }
 
-    /** Check out or update the TerraSwarm accessor repository.
-     *  If the <i>checkoutOrUpdateAccessorsRepository</i> parameter is
-     *  false, then the repository is not checked out or updated.
+    /** Check out or update the TerraSwarm accessor repository, unless
+     *  the <i>checkoutOrUpdateAccessorsRepository</i> parameter is
+     *  false, in which case, do nothing.
+     *  If the udpate succeeds, and the response from the SVN server
+     *  does not include "At revision ", then also run ant in the
+     *  accessors/web directory to update the documentation.
      *  @exception IOExeption If the repository cannot be checked out.
      */
     public static void getAccessorsRepository() throws IOException {
@@ -335,7 +338,8 @@ public class JSAccessor extends JavaScript {
 
             exec.setWaitForLastSubprocess(true);
             exec.start();
-            _commands += exec.buffer.toString();
+            // The following is redundant. Gets reported twice.
+            // _commands += exec.buffer.toString();
             int returnCode = exec.getLastSubprocessReturnCode();
             if (returnCode == 0) {
                 updated = true;
@@ -368,9 +372,11 @@ public class JSAccessor extends JavaScript {
                 MessageHandler.status("Could not update the accessors repository. Using local version.");
             }
         }
-        if (!updated) {
+        if (!updated || exec.buffer.toString().contains("At revision ")) {
             // Presumably, there is no reason to update the docs, since there was no update.
             return;
+        } else {
+            _lastRepoUpdateTime = System.currentTimeMillis();
         }
 
         // If the accessors/web directory exists, run ant there.
@@ -617,8 +623,10 @@ public class JSAccessor extends JavaScript {
 
     /** For the given URL specification, attempt to find a local copy of the resource
      *  and return that if it exists. Otherwise, return the URL specified.
-     *  If updateRepository is true, or if an exception occurs accessing the URL,
+     *  If updateRepository is true, or if an exception occurs accessing the local copy,
      *  then attempt to update the accessor repository on the local file system.
+     *  Do this only once in this instance of the JVM, as it is quite costly,
+     *  unless the last update was more than 12 hours ago.
      *  @param urlSpec The URL specification.
      *  @param updateRepository True to update the repository before attempting to
      *   find the local file.
@@ -636,8 +644,11 @@ public class JSAccessor extends JavaScript {
         }
     
         URL accessorURL = null;
+        boolean updateNeeded = updateRepository
+                && (_lastRepoUpdateTime < 0
+                || (System.currentTimeMillis() - _lastRepoUpdateTime > 43200000L)); // 12 hours
         try {
-            if (updateRepository) {
+            if (updateNeeded) {
                 try {
                     JSAccessor.getAccessorsRepository();
                 } catch (Throwable throwable) {
@@ -649,13 +660,14 @@ public class JSAccessor extends JavaScript {
             }
             accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
         } catch (IOException ex) {
-            if (!updateRepository) {
-                System.err.println("The updateRepository flag was false but "
-                        + urlSpec + " was not found, so we are trying to update "
-                        + "the repository anyway.");
-            }
-            // Note that if we get an exception, we try to do get the repository
+            // Note that if we get an exception, we try to get the repository
             // no matter what the value of updateRepository is.
+            if (!updateNeeded) {
+                System.err.println(
+                        "An error occurred reading "
+                        + urlSpec 
+                        + ". Trying to update the repository.");
+            }
             
             // If the urlSpec could be in the accessors repo, then try
             // to either check out or update the repo.
@@ -947,6 +959,9 @@ public class JSAccessor extends JavaScript {
      *  only once per directory.
      */
     private static boolean _invokedReloadAllAccessorsOnce = false;
+    
+    /** Last time of accessor respository update. */
+    private static long _lastRepoUpdateTime = -1L;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
