@@ -45,8 +45,9 @@ package ptolemy.util;
  exec.setCommands(execCommands);
 
  exec.start();
+ 
+ String result = exec.buffer.toString();
  </pre>
-
 
  <p>Loosely based on Example1.java from
  <a href="http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html">http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html</a>
