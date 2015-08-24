@@ -32,11 +32,13 @@
   <!-- Used in BasicGraphFrame.java -->
   <input source="ptolemy/vergil/basic/export/html/htmlExportConfiguration.xml"/>
 
+  <!-- Add support for importing Accessors. -->
   <!-- Add support for importing Functional Mock-up Units (FMUs). -->
+  <!-- Add support for import an FSMActor using LTL synthesis (G4LTL). -->
   <!-- Used in BasicGraphFrame.java -->
   <property name="_importActionClassNames"
             class="ptolemy.data.expr.Parameter"
-            value="{&quot;ptolemy.vergil.basic.imprt.accessor.ImportAccessorAction&quot;}"/>
+            value="{&quot;ptolemy.vergil.basic.imprt.accessor.ImportAccessorAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAction&quot;, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUForQSSAction&quot;, &quot;ptolemy.vergil.basic.imprt.g4ltl.ImportG4LTLAction&quot;}"/>
 
   <!-- Use the KIELER graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
@@ -72,6 +74,7 @@
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/modalTableauFactory.xml"/>
+    <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
@@ -90,11 +93,8 @@
     <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
 
       <!-- Note that regardless of the order here, classes get listed before entities. -->
-      <!-- input source="ptolemy/domains/qss/kernel/CyPhyComposite.xml" / -->
-      <!-- input source="ptolemy/domains/sr/kernel/PeriodicComposite.xml" / -->
-      <!-- input source="ptolemy/domains/qss/kernel/CyPhyCompositeClass.xml" / -->
-      <!-- input source="ptolemy/domains/sr/kernel/PeriodicCompositeClass.xml" / -->
-
+      <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+      <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
       <input source="ptolemy/configs/utilityModalModel.xml"/>
       <input source="ptolemy/configs/basicUtilities.xml"/>
       <!-- Override default background color so that CapeCode looks different. -->
@@ -107,20 +107,15 @@
       <configure>
         <?moml
           <group>
-	  <input source="ptolemy/actor/lib/jjs/js.xml"/>
+	      <input source="ptolemy/actor/lib/jjs/js.xml"/>
           <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
-	  <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
+	      <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
           <input source="ptolemy/data/unit/unitSystems.xml"/>
           </group>
         ?>
       </configure>
     </entity>
     
-    <!-- Standard TerraSwarm accessors. -->
-    <entity name="Accessors" class="org.terraswarm.accessor.AccessorLibrary">
-      <configure source="http://terraswarm.org/accessors"/>
-    </entity>
-
     <!-- Custom actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <configure>
@@ -151,6 +146,11 @@
          </group>
         ?>
       </configure>
+    </entity>
+
+    <!-- Standard TerraSwarm accessors. -->
+    <entity name="Accessors" class="org.terraswarm.accessor.AccessorLibrary">
+      <configure source="http://terraswarm.org/accessors"/>
     </entity>
 
     <!-- Optional packages that may or may not be present  -->
