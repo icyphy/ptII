@@ -27,6 +27,7 @@
  */
 package ptolemy.vergil.basic;
 
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -38,8 +39,6 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -56,6 +55,8 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// RunnableGraphController
@@ -103,7 +104,7 @@ implements ExecutionListener {
      */
     @Override
     public void executionError(Manager manager, Throwable throwable) {
-        getFrame().report(throwable);
+        _report(throwable);
 
         if (throwable instanceof KernelException) {
             highlightError(((KernelException) throwable).getNameable1());
@@ -163,7 +164,7 @@ implements ExecutionListener {
         } else {
             statusMessage = ".";
         }
-        getFrame().report("execution finished" + statusMessage);
+        _report("execution finished" + statusMessage);
     }
 
     /** Report that a manager state has changed.
@@ -202,8 +203,7 @@ implements ExecutionListener {
             } else {
                 statusMessage = ".";
             }
-            getFrame().report(
-                    manager.getState().getDescription() + statusMessage);
+            _report(manager.getState().getDescription() + statusMessage);
             _previousState = newState;
 
             if (newState == Manager.INITIALIZING
@@ -280,6 +280,32 @@ implements ExecutionListener {
         }
 
         return manager;
+    }
+    
+    /** If there is an associated BasicGraphFrame, use it to report a message.
+     *  Otherwise, report to standard output.
+     *  @param message The message.
+     */
+    protected void _report(String message) {
+        BasicGraphFrame frame = getFrame();
+        if (frame != null) {
+            frame.report(message);
+        } else {
+            System.out.println(message);
+        }
+    }
+
+    /** If there is an associated BasicGraphFrame, use it to report an error.
+     *  Otherwise, report to standard error.
+     *  @param exception The exception.
+     */
+    protected void _report(Throwable error) {
+        BasicGraphFrame frame = getFrame();
+        if (frame != null) {
+            frame.report(error);
+        } else {
+            System.err.println(error);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -369,7 +395,10 @@ implements ExecutionListener {
                 // Top calls GraphicalMessageHandler.setContext().
                 // Instead, if the user runs the model, we should set the
                 // context to that window.
-                UndeferredGraphicalMessageHandler.setContext(getFrame());
+                Frame frame = getFrame();
+                if (frame != null) {
+                    UndeferredGraphicalMessageHandler.setContext(getFrame());
+                }
                 _getManager().startRun();
             } catch (IllegalActionException ex) {
                 // Model may be already running. Attempt to resume.
