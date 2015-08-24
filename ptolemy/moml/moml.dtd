@@ -1,4 +1,4 @@
-<!-- MoML DTD Version 1.4, UC Berkeley -->
+<!-- MoML DTD Version 1.5, UC Berkeley -->
 <!-- $Id$ -->
 <!-- If you update this file, please also update:  -->
 <!--    ptweb/xml/dtd/MoML_1.dtd, -->
@@ -89,7 +89,7 @@
 <!ATTLIST port class CDATA #IMPLIED
                name CDATA #REQUIRED>
 
-<!ELEMENT property (configure | display | doc | property | rename)*>
+<!ELEMENT property (configure | display | doc | input | property | rename)*>
 <!ATTLIST property class CDATA #IMPLIED
                     name CDATA #REQUIRED
                     value CDATA #IMPLIED>
