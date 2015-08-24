@@ -79,17 +79,7 @@
  *   * _FadeEdges_: Boolean indicating whether to fade edges. Defaults to false.
  *   * _Scale_: Size of the cells, in pixels. Defaults to 16.
  *   * _Stretch_: Vertical stretch of the cells. Defaults to 1.0, which does not stretch.
- * * __Curl__: Apply a page curl effect to an image.
- *   * _Angle_: Angle of the curl in radians. Defaults to 0.0.
- *   * _Transition_: . Defaults to 1.0.
-
- angle = 0;
-    private float transition = 0.0f;
-
-    private float width;
-    private float height;
-    private float radius;
-
+ * * __FIXME__: Missing filters (alphabetically) here.
  * * __Gray__: Gray out an image by averaging each pixel with white.
  * * __Invert__: Invert the colors of an image.
  * * __LensBlur__: Simulate a lens blur. Options:
