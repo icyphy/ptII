@@ -317,7 +317,9 @@ public class JSAccessor extends JavaScript {
 
             if (accessorsRepoDirectory.isDirectory()) {
                 exec.setWorkingDirectory(accessorsRepoDirectory);
-                execCommands.add("svn update");
+                // Use --accept postpone so that the updated proceeds despite local mods.
+                // See http://lists.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-January/017045.html
+                execCommands.add("svn update --accept postpone");
                 _commands = "cd " + accessorsRepoDirectory + "\nsvn update";
                 MessageHandler.status("Updating local copy of the accessors repository.");
             } else {
