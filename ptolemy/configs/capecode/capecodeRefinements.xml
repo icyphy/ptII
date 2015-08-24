@@ -1,10 +1,8 @@
 <group>
   <!-- An entity giving default state refinements for modal models containing SDF directors. -->
   <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Periodic Refinement" class="ptolemy.domains.modal.modal.Refinement">
-      <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
+    <entity name="DE Refinement" class="ptolemy.domains.modal.modal.Refinement">
+      <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 65}">
         </property>
       </property>
