@@ -30,6 +30,7 @@ package org.terraswarm.accessor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -798,7 +799,7 @@ public class JSAccessor extends JavaScript {
 
                 // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
                 try {
-                    result.append(_getPtDoc(urlSpec.trim()));
+                    result.append(_getPtDoc(accessorURL.toExternalForm()));
                 } catch (IOException ex) {
                     // FIXME: What to do here?
                     System.err.println("Cannot find PtDoc file for "
@@ -907,14 +908,18 @@ public class JSAccessor extends JavaScript {
         // This assumes that getAccessorsRepository() was previously invoked.
         url = _getLocalURL(ptDocSpec, url);
         
+        // Check that the URL is readable, and import without docs if not.
+        // This will throw IOException if not.
+        InputStream stream = url.openStream();
+        stream.close();
+        
         // For some reason, using an input tag results in updating
         // the docs on reload, whereas using the previous method below
         // does not.
-        // FIXME: What does this do if the PtDoc file is not found?
-        // or if the user doesn't have access to the SVN repo?
         return "<input source=\""
                 + StringUtilities.escapeForXML(url.toExternalForm())
                 + "\"/>";
+
         /* Old version below:
         BufferedReader in = null;
         try {
