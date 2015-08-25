@@ -668,6 +668,8 @@ PTPROTOBUF_JAR
 PTPROCESSING_JARS
 PTPOWERMOCK_JARS
 PTPOWERMOCK_DIR
+PTSVGSALAMANDER_JAR
+PTSVGSALAMANDER_DIR
 PTSVG_JAR
 PTSVG_DIR
 PTRSYNTAXTEXTAREA_PACKAGES
@@ -1038,6 +1040,7 @@ with_mysql
 with_ojdbc
 with_pdfrenderer
 with_batikjar
+with_svgsalamanderjar
 with_tini
 with_giotto
 with_waba
@@ -1803,6 +1806,8 @@ Optional Packages:
                           defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
+  --with-svgsalamanderjar=SVGSALAMANDER_JAR     use svgSalamander jar file,
+                                  defaults to \$PTT/lib/svgSalamander.jar
   --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
                           defaults to \$PTII/lib/rsyntaxtextarea-2.5.7.jar
   --with-tini=DIR       use TINI from DIR,
@@ -12875,12 +12880,64 @@ $as_echo "$as_me: WARNING: Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
     Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
-	PTSVG_JAR=
     fi
 fi
 
 if test -z "$PTSVG_DIR"; then
    updateExcludes "diva/util/java2d/svg/"
+fi
+
+#--------------------------------------------------------------------
+#       svgSalamander is used by FIXME.
+#	See https://svgsalamander.java.net/
+#--------------------------------------------------------------------
+
+# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
+# FIXME if the svgSalamander jar file is found.
+PTSVGSALAMANDER_DIR=
+
+# svgSalamander Jar file.
+PTSVGSALAMANDER_JAR=
+
+# We only need to look for svgSalamander if FIXME is present.
+if test ! -d "$PTII/org/terraswarm/accessor"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/org/terraswarm/accessors is not present,
+    so we need not find svgSalamander." >&5
+$as_echo "$PTII/org/terraswarm/accessors is not present,
+    so we need not find svgSalamander." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for svgSalamander" >&5
+$as_echo_n "checking for svgSalamander... " >&6; }
+
+# Check whether --with-svgsalamanderjar was given.
+if test "${with_svgsalamanderjar+set}" = set; then :
+  withval=$with_svgsalamanderjar; PTSVGSALAMANDER_JAR=$withval
+else
+  PTSVGSALAMANDER_JAR=$PTII/lib/svgSalamander.jar
+fi
+
+
+    if test -f "$PTSVGSALAMANDER_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSVGSALAMANDER_JAR" >&5
+$as_echo "$PTSVGSALAMANDER_JAR" >&6; }; fi
+	PTSVGSALAMANDER_DIR=svgSalamander
+        updateClasspath "$PTSVGSALAMANDER_JAR"
+    fi
+
+    if test "$PTSVGSALAMANDER_DIR" = ""; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the svgSalamander.jar file.
+    You need only have find this if FIXME.
+    svgSalamander.jar can be downloaded from http://xmlgraphics.apache.org/batik/" >&5
+$as_echo "$as_me: WARNING: Failed to find the svgSalamander.jar file.
+    You need only have find this if FIXME.
+    svgSalamander.jar can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
+    fi
+fi
+
+if test -z "$PTSVGSALAMANDER_DIR"; then
+   echo "FIXME: could not find svgSalamander.jar"
+   # updateExcludes "diva/util/java2d/svg/"
 fi
 
 #--------------------------------------------------------------------
@@ -14618,6 +14675,13 @@ fi
 
 
 # Jar file used by diva/util/java2d/svg/makefile
+
+
+# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
+# FIXME if the svgSalamander jar file is found.
+
+
+# svgSalamander Jar file.
 
 
 # PTPOWERMOCK_DIR is set to test and used in
