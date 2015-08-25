@@ -322,6 +322,7 @@ public class ExportModelJUnitTest {
                 "KarplusStrong.xml", // "Audio Device Unavailable"
                 "LatticeComposition.xml", // Intentionally throws an error.
                 "LineFault.xml", // Intentionally throws an error.
+                "LongRuns.xml", // Produces almost 1 million lines on stdout.
                 "MatlabRoom.xml", // Matlab message: Error: Too many inputs passed to SimpleFunctionThunk.
                 "MapReduceDDF.xml", // Hangs.
                 "MoC.xml", // "No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported."
