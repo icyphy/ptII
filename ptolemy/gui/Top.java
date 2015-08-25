@@ -287,6 +287,8 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
             System.out.println("Top.dispose() : " + this.getName());
         }
 
+        removeWindowFocusListener(this);
+
         // Deal with help menu action listeners
         /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
@@ -334,6 +336,11 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         focusManager.clearGlobalFocusOwner();
         focusManager.downFocusCycle();
 
+        // Avoid a leak under RHEL and Java 1.8.0_55
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#LinuxBltSubRegion
+        // http://oracle.developer-works.com/article/5359339/How+to+realy+unregister+listeners+%28or+how+%22great%22+swing+leaks+memory%29
+        focusManager.setGlobalCurrentFocusCycleRoot(null); 
+
         // Set any AbstractActions to null.  This is not strictly necessary,
         // but it helps free up memory more quickly.  By doing this here,
         // we no longer require people to update dispose() by hand.
@@ -376,6 +383,12 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
         getContentPane().removeAll();
         _disposed = true;
+
+        java.awt.image.BufferStrategy bufferStrategy = getBufferStrategy();
+        if (bufferStrategy != null) {
+            System.out.println("Top.dispose(): calling dispose on " + bufferStrategy);
+            bufferStrategy.dispose();
+        }
 
         // Sigh.  Under Mac OS X, we need to deal with the peers by hand.
         // This code is left commented out because it is Mac-specific and
