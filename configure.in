@@ -5711,12 +5711,52 @@ else
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
     Batik can be downloaded from http://xmlgraphics.apache.org/batik/])
-	PTSVG_JAR=
     fi
 fi
 
 if test -z "$PTSVG_DIR"; then
    updateExcludes "diva/util/java2d/svg/"
+fi
+
+#--------------------------------------------------------------------
+#       svgSalamander is used by FIXME.
+#	See https://svgsalamander.java.net/
+#--------------------------------------------------------------------
+
+# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
+# FIXME if the svgSalamander jar file is found.
+PTSVGSALAMANDER_DIR=
+
+# svgSalamander Jar file.
+PTSVGSALAMANDER_JAR=
+
+# We only need to look for svgSalamander if FIXME is present.
+if test ! -d "$PTII/org/terraswarm/accessor"; then
+    PT_MSG_STATUS([$PTII/org/terraswarm/accessors is not present,
+    so we need not find svgSalamander.])
+else
+    AC_MSG_CHECKING([for svgSalamander])
+    AC_ARG_WITH(svgsalamanderjar, [  --with-svgsalamanderjar=SVGSALAMANDER_JAR     use svgSalamander jar file,
+                                  defaults to \$PTT/lib/svgSalamander.jar],
+                          PTSVGSALAMANDER_JAR=$withval,
+                          PTSVGSALAMANDER_JAR=$PTII/lib/svgSalamander.jar)
+
+    if test -f "$PTSVGSALAMANDER_JAR"; then
+	PT_MSG_RESULT([$PTSVGSALAMANDER_JAR])
+	PTSVGSALAMANDER_DIR=svgSalamander
+        updateClasspath "$PTSVGSALAMANDER_JAR"
+    fi	
+
+    if test "$PTSVGSALAMANDER_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the svgSalamander.jar file.
+    You need only have find this if FIXME.
+    svgSalamander.jar can be downloaded from http://xmlgraphics.apache.org/batik/])
+    fi
+fi
+
+if test -z "$PTSVGSALAMANDER_DIR"; then
+   echo "FIXME: could not find svgSalamander.jar"
+   # updateExcludes "diva/util/java2d/svg/"
 fi
 
 #--------------------------------------------------------------------
@@ -7191,6 +7231,13 @@ AC_SUBST(PTSVG_DIR)
 
 # Jar file used by diva/util/java2d/svg/makefile
 AC_SUBST(PTSVG_JAR)
+
+# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
+# FIXME if the svgSalamander jar file is found.
+AC_SUBST(PTSVGSALAMANDER_DIR)
+
+# svgSalamander Jar file.
+AC_SUBST(PTSVGSALAMANDER_JAR)
 
 # PTPOWERMOCK_DIR is set to test and used in
 # $PTII/ptdb/makefile
