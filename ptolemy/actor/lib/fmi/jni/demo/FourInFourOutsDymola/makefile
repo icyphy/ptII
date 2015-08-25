@@ -49,22 +49,6 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	FourInFourOuts1.fmu \
 	FourInFourOuts1_w.fmu \
-	FourInFourOuts2.fmu \
-	FourInFourOuts2_w.fmu \
-	FourInFourOuts3.fmu \
-	FourInFourOuts3_w.fmu \
-	FourInFourOuts4.fmu \
-	FourInFourOuts4_w.fmu \
-	FourInFourOuts5.fmu \
-	FourInFourOuts5_w.fmu \
-	FourInFourOuts6.fmu \
-	FourInFourOuts6_w.fmu \
-	FourInFourOuts7.fmu \
-	FourInFourOuts7_w.fmu \
-	FourInFourOuts8.fmu \
-	FourInFourOuts8_w.fmu \
-	FourInFourOuts9.fmu \
-	FourInFourOuts9_w.fmu \
 	FourInFourOutsDymolaJNI.xml \
 	FourInFourOutsDymolaWindows.xml \
 	FourInFourOutsDymola.xml \

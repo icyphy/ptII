@@ -135,7 +135,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts2" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts2.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -243,7 +243,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts3" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts3.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -351,7 +351,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts4" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts4.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -459,7 +459,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts5" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts5.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -567,7 +567,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts6" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts6.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -690,7 +690,7 @@
         </property>
     </entity>
     <entity name="FourInFourOuts7" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts7.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -796,7 +796,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts8" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts8.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -902,7 +902,7 @@
         </port>
     </entity>
     <entity name="FourInFourOuts9" class="ptolemy.actor.lib.fmi.FMUImport">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts9.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="FourInFourOuts1.fmu">
         </property>
         <property name="modelExchange" class="ptolemy.data.expr.Parameter" value="true">
         </property>
