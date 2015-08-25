@@ -32,6 +32,7 @@
  */
 package ptolemy.kernel.util;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -264,11 +265,7 @@ public final class Workspace implements Nameable {
         Thread current = Thread.currentThread();
         AccessRecord record = null;
 
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, false);
-        }
+        record = _lastReaderRecordOrCurrentAccessRecord(current, false);
 
         if (record == null) {
             throw new InvalidStateException(this,
@@ -410,13 +407,7 @@ public final class Workspace implements Nameable {
         // everywhere this method is called, which is a huge amount
         // of work.
         Thread current = Thread.currentThread();
-        AccessRecord record = null;
-
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, true);
-        }
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, true);
 
         if (record.readDepth > 0) {
             // If the current thread has read permission, then grant
@@ -511,13 +502,7 @@ public final class Workspace implements Nameable {
             return;
         }
 
-        AccessRecord record = null;
-
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, true);
-        }
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, true);
 
         // Probably need to wait for write access.
         // First increment this to make the record not empty, so as to
@@ -887,13 +872,7 @@ public final class Workspace implements Nameable {
     private final synchronized void _doneWriting(
             boolean incrementWorkspaceVersion) {
         Thread current = Thread.currentThread();
-        AccessRecord record = null;
-
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, false);
-        }
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, false);
 
         if (incrementWorkspaceVersion) {
             incrVersion();
@@ -921,6 +900,24 @@ public final class Workspace implements Nameable {
                                 + "matching call to getWriteAccess().");
             }
         }
+    }
+
+    /** If the thread is the same as the _lastReader, then return
+     *  the _lastReaderRecord.  Otherwise, get the AccessRecord for the thread.
+     *  @param thread The thread to check against _lastReader
+     *  @param createNew True if a new thread is to be created.
+     *  @return The AccessRecord
+     */
+    private final AccessRecord _lastReaderRecordOrCurrentAccessRecord(Thread thread,
+            boolean createNew) {
+        AccessRecord record = null;
+        // This is a separate method so as to avoid code duplication.
+        if (_lastReader != null && thread == _lastReader.get()) {
+            record = _lastReaderRecord;
+        } else {
+            record = _getAccessRecord(thread, createNew);
+        }
+        return record;
     }
 
     /** Return the AccessRecord object for the specified thread.
@@ -965,7 +962,7 @@ public final class Workspace implements Nameable {
         }
 
         if (record != null) {
-            _lastReader = current;
+            _lastReader = new WeakReference<Thread>(current);
             _lastReaderRecord = record;
         }
 
@@ -993,13 +990,7 @@ public final class Workspace implements Nameable {
         }
 
         Thread current = Thread.currentThread();
-        AccessRecord record = null;
-
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, false);
-        }
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(current, false);
 
         if (record == null || count > record.failedReadAttempts) {
             throw new InvalidStateException(this, "Trying to reacquire "
@@ -1041,14 +1032,7 @@ public final class Workspace implements Nameable {
      */
     private synchronized int _releaseAllReadPermissions() {
         // Find the current thread.
-        Thread current = Thread.currentThread();
-        AccessRecord record = null;
-
-        if (current == _lastReader) {
-            record = _lastReaderRecord;
-        } else {
-            record = _getAccessRecord(current, false);
-        }
+        AccessRecord record = _lastReaderRecordOrCurrentAccessRecord(Thread.currentThread(), false);
 
         if (record == null || record.readDepth == 0) {
             // current thread is not a reader
@@ -1090,7 +1074,7 @@ public final class Workspace implements Nameable {
 
     /** @serial The last thread that acquires/releases read permission.
      */
-    private transient Thread _lastReader = null;
+    private transient WeakReference<Thread> _lastReader = null;
 
     private transient AccessRecord _lastReaderRecord = null;
 
