@@ -116,6 +116,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
+        _addIfPresent(copyrightsMap, "com.kitfox.svg.app.beans.SVGPanel"
+                "lib/svgSalamander-license.htm");
+
         _addIfPresent(copyrightsMap, "com.jhlabs.image.AbstractBufferedImageOp",
                 "com/jhlabs/jhlabs-license.htm");
             
