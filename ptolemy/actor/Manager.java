@@ -542,7 +542,7 @@ public class Manager extends NamedObj implements Runnable {
 
         if (_state == IDLE) {
             if (_thread != null) {
-                _disposeOfThread();
+                _disposeOfThreads();
             }
             return;
         }
@@ -1232,7 +1232,7 @@ public class Manager extends NamedObj implements Runnable {
             // then we may get an Error here
             notifyListenersOfThrowable(throwable);
         } finally {
-            _disposeOfThread();
+            _disposeOfThreads();
         }
     }
 
@@ -1357,7 +1357,7 @@ public class Manager extends NamedObj implements Runnable {
                 // the thread.   We just ignore it.
             }
 
-            _disposeOfThread();
+            _disposeOfThreads();
         }
 
         // Terminate the entire hierarchy as best we can.
@@ -1431,7 +1431,7 @@ public class Manager extends NamedObj implements Runnable {
                     break;
                 }
             }
-            _disposeOfThread();
+            _disposeOfThreads();
             // }
         }
     }
@@ -1528,7 +1528,7 @@ public class Manager extends NamedObj implements Runnable {
         if (compositeActor != null) {
             _workspace.remove(this);
         } else {
-            _disposeOfThread();
+            _disposeOfThreads();
         }
 
         _container = compositeActor;
@@ -1596,8 +1596,7 @@ public class Manager extends NamedObj implements Runnable {
      *  if the JVM is shut down (by control-C, the user logging out, etc.).
      */
     protected void _registerShutdownHook() {
-        try {
-            Runtime.getRuntime().addShutdownHook(new Thread() {
+        _shutdownThread =  new Thread() {
                 @Override
                 public void run() {
                     if (_state != IDLE) {
@@ -1618,7 +1617,9 @@ public class Manager extends NamedObj implements Runnable {
                         }
                     }
                 }
-            });
+            };
+        try {
+            Runtime.getRuntime().addShutdownHook(_shutdownThread);
         } catch (java.security.AccessControlException ex) {
             // This exception gets triggered by
             // http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/vergil/Vergil.htm
@@ -1643,13 +1644,19 @@ public class Manager extends NamedObj implements Runnable {
     ////                         private methods                   ////
 
     /** Dispose of the thread by removing it from the workspace and
-     * setting it to null.
+     *  setting it to null.  Also, remove the shutdown thread.
      */
-    private void _disposeOfThread() {
+    private void _disposeOfThreads() {
         // FIXME: Should we acquire the read lock on the Workspace and
         // then have a version of doneReading that cleans up?
         // FIXME: Should we check to see if the Manager is idle here?
         _thread = null;
+        
+        // FIXME: Should this be synchronized?
+        if (_shutdownThread != null) {
+            Runtime.getRuntime().removeShutdownHook(_shutdownThread);
+            _shutdownThread = null;
+        }
     }
 
     /**
@@ -1716,6 +1723,9 @@ public class Manager extends NamedObj implements Runnable {
     // Flag for waiting on resume();
     private boolean _resumeNotifyWaiting = false;
 
+    // The thread that is passed to Runtime.addShutdowHook().
+    private Thread _shutdownThread = null;
+    
     // The state of the execution.
     private volatile State _state = IDLE;
 
