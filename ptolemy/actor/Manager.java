@@ -541,6 +541,9 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_state == IDLE) {
+            if (_thread != null) {
+                _disposeOfThread();
+            }
             return;
         }
 
@@ -1229,7 +1232,7 @@ public class Manager extends NamedObj implements Runnable {
             // then we may get an Error here
             notifyListenersOfThrowable(throwable);
         } finally {
-            _thread = null;
+            _disposeOfThread();
         }
     }
 
@@ -1354,7 +1357,7 @@ public class Manager extends NamedObj implements Runnable {
                 // the thread.   We just ignore it.
             }
 
-            _thread = null;
+            _disposeOfThread();
         }
 
         // Terminate the entire hierarchy as best we can.
@@ -1428,6 +1431,7 @@ public class Manager extends NamedObj implements Runnable {
                     break;
                 }
             }
+            _disposeOfThread();
             // }
         }
     }
@@ -1523,6 +1527,8 @@ public class Manager extends NamedObj implements Runnable {
     protected void _makeManagerOf(CompositeActor compositeActor) {
         if (compositeActor != null) {
             _workspace.remove(this);
+        } else {
+            _disposeOfThread();
         }
 
         _container = compositeActor;
@@ -1635,6 +1641,16 @@ public class Manager extends NamedObj implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Dispose of the thread by removing it from the workspace and
+     * setting it to null.
+     */
+    private void _disposeOfThread() {
+        // FIXME: Should we acquire the read lock on the Workspace and
+        // then have a version of doneReading that cleans up?
+        // FIXME: Should we check to see if the Manager is idle here?
+        _thread = null;
+    }
 
     /**
      *  Infer the width of the relations for which no width has been
