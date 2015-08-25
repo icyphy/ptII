@@ -386,7 +386,6 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
         java.awt.image.BufferStrategy bufferStrategy = getBufferStrategy();
         if (bufferStrategy != null) {
-            System.out.println("Top.dispose(): calling dispose on " + bufferStrategy);
             bufferStrategy.dispose();
         }
 
