@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 ///////////////////////////////////////////////////////////////////
 //// Workspace
@@ -254,8 +255,10 @@ public final class Workspace implements Nameable {
      *  read access to the workspace), then notify all threads that are
      *  waiting to get read/write access to this
      *  workspace so that they may contend for access.
+     *  
      *  @exception InvalidStateException If this method is called
      *   before a corresponding call to getReadAccess() by the same thread.
+     *  @see getReadAccess()
      */
     public final synchronized void doneReading() {
         Thread current = Thread.currentThread();
@@ -932,16 +935,15 @@ public final class Workspace implements Nameable {
         // If this object has been serialized and deserialized, then
         // _readerRecords could be null.
         if (_readerRecords == null) {
-            _readerRecords = new HashMap();
+            _readerRecords = new WeakHashMap<Thread,AccessRecord>();
         }
 
-        AccessRecord record = (AccessRecord) _readerRecords.get(current);
+        AccessRecord record = _readerRecords.get(current);
 
         if (record == null) {
             // delete any record that contains no history information
             // AND is not the last reader's record
             Iterator records = _readerRecords.values().iterator();
-
             while (records.hasNext()) {
                 AccessRecord aRecord = (AccessRecord) records.next();
 
@@ -1092,7 +1094,13 @@ public final class Workspace implements Nameable {
 
     private transient AccessRecord _lastReaderRecord = null;
 
-    private transient HashMap _readerRecords = new HashMap();
+    /** A WeakHashMap of threads to AccessRecords. 
+     *  A WeakHashMap is used because otherwise getting the effigy
+     *  adds Manager._thread to the Map and if it is a regular
+     *  HashMap, then when the window containing the model is closed,
+     *  a reference to the Manager will remain.
+     */
+    private transient WeakHashMap<Thread, AccessRecord> _readerRecords = new WeakHashMap<Thread, AccessRecord>();
 
     /** @serial The number of readers.
      *  The use of this field is to increment it every time we have a new
