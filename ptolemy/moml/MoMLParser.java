@@ -1304,24 +1304,36 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 }
 
+                String host = result.getHost();
                 if ((security == null || withinUntrustedApplet == false)
-                        && !_approvedRemoteXmlFiles.contains(result)) {
+                        && !_approvedRemoteXmlFiles.contains(result)
+                        && !_approvedRemoteXmlFiles.contains(host)) {
                     // If the result and _base have a common root,
                     // then the code is ok.
                     String resultBase = result.toString().substring(0,
                             result.toString().lastIndexOf("/"));
 
+                    boolean answer = false;
                     if (_base == null
                             || !resultBase.startsWith(_base.toString())) {
-                        MessageHandler.warning("Security concern:\n"
-                                + "About to look for MoML from the "
-                                + "net at address:\n" + result.toExternalForm()
-                                + "\nOK to proceed?");
+                        answer = MessageHandler.yesNoCancelQuestion(
+                                "OK to download MoML at "
+                                + result.toExternalForm()
+                                + "?\nAllow all future downloads from "
+                                + host
+                                + "?",
+                                "Allow this download only",
+                                "Allow all from this host",
+                                "Cancel");
                     }
 
                     // If we get to here, the the user did not hit cancel,
-                    // so we cache the file
-                    _approvedRemoteXmlFiles.add(result);
+                    // so we cache the file or host.
+                    if (answer) {
+                        _approvedRemoteXmlFiles.add(result);                        
+                    } else {
+                        _approvedRemoteXmlFiles.add(host);
+                    }
                 }
             }
 
