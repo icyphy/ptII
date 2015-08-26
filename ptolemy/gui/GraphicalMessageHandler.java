@@ -317,7 +317,8 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
     /** Ask the user a question with three possible answers;
      *  return true if the answer is the first one and false if
      *  the answer is the second one; throw an exception if the
-     *  user selects the third one.
+     *  user selects the third one. The default (selected by return
+     *  and escape) is the third (the cancel option).
      *  @param question The question.
      *  @param trueOption The option for which to return true.
      *  @param falseOption The option for which to return false.
@@ -360,10 +361,10 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
 
                     if (selected == 0) {
                         results[0] = Boolean.TRUE;
-                    } else if (selected == 2) {
-                        results[1] = Boolean.TRUE;
-                    } else {
+                    } else if (selected == 1) {
                         results[0] = Boolean.FALSE;
+                    } else {
+                        results[1] = Boolean.TRUE;
                     }
                 }
             };
