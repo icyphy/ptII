@@ -109,7 +109,7 @@ import ptolemy.util.StringUtilities;
  @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (bilung)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class JSAccessor extends JavaScript {
 
@@ -302,10 +302,15 @@ public class JSAccessor extends JavaScript {
      *  If the udpate succeeds, and the response from the SVN server
      *  does not include "At revision ", then also run ant in the
      *  accessors/web directory to update the documentation.
+     *  If the checkout or update fails once, the it will not be tried
+     *  again until the JVM is restarted.
      *  @exception IOExeption If the repository cannot be checked out.
      */
     public static void getAccessorsRepository() throws IOException {
         if (!_checkoutOrUpdateAccessorsRepository) {
+            return;
+        }
+        if (_checkoutOrUpdateFailed) {
             return;
         }
 
@@ -329,7 +334,7 @@ public class JSAccessor extends JavaScript {
             } else {
                 newCheckout = true;
                 exec.setWorkingDirectory(JSAccessor._accessorDirectory());
-                String svnCommand = "svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors";
+                String svnCommand = "svn co --non-interactive --trust-server-cert https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/notreadable";
                 execCommands.add(svnCommand);
                 _commands = "cd " + JSAccessor._accessorDirectory() + "\n" + svnCommand;
                 MessageHandler.status("Checking out the accessors repository.");
@@ -344,12 +349,14 @@ public class JSAccessor extends JavaScript {
             int returnCode = exec.getLastSubprocessReturnCode();
             if (returnCode == 0) {
                 updated = true;
+                _checkoutOrUpdateFailed = false;
                 if (newCheckout) {
                     MessageHandler.status("Checked out accessor repository.");
                 } else {
                     MessageHandler.status("Updated accessor repository.");
                 }
             } else {
+                _checkoutOrUpdateFailed = true;
                 if (newCheckout) {
                     MessageHandler.status("Failed to check out the accessors repository.");
                     throw new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
@@ -360,11 +367,12 @@ public class JSAccessor extends JavaScript {
                 }
             }
         } catch (Throwable throwable) {
+            _checkoutOrUpdateFailed = true;
             if (newCheckout) {
                 MessageHandler.status("Failed to check out the accessors repository.");
                 IOException ioException = new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
                         + _commands + "\n"
-                        + "Perhaps you don't have read access?"
+                        + "Perhaps you don't have read access?  "
                         + "The TerraSwarm accessors repository is under development.\n"
                         + "The output was: " + exec.buffer);
                 ioException.initCause(throwable);
@@ -374,9 +382,11 @@ public class JSAccessor extends JavaScript {
             }
         }
         if (!updated || exec.buffer.toString().contains("At revision ")) {
+            _checkoutOrUpdateFailed = false;
             // Presumably, there is no reason to update the docs, since there was no update.
             return;
         } else {
+            _checkoutOrUpdateFailed = true;
             _lastRepoUpdateTime = System.currentTimeMillis();
         }
 
@@ -653,8 +663,8 @@ public class JSAccessor extends JavaScript {
                 try {
                     JSAccessor.getAccessorsRepository();
                 } catch (Throwable throwable) {
-                    System.err.println("Failed to checkout or update the TerraSwarm accessor repo."
-                            + "  This could happen if you don't have read access to the repo."
+                    System.err.println("Failed to checkout or update the TerraSwarm accessor repo.  "
+                            + "This could happen if you don't have read access to the repo.  "
                             + "The message was:\n"
                             + throwable);
                 }
@@ -951,6 +961,10 @@ public class JSAccessor extends JavaScript {
      *  The method that uses this field is static.
      */
     private static boolean _checkoutOrUpdateAccessorsRepository = true;
+
+    /** True if the checkout or update of the accessors repository failed.
+     */   
+    private static boolean _checkoutOrUpdateFailed = false;
 
     /** Commands that were run to check out or update the repo. */
     private static String _commands = "";
