@@ -1134,10 +1134,16 @@ else
            if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
               # The accessors mechanism needs to have a repo checked out.  svn:externals won't work.
               # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnExternals
-              PT_MSG_STATUS([About to check out the accessors repo.  This will fail for people who do not have access.])
-              (cd $PTACCESSOR_DIR_FULL; svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors)
+              # See https://www.terraswarm.org/accessors/wiki/Version0/SupportForImplementAndExtendInPtolemyIIDiscussion
+              AC_MSG_RESULT([About to check out the accessors repo.  This will fail for people who do not have access.])
+              (cd $PTACCESSOR_DIR_FULL; svn co --trust-server-cert --non-interactive https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors)
               if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
-                AC_MSG_WARN([Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work.])
+                AC_MSG_WARN([Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work.
+    Access to the repo is restricted.  If you have an account on repo.eecs.berkeley.edu and your login on
+    repo.eecs.berkeley.edu is different than your login, then try
+      cd org/terraswarm/accessor
+      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+    and rerun ./configure])
               else
                 PT_MSG_RESULT([ok])
               fi
