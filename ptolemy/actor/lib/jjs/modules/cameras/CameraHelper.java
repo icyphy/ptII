@@ -78,9 +78,13 @@ import ptolemy.kernel.util.IllegalActionException;
  *  libraries, be sure to run the ldd command on the version appropriate for your
  *  JVM.</p>
  *
- *  <p>Then look for libraries that are listed as "not found", then use
+ *  <p>Then look for libraries that are listed as "not found", then as root use
  *  <code>yum search xxx</code> to find them and then install them.</p>
  *
+ *  <p>For example, if libv4l2.so.0 is not found, then run
+ *  <code>yum search v4l2</code> and if v4l2 is not installed, then
+ *  <code>yum install libv4l.x86_64</code>.</p>
+
  *  @author Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
