@@ -1319,11 +1319,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         answer = MessageHandler.yesNoCancelQuestion(
                                 "OK to download MoML at "
                                 + result.toExternalForm()
-                                + "?\nAllow all future downloads from "
+                                + "?\nAllow future downloads during this session from "
                                 + host
                                 + "?",
                                 "Allow this download only",
-                                "Allow all from this host",
+                                "Allow future downloads during this session from this host",
                                 "Cancel");
                     }
 
