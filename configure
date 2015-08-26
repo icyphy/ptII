@@ -4506,12 +4506,23 @@ else
            if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
               # The accessors mechanism needs to have a repo checked out.  svn:externals won't work.
               # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnExternals
-              if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: About to check out the accessors repo.  This will fail for people who do not have access." >&5
-$as_echo "About to check out the accessors repo.  This will fail for people who do not have access." >&6; }; fi
-              (cd $PTACCESSOR_DIR_FULL; svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors)
+              # See https://www.terraswarm.org/accessors/wiki/Version0/SupportForImplementAndExtendInPtolemyIIDiscussion
+              { $as_echo "$as_me:${as_lineno-$LINENO}: result: About to check out the accessors repo.  This will fail for people who do not have access." >&5
+$as_echo "About to check out the accessors repo.  This will fail for people who do not have access." >&6; }
+              (cd $PTACCESSOR_DIR_FULL; svn co --trust-server-cert --non-interactive https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors)
               if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work." >&5
-$as_echo "$as_me: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work." >&2;}
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work.
+    Access to the repo is restricted.  If you have an account on repo.eecs.berkeley.edu and your login on
+    repo.eecs.berkeley.edu is different than your login, then try
+      cd org/terraswarm/accessor
+      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+    and rerun ./configure" >&5
+$as_echo "$as_me: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work.
+    Access to the repo is restricted.  If you have an account on repo.eecs.berkeley.edu and your login on
+    repo.eecs.berkeley.edu is different than your login, then try
+      cd org/terraswarm/accessor
+      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+    and rerun ./configure" >&2;}
               else
                 if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
