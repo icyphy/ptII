@@ -344,7 +344,8 @@ public class UndeferredGraphicalMessageHandler extends
     /** Ask the user a question with three possible answers;
      *  return true if the answer is the first one and false if
      *  the answer is the second one; throw an exception if the
-     *  user selects the third one.
+     *  user selects the third one. The default (selected by return
+     *  and escape) is the third (the cancel option).
      *  @param question The question.
      *  @param trueOption The option for which to return true.
      *  @param falseOption The option for which to return false.
@@ -365,14 +366,14 @@ public class UndeferredGraphicalMessageHandler extends
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
                 "Warning", JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+                JOptionPane.WARNING_MESSAGE, null, options, options[2]);
 
         if (selected == 0) {
             return true;
-        } else if (selected == 2) {
-            throw new ptolemy.util.CancelException();
-        } else {
+        } else if (selected == 1) {
             return false;
+        } else {
+            throw new ptolemy.util.CancelException();
         }
     }
 
