@@ -566,6 +566,7 @@ FULL_10_0_JARS = \
 	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
 
 FULL_11_0_JARS = \
+	edu/umich/eecs/april/april.jar \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
