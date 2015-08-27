@@ -1304,36 +1304,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 }
 
-                String host = result.getHost();
                 if ((security == null || withinUntrustedApplet == false)
-                        && !_approvedRemoteXmlFiles.contains(result)
-                        && !_approvedRemoteXmlFiles.contains(host)) {
+                        && !_approvedRemoteXmlFiles.contains(result)) {
                     // If the result and _base have a common root,
                     // then the code is ok.
                     String resultBase = result.toString().substring(0,
                             result.toString().lastIndexOf("/"));
 
-                    boolean answer = false;
                     if (_base == null
                             || !resultBase.startsWith(_base.toString())) {
-                        answer = MessageHandler.yesNoCancelQuestion(
-                                "OK to download MoML at "
-                                + result.toExternalForm()
-                                + "?\nAllow future downloads during this session from "
-                                + host
-                                + "?",
-                                "Allow this download only",
-                                "Allow future downloads during this session from this host",
-                                "Cancel");
+                        MessageHandler.warning("Security concern:\n"
+                                + "About to look for MoML from the "
+                                + "net at address:\n" + result.toExternalForm()
+                                + "\nOK to proceed?");
                     }
 
                     // If we get to here, the the user did not hit cancel,
-                    // so we cache the file or host.
-                    if (answer) {
-                        _approvedRemoteXmlFiles.add(result);                        
-                    } else {
-                        _approvedRemoteXmlFiles.add(host);
-                    }
+                    // so we cache the file
+                    _approvedRemoteXmlFiles.add(result);
                 }
             }
 
