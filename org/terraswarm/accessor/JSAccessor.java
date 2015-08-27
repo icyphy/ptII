@@ -319,7 +319,7 @@ public class JSAccessor extends JavaScript {
         boolean newCheckout = false;
         boolean updated = false;
         try {
-            List execCommands = new LinkedList();
+            List execCommands = new LinkedList<String>();
             // If the org/terraswarm/accessor/accessors directory
             // exists, then run svn update, otherwise try to check out
             // the repo.
@@ -328,13 +328,20 @@ public class JSAccessor extends JavaScript {
                 exec.setWorkingDirectory(accessorsRepoDirectory);
                 // Use --accept postpone so that the updated proceeds despite local mods.
                 // See http://lists.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-January/017045.html
-                execCommands.add("svn update --accept postpone");
-                _commands = "cd " + accessorsRepoDirectory + "\nsvn update";
+                String svnUpdateCommand = "svn update --accept postpone";
+                execCommands.add(svnUpdateCommand);
+                _commands = "cd " + accessorsRepoDirectory + "\n" + svnUpdateCommand;
                 MessageHandler.status("Updating local copy of the accessors repository.");
             } else {
                 newCheckout = true;
+                // Default to anonymous, read-only access.
+                String accessorsRepo = "https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors";
+                // If the ptII svn repo is read/write, then try read write access to the accessors repo.
+                if (_ptIISvnRepoIsReadWrite()) {
+                    accessorsRepo = "https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors";
+                }
                 exec.setWorkingDirectory(JSAccessor._accessorDirectory());
-                String svnCommand = "svn co --non-interactive --trust-server-cert https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/notreadable";
+                String svnCommand = "svn co --non-interactive --trust-server-cert " + accessorsRepo;
                 execCommands.add(svnCommand);
                 _commands = "cd " + JSAccessor._accessorDirectory() + "\n" + svnCommand;
                 MessageHandler.status("Checking out the accessors repository.");
@@ -398,7 +405,7 @@ public class JSAccessor extends JavaScript {
             try {
                 StringBufferExec antExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
                 antExec.setWorkingDirectory(accessorsRepoWebDirectory);
-                List execCommands = new LinkedList();
+                List execCommands = new LinkedList<String>();
                 // $PTII/configure looks for "ant" in the path and stores it $PTII/lib/ptII.properties
                 antPath = StringUtilities.getProperty("ptolemy.ant.path");
 
@@ -955,6 +962,59 @@ public class JSAccessor extends JavaScript {
         }
         return "";
         */
+    }
+
+    
+    /** Return true if the ptII tree was checked out with svn
+     *  read/write access.  Return false if the ptII tree was not
+     *  checked out of svn or if the ptII tree was checked out with
+     *  anonymous svn access.
+     */
+    private static boolean _ptIISvnRepoIsReadWrite() {
+        String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+
+        // Return false if $PTII/.svn is not a directory.
+        if (! (new File(ptII, ".svn").isDirectory())) {
+            return false;
+        }
+
+        // Run svn info, get the Repository Root: line and return the value.
+        StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+        exec.setWorkingDirectory(new File(ptII));
+
+        List execCommands = new LinkedList<String>();
+        execCommands.add("svn info");
+        exec.setCommands(execCommands);
+
+        exec.setWaitForLastSubprocess(true);
+
+        System.out.println("Invoking \"svn info\" in order to determine whether the anonymous, read only accessors repo should be used or the user-specific, read/write accessors repo should be used.");
+        exec.start();
+
+        // If the subprocess returns non-zero, then return false
+        int returnCode = exec.getLastSubprocessReturnCode();
+        if (returnCode != 0) {
+            MessageHandler.status("In " + ptII + ", \"svn info\" returned " + returnCode
+                    + ".  The output was: " + exec.buffer);
+            return false;
+        }
+
+        // Search for "Repository Root:"
+        String repositoryRoot = "Repository Root:";
+        int index = exec.buffer.toString().indexOf(repositoryRoot);
+        if (index == -1) {
+            return false;
+        }
+
+        // Search for the URL after "Repository Root:"
+        String readWriteURL = "https://repo.eecs.berkeley.edu/svn/projects/eal/ptII";
+
+        int index2 = exec.buffer.toString().indexOf(readWriteURL,  index + repositoryRoot.length() + 1);
+        if (index2 != 1) {
+            return true;
+        }
+                
+        return false;
     }
 
     /** Cached version of the checkoutOrUpdateAccessorsRepository parameter.
