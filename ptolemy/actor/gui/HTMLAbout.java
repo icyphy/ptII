@@ -176,6 +176,13 @@ public class HTMLAbout {
                     + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
                     + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
         }
+        if (_configurationExists("capecode")) {
+            htmlBuffer
+            .append("<tr rowspan=4><center><b>CapeCode</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/capecode/intro.htm")
+                    + _aboutHTML("ptolemy/configs/capecode/docs.htm")
+                    + _aboutHTML("ptolemy/configs/capecode/demonstrations.htm"));
+        }
         if (_configurationExists("cyphysim")) {
             htmlBuffer
             .append("<tr rowspan=4><center><b>CyPhySim</b></center></tr>\n"

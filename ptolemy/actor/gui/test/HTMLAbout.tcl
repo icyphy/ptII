@@ -171,6 +171,25 @@ tag specially.
     <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
+<tr rowspan=4><center><b>CapeCode</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/capecode/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/intro.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/docs.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/docs.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/docs.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/docs.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/capecode/demonstrations.htm</code>
+    <td><a href="about:demos#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/capecode/demonstrations.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
 <tr rowspan=4><center><b>CyPhySim</b></center></tr>
   <tr>
     <code>ptolemy/configs/cyphysim/intro.htm</code>
@@ -351,6 +370,15 @@ For each of the files below, we list demos that are not included in <a href="fil
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/docsBcvtb.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/intro.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/docs.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/docs.htm</code></a></h2>
+<ul>
+</ul>
+<h2><a href="file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm"><code>file:XXXPTIIXXX/ptolemy/configs/capecode/demonstrations.htm</code></a></h2>
 <ul>
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm"><code>file:XXXPTIIXXX/ptolemy/configs/cyphysim/intro.htm</code></a></h2>
