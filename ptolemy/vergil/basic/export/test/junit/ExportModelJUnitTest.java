@@ -406,6 +406,18 @@ public class ExportModelJUnitTest {
                 return 30000 * 2;
             }
         }
+        // Pathnames for demos that get a shorter running time because
+        // they produce too much output.
+        String[] shortRunningDemos = { "CntToLedsAndRfm.xml",
+                                       "SendAndReceiveCnt.xml",
+                                       "RfmToLeds.xml",
+                                       "Surge.xml"
+        };
+        for (String shortRunningDemo : shortRunningDemos) {
+            if (modelPath.indexOf(shortRunningDemo) != -1) {
+                return 5000;
+            }
+        }
         return 30000;
     }
 
