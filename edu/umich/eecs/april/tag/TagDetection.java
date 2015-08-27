@@ -40,13 +40,11 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.tag;
 
-
-public class TagDetection
-{
+public class TagDetection {
     /** Is the detection good enough? **/
     public boolean good;
 
@@ -94,16 +92,20 @@ public class TagDetection
     public double hxy[];
 
     /** interpolate point given (x,y) is in tag coordinate space from (-1,-1) to (1,1) **/
-    public double[] interpolate(double x, double y)
-    {
-        double z = homography[2][0]*x + homography[2][1]*y + homography[2][2];
-        return new double[] { (homography[0][0]*x + homography[0][1]*y + homography[0][2])/z + hxy[0],
-                              (homography[1][0]*x + homography[1][1]*y + homography[1][2])/z + hxy[1]};
+    public double[] interpolate(double x, double y) {
+        double z = homography[2][0] * x + homography[2][1] * y
+                + homography[2][2];
+        return new double[] {
+                (homography[0][0] * x + homography[0][1] * y + homography[0][2])
+                        / z + hxy[0],
+                (homography[1][0] * x + homography[1][1] * y + homography[1][2])
+                        / z + hxy[1] };
     }
 
-    public String toString()
-    {
-        return String.format("[TagDetection code 0x%010x   id=%-5d   errors=%d   position =  (%8.2f,%8.2f) @ %3d deg]",
-                             code, id, hammingDistance, cxy[0], cxy[1], rotation*90);
+    public String toString() {
+        return String
+                .format("[TagDetection code 0x%010x   id=%-5d   errors=%d   position =  (%8.2f,%8.2f) @ %3d deg]",
+                        code, id, hammingDistance, cxy[0], cxy[1],
+                        rotation * 90);
     }
 }

@@ -40,54 +40,47 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.util;
 
-
 /** Execution time measurement. **/
-public class Tic
-{
+public class Tic {
     long initTime;
     long startTime;
 
     /** Includes an implicit call to tic() **/
-    public Tic()
-    {
+    public Tic() {
         initTime = System.nanoTime();
         startTime = initTime;
     }
 
     /** Begin measuring time from now. **/
-    public void tic()
-    {
+    public void tic() {
         startTime = System.nanoTime();
     }
 
     /** How much time has passed since the most recent call to tic()? **/
-    public double toc()
-    {
+    public double toc() {
         long endTime = System.nanoTime();
-        double elapsedTime = (endTime-startTime)/1000000000f;
+        double elapsedTime = (endTime - startTime) / 1000000000f;
 
         return elapsedTime;
     }
 
     /** Equivalent to toc() followed by tic() **/
-    public double toctic()
-    {
+    public double toctic() {
         long endTime = System.nanoTime();
-        double elapsedTime = (endTime-startTime)/1000000000f;
+        double elapsedTime = (endTime - startTime) / 1000000000f;
 
         tic();
         return elapsedTime;
     }
 
     /** How much time has passed since the object was created? **/
-    public double totalTime()
-    {
+    public double totalTime() {
         long endTime = System.nanoTime();
-        double elapsedTime = (endTime-initTime)/1000000000f;
+        double elapsedTime = (endTime - initTime) / 1000000000f;
 
         return elapsedTime;
     }

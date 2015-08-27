@@ -40,10 +40,9 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.tag;
-
 
 /** Tag family with 30 distinct codes.
     bits: 16,  minimum hamming: 5,  minimum complexity: 5
@@ -74,11 +73,13 @@ package edu.umich.eecs.april.tag;
       14  0
       15  0
       16  0
-**/
-public class Tag16h5 extends TagFamily
-{
-	public Tag16h5()
-	{
-		super(16, 5, new long[] { 0x231bL, 0x2ea5L, 0x346aL, 0x45b9L, 0x79a6L, 0x7f6bL, 0xb358L, 0xe745L, 0xfe59L, 0x156dL, 0x380bL, 0xf0abL, 0x0d84L, 0x4736L, 0x8c72L, 0xaf10L, 0x093cL, 0x93b4L, 0xa503L, 0x468fL, 0xe137L, 0x5795L, 0xdf42L, 0x1c1dL, 0xe9dcL, 0x73adL, 0xad5fL, 0xd530L, 0x07caL, 0xaf2eL });
-	}
+ **/
+public class Tag16h5 extends TagFamily {
+    public Tag16h5() {
+        super(16, 5, new long[] { 0x231bL, 0x2ea5L, 0x346aL, 0x45b9L, 0x79a6L,
+                0x7f6bL, 0xb358L, 0xe745L, 0xfe59L, 0x156dL, 0x380bL, 0xf0abL,
+                0x0d84L, 0x4736L, 0x8c72L, 0xaf10L, 0x093cL, 0x93b4L, 0xa503L,
+                0x468fL, 0xe137L, 0x5795L, 0xdf42L, 0x1c1dL, 0xe9dcL, 0x73adL,
+                0xad5fL, 0xd530L, 0x07caL, 0xaf2eL });
+    }
 }

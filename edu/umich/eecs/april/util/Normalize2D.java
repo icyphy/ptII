@@ -40,38 +40,33 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.util;
-
 
 import java.util.ArrayList;
 
 /** For a set of 2D points, compute a 3x3 transform that
  * will make the points have mean zero and unit variance.
  **/
-public class Normalize2D
-{
+public class Normalize2D {
     double mX, mY, mXX, mYY;
     int N;
 
-    public void add(double x, double y)
-    {
+    public void add(double x, double y) {
         mX += x;
-        mXX += x*x;
+        mXX += x * x;
         mY += y;
-        mYY += y*y;
+        mYY += y * y;
         N++;
     }
 
-    public void add(ArrayList<double[]> points)
-    {
-        for (double p[]: points)
+    public void add(ArrayList<double[]> points) {
+        for (double p[] : points)
             add(p[0], p[1]);
     }
 
-    public double[][] getTransform()
-    {
+    public double[][] getTransform() {
         double eX = mX / N;
         double eY = mY / N;
         double stddevX = 1; //Math.sqrt(mXX / N + eX*eX);
@@ -80,8 +75,7 @@ public class Normalize2D
         double scaleX = 1.0 / stddevX;
         double scaleY = 1.0 / stddevY;
 
-        return new double[][] { { scaleX, 0,      -eX*scaleX },
-                                { 0,      scaleY, -eY*scaleY },
-                                { 0,      0,      1 } };
+        return new double[][] { { scaleX, 0, -eX * scaleX },
+                { 0, scaleY, -eY * scaleY }, { 0, 0, 1 } };
     }
 }
