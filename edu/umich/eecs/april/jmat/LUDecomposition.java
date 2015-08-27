@@ -40,10 +40,9 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.jmat;
-
 
 /** LU Decomposition
     <P>
@@ -56,21 +55,18 @@ package edu.umich.eecs.april.jmat;
     singular, so the constructor will never fail.  The primary use of the
     LU decomposition is in the solution of square systems of simultaneous
     linear equations.  This will fail if isNonsingular() returns false.
-**/
-public class LUDecomposition
-{
+ **/
+public class LUDecomposition {
     Matrix LU;
 
     int pivsign;
     int piv[];
 
-    public LUDecomposition(Matrix A)
-    {
+    public LUDecomposition(Matrix A) {
         this(A, true);
     }
 
-    public LUDecomposition(Matrix A, boolean autoPivot)
-    {
+    public LUDecomposition(Matrix A, boolean autoPivot) {
         LU = A.copy();
         int m = LU.m, n = LU.n;
 
@@ -94,8 +90,8 @@ public class LUDecomposition
 
                 // Most of the time is spent in the following dot product.
 
-                int kmax = Math.min(i,j);
-                double s = LUrowi.dotProduct(LUcolj, 0, kmax-1);
+                int kmax = Math.min(i, j);
+                double s = LUrowi.dotProduct(LUcolj, 0, kmax - 1);
 
                 LUcolj.plusEquals(i, -s);
                 LUrowi.plusEquals(j, -s);
@@ -104,7 +100,7 @@ public class LUDecomposition
             // Find pivot and exchange if necessary.
             int p = j;
             if (autoPivot) {
-                for (int i = j+1; i < m; i++) {
+                for (int i = j + 1; i < m; i++) {
                     if (Math.abs(LUcolj.get(i)) > Math.abs(LUcolj.get(p))) {
                         p = i;
                     }
@@ -113,15 +109,17 @@ public class LUDecomposition
 
             if (p != j) {
                 LU.swapRows(p, j);
-                int k = piv[p]; piv[p] = piv[j]; piv[j] = k;
+                int k = piv[p];
+                piv[p] = piv[j];
+                piv[j] = k;
                 pivsign = -pivsign;
             }
 
             // Compute multipliers.
-            if (j < n && j < m && LU.get(j,j) != 0.0) {
-                double LUjj = LU.get(j,j);
-                for (int i = j+1; i < m; i++) {
-                    LU.timesEquals(i,j, 1.0/LUjj);
+            if (j < n && j < m && LU.get(j, j) != 0.0) {
+                double LUjj = LU.get(j, j);
+                for (int i = j + 1; i < m; i++) {
+                    LU.timesEquals(i, j, 1.0 / LUjj);
                 }
             }
         }
@@ -180,29 +178,26 @@ public class LUDecomposition
       }
       }
       }
-    */
+     */
 
-    public int[] getPermutation()
-    {
+    public int[] getPermutation() {
         return piv;
     }
 
-    public Matrix getLU()
-    {
+    public Matrix getLU() {
         return LU;
     }
 
-    public Matrix getL()
-    {
+    public Matrix getL() {
         int m = LU.m, n = LU.n;
         Matrix L = new Matrix(m, n, LU.getOptions());
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (i > j) {
-                    L.set(i,j, LU.get(i,j));
+                    L.set(i, j, LU.get(i, j));
                 } else if (i == j) {
-                    L.set(i,j, 1.0);
+                    L.set(i, j, 1.0);
                 }
             }
         }
@@ -210,42 +205,39 @@ public class LUDecomposition
         return L;
     }
 
-    public Matrix getU()
-    {
+    public Matrix getU() {
         int m = LU.m, n = LU.n;
         Matrix U = new Matrix(n, n, LU.getOptions());
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (i <= j) {
-                    U.set(i,j, LU.get(i,j));
+                    U.set(i, j, LU.get(i, j));
                 }
             }
         }
         return U;
     }
 
-    public double det()
-    {
+    public double det() {
         if (LU.m != LU.n)
             throw new IllegalArgumentException("Matrix must be square.");
 
-        double d = (double) pivsign;
+        double d = pivsign;
         for (int j = 0; j < LU.n; j++)
-            d *= LU.get(j,j);
+            d *= LU.get(j, j);
 
         return d;
     }
 
-    public double logDet()
-    {
+    public double logDet() {
         if (LU.m != LU.n)
             throw new IllegalArgumentException("Matrix must be square.");
 
-        double sign = (double) pivsign;
+        double sign = pivsign;
         double logD = 0;
         for (int j = 0; j < LU.n; j++) {
-            final double v = LU.get(j,j);
+            final double v = LU.get(j, j);
             sign *= Math.signum(v);
             logD += Math.log(Math.abs(v));
         }
@@ -256,22 +248,21 @@ public class LUDecomposition
         return logD;
     }
 
-    public boolean isSingular()
-    {
-        int m = LU.m, n = LU.n;
+    public boolean isSingular() {
+        int n = LU.n;
         for (int j = 0; j < n; j++) {
-            if (LU.get(j,j)==0)
+            if (LU.get(j, j) == 0)
                 return true;
         }
 
         return false;
     }
 
-    public Matrix solve(Matrix B)
-    {
+    public Matrix solve(Matrix B) {
         int m = LU.m, n = LU.n;
         if (B.m != m)
-            throw new IllegalArgumentException("Matrix row dimensions must agree.");
+            throw new IllegalArgumentException(
+                    "Matrix row dimensions must agree.");
 
         if (isSingular())
             throw new RuntimeException("Matrix is singular");
@@ -279,54 +270,50 @@ public class LUDecomposition
         // Copy right hand side with pivoting
         Matrix X = B.copy();
         X.permuteRows(piv);
-        int nx = X.n;
-
         // Solve L*Y = B(piv,:)
         for (int k = 0; k < n; k++) {
             Vec Xrowk = X.getRow(k);
 
-            for (int i = k+1; i < n; i++) {
+            for (int i = k + 1; i < n; i++) {
                 Vec Xrowi = X.getRow(i);
-                Xrowk.addTo(Xrowi, -LU.get(i,k));
+                Xrowk.addTo(Xrowi, -LU.get(i, k));
             }
         }
 
         // Solve U*X = Y;
-        for (int k = n-1; k >= 0; k--) {
+        for (int k = n - 1; k >= 0; k--) {
             Vec Xrowk = X.getRow(k);
-            Xrowk.timesEquals(1.0 / LU.get(k,k));
+            Xrowk.timesEquals(1.0 / LU.get(k, k));
 
             for (int i = 0; i < k; i++) {
                 Vec Xrowi = X.getRow(i);
-                Xrowk.addTo(Xrowi, -LU.get(i,k));
+                Xrowk.addTo(Xrowi, -LU.get(i, k));
             }
         }
 
         return X;
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         java.util.Random r = new java.util.Random();
 
         System.out.println("Testing factors");
-        for (int iters=0; iters<1000;iters++) {
-            Matrix A = Matrix.random(r.nextInt(3)+3,
-                                     r.nextInt(3)+3);
+        for (int iters = 0; iters < 1000; iters++) {
+            Matrix A = Matrix.random(r.nextInt(3) + 3, r.nextInt(3) + 3);
 
             LUDecomposition lud = new LUDecomposition(A);
 
             Matrix A2 = lud.getL().times(lud.getU());
             A2.inversePermuteRows(lud.getPermutation());
 
-            assert(A.equals(A2));
-            System.out.println("ok "+iters);
+            assert (A.equals(A2));
+            System.out.println("ok " + iters);
         }
 
         System.out.println("Testing Solve");
-        for (int iters=0; iters<1000;iters++) {
-            Matrix A = Matrix.random(10,10);
-            Matrix X = Matrix.random(10,1);
+        for (int iters = 0; iters < 1000; iters++) {
+            Matrix A = Matrix.random(10, 10);
+            Matrix X = Matrix.random(10, 1);
             Matrix B = A.times(X);
 
             LUDecomposition lud = new LUDecomposition(A);
@@ -334,9 +321,8 @@ public class LUDecomposition
             Matrix X2 = lud.solve(B);
             Matrix B2 = A.times(X2);
 
-            assert(X.equals(X2) && B.equals(B2));
-            System.out.println("ok "+iters);
+            assert (X.equals(X2) && B.equals(B2));
+            System.out.println("ok " + iters);
         }
     }
 }
-

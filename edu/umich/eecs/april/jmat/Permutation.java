@@ -40,19 +40,16 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.jmat;
 
-
 /** The output of a variable reordering algorithm. **/
-public class Permutation
-{
+public class Permutation {
     public int perm[];
     public int invperm[];
 
-    public Permutation(int perm[])
-    {
+    public Permutation(int perm[]) {
         this.perm = perm;
 
         invperm = new int[perm.length];

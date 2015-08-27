@@ -40,10 +40,9 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.tag;
-
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -59,8 +58,7 @@ import javax.imageio.ImageIO;
 import edu.umich.eecs.april.util.ReflectUtil;
 
 /** Generic class for all tag encoding families **/
-public class TagFamily
-{
+public class TagFamily {
     /** How many pixels wide is the outer-most white border? This is
      * only used when rendering a tag, not for decoding a tag (since
      * we look for the white/black edge). **/
@@ -95,24 +93,21 @@ public class TagFamily
 
     /** The codes array is not copied internally and so must not be
      * modified externally. **/
-    public TagFamily(int bits, int minimumHammingDistance, long codes[])
-    {
+    public TagFamily(int bits, int minimumHammingDistance, long codes[]) {
         this.bits = bits;
-        this.d = (int) Math.sqrt(bits);
-        assert(d*d == bits);
+        d = (int) Math.sqrt(bits);
+        assert (d * d == bits);
 
         this.minimumHammingDistance = minimumHammingDistance;
         this.codes = codes;
     }
 
-    public void setErrorRecoveryBits(int b)
-    {
-        this.errorRecoveryBits = b;
+    public void setErrorRecoveryBits(int b) {
+        errorRecoveryBits = b;
     }
 
-    public void setErrorRecoveryFraction(double v)
-    {
-        this.errorRecoveryBits = (int) (((int) (minimumHammingDistance-1)/2)*v);
+    public void setErrorRecoveryFraction(double v) {
+        errorRecoveryBits = (int) (((minimumHammingDistance - 1) / 2) * v);
     }
 
     /** if the bits in w were arranged in a d*d grid and that grid was
@@ -123,17 +118,16 @@ public class TagFamily
      *  5 4 3  ==>  1 4 7 ==>  3 4 5    (rotate90 applied twice)
      *  2 1 0       0 3 6      6 7 8
      **/
-    public static long rotate90(long w, int d)
-    {
+    public static long rotate90(long w, int d) {
         long wr = 0;
 
-        for (int r = d-1; r >=0; r--) {
+        for (int r = d - 1; r >= 0; r--) {
             for (int c = 0; c < d; c++) {
-                int b = r + d*c;
+                int b = r + d * c;
 
                 wr = wr << 1;
 
-                if ((w & (1L << b))!=0)
+                if ((w & (1L << b)) != 0)
                     wr |= 1;
 
             }
@@ -142,35 +136,32 @@ public class TagFamily
     }
 
     /** Compute the hamming distance between two longs. **/
-    public static final int hammingDistance(long a, long b)
-    {
-        return popCount(a^b);
+    public static final int hammingDistance(long a, long b) {
+        return popCount(a ^ b);
     }
 
     /** How many bits are set in the long? **/
-    static final int popCountReal(long w)
-    {
+    static final int popCountReal(long w) {
         int cnt = 0;
         while (w != 0) {
-            w &= (w-1);
+            w &= (w - 1);
             cnt++;
         }
         return cnt;
     }
 
     static final int popCountTableShift = 12;
-    static final byte[] popCountTable = new byte[1<<popCountTableShift];
+    static final byte[] popCountTable = new byte[1 << popCountTableShift];
     static {
         for (int i = 0; i < popCountTable.length; i++)
             popCountTable[i] = (byte) popCountReal(i);
     }
 
-    public static final int popCount(long w)
-    {
+    public static final int popCount(long w) {
         int count = 0;
 
         while (w != 0) {
-            count += popCountTable[(int) (w&(popCountTable.length-1))];
+            count += popCountTable[(int) (w & (popCountTable.length - 1))];
             w >>= popCountTableShift;
         }
         return count;
@@ -179,11 +170,10 @@ public class TagFamily
     /** Given an observed tag with code 'rcode', try to recover the
      * id. The corresponding fields of TagDetection will be filled
      * in. **/
-    public void decode(TagDetection det, long rcode)
-    {
-        int  bestid = -1;
-        int  besthamming = Integer.MAX_VALUE;
-        int  bestrotation = 0;
+    public void decode(TagDetection det, long rcode) {
+        int bestid = -1;
+        int besthamming = Integer.MAX_VALUE;
+        int bestrotation = 0;
         long bestcode = 0;
 
         long rcodes[] = new long[4];
@@ -215,26 +205,25 @@ public class TagFamily
     }
 
     /** Return the dimension of the tag including borders when we render it.**/
-    public int getTagRenderDimension()
-    {
-        return whiteBorder*2 + blackBorder*2 + d;
+    public int getTagRenderDimension() {
+        return whiteBorder * 2 + blackBorder * 2 + d;
     }
 
-    public BufferedImage makeImage(int id)
-    {
+    public BufferedImage makeImage(int id) {
         long v = codes[id];
 
         int width = getTagRenderDimension();
         int height = getTagRenderDimension();
 
-        BufferedImage im = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage im = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_RGB);
 
         // Draw the borders.  It's easier to do this by iterating over
         // the whole tag than just drawing the borders.
         for (int y = 0; y < width; y++) {
             for (int x = 0; x < height; x++) {
-                if (y < whiteBorder || y+whiteBorder >= height ||
-                    x < whiteBorder || x+whiteBorder >= width)
+                if (y < whiteBorder || y + whiteBorder >= height
+                        || x < whiteBorder || x + whiteBorder >= width)
                     im.setRGB(x, y, 0xffffff);
                 else
                     im.setRGB(x, y, 0x000000);
@@ -244,12 +233,14 @@ public class TagFamily
         // Now, draw the payload.
         for (int y = 0; y < d; y++) {
             for (int x = 0; x < d; x++) {
-                if ((v&(1L<<(bits-1)))!=0)
-                    im.setRGB(x + whiteBorder + blackBorder, y + whiteBorder + blackBorder, 0xffffff);
+                if ((v & (1L << (bits - 1))) != 0)
+                    im.setRGB(x + whiteBorder + blackBorder, y + whiteBorder
+                            + blackBorder, 0xffffff);
                 else
-                    im.setRGB(x + whiteBorder + blackBorder, y + whiteBorder + blackBorder, 0x000000);
+                    im.setRGB(x + whiteBorder + blackBorder, y + whiteBorder
+                            + blackBorder, 0x000000);
 
-                v = v<<1;
+                v = v << 1;
             }
         }
 
@@ -261,24 +252,20 @@ public class TagFamily
      * the first block is nbits, the second block is hamming distance,
      * and the final block is the id.
      **/
-    public void writeAllImages(String dirpath) throws IOException
-    {
+    public void writeAllImages(String dirpath) throws IOException {
         for (int i = 0; i < codes.length; i++) {
             BufferedImage im = makeImage(i);
-            String fname = String.format("tag%02d_%02d_%05d.png",
-                                         bits,
-                                         minimumHammingDistance,
-                                         i);
+            String fname = String.format("tag%02d_%02d_%05d.png", bits,
+                    minimumHammingDistance, i);
             try {
                 ImageIO.write(im, "png", new File(dirpath + "/" + fname));
             } catch (IOException ex) {
-                System.out.println("ex: "+ex);
+                System.out.println("ex: " + ex);
             }
         }
     }
 
-    public BufferedImage getAllImagesMosaic()
-    {
+    public BufferedImage getAllImagesMosaic() {
         ArrayList<BufferedImage> ims = new ArrayList<BufferedImage>();
 
         for (int i = 0; i < codes.length; i++) {
@@ -290,7 +277,8 @@ public class TagFamily
         int height = ims.size() / width + 1;
         int dim = getTagRenderDimension();
 
-        BufferedImage im = new BufferedImage(dim*width, dim*height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage im = new BufferedImage(dim * width, dim * height,
+                BufferedImage.TYPE_INT_RGB);
         Graphics2D g = im.createGraphics();
 
         g.setColor(Color.white);
@@ -298,27 +286,25 @@ public class TagFamily
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int id = y*width+x;
+                int id = y * width + x;
                 if (id >= codes.length)
                     continue;
 
-                g.drawImage(ims.get(id), x*dim, y*dim, null);
+                g.drawImage(ims.get(id), x * dim, y * dim, null);
             }
         }
 
         return im;
     }
 
-    public void writeAllImagesMosaic(String filepath) throws IOException
-    {
+    public void writeAllImagesMosaic(String filepath) throws IOException {
         BufferedImage im = getAllImagesMosaic();
 
         ImageIO.write(im, "png", new File(filepath));
     }
 
-    public void printHammingDistances()
-    {
-        int hammings[] = new int[d*d+1];
+    public void printHammingDistances() {
+        int hammings[] = new int[d * d + 1];
 
         for (int i = 0; i < codes.length; i++) {
             long r0 = codes[i];
@@ -326,12 +312,12 @@ public class TagFamily
             long r2 = rotate90(r1, d);
             long r3 = rotate90(r2, d);
 
-            for (int j = i+1; j < codes.length; j++) {
+            for (int j = i + 1; j < codes.length; j++) {
 
                 int d = Math.min(Math.min(hammingDistance(r0, codes[j]),
-                                          hammingDistance(r1, codes[j])),
-                                 Math.min(hammingDistance(r2, codes[j]),
-                                          hammingDistance(r3, codes[j])));
+                        hammingDistance(r1, codes[j])), Math.min(
+                        hammingDistance(r2, codes[j]),
+                        hammingDistance(r3, codes[j])));
 
                 hammings[d]++;
             }
@@ -341,39 +327,39 @@ public class TagFamily
             System.out.printf("%10d  %10d\n", i, hammings[i]);
     }
 
-    public void writeAllImagesPostScript(String filepath) throws IOException
-    {
-        int sz = d + 2*whiteBorder + 2*blackBorder;
+    public void writeAllImagesPostScript(String filepath) throws IOException {
+        int sz = d + 2 * whiteBorder + 2 * blackBorder;
 
         BufferedWriter outs = new BufferedWriter(new FileWriter(filepath));
 
-        outs.write("/pagewidth 8.5 72 mul def                      \n" +
-                   "/pageheight 11 72 mul def                      \n" +
+        outs.write("/pagewidth 8.5 72 mul def                      \n"
+                + "/pageheight 11 72 mul def                      \n" +
 
-                   "/maketag                                       \n" +
-                   "{                                              \n" +
-                   "  /img exch def                                \n" +
-                   "  /name exch def                               \n" +
-                   "  gsave                                        \n" +
-                   "  pagewidth 2 div pageheight 2 div translate   \n" +
-                   "  0 0 moveto                                   \n" +
-                   "  1.0 pagewidth mul dup scale                  \n" +
-                   "  1 -1 scale                                   \n" +
-                   "  -.5 -.5 translate                            \n" +
-                   "  "+sz+" "+sz+" 1 [ "+sz+" 0 0 "+sz+" 0 0 ] { img } image \n" +
-                   "  0 setlinewidth .5 setgray [0.002 0.01] 0 setdash \n" +
-                   "  0 0 moveto 1 0 lineto 1 1 lineto 0 1 lineto  \n" +
-                   "  closepath stroke                             \n" +
-                   "  grestore                                     \n" +
-                   "  gsave                                        \n" +
-                   "  pagewidth 2 div 72 translate                 \n" +
-                   "  /Helvetica-Bold findfont 20 scalefont setfont \n" +
-                   "  name                                         \n" +
-                   "  dup stringwidth pop -.5 mul 0 moveto         \n" +
-                   "  show                                         \n" +
-                   "  grestore                                     \n" +
-                   "  showpage                                     \n" +
-                   "} def                                          \n");
+                "/maketag                                       \n"
+                + "{                                              \n"
+                + "  /img exch def                                \n"
+                + "  /name exch def                               \n"
+                + "  gsave                                        \n"
+                + "  pagewidth 2 div pageheight 2 div translate   \n"
+                + "  0 0 moveto                                   \n"
+                + "  1.0 pagewidth mul dup scale                  \n"
+                + "  1 -1 scale                                   \n"
+                + "  -.5 -.5 translate                            \n" + "  "
+                + sz + " " + sz + " 1 [ " + sz + " 0 0 " + sz
+                + " 0 0 ] { img } image \n"
+                + "  0 setlinewidth .5 setgray [0.002 0.01] 0 setdash \n"
+                + "  0 0 moveto 1 0 lineto 1 1 lineto 0 1 lineto  \n"
+                + "  closepath stroke                             \n"
+                + "  grestore                                     \n"
+                + "  gsave                                        \n"
+                + "  pagewidth 2 div 72 translate                 \n"
+                + "  /Helvetica-Bold findfont 20 scalefont setfont \n"
+                + "  name                                         \n"
+                + "  dup stringwidth pop -.5 mul 0 moveto         \n"
+                + "  show                                         \n"
+                + "  grestore                                     \n"
+                + "  showpage                                     \n"
+                + "} def                                          \n");
 
         for (int id = 0; id < codes.length; id++) {
             BufferedImage im = makeImage(id);
@@ -388,25 +374,27 @@ public class TagFamily
                 int vlen = 0;
 
                 for (int x = 0; x < width; x++) {
-                    int b = ((im.getRGB(x, y)&0xffffff) > 0) ? 1 : 0;
-                    v = (v<<1) | b; vlen++;
+                    int b = ((im.getRGB(x, y) & 0xffffff) > 0) ? 1 : 0;
+                    v = (v << 1) | b;
+                    vlen++;
                 }
 
                 // pad to a byte boundary.
-                while ((vlen%8) != 0) {
-                    v = (v<<1) | 0; vlen++;
+                while ((vlen % 8) != 0) {
+                    v = (v << 1) | 0;
+                    vlen++;
                 }
-                imgdata += String.format("%0"+(vlen/4)+"x", v);
+                imgdata += String.format("%0" + (vlen / 4) + "x", v);
             }
 
-            outs.write("("+this.getClass().getName()+", id = "+id+") <"+imgdata+"> maketag\n");
+            outs.write("(" + this.getClass().getName() + ", id = " + id + ") <"
+                    + imgdata + "> maketag\n");
         }
 
         outs.close();
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         if (args.length != 2) {
             System.out.printf("Usage: <tagclass> <outputdir>\n");
             System.out.printf("Example: art.tag.Tag25h11 /tmp/tag25h11\n");
@@ -425,11 +413,11 @@ public class TagFamily
             if (!f.exists())
                 f.mkdirs();
 
-            tagFamily.writeAllImagesMosaic(dirpath+"mosaic.png");
+            tagFamily.writeAllImagesMosaic(dirpath + "mosaic.png");
             tagFamily.writeAllImages(dirpath);
-            tagFamily.writeAllImagesPostScript(dirpath+"alltags.ps");
+            tagFamily.writeAllImagesPostScript(dirpath + "alltags.ps");
         } catch (IOException ex) {
-            System.out.println("ex: "+ex);
+            System.out.println("ex: " + ex);
         }
     }
 }

@@ -40,10 +40,9 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 package edu.umich.eecs.april.util;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,10 +51,8 @@ import java.util.Random;
 import edu.umich.eecs.april.jmat.LinAlg;
 
 /** A lookup table in 2D for implementing nearest neighbor **/
-public class Gridder<T>
-{
-    static class Cell
-    {
+public class Gridder<T> {
+    static class Cell {
         Object o;
         Cell next;
     }
@@ -65,27 +62,26 @@ public class Gridder<T>
     int width, height;
     double metersPerCell;
 
-    public Gridder(double x0, double y0, double x1, double y1, double metersPerCell)
-    {
+    public Gridder(double x0, double y0, double x1, double y1,
+            double metersPerCell) {
         this.x0 = x0;
         this.y0 = y0;
         this.metersPerCell = metersPerCell;
 
-        width = (int) ((x1 - x0)/metersPerCell + 1);
-        height = (int) ((y1 - y0)/metersPerCell + 1);
+        width = (int) ((x1 - x0) / metersPerCell + 1);
+        height = (int) ((y1 - y0) / metersPerCell + 1);
 
-        this.x1 = x0 + metersPerCell*width;
-        this.y1 = y0 + metersPerCell*height;
+        this.x1 = x0 + metersPerCell * width;
+        this.y1 = y0 + metersPerCell * height;
 
         cells = new Cell[height][width];
     }
 
-    public void add(double x, double y, T o)
-    {
-        int ix = (int) ((x - x0)/metersPerCell);
-        int iy = (int) ((y - y0)/metersPerCell);
+    public void add(double x, double y, T o) {
+        int ix = (int) ((x - x0) / metersPerCell);
+        int iy = (int) ((y - y0) / metersPerCell);
 
-        if (ix >=0 && iy >=0 && ix < width && iy < height) {
+        if (ix >= 0 && iy >= 0 && ix < width && iy < height) {
             Cell c = new Cell();
             c.o = o;
             c.next = cells[iy][ix];
@@ -93,12 +89,11 @@ public class Gridder<T>
         }
     }
 
-    public void remove(double x, double y, T o)
-    {
-        int ix = (int) ((x - x0)/metersPerCell);
-        int iy = (int) ((y - y0)/metersPerCell);
+    public void remove(double x, double y, T o) {
+        int ix = (int) ((x - x0) / metersPerCell);
+        int iy = (int) ((y - y0) / metersPerCell);
 
-        if (ix >=0 && iy >=0 && ix < width && iy < height) {
+        if (ix >= 0 && iy >= 0 && ix < width && iy < height) {
 
             // nobody in this bucket!
             if (cells[iy][ix] == null)
@@ -127,41 +122,38 @@ public class Gridder<T>
         }
     }
 
-    class MyIterator implements Iterator<T>, Iterable<T>
-    {
+    class MyIterator implements Iterator<T>, Iterable<T> {
         int ix0, ix1, iy0, iy1;
 
         int ix, iy;
         Cell c;
 
-        MyIterator(double x, double y, double range)
-	    {
-            ix0 = (int) ((x - range - x0)/metersPerCell);
-            iy0 = (int) ((y - range - y0)/metersPerCell);
+        MyIterator(double x, double y, double range) {
+            ix0 = (int) ((x - range - x0) / metersPerCell);
+            iy0 = (int) ((y - range - y0) / metersPerCell);
 
-            ix1 = (int) ((x + range - x0)/metersPerCell);
-            iy1 = (int) ((y + range - y0)/metersPerCell);
+            ix1 = (int) ((x + range - x0) / metersPerCell);
+            iy1 = (int) ((y + range - y0) / metersPerCell);
 
             ix0 = Math.max(0, ix0);
-            ix0 = Math.min(width-1, ix0);
+            ix0 = Math.min(width - 1, ix0);
 
             ix1 = Math.max(0, ix1);
-            ix1 = Math.min(width-1, ix1);
+            ix1 = Math.min(width - 1, ix1);
 
             iy0 = Math.max(0, iy0);
-            iy0 = Math.min(height-1, iy0);
+            iy0 = Math.min(height - 1, iy0);
 
             iy1 = Math.max(0, iy1);
-            iy1 = Math.min(height-1, iy1);
+            iy1 = Math.min(height - 1, iy1);
 
             ix = ix0;
             iy = iy0;
 
             c = cells[iy][ix];
-	    }
+        }
 
-        void findNext()
-        {
+        void findNext() {
             if (c != null)
                 c = c.next;
 
@@ -184,39 +176,33 @@ public class Gridder<T>
             }
         }
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             if (c == null)
                 findNext();
 
             return (c != null);
         }
 
-        public T next()
-        {
+        public T next() {
             Cell thisc = c;
             findNext();
             return (T) thisc.o;
         }
 
-        public void remove()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
 
-        public Iterator<T> iterator()
-        {
+        public Iterator<T> iterator() {
             return this;
         }
     }
 
-    public Iterable<T> find(double x, double y, double range)
-    {
+    public Iterable<T> find(double x, double y, double range) {
         return new MyIterator(x, y, range);
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         Gridder<double[]> g = new Gridder<double[]>(0, 0, 1, 1, 0.1);
         Random r = new Random();
 
@@ -262,7 +248,7 @@ public class Gridder<T>
             if (bestDist > searchRange)
                 continue;
 
-            assert(best == points.get(bestIndex));
+            assert (best == points.get(bestIndex));
         }
     }
 }

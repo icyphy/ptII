@@ -40,7 +40,7 @@ JNA to interface the C version to Java.
 For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
-*/
+ */
 
 /* An AprilTag image filter.
 
@@ -104,7 +104,7 @@ import edu.umich.eecs.april.util.UnionFindSimple;
  *  which are two-dimensional images, similar to QR codes, but easier to detect.
  *  The options for the filter are the ones that have setter methods. For example,
  *  the TagFamily option as a setTagFamily() method.
- *  
+ *
  *  @author Edwin Bolson and Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -122,28 +122,28 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      *  returned. Otherwise, the red circle is added to the destination image.
      *  In addition, this method records the tags discovered so that they can later
      *  by retrieved by invoking the {@link tags()} method.
-     *  
+     *
      *  @param source The source image, on which motion is detected.
      *  @param destination The destination image, on which the red circle is added,
      *   or null to specify to add the circle to the source image.
      */
-    public BufferedImage filter( BufferedImage source, BufferedImage destination ) {
-        if ( destination == null ) {
+    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+        if (destination == null) {
             // If no destination is provided, overwrite the source.
             destination = source;
         }
-        
-        _tagFamily = (TagFamily) ReflectUtil.createObject(
-                "edu.umich.eecs.april.tag." + _tagFamilyName);
+
+        _tagFamily = (TagFamily) ReflectUtil
+                .createObject("edu.umich.eecs.april.tag." + _tagFamilyName);
         if (_tagFamily == null) {
             throw new IllegalArgumentException("Failed to find tag family "
                     + _tagFamilyName + " in package edu.umich.eecs.april.tag");
         }
-        
+
         int width = source.getWidth();
         int height = source.getHeight();
-        
-        _tags = _process(source, new double[] {width/2, height/2});
+
+        _tags = _process(source, new double[] { width / 2, height / 2 });
 
         Graphics2D g = destination.createGraphics();
         g.setStroke(new BasicStroke(2));
@@ -152,21 +152,21 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             double[] centerOfTag = tag.cxy;
             g.setColor(Color.GREEN);
             for (int i = 0; i < 4; i++) {
-                g.drawLine((int)tag.p[i][0], (int)tag.p[i][1],
-                        (int)tag.p[i + 1 & 3][0], (int)tag.p[i + 1 & 3][1]);
+                g.drawLine((int) tag.p[i][0], (int) tag.p[i][1],
+                        (int) tag.p[i + 1 & 3][0], (int) tag.p[i + 1 & 3][1]);
             }
-            int x = (int)centerOfTag[0];
-            int y = (int)centerOfTag[1];
+            int x = (int) centerOfTag[0];
+            int y = (int) centerOfTag[1];
             g.setColor(Color.RED);
             g.drawOval(x - 5, y - 5, 10, 10);
             g.drawString(String.format("ID: %d", tag.id), x + 10, y);
-            
+
         }
         g.dispose();
 
         return destination;
     }
-    
+
     /** When growing components, the intra component variation is
      * allowed to grow when the component is small in size. This
      * threshold affects how much. The default is 1200.
@@ -232,7 +232,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     public String getTagFamily() {
         return _tagFamilyName;
     }
-    
+
     /** When growing components, the intra component variation is
      * allowed to grow when the component is small in size. This
      * threshold affects how much. The default is 100.
@@ -269,7 +269,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * @see #getMagThresh()
      */
     public void setMagThresh(double magThresh) {
-        this._magThresh = magThresh;
+        _magThresh = magThresh;
     }
 
     /** Set the maximum angle range allowed for the gradient directions
@@ -278,7 +278,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      *  @see #getMaxEdgeCost()
      */
     public void setMaxEdgeCost(double maxEdgeCost) {
-        this._maxEdgeCost = maxEdgeCost;
+        _maxEdgeCost = maxEdgeCost;
     }
 
     /** Set the gradient magnitude threshold for ignoring pixels.
@@ -290,7 +290,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * @see #getMinMag()
      */
     public void setMinMag(double minMag) {
-        this._minMag = minMag;
+        _minMag = minMag;
     }
 
     /** Set whether decimating before segmenting is enabled.
@@ -311,7 +311,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * @see #getSegDecimate()
      */
     public void setSegDecimate(boolean segDecimate) {
-        this._segDecimate = segDecimate;
+        _segDecimate = segDecimate;
     }
 
     /** Set the Gaussian smoothing kernel applied to image (0 == no filter)
@@ -323,7 +323,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * @see #getSegSigma()
      */
     public void setSegSigma(double segSigma) {
-        this._segSigma = segSigma;
+        _segSigma = segSigma;
     }
 
     /** Set the Gaussian smoothing kernel applied to image (0 == no filter, the default)
@@ -336,7 +336,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * @see #getSigma()
      */
     public void setSigma(double sigma) {
-        this._sigma = sigma;
+        _sigma = sigma;
     }
 
     /** Set the name of the tag family being detected.
@@ -349,16 +349,16 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     public void setTagFamily(String name) {
         _tagFamilyName = name;
     }
-    
+
     /** When growing components, the intra component variation is
      * allowed to grow when the component is small in size. This
      * threshold affects how much. The default is 100.
      * @see #getThetaThresh()
      */
     public void setThetaThresh(double thetaThresh) {
-        this._thetaThresh = thetaThresh;
+        _thetaThresh = thetaThresh;
     }
-    
+
     /** Return an array of records representing the most recently detected tags
      *  from an invocation of {@link #filter(BufferedImage, BufferedImage}, or
      *  null if there has been no such invocation or if no tags were detected.
@@ -378,15 +378,15 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         Token[] tags = new RecordToken[_tags.size()];
         int i = 0;
         for (TagDetection tag : _tags) {
-            Map<String,Token> fieldMap = new HashMap<String,Token>();
-            
+            Map<String, Token> fieldMap = new HashMap<String, Token>();
+
             fieldMap.put("id", new IntToken(tag.id));
-            
+
             DoubleToken[] center = new DoubleToken[2];
             center[0] = new DoubleToken(tag.cxy[0]);
             center[1] = new DoubleToken(tag.cxy[1]);
             fieldMap.put("center", new ArrayToken(center));
-            
+
             DoubleToken[] corner = new DoubleToken[2];
             ArrayToken[] perimeter = new ArrayToken[4];
             for (int k = 0; k < 4; k++) {
@@ -395,7 +395,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 perimeter[k] = new ArrayToken(corner);
             }
             fieldMap.put("perimeter", new ArrayToken(perimeter));
-                    
+
             tags[i++] = new RecordToken(fieldMap);
         }
         return new ArrayToken(tags);
@@ -431,11 +431,11 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * NOTE: Most of the debugging code is disabled in this implementation.
      **/
     public boolean debug = false;
-    public BufferedImage   debugInput;         // the input image (after preprocessing)
-    public BufferedImage   debugSegInput;      // the input image passed to segmentation.
-    public BufferedImage   debugSegmentation;  // segmented image
-    public BufferedImage   debugTheta, debugMag;
-    
+    public BufferedImage debugInput; // the input image (after preprocessing)
+    public BufferedImage debugSegInput; // the input image passed to segmentation.
+    public BufferedImage debugSegmentation; // segmented image
+    public BufferedImage debugTheta, debugMag;
+
     /** During segmentation, the weight of an edge is related to the
      * change in theta between the two pixels. This change is
      * normalized via maxEdgeCost, resulting in a number[0,1]. We then
@@ -454,13 +454,12 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Lousy approximation of arctan function, but good enough for our purposes (about 4 degrees). */
-    private final double _arctan2(double y, double x)
-    {
-        double coeff_1 = Math.PI/4;
-        double coeff_2 = 3*coeff_1;
-        double abs_y = Math.abs(y)+1e-10;      // kludge to prevent 0/0 condition
+    private final double _arctan2(double y, double x) {
+        double coeff_1 = Math.PI / 4;
+        double coeff_2 = 3 * coeff_1;
+        double abs_y = Math.abs(y) + 1e-10; // kludge to prevent 0/0 condition
 
         double angle;
 
@@ -473,7 +472,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         }
 
         if (y < 0)
-            return -angle;     // negate if in quad III or IV
+            return -angle; // negate if in quad III or IV
         else
             return angle;
     }
@@ -484,11 +483,11 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * be small enough to fit in an integer. This implementation is
      * stable.
      **/
-    private static long[] _countingSortLongArray(long v[], int vlength, int maxv, long mask)
-    {
+    private static long[] _countingSortLongArray(long v[], int vlength,
+            int maxv, long mask) {
         if (maxv < 0) {
             for (int i = 0; i < vlength; i++)
-                maxv = Math.max(maxv, (int) (v[i]&mask));
+                maxv = Math.max(maxv, (int) (v[i] & mask));
         }
 
         // For weight 'w', counts[w] will give the output position for
@@ -497,48 +496,47 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         // that the initial position for weight w is only affected by
         // the number of weights less than w, hence the +1 in
         // counts[w+1].
-        int counts[] = new int[maxv+2];
+        int counts[] = new int[maxv + 2];
 
         for (int i = 0; i < vlength; i++) {
-            int w = (int) (v[i]&mask);
-            counts[w+1]++;
+            int w = (int) (v[i] & mask);
+            counts[w + 1]++;
         }
 
         // accumulate.
         for (int i = 1; i < counts.length; i++)
-            counts[i] += counts[i-1];
+            counts[i] += counts[i - 1];
 
         long newv[] = new long[vlength];
         for (int i = 0; i < vlength; i++) {
-            int w = (int) (v[i]&mask);
+            int w = (int) (v[i] & mask);
             newv[counts[w]] = v[i];
             counts[w]++;
         }
 
-/*       // test (debugging code)
-        for (int i = 0; i+1 < newv.length; i++) {
-            int w0 = (int) (newv[i]&mask);
-            int w1 = (int) (newv[i+1]&mask);
-            assert(w0 <= w1);
-        }
-*/
+        /*       // test (debugging code)
+                for (int i = 0; i+1 < newv.length; i++) {
+                    int w0 = (int) (newv[i]&mask);
+                    int w1 = (int) (newv[i+1]&mask);
+                    assert(w0 <= w1);
+                }
+        */
 
         return newv;
     }
 
-    private boolean _detectionsOverlapTooMuch(TagDetection a, TagDetection b)
-    {
+    private boolean _detectionsOverlapTooMuch(TagDetection a, TagDetection b) {
         // Compute a sort of "radius" of the two targets. We'll do
         // this by computing the average length of the edges of the
         // quads (in pixels).
-        double radius = 0.0625*(LinAlg.distance(a.p[0], a.p[1]) +
-                                LinAlg.distance(a.p[1], a.p[2]) +
-                                LinAlg.distance(a.p[2], a.p[3]) +
-                                LinAlg.distance(a.p[3], a.p[0]) +
-                                LinAlg.distance(b.p[0], b.p[1]) +
-                                LinAlg.distance(b.p[1], b.p[2]) +
-                                LinAlg.distance(b.p[2], b.p[3]) +
-                                LinAlg.distance(b.p[3], b.p[0]));
+        double radius = 0.0625 * (LinAlg.distance(a.p[0], a.p[1])
+                + LinAlg.distance(a.p[1], a.p[2])
+                + LinAlg.distance(a.p[2], a.p[3])
+                + LinAlg.distance(a.p[3], a.p[0])
+                + LinAlg.distance(b.p[0], b.p[1])
+                + LinAlg.distance(b.p[1], b.p[2])
+                + LinAlg.distance(b.p[2], b.p[3]) + LinAlg.distance(b.p[3],
+                b.p[0]));
 
         // distance (in pixels) between two tag centers.
         double d = LinAlg.distance(a.cxy, b.cxy);
@@ -548,8 +546,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         return (d < radius);
     }
 
-    private final int _edgeCost(double theta0, double mag0, double theta1, double mag1)
-    {
+    private final int _edgeCost(double theta0, double mag0, double theta1,
+            double mag1) {
         if (mag0 < _minMag || mag1 < _minMag)
             return -1;
 
@@ -592,8 +590,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * optical center, but it is usually fine to pass in (width/2,
      * height/2).
      **/
-    private ArrayList<TagDetection> _process(BufferedImage im, double opticalCenter[])
-    {
+    private ArrayList<TagDetection> _process(BufferedImage im,
+            double opticalCenter[]) {
         // This is a very long function, but it can't really be
         // factored any more simply: it's just a long sequence of
         // sequential operations.
@@ -605,7 +603,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
         FloatImage fim = fimOrig;
         if (_sigma > 0) {
-            int filtsz = ((int) Math.max(3, 3*_sigma)) | 1;
+            int filtsz = ((int) Math.max(3, 3 * _sigma)) | 1;
             float filt[] = SigProc.makeGaussianFilter(_sigma, filtsz);
             fim = fimOrig.filterFactoredCentered(filt, filt);
         }
@@ -629,7 +627,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 fimseg = fim;
             } else {
                 // blur anew.
-                int filtsz = ((int) Math.max(3, 3*_segSigma)) | 1;
+                int filtsz = ((int) Math.max(3, 3 * _segSigma)) | 1;
                 float filt[] = SigProc.makeGaussianFilter(_segSigma, filtsz);
                 fimseg = fimOrig.filterFactoredCentered(filt, filt);
             }
@@ -640,13 +638,13 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         FloatImage fimTheta = new FloatImage(fimseg.width, fimseg.height);
         FloatImage fimMag = new FloatImage(fimseg.width, fimseg.height);
 
-        for (int y = 1; y+1 < fimseg.height; y++) {
-            for (int x = 1; x+1 < fimseg.width; x++) {
+        for (int y = 1; y + 1 < fimseg.height; y++) {
+            for (int x = 1; x + 1 < fimseg.width; x++) {
 
-                float Ix = fimseg.get(x+1, y) - fimseg.get(x-1, y);
-                float Iy = fimseg.get(x,y+1) - fimseg.get(x, y-1);
+                float Ix = fimseg.get(x + 1, y) - fimseg.get(x - 1, y);
+                float Iy = fimseg.get(x, y + 1) - fimseg.get(x, y - 1);
 
-                double mag = Ix*Ix + Iy*Iy;
+                double mag = Ix * Ix + Iy * Iy;
                 double theta = _arctan2(Iy, Ix);
 
                 fimTheta.set(x, y, (float) theta);
@@ -663,60 +661,74 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         // Step three. Segment the edges, grouping pixels with similar
         // thetas together. This is a greedy algorithm: we start with
         // the most similar pixels.  We use 4-connectivity.
-        UnionFindSimple uf = new UnionFindSimple(fimseg.width*fimseg.height);
+        UnionFindSimple uf = new UnionFindSimple(fimseg.width * fimseg.height);
 
         if (true) {
             int width = fimseg.width;
             int height = fimseg.height;
 
-            long edges[] = new long[width*height*4];
+            long edges[] = new long[width * height * 4];
             int nedges = 0;
 
             // for efficiency, each edge is encoded as a single
             // long. The constants below are used to pack/unpack the
             // long.
-            final long IDA_SHIFT = 40, IDB_SHIFT = 16, INDEX_MASK = (1<<24) - 1, WEIGHT_MASK=(1<<16)-1;
+            final long IDA_SHIFT = 40, IDB_SHIFT = 16, INDEX_MASK = (1 << 24) - 1, WEIGHT_MASK = (1 << 16) - 1;
 
             // bounds on the thetas assigned to this group. Note that
             // because theta is periodic, these are defined such that the
             // average value is contained *within* the interval.
-            double tmin[] = new double[width*height];
-            double tmax[] = new double[width*height];
+            double tmin[] = new double[width * height];
+            double tmax[] = new double[width * height];
 
-            double mmin[] = new double[width*height];
-            double mmax[] = new double[width*height];
+            double mmin[] = new double[width * height];
+            double mmax[] = new double[width * height];
 
-            for (int y = 0; y+1 < fimseg.height; y++) {
-                for (int x = 0; x+1 < fimseg.width; x++) {
+            for (int y = 0; y + 1 < fimseg.height; y++) {
+                for (int x = 0; x + 1 < fimseg.width; x++) {
 
-                    double mag0 = fimMag.get(x,y);
+                    double mag0 = fimMag.get(x, y);
                     if (mag0 < _minMag)
                         continue;
-                    mmax[y*width+x] = mag0;
-                    mmin[y*width+x] = mag0;
+                    mmax[y * width + x] = mag0;
+                    mmin[y * width + x] = mag0;
 
-                    double theta0 = fimTheta.get(x,y);
-                    tmin[y*width+x] = theta0;
-                    tmax[y*width+x] = theta0;
+                    double theta0 = fimTheta.get(x, y);
+                    tmin[y * width + x] = theta0;
+                    tmax[y * width + x] = theta0;
 
                     int edgeCost;
 
                     // 8 connectivity
-                    edgeCost = _edgeCost(theta0, mag0, fimTheta.get(x+1, y), fimMag.get(x+1,y));
+                    edgeCost = _edgeCost(theta0, mag0, fimTheta.get(x + 1, y),
+                            fimMag.get(x + 1, y));
                     if (edgeCost >= 0)
-                        edges[nedges++] = (((long) y*width+x)<<IDA_SHIFT) + (((long) y*width+x+1)<<IDB_SHIFT) + edgeCost;
+                        edges[nedges++] = (((long) y * width + x) << IDA_SHIFT)
+                                + (((long) y * width + x + 1) << IDB_SHIFT)
+                                + edgeCost;
 
-                    edgeCost = _edgeCost(theta0, mag0, fimTheta.get(x, y+1), fimMag.get(x,y+1));
+                    edgeCost = _edgeCost(theta0, mag0, fimTheta.get(x, y + 1),
+                            fimMag.get(x, y + 1));
                     if (edgeCost >= 0)
-                        edges[nedges++] = ((long) (y*width+x)<<IDA_SHIFT) + (((long) (y+1)*width+x)<<IDB_SHIFT) + edgeCost;
+                        edges[nedges++] = ((long) (y * width + x) << IDA_SHIFT)
+                                + (((long) (y + 1) * width + x) << IDB_SHIFT)
+                                + edgeCost;
 
-                    edgeCost = _edgeCost(theta0, mag0, fimTheta.get(x+1, y+1), fimMag.get(x+1,y+1));
+                    edgeCost = _edgeCost(theta0, mag0,
+                            fimTheta.get(x + 1, y + 1),
+                            fimMag.get(x + 1, y + 1));
                     if (edgeCost >= 0)
-                        edges[nedges++] = (((long) y*width+x)<<IDA_SHIFT) + (((long) (y+1)*width+x+1)<<IDB_SHIFT) + edgeCost;
+                        edges[nedges++] = (((long) y * width + x) << IDA_SHIFT)
+                                + (((long) (y + 1) * width + x + 1) << IDB_SHIFT)
+                                + edgeCost;
 
-                    edgeCost = (x == 0) ? -1 : _edgeCost(theta0, mag0, fimTheta.get(x-1, y+1), fimMag.get(x-1,y+1));
+                    edgeCost = (x == 0) ? -1 : _edgeCost(theta0, mag0,
+                            fimTheta.get(x - 1, y + 1),
+                            fimMag.get(x - 1, y + 1));
                     if (edgeCost >= 0)
-                        edges[nedges++] = (((long) y*width+x)<<IDA_SHIFT) + (((long) (y+1)*width+x-1)<<IDB_SHIFT) + edgeCost;
+                        edges[nedges++] = (((long) y * width + x) << IDA_SHIFT)
+                                + (((long) (y + 1) * width + x - 1) << IDB_SHIFT)
+                                + edgeCost;
                 }
             }
 
@@ -727,8 +739,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             // clusters if we can do so without exceeding the
             // thetaThresh.
             for (int i = 0; i < nedges; i++) {
-                int ida = (int) ((edges[i]>>IDA_SHIFT)&INDEX_MASK);
-                int idb = (int) ((edges[i]>>IDB_SHIFT)&INDEX_MASK);
+                int ida = (int) ((edges[i] >> IDA_SHIFT) & INDEX_MASK);
+                int idb = (int) ((edges[i] >> IDB_SHIFT) & INDEX_MASK);
 
                 ida = uf.getRepresentative(ida);
                 idb = uf.getRepresentative(idb);
@@ -742,27 +754,32 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 double tmina = tmin[ida], tmaxa = tmax[ida];
                 double tminb = tmin[idb], tmaxb = tmax[idb];
 
-                double costa = (tmaxa-tmina);
-                double costb = (tmaxb-tminb);
+                double costa = (tmaxa - tmina);
+                double costb = (tmaxb - tminb);
 
                 // bshift will be a multiple of 2pi that aligns the spans
                 // of b with a so that we can properly take the union of
                 // them.
-                double bshift = MathUtil.mod2pi((tmina+tmaxa)/2, (tminb+tmaxb)/2) - (tminb+tmaxb)/2;
+                double bshift = MathUtil.mod2pi((tmina + tmaxa) / 2,
+                        (tminb + tmaxb) / 2) - (tminb + tmaxb) / 2;
 
                 double tminab = Math.min(tmina, tminb + bshift);
                 double tmaxab = Math.max(tmaxa, tmaxb + bshift);
 
-                if (tmaxab - tminab > 2*Math.PI)  // corner case that's probably not useful to handle correctly. oh well.
-                    tmaxab = tminab + 2*Math.PI;
+                if (tmaxab - tminab > 2 * Math.PI) // corner case that's probably not useful to handle correctly. oh well.
+                    tmaxab = tminab + 2 * Math.PI;
 
                 double mmaxab = Math.max(mmax[ida], mmax[idb]);
                 double mminab = Math.min(mmin[ida], mmin[idb]);
 
                 // merge these two clusters?
                 double costab = (tmaxab - tminab);
-                if (costab <= (Math.min(costa, costb) + _thetaThresh/(sza+szb)) &&
-                    (mmaxab-mminab) <= Math.min(mmax[ida]-mmin[ida], mmax[idb]-mmin[idb]) + _magThresh/(sza+szb)) {
+                if (costab <= (Math.min(costa, costb) + _thetaThresh
+                        / (sza + szb))
+                        && (mmaxab - mminab) <= Math.min(mmax[ida] - mmin[ida],
+                                mmax[idb] - mmin[idb])
+                                + _magThresh
+                                / (sza + szb)) {
 
                     int idab = uf.connectNodes(ida, idb);
 
@@ -781,29 +798,30 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         // these points.
 
         if (debug) {
-            debugSegmentation = new BufferedImage(fimseg.width, fimseg.height, BufferedImage.TYPE_INT_RGB);
+            debugSegmentation = new BufferedImage(fimseg.width, fimseg.height,
+                    BufferedImage.TYPE_INT_RGB);
         }
 
-        HashMap<Integer,ArrayList<double[]>> clusters = new HashMap<Integer,ArrayList<double[]>>();
-        for (int y = 0; y+1 < fimseg.height; y++) {
-            for (int x = 0; x+1 < fimseg.width; x++) {
-                if (uf.getSetSize(y*fimseg.width+x) < minimumSegmentSize) {
+        HashMap<Integer, ArrayList<double[]>> clusters = new HashMap<Integer, ArrayList<double[]>>();
+        for (int y = 0; y + 1 < fimseg.height; y++) {
+            for (int x = 0; x + 1 < fimseg.width; x++) {
+                if (uf.getSetSize(y * fimseg.width + x) < minimumSegmentSize) {
                     if (debug)
                         debugSegmentation.setRGB(x, y, 0);
                     continue;
                 }
 
-                int rep = (int) uf.getRepresentative(y*fimseg.width + x);
+                int rep = uf.getRepresentative(y * fimseg.width + x);
                 if (debug)
                     debugSegmentation.setRGB(x, y, rep);
 
                 ArrayList<double[]> points = clusters.get(rep);
-                if (points == null){
+                if (points == null) {
                     points = new ArrayList<double[]>();
                     clusters.put(rep, points);
                 }
 
-                double pt[] = new double[] { x, y, fimMag.get(x,y) };
+                double pt[] = new double[] { x, y, fimMag.get(x, y) };
 
                 points.add(pt);
             }
@@ -818,7 +836,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             GLineSegment2D gseg = GLineSegment2D.lsqFitXYW(points);
 
             // filter short lines
-            double length =  LinAlg.distance(gseg.p1, gseg.p2);
+            double length = LinAlg.distance(gseg.p1, gseg.p2);
             if (length < minimumLineLength)
                 continue;
 
@@ -826,8 +844,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             double dy = gseg.p2[1] - gseg.p1[1];
             double dx = gseg.p2[0] - gseg.p1[0];
 
-            seg.theta = MathUtil.atan2(gseg.p2[1] - gseg.p1[1],
-                                       gseg.p2[0] - gseg.p1[0]);
+            seg.theta = MathUtil.atan2(gseg.p2[1] - gseg.p1[1], gseg.p2[0]
+                    - gseg.p1[0]);
             seg.length = length;
 
             // We add an extra semantic to segments: the vector
@@ -856,21 +874,25 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 seg.theta += Math.PI;
             }
 
-            double dot = dx*Math.cos(seg.theta) + dy*Math.sin(seg.theta);
+            double dot = dx * Math.cos(seg.theta) + dy * Math.sin(seg.theta);
             double xbug = 0, ybug = 0;
             if (dot > 0) {
-                seg.x0 = gseg.p2[0] + xbug; seg.y0 = gseg.p2[1] + ybug;
-                seg.x1 = gseg.p1[0] + xbug; seg.y1 = gseg.p1[1] + ybug;
+                seg.x0 = gseg.p2[0] + xbug;
+                seg.y0 = gseg.p2[1] + ybug;
+                seg.x1 = gseg.p1[0] + xbug;
+                seg.y1 = gseg.p1[1] + ybug;
             } else {
-                seg.x0 = gseg.p1[0]; seg.y0 = gseg.p1[1];
-                seg.x1 = gseg.p2[0]; seg.y1 = gseg.p2[1];
+                seg.x0 = gseg.p1[0];
+                seg.y0 = gseg.p1[1];
+                seg.x1 = gseg.p2[0];
+                seg.y1 = gseg.p2[1];
             }
 
             if (_segDecimate) {
-                seg.x0 = 2*seg.x0 + .5;
-                seg.y0 = 2*seg.y0 + .5;
-                seg.x1 = 2*seg.x1 + .5;
-                seg.y1 = 2*seg.y1 + .5;
+                seg.x0 = 2 * seg.x0 + .5;
+                seg.y0 = 2 * seg.y0 + .5;
+                seg.x1 = 2 * seg.x1 + .5;
+                seg.y1 = 2 * seg.y1 + .5;
                 seg.length *= 2;
             }
 
@@ -904,7 +926,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
             }
         }
-        */
+         */
 
         ////////////////////////////////////////////////////////////////
         // Step six. For each segment, find segments that begin where
@@ -926,25 +948,29 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         for (Segment parent : segments) {
 
             // compute length of the line segment
-            GLine2D parentLine = new GLine2D(new double[] { parent.x0, parent.y0 },
-                                             new double[] { parent.x1, parent.y1 });
+            GLine2D parentLine = new GLine2D(new double[] { parent.x0,
+                    parent.y0 }, new double[] { parent.x1, parent.y1 });
 
-            for (Segment child : gridder.find(parent.x1, parent.y1, quadSearchRangePix + quadSearchRangeFraction*parent.length)) {
-//            for (Segment child : gridder.find(parent.x1, parent.y1, 5+parent.length)) {
+            for (Segment child : gridder.find(parent.x1, parent.y1,
+                    quadSearchRangePix + quadSearchRangeFraction
+                            * parent.length)) {
+                //            for (Segment child : gridder.find(parent.x1, parent.y1, 5+parent.length)) {
                 // require child to have the right handedness...
                 if (MathUtil.mod2pi(child.theta - parent.theta) > 0)
                     continue;
 
                 // compute intersection of points.
-                GLine2D childLine = new GLine2D(new double[] { child.x0, child.y0 },
-                                                new double[] { child.x1, child.y1 });
+                GLine2D childLine = new GLine2D(new double[] { child.x0,
+                        child.y0 }, new double[] { child.x1, child.y1 });
 
                 double p[] = parentLine.intersectionWith(childLine);
                 if (p == null)
                     continue;
 
-                double parentDist = LinAlg.distance(p, new double[] {parent.x1, parent.y1});
-                double childDist = LinAlg.distance(p, new double[] {child.x0, child.y0});
+                double parentDist = LinAlg.distance(p, new double[] {
+                        parent.x1, parent.y1 });
+                double childDist = LinAlg.distance(p, new double[] { child.x0,
+                        child.y0 });
 
                 if (Math.max(parentDist, childDist) > parent.length)
                     continue;
@@ -978,8 +1004,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                                                             new VzLines.Style(Color.orange, 2))));
             }
         }
-        */
-
+         */
 
         ////////////////////////////////////////////////////////////////
         // Step eight. Decode the quads. For each quad, we first
@@ -1002,13 +1027,13 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 vdwhite = new VisVertexData();
                 vdsamp = new VisVertexData();
             }
-            */
+             */
 
             // sample points around the black and white border in
             // order to calibrate our gray threshold. This code is
             // simpler if we loop over the whole rectangle and discard
             // the points we don't want.
-            int dd = 2*_tagFamily.blackBorder + _tagFamily.d;
+            int dd = 2 * _tagFamily.blackBorder + _tagFamily.d;
 
             for (int iy = -1; iy <= dd; iy++) {
                 for (int ix = -1; ix <= dd; ix++) {
@@ -1016,8 +1041,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                     double x = (ix + .5) / dd;
 
                     double pxy[] = quad.interpolate01(x, y);
-                    int irx = (int) (pxy[0]+.5);
-                    int iry = (int) (pxy[1]+.5);
+                    int irx = (int) (pxy[0] + .5);
+                    int iry = (int) (pxy[1] + .5);
 
                     if (irx < 0 || irx >= width || iry < 0 || iry >= height)
                         continue;
@@ -1031,15 +1056,16 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                         /* Remove Vis-dependent code.
                         if (debug && debugSamples != null)
                             vdwhite.add(pxy);
-                        */
-                    } else if ((iy == 0 || iy == (dd-1)) || (ix == 0 || ix == (dd-1))) {
+                         */
+                    } else if ((iy == 0 || iy == (dd - 1))
+                            || (ix == 0 || ix == (dd - 1))) {
                         // part of the outer black border.
                         blackModel.addObservation(x, y, v);
 
                         /* Remove Vis-dependent code.
                         if (debug && debugSamples != null)
                             vdblack.add(pxy);
-                        */
+                         */
                     }
                 }
             }
@@ -1051,26 +1077,27 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             // XXX: todo: multiple samples within each cell and vote?
 
             // reminder: the MSB is at tag coordinates (-1,1) (the top left).
-            for (int iy = _tagFamily.d-1; iy >= 0; iy--) {
+            for (int iy = _tagFamily.d - 1; iy >= 0; iy--) {
                 for (int ix = 0; ix < _tagFamily.d; ix++) {
                     double y = (_tagFamily.blackBorder + iy + .5) / dd;
                     double x = (_tagFamily.blackBorder + ix + .5) / dd;
 
                     double pxy[] = quad.interpolate01(x, y);
-                    int irx = (int) (pxy[0]+.5);
-                    int iry = (int) (pxy[1]+.5);
+                    int irx = (int) (pxy[0] + .5);
+                    int iry = (int) (pxy[1] + .5);
 
                     if (irx < 0 || irx >= width || iry < 0 || iry >= height) {
                         bad = true;
                         continue;
                     }
 
-                    double threshold = (blackModel.interpolate(x, y) + whiteModel.interpolate(x,y))*.5;
+                    double threshold = (blackModel.interpolate(x, y) + whiteModel
+                            .interpolate(x, y)) * .5;
 
                     /* Remove Vis-dependent code.
                     if (debug && debugSamples != null)
                         vdsamp.add(pxy);
-                    */
+                     */
 
                     float v = fim.get(irx, iry);
 
@@ -1092,7 +1119,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                                                   new VzPoints(vdsamp,
                                                                new VzPoints.Style(Color.orange, 4))));
             }
-            */
+             */
 
             if (!bad) {
                 TagDetection d = new TagDetection();
@@ -1105,7 +1132,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 d.p = new double[4][];
 
                 for (int i = 0; i < 4; i++) {
-                    d.p[(4+i-d.rotation)%4] = quad.p[i];
+                    d.p[(4 + i - d.rotation) % 4] = quad.p[i];
                 }
 
                 // compute the homography (and rotate it appropriately)
@@ -1113,11 +1140,10 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 d.hxy = new double[2]; //quad.homography.getCXY();
 
                 if (true) {
-                    double c = Math.cos(d.rotation*Math.PI/2.0);
-                    double s = Math.sin(d.rotation*Math.PI/2.0);
-                    double R[][] = new double[][] {{ c, -s, 0},
-                                                   { s,  c, 0},
-                                                   { 0,  0, 1} };
+                    double c = Math.cos(d.rotation * Math.PI / 2.0);
+                    double s = Math.sin(d.rotation * Math.PI / 2.0);
+                    double R[][] = new double[][] { { c, -s, 0 }, { s, c, 0 },
+                            { 0, 0, 1 } };
                     d.homography = LinAlg.matrixAB(d.homography, R);
                 }
 
@@ -1129,7 +1155,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                     d.homography[2][2] *= -1;
                     d.homography[2][1] *= -1;
                 }
-                */
+                 */
 
                 if (d.good) {
                     detections.add(d);
@@ -1150,7 +1176,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             if (debugLabels != null)
                 debugLabels.swap();
         }
-        */
+         */
 
         ////////////////////////////////////////////////////////////////
         // Step nine. Some quads may be detected more than once, due
@@ -1182,7 +1208,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
                 // otherwise, keep the new one if it either has
                 // *lower* error, or has greater perimeter
-                if (d.hammingDistance < od.hammingDistance || d.observedPerimeter > od.observedPerimeter)
+                if (d.hammingDistance < od.hammingDistance
+                        || d.observedPerimeter > od.observedPerimeter)
                     goodDetections.set(odidx, d);
             }
 
@@ -1202,8 +1229,8 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     parent: The first segment in the quad.
     depth: how deep in the search are we?
      **/
-    private void _search(ArrayList<Quad> quads, Segment[] path, Segment parent, int depth)
-    {
+    private void _search(ArrayList<Quad> quads, Segment[] path, Segment parent,
+            int depth) {
         // terminal depth occurs when we've found four segments.
         if (depth == 4) {
             // Is the first segment the same as the last segment (i.e., a loop?)
@@ -1218,10 +1245,12 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                     // compute intersections between all the
                     // lines. This will give us sub-pixel accuracy for
                     // the corners of the quad.
-                    GLine2D linea = new GLine2D(new double[] { path[i].x0, path[i].y0 },
+                    GLine2D linea = new GLine2D(new double[] { path[i].x0,
+                            path[i].y0 },
                             new double[] { path[i].x1, path[i].y1 });
-                    GLine2D lineb = new GLine2D(new double[] { path[i+1].x0, path[i+1].y0 },
-                            new double[] { path[i+1].x1, path[i+1].y1 });
+                    GLine2D lineb = new GLine2D(new double[] { path[i + 1].x0,
+                            path[i + 1].y0 }, new double[] { path[i + 1].x1,
+                            path[i + 1].y1 });
                     p[i] = linea.intersectionWith(lineb);
 
                     observedPerimeter += path[i].length();
@@ -1235,13 +1264,19 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                 // loop (i.e., those that form an hour glass, or wind
                 // the wrong way.)
                 if (!bad) {
-                    double t0 = MathUtil.atan2(p[1][1] - p[0][1], p[1][0] - p[0][0]);
-                    double t1 = MathUtil.atan2(p[2][1] - p[1][1], p[2][0] - p[1][0]);
-                    double t2 = MathUtil.atan2(p[3][1] - p[2][1], p[3][0] - p[2][0]);
-                    double t3 = MathUtil.atan2(p[0][1] - p[3][1], p[0][0] - p[3][0]);
+                    double t0 = MathUtil.atan2(p[1][1] - p[0][1], p[1][0]
+                            - p[0][0]);
+                    double t1 = MathUtil.atan2(p[2][1] - p[1][1], p[2][0]
+                            - p[1][0]);
+                    double t2 = MathUtil.atan2(p[3][1] - p[2][1], p[3][0]
+                            - p[2][0]);
+                    double t3 = MathUtil.atan2(p[0][1] - p[3][1], p[0][0]
+                            - p[3][0]);
 
-                    double ttheta = MathUtil.mod2pi(t1-t0) + MathUtil.mod2pi(t2-t1) +
-                            MathUtil.mod2pi(t3-t2) + MathUtil.mod2pi(t0-t3);
+                    double ttheta = MathUtil.mod2pi(t1 - t0)
+                            + MathUtil.mod2pi(t2 - t1)
+                            + MathUtil.mod2pi(t3 - t2)
+                            + MathUtil.mod2pi(t0 - t3);
 
                     // the magic value is -2*PI. It should be exact,
                     // but we allow for (lots of) numeric imprecision.
@@ -1258,8 +1293,9 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                     double d5 = LinAlg.distance(p[1], p[3]);
 
                     // check sizes
-                    if (d0 < minimumTagSize || d1 < minimumTagSize || d2 < minimumTagSize ||
-                            d3 < minimumTagSize || d4 < minimumTagSize || d5 < minimumTagSize)
+                    if (d0 < minimumTagSize || d1 < minimumTagSize
+                            || d2 < minimumTagSize || d3 < minimumTagSize
+                            || d4 < minimumTagSize || d5 < minimumTagSize)
                         bad = true;
 
                     // check aspect ratio
@@ -1292,7 +1328,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             if (child.theta > path[0].theta)
                 continue;
 
-            path[depth+1] = child;
+            path[depth + 1] = child;
             _search(quads, path, child, depth + 1);
         }
     }
@@ -1348,14 +1384,14 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     private double _sigma = 0;
 
     /** The tag family being detected. */
-    private TagFamily _tagFamily;    
+    private TagFamily _tagFamily;
 
     /** The name of the tag family being detected. */
-    private String _tagFamilyName = "Tag36h11"; 
-    
+    private String _tagFamilyName = "Tag36h11";
+
     /** The list of tags most recently detected by an invocation of filter(). */
     private ArrayList<TagDetection> _tags;
-        
+
     /** When growing components, the intra component variation is
      * allowed to grow when the component is small in size. This
      * threshold affects how much. The default is 100.
@@ -1371,52 +1407,48 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     We use this model to compute spatially-varying thresholds for
     reading bits.
      **/
-    static class GrayModel
-    {
+    static class GrayModel {
         // we're solving Ax = b. For each observation, we add a row to
         // A of the form [x y xy 1] and to be of the form [gray]. x is
         // the vector [A B C D].
         //
         // The least-squares solution to the system is x = inv(A'A)A'b
         double A[][] = new double[4][4]; // The A'A matrix
-        double b[]   = new double[4];    // The A'b matrix
+        double b[] = new double[4]; // The A'b matrix
         double X[]; // our solution, [A B C D]
 
         int nobs; // how many observations?
 
-        public void addObservation(double x, double y, double gray)
-        {
-            double xy = x*y;
+        public void addObservation(double x, double y, double gray) {
+            double xy = x * y;
 
             // update only upper-right elements. A'A is symmetric,
             // we'll fill the other elements in later.
-            A[0][0] += x*x;
-            A[0][1] += x*y;
-            A[0][2] += x*xy;
+            A[0][0] += x * x;
+            A[0][1] += x * y;
+            A[0][2] += x * xy;
             A[0][3] += x;
-            A[1][1] += y*y;
-            A[1][2] += y*xy;
+            A[1][1] += y * y;
+            A[1][2] += y * xy;
             A[1][3] += y;
-            A[2][2] += xy*xy;
+            A[2][2] += xy * xy;
             A[2][3] += xy;
             A[3][3] += 1;
 
-            b[0] += x*gray;
-            b[1] += y*gray;
-            b[2] += xy*gray;
+            b[0] += x * gray;
+            b[1] += y * gray;
+            b[2] += xy * gray;
             b[3] += gray;
 
             nobs++;
             X = null; // force a new solution to be computed.
         }
 
-        int getNumObservations()
-        {
+        int getNumObservations() {
             return nobs;
         }
 
-        void compute()
-        {
+        void compute() {
             if (X != null) // already computed?
                 return;
 
@@ -1429,7 +1461,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
                 // make symmetric
                 for (int i = 0; i < 4; i++)
-                    for (int j = i+1; j < 4; j++)
+                    for (int j = i + 1; j < 4; j++)
                         A[j][i] = A[i][j];
 
                 double Ainv[][] = LinAlg.inverse(A);
@@ -1445,34 +1477,29 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             }
         }
 
-        public double interpolate(double x, double y)
-        {
+        public double interpolate(double x, double y) {
             compute();
 
-            return X[0]*x + X[1]*y + X[2]*x*y + X[3];
+            return X[0] * x + X[1] * y + X[2] * x * y + X[3];
         }
     }
 
-    
     /** Represents a line fit to a set of pixels whose gradients are
      * similar.
      **/
-    class Segment
-    {
+    class Segment {
         double x0, y0, x1, y1;
-        double theta;  // gradient direction (points towards white)
+        double theta; // gradient direction (points towards white)
         double length; // length of line segment in pixels
         ArrayList<Segment> children = new ArrayList<Segment>();
 
-        public double length()
-        {
-            return Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0));
+        public double length() {
+            return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
         }
     }
 
     /** Represents four segments that form a loop, and might be a tag. **/
-    class Quad
-    {
+    class Quad {
         // points for the quad (in pixel coordinates), in counter
         // clockwise order. These points are the intersections of
         // segments.
@@ -1496,37 +1523,33 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         /** (x,y) are the optical center of the camera, which is
          * needed to correctly compute the homography.
          **/
-        public Quad(double p[][])
-        {
+        public Quad(double p[][]) {
             this.p = p;
 
             homography = new Homography33b(); //(opticalCenter[0], opticalCenter[1]);
-//            homography = new Homography33(opticalCenter[0], opticalCenter[1]);
+            //            homography = new Homography33(opticalCenter[0], opticalCenter[1]);
             homography.addCorrespondence(-1, -1, p[0][0], p[0][1]);
-            homography.addCorrespondence( 1, -1, p[1][0], p[1][1]);
-            homography.addCorrespondence( 1,  1, p[2][0], p[2][1]);
-            homography.addCorrespondence(-1,  1, p[3][0], p[3][1]);
+            homography.addCorrespondence(1, -1, p[1][0], p[1][1]);
+            homography.addCorrespondence(1, 1, p[2][0], p[2][1]);
+            homography.addCorrespondence(-1, 1, p[3][0], p[3][1]);
 
             //       for (double wi[] : homography.correspondences) {
-//                System.out.printf("%15f %15f %15f %15f\n", wi[0], wi[1], wi[2], wi[3]);
-//            }
+            //                System.out.printf("%15f %15f %15f %15f\n", wi[0], wi[1], wi[2], wi[3]);
+            //            }
         }
 
         // Same as interpolate, except that the coordinates are
         // interpreted between 0 and 1, instead of -1 and 1.
-        double[] interpolate01(double x, double y)
-        {
-            return interpolate(2*x - 1, 2*y - 1);
+        double[] interpolate01(double x, double y) {
+            return interpolate(2 * x - 1, 2 * y - 1);
         }
 
         // interpolate given that the lower left corner of the lower
         // left cell is at (-1,-1) and the upper right corner of
         // the upper right cell is at (1,1)
-        double[] interpolate(double x, double y)
-        {
+        double[] interpolate(double x, double y) {
             return homography.project(x, y);
         }
     }
 
-    
 }
