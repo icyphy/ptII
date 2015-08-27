@@ -25,6 +25,7 @@
     <include name="doc/docConfig.jar" />
     <include name="doc/img/img.jar" />
     <include name="doc/papers/papers.jar" />
+    <include name="edu/umich/eecs/april/april.jar" />
     <include name="lbnl/demo/demo.jar" />
     <include name="lbnl/lbnl.jar" />
     <include name="lib/diva.jar" />
@@ -1598,6 +1599,17 @@
 	<include name="doc/papers/y11/modularSemantics/*.xml"/>
 	<include name="doc/papers/y12/designContracts/*.xml"/>
 	<include name="doc/papers/y14/constructive/models/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- edu/umich/eecs/april/april.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}edu/umich/eecs/april/april.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="edu/umich/eecs/april/*.htm"/>
+	<include name="edu/umich/eecs/april/*/*.class"/>
+        <include name="edu/umich/eecs/april/*/*/*.class"/>
       </fileset>
     </jar>
 

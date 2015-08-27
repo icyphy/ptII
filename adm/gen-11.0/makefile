@@ -131,6 +131,7 @@ PTII_TOPDIR=	.cshrc \
 		copyright.txt \
 		diva \
 		doc \
+		edu \
 		jars.xml \
 		lib \
 		lbnl \
