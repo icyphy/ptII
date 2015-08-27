@@ -30,8 +30,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.VoidHandler;
@@ -40,9 +49,11 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.WebSocket;
 import org.vertx.java.core.http.WebSocketBase;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.ImageToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
@@ -110,6 +121,8 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param host IP address or host name of the host.
      *  @param port The port number that the host listens on.
+     *  @param receiveType The type to assume for incoming messages.
+     *  @param sendType The type for outgoing messages.
      *  @param numberOfRetries The number of retries.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
      *  @param discardMessagesBeforeOpen True to discard messages before the socket is open. False to queue them.
@@ -118,9 +131,10 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public static WebSocketHelper createClientSocket(
             ScriptObjectMirror currentObj, String host, int port,
+            String receiveType, String sendType,
             int numberOfRetries, int timeBetweenRetries,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
-        return new WebSocketHelper(currentObj, host, port, numberOfRetries,
+        return new WebSocketHelper(currentObj, host, port, receiveType, sendType, numberOfRetries,
                 timeBetweenRetries, discardMessagesBeforeOpen, throttleFactor);
     }
 
@@ -128,27 +142,54 @@ public class WebSocketHelper extends VertxHelperBase {
      *  Socket instance for the server side of the socket.
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param serverWebSocket The given server-side Java socket.
+     *  @param receiveType The type to assume for incoming messages.
+     *  @param sendType The type for outgoing messages.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createServerSocket(
-            ScriptObjectMirror currentObj, WebSocketBase serverWebSocket) {
-        return new WebSocketHelper(currentObj, serverWebSocket);
+            ScriptObjectMirror currentObj, WebSocketBase serverWebSocket,
+            String receiveType, String sendType) {
+        return new WebSocketHelper(currentObj, serverWebSocket, receiveType, sendType);
     }
 
-    /** Send text data through the web socket.
-     *  @param msg A text message to be sent.
+    /** Send data through the web socket.
+     *  @param msg A message to be sent.
      *  @exception IllegalActionException If establishing the connection to the web socket has
      *   permanently failed.
      */
-    public void sendText(String msg) throws IllegalActionException {
+    public void send(Object msg) throws IllegalActionException {
         synchronized (_actor) {
             if (_wsFailed != null) {
                 throw new IllegalActionException(_actor, _wsFailed,
                         "Failed to establish connection after "
                                 + _numberOfTries + " tries.");
             }
+            // If the message is not a string, attempt to create a Buffer object.
+            if (!(msg instanceof String)) {
+                if (msg instanceof ImageToken) {
+                    Image image = ((ImageToken)msg).asAWTImage();
+                    if (!(image instanceof BufferedImage)) {
+                        throw new IllegalActionException(_actor, "Unsupported image token type: " + image.getClass());
+                    }
+                    if (!_sendType.startsWith("image/")) {
+                        throw new IllegalActionException(_actor, "Trying to send an image, but sendType is " + _sendType);
+                    }
+                    String imageType = _sendType.substring(6);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    try {
+                        ImageIO.write((BufferedImage)image, imageType, stream);
+                    } catch (IOException e) {
+                        throw new IllegalActionException(_actor, e, "Failed to convert image to byte array for sending.");
+                    }
+                    msg = new Buffer(stream.toByteArray());
+                }
+            }
             if (isOpen()) {
-                _webSocket.writeTextFrame(msg);
+                if (msg instanceof String) {
+                    _webSocket.writeTextFrame((String)msg);
+                } else if (msg instanceof Buffer) {
+                    _webSocket.writeBinaryFrame((Buffer)msg);
+                }
             } else if (!_discardMessagesBeforeOpen) {
                 // FIXME: Bound the queue?
                 if (_pendingOutputs == null) {
@@ -189,17 +230,25 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param host The IP address or host name of the host.
      *  @param port The port number of the host.
+     *  @param receiveType The type to assume for incoming messages.
+     *  @param sendType The type for outgoing messages.
      *  @param numberOfRetries The maximum number of retries if a connect attempt fails.
-     *  @param discardMessagesBeforeOpen True to discard messages before the socket is open, false to queue them.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
+     *  @param discardMessagesBeforeOpen True to discard messages before the socket is open, 
+     *   false to queue them.
+     *  @param throttleFactor The number of milliseconds to stall for each queued item
+     *   waiting to be sent.
      */
     private WebSocketHelper(ScriptObjectMirror currentObj, String host,
-            int port, int numberOfRetries, int timeBetweenRetries,
+            int port, String receiveType, String sendType,
+            int numberOfRetries, int timeBetweenRetries,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
         super(currentObj);
 
         _host = host;
         _port = port;
+        _receiveType = receiveType;
+        _sendType = sendType;
         _numberOfRetries = numberOfRetries;
         _timeBetweenRetries = timeBetweenRetries;
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
@@ -218,9 +267,11 @@ public class WebSocketHelper extends VertxHelperBase {
     /** Private constructor for WebSocketHelper for a server-side web socket.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
+     *  @param receiveType The type to assume for incoming messages.
+     *  @param sendType The type for outgoing messages.
      */
     private WebSocketHelper(ScriptObjectMirror currentObj,
-            WebSocketBase serverWebSocket) {
+            WebSocketBase serverWebSocket, String receiveType, String sendType) {
         super(currentObj);
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
@@ -229,6 +280,9 @@ public class WebSocketHelper extends VertxHelperBase {
         _webSocket.dataHandler(new DataHandler());
         _webSocket.endHandler(new EndHandler());
         _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+        
+        _receiveType = receiveType;
+        _sendType = sendType;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -311,6 +365,12 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The host port. */
     private int _port;
+    
+    /** The MIME type to assume for received messages. */
+    private String _receiveType;
+    
+    /** The MIME type to assume for sent messages. */
+    private String _sendType;
 
     /** The number of milliseconds to stall for each queued item waiting to be sent. */
     private int _throttleFactor;
@@ -340,8 +400,23 @@ public class WebSocketHelper extends VertxHelperBase {
         public void handle(Buffer buffer) {
             // FIXME: Why is this synchronized?
             synchronized (_actor) {
-                // This assumes the input is a string encoded in UTF-8.
-                _currentObj.callMember("notifyIncoming", buffer.toString());
+                if (_receiveType.equals("application/json")
+                        || _receiveType.startsWith("text/")) {
+                    // This assumes the input is a string encoded in UTF-8.
+                    _currentObj.callMember("notifyIncoming", buffer.toString());
+                } else if (_receiveType.startsWith("image/")) {
+                    try {
+                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.getBytes()));
+                        ImageToken token = new AWTImageToken(image);
+                        _currentObj.callMember("notifyIncoming", token);
+                    } catch (IOException e) {
+                        // FIXME: How to report this error?
+                        e.printStackTrace();
+                    }
+                } else {
+                    // FIXME: Need to catch this error earlier!!!
+                    throw new InternalErrorException("Unsupported receiveType: " + _receiveType);
+                }
             }
         }
     }
