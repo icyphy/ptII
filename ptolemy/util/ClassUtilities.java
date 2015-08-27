@@ -259,8 +259,7 @@ public class ClassUtilities {
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader != null) {
-            url = Thread.currentThread().getContextClassLoader()
-                .getResource(spec);
+            url = classLoader.getResource(spec);
         } else {
             classLoader = ClassLoader.getSystemClassLoader();
             if (classLoader != null) {
