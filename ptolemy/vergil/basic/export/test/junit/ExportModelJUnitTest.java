@@ -66,7 +66,13 @@ import ptolemy.vergil.basic.export.ExportModel;
  * export JAVAFLAGS="-Dptolemy.ptII.exportHTML.linkToJNLP=true -Dptolemy.ptII.exportHTML.usePtWebsite=true"
  * $PTII/bin/ptinvoke org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest
  * </pre>
- *
+ * <p>Or, if you want to debug this to find leaks, try removing most of the models from $PTII/ptolemy/configs/doc/models.txt
+ * and then running the above exports followed by $PTII/bin/ptjacl and then:
+ * <pre>
+ * set cmdArgs [java::new {java.lang.String[]} 1 {ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest}]
+ * java::call org.junit.runner.JUnitCore main $cmdArgs
+ * </pre>
+ * <p>Then a few models will export and leaks can be checked.</p>
  * <p>
  * This test uses JUnitParams from <a
  * href="http://code.google.com/p/junitparams/#in_browser"
@@ -282,7 +288,8 @@ public class ExportModelJUnitTest {
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
                 "data/ontologies/demo/ConstPropagation/ConstPropagation.xml", // Has links to other models
-               // HLA Models that have links to other demos.
+                "jjs/modules/discovery/demo/Discovery/Discovery.xml", // Has links to other models
+                // HLA Models that have links to other demos.
                 "2Billes2Fed.xml", // Has links to other models
                 "org/hlacerti/demo/legacy/CoSimulation/CoSimulation.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
