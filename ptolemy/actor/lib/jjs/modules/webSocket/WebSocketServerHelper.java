@@ -76,11 +76,14 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
      *   the argument is null, then "localhost" will be used.
      *  @param port The port number that the server will use.
+     *  @param receiveType The type to assume for incoming messages.
+     *  @param sendType The type for outgoing messages.
      *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
-            ScriptObjectMirror currentObj, String hostInterface, int port) {
-        return new WebSocketServerHelper(currentObj, hostInterface, port);
+            ScriptObjectMirror currentObj, String hostInterface, int port,
+            String receiveType, String sendType) {
+        return new WebSocketServerHelper(currentObj, hostInterface, port, receiveType, sendType);
     }
 
     /** Create and start the server and beginning listening for
@@ -106,8 +109,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
                         // Notify of a new connection.
                         // This will have the side effect of creating a new JS Socket
                         // object, which is an event emitter.
-                        _currentObj
-                                .callMember("socketCreated", serverWebSocket);
+                        _currentObj.callMember("socketCreated", serverWebSocket);
                     }
                 }
             });
@@ -132,15 +134,19 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
      *   the argument is null, then "localhost" will be used.
      *  @param port The port on which to create the server.
+     *  @param receiveType The type to assume for incoming messages.
+     *  @param sendType The type for outgoing messages.
      */
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
-            String hostInterface, int port) {
+            String hostInterface, int port, String receiveType, String sendType) {
         super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
             _hostInterface = "localhost";
         }
         _port = port;
+        _receiveType = receiveType;
+        _sendType = sendType;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,7 +158,12 @@ public class WebSocketServerHelper extends VertxHelperBase {
     /** The port on which the server listens. */
     private int _port;
 
+    /** The MIME type to assume for received messages. */
+    private String _receiveType;
+    
+    /** The MIME type to assume for sent messages. */
+    private String _sendType;
+
     /** The internal http server created by Vert.x */
     private HttpServer _server = null;
-
 }
