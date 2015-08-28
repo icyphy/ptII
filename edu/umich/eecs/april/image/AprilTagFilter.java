@@ -1,3 +1,6 @@
+/* An AprilTag image filter. */
+
+
 /*
 Copyright (c) 2013 by the Regents of the University of Michigan.
 Developed by the APRIL robotics lab under the direction of Edwin Olson (ebolson@umich.edu).
@@ -42,29 +45,10 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
  */
 
-/* An AprilTag image filter.
-
-This file uses code from the TagDetector class in the
-april package, written by Associate Professor Edwin Olson (ebolson@umich.edu),
-EECS, University of Michigan. This file is part of a modified subset of the
-april package created by Professor Edward A. Lee (eal@eecs.berkeley.edu) that
-removes all dependencies on external libraries and graphical classes
-and renames the packages to follow Java naming conventions.
-The original files were retrieved on July 28, 2015, from the GIT repository
-at git://april.eecs.umich.edu/home/git/april.git.  The Java implementation
-AprilTags is described here: https://april.eecs.umich.edu/wiki/index.php/AprilTags-Java.
-The April project is described here: https://april.eecs.umich.edu/.
-
-The original author (Edwin Olson) has stipulated the following license:
-
-This file is licensed under the terms of the GPLv2 or successor.
-
-Alternative licenses use may be available by contacting
-ebolson@umich.edu.
-
-
-The filter architecture defined here follows the pattern defined by Jerry Huxtable
-in the JH Labs Java Image Processing library, available from:
+/*
+The filter architecture defined here follows the pattern defined by
+Jerry Huxtable in the JH Labs Java Image Processing library, available
+from:
     http://www.jhlabs.com/ip/filters
 and licensed under the Apache License, Version 2.0
 (http://www.apache.org/licenses/LICENSE-2.0).

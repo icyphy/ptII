@@ -131,11 +131,14 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "com.sleepycat.db.Environment",
                 "ptdb/lib/db-dbxml-license.htm");
 
+        _addIfPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
+                "lib/protobuf-license.htm");
+
         _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
                 "diva/gui/ExtensionFileFilter-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
-                "lib/protobuf-license.htm");
+        _addIfPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
+                "edu/umich/eecs/april/april-license.htm");
 
         _addIfPresent(copyrightsMap, "g4ltl.SolverUtility",
                 "lib/g4ltl-license.htm");
@@ -930,11 +933,12 @@ public class GenerateCopyrights {
             { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
             { "ResizableImageWidget", " ", " ", "Y", " ",
                     "CDDL + Oracle + Oracle" },
+            { "april", " ", " ", " ", "Y ", "BSD" },
             { "chic", " ", " ", "Y", "Y", "BSD" },
             { "colt", "Y", " ", "Y", "Y", "BSD and others" },
             { "cup", " ", " ", "Y", " ", "Similar to BSD" },
             { "db", " ", " ", "Y", " ",
-                    "Similar to <font color=\"red\">like GPL</font>" }, // GPL!!
+                    "Similar to <font color=\"red\">GPL</font>" }, // GPL!!
             { "fmipp", " ", " ", "Y", " ", "FMUSDK: Qtronic: Similar to BSD" },
             { "fmusdk", " ", " ", "Y", " ", " QTronic: Similar to BSD" },
             { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
@@ -991,6 +995,7 @@ public class GenerateCopyrights {
             { "smack", " ", " ", "Y", "Y", "Apache License" },
             { "socketio", " ", " ", "Y", "Y", "BSD" },
             { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
+            { "svgSalamander", " ", " ", "Y", " ", "BSD" },
             { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
             { "udunits", " ", " ", "Y", " ",
                     "Similar to BSD.  No use of sponsor name in advertising" },
