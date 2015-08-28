@@ -188,6 +188,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         // These might not be necessary, but they probably can't hurt.
         if (_controller != null) {
             _controller.setFrame(null);
+            _controller.setConfiguration(null);
             _controller = null;
         }
 
