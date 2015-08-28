@@ -652,7 +652,7 @@ ApplicationConfigurer, InstanceOpener {
      *  @return A list of configurations, where each element of the list
      *  is of type Configuration.
      */
-    public static List configurations() {
+    public static List<Configuration> configurations() {
         return _configurations;
     }
 
@@ -855,10 +855,7 @@ ApplicationConfigurer, InstanceOpener {
      *  @return An effigy, or null if none can be found.
      */
     public static Effigy findEffigy(NamedObj model) {
-        Iterator configurations = _configurations.iterator();
-
-        while (configurations.hasNext()) {
-            Configuration configuration = (Configuration) configurations.next();
+        for (Configuration configuration : _configurations) {
             Effigy effigy = configuration.getEffigy(model);
 
             if (effigy != null) {
@@ -1250,6 +1247,16 @@ ApplicationConfigurer, InstanceOpener {
     static public final String _DIRECTORY_NAME = "directory";
 
     ///////////////////////////////////////////////////////////////////
+    ////                         package protected methods         ////
+
+    /** Remove the configuration from the list of configurations.
+     *  @param configuration The configuration to be removed.
+     */
+    void removeConfiguration(Configuration configuration) {
+        _configurations.remove(configuration);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Remove the specified entity; if that entity is the model directory,
@@ -1602,5 +1609,5 @@ ApplicationConfigurer, InstanceOpener {
     ////                         private variables                 ////
 
     /** The list of configurations that have been created. */
-    private static List _configurations = new LinkedList();
+    private static LinkedList<Configuration> _configurations = new LinkedList<Configuration>();
 }
