@@ -123,6 +123,8 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param port The port number that the host listens on.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
+     *  @param connectTimeout The time to wait before giving up on a connection.
+     *  @param maxFrameSize The maximum frame size for a received message.
      *  @param numberOfRetries The number of retries.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
      *  @param discardMessagesBeforeOpen True to discard messages before the socket is open. False to queue them.
@@ -132,9 +134,11 @@ public class WebSocketHelper extends VertxHelperBase {
     public static WebSocketHelper createClientSocket(
             ScriptObjectMirror currentObj, String host, int port,
             String receiveType, String sendType,
+            int connectTimeout, int maxFrameSize,
             int numberOfRetries, int timeBetweenRetries,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
-        return new WebSocketHelper(currentObj, host, port, receiveType, sendType, numberOfRetries,
+        return new WebSocketHelper(currentObj, host, port, receiveType, sendType,
+                connectTimeout, maxFrameSize, numberOfRetries,
                 timeBetweenRetries, discardMessagesBeforeOpen, throttleFactor);
     }
 
@@ -144,12 +148,14 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param serverWebSocket The given server-side Java socket.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
+     *  @param maxFrameSize The maximum frame size for a received message.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createServerSocket(
             ScriptObjectMirror currentObj, WebSocketBase serverWebSocket,
-            String receiveType, String sendType) {
-        return new WebSocketHelper(currentObj, serverWebSocket, receiveType, sendType);
+            String receiveType, String sendType, int maxFrameSize) {
+        return new WebSocketHelper(
+                currentObj, serverWebSocket, receiveType, sendType, maxFrameSize);
     }
 
     /** Send data through the web socket.
@@ -185,11 +191,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 }
             }
             if (isOpen()) {
-                if (msg instanceof String) {
-                    _webSocket.writeTextFrame((String)msg);
-                } else if (msg instanceof Buffer) {
-                    _webSocket.writeBinaryFrame((Buffer)msg);
-                }
+                _sendMessageOverSocket(msg);
             } else if (!_discardMessagesBeforeOpen) {
                 // FIXME: Bound the queue?
                 if (_pendingOutputs == null) {
@@ -223,6 +225,50 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Send the specified message over the websocket.
+     *  @param message The message.
+     */
+    protected void _sendMessageOverSocket(Object message) {
+        if (message instanceof String) {
+            message = new Buffer((String)message);
+        }
+        /* Sadly, the following check doesn't make sense.
+         * Only the sender of the message can check whether
+         * the frame size is sufficient for the message,
+         * but it is the receiver of the message that has to
+         * have the frame size set. Thus, we would need to check
+         * the frame size of the other end of the socket, and
+         * we don't have access to that.
+        if (((Buffer)message).length() > _maxFrameSize) {
+            _currentObj.callMember("emit", "error", 
+                    "Message size of " + ((Buffer)message).length()
+                    + " exceeds the maximum frame size of "
+                    + _maxFrameSize
+                    + ". Message not sent. Consider increasing the maxFrameSize.");
+            _wsIsOpen = false;
+            return;
+        }
+        */
+        if (!(message instanceof Buffer)) {
+            _currentObj.callMember("emit", "error", 
+                    "Message type not recognized: " + message.getClass()
+                    + ". Perhaps the sendType doesn't match the data type.");
+            return;
+        }
+        _webSocket.write((Buffer)message);
+        if (_webSocket.writeQueueFull()) {
+            _webSocket.pause();
+            _webSocket.drainHandler(new VoidHandler() {
+                public void handle() {
+                    _webSocket.resume();
+                }
+            });
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
 
     /** Private constructor for WebSocketHelper to open a client-side web socket.
@@ -232,6 +278,8 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param port The port number of the host.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
+     *  @param connectTimeout The time to wait before giving up on a connection.
+     *  @param maxFrameSize The maximum frame size for a received message.
      *  @param numberOfRetries The maximum number of retries if a connect attempt fails.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
      *  @param discardMessagesBeforeOpen True to discard messages before the socket is open, 
@@ -241,6 +289,7 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     private WebSocketHelper(ScriptObjectMirror currentObj, String host,
             int port, String receiveType, String sendType,
+            int connectTimeout, int maxFrameSize,
             int numberOfRetries, int timeBetweenRetries,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
         super(currentObj);
@@ -249,14 +298,20 @@ public class WebSocketHelper extends VertxHelperBase {
         _port = port;
         _receiveType = receiveType;
         _sendType = sendType;
+        _connectTimeout = connectTimeout;
+        _maxFrameSize = maxFrameSize;
         _numberOfRetries = numberOfRetries;
         _timeBetweenRetries = timeBetweenRetries;
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
         _throttleFactor = throttleFactor;
+        // FIXME: This seems to become a zombie thread.
         _client = _vertx.createHttpClient();
-        _client.setHost(host);
-        _client.setPort(port);
-        _client.exceptionHandler(new HttpClientExceptionHandler());
+        _client.setHost(host)
+            .setPort(port)
+            .exceptionHandler(new HttpClientExceptionHandler())
+            .setKeepAlive(true)
+            .setConnectTimeout(_connectTimeout)
+            .setMaxWebSocketFrameSize(_maxFrameSize);
         _wsFailed = null;
 
         // Make the connection. This might eventually be a wrapped in a public method.
@@ -269,18 +324,26 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
+     *  @param maxFrameSize The maximum frame size for a received message.
      */
     private WebSocketHelper(ScriptObjectMirror currentObj,
-            WebSocketBase serverWebSocket, String receiveType, String sendType) {
+            WebSocketBase serverWebSocket, String receiveType, String sendType, int maxFrameSize) {
         super(currentObj);
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
         _wsIsOpen = true;
-
+        
+        _maxFrameSize = maxFrameSize;
+        
+        // FIXME: Grab the headers and get the Content-Type from that.
+        // However, the headers don't seem to available.
+        // MultiMap headers = serverWebSocket.headers();
+                
         _webSocket.dataHandler(new DataHandler());
         _webSocket.endHandler(new EndHandler());
         _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-        
+        _webSocket.closeHandler(new WebSocketCloseHandler());
+
         _receiveType = receiveType;
         _sendType = sendType;
     }
@@ -318,8 +381,8 @@ public class WebSocketHelper extends VertxHelperBase {
 
                     _webSocket.dataHandler(new DataHandler());
                     _webSocket.endHandler(new EndHandler());
-                    _webSocket
-                            .exceptionHandler(new WebSocketExceptionHandler());
+                    _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+                    _webSocket.closeHandler(new WebSocketCloseHandler());
 
                     // Socket.io uses the name "connect" for this event, but WS uses "open",
                     // so we just emit both events.
@@ -329,11 +392,7 @@ public class WebSocketHelper extends VertxHelperBase {
                     // Send any pending messages.
                     if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
                         for (Object message : _pendingOutputs) {
-                            if (message instanceof String) {
-                                _webSocket.writeTextFrame((String) message);
-                            } else {
-                                _webSocket.writeBinaryFrame((Buffer) message);
-                            }
+                            _sendMessageOverSocket(message);
                         }
                         _pendingOutputs.clear();
                     }
@@ -347,12 +406,18 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The HttpClient object. */
     private HttpClient _client;
+    
+    /** The time to wait before giving up on a connection. */
+    private int _connectTimeout = 60000;
 
     /** True to discard messages before the socket is open. False to discard them. */
     private boolean _discardMessagesBeforeOpen;
 
     /** The host IP or name. */
     private String _host;
+    
+    /** The maximum frame size for a received message. */
+    private int _maxFrameSize = 65536;
 
     /** Maximum number of attempts to reconnect to the web socket if the first try fails. */
     private int _numberOfRetries = 0;
@@ -446,6 +511,18 @@ public class WebSocketHelper extends VertxHelperBase {
         public void handle(Throwable throwable) {
             synchronized (_actor) {
                 _currentObj.callMember("emit", "error", throwable.getMessage());
+                _wsIsOpen = false;
+            }
+        }
+    }
+    
+    /** The event handler that is triggered when a socket is closed.
+     */
+    private class WebSocketCloseHandler implements Handler {
+        @Override
+        public void handle(Object ignored) {
+            synchronized (_actor) {
+                _currentObj.callMember("emit", "close");
                 _wsIsOpen = false;
             }
         }

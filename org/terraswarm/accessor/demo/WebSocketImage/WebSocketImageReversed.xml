@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="WebSocketImage" class="ptolemy.actor.TypedCompositeActor">
+<entity name="WebSocketImageReversed" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -29,36 +29,16 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts a server that receives images from clients,&#10;and one client that sends an image 10 times per second.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model starts a server that sends images to clients&#10;10 times per second.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 30.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Extract the image&#10;from the received&#10;message.">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-15.0, 50.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="JavaScript">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each sent message should result in one reply,&#10;a count of the images received.">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-185.0, 85.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="WebSocketClient">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
-            </property>
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="maxFrameSize here&#10;is larger than the&#10;default to allow to&#10;receive messages with&#10;more than 65536 bytes.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-140.0, 70.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="WebSocketServer">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-130.0, 70.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="WebSocketClient">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
             </property>
@@ -66,7 +46,7 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 325.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -76,7 +56,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Server Status">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 165.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -96,11 +76,11 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Client Received">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 105.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 375.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -111,7 +91,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 155.0]">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -129,7 +109,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 155.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -143,13 +123,13 @@
         </port>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 640, 524}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 91, 44}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 375.0]">
         </property>
     </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -191,17 +171,17 @@
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="image/jpeg">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="application/json">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="application/json">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="image/jpeg">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 155.0]">
         </property>
-        <property name="maxFrameSize" class="ptolemy.data.expr.Parameter" value="65536*4">
+        <property name="maxFrameSize" class="ptolemy.data.expr.Parameter" value="65536">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -214,32 +194,6 @@
             </property>
         </port>
         <port name="connection" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
-    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	input('received');&#10;	output('image');&#10;}&#10;&#10;exports.fire = function() {&#10;	var received = get('received');&#10;	send('image', received.message);&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 170.0]">
-        </property>
-        <port name="received" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -294,11 +248,11 @@
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="application/json">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="image/jpeg">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="image/jpeg">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="application/json">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -316,7 +270,7 @@
         </property>
         <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="60000">
         </property>
-        <property name="maxFrameSize" class="ptolemy.data.expr.Parameter" value="65536">
+        <property name="maxFrameSize" class="ptolemy.data.expr.Parameter" value="65536*4">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -338,41 +292,37 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[310.0, 170.0]">
-        </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[395.0, 375.0]">
+        </vertex>
     </relation>
-    <link port="Ramp.output" relation="relation2"/>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation6"/>
     <link port="Ramp.trigger" relation="relation"/>
     <link port="Display.input" relation="relation5"/>
     <link port="Display2.input" relation="relation3"/>
-    <link port="Display3.input" relation="relation6"/>
-    <link port="MicrostepDelay.input" relation="relation10"/>
+    <link port="Display3.input" relation="relation9"/>
+    <link port="MicrostepDelay.input" relation="relation7"/>
     <link port="MicrostepDelay.output" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation4"/>
     <link port="Camera.trigger" relation="relation4"/>
-    <link port="Camera.image" relation="relation7"/>
-    <link port="ImageDisplay.input" relation="relation8"/>
+    <link port="Camera.image" relation="relation2"/>
+    <link port="ImageDisplay.input" relation="relation7"/>
     <link port="WebSocketServer.toSend" relation="relation2"/>
-    <link port="WebSocketServer.received" relation="relation10"/>
+    <link port="WebSocketServer.received" relation="relation9"/>
     <link port="WebSocketServer.connection" relation="relation5"/>
-    <link port="JavaScript.received" relation="relation10"/>
-    <link port="JavaScript.image" relation="relation8"/>
-    <link port="WebSocketClient.toSend" relation="relation7"/>
+    <link port="WebSocketClient.toSend" relation="relation6"/>
     <link port="WebSocketClient.connected" relation="relation3"/>
-    <link port="WebSocketClient.received" relation="relation6"/>
+    <link port="WebSocketClient.received" relation="relation7"/>
 </entity>
