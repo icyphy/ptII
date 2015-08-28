@@ -29,6 +29,7 @@ package ptolemy.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 ///////////////////////////////////////////////////////////////////
@@ -183,7 +184,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  @see #status(String)
      */
     public static void setStatusHandler(StatusHandler handler) {
-        _statusHandler = handler;
+        _statusHandler = new WeakReference<StatusHandler>(handler);
     }
     
     /** Return a short description of the throwable.
@@ -218,8 +219,8 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  @see #message(String)
      */
     public static void status(String message) {
-        if (_statusHandler != null) {
-            _statusHandler.status(message);
+        if (_statusHandler != null && _statusHandler.get() != null) {
+            _statusHandler.get().status(message);
         } else {
             System.out.println(message);
         }
@@ -477,5 +478,5 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     private static MessageHandler _handler = new MessageHandler();
     
     /** The status handlers, if any. */
-    private static StatusHandler _statusHandler;
+    private static transient WeakReference<StatusHandler> _statusHandler;
 }
