@@ -391,6 +391,15 @@ public class ConfigurationApplication implements ExecutionListener {
         try {
             // FIXME: are all these necessary?
             effigy.closeTableaux();
+
+            // Avoid a leaking Configuration.
+            // This might not be safe, if we had a WeakLinkedList, we
+            // could use make Configuration._configuration a WeakLinkedList.
+            // Or, perhaps effigy.closeTableaux() should do this.
+            Configuration configuration = (Configuration) Configuration
+                .findEffigy(model.toplevel()).toplevel();
+            configuration.removeConfiguration(configuration);
+
             model.setContainer(null);
             MoMLParser.purgeAllModelRecords();
         } finally {
