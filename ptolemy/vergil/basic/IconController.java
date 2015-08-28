@@ -185,8 +185,11 @@ public class IconController extends ParameterizedNodeController {
                             }
 
                             // If the container already has an icon, do nothing.
+                            // MatlabWirelessSoundDetection.xml has some _icon properties,
+                            // so we check for them.
                             List icons = object.attributeList(EditorIcon.class);
-                            if (icons != null && icons.size() > 0) {
+                            if (icons != null && icons.size() > 0
+                                    || object.getAttribute("_icon") != null) {
                                 return;
                             }
 
