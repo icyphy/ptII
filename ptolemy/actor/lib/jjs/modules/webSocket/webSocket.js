@@ -62,6 +62,8 @@ var EventEmitter = require('events').EventEmitter;
  *  * port: The port on which the host is listening. Defaults to 80.
  *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
+ *  * connectTimeout: The time to wait before giving up on a connection.
+ *  * maxFrameSize: The maximum frame size for a received message.
  *  * numberOfRetries: The number of times to retry connecting. Defaults to 0.
  *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
  *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
@@ -75,6 +77,8 @@ exports.Client = function(options) {
     this.host = options['host'] || 'localhost';
     this.receiveType = options['receiveType'] || 'application/json';
     this.sendType = options['sendType'] || 'application/json';
+    this.connectTimeout = options['connectTimeout'] || 60000;
+    this.maxFrameSize = options['maxFrameSize'] || 65536;
     this.numberOfRetries = options['numberOfRetries'] || 1;
     this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
     this.discardMessagesBeforeOpen = options['discardMessagesBeforeOpen'] || false;
@@ -85,6 +89,8 @@ exports.Client = function(options) {
         this.port,
         this.receiveType,
         this.sendType,
+        this.connectTimeout,
+        this.maxFrameSize,
         this.numberOfRetries,
         this.timeBetweenRetries,
         this.discardMessagesBeforeOpen,
@@ -157,6 +163,7 @@ exports.Client.prototype.notifyIncoming = function(message) {
  *    See the Client documentation for supported types.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
  *    See the Client documentation for supported types.
+ *  * maxFrameSize: The maximum frame size for a received message.
  * 
  *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
  *  A typical usage pattern looks like this:
@@ -195,8 +202,10 @@ exports.Server = function(options) {
     this.hostInterface = options['hostInterface'] || 'localhost';
     this.receiveType = options['receiveType'] || 'application/json';
     this.sendType = options['sendType'] || 'application/json';
+    this.maxFrameSize = options['maxFrameSize'] || 65536;
     this.helper = WebSocketServerHelper.createServer(
-            this, this.hostInterface, this.port, this.receiveType, this.sendType);
+            this, this.hostInterface, this.port, this.receiveType, this.sendType,
+            this.maxFrameSize);
 }
 util.inherits(exports.Server, EventEmitter);
 
@@ -220,7 +229,8 @@ exports.Server.prototype.close = function() {
  *  @param serverWebSocket The Java ServerWebSocket object.
  */
 exports.Server.prototype.socketCreated = function(serverWebSocket) {
-    var socket = new exports.Socket(serverWebSocket, this.receiveType, this.sendType);
+    var socket = new exports.Socket(
+            serverWebSocket, this.receiveType, this.sendType, this.maxFrameSize);
     this.emit('connection', socket);
 }
 
@@ -233,12 +243,16 @@ exports.Server.prototype.socketCreated = function(serverWebSocket) {
  *  the JavaScript programmer. The returned Socket is an event emitter that emits
  *  'message' events.
  *  @param serverWebSocket The Java ServerWebSocket object.
+ *  @param receiveType The MIME type for incoming messages, which defaults to 'application/json'.
+ *  @param sendType The MIME type for outgoing messages, which defaults to 'application/json'.
+ *  @param maxFrameSize The maximum frame size for a received message.
  */
-exports.Socket = function(serverWebSocket, receiveType, sendType) {
+exports.Socket = function(serverWebSocket, receiveType, sendType, maxFrameSize) {
     this.helper = WebSocketHelper.createServerSocket(
-            this, serverWebSocket, receiveType, sendType);
+            this, serverWebSocket, receiveType, sendType, maxFrameSize);
     this.receiveType = receiveType;
     this.sendType = sendType;
+    this.maxFrameSize = maxFrameSize;
 }
 util.inherits(exports.Socket, EventEmitter);
 
