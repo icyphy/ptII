@@ -880,7 +880,8 @@ For example:
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
-      <jvmarg value="-XX:-HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:HeapDumpPath=${env.HOME}/ptII.test.longest.hprof"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -915,7 +916,8 @@ For example:
       <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
       <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
-      <jvmarg value="-XX:-HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:HeapDumpPath=${env.HOME}/ptII.test.longest.hprof"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -1217,7 +1219,8 @@ For example:
       <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
       <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
-      <jvmarg value="-XX:-HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:HeapDumpPath=${env.HOME}/ptII.test.longest.hprof"/>
     </junit>
   </target>
 
