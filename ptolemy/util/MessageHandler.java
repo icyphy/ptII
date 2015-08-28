@@ -321,8 +321,12 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     public static boolean yesNoCancelQuestion(String question,
             String trueOption, String falseOption, String exceptionOption)
                     throws ptolemy.util.CancelException {
-        return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
-                exceptionOption);
+        if (!isRunningNightlyBuild()) {
+            return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
+                    exceptionOption);
+        } else {
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
