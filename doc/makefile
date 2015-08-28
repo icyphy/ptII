@@ -229,6 +229,14 @@ COREPACKAGES = \
 	ptolemy.vergil.tree \
 	ptolemy.vergil.unit \
 
+# April Image Tags packages.
+APRILPACKAGES = \
+	edu.umich.eecs.april.image \
+	edu.umich.eecs.april.jmat \
+	edu.umich.eecs.april.jmat.geom \
+	edu.umich.eecs.april.tag \
+	edu.umich.eecs.april.util
+
 # CG Codegen packages
 # cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g' | grep -v test
 CGPACKAGES = \
@@ -542,6 +550,7 @@ USER_PACKAGES =
 
 # All the packages
 ALLPACKAGES = \
+	$(APRILPACKAGES) \
 	$(CGPACKAGES) \
 	$(COREPACKAGES) \
 	$(COMPACKAGES) \
