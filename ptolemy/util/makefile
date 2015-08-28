@@ -58,13 +58,13 @@ JSRCS = \
 	MultiHashMap.java \
 	OrderedResourceBundle.java \
 	RecursiveFileFilter.java \
+	RunnableExceptionCatcher.java \
 	SimpleMessageHandler.java \
 	StatusHandler.java \
 	StreamExec.java \
 	StringBufferExec.java \
 	StringUtilities.java \
-	XSLTUtilities.java \
-	RunnableExceptionCatcher.java
+	XSLTUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
 	DoubleUtilities-license.htm
