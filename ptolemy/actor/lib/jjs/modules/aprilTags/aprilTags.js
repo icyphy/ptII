@@ -1,8 +1,20 @@
 /**
 Module to identify AprilTags in an image.
-To use this module, you have separately install a modified version of the
-AprilTags code by Edwin Olson. This has to be a separate install, because
-(sadly) the code is GPL'd.  See: http://ptolemy.eecs.berkeley.edu/~eal/aprilTags/
+
+This code uses AprilTags Java code found in $PTII/edu/umich/eecs/april.
+
+The AprilTags code developed by the APRIL robotics lab under the
+direction of Edwin Olson (ebolson@umich.edu).
+
+The Java implementation of the AprilTags detector is provided for
+convenience as a demonstration.  It is an older version implemented in
+Java that has been supplanted by a much better performing C version.
+If your application demands better performance, you will need to
+replace this implementation with the newer C version and using JNI or
+JNA to interface the C version to Java.
+
+For details about the C version, see
+https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
 @module aprilTags
 @authors Edward A. Lee
