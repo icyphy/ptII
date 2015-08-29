@@ -50,7 +50,7 @@ import ptolemy.util.FileUtilities;
  attribute, accessed by getExpression(), is a string that names a file
  or URL, possibly containing references to variables defined in scope
  using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
- is name of the file with such references resolved.</p>
+ is the name of the file with such references resolved.</p>
 
  <p>If this attribute contains a parameter named <i>allowFiles</i> with
  value false, then when a file browser is used to select a file,
