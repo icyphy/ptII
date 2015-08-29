@@ -297,7 +297,7 @@ public class DocBuilder extends Attribute {
                             // cancel because when this command is run the user
                             // has no way to hit enter.
                             + "-Dptolemy.ptII.batchMode=true "
-                            + "--classpath \""
+                            + "-classpath \""
                             + StringUtilities.getProperty("java.class.path")
                             + "\" ptolemy.moml.filter.ActorIndex doc/codeDoc/allNamedObjs.txt "
                             + "\"" + ptII
