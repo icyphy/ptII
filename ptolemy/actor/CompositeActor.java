@@ -2097,6 +2097,10 @@ FiringsRecordable {
             _relationWidthInference = null;
         }
 
+        if (container == null) {
+            setManager(null);
+        }
+
         super.setContainer(container);
 
         Director director = getDirector();
