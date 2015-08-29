@@ -116,37 +116,44 @@ public class AccessorIconLoader implements IconLoader {
                     JSAccessor accessor = (JSAccessor)context;
                     // Use FileParameter to preprocess the source to resolve
                     // relative classpaths and references to $CLASSPATH, etc.
-                    String source = accessor.accessorSource.asURL().toExternalForm();
-                    int tail = source.lastIndexOf(".js");
-                    if (tail < 0) {
-                        tail = source.lastIndexOf(".xml");
-                    }
-                    if (tail > 0) {
-                        String iconURLSpec = source.substring(0, tail) + "Icon.xml";
-                        // Do not update the repo (second argument is false).
-                        try {
-                            URL iconURL = JSAccessor._sourceToURL(iconURLSpec, false);
-                            InputStream input = iconURL.openStream();
-                            MoMLParser newParser = new MoMLParser();
-                            // Mark the parser to keep track of objects created.
-                            newParser.clearTopObjectsList();
-                            newParser.setContext(context);
-                            newParser.parse(iconURL, iconURL.toExternalForm(), input);
-                            // Have to mark the contents derived objects, so that
-                            // the icon is not exported with the MoML export.
-                            List<NamedObj> icons = newParser.topObjectsCreated();
-                            if (icons != null) {
-                                Iterator objects = icons.iterator();
 
-                                while (objects.hasNext()) {
-                                    NamedObj newObject = (NamedObj) objects.next();
-                                    newObject.setDerivedLevel(1);
-                                    _markContentsDerived(newObject, 1);
-                                    foundAnIcon = true;
+                    // BluetoothDistance in org/terraswarm/accessor/demo/c4po/c4po.xml
+                    // does not set accessorSource URL.  To trigger this, run
+                    // "ant javadoc.actorIndex" and look for NPEs in the output. 
+                    URL accessorSourceURL = accessor.accessorSource.asURL();
+                    if (accessorSourceURL != null) {
+                        String source = accessorSourceURL.toExternalForm();
+                        int tail = source.lastIndexOf(".js");
+                        if (tail < 0) {
+                            tail = source.lastIndexOf(".xml");
+                        }
+                        if (tail > 0) {
+                            String iconURLSpec = source.substring(0, tail) + "Icon.xml";
+                            // Do not update the repo (second argument is false).
+                            try {
+                                URL iconURL = JSAccessor._sourceToURL(iconURLSpec, false);
+                                InputStream input = iconURL.openStream();
+                                MoMLParser newParser = new MoMLParser();
+                                // Mark the parser to keep track of objects created.
+                                newParser.clearTopObjectsList();
+                                newParser.setContext(context);
+                                newParser.parse(iconURL, iconURL.toExternalForm(), input);
+                                // Have to mark the contents derived objects, so that
+                                // the icon is not exported with the MoML export.
+                                List<NamedObj> icons = newParser.topObjectsCreated();
+                                if (icons != null) {
+                                    Iterator objects = icons.iterator();
+                                    
+                                    while (objects.hasNext()) {
+                                        NamedObj newObject = (NamedObj) objects.next();
+                                        newObject.setDerivedLevel(1);
+                                        _markContentsDerived(newObject, 1);
+                                        foundAnIcon = true;
+                                    }
                                 }
+                            } catch (Throwable ex) {
+                                // Ignore and fall back to default behavior.
                             }
-                        } catch (Throwable ex) {
-                            // Ignore and fall back to default behavior.
                         }
                     }
                 }
