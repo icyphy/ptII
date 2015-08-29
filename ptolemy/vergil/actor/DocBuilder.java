@@ -291,7 +291,13 @@ public class DocBuilder extends Attribute {
                             + "-doclet doc.doclets.PtDoclet "
                             + "-subpackages com:diva:jni:org:ptolemy:thales "
                             + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
-                    commands.add("java -Xmx256m -classpath \""
+                    commands.add("java -Xmx256m "
+                            // ptolemy.ptII.batchMode is checked in MessageHandler.
+                            // Avoid hanging yes/no questions and just automatically
+                            // cancel because when this command is run the user
+                            // has no way to hit enter.
+                            + "-Dptolemy.ptII.batchMode=true "
+                            + "--classpath \""
                             + StringUtilities.getProperty("java.class.path")
                             + "\" ptolemy.moml.filter.ActorIndex doc/codeDoc/allNamedObjs.txt "
                             + "\"" + ptII
