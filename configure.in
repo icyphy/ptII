@@ -1145,7 +1145,6 @@ else
 
                   # Default to anonymous read-only access.
                   ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors
-                  READ_WRITE_ACCESSOR_REPO=
 
                   # If the the PTII tree was not checked out with svn, then default to using anonymous read-only access
                   if test ! -d "$PTII/.svn"; then
