@@ -158,7 +158,7 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
      */
     @Override
     protected void _warning(final String info) throws CancelException {
-        if (isRunningNightlyBuild()) {
+        if (isNonInteractive()) {
             System.out
             .println("Running nightly build or in batch mode.  "
                     + "A warning dialog would have been displayed, but instead we are printing:\n"
@@ -220,7 +220,7 @@ public class GraphicalMessageHandler extends UndeferredGraphicalMessageHandler {
     @Override
     protected void _warning(final String info, final Throwable throwable)
             throws CancelException {
-        if (isRunningNightlyBuild()) {
+        if (isNonInteractive()) {
             System.out
             .println("Running nightly build or in batch mode.  "
                     + "A warning dialog would have been displayed, but instead we are printing:\n"

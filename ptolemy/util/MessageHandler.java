@@ -132,12 +132,13 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         return _handler;
     }
 
-    /** If the nightly build is running, then return true.
+    /** Return true if the current process is a non-interactive session.
+     *  If the nightly build is running, then return true.
      *
      *  <p>This method merely checks to see if the
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty
      *  or if the "ptolemy.ptII.batchMode" property exists and is not empty
-     *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.
+     *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.</p>
      *
      *  <p>To run the test suite in the Nightly Build mode, use</p>
      *  <pre>
@@ -145,7 +146,13 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  </pre>
      *  @return True if the nightly build is running.
      */
-    public static boolean isRunningNightlyBuild() {
+    public static boolean isNonInteractive() {
+        // This method is necessary because Ptolemy can download models
+        // and files from websites. It is a best practice to prompt the user
+        // and ask them if they actually want to download the resource.  
+        // However, code like the nightly build and the actor indexing code
+        // should run without user interaction, so we set a property
+        // when running non-interactive, batch mode code.
         if ((StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
                 .length() > 0 || StringUtilities.getProperty(
                         "ptolemy.ptII.batchMode").length() > 0)
@@ -156,7 +163,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
         return false;
     }
-
+    
     /** Defer to the set message handler to show the specified
      *  message.  An implementation may block, for example with a modal dialog.
      *  @param info The message.
@@ -286,7 +293,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  @return True if the answer is yes.
      */
     public static boolean yesNoQuestion(String question) {
-        if (!isRunningNightlyBuild()) {
+        if (!isNonInteractive()) {
             return _handler._yesNoQuestion(question);
         } else {
             return true;
@@ -322,7 +329,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     public static boolean yesNoCancelQuestion(String question,
             String trueOption, String falseOption, String exceptionOption)
                     throws ptolemy.util.CancelException {
-        if (!isRunningNightlyBuild()) {
+        if (!isNonInteractive()) {
             return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
                     exceptionOption);
         } else {

@@ -487,7 +487,7 @@ public class DatabaseManager extends TypedAtomicActor {
                                 "Failed to read a line from " + passwordFile);
                     }
                 } catch (Exception ex) {
-                    if (ptolemy.util.MessageHandler.isRunningNightlyBuild()) {
+                    if (ptolemy.util.MessageHandler.isNonInteractive()) {
                         throw new IllegalActionException(this, ex,
                                 "Failed to read " + passwordFile.stringValue());
                     } else {

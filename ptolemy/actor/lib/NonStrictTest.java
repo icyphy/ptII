@@ -233,7 +233,7 @@ public class NonStrictTest extends Sink {
      *  @exception IllegalActionException If the base class throws it or
      *  if we are running under the test suite and the trainingMode
      *  parameter is set to true.
-     *  @see ptolemy.util.MessageHandler#isRunningNightlyBuild()
+     *  @see ptolemy.util.MessageHandler#isNonInteractive()
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -245,7 +245,7 @@ public class NonStrictTest extends Sink {
         _initialized = true;
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (MessageHandler.isRunningNightlyBuild()) {
+            if (MessageHandler.isNonInteractive()) {
                 throw new IllegalActionException(this,
                         TRAINING_MODE_ERROR_MESSAGE);
             } else {
