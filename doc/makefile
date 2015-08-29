@@ -971,6 +971,7 @@ codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx1500m \
+	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt \
