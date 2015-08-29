@@ -152,12 +152,12 @@ public class AccessorLibrary extends EntityLibrary {
                             Object value = index.get(i);
                             if (value instanceof String) {
                                 String valueString = (String)value;
+                                String newConfigureSource = _configureSource + valueString;
+                                URL newBase = new URL(newConfigureSource);
                                 // Check to see whether the value specifies a sublibrary.
                                 if (!valueString.endsWith(".js") && !valueString.endsWith(".xml")) {
                                     // Assume the entry in index.json specifies a sublibrary, not an accessor.
                                     AccessorLibrary sublibrary = new AccessorLibrary(this, valueString);
-                                    String newConfigureSource = _configureSource + valueString;
-                                    URL newBase = new URL(newConfigureSource);
                                     sublibrary.configure(newBase, newConfigureSource, null);
                                     continue;
                                 }
@@ -165,7 +165,7 @@ public class AccessorLibrary extends EntityLibrary {
                                 parser.setContext(this);
                                 try {
                                     URL accessorURL = new URL(source, valueString);
-                                    String moml = JSAccessor.accessorToMoML(accessorURL.toExternalForm(), false);
+                                    String moml = JSAccessor.accessorToMoML(newConfigureSource, false);
                                     parser.parse(accessorURL, moml);
                                 } catch (Throwable ex) {
                                     String message = "Loading accessor failed: " + valueString;

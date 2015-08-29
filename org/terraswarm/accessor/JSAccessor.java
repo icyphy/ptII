@@ -50,6 +50,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -163,7 +164,7 @@ public class JSAccessor extends JavaScript {
     ////                         parameters                        ////
 
     /** The source of the accessor (a URL). */
-    public StringAttribute accessorSource;
+    public ActionableAttribute accessorSource;
 
     /** If true, then check out the TerraSwarm accessors svn
      *  repository when the accessor is reloaded and run ant to build
@@ -283,7 +284,9 @@ public class JSAccessor extends JavaScript {
                 // Create a URIAttribute so that if the icon makes external
                 // references, it can use relative file names, relative to the
                 // location of the accessor.
-                URL sourceURL = _sourceToURL(accessorSource.getExpression(), false);
+                // Use FileParameter to preprocess the source to resolve
+                // relative classpaths and references to $CLASSPATH, etc.
+                URL sourceURL = _sourceToURL(accessorSource.asURL().toExternalForm(), false);
                 URIAttribute uriAttribute = new URIAttribute(this, "_uri");
                 uriAttribute.setURL(sourceURL);
             } catch (Throwable e) {
@@ -307,10 +310,12 @@ public class JSAccessor extends JavaScript {
      *  @exception IOExeption If the repository cannot be checked out.
      */
     public static void getAccessorsRepository() throws IOException {
-        if (!_checkoutOrUpdateAccessorsRepository) {
-            return;
-        }
-        if (_checkoutOrUpdateFailed) {
+        boolean updateNeeded = 
+                _checkoutOrUpdateAccessorsRepository
+                && !_checkoutOrUpdateFailed
+                && (_lastRepoUpdateTime < 0
+                || (System.currentTimeMillis() - _lastRepoUpdateTime > 43200000L)); // 12 hours
+        if (!updateNeeded) {
             return;
         }
 
@@ -388,13 +393,13 @@ public class JSAccessor extends JavaScript {
                 MessageHandler.status("Could not update the accessors repository. Using local version.");
             }
         }
+        _lastRepoUpdateTime = System.currentTimeMillis();
         if (!updated || exec.buffer.toString().contains("At revision ")) {
             _checkoutOrUpdateFailed = false;
             // Presumably, there is no reason to update the docs, since there was no update.
             return;
         } else {
             _checkoutOrUpdateFailed = true;
-            _lastRepoUpdateTime = System.currentTimeMillis();
         }
 
         // If the accessors/web directory exists, run ant there.
@@ -560,8 +565,11 @@ public class JSAccessor extends JavaScript {
            return;
            }
         */
+        // Use FileParameter to preprocess the source to resolve
+        // relative classpaths and references to $CLASSPATH, etc.
         String moml = "<group name=\"doNotOverwriteOverrides\">"
-            + JSAccessor._accessorToMoML(accessorSource.getExpression(), obeyCheckoutOrUpdateRepositoryParameter)
+            + JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
+                    obeyCheckoutOrUpdateRepositoryParameter)
             + "</group>";
         final NamedObj context = this;
         MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
@@ -660,40 +668,35 @@ public class JSAccessor extends JavaScript {
         if (urlSpec == null || urlSpec.trim().equals("")) {
             throw new IllegalActionException("No source file specified.");
         }
+        // If the source makes no mention of the TerraSwarm accessors repo,
+        // then just use FileParameter to find the source file.
+        if (urlSpec.indexOf("org/terraswarm/accessor/accessors") < 0
+                && urlSpec.indexOf("terraswarm.org/accessors") < 0) {
+            return FileUtilities.nameToURL(urlSpec, null, null);
+        }
     
         URL accessorURL = null;
-        boolean updateNeeded = updateRepository
-                && (_lastRepoUpdateTime < 0
-                || (System.currentTimeMillis() - _lastRepoUpdateTime > 43200000L)); // 12 hours
         try {
-            if (updateNeeded) {
-                try {
-                    JSAccessor.getAccessorsRepository();
-                } catch (Throwable throwable) {
-                    System.err.println("Failed to checkout or update the TerraSwarm accessor repo.  "
-                            + "This could happen if you don't have read access to the repo.  "
-                            + "The message was:\n"
-                            + throwable);
-                }
-            }
+            JSAccessor.getAccessorsRepository();
+        } catch (Throwable throwable) {
+            System.err.println("Failed to checkout or update the TerraSwarm accessor repo.  "
+                    + "This could happen if you don't have read access to the repo.  "
+                    + "The message was:\n"
+                    + throwable);
+        }
+        try {
             accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
-        } catch (IOException ex) {
+        } catch(IOException ex) {
             // Note that if we get an exception, we try to get the repository
             // no matter what the value of updateRepository is.
-            if (!updateNeeded) {
-                System.err.println(
-                        "An error occurred reading "
-                        + urlSpec 
-                        + ". Trying to update the repository.");
-            }
             
             // If the urlSpec could be in the accessors repo, then try
             // to either check out or update the repo.
             if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
+                boolean restore = _checkoutOrUpdateAccessorsRepository;
                 try {
-                    if (updateRepository) {
-                        JSAccessor.getAccessorsRepository();
-                    }
+                    _checkoutOrUpdateAccessorsRepository = true;
+                    JSAccessor.getAccessorsRepository();
                     accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
                 } catch (IOException ex2) {
                     IOException ioException = new IOException(ex.getMessage()
@@ -702,9 +705,12 @@ public class JSAccessor extends JavaScript {
                             + "but that failed with: " + ex2.getMessage());
                     ioException.initCause(ex2);
                     throw ioException;
+                } finally {
+                    _checkoutOrUpdateAccessorsRepository = restore;
                 }
             }
         }
+
         if (accessorURL == null) {
             throw new IOException("Failed to find accessor file: " + urlSpec.trim() 
                     + "\nWhich is converted to: " + accessorURL);
@@ -1047,7 +1053,7 @@ public class JSAccessor extends JavaScript {
 
     /** Attribute with an associated named action.
      */
-    public class ActionableAttribute extends StringAttribute implements Actionable {
+    public class ActionableAttribute extends FileParameter implements Actionable {
 
         /** Create a new actionable attribute.
          *  @param container The container.
