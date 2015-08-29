@@ -880,6 +880,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Free up BasicGraphFrame$HierarchyTreeCellRenderer.
             MemoryCleaner.removeActionListeners(_treeView);
             _treeView.setCellRenderer(null);
+            // See http://stackoverflow.com/questions/4517931/java-swing-jtree-is-not-garbage-collected
+            _treeView.setModel(null);
             _treeView.setUI(null);
             _treeView = null;
         }
