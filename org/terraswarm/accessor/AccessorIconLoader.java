@@ -114,7 +114,9 @@ public class AccessorIconLoader implements IconLoader {
                 // First, if the context is an instance JSAccessor, proceed.
                 if (context instanceof JSAccessor) {
                     JSAccessor accessor = (JSAccessor)context;
-                    String source = accessor.accessorSource.getExpression().trim();
+                    // Use FileParameter to preprocess the source to resolve
+                    // relative classpaths and references to $CLASSPATH, etc.
+                    String source = accessor.accessorSource.asURL().toExternalForm();
                     int tail = source.lastIndexOf(".js");
                     if (tail < 0) {
                         tail = source.lastIndexOf(".xml");
