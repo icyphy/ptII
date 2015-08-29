@@ -662,6 +662,7 @@ For example:
 	<path refid="ptII.classpath" />
 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </java>
   </target>
 
