@@ -214,7 +214,7 @@ public class TypeTest extends Discard {
                                                                      .toArray(new Token[parameterAssignments.size()]));
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (MessageHandler.isRunningNightlyBuild()) {
+            if (MessageHandler.isNonInteractive()) {
                 throw new IllegalActionException(this,
                         NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
             } else {

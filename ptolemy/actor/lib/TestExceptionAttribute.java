@@ -201,7 +201,7 @@ implements ExceptionHandler {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
-            if (MessageHandler.isRunningNightlyBuild()) {
+            if (MessageHandler.isNonInteractive()) {
                 throw new IllegalActionException(this,
                         TRAINING_MODE_ERROR_MESSAGE);
             } else {
