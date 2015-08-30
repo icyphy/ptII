@@ -770,7 +770,7 @@ ApplicationConfigurer, InstanceOpener {
                             }
                             calledMessageHandler = true;
                         } else {
-                            // Opening a link to a non-existant .htm file
+                            // Opening a link to a non-existent .htm file
                             // might get us to here because the effigy is
                             // not a PtolemyEffigy.
                             //
@@ -1166,7 +1166,9 @@ ApplicationConfigurer, InstanceOpener {
      */
     public Tableau openModel(NamedObj entity) throws IllegalActionException,
     NameDuplicationException {
-        return openModel(entity, null);
+        NamedObj container = entity.getContainer();
+        Effigy containerEffigy = getEffigy(container);
+        return openModel(entity, containerEffigy);
     }
 
     /** Open the specified Ptolemy II model. If a model already has
