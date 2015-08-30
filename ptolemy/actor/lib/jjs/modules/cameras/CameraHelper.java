@@ -33,15 +33,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.HelperBase;
+import ptolemy.actor.lib.jjs.JavaScript;
+import ptolemy.data.AWTImageToken;
+import ptolemy.kernel.util.IllegalActionException;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
-
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.actor.lib.jjs.HelperBase;
-import ptolemy.data.AWTImageToken;
-import ptolemy.kernel.util.IllegalActionException;
 
 /** Helper for the cameras JavaScript module.  This is based on
  *  the webcam-capture package by Bartosz Firyn (SarXos), available from:
@@ -162,6 +164,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     public void close() {
         if (_webcam != null) {
             _webcam.close();
+            if (_openCameras != null) {
+                _openCameras.remove(_webcam.getName());
+            }
         }
     }
 
@@ -202,7 +207,22 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         // The true argument opens the camera in "asynchronous" mode, which
         // notifies this object of each new image obtained.
         if (_webcam != null) {
+            String cameraName = _webcam.getName();
+            if (_openCameras != null) {
+                JavaScript actor = _openCameras.get(cameraName);
+                if (actor != null) {
+                    _actor.error(
+                            "Camera " + cameraName + " has already been opened by "
+                            + actor.getFullName()
+                            + " Cannot be used again by "
+                            + _actor.getFullName());
+                    return;
+                }
+            } else {
+                _openCameras = new WeakHashMap<String, JavaScript>();
+            }
             _webcam.open(true);
+            _openCameras.put(cameraName, _actor);
         }
     }
 
@@ -230,7 +250,14 @@ public class CameraHelper extends HelperBase implements WebcamListener {
                             + heightSpec);
         }
         if (_webcam != null) {
-            _webcam.setViewSize(new Dimension(width, height));
+            // Do not change the dimension if it's already set because the
+            // camera may be open and in use by another actor, which is OK if
+            // the dimensions are the same.
+            Dimension previous = _webcam.getViewSize();
+            Dimension newDimension = new Dimension(width, height);
+            if (!newDimension.equals(previous)) {
+                _webcam.setViewSize(newDimension);                
+            }
         }
     }
 
@@ -317,6 +344,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** The latest image obtained. */
     private BufferedImage _image;
+    
+    /** Open cameras, indexed by camera name. */
+    private static Map<String, JavaScript> _openCameras;
 
     /** The camera associated with this instance. */
     private Webcam _webcam;
