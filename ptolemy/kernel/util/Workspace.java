@@ -259,7 +259,7 @@ public final class Workspace implements Nameable {
      *  
      *  @exception InvalidStateException If this method is called
      *   before a corresponding call to getReadAccess() by the same thread.
-     *  @see getReadAccess()
+     *  @see #getReadAccess()
      */
     public final synchronized void doneReading() {
         Thread current = Thread.currentThread();
