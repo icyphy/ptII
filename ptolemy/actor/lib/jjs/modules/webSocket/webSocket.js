@@ -1,5 +1,15 @@
 /**
  * Module supporting web sockets.
+ * This module defines three classes, Client, Server, and Socket.
+ * To make a connection, create an instance of Server, set up listeners,
+ * and start the server. On another machine (or the same machine), create
+ * an instance of Client and set up listeners and/or invoke send() to send
+ * a message. When a client connects to the Server, the Server will create
+ * an instance of the Socket object.
+ *
+ * This module also provides two utility functions that return arrays
+ * of MIME types supported for sending or receiving messages.
+ *
  * @module webSocket
  * @authors: Hokeun Kim and Edward A. Lee
  * @copyright: http://terraswarm.org/accessors/copyright.txt
@@ -9,8 +19,25 @@ var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSock
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
 var EventEmitter = require('events').EventEmitter;
 
-// This file contains first the code for a Client and then for a Server side
-// of a web socket.
+///////////////////////////////////////////////////////////////////////////////
+//// supportedReceiveTypes
+
+/** Return an array of the types supported by the current host for
+ *  receiveType arguments.
+ */
+exports.supportedReceiveTypes = function() {
+    return WebSocketHelper.supportedReceiveTypes();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//// supportedSendTypes
+
+/** Return an array of the types supported by the current host for
+ *  sendType arguments.
+ */
+exports.supportedSendTypes = function() {
+    return WebSocketHelper.supportedSendTypes();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //// Client

@@ -1937,7 +1937,7 @@ public class JavaScript extends TypedAtomicActor {
     private void _setOptionsForSelect(NamedObj typeable, Map options) {
         if (options != null) {
             Object possibilities = ((Map) options).get("options");
-            if (possibilities instanceof ScriptObjectMirror) {
+            if (possibilities != null) {
                 // Possibilities are specified.
                 Parameter parameter = null;
                 if (typeable instanceof Parameter) {
@@ -1948,14 +1948,37 @@ public class JavaScript extends TypedAtomicActor {
                     // Can't set possibilities. Ignore this option.
                     return;
                 }
-                for (Object possibility : ((ScriptObjectMirror) possibilities)
-                        .values()) {
-                    if (possibility instanceof String) {
-                        if (parameter.isStringMode()) {
-                            parameter.addChoice((String) possibility);
-                        } else {
-                            parameter.addChoice("\"" + (String) possibility
-                                    + "\"");
+                Iterable choices = null;
+                if (possibilities instanceof ScriptObjectMirror) {
+                    choices = ((ScriptObjectMirror) possibilities).values();
+                } else if (possibilities instanceof Object[]) {
+                    // Pathetically, Arrays.asList() doesn't work.
+                    // It returns a list with one element, the array!
+                    // choices = Arrays.asList(possibilities);
+                    choices = new LinkedList();
+                    for (int i = 0; i < ((Object[])possibilities).length; i++) {
+                        ((LinkedList)choices).add(((Object[])possibilities)[i].toString());
+                    }
+                } else if (possibilities instanceof int[]) {
+                    choices = new LinkedList();
+                    for (int i = 0; i < ((int[])possibilities).length; i++) {
+                        ((LinkedList)choices).add(new Integer(((int[])possibilities)[i]));
+                    }
+                } else if (possibilities instanceof double[]) {
+                    choices = new LinkedList();
+                    for (int i = 0; i < ((double[])possibilities).length; i++) {
+                        ((LinkedList)choices).add(new Double(((double[])possibilities)[i]));
+                    }
+                }
+                if (choices != null) {
+                    for (Object possibility : choices) {
+                        if (possibility instanceof String) {
+                            if (parameter.isStringMode()) {
+                                parameter.addChoice((String) possibility);
+                            } else {
+                                parameter.addChoice("\"" + (String) possibility
+                                        + "\"");
+                            }
                         }
                     }
                 }
@@ -2064,6 +2087,7 @@ public class JavaScript extends TypedAtomicActor {
         } else if (type.equals("boolean")) {
             return (BaseType.BOOLEAN);
         } else if (type.equals("select")) {
+            _setStringMode(typeable, false);
             return (BaseType.STRING);
         } else {
             throw new IllegalActionException(this, "Unsupported type: " + type);

@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -158,6 +159,18 @@ public class WebSocketHelper extends VertxHelperBase {
                 currentObj, serverWebSocket, receiveType, sendType, maxFrameSize);
     }
 
+    /** Return whether the web socket is opened successfully.
+     *  @return True if the socket is open.
+     */
+    public boolean isOpen() {
+        synchronized (_actor) {
+            if (_webSocket == null) {
+                return false;
+            }
+            return _wsIsOpen;
+        }
+    }
+
     /** Send data through the web socket.
      *  @param msg A message to be sent.
      *  @exception IllegalActionException If establishing the connection to the web socket has
@@ -212,16 +225,28 @@ public class WebSocketHelper extends VertxHelperBase {
         }
     }
 
-    /** Return whether the web socket is opened successfully.
-     *  @return True if the socket is open.
+    /** Return an array of the types supported by the current host for
+     *  receiveType arguments.
      */
-    public boolean isOpen() {
-        synchronized (_actor) {
-            if (_webSocket == null) {
-                return false;
-            }
-            return _wsIsOpen;
-        }
+    public static String[] supportedReceiveTypes() {
+        String[] imageTypes = ImageIO.getReaderFormatNames();
+        String[] result = new String[imageTypes.length + 2];
+        result[0] = "application/json";
+        result[1] = "text/plain";
+        System.arraycopy(imageTypes, 0, result, 2, imageTypes.length);
+        return result;
+    }
+
+    /** Return an array of the types supported by the current host for
+     *  sendType arguments.
+     */
+    public static String[] supportedSendTypes() {
+        String[] imageTypes = ImageIO.getWriterFormatNames();
+        String[] result = new String[imageTypes.length + 2];
+        result[0] = "application/json";
+        result[1] = "text/plain";
+        System.arraycopy(imageTypes, 0, result, 2, imageTypes.length);
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
