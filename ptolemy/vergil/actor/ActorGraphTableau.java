@@ -83,7 +83,7 @@ public class ActorGraphTableau extends Tableau {
      *  @param container The container.
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
-     *  @exception IllegalActionException If thrown by the superclass.
+     *  @exception IllegalActionException If the model is not a CompositeEntity.
      *  @exception NameDuplicationException If thrown by the superclass.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name,
