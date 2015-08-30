@@ -1527,6 +1527,15 @@ public class JavaScript extends TypedAtomicActor {
                     }
                 }
                 _outputTokens.clear();
+                
+                // If there are any remaining input handlers, remove them.
+                if (_handleToIndex != null) {
+                    // Copy the handle list to prevent a concurrent modification exception.
+                    Set<Integer> copy = new HashSet<Integer>(_handleToIndex.keySet());
+                    for (Integer handle : copy) {
+                        removeInputHandler(handle);
+                    }
+                }
             }
         }
         super.wrapup();
