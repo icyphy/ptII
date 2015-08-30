@@ -32,7 +32,7 @@
 DIRS = april
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =		../../..
 
 # $(ME) is used in ptdir.mk
 ME =		edu/umich/eecs
