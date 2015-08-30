@@ -50,6 +50,10 @@ test ActorIndex-1.1 {Run the ActorIndex on some test files } {
     # testModels.txt refers to 
     # $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
     # which downloads an actor from http://ptolemy.eecs.berkeley.edu
+
+    # Explicitly set the ptolemy.ptII.batchMode property so that we don't hang here.
+    java::call System setProperty ptolemy.ptII.batchMode true
+
     file delete -force codeDoc
     file mkdir codeDoc
 
