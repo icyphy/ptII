@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={656, 22, 783, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={653, 23, 783, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 529]">
     </property>
@@ -23,34 +23,9 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects AprilTags in a video feed from the camera.&#10;It modifies the camera image to outline the tag, indicate its center,&#10;and indicate its ID.&#10;&#10;To run this, you have separately install a modified version of the&#10;AprilTags code by Edwin Olson. This has to be a separate install, because&#10;(sadly) the code is GPL'd.  See:">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects AprilTags in a video feed from the camera.&#10;It modifies the camera image to outline the tag, indicate its center,&#10;and indicate its ID.">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[0.0, 195.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="http://ptolemy.eecs.berkeley.edu/~eal/aprilTags/">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 330.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://ptolemy.eecs.berkeley.edu/~eal/aprilTags/index.html#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{150, 310}">
-            </property>
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -58,13 +33,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To test this, you can print out the following sample tag&#10;and hold it in the field of view of the camera:">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[0.0, 360.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[0.0, 260.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36_11_00586.pdf">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 310.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="tag36_11_00586.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
