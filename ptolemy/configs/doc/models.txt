@@ -86,6 +86,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
+$CLASSPATH/org/terraswarm/accessor/demo/WebSocketImage/WebSocketImage.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosSubscriber.xml
