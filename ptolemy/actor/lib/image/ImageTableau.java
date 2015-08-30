@@ -185,11 +185,15 @@ public class ImageTableau extends TokenTableau {
             _picture = new Picture(_oldxsize, _oldysize);
         } else {
             Image image = token.asAWTImage();
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-            if (width > 0 && height > 0) {
-                // FIXME: scale to fit on screen.
-                _picture = new Picture(width, height);
+            if (image != null) {
+                int width = image.getWidth(null);
+                int height = image.getHeight(null);
+                if (width > 0 && height > 0) {
+                    // FIXME: scale to fit on screen.
+                    _picture = new Picture(width, height);
+                } else {
+                    _picture = new Picture(_oldxsize, _oldysize);
+                }
             } else {
                 _picture = new Picture(_oldxsize, _oldysize);
             }
