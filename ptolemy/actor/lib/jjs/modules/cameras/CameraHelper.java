@@ -30,10 +30,10 @@ package ptolemy.actor.lib.jjs.modules.cameras;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
@@ -209,20 +209,22 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         if (_webcam != null) {
             String cameraName = _webcam.getName();
             if (_openCameras != null) {
-                JavaScript actor = _openCameras.get(cameraName);
-                if (actor != null) {
+                WeakReference<JavaScript> actor = _openCameras.get(cameraName);
+                if (actor != null && actor.get() != null) {
                     _actor.error(
                             "Camera " + cameraName + " has already been opened by "
-                            + actor.getFullName()
+                            + actor.get().getFullName()
                             + " Cannot be used again by "
                             + _actor.getFullName());
                     return;
+                } else if (actor != null) {
+                    _openCameras.remove(cameraName);
                 }
             } else {
-                _openCameras = new WeakHashMap<String, JavaScript>();
+                _openCameras = new HashMap<String, WeakReference<JavaScript>>();
             }
             _webcam.open(true);
-            _openCameras.put(cameraName, _actor);
+            _openCameras.put(cameraName, new WeakReference(_actor));
         }
     }
 
@@ -346,7 +348,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     private BufferedImage _image;
     
     /** Open cameras, indexed by camera name. */
-    private static Map<String, JavaScript> _openCameras;
+    private static Map<String, WeakReference<JavaScript>> _openCameras;
 
     /** The camera associated with this instance. */
     private Webcam _webcam;
