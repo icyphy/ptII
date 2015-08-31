@@ -5768,15 +5768,18 @@ fi
 #	See https://svgsalamander.java.net/
 #--------------------------------------------------------------------
 
-# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
-# FIXME if the svgSalamander jar file is found.
+# PTSVGSALAMANDER_DIR is set to svg and used in com/jhlabs/image/svg/makefile
+# if the svgSalamander jar file is found.
 PTSVGSALAMANDER_DIR=
 
 # svgSalamander Jar file.
 PTSVGSALAMANDER_JAR=
 
-# We only need to look for svgSalamander if FIXME is present.
-if test ! -d "$PTII/org/terraswarm/accessor"; then
+# PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
+PTSVGSALAMANDER_PACKAGES=
+
+# We only need to look for svgSalamander if com/jhlabs/image/svg is present.
+if test ! -d "$PTII/com/jhlabs/image/svg"; then
     PT_MSG_STATUS([$PTII/org/terraswarm/accessors is not present,
     so we need not find svgSalamander.])
 else
@@ -5788,13 +5791,15 @@ else
 
     if test -f "$PTSVGSALAMANDER_JAR"; then
 	PT_MSG_RESULT([$PTSVGSALAMANDER_JAR])
-	PTSVGSALAMANDER_DIR=svgSalamander
+	PTSVGSALAMANDER_DIR=svg
+        PTSVGSALAMANDER_PACKAGES=com.jhlabs.image.svg
         updateClasspath "$PTSVGSALAMANDER_JAR"
     fi	
 
     if test "$PTSVGSALAMANDER_DIR" = ""; then
         AC_MSG_WARN([Failed to find the svgSalamander.jar file.
-    You need only have find this if FIXME.
+    You need only have find this if com/jhlabs/image/svg is present.
+    The svgSalamander facility is used by Cape Code to render icons.
     svgSalamander.jar can be downloaded from http://xmlgraphics.apache.org/batik/])
     fi
 fi
@@ -6265,7 +6270,6 @@ PTWEBCAMCAPTURE_JARS=
 # PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
 PTWEBCAMCAPTURE_PACKAGES=
 
-# FIXME: change this to the name of the webcam directory after Edward checks in his work
 WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
 # We only need to look for webcam-capture*.jar if the directory that uses it exists.
 if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
@@ -7277,12 +7281,14 @@ AC_SUBST(PTSVG_DIR)
 # Jar file used by diva/util/java2d/svg/makefile
 AC_SUBST(PTSVG_JAR)
 
-# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
-# FIXME if the svgSalamander jar file is found.
+# PTSVGSALAMANDER_DIR is set to svg and used in com/jhlabs/image/svg/makefile
 AC_SUBST(PTSVGSALAMANDER_DIR)
 
 # svgSalamander Jar file.
 AC_SUBST(PTSVGSALAMANDER_JAR)
+
+# PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTSVGSALAMANDER_PACKAGES)
 
 # PTPOWERMOCK_DIR is set to test and used in
 # $PTII/ptdb/makefile

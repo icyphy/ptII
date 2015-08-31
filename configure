@@ -668,6 +668,7 @@ PTPROTOBUF_JAR
 PTPROCESSING_JARS
 PTPOWERMOCK_JARS
 PTPOWERMOCK_DIR
+PTSVGSALAMANDER_PACKAGES
 PTSVGSALAMANDER_JAR
 PTSVGSALAMANDER_DIR
 PTSVG_JAR
@@ -12994,15 +12995,18 @@ fi
 #	See https://svgsalamander.java.net/
 #--------------------------------------------------------------------
 
-# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
-# FIXME if the svgSalamander jar file is found.
+# PTSVGSALAMANDER_DIR is set to svg and used in com/jhlabs/image/svg/makefile
+# if the svgSalamander jar file is found.
 PTSVGSALAMANDER_DIR=
 
 # svgSalamander Jar file.
 PTSVGSALAMANDER_JAR=
 
-# We only need to look for svgSalamander if FIXME is present.
-if test ! -d "$PTII/org/terraswarm/accessor"; then
+# PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
+PTSVGSALAMANDER_PACKAGES=
+
+# We only need to look for svgSalamander if com/jhlabs/image/svg is present.
+if test ! -d "$PTII/com/jhlabs/image/svg"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/org/terraswarm/accessors is not present,
     so we need not find svgSalamander." >&5
 $as_echo "$PTII/org/terraswarm/accessors is not present,
@@ -13023,16 +13027,19 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSVGSALAMANDER_JAR" >&5
 $as_echo "$PTSVGSALAMANDER_JAR" >&6; }; fi
-	PTSVGSALAMANDER_DIR=svgSalamander
+	PTSVGSALAMANDER_DIR=svg
+        PTSVGSALAMANDER_PACKAGES=com.jhlabs.image.svg
         updateClasspath "$PTSVGSALAMANDER_JAR"
     fi
 
     if test "$PTSVGSALAMANDER_DIR" = ""; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the svgSalamander.jar file.
-    You need only have find this if FIXME.
+    You need only have find this if com/jhlabs/image/svg is present.
+    The svgSalamander facility is used by Cape Code to render icons.
     svgSalamander.jar can be downloaded from http://xmlgraphics.apache.org/batik/" >&5
 $as_echo "$as_me: WARNING: Failed to find the svgSalamander.jar file.
-    You need only have find this if FIXME.
+    You need only have find this if com/jhlabs/image/svg is present.
+    The svgSalamander facility is used by Cape Code to render icons.
     svgSalamander.jar can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
     fi
 fi
@@ -14779,11 +14786,13 @@ fi
 # Jar file used by diva/util/java2d/svg/makefile
 
 
-# PTSVGSALAMANDER_DIR is set to svgSalamander and used in
-# FIXME if the svgSalamander jar file is found.
+# PTSVGSALAMANDER_DIR is set to svg and used in com/jhlabs/image/svg/makefile
 
 
 # svgSalamander Jar file.
+
+
+# PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
 
 
 # PTPOWERMOCK_DIR is set to test and used in

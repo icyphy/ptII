@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,8 @@
 
 ME = 		com/jhlabs/image
 
-DIRS =		
+# PTSVGSALAMANDER_DIR is set to svg by configure.
+DIRS =		$(PTSVGSALAMANDER_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -44,7 +45,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	image
-PTCLASSJAR = 	$(PTPACKAGE).jar
+#PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	svg/svg.jar
 
 JSRCS = \
 	AbstractBufferedImageOp.java \
@@ -221,7 +227,8 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include $(DIRS) here, we don't want make sources to run make demo
-MISC_FILES =	#$(DIRS)
+MISC_FILES = \
+	svg
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -243,9 +250,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass $(PTCLASSJAR)
-docs: javadocs
+all: suball
+install: subinstall $(PTCLASSALLJAR)
 
 # Include the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
