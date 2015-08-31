@@ -916,6 +916,7 @@ PTPSDF_DIR =	@PTPSDF_DIR@
 # $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
 PTSVG_DIR =	@PTSVG_DIR@
 
+
 # Jar file used by diva/util/java2d/svg/makefile
 PTSVG_JAR =	@PTSVG_JAR@
 
@@ -925,6 +926,9 @@ PTSVGSALAMANDER_DIR =	@PTSVGSALAMANDER_DIR@
 
 # svgSalamander Jar file.
 PTSVGSALAMANDER_JAR =	@PTSVGSALAMANDER_JAR@
+
+# PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
+PTSVGSALAMANDER_PACKAGES =	@PTSVGSALAMANDER_PACKAGES@
 
 # PTRSYNTAXTEXTAREA_DIR is set to syntax and used in
 # $PTII/ptolemy/actor/gui/makefile if RSyntaxEditor is present.

@@ -3965,6 +3965,8 @@
       <fileset dir="${basedir}">
 	<include name="com/jhlabs/*.htm"/>
 	<include name="com/jhlabs/*/*.class"/>
+	<include name="com/jhlabs/*/*/*.class"/>
+        <include name="com/jhlabs/*/*/*.svg"/>
       </fileset>
     </jar>
 
