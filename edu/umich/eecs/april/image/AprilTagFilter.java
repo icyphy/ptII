@@ -105,7 +105,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      *  then the red circle is added directly to the source, and the source is
      *  returned. Otherwise, the red circle is added to the destination image.
      *  In addition, this method records the tags discovered so that they can later
-     *  by retrieved by invoking the {@link tags()} method.
+     *  by retrieved by invoking the {@link #tags()} method.
      *
      *  @param source The source image, on which motion is detected.
      *  @param destination The destination image, on which the red circle is added,
@@ -292,7 +292,6 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * segSigma occurs first, followed by the block LPF, and the
      * decimation. This defaults to false, indicating that the option
      * is not enabled.
-     * @see #getSegDecimate()
      */
     public void setSegDecimate(boolean segDecimate) {
         _segDecimate = segDecimate;
@@ -344,7 +343,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     }
 
     /** Return an array of records representing the most recently detected tags
-     *  from an invocation of {@link #filter(BufferedImage, BufferedImage}, or
+     *  from an invocation of {@link #filter(BufferedImage, BufferedImage)}, or
      *  null if there has been no such invocation or if no tags were detected.
      *  Each record includes the following fields:
      *  <ul>
@@ -1353,6 +1352,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * segSigma occurs first, followed by the block LPF, and the
      * decimation. This defaults to false, indicating that the option
      * is not enabled.
+     * @see #isSegDecimate()
      */
     private boolean _segDecimate = false;
 
