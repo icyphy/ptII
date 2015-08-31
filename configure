@@ -13638,7 +13638,6 @@ PTWEBCAMCAPTURE_JARS=
 # PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
 PTWEBCAMCAPTURE_PACKAGES=
 
-# FIXME: change this to the name of the webcam directory after Edward checks in his work
 WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
 # We only need to look for webcam-capture*.jar if the directory that uses it exists.
 if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then

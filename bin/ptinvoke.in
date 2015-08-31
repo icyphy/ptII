@@ -647,10 +647,10 @@ if [ "$PTPSDF_DIR" = "psdf" ]; then
 fi
 
 #### Use svgSalamander.jar
-# PTSVGSALAMANDER_DIR is set to svgSalamander if configure found $PTII/lib/svgSalamander.jar
+# PTSVGSALAMANDER_DIR is set to svg if configure found $PTII/lib/svgSalamander.jar
 PTSVGSALAMANDER_DIR="@PTSVGSALAMANDER_DIR@"
 PTSVGSALAMANDER_JARS=""
-if [ "$PTSVGSALAMANDER_DIR" = "svgSalamander" ]; then 
+if [ "$PTSVGSALAMANDER_DIR" = "svg" ]; then 
     PTSVGSALAMANDER_JAR="@PTSVGSALAMANDER_JAR@"
     PTSVGSALAMANDER_JARS="${CLASSPATHSEPARATOR}${PTSVGSALAMANDER_JAR}"
 fi
