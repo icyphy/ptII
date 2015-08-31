@@ -2532,7 +2532,7 @@ public final class LinAlg {
      * resides, where the plane is defined by its normal and a point
      * on the plane.
      *
-     * @see #pointsOnWhichSideOfPlane(ArrayList<double[]>, double[]),
+     * @see #pointsOnWhichSideOfPlane(ArrayList, double[]),
      * description* where the plane is defined by plane equation, for
      * descriptiona * full description.
      *
