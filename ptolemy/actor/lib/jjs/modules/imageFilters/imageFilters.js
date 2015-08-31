@@ -123,7 +123,7 @@ var filters = {};
  *  @return An array of filter names.
  */
 exports.filters = function() {
-    return ['Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
+    return ['Annotate', 'Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
             'Bump', 'ChannelMix', 'Chrome', 'Circle',
             'ColorHalftone', 'Contour', 'Contrast', 'Crop',
             'Crystallize',
@@ -143,7 +143,19 @@ exports.filter = function(image, filterName, options) {
     image = image.asAWTImage();
     var filter = filters[filterName];
     if (! filter) {
-        var Filter = Java.type('com.jhlabs.image.' + filterName + 'Filter');
+        var root = 'com.jhlabs.image.';
+        var Filter = null;
+        try {
+            Filter = Java.type(root + filterName + 'Filter');
+        } catch(ex) {
+            // Try alternative location.
+            try {
+                Filter = Java.type(root + 'svg.' + filterName + 'Filter');
+            } catch(ex) {
+                error('Cannot find filter: ' + filterName);
+                return image;
+            }
+        }
         filter = new Filter();
         filters[filterName] = filter;
     }
