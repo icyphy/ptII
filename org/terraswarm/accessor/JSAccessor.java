@@ -55,7 +55,6 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
-import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -279,20 +278,6 @@ public class JSAccessor extends JavaScript {
             // The above will have the side effect that a script will not be saved
             // when you save the model. Force it to be saved.
             attribute.setPersistent(true);
-        } else if (attribute == accessorSource) {
-            try {
-                // Create a URIAttribute so that if the icon makes external
-                // references, it can use relative file names, relative to the
-                // location of the accessor.
-                // Use FileParameter to preprocess the source to resolve
-                // relative classpaths and references to $CLASSPATH, etc.
-                URL sourceURL = _sourceToURL(accessorSource.asURL().toExternalForm(), false);
-                URIAttribute uriAttribute = new URIAttribute(this, "_uri");
-                uriAttribute.setURL(sourceURL);
-            } catch (Throwable e) {
-                // Ignore. The only effect will be that icons don't load properly
-                // if they make references to external files.
-            }
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
             // Update the static cached version of this variable.
             _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
