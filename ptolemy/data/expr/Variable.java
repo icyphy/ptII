@@ -69,6 +69,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// Variable
@@ -1850,7 +1851,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     || (!(ex instanceof UndefinedConstantOrIdentifierException))
                     && !(ex instanceof CircularDependencyError)) {
                 throw new IllegalActionException(this, ex,
-                        "Error evaluating expression: " + _currentExpression);
+                        "Error evaluating expression:\n" 
+                                + StringUtilities.truncateString(_currentExpression, 80, 1));
             }
         } finally {
             workspace().doneReading();

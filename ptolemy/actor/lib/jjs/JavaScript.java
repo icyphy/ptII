@@ -474,6 +474,11 @@ public class JavaScript extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == script) {
+            // NOTE: The try-catch is a bad idea: During copying, exceptions
+            // occur during MoMLVariableCheck to find out whether a variable
+            // is defined. This causes errors to be reported that should not
+            // be reported.
+            /*
             try {
                 _createEngineAndEvaluateSetup();
             } catch (Exception e) {
@@ -487,6 +492,8 @@ public class JavaScript extends TypedAtomicActor {
                     throw new IllegalActionException(this, e, "Cancelled");
                 }
             }
+            */
+            _createEngineAndEvaluateSetup();
         } else {
             super.attributeChanged(attribute);
         }
@@ -712,7 +719,6 @@ public class JavaScript extends TypedAtomicActor {
                 continue;
             }
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
-            // FIXME: This could be null if the port has been deleted, but not the parameter.
             if (portParameter.update()) {
                 proxy._hasNewInput(true);
                 foundNewInput = true;

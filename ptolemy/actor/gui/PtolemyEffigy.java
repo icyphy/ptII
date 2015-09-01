@@ -123,7 +123,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             MessageHandler.error("Change failed: ", exception);
         } else if (!change.isErrorReported()) {
             change.setErrorReported(true);
-            MessageHandler.error("Change failed: " + change.getDescription(),
+            MessageHandler.error("Change failed: "
+                    + StringUtilities.truncateString(change.getDescription(), 80, 1),
                     exception);
         }
     }

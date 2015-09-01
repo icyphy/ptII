@@ -98,10 +98,10 @@ public class VergilErrorHandler implements ErrorHandler {
         // FIXME: This pattern window actually is never set.
         Component parentWindow = UndeferredGraphicalMessageHandler.getContext();
 
-        // If the element is longer than 80 characters, we split it
-        // into shorter new line separated strings.
-        String message = "Error encountered in:\n"
-                + StringUtilities.split(element) + "\n"
+        // If the element is long, we truncate it.
+        String message = "Error encountered in XML element:\n"
+                + StringUtilities.truncateString(element, 80, 1)
+                + "\n"
                 + exception.getMessage();
 
         Object[] messageArray = new Object[1];

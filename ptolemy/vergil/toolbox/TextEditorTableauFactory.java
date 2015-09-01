@@ -260,8 +260,7 @@ public class TextEditorTableauFactory extends TableauFactory
                             + " with value " + token.toString();
                 }
             } catch (IllegalActionException e) {
-                textToEdit = "Error retrieving the value of " + attributeToEdit.getName()
-                        + ": " + e.getMessage();
+                textToEdit = ((Variable)attributeToEdit).getExpression();
             }
         }
         return textToEdit;
