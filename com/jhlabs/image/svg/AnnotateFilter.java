@@ -128,7 +128,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     
     /** Get the horizontal offset for the graphic, in pixels.
      *  @return The horizontal offset for the graphic, in pixels.
-     *  @see #setXOffset(String)
+     *  @see #setXOffset(double)
      */
     public double getXOffset() {
         return _xOffset;
@@ -136,7 +136,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
 
     /** Get the vertical offset for the graphic, in pixels.
      *  @return The vertical offset for the graphic, in pixels.
-     *  @see #setYOffset(String)
+     *  @see #setYOffset(double)
      */
     public double getYOffset() {
         return _yOffset;
