@@ -93,6 +93,17 @@ public class AutoTests extends ModelTests {
                     + System.getProperty("user.dir"));
             return;
         }
+        // Only check for the JSAccessor class if there are auto tests.
+        // MoMLParser.tcl had a test that was reporting different
+        // results between running using ptjacl and JUnit because
+        // JUnit was always instantiating a JSAccessor, even
+        // if there were no auto tests.  This was causing
+        // "StreamChangeRequest.changeExecuted(): AccessorIconLoader succeeded"
+        // to appear in the listener.
+        if (!AutoTests._haveCheckedForJSAccessor) {
+            AutoTests._haveCheckedForJSAccessor = true;
+            AutoTests._checkForJSAccessor();
+        }
         if (modelFileIsOK(fullPath)) {
             System.out.println("----------------- testing " + fullPath);
             System.out.flush();
@@ -161,8 +172,11 @@ public class AutoTests extends ModelTests {
             return false;
         }
         return true;
-    }
+    } 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected fields                  ////
+    
     /** The org.terraswarm.accessor.JSAccessor class, which is tested
      * by reloading Accessors.
      */
@@ -171,7 +185,10 @@ public class AutoTests extends ModelTests {
     /** The method that reloads all the accessors in a CompositeEntity. */
     protected static Method _jsAccessorReloadAllAccessorsMethod = null;
 
-    static {
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private static void _checkForJSAccessor() {
         try {
             _jsAccessorClass = Class
                 .forName("org.terraswarm.accessor.JSAccessor");
@@ -187,4 +204,10 @@ public class AutoTests extends ModelTests {
             _jsAccessorReloadAllAccessorsMethod = null;
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** True if we have checked for JSAccessor. */
+    private static boolean _haveCheckedForJSAccessor = false;
 }
