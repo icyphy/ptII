@@ -52,6 +52,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////
 //// PTParser.jjt
@@ -193,7 +194,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression \u005c"" + stringIn + "\u005c"");
+                    "Error parsing expression\n\"" 
+                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                            + "\"");
         }
         ASTPtRootNode primary = (ASTPtRootNode) rootNode.jjtGetChild(0);
         primary.jjtSetParent(null);
@@ -221,7 +224,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 rootNode.displayParseTree(" ");
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression \u005c"" + stringIn + "\u005c"");
+                    "Error parsing expression\n\"" 
+                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                            + "\"");
         }
         ASTPtRootNode primary = (ASTPtRootNode) rootNode.jjtGetChild(0);
         primary.jjtSetParent(null);
@@ -253,7 +258,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression \u005c"" + stringIn + "\u005c"");
+                    "Error parsing expression\n\"" 
+                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                            + "\"");
         } finally {
             token_source.SwitchTo(DEFAULT);
         }
@@ -284,7 +291,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             map = startAssignmentList();
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression \u005c"" + stringIn + "\u005c"");
+                    "Error parsing expression\n\"" 
+                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                            + "\"");
         }
         return map;
     }
