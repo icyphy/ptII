@@ -2532,9 +2532,8 @@ public final class LinAlg {
      * resides, where the plane is defined by its normal and a point
      * on the plane.
      *
-     * @see #pointsOnWhichSideOfPlane(ArrayList, double[]),
-     * description* where the plane is defined by plane equation, for
-     * descriptiona * full description.
+     * See @{link #pointsOnWhichSideOfPlane(ArrayList, double[])},
+     * where the plane is defined by plane equation
      *
      * @param points an arraylist of 3D points (in coord. frame A)
      * @param normal vector for a surface (need not be unit length)
