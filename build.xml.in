@@ -387,6 +387,12 @@ For example:
 	<patternset refid="ptII.excludes" />
 	<exclude name="org/ptolemy/websensor/controller/" />
 	<exclude name="ptolemy/apps/websensor/src/main/java/org/ptolemy/websensor/controller/" />
+	<exclude name="ptolemy/actor/ptalon/demo/ptinyos/SendAndReceiveCnt/output" />
+	<exclude name="ptolemy/actor/ptalon/demo/ptinyos/SenseToLeds/output" />
+	<exclude name="ptolemy/domains/ptinyos/demo/CntToLedsAndRfm/output" />
+	<exclude name="ptolemy/domains/ptinyos/demo/RfmToLeds/output" />
+	<exclude name="ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output" />
+	<exclude name="ptolemy/domains/ptinyos/demo/SenseToLeds/output" />
       </packageset>	
     </javadoc>
   </target>
