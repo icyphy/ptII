@@ -750,6 +750,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII11.0.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/diva" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/doc" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII11.0.devel/edu" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/jars.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/lbnl" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.0.devel/lib" targetdir="$INSTALL_PATH"/>
