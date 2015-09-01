@@ -1542,6 +1542,14 @@ WebExporter {
             URIAttribute modelURI = (URIAttribute) model.getAttribute("_uri",
                     URIAttribute.class);
             if (modelURI != null) {
+                // If a model is remote, then don't look for toc.htm.
+                if (!modelURI.getURI().toString().startsWith("file:")) {
+                    System.out.println("Can't find toc: " + model.getFullName()
+                            + ": _uri is "
+                            + modelURI.getURI() + ", which does not start with \"file:\"");
+                    return "";
+                }
+
                 // Look in the current directory for toc.htm or toc.html, then
                 // look for ../../doc/toc.htm and then ../../doc/toc.html.
                 File modelFile = new File(modelURI.getURI());
@@ -1559,6 +1567,8 @@ WebExporter {
                                     tocFile = null;
                                 }
                             }
+                        } else {
+                            tocFile = null;
                         }
                     }
                 }
@@ -1590,6 +1600,7 @@ WebExporter {
         } catch (Throwable throwable) {
             System.out.println("Failed to find toc for " + model.getFullName()
                     + ": " + throwable);
+            throwable.printStackTrace();
             return "";
         }
         return "";
