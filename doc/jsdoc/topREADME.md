@@ -3,7 +3,7 @@
 
 The following objects provide bundles of functions. An accessor that uses one or more of these modules must declare that requirement using the [require][1] tag or JavaScript function. 
 
-See also the [auto-generated doc files][2] for the current version of the Ptolemy II/Nashorn host implementation of these modules. 
+As these modules are very much under development, these interface definitions may change. For the most up-to-date interface specifications, see the [auto-generated doc files][2] for the current version of the Ptolemy II/Nashorn host implementation of these modules. 
 
 
 
