@@ -884,6 +884,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _treeView.setModel(null);
             _treeView.setUI(null);
             _treeView = null;
+            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#ManagerAgain_treeViewModel
+            _treeViewModel = null;
         }
 
         // Top.dispose() sets all the AbstractAction to null.
