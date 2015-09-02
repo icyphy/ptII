@@ -579,11 +579,12 @@ public class WebSocketHelper extends VertxHelperBase {
                             try {
                                 Thread.sleep(_timeBetweenRetries);
                             } catch (InterruptedException e) {
-                                _currentObj
-                                        .callMember("emit", "error",
-                                                "Reconnection thread has been interrupted.");
-                                _wsIsOpen = false;
-                                _wsFailed = e;
+                                synchronized(_actor) {
+                                    _currentObj.callMember("emit", "error",
+                                            "Reconnection thread has been interrupted.");
+                                    _wsIsOpen = false;
+                                    _wsFailed = e;
+                                }
                                 return;
                             }
                             synchronized (_actor) {
