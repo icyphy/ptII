@@ -194,7 +194,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression\n\"" 
+                    "Error parsing expression:\n\"" 
                             + StringUtilities.truncateString(stringIn, 80, 1) 
                             + "\"");
         }
@@ -224,7 +224,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 rootNode.displayParseTree(" ");
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression\n\"" 
+                    "Error parsing expression:\n\"" 
                             + StringUtilities.truncateString(stringIn, 80, 1) 
                             + "\"");
         }
@@ -258,7 +258,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression\n\"" 
+                    "Error parsing expression:\n\"" 
                             + StringUtilities.truncateString(stringIn, 80, 1) 
                             + "\"");
         } finally {
@@ -291,7 +291,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             map = startAssignmentList();
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression\n\"" 
+                    "Error parsing expression:\n\"" 
                             + StringUtilities.truncateString(stringIn, 80, 1) 
                             + "\"");
         }
