@@ -143,13 +143,15 @@ test MoMLVariableChecker-1.1 {copy a const that refers another parameter } {
 </group>
   in .top
 Because:
-Error evaluating expression: myParam
+Error evaluating expression:
+myParam
   in .top.Const.value
 Because:
 The ID myParam is undefined.
   in .top.Const.value
 Because:
-Error evaluating expression: myParam
+Error evaluating expression:
+myParam
   in .top.Const.value
 Because:
 The ID myParam is undefined.}}
