@@ -85,14 +85,16 @@ test TimedDelay-3.2 {test with negative delay} {
     $timedDelayAmount setExpression "-1.0"
     catch {$timedDelayAmount validate} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: -1.0
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression:
+-1.0
   in .top.TimedDelay.delay
 Because:
 Cannot have negative delay: -1.0
   in .top.TimedDelay
   in .top.TimedDelay.delay
 Because:
-Error evaluating expression: -1.0
+Error evaluating expression:
+-1.0
   in .top.TimedDelay.delay
 Because:
 Cannot have negative delay: -1.0
