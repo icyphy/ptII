@@ -110,53 +110,10 @@ test Commutator-4.1 {run with mutations} {
     # from SDFScheduler._setBufferSize
     list $results \
 	    [enumToTokenValues [$rec getRecord 0]]
-} {{StreamChangeRequest.changeExecuted(): <group>
-<entity name="commutator">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</entity>
-<entity name="ramp1">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</entity>
-<entity name="ramp2">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</entity>
-<entity name="rec">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2"/>
-</entity>
-</group> succeeded
-StreamChangeRequest.changeExecuted(): <group>
-<relation name="r1">
-<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</relation>
-<relation name="_R">
-<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2"/>
-</relation>
-<relation name="_R2">
-<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</relation>
-</group> succeeded
-StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
+} {{StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
 StreamChangeRequest.changeExecuted(): <deleteRelation name="r1"/> succeeded
-StreamChangeRequest.changeExecuted(): <group>
-<entity name="commutator">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</entity>
-<entity name="ramp2">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</entity>
-<entity name="rec">
-<property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</entity>
-</group> succeeded
-StreamChangeRequest.changeExecuted(): <group>
-<relation name="_R">
-<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</relation>
-<relation name="_R2">
-<property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1"/>
-</relation>
-</group> succeeded
-}} {0 0 1}
+StreamChangeRequest.changeExecuted(): Record firings per iteration succeeded
+} {0 0 1}}
 
 test Commutator-5.1 {test under DE} {
     set e0 [deModel 6.0]

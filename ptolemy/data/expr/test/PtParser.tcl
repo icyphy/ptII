@@ -234,8 +234,8 @@ a TokenMgrError, which is _not_ a ParseException } {
     regsub -all [java::call System getProperty "line.separator"] \
 	        $errmsg "\n" output
     set lines [split $output "\n"]
-    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "" at line 1, column 1.}}
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2] [lindex $lines 3]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {"\0"} Because: {Encountered "" at line 1, column 1.}}
 
 ######################################################################
 ####
@@ -596,7 +596,8 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(\"foo\")"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: cos("foo")
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression:
+cos("foo")
   in .E.v1
 Because:
 No function found matching cos(string)}}
@@ -842,7 +843,7 @@ test PtParser-15.0 {Test parsing to end of expression.} {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "1 + 2 foo"} Because: {Encountered " <ID> "foo "" at line 1, column 7.}}
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {"1 + 2 foo"} Because:}
 
 
 ######################################################################
@@ -981,7 +982,8 @@ test PtParser-18.3 {Test expressions with backslashes.} {
     set p [java::new ptolemy.data.expr.PtParser]
     catch {[set root [ $p {generateParseTree String} "\"\\\""]] toString} res
     list $res
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\""
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:
+""\""
 Because:
 Unterminated backslash sequence in string: "\"}}
 
@@ -989,7 +991,8 @@ test PtParser-18.4 {Test expressions with backslashes.} {
     set p [java::new ptolemy.data.expr.PtParser]
     catch {[set root [ $p {generateParseTree String} "\"\\dsdfsdf\""]] toString} res
     list $res
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\dsdfsdf""
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:
+""\dsdfsdf""
 Because:
 Unknown backslash sequence: \dsdfsdf}}
 
@@ -1007,7 +1010,7 @@ test PtParser-18.6 {Test bad expression.} {
 	        $errmsg "\n" output
     set lines [split $output "\n"]
     list $lines
-} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Encountered "" at line 1, column 1.} {Was expecting one of:} {    }}}
+} {{{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {"\0"} Because: {Encountered "" at line 1, column 1.} {Was expecting one of:} {    }}}
 
 test PtParser-18.7 {Test expression with comment.} {
     set p [java::new ptolemy.data.expr.PtParser]
@@ -1103,8 +1106,8 @@ test PtParser-19.10 {Test String mode with {}} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        $errmsg "\n" output
     set lines [split $output "\n"]
-    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""} Because: {Encountered "<EOF>" at line 0, column 0.}}
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2] [lindex $lines 3]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {""} Because: {Encountered "<EOF>" at line 0, column 0.}}
 
 test PtParser-20.0 {Test nil Token} {
     set p1 [java::new ptolemy.data.expr.PtParser]
@@ -1131,8 +1134,8 @@ test PtParser-21.2 {Test the smallest short token 32768s} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        $errmsg "\n" output
     set lines [split $output "\n"]
-    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "32768s"} Because: {Unable to convert token 32768s to an integer or long}}
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2] [lindex $lines 3]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {"32768s"} Because: {Unable to convert token 32768s to an integer or long}}
 
 test PtParser-21.3 {Test the smallest short token -32767s} {
     set p [java::new ptolemy.data.expr.PtParser]
@@ -1161,5 +1164,5 @@ test PtParser-21.6 {Test the smallest short token -(32768s)} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        $errmsg "\n" output
     set lines [split $output "\n"]
-    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "-(32768s)"} Because: {Unable to convert token 32768s to an integer or long}}
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2] [lindex $lines 3]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression:} {"-(32768s)"} Because: {Unable to convert token 32768s to an integer or long}}
