@@ -134,6 +134,7 @@
     <pathelement location="lib/smackx.jar" />
     <pathelement location="lib/socketio.jar" />
     <pathelement location="lib/sootclasses.jar" />
+    <pathelement location="lib/svgSalamander.jar" />
     <pathelement location="ptolemy/distributed/jini/jar/jini-core.jar" />
     <pathelement location="ptolemy/distributed/jini/jar/jini-ext.jar" />
     <pathelement location="ptolemy/distributed/jini/jar/sun-util.jar" />
