@@ -2097,9 +2097,16 @@ FiringsRecordable {
             _relationWidthInference = null;
         }
 
-        if (container == null) {
-            setManager(null);
-        }
+        // FIXME: Don't call setManager(null) here or else
+        // java -classpath $PTII ptolemy.moml.MoMLSimpleApplication ptolemy/domains/wireless/test/auto/Zigbee.xml
+        // will throw a NPE.
+
+        // However, if we don't set the manager to null, we will leak
+        // memory here.
+
+        //if (container == null) {
+        //    setManager(null);
+        //}
 
         super.setContainer(container);
 
