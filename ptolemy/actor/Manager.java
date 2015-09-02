@@ -1669,6 +1669,11 @@ public class Manager extends NamedObj implements Runnable {
      *          for a relation.
      */
     private void _inferWidths() throws IllegalActionException {
+        if (_container == null) {
+            throw new NullPointerException("The container of the manager "
+                    + getFullName() + " was null. "
+                    + "Try calling composite.setManager().");                    
+        }
         if (_container.needsWidthInference()) {
             State previousState = _state;
             try {
