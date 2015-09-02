@@ -450,16 +450,17 @@ public class Manager extends NamedObj implements Runnable {
                 // Handle throwable with exception handlers,
                 // if there are any.
                 if (initialThrowable != null) {
-                    if (_container == null) {
+                    if (_container == null || _container.get() == null) {
                         throw new InternalErrorException(this,
                                 initialThrowable,
                                 "The container of the manager was null. "
                                         + "Try calling composite.setManager().");
                     }
                     // Look for attributes and entities that implement ExceptionHandler.
-                    List<ExceptionHandler> exceptionHandlersList = _container
+                    CompositeActor container = _container.get();
+                    List<ExceptionHandler> exceptionHandlersList = container
                             .attributeList(ExceptionHandler.class);
-                    exceptionHandlersList.addAll(_container
+                    exceptionHandlersList.addAll(container
                             .entityList(ExceptionHandler.class));
                     boolean exceptionHandled = false;
                     for (ExceptionHandler exceptionHandler : exceptionHandlersList) {
@@ -467,7 +468,7 @@ public class Manager extends NamedObj implements Runnable {
                         // to handle the same exception. So we iterate all
                         // of the exception handlers, at least until one
                         // those throws an exception.
-                        if (exceptionHandler.handleException(_container,
+                        if (exceptionHandler.handleException(container,
                                 initialThrowable)) {
                             exceptionHandled = true;
                         }
@@ -593,7 +594,10 @@ public class Manager extends NamedObj implements Runnable {
      */
     @Override
     public NamedObj getContainer() {
-        return _container;
+        if (_container == null) {
+            return null;
+        } 
+        return _container.get();
     }
 
     /** Return the iteration count, which is the number of iterations
@@ -692,7 +696,12 @@ public class Manager extends NamedObj implements Runnable {
             }
 
             _setState(INITIALIZING);
-            _container.initialize();
+            if (_container == null || _container.get() == null) {
+                throw new InternalErrorException(this, null,
+                        "The container of the manager was null. "
+                        + "Try calling composite.setManager().");
+            }
+            _container.get().initialize();
 
             // Since we have just initialized all actors, clear the
             // list of actors pending initialization.
@@ -738,8 +747,9 @@ public class Manager extends NamedObj implements Runnable {
      *   is no container.
      */
     public boolean iterate() throws KernelException {
-        if (_container == null) {
-            throw new IllegalActionException(this, "No model to execute!");
+        if (_container == null || _container.get() == null) {
+            throw new IllegalActionException(this, "No model to execute!  "
+                    + "Try calling composite.setManager()");
         }
 
         boolean result = true;
@@ -815,9 +825,10 @@ public class Manager extends NamedObj implements Runnable {
             // returns false, it means "I don't want to be fired now."
             // If postfire returns false, it means "I don't want to
             // ever be fired again."
-            if (_container.prefire()) {
-                _container.fire();
-                result = _container.postfire();
+            CompositeActor container = _container.get();
+            if (container.prefire()) {
+                container.fire();
+                result = container.postfire();
             }
         } finally {
             _workspace.doneReading();
@@ -959,8 +970,9 @@ public class Manager extends NamedObj implements Runnable {
                         "The model is already running.");
             }
 
-            if (_container == null) {
-                throw new IllegalActionException(this, "No model to run!");
+            if (_container == null || _container.get() == null) {
+                throw new IllegalActionException(this, "No model to run!  "
+                                        + "Try calling composite.setManager().");
             }
 
             _setState(PREINITIALIZING);
@@ -1004,7 +1016,7 @@ public class Manager extends NamedObj implements Runnable {
             // the inside of the higher-order components is constructed
             // based on the parameter values.
             // EAL 5/31/02.
-            _container.preinitialize();
+            _container.get().preinitialize();
             //_container.createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
             //_container.createSchedule(); // Undid this change temporarily since the move of createReceivers breaks HDF
             executeChangeRequests();
@@ -1166,7 +1178,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception TypeConflictException If a type conflict is detected.
      */
     public void resolveTypes() throws TypeConflictException {
-        if (!(_container instanceof TypedCompositeActor)) {
+        if (!(_container.get() instanceof TypedCompositeActor)) {
             return;
         }
 
@@ -1174,7 +1186,7 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.getReadAccess();
             _setState(RESOLVING_TYPES);
 
-            TypedCompositeActor.resolveTypes((TypedCompositeActor) _container);
+            TypedCompositeActor.resolveTypes((TypedCompositeActor) _container.get());
         } finally {
             _workspace.doneReading();
         }
@@ -1286,7 +1298,7 @@ public class Manager extends NamedObj implements Runnable {
         // where finish() might be called before the spawned thread
         // actually starts up.
         _finishRequested = false;
-        _thread = new PtolemyRunThread(this, _container.getName());
+        _thread = new PtolemyRunThread(this, _container.get().getName());
         // Priority set to the minimum to get responsive UI during execution.
         _thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
@@ -1361,7 +1373,9 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         // Terminate the entire hierarchy as best we can.
-        _container.terminate();
+        if (_container != null && _container.get() != null) {
+            _container.get().terminate();
+        }
         _setState(CORRUPTED);
     }
 
@@ -1455,7 +1469,7 @@ public class Manager extends NamedObj implements Runnable {
                                 + _state.getDescription());
             }
 
-            if (_container == null) {
+            if (_container == null || _container.get() == null) {
                 throw new IllegalActionException(this, "No model to run!");
             }
 
@@ -1463,7 +1477,7 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         // Wrap up the topology
-        _container.wrapup();
+        _container.get().wrapup();
 
         // Process all change requests. If the model reaches this wrap up
         // state due to the occurrence of an exception during execution,
@@ -1531,7 +1545,7 @@ public class Manager extends NamedObj implements Runnable {
             _disposeOfThreads();
         }
 
-        _container = compositeActor;
+        _container = new WeakReference<CompositeActor>(compositeActor);
     }
 
     /** Notify listeners that execution has completed.
@@ -1669,16 +1683,16 @@ public class Manager extends NamedObj implements Runnable {
      *          for a relation.
      */
     private void _inferWidths() throws IllegalActionException {
-        if (_container == null) {
+        if (_container == null || _container.get() == null) {
             throw new NullPointerException("The container of the manager "
                     + getFullName() + " was null. "
-                    + "Try calling composite.setManager().");                    
+                    + "Try calling composite.setManager().");
         }
-        if (_container.needsWidthInference()) {
+        if (_container.get().needsWidthInference()) {
             State previousState = _state;
             try {
                 _setState(INFERING_WIDTHS);
-                _container.inferWidths();
+                _container.get().inferWidths();
             } finally {
                 _setState(previousState);
             }
@@ -1694,7 +1708,7 @@ public class Manager extends NamedObj implements Runnable {
     private long _afterInitTime = 0;
 
     // The top-level CompositeActor that contains this Manager
-    private CompositeActor _container = null;
+    private WeakReference<CompositeActor> _container = null;
 
     /** An execution identifier.  See
      * #getExecutionIdentifier(Throwable throwable)
