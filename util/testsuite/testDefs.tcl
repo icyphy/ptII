@@ -114,13 +114,37 @@ if [catch {java::call ptolemy.actor.injection.ActorModuleInitializer initializeI
     puts "Warning: Could not invoke ptolemy.actor.injection.ActorModuleInitializer initializeInjector.  This is only a problem if you want to run models."
 }
 
+# Perform file prefix substitution.
+# We have a non-Ptolemy verison of the
+# StringUtilities.substituteFilePrefix() method because
+# $PTII/adm/test/ant.tcl invokes "ant clean" and so the
+# StringUtilities .class file might not exist.
+proc substituteFilePrefix {prefix target replacement} {
+    set prefixString [java::new String $prefix]
+    set targetString [java::new String $target]
+    if { [$targetString startsWith $prefixString] } {
+	return $replacement[string range $target 1 [string length $prefix]]
+    } else {
+	set prefixCanonicalPath [[java::new java.io.File $prefix] getCanonicalPath]
+	set targetCanonicalPath [[java::new java.io.File $target] getCanonicalPath]
+	set prefixCanonicalString [java::new String $prefixCanonicalPath]
+	set targetCanonicalString [java::new String $targetCanonicalPath]
+
+	if { [$targetCanonicalString startsWith $prefixCanonicalString] } {
+	    return $replacement[string range $targetCanonicalString 1 [string length $prefixCanonicalString]]
+	}
+    }
+}
 proc scriptName {} {
     global argv0 PTII
     #set filename [file join [pwd] [info script]]
     #set file [java::new java.io.File $filename]
     #set canonicalPath [$file getCanonicalPath]
+    #set relativeFilename \
+    #	[java::call ptolemy.util.StringUtilities substituteFilePrefix \
+    #	     $PTII [file join [pwd] [info script]] {$PTII}]
     set relativeFilename \
-	[java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	[substituteFilePrefix \
 	     $PTII [file join [pwd] [info script]] {$PTII}]
     if [ regexp {testsuite/auto.tcl$} $relativeFilename] {
 	return
