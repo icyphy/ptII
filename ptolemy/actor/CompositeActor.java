@@ -2099,15 +2099,15 @@ FiringsRecordable {
 
         // FIXME: Don't call setManager(null) here or else
         // java -classpath $PTII ptolemy.moml.MoMLSimpleApplication ptolemy/domains/wireless/test/auto/Zigbee.xml
-        // will throw a NPE.
+        // will throw a NPE because MoMLParser calls
+        // setContainer(null) if there is a problem with the
+        // LinkVisualizer change request.
 
         // However, if we don't set the manager to null, we will leak
-        // memory here.
+        // memory here.  So, our solution is to modify Manager so that
+        // _container is a WeakReference.
 
-        //if (container == null) {
-        //    setManager(null);
-        //}
-
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#containerInCompositeActor
         super.setContainer(container);
 
         Director director = getDirector();
