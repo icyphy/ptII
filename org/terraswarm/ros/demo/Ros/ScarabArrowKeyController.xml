@@ -9,16 +9,16 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for the RosPublisher and RosSubscriber accessors, with the Scarab simulator.&#10;&#10;To use this with the Scarab simulation, you must have a Scarab or Scarab simulator&#10;publishing (current position) to the /pose topic, &#10;and subscibing to the /goal topic (for waypoints).&#10;The Scarab/simulator must also be running rosbridge to expose its topics to&#10;non-ROS programs. &#10;&#10;Follow instructions to setup simulation at &#10;https://www.terraswarm.org/accessors/wiki/Main/InstallingTheScarabsROSPackages#Run&#10; &#10;This accessor needs a RosSubscriber, subscribed to the /pose topic to give it pose input. &#10;It computes the next waypoint, based on arrow key input and outputs it to ScarabGoalPublisher,&#10;which will publish it to the goal topic. &#10;'U' moves robot forward, 'L' rotates left, 'R' rotates right, 'D' returns to origin.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-195.0, 395.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 412.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={249, 80, 1018, 848}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={249, 27, 1038, 869}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 759]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000198">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{146.43434405940638, 253.62956373762376}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 379.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -27,14 +27,14 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="ArrowKeySensor" class="ptolemy.actor.lib.gui.ArrowKeySensor">
         <doc>Create a JFrame for sensing up, left, right, and down arrow key presses and releases</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 157.5]">
         </property>
     </entity>
     <entity name="NewGoal" class="ptolemy.actor.lib.gui.Display">
@@ -42,7 +42,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1375, 387]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 272.5]">
         </property>
     </entity>
     <entity name="CurrentPose" class="ptolemy.actor.lib.gui.Display">
@@ -50,13 +50,13 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1242, 144]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 337.5]">
         </property>
     </entity>
     <entity name="RosSubscriber2" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor subscribes to a pre-established ROS topic.&lt;br&gt;&#10; *  It communicates to ROS through the rosbridge web socket, and extends the &#10; *  WebSocketClient accessor to do so. &#10; *  It has a 'topic' parameter, that must be prefixed with a '/' eg: '/noise'.&lt;br&gt;. &#10; *  The other parameters configure how the data is to be received according to the rosbridge specification:&#10; *  https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#344-subscribe&#10; *&#10; *  @accessor RosSubscriber&#10; *  @parameter {string} topic The ROS topic to subscribe to.&#10; *  @parameter {int} throttle_rate The minimum amount of time (in ms) that must elapse between messages sent. Defaults to 0.&#10; *  @parameter {int} queue_length The ROS size of the queue to buffer messages. Messages are buffered as a result of the throttle_rate. Defaults to 1.&#10; *  @parameter {int} fragment_size The maximum size that a message can take before it is to be fragmented. Defaults to 1000. Ptolemy will close the model if fragment size is too large (not sure what the maximum is).&#10; *  @parameter {string} compression A string to specify the compression scheme to be used on messages. Options are &quot;none&quot; (default) and &quot;png&quot;. &#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; *&#10; */&#10;&#10;&#10;/** Sets up by accessor by inheriting inputs, outputs and parameters from setup() in WebSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is the ROS topic to subscribe to. */&#10;exports.setup = function() {&#10;&#10;   extend('WebSocketClient');&#10;&#10;   parameter('topic', {&#10;      type: &quot;string&quot;,&#10;      value: &quot;&quot;&#10;   });&#10;   parameter('throttle_rate', {&#10;      type: &quot;int&quot;,&#10;      value: 0&#10;   });&#10;   parameter('queue_length', {&#10;      type: &quot;int&quot;,&#10;      value: 10&#10;   });&#10;   parameter('fragment_size', {&#10;      type: &quot;int&quot;,&#10;      value: 10000&#10;   });&#10;   parameter('compression', {&#10;      type: &quot;string&quot;,&#10;      value: 'none'&#10;   });&#10;   &#10;}&#10;&#10;/** Overrides the toSendInputHandler to throw an error if called. A subscriber should not be publishing inputs. */&#10;exports.toSendInputHandler = function() {&#10;   console.error('This is a subscriber and does not take input to publish.');&#10;}&#10;&#10;/** Inherits initialize from webSocketClient.&lt;br&gt;&#10;    Sends a message to rosbridge to start subscribing to the topic on input 'topic'.*/ &#10;exports.initialize = function() {&#10;  this.ssuper.initialize.apply(this);&#10;&#10;  exports.sendToWebSocket({&#10;      &quot;op&quot;: &quot;subscribe&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;throttle_rate&quot;: getParameter('throttle_rate'),&#10;      &quot;queue_length&quot;: getParameter('queue_length'),&#10;      &quot;fragment_size&quot;: getParameter('fragment_size'),&#10;      &quot;compression&quot;: getParameter('compression')&#10;  });&#10;}&#10;&#10;/** Unsubscribe from the topic. Close websocket connections by calling wrapup of WebSocketClient */&#10;exports.wrapup = function() {&#10;   var unsubscribe = {&#10;      &quot;op&quot;: &quot;unsubscribe&quot;,&#10;      &quot;topic&quot;: getParameter('topic')&#10;   }&#10;   exports.sendToWebSocket(unsubscribe);&#10;   this.ssuper.wrapup();&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor subscribes to a pre-established ROS topic.&lt;br&gt;&#10; *  It communicates to ROS through the rosbridge web socket, and extends the &#10; *  WebSocketClient accessor to do so. &#10; *  It has a 'topic' parameter, that must be prefixed with a '/' eg: '/noise'.&lt;br&gt;. &#10; *  The other parameters configure how the data is to be received according&#10; *  to the rosbridge specification:&#10; *  https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#344-subscribe&#10; *&#10; *  @accessor robotics/RosSubscriber&#10; *  @parameter {string} topic The ROS topic to subscribe to.&#10; *  @parameter {int} throttleRate The minimum amount of time (in ms)&#10; *   that must elapse between messages sent. Defaults to 0.&#10; *  @parameter {int} queueLength The ROS size of the queue to buffer messages.&#10; *   Messages are buffered as a result of the throttleRate. Defaults to 1.&#10; *  @parameter {int} fragment_size The maximum size that a message can take&#10; *   before it is to be fragmented. Defaults to 1000. Ptolemy will close the&#10; *   model if fragment size is too large (not sure what the maximum is).&#10; *  @parameter {string} compression A string to specify the compression&#10; *   scheme to be used on messages. Options are &quot;none&quot; (default) and &quot;png&quot;. &#10; *  @parameter {boolean} outputCompleteResponseOnly A flag which if set to true&#10; *   will cause the accessor to delay in sending messages on the &quot;received&quot; port&#10; *   until it has concatenated the data fields from message fragments back into&#10; *   the original unfragmented message. Otherwise it will send the message&#10; *   fragments as they come in.&#10; *  @output {boolean} connected The status of the web socket connection.&#10; *  @output {JSON} received The data received from the web socket server.&#10; *  @author Marcus Pan, Matt Weber&#10;&#10;&#10; *  @version $$$$Id$$$$ &#10; *&#10; */&#10;&#10;&#10;/** Sets up by accessor by inheriting inputs, outputs and parameters from setup() in WebSocketClient.&lt;br&gt;&#10; *  Adds a 'topic' input which is the ROS topic to subscribe to. */&#10;exports.setup = function() {&#10;&#10;   extend('net/WebSocketClient');&#10;&#10;   parameter('topic', {&#10;      type: &quot;string&quot;,&#10;      value: &quot;&quot;&#10;   });&#10;   parameter('throttleRate', {&#10;      type: &quot;int&quot;,&#10;      value: 0&#10;   });&#10;   parameter('queueLength', {&#10;      type: &quot;int&quot;,&#10;      value: 10&#10;   });&#10;   parameter('fragmentSize', {&#10;      type: &quot;int&quot;,&#10;      value: 10000&#10;   });&#10;   parameter('outputCompleteResponseOnly', {&#10;      type: &quot;boolean&quot;,&#10;      value: true&#10;   });&#10;   parameter('compression', {&#10;      type: &quot;string&quot;,&#10;      value: 'none'&#10;   });&#10;   &#10;}&#10;&#10;/** Overrides the toSendInputHandler to throw an error if called. A subscriber should not be publishing inputs. */&#10;exports.toSendInputHandler = function() {&#10;   console.error('This is a subscriber and does not take input to publish.');&#10;}&#10;&#10;/** Inherits initialize from webSocketClient.&lt;br&gt;&#10;    Sends a message to rosbridge to start subscribing to the topic on input 'topic'.*/ &#10;exports.initialize = function() {&#10;  this.ssuper.initialize.apply(this);&#10;&#10;  exports.sendToWebSocket({&#10;      &quot;op&quot;: &quot;subscribe&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;throttle_rate&quot;: getParameter('throttleRate'),&#10;      &quot;queue_length&quot;: getParameter('queueLength'),&#10;      &quot;fragment_size&quot;: getParameter('fragmentSize'),&#10;      &quot;compression&quot;: getParameter('compression')&#10;  });&#10;}&#10;&#10;/** Unsubscribe from the topic. Close websocket connections by calling wrapup of WebSocketClient */&#10;exports.wrapup = function() {&#10;   var unsubscribe = {&#10;      &quot;op&quot;: &quot;unsubscribe&quot;,&#10;      &quot;topic&quot;: getParameter('topic')&#10;   }&#10;   exports.sendToWebSocket(unsubscribe);&#10;   this.ssuper.wrapup();&#10;}&#10;&#10;//Combines fragments into the original message. If the message is incomplete this function&#10;//returns null. When the entire message has been received it returns the whole message.&#10;exports.defragmentMessage = (function() {&#10;  &#10;  //This closure remembers the number and content of fragments already seen.&#10;  var originalMessage = &quot;&quot;;&#10;  var fragmentCount = 0;&#10;  &#10;  var processMessage = function(message){&#10;&#10;    //Check for missing fragment&#10;    if(fragmentCount != message.num){&#10;      console.error(&quot;Fragment &quot; + fragmentCount + &quot; of message is missing. Instead received fragment number &quot; + message.num);&#10;    }&#10;&#10;    //Accumulate data from fragment.&#10;    if( fragmentCount == 0){&#10;      originalMessage = message.data;&#10;      fragmentCount++;&#10;      return null;&#10;    } else if(fragmentCount &lt; message.total - 1 ){&#10;      originalMessage += message.data;&#10;      fragmentCount++;&#10;      return null;&#10;    } else if(fragmentCount == message.total -1 ){&#10;      originalMessage += message.data;&#10;      fragmentCount = 0;&#10;      return originalMessage;&#10;    } else {&#10;      console.error(&quot;Error in reconstructing fragments. Fragment count exceeds indicated total.&quot;);&#10;      return null;&#10;    }&#10;  };&#10;  return processMessage;&#10;})();&#10;&#10;&#10;exports.onMessage = function(message){&#10;  &#10;  var messageToSend;&#10;  if( getParameter('outputCompleteResponseOnly') &amp;&amp; message.op == &quot;fragment&quot;){&#10;    messageToSend = this.defragmentMessage(message)&#10;    if(messageToSend == null){&#10;      return;&#10;    }&#10;  } else {&#10;    messageToSend = message;&#10;  }&#10;&#10;  send('received', messageToSend);&#10;}&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/RosSubscriber.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/robotics/RosSubscriber.js">
         </property>
         <property name="server" class="ptolemy.data.expr.StringParameter" value="192.168.131.15">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -78,7 +78,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 257.5]">
         </property>
         <property name="throttle_rate" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -89,6 +89,50 @@
         <property name="compression" class="ptolemy.data.expr.StringParameter" value="none">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="application/json">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="application/json">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="60000">
+        </property>
+        <property name="maxFrameSize" class="ptolemy.data.expr.Parameter" value="65536">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor subscribes to a pre-established ROS topic.&lt;br&gt;&#10; It communicates to ROS through the rosbridge web socket, and extends the &#10; WebSocketClient accessor to do so. &#10; It has a 'topic' parameter, that must be prefixed with a '/' eg: '/noise'.&lt;br&gt;. &#10; The other parameters configure how the data is to be received according&#10; to the rosbridge specification:&#10; https://github.com/RobotWebTools/rosbridge_suite/blob/develop/ROSBRIDGE_PROTOCOL.md#344-subscribe&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan, Matt Weber">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="topic (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The ROS topic to subscribe to.">
+            </property>
+            <property name="fragment_size (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;int&quot;]}) The maximum size that a message can take&#10;  before it is to be fragmented. Defaults to 1000. Ptolemy will close the&#10;  model if fragment size is too large (not sure what the maximum is).">
+            </property>
+            <property name="compression (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) A string to specify the compression&#10;  scheme to be used on messages. Options are &quot;none&quot; (default) and &quot;png&quot;.">
+            </property>
+            <property name="connected (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;boolean&quot;]}) The status of the web socket connection.">
+            </property>
+            <property name="received (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The data received from the web socket server.">
+            </property>
+            <property name="throttleRate (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;int&quot;]}) The minimum amount of time (in ms)&#10;  that must elapse between messages sent. Defaults to 0.">
+            </property>
+            <property name="queueLength (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;int&quot;]}) The ROS size of the queue to buffer messages.&#10;  Messages are buffered as a result of the throttleRate. Defaults to 1.">
+            </property>
+            <property name="outputCompleteResponseOnly (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;boolean&quot;]}) A flag which if set to true&#10;  will cause the accessor to delay in sending messages on the &quot;received&quot; port&#10;  until it has concatenated the data fields from message fragments back into&#10;  the original unfragmented message. Otherwise it will send the message&#10;  fragments as they come in.">
+            </property>
+        </property>
+        <property name="throttleRate" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="queueLength" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="fragmentSize" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <property name="outputCompleteResponseOnly" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,9 +151,9 @@
         </port>
     </entity>
     <entity name="RosPublisher" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor advertises and publishes to a ROS topic. It extends the WebSocketClient to communicate to a rosbridge websocket. &lt;br&gt;&#10; * During intialize, it will advertise the  topic it will publish to, along with its type. The purpose of 'advertise' here is to establish the ROS topic if isn't already established. This is slightly different from the 'advertise' function in NodeHandle which simply publicizes that the the node will be publishing messages to the topic. &#10; * &lt;li&gt;If the topic does not already exist, and the type is valid, a topic will be established with this type.&lt;/li&gt; &#10; * &lt;li&gt;If the topic already exists with a different type, no new topic will be established&#10; * &lt;li&gt;If the topic already exists with the same type, no new topic will be established.&lt;/li&gt; &#10; * &lt;li&gt;If the topic already exists but the type isn't resolved, no new topic will be established.&lt;/li&gt;&#10; *  On input from 'toSend', this accessor publishes that input to the &#10; *  aforementioned topic. &#10; *  The input from 'toSend' must be in JSON form, and must match the message&#10; *  datatype that the ROS topic is expecting. For example if ROS topic is &#10; *  expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; *  as follows:&#10; *  &lt;pre&gt; { &quot;data&quot;: &quot;hello world&quot; } &lt;/pre&gt;&#10; *  Some ROS types contain a header which consists of a sequence, timestamp, and a frame_id. If the ROS type has a header, you can either:&#10; *  &lt;li&gt;send the message on toSend without the header, and check the parameter 'addHeader'. This sends the message with a header with only the frame_id specified, and rosbridge will add the sequence and timestamp for you. &#10; *  &lt;li&gt;send a fully formed message with all fields in the header included and don't check the parameter 'addHeader'.&lt;/li&gt; &#10; *  This accessor doesn't do any error checking. All error messages orginate from rosbridge and will appear on the console running rosbridge. More information ccan be viewed on the &lt;a href='https://github.com/RobotWebTools/rosbridge_suite/blob/groovy-devel/ROSBRIDGE_PROTOCOL.md'&gt;rosbridge protocol specification&lt;/a&gt; site.&#10; *&#10; *  @accessor RosPublisher&#10; *  @parameter {string} topic The ROS topic to publish to.&#10; *  @parameter {string} ROStype The ROS datatype of the topic.&#10; *  @parameter {boolean} addHeader If (true), this accessor will send a header with a blank seq and timestamp field, and rosbridge will add the header for you.&#10; *  @parameter {string} frame_id The frame_id of the header (only needed if a header is required).&#10; *  @author Marcus Pan &#10; *  @version $$Id$$ &#10; */&#10;&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in WebSocketClient. Adds additional parameters regarding the ROS topic to publish to. */ &#10;exports.setup = function() {&#10;   extend('WebSocketClient');&#10;   parameter('topic', {&#10;      type: &quot;string&quot;&#10;   });&#10;   parameter('ROStype', {&#10;      type: &quot;string&quot;&#10;   });&#10;   parameter('addHeader', {&#10;      type: &quot;boolean&quot;,&#10;      value: false&#10;   });&#10;   parameter('frame_id', {&#10;      type: &quot;string&quot;,&#10;      value: &quot;&quot;&#10;   });&#10;}&#10;&#10;/** Override inputHandler on 'toSend' from WebSocketClient */&#10;exports.toSendInputHandler = function() {&#10;   var msg = get('toSend');&#10;//add a header with a blank time and sequence info. This will be added by rosbridge.&#10;   if (getParameter('addHeader')) {&#10;      msg.header = {&#10;         &quot;frame_id&quot;: getParameter('frame_id')&#10;      };&#10;   }&#10;      &#10;   var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;msg&quot;: msg &#10;   }&#10;&#10;   exports.sendToWebSocket(data);&#10;}&#10;&#10;/**  Inherits initialize from WebSocketClient. &#10; *   Advertise the topic we are publishing to.*/ &#10;exports.initialize = function() {&#10;   this.ssuper.initialize.apply(this);&#10;&#10;   var advertise = {&#10;      &quot;op&quot;: &quot;advertise&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;type&quot;: getParameter('ROStype')&#10;   };&#10;   exports.sendToWebSocket(advertise);&#10;   &#10;}&#10;&#10;/** Unadvertise the topic and inherit wrapup from WebSocketClient */&#10;exports.wrapup = function() {&#10;   var unadvertise = {&#10;      &quot;op&quot;: &quot;unadvertise&quot;,&#10;      &quot;topic&quot;: getParameter('topic')&#10;   };&#10;   exports.sendToWebSocket(unadvertise);&#10;   this.ssuper.wrapup();&#10;}&#10;&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor advertises and publishes to a ROS topic. It extends the WebSocketClient to communicate to a rosbridge websocket. &lt;br&gt;&#10; * During intialize, it will advertise the  topic it will publish to, along with its type. The purpose of 'advertise' here is to establish the ROS topic if isn't already established. This is slightly different from the 'advertise' function in NodeHandle which simply publicizes that the the node will be publishing messages to the topic. &#10; * &lt;li&gt;If the topic does not already exist, and the type is valid, a topic will be established with this type.&lt;/li&gt; &#10; * &lt;li&gt;If the topic already exists with a different type, no new topic will be established&#10; * &lt;li&gt;If the topic already exists with the same type, no new topic will be established.&lt;/li&gt; &#10; * &lt;li&gt;If the topic already exists but the type isn't resolved, no new topic will be established.&lt;/li&gt;&#10; *  On input from 'toSend', this accessor publishes that input to the &#10; *  aforementioned topic. &#10; *  The input from 'toSend' must be in JSON form, and must match the message&#10; *  datatype that the ROS topic is expecting. For example if ROS topic is &#10; *  expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; *  as follows:&#10; *  &lt;pre&gt; { &quot;data&quot;: &quot;hello world&quot; } &lt;/pre&gt;&#10; *  Some ROS types contain a header which consists of a sequence, timestamp, and a frame_id. If the ROS type has a header, you can either:&#10; *  &lt;li&gt;send the message on toSend without the header, and check the parameter 'addHeader'. This sends the message with a header with only the frame_id specified, and rosbridge will add the sequence and timestamp for you. &#10; *  &lt;li&gt;send a fully formed message with all fields in the header included and don't check the parameter 'addHeader'.&lt;/li&gt; &#10; *  This accessor doesn't do any error checking. All error messages orginate from rosbridge and will appear on the console running rosbridge. More information ccan be viewed on the &lt;a href='https://github.com/RobotWebTools/rosbridge_suite/blob/groovy-devel/ROSBRIDGE_PROTOCOL.md'&gt;rosbridge protocol specification&lt;/a&gt; site.&#10; *&#10; *  @accessor robotics/RosPublisher&#10; *  @parameter {string} topic The ROS topic to publish to.&#10; *  @parameter {string} ROStype The ROS datatype of the topic.&#10; *  @parameter {boolean} addHeader If (true), this accessor will send a header with a blank seq and timestamp field, and rosbridge will add the header for you.&#10; *  @parameter {string} frame_id The frame_id of the header (only needed if a header is required).&#10; *  @author Marcus Pan &#10; *  @version $$$$Id$$$$ &#10; */&#10;&#10;&#10;/** Sets up by accessor by inheriting inputs from setup() in WebSocketClient. Adds additional parameters regarding the ROS topic to publish to. */ &#10;exports.setup = function() {&#10;   extend('net/WebSocketClient');&#10;   parameter('topic', {&#10;      type: &quot;string&quot;&#10;   });&#10;   parameter('ROStype', {&#10;      type: &quot;string&quot;&#10;   });&#10;   parameter('addHeader', {&#10;      type: &quot;boolean&quot;,&#10;      value: false&#10;   });&#10;   parameter('frame_id', {&#10;      type: &quot;string&quot;,&#10;      value: &quot;&quot;&#10;   });&#10;}&#10;&#10;/** Override inputHandler on 'toSend' from WebSocketClient */&#10;exports.toSendInputHandler = function() {&#10;   var msg = get('toSend');&#10;//add a header with a blank time and sequence info. This will be added by rosbridge.&#10;   if (getParameter('addHeader')) {&#10;      msg.header = {&#10;         &quot;frame_id&quot;: getParameter('frame_id')&#10;      };&#10;   }&#10;      &#10;   var data = {&#10;      &quot;op&quot;: &quot;publish&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;msg&quot;: msg &#10;   }&#10;&#10;   exports.sendToWebSocket(data);&#10;}&#10;&#10;/**  Inherits initialize from WebSocketClient. &#10; *   Advertise the topic we are publishing to.*/ &#10;exports.initialize = function() {&#10;   this.ssuper.initialize.apply(this);&#10;&#10;   var advertise = {&#10;      &quot;op&quot;: &quot;advertise&quot;,&#10;      &quot;topic&quot;: getParameter('topic'),&#10;      &quot;type&quot;: getParameter('ROStype')&#10;   };&#10;   exports.sendToWebSocket(advertise);&#10;   &#10;}&#10;&#10;/** Unadvertise the topic and inherit wrapup from WebSocketClient */&#10;exports.wrapup = function() {&#10;   var unadvertise = {&#10;      &quot;op&quot;: &quot;unadvertise&quot;,&#10;      &quot;topic&quot;: getParameter('topic')&#10;   };&#10;   exports.sendToWebSocket(unadvertise);&#10;   this.ssuper.wrapup();&#10;}&#10;&#10;&#10;">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/RosPublisher.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/robotics/RosPublisher.js">
         </property>
         <property name="server" class="ptolemy.data.expr.StringParameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -141,7 +185,35 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 162.5]">
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="application/json">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="application/json">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="60000">
+        </property>
+        <property name="maxFrameSize" class="ptolemy.data.expr.Parameter" value="65536">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor advertises and publishes to a ROS topic. It extends the WebSocketClient to communicate to a rosbridge websocket. &lt;br&gt;&#10;During intialize, it will advertise the  topic it will publish to, along with its type. The purpose of 'advertise' here is to establish the ROS topic if isn't already established. This is slightly different from the 'advertise' function in NodeHandle which simply publicizes that the the node will be publishing messages to the topic. &lt;/p&gt;&#10;&lt;p&gt;&lt;li&gt;If the topic does not already exist, and the type is valid, a topic will be established with this type.&lt;/li&gt; &lt;/p&gt;&#10;&lt;p&gt;&lt;li&gt;If the topic already exists with a different type, no new topic will be established&lt;/p&gt;&#10;&lt;p&gt;&lt;li&gt;If the topic already exists with the same type, no new topic will be established.&lt;/li&gt; &lt;/p&gt;&#10;&lt;p&gt;&lt;li&gt;If the topic already exists but the type isn't resolved, no new topic will be established.&lt;/li&gt;&#10; On input from 'toSend', this accessor publishes that input to the &#10; aforementioned topic. &#10; The input from 'toSend' must be in JSON form, and must match the message&#10; datatype that the ROS topic is expecting. For example if ROS topic is &#10; expecting &lt;code&gt;std_msgs/String&lt;/code&gt;, then the input in 'toSend' should be&#10; as follows:&#10; &lt;pre&gt; { &amp;quot;data&amp;quot;: &amp;quot;hello world&amp;quot; } &lt;/pre&gt;&#10; Some ROS types contain a header which consists of a sequence, timestamp, and a frame_id. If the ROS type has a header, you can either:&#10; &lt;li&gt;send the message on toSend without the header, and check the parameter 'addHeader'. This sends the message with a header with only the frame_id specified, and rosbridge will add the sequence and timestamp for you. &#10; &lt;li&gt;send a fully formed message with all fields in the header included and don't check the parameter 'addHeader'.&lt;/li&gt; &#10; This accessor doesn't do any error checking. All error messages orginate from rosbridge and will appear on the console running rosbridge. More information ccan be viewed on the &lt;a href='https://github.com/RobotWebTools/rosbridge_suite/blob/groovy-devel/ROSBRIDGE_PROTOCOL.md'&gt;rosbridge protocol specification&lt;/a&gt; site.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Marcus Pan">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="topic (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The ROS topic to publish to.">
+            </property>
+            <property name="ROStype (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The ROS datatype of the topic.">
+            </property>
+            <property name="addHeader (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;boolean&quot;]}) If (true), this accessor will send a header with a blank seq and timestamp field, and rosbridge will add the header for you.">
+            </property>
+            <property name="frame_id (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The frame_id of the header (only needed if a header is required).">
+            </property>
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -168,7 +240,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 152.5]">
         </property>
         <property name="U" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -210,27 +282,23 @@
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="newGoal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[325.0, 150.0]">
+        <vertex name="vertex1" value="[550.0, 167.5]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[130.0, 180.0]">
+        <vertex name="vertex1" value="[355.0, 197.5]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
