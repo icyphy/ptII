@@ -340,7 +340,7 @@ test Variable-5.4 {Check setting expression to null} {
 #     list $r1 $r2
 # } {{"cb"} {ptolemy.kernel.util.IllegalActionException: Object name: .V2:
 # Error evaluating expression:
-P1+P2
+# P1+P2
 # In variable: .V2
 # Caused by:
 #  ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.}}
