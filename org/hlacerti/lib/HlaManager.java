@@ -249,7 +249,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
         _strucuralInformation = new HashMap<Integer, StructuralInformation>();
 
-        _hlaStartTime = null;
         _hlaTimeStep = null;
         _hlaLookAHead = null;
 
@@ -299,12 +298,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isTimeRegulator.setVisibility(Settable.NOT_EDITABLE);
         attributeChanged(isTimeRegulator);
 
-        hlaStartTime = new Parameter(this, "hlaStartTime");
-        hlaStartTime.setDisplayName("logical start time (s)");
-        hlaStartTime.setExpression("0.0");
-        hlaStartTime.setTypeEquals(BaseType.DOUBLE);
-        attributeChanged(hlaStartTime);
-
         hlaLookAHead = new Parameter(this, "hlaLookAHead");
         hlaLookAHead.setDisplayName("lookahead (s)");
         hlaLookAHead.setExpression("0.1");
@@ -328,7 +321,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         isCreator = new Parameter(this, "isCreator");
         isCreator.setTypeEquals(BaseType.BOOLEAN);
         isCreator.setExpression("false");
-        isCreator.setDisplayName("Is synchronization point creator ?");
+        isCreator.setDisplayName("Is synchronization point register ?");
         attributeChanged(isCreator);
 
         hlaTimeUnit = new Parameter(this, "hlaTimeUnit");
@@ -359,10 +352,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** Boolean value, 'true' if the Federate is declared time regulator
      *  'false' if not. This parameter must contain an BooleanToken. */
     public Parameter isTimeRegulator;
-
-    /** Value of the start time of the Federate. This parameter must contain
-     *  an DoubleToken. */
-    public Parameter hlaStartTime;
 
     /** Value of the time step of the Federate. This parameter must contain
      *  an DoubleToken. */
@@ -464,15 +453,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         } else if (attribute == isTimeRegulator) {
             _isTimeRegulator = ((BooleanToken) isTimeRegulator.getToken())
                     .booleanValue();
-
-        } else if (attribute == hlaStartTime) {
-            Double value = ((DoubleToken) hlaStartTime.getToken())
-                    .doubleValue();
-            if (value < 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have negative value !");
-            }
-            _hlaStartTime = value;
+            
         } else if (attribute == hlaTimeStep) {
             Double value = ((DoubleToken) hlaTimeStep.getToken()).doubleValue();
             if (value < 0) {
@@ -537,8 +518,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         newObject._noObjectDicovered = _noObjectDicovered;
 
         try {
-            newObject._hlaStartTime = ((DoubleToken) hlaStartTime.getToken())
-                    .doubleValue();
             newObject._hlaTimeStep = ((DoubleToken) hlaTimeStep.getToken())
                     .doubleValue();
             newObject._hlaLookAHead = ((DoubleToken) hlaLookAHead.getToken())
@@ -1422,9 +1401,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** Indicates the use of the enableTimeRegulation() service. */
     private Boolean _isTimeRegulator;
 
-    /** Start time of the Ptolemy Federate HLA logical clock. */
-    private Double _hlaStartTime;
-
     /** Time step of the Ptolemy Federate. */
     private Double _hlaTimeStep;
 
@@ -1559,7 +1535,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     private void _initializeTimeAspects() throws IllegalActionException {
 
         // Initialize Federate timing values.
-        _federateAmbassador.initializeTimeValues(_hlaStartTime, _hlaLookAHead);
+        _federateAmbassador.initializeTimeValues(0.0, _hlaLookAHead);
 
         // Declare the Federate time constrained (if true).
         if (_isTimeConstrained) {
