@@ -12,6 +12,11 @@
  * with options in the sublist (if there are options).
  * <font color="red">FIXME:</font> <i>This list is incomplete. See
  * $PTII/com/jhlabs/image for a complete list of filters</i>.
+ * * __Annotate__: Annotate an image with an overlaid SVG graphic.
+ *   * _Graphic_: The SVG graphic. Defaults to an empty string, which specifies a default graphic. Overrides GraphicURI.
+ *   * _GraphicURI_: The location of the graphic. Defaults to an empty string, which specifies a default graphic.
+ *   * _XOffset_: The horizontal offset for the graphic in pixels. Defaults to 0.
+ *   * _YOffset_: The vertical offset for the graphic in pixels. Defaults to 0.
  * * __Average__: Average the 3x3 neighbourhood of each pixel, providing a simple blur.
  * * __BicubicScale__: Scale an image using bi-cubic interpolation.
  *   * _Height_: The height of the result image, in pixels. Defaults to 256.
