@@ -168,7 +168,7 @@ import ptolemy.kernel.util.Workspace;
  * <i>istimeRegulator</i> to specify time-regulator Federate. The combination of
  * both parameters is possible and is recommended.
  * </p><p>
- * Parameters <i>hlaStartTime</i>, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
+ * Parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
  * are used to specify Hla Timing attributes of a Federate.
  * </p><p>
  * Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
@@ -705,32 +705,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
             return proposedTime;
         }
 
-        // If the proposedTime has already been asked to the HLA/CERTI Federation
-        // then return it.
-
-        // GL: FIXME: Comment this until the clarification with NERA and TARA
-        // and the use of TICK is made.
-
-        /*        if (_lastProposedTime != null) {
-                    if (_lastProposedTime.compareTo(proposedTime) == 0) {
-
-                    // Even if we avoid the multiple calls of the HLA Time management
-                    // service for optimization, it could be possible to have events
-                    // from the Federation in the Federate's priority timestamp queue,
-                    // so we tick() to get these events (if they exist).
-                    try {
-                        _rtia.tick();
-                    } catch (ConcurrentAccessAttempted e) {
-                        throw new IllegalActionException(this, e, "ConcurrentAccessAttempted ");
-                    } catch (RTIinternalError e) {
-                        throw new IllegalActionException(this, e, "RTIinternalError ");
-                    }
-
-                    return _lastProposedTime;
-                }
-                }
-        */
-
         // If the proposedTime is equal to current time
         // so it has no need to ask for the HLA service
         // then return the currentTime.
@@ -1061,18 +1035,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * is used for proposing a time to advance to.
      * @param proposedTime time stamp of lastFoundEvent
      * @return
-     * @throws IllegalActionException
-     * @throws InvalidFederationTime
-     * @throws FederationTimeAlreadyPassed
-     * @throws TimeAdvanceAlreadyInProgress
-     * @throws FederateNotExecutionMember
-     * @throws SaveInProgress
-     * @throws EnableTimeRegulationPending
-     * @throws EnableTimeConstrainedPending
-     * @throws RestoreInProgress
-     * @throws RTIinternalError
-     * @throws ConcurrentAccessAttempted
-     * @throws SpecifiedSaveLabelDoesNotExist
      */
     private Time _eventsBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException, InvalidFederationTime,
@@ -1117,7 +1079,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             + certiProposedTime.getTime()
                             + ") by calling tick2()");
                 }
-
                 _rtia.tick2();
             }
 
@@ -1168,17 +1129,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * is used for proposing a time to advance to.
      * @param proposedTime time stamp of lastFoundEvent
      * @return a valid time to advance to
-     * @throws IllegalActionException
-     * @throws InvalidFederationTime
-     * @throws FederationTimeAlreadyPassed
-     * @throws TimeAdvanceAlreadyInProgress
-     * @throws FederateNotExecutionMember
-     * @throws SaveInProgress
-     * @throws EnableTimeRegulationPending
-     * @throws EnableTimeConstrainedPending
-     * @throws RestoreInProgress
-     * @throws RTIinternalError
-     * @throws ConcurrentAccessAttempted
      */
     private Time _timeSteppedBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException, InvalidFederationTime,
@@ -1365,7 +1315,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         // Federation, are store in the _subscribedValues queue (see
         // reflectAttributeValues() in PtolemyFederateAmbassadorInner class).
 
-        TimedEvent ravevent;
         Iterator<Entry<String, LinkedList<TimedEvent>>> it = _fromFederationEvents
                 .entrySet().iterator();
 
@@ -1376,7 +1325,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
             LinkedList<TimedEvent> events = elt.getValue();
             while (events.size() > 0) {
 
-                ravevent = events.get(0);
+                TimedEvent ravevent = events.get(0);
 
                 // All rav-events received by HlaSubscriber actors, RAV(tau) with tau < hlaCurrentTime
                 // are put in the event queue with timestamp hlaCurrentTime
@@ -1386,6 +1335,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                 // If any rav-event received by HlaSubscriber actors, RAV(tau) with tau < ptolemy startTime
                 // are put in the event queue with timestamp startTime
+                //FIXME: Or should it be an exception because there is something wrong with 
+                //the overall simulation ?? 
                 if (ravevent.timeStamp.compareTo(_director.getModelStartTime()) < 0) {
                     ravevent.timeStamp = _director.getModelStartTime();
                 }
