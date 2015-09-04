@@ -33,7 +33,10 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c
 
-DIRS =		adapters arduino mbed luminary #renesas xmos
+# PTMBED_DIR is set to mbed and used in
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found by configure
+DIRS =		adapters arduino $(PTMBED_DIR) luminary #renesas xmos
 
 # Root of the Java directory
 ROOT =		../../../../../../..

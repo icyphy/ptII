@@ -2313,6 +2313,48 @@ else
 fi
 
 
+
+#--------------------------------------------------------------------
+#       gcc-arm is a GNU compiler for the Arm processor used by 
+#	the mbed code generator in ptolemy/cg/adapter/generic/program/procedural/c/mbed
+#--------------------------------------------------------------------
+
+# Set to mbed and used in
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
+PTMBED_DIR= 
+
+# We only need to look for vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc if
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed exists
+MBED_USER_DIR="$PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed"
+if test ! -d "$MBED_USER_DIR"; then
+    PT_MSG_STATUS([$MBED_USER_DIR is not present,
+    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed])
+else
+    AC_MSG_CHECKING([for arm-none-eabi-gcc])
+    AC_ARG_WITH(gcc-arm, [  --with-gcc-arm=GCC_BINARY       use gcc-arm
+                          defaults to \$PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc],
+	PTGCC_ARM=$withval,
+	PTGCC_ARM=$PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc)
+
+    if test -f "$PTGCC_ARM"; then
+	PT_MSG_RESULT([$PTGCC_ARM])
+        # Set to mbed and used in
+        # $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+        # if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
+	PTMBED_DIR=mbed
+    fi	
+
+    if test "$PTMBED_DIR" = ""; then
+        AC_MSG_WARN([Failed to find $PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+    so the Mbed CG facility will not be run.])
+    fi
+fi
+
+if test -z "$PTMBED_DIR"; then
+   updateExcludes "ptolemy/cg/adapter/generic/program/procedural/c/mbed"
+fi 
+
 #--------------------------------------------------------------------
 #       iText PDF is a "a library that allows you to generate PDF files on the fly."
 #	http://itextpdf.com/
@@ -7193,6 +7235,11 @@ AC_SUBST(PTMATLAB_MEXEXT)
 
 # Used in $PTII/doc/makefile
 AC_SUBST(PTMATLAB_PACKAGES)
+
+# Set to mbed and used in
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
+AC_SUBST(PTMBED_DIR)
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
