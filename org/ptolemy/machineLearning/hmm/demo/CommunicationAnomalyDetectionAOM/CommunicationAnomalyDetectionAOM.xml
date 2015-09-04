@@ -321,7 +321,7 @@
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside this actor for the hidden markov &#10;model estimator/classifier actors">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[45.0, -20.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[45.0, -20.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="ObserverAndClassifier">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -436,7 +436,7 @@
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compute packet latency">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-65.0, 30.0}">
+                <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-65.0, 30.0}">
                     <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="LatencyEstimate">
                     </property>
                     <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -446,7 +446,7 @@
             <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use every fourth sequence as training data and every other data sequence as test/classify data">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-750.0, -220.0]">
+                <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-750.0, -220.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1391, 634}, maximized=false}">
@@ -709,7 +709,7 @@
                 <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                     <property name="text" class="ptolemy.kernel.util.StringAttribute" value="compute success ratio of the algorithm&#10;by comparing classified labels to the &#10;actual labels ">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-50.0, -110.0]">
+                    <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-50.0, -110.0]">
                         <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="CountTrues">
                         </property>
                         <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -905,13 +905,13 @@
                     </configure>
                 </entity>
                 <entity name="HMMGaussianClassifier" class="org.ptolemy.machineLearning.hmm.HMMGaussianClassifier">
-                    <property name="priorDistribution" class="ptolemy.actor.parameters.PortParameter" value="{0.2947455781542, 0.325321715799, 0.3799327060468}">
+                    <property name="priorDistribution" class="ptolemy.actor.parameters.PortParameter" value="{0.0999992780638, 0.5648221327077, 0.3351785892284}">
                     </property>
-                    <property name="transitionMatrix" class="ptolemy.actor.parameters.PortParameter" value="[0.9811169831589, 0.0188811928028, 1.824038370072475E-6; 0.2070661340301, 0.5537957331159, 0.239138132854; 5.866436675574501E-6, 0.1039523181725, 0.8960418153908]">
+                    <property name="transitionMatrix" class="ptolemy.actor.parameters.PortParameter" value="[0.988936735723, 0.0110512559892, 1.200828787940982E-5; 0.2950580628144, 0.4262084052322, 0.2787335319534; 2.685323824898709E-5, 0.0788690147225, 0.9211041320392]">
                     </property>
-                    <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{0.0824173753937, 0.2403745832651, 0.4093365692331}">
+                    <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="{0.0676105633777, 0.2519304502668, 0.4113543775963}">
                     </property>
-                    <property name="covariance" class="ptolemy.actor.parameters.PortParameter" value="{0.0346922294974, 0.0677191482778, 0.0804068197773}">
+                    <property name="covariance" class="ptolemy.actor.parameters.PortParameter" value="{0.0277687504377, 0.071145802906, 0.0777520597534}">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, -360.0}">
                     </property>
@@ -1978,11 +1978,11 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[609.6801009874732, 387.102668837001]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="WiFi" class="ptolemy.domains.modal.kernel.State">
@@ -1990,21 +1990,21 @@
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[454.6801009874732, 392.102668837001]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="init" class="ptolemy.domains.modal.kernel.State">
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[524.6801009874732, 257.102668837001]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <entity name="highLatencyLink" class="ptolemy.domains.modal.kernel.State">
@@ -2456,7 +2456,7 @@
             <link port="slowLink.state" relation="stateRelation"/>
         </entity>
         <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
-            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.3768387701966">
+            <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.3633586111508">
             </property>
             <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -2550,7 +2550,7 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>LatencyDistribution</title>
-<xRange min="-1.0250000000000001" max="1.1"/>
+<xRange min="-0.22000000000000014" max="0.9900000000000002"/>
 <yRange min="0.0" max="1023.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.005"/>
