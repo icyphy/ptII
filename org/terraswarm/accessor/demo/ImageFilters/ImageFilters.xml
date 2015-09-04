@@ -7,7 +7,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Average">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Average.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,7 +38,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="BicubicScale">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 160.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/BicubicScale.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -69,7 +69,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Block">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 180.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Block.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -100,7 +100,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Border">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 200.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Border.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -131,7 +131,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="BoxBlur">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 220.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/BoxBlur.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -162,7 +162,7 @@
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Bump">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Bump.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -193,7 +193,7 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ChannelMix">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 260.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/ChannelMix.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -224,7 +224,7 @@
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Chrome">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 280.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Chrome.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -255,7 +255,7 @@
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Circle">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 300.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Circle.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -457,7 +457,7 @@
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ColorHalftone">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 320.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/ColorHalftone.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -488,7 +488,7 @@
     <property name="Annotation17" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contour">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 340.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Contour.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -519,7 +519,7 @@
     <property name="Annotation18" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrast">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 360.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Contrast.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -550,7 +550,7 @@
     <property name="Annotation19" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Crop">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 380.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Crop.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -581,7 +581,7 @@
     <property name="Annotation20" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Crystallize">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 400.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Crystallize.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -640,6 +640,37 @@
             </property>
         </property>
         <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/terraswarm/accessor/demo/ImageFilters/Random.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation23" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Annotate">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 120.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Annotate.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/terraswarm/accessor/demo/ImageFilters/Annotate.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{470, 230}">
