@@ -87,6 +87,20 @@ function error(message) {
     actor.error(message);
 }
 
+/** Get a resource, which may be a relative file name or a URL, and return the
+ *  value of the resource as a string.
+ *  Implementations of this function may restrict the locations from which
+ *  resources can be retrieved. This implementation restricts relative file
+ *  names to be in the same directory where the swarmlet model is located or
+ *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
+ *  classpath of the current Java process.
+ *  @param uri A specification for the resource.
+ *  @param timeout The timeout in milliseconds.
+ */
+function getResource(uri, timeout) {
+    return actor.getResource(uri, timeout);
+}
+
 /** Perform a blocking HTTP request.
  *  @param url The url for the request, method, properties, body, timeout) {
  *  @param method the request method for the url connection.
@@ -162,8 +176,9 @@ function readURL(url, timeout) {
     }
     var theURL = new (Java.type('java.net.URL'))(url);
     if (actor.isRestricted
-            && !theURL.getProtocol().toLowerCase().equals("http")) {
-        throw "Actor is restricted. Only HTTP requests will be honored by readURL().";
+            && !theURL.getProtocol().toLowerCase().equals("http")
+            && !theURL.getProtocol().toLowerCase().equals("https")) {
+        throw "Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL().";
     }
     var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
     request.setUrl(theURL);
