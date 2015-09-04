@@ -130,6 +130,22 @@ public class RestrictedJavaScriptInterface {
         return _actor.getPortOrParameterProxy(name);
     }
 
+    /** Get a resource, which may be a file name or a URL, and return the
+     *  value of the resource as a string. If this instance of JavaScript
+     *  is restricted (e.g., it is an accessor), then restrict relative file
+     *  names to be in the same directory where the model is located or
+     *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
+     *  classpath of the current Java process.
+     *  @param uri A specification for the resource.
+     *  @param timeout The timeout in milliseconds.
+     *  @throws IllegalActionException If the uri specifies any protocol other
+     *   than "http" or "https", or if the uri contains any "../", or if the uri
+     *   begins with "/".
+     */
+    public String getResource(String uri, int timeout) throws IllegalActionException {
+        return _actor.getResource(uri, timeout);
+    }
+    
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.

@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.URI;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -64,6 +66,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -884,6 +887,66 @@ public class JavaScript extends TypedAtomicActor {
             return _proxiesByName.get(name);
         }
         return null;
+    }
+    
+    /** Get a resource, which may be a file name or a URL, and return the
+     *  value of the resource as a string. If this instance of JavaScript
+     *  is restricted (e.g., it is an accessor), then restrict relative file
+     *  names to be in the same directory where the model is located or
+     *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
+     *  classpath of the current Java process.
+     *  @param uri A specification for the resource.
+     *  @param timeout The timeout in milliseconds.
+     *  @throws IllegalActionException If the uri specifies any protocol other
+     *   than "http" or "https", or if the uri contains any "../", or if the uri
+     *   begins with "/".
+     */
+    public String getResource(String uri, int timeout) throws IllegalActionException {
+        URI baseDirectory = null;
+        uri = uri.trim();
+        int colon = uri.indexOf(":");
+        if (_restricted && colon >= 0
+                && !(uri.startsWith("http:") || uri.startsWith("https:"))) {
+            throw new IllegalActionException(this, "Protocol not permitted: "
+                    + uri.substring(0, colon)
+                    + " in URI "
+                    + uri);
+        }
+        if (_restricted && (uri.contains("$CWD")
+                || uri.contains("$USER")
+                || uri.contains("$HOME")
+                || uri.contains("$USERNAME")
+                || uri.contains("~"))) {
+            throw new IllegalActionException(this, "Illegal file name for resource: " + uri);
+        }
+
+        if (colon < 0) {
+            // Relative file name is given.
+            if (_restricted && uri.startsWith("/")) {
+                throw new IllegalActionException(this, "Absolute file names not permitted: " + uri);
+            }
+            if (_restricted && uri.contains("../")) {
+                throw new IllegalActionException(this,
+                        "Only file names at or within the model location are permitted: " + uri);
+            }
+            baseDirectory = URIAttribute.getModelURI(this);
+        }
+        
+        try {
+            URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    url.openStream()));
+            StringBuffer contents = new StringBuffer();
+            String input;
+            while ((input = in.readLine()) != null) {
+                contents.append(input);
+                contents.append("\n");
+            }
+            return contents.toString();
+
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e, "Failed to read URI: " + uri);
+        }
     }
 
     /** Create a new JavaScript engine, load the default functions, and
