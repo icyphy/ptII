@@ -7216,13 +7216,13 @@ fi
 PTMBED_DIR=
 
 # We only need to look for vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc if
-# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed exists
-MBED_USER_DIR="$PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed"
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed exists
+MBED_USER_DIR="$PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed"
 if test ! -d "$MBED_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MBED_USER_DIR is not present,
-    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed" >&5
+    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed" >&5
 $as_echo "$MBED_USER_DIR is not present,
-    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed" >&6; }; fi
+    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/mbed" >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for arm-none-eabi-gcc" >&5
 $as_echo_n "checking for arm-none-eabi-gcc... " >&6; }
