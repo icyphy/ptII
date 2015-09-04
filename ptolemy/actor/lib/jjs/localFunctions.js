@@ -61,7 +61,8 @@ Object.setPrototypeOf(exports, {
 });
 
 /** Add a handler function to call when the specified input receives new data.
- *  If the name argument is null, then call the handler when any input receives data.
+ *  If the name argument is null, or if only a single argument is given and it is
+ *  a function, then call the handler when any input receives data.
  *  Return a handle to use in removeInputHandler(). If there are additional arguments
  *  beyond the first two, then those arguments will be passed to the function
  *  when it is invoked. The handler can retrieve the input input value by invoking get().
@@ -77,7 +78,13 @@ Object.setPrototypeOf(exports, {
  */
 function addInputHandler(name, func) {
     if (name && typeof name !== 'string') {
-        throw('name argument is required to be a string. Got: ' + (typeof name));
+        // Tolerate a single argument, a function.
+        if (typeof name === 'function' && arguments.length == 1) {
+            func = name;
+            name = null;
+        } else {
+            throw('name argument is required to be a string. Got: ' + (typeof name));
+        }
     }
     if (!func) {
         func = nullHandlerFunction;
