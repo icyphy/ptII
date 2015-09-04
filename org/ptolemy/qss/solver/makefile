@@ -55,6 +55,7 @@ JSRCS = \
 	LIQSS2Fd.java \
 	QSS1.java \
 	QSS2Fd.java \
+	QSS2FdJac.java \
 	QSS2Pts.java \
 	QSS2Qts.java \
 	QSS3Fd.java \

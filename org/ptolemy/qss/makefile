@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../..
 
-DIRS = util test demo
+DIRS = util solver test demo
 
 # $(ME) is used in ptdir.mk
 ME = org/ptolemy/qss
@@ -48,7 +48,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = qss
-PTCLASSJAR = $(PTPACKAGE).jar
+#PTCLASSJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	solver/solver.jar \
+	util/util.jar
 
 JSRCS = \
 	QSSIntegrator.java 
@@ -71,8 +78,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+all: suball
+install: subinstall jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
