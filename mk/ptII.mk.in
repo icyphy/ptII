@@ -890,6 +890,11 @@ PTMATLAB_MEXEXT = @PTMATLAB_MEXEXT@
 # Used in $PTII/doc/makefile
 PTMATLAB_PACKAGES = @PTMATLAB_PACKAGES@
 
+# Set to mbed and used in
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
+PTMBED_DIR = 	@PTMBED_DIR@
+
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
 PTMESCAL_DIR=	@PTMESCAL_DIR@
