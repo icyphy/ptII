@@ -61,10 +61,10 @@ Object.setPrototypeOf(exports, {
 });
 
 /** Add a handler function to call when the specified input receives new data.
- *  If the name argument is null, or if only a single argument is given and it is
- *  a function, then call the handler when any input receives data.
+ *  If the name argument is null, or if there is no name argument and the first
+ *  argument is a function, then call the handler when any input receives data.
  *  Return a handle to use in removeInputHandler(). If there are additional arguments
- *  beyond the first two, then those arguments will be passed to the function
+ *  beyond the function, then those arguments will be passed to the function
  *  when it is invoked. The handler can retrieve the input input value by invoking get().
  *  Note that with this implementation, it is not necessary to
  *  call removeInputHandler() in the actor's wrapup() function.
@@ -77,11 +77,13 @@ Object.setPrototypeOf(exports, {
  *  @param arguments Additional arguments, if any, to pass to the callback function.
  */
 function addInputHandler(name, func) {
+    var argCount = 2;
     if (name && typeof name !== 'string') {
         // Tolerate a single argument, a function.
         if (typeof name === 'function' && arguments.length == 1) {
             func = name;
             name = null;
+            argCount = 1;
         } else {
             throw('name argument is required to be a string. Got: ' + (typeof name));
         }
@@ -101,7 +103,7 @@ function addInputHandler(name, func) {
     var callback;
     // If there are arguments to the callback, create a new function.
     // Get an array of arguments excluding the first two.
-    var tail = Array.prototype.slice.call(arguments, 2);
+    var tail = Array.prototype.slice.call(arguments, argCount);
     if (tail.length !== 0) {
         callback = function() {
             func.apply(exports, tail);
