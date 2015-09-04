@@ -43,6 +43,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.DoubleArrayMath;
+import ptolemy.math.DoubleMatrixMath;
+import ptolemy.math.SignalProcessing;
 
 ///////////////////////////////////////////////////////////////////
 ////ExpectationMaximization
@@ -204,8 +207,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                     "Parameter guess vectors must have equal lengths.");
         }
 
-        _EMParameterEstimation();
-        System.out.println(likelihood);
+        _EMParameterEstimation(); 
         Token[] mTokens = new Token[_nStates];
         Token[] sTokens = new Token[_nStates];
         Token[] pTokens = new Token[_nStates];
@@ -240,53 +242,24 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
         double[][] s = _sigma[hiddenState];
         double[] m = _mu[hiddenState];
+        if (DoubleMatrixMath.determinant(s) < SignalProcessing.EPSILON) {
+            return 0.0;
+        } 
         return Algorithms.mvnpdf(y, m, s);
     }
 
     @Override
-    protected boolean _checkForConvergence(int iterations) {
-        if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
-                || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
-            // if no convergence in 10 iterations, issue warning message.
-            if ((iterations >= _nIterations - 1)) {
-                // return the guess parameters
-                m_new = _mu0;
-                s_new = _sigma0;
-                A_new = _A0;
-                prior_new = _priors;
-                System.out.println("Failed");
-                throw new InternalErrorException("EM did not converge in " + iterations + " iterations.");
+    protected boolean _checkForConvergence(int iterations) { 
 
-            } else if (_randomize) {
-
-                for (int j = 0 ; j < _obsDimension; j++) {
-                    // randomize means
-                    double minO = _observations[0][j];
-                    double maxO = _observations[0][j];
-                    for (int t = 0; t < _observations.length; t++) {
-                        if (_observations[t][j] < minO) {
-                            minO = _observations[t][j];
-                        }
-                        if (_observations[t][j] > maxO) {
-                            maxO = _observations[t][j];
-                        }
-                    }
-                    double L = maxO - minO;
-                    // make new random guess
-                    for (int i = 0; i < _nStates; i++) {
-                        m_new[i][j] = L / _nStates * Math.random() + L * i / _nStates
-                                + minO;
-                        s_new[i][j][j] = Math.abs((maxO - minO) * Math.random())
-                                / _nStates;
-                    }
-                }
-                A_new = _A0;
-                // sort arrays
-                ///Arrays.sort(m_new);
-                prior_new = _priors;
-            }
+//        double normMatrix = DoubleArrayMath.l2norm(DoubleMatrixMath.fromMatrixToArray(m_new));
+//        if (DoubleMatrixMath.within(_mu, m_new, 0.01*normMatrix)) {
+//            return true;
+//        } 
+        if (Math.abs(likelihood - _likelihood) < _likelihoodThreshold) {
+            return true;
+        } else { 
+            return false;
         }
-        return true;
     }
 
     @Override
@@ -318,10 +291,42 @@ public class HMMGaussianEstimator extends ParameterEstimator {
 
     @Override
     protected void _updateEstimates() {
-        _transitionMatrix = A_new;
-        _sigma = s_new;
-        _mu = m_new;
-        _priorIn = _priors; // set to the original priors
+
+        if (Double.isNaN(m_new[0][0]) || Double.isNaN(s_new[0][0][0])
+                || Double.isNaN(A_new[0][0]) || Double.isNaN(prior_new[0])) {
+            if (_randomize) {
+                for (int j = 0 ; j < _obsDimension; j++) {
+                    // randomize means
+                    double minO = _observations[0][j];
+                    double maxO = _observations[0][j];
+                    for (int t = 0; t < _observations.length; t++) {
+                        if (_observations[t][j] < minO) {
+                            minO = _observations[t][j];
+                        }
+                        if (_observations[t][j] > maxO) {
+                            maxO = _observations[t][j];
+                        }
+                    }
+                    double L = maxO - minO;
+                    // make new random guess
+                    for (int i = 0; i < _nStates; i++) {
+                        m_new[i][j] = L / _nStates * Math.random() + L * i / _nStates
+                                + minO;
+                        s_new[i][j][j] = Math.abs((maxO - minO) * Math.random())
+                                / _nStates;
+                    }
+                }
+                A_new = _A0;
+                // sort arrays
+                ///Arrays.sort(m_new);
+                prior_new = _priors;
+            } 
+        } else { 
+            _transitionMatrix = A_new;
+            _sigma = s_new;
+            _mu = m_new;
+            _priorIn = _priors; // set to the original priors
+        }
     }
 
     /** Mean estimates. */
@@ -333,6 +338,19 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     /**  Standard deviation guess. */
     private double[][][] _sigma0 = null;
 
+    
+    // // if no convergence in 10 iterations, issue warning message.
+//    if ((iterations >= _nIterations - 1)) {
+//        // return the guess parameters
+//        m_new = _mu0;
+//        s_new = _sigma0;
+//        A_new = _A0;
+//        prior_new = _priors;
+//        System.out.println("Failed");
+//        throw new InternalErrorException("EM did not converge in " + iterations + " iterations.");
+//
+//
+//    } else {
     /**  Updated Transition probability matrix estimate. */
     private double[][] A_new = null;
     /**  Updated mean estimate. */
