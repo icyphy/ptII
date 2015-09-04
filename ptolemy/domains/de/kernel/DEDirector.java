@@ -1169,7 +1169,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
             if (_debugging) {
-                _debug("Prefire returns" + newActorFromProposeTime);
+                _debug("Prefire returns " + newActorFromProposeTime);
             }
             return true && newActorFromProposeTime;
         }
