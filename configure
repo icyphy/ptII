@@ -696,6 +696,7 @@ PTOAUTHCLIENT_JAR
 PTMETROII_PACKAGES
 PTMETROII_DIR
 PTMESCAL_DIR
+PTMBED_DIR
 PTMATLAB_PACKAGES
 PTMATLAB_MEXEXT
 PTMATLAB_64LD_ARGS
@@ -996,6 +997,7 @@ with_dbxml
 with_db
 with_dbxmllib
 with_gc_include
+with_gcc_arm
 with_itextpdf
 with_openideutil
 with_openideutillookup
@@ -1711,6 +1713,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/dbxml-2.5.16/install/lib
   --with-gc-include=DIR       use gc.h from DIR
                           defaults to \$PTII/vendors/gc/gc/include
+  --with-gcc-arm=GCC_BINARY       use gcc-arm
+                          defaults to \$PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
   --with-itextpdf=JARFILE       use iText from JARFILE,
                           defaults to \$PTII/vendors/misc/itext/iText.jar
   --with-openideutil=JAR       use org-openide-util.jar from JAR,
@@ -7199,6 +7203,59 @@ $as_echo "$as_me: WARNING: Failed to find gc.h.
    fi
 fi
 
+
+
+#--------------------------------------------------------------------
+#       gcc-arm is a GNU compiler for the Arm processor used by
+#	the mbed code generator in ptolemy/cg/adapter/generic/program/procedural/c/mbed
+#--------------------------------------------------------------------
+
+# Set to mbed and used in
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
+PTMBED_DIR=
+
+# We only need to look for vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc if
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed exists
+MBED_USER_DIR="$PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed"
+if test ! -d "$MBED_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MBED_USER_DIR is not present,
+    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed" >&5
+$as_echo "$MBED_USER_DIR is not present,
+    so we need not find $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile/mbed" >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for arm-none-eabi-gcc" >&5
+$as_echo_n "checking for arm-none-eabi-gcc... " >&6; }
+
+# Check whether --with-gcc-arm was given.
+if test "${with_gcc_arm+set}" = set; then :
+  withval=$with_gcc_arm; PTGCC_ARM=$withval
+else
+  PTGCC_ARM=$PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+fi
+
+
+    if test -f "$PTGCC_ARM"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTGCC_ARM" >&5
+$as_echo "$PTGCC_ARM" >&6; }; fi
+        # Set to mbed and used in
+        # $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+        # if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
+	PTMBED_DIR=mbed
+    fi
+
+    if test "$PTMBED_DIR" = ""; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+    so the Mbed CG facility will not be run." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTII/vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc
+    so the Mbed CG facility will not be run." >&2;}
+    fi
+fi
+
+if test -z "$PTMBED_DIR"; then
+   updateExcludes "ptolemy/cg/adapter/generic/program/procedural/c/mbed"
+fi
 
 #--------------------------------------------------------------------
 #       iText PDF is a "a library that allows you to generate PDF files on the fly."
@@ -14696,6 +14753,11 @@ fi
 
 
 # Used in $PTII/doc/makefile
+
+
+# Set to mbed and used in
+# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
+# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found
 
 
 # Set to mescal and used in $PTII/makefile
