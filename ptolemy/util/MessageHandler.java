@@ -49,7 +49,8 @@ import java.util.Locale;
  reporting errors.  For example, a Swing application will probably
  want to report errors in a dialog box, using for example
  the derived class GraphicalMessageHandler.
- @see ptolemy.gui.GraphicalMessageHandler
+
+ <p>See ptolemy.gui.GraphicalMessageHandler</p>
 
  @author  Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  @version $Id$
