@@ -216,6 +216,7 @@ PTOLEMYUTILFILES = \
 	ptolemy/util/FileUtilities.class \
 	ptolemy/util/MessageHandler.class \
 	ptolemy/util/RunnableExceptionCatcher.class \
+	ptolemy/util/StatusHandler.java \
 	ptolemy/util/StringUtilities.class
 
 # Class files used in all applets and applications
@@ -550,13 +551,14 @@ fixtmpdist:
 	cp "$(PTII)/ptolemy/util/CancelException.java" \
 		"$(PTII)/ptolemy/util/MessageHandler.java" \
 		"$(PTII)/ptolemy/util/RunnableExceptionCatcher.java" \
+		"$(PTII)/ptolemy/util/StatusHandler.java" \
 		"$(PTII)/ptolemy/util/StringUtilities.java" \
 		"$(PTII)/ptolemy/util/SimpleMessageHandler.java" \
 		"$(PTII)/ptolemy/util/ClassUtilities.java" \
 		"$(PTII)/ptolemy/util/FileUtilities.java" \
 		"$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "ExecuteCommands|JVMBitWidth|MultiHashMap.java|OrderedResourceBundle|RecursiveFileFilter|StreamExec|StringBufferExec.java|XSLTUtilities" \
+	egrep -v "DoubleUtilities|ExecuteCommands|JVMBitWidth|MultiHashMap.java|OrderedResourceBundle|RecursiveFileFilter|StreamExec|StringBufferExec.java|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" | \
 		sed "s/ test / /" | \
 		sed "s/\ttest/\t/" > \
@@ -629,6 +631,8 @@ fixtmpdist:
 	# Fix permissions and clean up
 	chmod -R a+r $(PTTMPDIR)/$(PTDIST)
 	$(FIND) $(PTTMPDIR)/$(PTDIST) -name "*.class" -exec rm {} \;
+	# Remove the ptplot/test/junit directory
+	rm -rf $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/test/junit
 
 
 isj:
