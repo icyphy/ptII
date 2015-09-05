@@ -58,6 +58,8 @@ test missingDemos-1.0 {Look for demos listed in configs/doc/demos.html that are 
 
 test missingDemos-2.0 {Run the missingDemos script.} {
     jdkCaptureOutAndErr {
+	# In the installer, missingDemos might not be executable.
+	exec chmod a+x $PTII/ptolemy/configs/test/missingDemos
         exec $PTII/ptolemy/configs/test/missingDemos
     } out err
     puts "Stderr for '$PTII/ptolemy/configs/test/missingDemos' was\n--start--\n$err\n--end--"
