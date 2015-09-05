@@ -159,14 +159,13 @@
       <configure>
         <?moml
           <group>
-            <input source="ptolemy/actor/lib/aspect/aspect.xml"/>
-            <input source="ptolemy/configs/cosimulation.xml"/>
+            <!--input source="ptolemy/actor/lib/aspect/aspect.xml"/-->
+            <!--input source="ptolemy/configs/cosimulation.xml"/-->
             <input source="ptolemy/actor/lib/database/database.xml"/>
             <input source="ptolemy/configs/capecode/gr.xml"/>
-            <input source="ptolemy/actor/lib/image/image.xml"/>
-            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
-            <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
-	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
+            <!--input source="ptolemy/actor/lib/image/image.xml"/-->
+            <!--input source="ptolemy/vergil/actor/lib/interactive.xml"/-->
+	        <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
             <input source="ptolemy/actor/lib/mail/mail.xml"/>
 
             <!-- openmodelica actors not really working -->
