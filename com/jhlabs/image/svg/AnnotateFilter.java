@@ -32,6 +32,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.URI;
 import java.net.URL;
 
 import ptolemy.util.FileUtilities;
@@ -64,7 +67,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     ////                         public methods                    ////
 
     /** Filter the source image, overlaying graphics that has been specified
-     *  by setSvgURI.
+     *  by setGraphicURI.
      *
      *  @param source The source image, on which motion is detected.
      *  @param destination The destination image, on which the graphic is added,
@@ -78,22 +81,40 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         }
         SVGIcon icon = new SVGIcon();
         boolean success = false;
-        if (_svgURI != null) {
+        if (_graphic != null && !_graphic.trim().equals("")) {
             try {
-                URL url = FileUtilities.nameToURL(_svgURI, null, null);
+                Reader reader = new StringReader(_graphic);
+                // NOTE: The second argument is supposed to be a unique name.
+                // If the graphic changes on multiple invocations of this method,
+                // will have to use a new name, or the old graphic will be rendered.
+                URI uri = icon.getSvgUniverse().loadSVG(reader, "/graphic" + _graphicVersion);
+                // Unfortunately, if the string is malformed SVG, the above prints to stderr
+                // and returns null rather than throwing an exception.
+                if (uri != null) {
+                    icon.setSvgURI(uri);
+                    success = true;
+                }
+            } catch (Exception e) {
+                // Print the error an proceed to using defaults.
+                System.err.println("Failed to load graphic: " + e);
+            }
+        }
+        if (_graphicURI != null && !_graphicURI.trim().equals("")) {
+            try {
+                URL url = FileUtilities.nameToURL(_graphicURI, null, null);
                 icon.setSvgURI(url.toURI());
                 success = true;
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // Print the error an proceed to using defaults.
+                System.err.println("Failed to load graphicURI: " + e);
             }
         }
         if (!success) {
             try {
-                URL url = FileUtilities.nameToURL(DEFAULT_SVG_URI, null, null);
+                URL url = FileUtilities.nameToURL(DEFAULT_GRAPHIC_URI, null, null);
                 icon.setSvgURI(url.toURI());
             } catch (Exception e) {
-                // TODO Auto-generated catch block
+                // FIXME Auto-generated catch block
                 e.printStackTrace();
                 
                 // If all else fails, paint default graphic.
@@ -118,12 +139,21 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         return destination;
     }
 
+    /** Return the specified SVG for the graphic, or an empty string
+     *  if none has been specified.
+     *  @return The specified SVG for the graphic.
+     *  @see #setGraphic(String)
+     */
+    public String getGraphic() {
+        return _graphic;
+    }
+
     /** Get the specified URI for the graphic.
      *  @return The specified URI for the graphic.
-     *  @see #setSvgURI(String)
+     *  @see #setGraphicURI(String)
      */
-    public String getSvgURI() {
-        return _svgURI;
+    public String getGraphicURI() {
+        return _graphicURI;
     }
     
     /** Get the horizontal offset for the graphic, in pixels.
@@ -142,11 +172,23 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         return _yOffset;
     }
 
-    /** Set the specified URI for the graphic.
-     *  @see #getSvgURI()
+    /** Set the SVG for the graphic.
+     *  @param graphic An SVG specification for the graphic.
+     *  @see #getGraphic()
      */
-    public void setSvgURI(String svgURI) {
-        _svgURI = svgURI;
+    public void setGraphic(String graphic) {
+        if (!_graphic.equals(graphic)) {
+            _graphicVersion++;
+        }
+        _graphic = graphic;
+    }
+
+    /** Set the specified URI for the graphic.
+     *  @param graphicURI An SVG specification for the graphic.
+     *  @see #getGraphicURI()
+     */
+    public void setGraphicURI(String graphicURI) {
+        _graphicURI = graphicURI;
     }
 
     /** Set the horizontal offset for the graphic.
@@ -176,13 +218,19 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     
-    public static String DEFAULT_SVG_URI = "$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg";
+    public static String DEFAULT_GRAPHIC_URI = "$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The SVG for the graphic, if it has been given. */
+    private String _graphic = "";
+
     /** The URI for the graphic, if one has been given. */
-    private String _svgURI = null;
+    private String _graphicURI = null;
+    
+    /** The version for the graphic. This gets incremented each time _graphic changes. */
+    private int _graphicVersion = 0;
     
     /** The horizontal location for the graphic. */
     private double _xOffset = 0;
