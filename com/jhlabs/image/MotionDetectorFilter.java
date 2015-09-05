@@ -71,6 +71,9 @@ import java.awt.image.BufferedImage;
  *  <li> <i>AreaThreshold</i>: The percentage threshold of image
  *       that has different pixels for motion to be detected
  *       (a double 0-100, with default 0.2).
+ *  <li> <i>ModifyImage</i>: If true (the default), the modify the
+ *       provided image with a visual indication of the location
+ *       and amount of motion.
  *  </ul>
  *  The implementation is taken from the webcam-capture package by
  *  Bartosz Firyn (SarXos), available from:
@@ -156,23 +159,24 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
 
         _previous = modified;
 
-        // FIXME: May want a parameter here whether to generate the modified image.
-        Graphics2D g = destination.createGraphics();
-        g.setColor(Color.WHITE);
-        double s = getMotionArea();
-        g.drawString(String.format("Area: %.2f%%", s), 10, 20);
+        if (_modify) {
+            Graphics2D g = destination.createGraphics();
+            g.setColor(Color.WHITE);
+            double s = getMotionArea();
+            g.drawString(String.format("Area: %.2f%%", s), 10, 20);
 
-        if (_motion) {
-            g.setStroke(new BasicStroke(2));
-            g.setColor(Color.RED);
-            g.drawOval(_cog.x - 5, _cog.y - 5, 10, 10);
-        } else {
-            /* Original would put a green rectangle in the center. Don't do this.
+            if (_motion) {
+                g.setStroke(new BasicStroke(2));
+                g.setColor(Color.RED);
+                g.drawOval(_cog.x - 5, _cog.y - 5, 10, 10);
+            } else {
+                /* Original would put a green rectangle in the center. Don't do this.
             g.setColor(Color.GREEN);
             g.drawRect(_cog.x - 5, _cog.y - 5, 10, 10);
-            */
+                 */
+            }
+            g.dispose();
         }
-        g.dispose();
 
         return destination;
     }
@@ -197,6 +201,14 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
         } else {
             return null;
         }
+    }
+    
+    /** Return whether the filter will modify the provided image with a visual
+     *  indication of the amount and location of the motion.
+     *  @return True if the image will be modified (the default).
+     */
+    public boolean getModifyImage() {
+        return _modify;
     }
     
     /** Return the motion strength (0 = no motion, 100 = full image covered by motion).
@@ -237,6 +249,15 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
             throw new IllegalArgumentException("Area fraction threshold cannot be higher than 100!");
         }
         _areaThreshold = threshold;
+    }
+    
+    /** Specify whether to modify the image with a visual indication of the amount
+     *  and location of the motion.
+     *  @param modify True to modify the image.
+     *  @see #getModifyImage()
+     */
+    public void setModifyImage(boolean modify) {
+        _modify = modify;
     }
 
     /** Set the pixel intensity difference threshold above which pixel is classified as "moved".
@@ -341,6 +362,9 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
 
     /** Gray filter instance. */
     private final GrayFilter _gray = new GrayFilter();
+    
+    /** True to modify the provided image. */
+    private boolean _modify = true;
 
     /** Indicator that motion has been detected by the filter operation. */
     private boolean _motion = false;
