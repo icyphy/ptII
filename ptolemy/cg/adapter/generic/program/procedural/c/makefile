@@ -58,9 +58,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	adapters/adapters.jar \
 	arduino/arduino.jar \
-	luminary/luminary.jar \
-	mbed/mbed.jar
+	luminary/luminary.jar
 
+#	mbed/mbed.jar
 #	renesas/renesas.jar
 #	xmos/xmos.jar
 
