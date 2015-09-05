@@ -32,7 +32,7 @@ package ptolemy.util;
 /**
  This is a message handler that reports errors in a graphical dialog box.
 
- @see ptolemy.gui.GraphicalMessageHandler
+ <p>See ptolemy.gui.GraphicalMessageHandler</p>
 
  @author  Christopher Brooks
  @version $Id$
