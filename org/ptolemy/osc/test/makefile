@@ -37,7 +37,8 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+# PTOSCP5_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTOSCP5_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -84,9 +85,10 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 # We remove certain files from /tmp before and after running.
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	-$(JTCLSH) alljtests.tcl
-	(cd junit; $(MAKE))
+	# No need to run the junit tests here, they replicate the tests already run by make.
+	#(cd junit; $(MAKE))
 
 # 'make clean' removes $(KRUFT)
 KRUFT =
