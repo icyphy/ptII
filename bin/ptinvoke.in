@@ -1532,9 +1532,15 @@ if [ "$error" = "none" ]; then
                 fi		    
 	    fi
 		
-	    if [ -f /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub ]; then
-		echo "Updating JavaApplicationStub from /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"
-                cp /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub $MACAPP_APP/Contents/MacOS/
+            STUB=$PTII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub 
+            if [ ! -f "$STUB" ]; then
+               (cd $PTII/vendors; git clone https://github.com/tofi86/universalJavaApplicationStub.git)
+            fi
+
+	    if [ -f "$STUB" ]; then
+		echo "Updating universalJavaApplicationStub from $STUB";
+                cp $STUB $MACAPP_APP/Contents/MacOS/
+                chmod a+x $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub
             fi		     
 
 	    cat >$MACAPP_PLIST <<EOF
@@ -1614,35 +1620,49 @@ EOF2
 EOF3
            else
        # Not Java 1.6.  See
-       # http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/package_for_mac.html
-       # and http://java.net/projects/appbundler
+       # https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MacJavaApps
      cat >>$MACAPP_PLIST <<EOF4
     <key>CFBundleExecutable</key>
-    <string>JavaAppLauncher</string>
-    <key>JVMRuntime</key>
-    <string>jdk1.8.0_20.jdk</string>
-    <key>JVMMainClassName</key>
-    <string>ptolemy.vergil.VergilApplication</string>
-    <key>JVMOptions</key>
-    <array>
-      <string>-Xmx1024m</string>
-      <string>-Dptolemy.ptII.dir=\$APP_ROOT/../..</string>
-      <string>-classpath</string>
-EOF4
-        echo "foo" | awk '{printf("     <string>$USER_HOME/.ptolemyII/*:$APP_ROOT/../../contrib/contrib.jar:$APP_ROOT/../..")}' >> $MACAPP_PLIST
-	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
-	  awk '{ for(i=1;i<=NF;i++) { printf(":$APP_ROOT/../../%s", $i)}}
-		   END {printf("</string>\n")}' >> $MACAPP_PLIST
-
-	cat >>$MACAPP_PLIST <<EOF6
-      </array>
-      <key>JVMArguments</key>
+    <string>universalJavaApplicationStub</string>
+    <key>JavaX</key>
+    <dict>
+      <key>MainClass</key>
+      <string>ptolemy.vergil.VergilApplication</string>
+      <key>JVMVersion</key>
+      <string>1.8+</string>
+      <key>ClassPath</key>
       <array>
-      <string>$MACAPP_ARGUMENT</string>
+EOF4
+
+      # Generate the list of jar files.
+        echo "foo" | awk '{printf("        <string>$USER_HOME/.ptolemyII/*</string>\n        <string>$JAVAROOT/../../../../../contrib/contrib.jar</string>\n        <string>$JAVAROOT/../../../../..</string>\n")}' >> $MACAPP_PLIST
+	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
+	  awk '{ for(i=1;i<=NF;i++) { printf("        <string>$JAVAROOT/../../../../../%s</string>\n", $i)}}' >> $MACAPP_PLIST
+
+      # Here's the last part of the file:
+      cat >>$MACAPP_PLIST <<EOF6        
       </array>
+      <key>Properties</key>
+      <dict>
+        <key>com.apple.mrj.application.apple.menu.about.name</key>
+        <string>Vergil</string>
+      </dict>
+   </dict>
    </dict>
 </plist>
 EOF6
+      #	cat >>$MACAPP_PLIST <<EOF6
+      # <string>$MACAPP_ARGUMENT</string>
+      # </array>
+      # <key>Properties</key>
+      # <dict>
+      #   <key>ptolemy.ptII.dir</key>
+      #   <string>\$APP_ROOT/../..</string>
+      # <string>-Xmx1024m</string>
+      # <string>-Dptolemy.ptII.dir=\$APP_ROOT/../..</string>
+      # <array>
+      # <string>$MACAPP_ARGUMENT</string>
+
            # Under Mac Java 1.8, OS X, copy the JVM.  Under other OS's check for a tar file and untar.
            case "`uname -s`" in
            Darwin*) Darwin=yes;;
