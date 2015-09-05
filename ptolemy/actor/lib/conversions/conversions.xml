@@ -96,6 +96,8 @@
     </property>
   </entity>
 
+  <input source="ptolemy/actor/lib/conversions/json/json.xml"/>
+
   <entity name="LongToDouble"
           class="ptolemy.actor.lib.conversions.LongToDouble">
   </entity>
