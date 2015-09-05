@@ -35,7 +35,10 @@ ME =		ptolemy/actor/lib/io/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# Include $(CALTROP_JARS) so that when we run make,
+# auto/DirectoryListingJar.xml can look in ptCal.jar for the .class
+# files.
+CLASSPATH =	$(ROOT)$(CALTROP_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
