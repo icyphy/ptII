@@ -11,6 +11,11 @@
       </entity>
     </entity>
 
+  <entity name="Icon Editor"
+          class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <property name="blank" class="ptolemy.vergil.icon.EditorIcon"/>
+  </entity>
+
     <!-- We need an FSM editor, but do not want it to appear in the -->
     <!-- File->New menu. -->
     <entity name="Modal Model"
