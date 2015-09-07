@@ -80,6 +80,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * that uses the given z-list for its storage. If you have
      * a composite figure that you know is going to contain a
      * lot of children, you can give it an optimized z-list.
+     * @param zlist the z-list used for storage
      */
     public CompositeFigure(ZList zlist) {
         _children = zlist;
@@ -88,6 +89,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /**
      * Construct a composite figure with the given figure as its
      * background.
+     * @param background The background
      */
     public CompositeFigure(Figure background) {
         this();
@@ -209,6 +211,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Get the internal z-list. Clients must <i>not</i> modify
      * the z-list, but can use it for making queries on its contents.
+     * @return The internal z-list.
      */
     public ZList getChildren() {
         return _children;
@@ -445,6 +448,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  getShape(), and most of the methods that return iterators
      *  over figures (such as figures()) do not include the background
      *  figure.
+     *  @param background The background of the figure.
      *  @see #figures()
      *  @see #getBackgroundFigure()
      */
@@ -462,7 +466,8 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Set the index of the given figure.
-     *
+     * @param index The index
+     * @param f The figure
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex(int index, Figure f) {

@@ -19,6 +19,8 @@ package com.microstar.xml.demo;
 public class EventDemo extends XmlApp {
     /**
      * Entry point for an application.
+     * @param args The arguments.  The first argument should be the uri
+     * @exception Exception If the parse fails
      */
     public static void main(String[] args) throws Exception {
         EventDemo demo = new EventDemo();

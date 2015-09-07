@@ -315,6 +315,7 @@ public class XmlApplet extends Applet implements XmlHandler {
      * Start a parse (in response to a button press).
      * <p>Erase the text area, then start the parser running, using
      * the value of the "url" parameter.
+     * @exception Exception If thrown by the parser.
      */
     public void startParse() throws java.lang.Exception {
         textArea.setText("");

@@ -56,18 +56,23 @@ public abstract class DamageRegion {
 
     /** Tell the damage region to inflict itself on the given
      * JCanvas.
+     * @param canvas The canvas
      */
     public abstract void apply(JCanvas canvas);
 
     /** Check transform cache validity. This must be called from
      * the repaint(DamageRegion) method of any component that
      * has a transform context.
+     * @param x The TransformContext
      */
     public void checkCacheValid(TransformContext c) {
         _context.checkCacheValid(c);
     }
 
     /** Create a damage region in this context over the given rectangle.
+     *  @param c The Transform Context
+     *  @param r The given rectangle
+     *  @return The Damage Region.
      */
     public static DamageRegion createDamageRegion(TransformContext c,
             Rectangle2D r) {
