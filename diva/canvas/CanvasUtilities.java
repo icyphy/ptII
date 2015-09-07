@@ -432,7 +432,7 @@ public final class CanvasUtilities {
 
     /** Return the angle between -PI and PI that corresponds to the
      *  given angle.
-     *  @param The angle
+     *  @param angle The angle
      *  @return The modulo of the angle.
      */
     public static double moduloAngle(double angle) {
@@ -671,7 +671,7 @@ public final class CanvasUtilities {
      * transformation is used that creates and returns a new instance
      * of GeneralPath.
      *
-     * @param r The shapre
+     * @param a The shape
      * @param at The AffineTransform
      * @return The shape after the transformation.
      * @deprecated Use ShapeUtilities.transformModify()
@@ -685,7 +685,10 @@ public final class CanvasUtilities {
      * root transform context.   The root context must enclose
      * the local one, otherwise this method goes into an infinite
      * loop.  You asked for it.
-     *  @deprecated Use local.getTransform(root) instead.
+     * @param p The point to be transformed
+     * @param local The local context
+     * @return The transformed point
+     * @deprecated Use local.getTransform(root) instead.
      */
     @Deprecated
     public static Point2D transformInto(Point2D p, TransformContext local,
@@ -851,6 +854,7 @@ public final class CanvasUtilities {
      * @param s The shape to translate.
      * @param x amount to translate.
      * @param y amount to translate.
+     * @return The transformed shape
      * @deprecated Use ShapeUtilities.translateModify()
      */
     @Deprecated

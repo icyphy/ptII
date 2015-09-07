@@ -27,6 +27,8 @@ import com.microstar.xml.XmlParser;
 public class DtdDemo extends XmlApp {
     /**
      * Entry point for an application (applets enter through XmlApp.init()).
+     * @param args The arguments.  The first argument should be the uri
+     * @exception Exception If the parse fails
      * @see XmlApp
      */
     public static void main(String[] args) throws Exception {
@@ -50,6 +52,7 @@ public class DtdDemo extends XmlApp {
 
     /**
      * Print a comment showing where the DTD (if any) ends.
+     * @param errorCount Ignored in this method.
      */
     public void endDocument(int errorCount) {
         displayText("<-- End of DTD -->");
@@ -196,6 +199,7 @@ public class DtdDemo extends XmlApp {
 
     /**
      * Dump attributes for an element.
+     * @param elname The element name.
      * @see #makeAttributeType
      * @see #makeAttributeValue
      */
@@ -234,6 +238,9 @@ public class DtdDemo extends XmlApp {
 
     /**
      * Generate the attribute type as a normalised string.
+     * @param elname The element name.
+     * @param aname The attribute name.
+     * @return The attribute type as a normalised string.
      */
     public String makeAttributeType(String elname, String aname) {
         // Construct a string equivalent
@@ -279,6 +286,9 @@ public class DtdDemo extends XmlApp {
 
     /**
      * Generate a full attribute default value.
+     * @param elname The element name.
+     * @param aname The attribute name.
+     * @return The full attribute default value
      * @see #makeLiteral
      */
     public String makeAttributeValue(String elname, String aname) {
@@ -305,6 +315,9 @@ public class DtdDemo extends XmlApp {
 
     /**
      * Construct a string equivalent of external identifiers.
+     * @param pubid The public identifier
+     * @param sysid The string id
+     * @return The external identifiers
      * @see #makeLiteral
      */
     public String makeExternalIdentifiers(String pubid, String sysid) {
@@ -325,6 +338,8 @@ public class DtdDemo extends XmlApp {
 
     /**
      * Quote a literal, and escape any '"' or non-ASCII characters within it.
+     * @param data The data
+     * @return the data as a literal
      */
     public String makeLiteral(String data) {
         char[] ch = data.toCharArray();
