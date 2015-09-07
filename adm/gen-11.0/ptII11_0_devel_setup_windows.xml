@@ -286,6 +286,11 @@ The Ptiny pack is required.
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
+            <executable
+              targetfile="$INSTALL_PATH/bin/Ptiny.app/MacOS/universalJavaApplicationStub" 
+              stage="never"
+              keep="true"
+              />
         </pack>
         <pack name="Full" required="no">
             <description>All of the domains, HyVisual and VisualSense.</description>
@@ -691,6 +696,11 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/g4ltl/demo"/>
 
+            <executable
+              targetfile="$INSTALL_PATH/bin/Vergil.app/MacOS/universalJavaApplicationStub" 
+              stage="never"
+              keep="true"
+              />
         </pack>
 
         <pack name="Docs" required="no">
