@@ -1597,6 +1597,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throws Exception {
         _base = base;
 
+        // Invoking a Vertx demo and then a Nashorn demo can result in
+        // Ptolemy classes not being found.  In particular, exporting
+        // two models in a row by editing
+        // $PTII/ptolemy/configs/models.txt so that it contains:
+        // $CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/Receiver.xml
+        // $CLASSPATH/ptolemy/demo/Robot/RandomWalkIntruder.xml
+        // and then running cd $PTII/ptolemy/vergil/basic/export/test/junit; make long_test
+        // resulted in the second model failing to find Ptolemy classes from within Nashorn
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSClassLoaderProblem
+        if (Thread.currentThread().getContextClassLoader() == null) {
+            Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
+        }
+
         Reader buffered = new BufferedReader(reader);
 
         try {
