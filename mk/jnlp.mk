@@ -1737,9 +1737,9 @@ echo_jars:
 
 
 # The echo_plist_jars rule is used by $PTII/bin/makeapp to create Contents/Info.plist.
-# sed is used to make the paths relative for things like lib/js.jar
+# sed is used to make the paths relative for things like lib/js.jar and to replace colons with spaces.
 echo_plist_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | sed 's@$(PTII)/@@g'
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | sed -e 's@$(PTII)/@@g' -e 's/:/ /g'
 
 # make echo_classpath_jars JARS=PTINY_JNLP_JARS
 echo_classpath_jars:
