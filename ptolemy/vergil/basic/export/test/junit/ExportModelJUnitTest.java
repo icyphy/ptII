@@ -320,6 +320,7 @@ public class ExportModelJUnitTest {
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
                 "HappySadStock.xml", // Run only if there is a Hue on the local network.
                 "HierarchyFlattening.xml", // gt
+                "/ImageAnnotate/", // Uses the camera, which is not present on the nightly build machine.
                 "ImageFilters.xml", // Links to other demos.          
                 "/ImageFilters/", // Uses the camera, which is not present on the nightly build machine.
                 "IMUSensor.xml", // Uses the serial port.
