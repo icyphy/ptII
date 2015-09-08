@@ -1542,6 +1542,10 @@ if [ "$error" = "none" ]; then
                 cp $STUB $MACAPP_APP/Contents/MacOS/
                 chmod a+x $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub
             fi		     
+            # Removed Java application stubs that are no longer used because we have the
+            # universalJavaApplicationStub
+            rm -f $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub/JavaAppLauncher
+            rm -f $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub/JavaApplicationStub
 
 	    cat >$MACAPP_PLIST <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
