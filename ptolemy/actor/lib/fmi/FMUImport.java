@@ -1099,18 +1099,17 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     }
                     token = new DoubleToken(result);
                     if (_useQSS) {
-                        double epsilon = 0.0;
                         if (_firstFire) {
                             _outputs.get(index).lastDoubleOutput = result;
-                            epsilon = Math.abs(_outputQuantum * result);
+                            _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
                         }
                         // Produce an output if the quantum has been crossed.
                         else {
-                            if (Math.abs(result - output.lastDoubleOutput) <= epsilon) {
+                            if (Math.abs(result - output.lastDoubleOutput) <= _outputs.get(index).quantum) {
                                 continue;
                             } else {
                                 _outputs.get(index).lastDoubleOutput = result;
-                                epsilon = Math.abs(_outputQuantum * result);
+                                _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
                             }
                         }
                     }
@@ -1530,19 +1529,11 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _numberOfStateEvents = 0;
         _numberOfStepEvents = 0;
         _numberOfTimeEvents = 0;
-
-        // Initialize parameters used for the case where the QSS director is used.
-        // This will be used to determine whether outputs need to be quantized.
-        _useQSS = false;
-        Director director = getDirector();
-        if ((director instanceof QSSDirector)) {
-            _useQSS = true;
-            // Get the quantum which will be used to determine whether
-            // outputs should be produced or not.
-            _outputQuantum = Math.max(
-                    ((QSSDirector) getDirector()).getRelativeQuantum(),
-                    ((QSSDirector) getDirector()).getAbsoluteQuantum());
-        }
+        
+        // Check if the QSS director is used at the top level.
+        // This call initialize the _outputQuantum as well as
+        // the flag which indicates that QSS director is used here.
+        _hasQSSDirector();
 
         if (_useRawJNI()) {
             // Load the "JNIFMU" native interface. Use a classpath-relative
@@ -1989,9 +1980,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         "Could not instantiate Functional Mockup Unit (FMU).");
             }
         } else {
-            final Time currentTime = director.getModelTime();
-            final Time startTime = director.getModelStartTime();
-            final Time stopTime = director.getModelStopTime();
+            final Time currentTime = getDirector().getModelTime();
+            final Time startTime = getDirector().getModelStartTime();
+            final Time stopTime = getDirector().getModelStopTime();
             final double relativeTolerance = 1e-4;
             // Get the path to the native FMU library.
             String fmuLibPath = null;
@@ -4294,6 +4285,26 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
     }
 
+    /** Return true if we use the QSSDirector.
+     *  @return true if we use the QSS Director.
+     */
+    protected boolean _hasQSSDirector(){
+        // Initialize parameters used for the case where the QSS director is used.
+        // This will be used to determine whether outputs need to be quantized.
+        boolean useQSS = false;
+        Director director = getDirector();
+        if ((director instanceof QSSDirector)) {
+            useQSS = true;
+            // Get the quantum which will be used to determine whether
+            // outputs should be produced or not.
+            _outputQuantum = Math.max(
+                    ((QSSDirector) getDirector()).getRelativeQuantum(),
+                    ((QSSDirector) getDirector()).getAbsoluteQuantum());
+            _useQSS = true;
+        }   	
+        return (useQSS);
+    }
+    
     /** Return true if we use use raw JNI instead of JNA.
      *  @return true if raw JNI should be used.
      *  @exception IllegalActionException If there is a problem
@@ -4759,11 +4770,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Boolean indicating whether the director uses an error tolerance. */
     private byte _toleranceControlled;
+    
+    /** Boolean indicating that QSS is used */
+    private boolean _useQSS = false;
 
-    /**
-     * Indicator that we use the QSSDirector
-     */
-    private boolean _useQSS;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -4806,6 +4816,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
+
+        /** The Quantum value of the output. */
+		public double quantum;
 
     }
 }
