@@ -1,6 +1,6 @@
 /* An attribute that creates a text editor to edit a string attribute.
 
- Copyright (c) 2003-2014 The Regents of the University of California.
+ Copyright (c) 2003-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,11 +28,15 @@
 package ptolemy.vergil.toolbox;
 
 import java.awt.Frame;
+import java.lang.reflect.Constructor;
+
+import javax.swing.text.Document;
 
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -58,7 +62,7 @@ import ptolemy.util.MessageHandler;
  editor when the user looks inside.
  @see TextEditorTableauFactory
 
- @author Edward A. Lee
+ @author Edward A. Lee, contributor: Daniel Crawl
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (eal)
@@ -87,6 +91,9 @@ TextEditorFactory {
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setTypeEquals(BaseType.INT);
         rowsDisplayed.setExpression("40");
+        
+        syntaxStyle = new StringAttribute(this, "syntaxStyle");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,6 +111,21 @@ TextEditorFactory {
      *  integer, and defaults to 10.
      */
     public Parameter rowsDisplayed;
+    
+    /** The style of the text to be edited. This may or may not be
+     *  supported. If the package "org.fife.ui.rsyntaxtextarea" is found in
+     *  the classpath, then the supported styles include
+     *  "text/plain", "text/c", "text/clojure", "text/cpp", "text/cs",
+     *  "text/css", "text/dtd", "text/fortran", 
+     *  "text/groovy", "text/html", "text/java", 
+     *  "text/javascript", "text/json", "text/jsp", 
+     *  "text/latex", "text/makefile", 
+     *  "text/perl", "text/php", 
+     *  "text/properties", "text/python", "text/ruby", "text/sas", 
+     *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb", 
+     *  "text/bat", and "text/xml".
+     */
+    public StringAttribute syntaxStyle;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -134,10 +156,56 @@ TextEditorFactory {
                         .intValue();
                 int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
                         .intValue();
-                _editor = new TextEditorForStringAttributes(this,
-                        attributeToEdit, numberOfRows, numberOfColumns,
-                        "Editor for " + attributeName.getExpression() + " of "
-                                + getContainer().getFullName());
+                
+                String style = syntaxStyle.getExpression();
+                if (style != null && !style.trim().equals("")) {
+                    // Attempt to specify a syntax-aware text editor.
+                    try {
+                        
+                        Document doc = null;
+                        try {
+                            // Attempt to create a styled document.
+                            // Use reflection here to avoid a hard dependency on an external package.
+                            Class<?> docClass = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxDocument");
+                            Constructor<?> docClassConstructor = docClass.getConstructor(String.class);
+                            doc = (Document) docClassConstructor.newInstance(new Object[] {style});
+                        } catch (Throwable ex) {
+                            // Ignore and use default text editor.
+                            System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                        }
+
+                        if (doc != null) {
+                            Class<?> editorClass = Class.forName(
+                                    "ptolemy.actor.gui.syntax.SyntaxTextEditorForStringAttributes");
+                            Constructor<?> constructor = editorClass.getConstructor(
+                                    new Class[] {
+                                            TextEditorFactory.class, Attribute.class,
+                                            Integer.TYPE, Integer.TYPE,
+                                            String.class, Document.class
+                                            });
+                            _editor = (TextEditorForStringAttributes) constructor.newInstance(
+                                    new Object[] {
+                                            this, attributeToEdit,
+                                            numberOfRows, numberOfColumns,
+                                            "Editor for " + attributeName.getExpression() + " of "
+                                                    + getContainer().getFullName(), doc});
+                            
+                            _editor.text.append(TextEditorTableauFactory.getTextToEdit(attributeToEdit));
+                            // The above will mark the text object modified. Reverse this.
+                            _editor.setModified(false);
+
+                        }
+                    } catch (Throwable ex) {
+                        // Ignore and use default text editor.
+                        System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+                    }
+                }
+                if (_editor == null) {
+                    _editor = new TextEditorForStringAttributes(this,
+                            attributeToEdit, numberOfRows, numberOfColumns,
+                            "Editor for " + attributeName.getExpression() + " of "
+                                    + getContainer().getFullName());
+                }
             } catch (IllegalActionException ex) {
                 MessageHandler.error(
                         "Cannot get specified string attribute to edit.", ex);
