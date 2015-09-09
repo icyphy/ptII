@@ -785,6 +785,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
 
             // end of AtomicActor.java
+            
+            // This need to be called to initialize the _outputQuantum
+            // since the initialization of the parameter is done in
+            // super.preinitialize which is not called when using JNI.
+            _hasQSSDirector();
 
             // Indicate that only parameters with FMIRealType will be updated.
             if (((BooleanToken) initFMUParameters.getToken()).booleanValue()) {
@@ -1957,12 +1962,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param val The values to be sent.
      * @param prt The port where values will be sent.
      * @param time The time when value is sent.
+     * @param isState The parameter to identify state variable
      */
     private void _sendModel(final double[] val, final TypedIOPort prt,
-            Time time) throws NoRoomException,
+            Time time, boolean isState) throws NoRoomException,
             IllegalActionException {
-        // Send model to a port.
-        prt.send(0, new SmoothToken(val, time));
+        // Send model to a port which is a state.
+    	if (isState){
+          prt.send(0, new SmoothToken(val, time));
+    	}
+    	// Send model to a port which is a regular output.
+    	else{
+    		prt.send(0, new DoubleToken(val[0]));
+    	}
     }
 
     /**
@@ -1976,44 +1988,56 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	private void _sendModelToPort(final double[] val, final TypedIOPort prt,
 	        Time time, int index, boolean isState) throws NoRoomException,
 	        IllegalActionException {
-	    // Handle outputs which are states.
-	    if (isState) {
-	        double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
+         	    
+        // Handle outputs which are states.
+		// The code below has been commented out. The problem is that 
+		// when we check whether the quantum has been crossed for the isState case, and we see that this is not 
+		// the case, the code should not do send any new data, instead the last seen value should be used.
+		// Unfortunately, the values that are sent are smooth token which can be extrapolated.
+		// This causes the code to use wrong values for computation leading to different results.
+		// The drawback of current code is that it will send values if we have finer discretization,
+		// which is done by using a quantumScaleFactor with  a value less than 1.0.
+		// One way to solve this problem, might be to see whether we should send a different type of
+		// token when the quantum is not crossed. A token which is persistent but is not extrapolated.
+	    if (isState) {  
 	        //final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates
 	        //        .get(_fmiModelDescription.continuousStates.get(index).name);
 	        // We should only use the first coefficient of the quantized state model
 	        // since since higher order terms are zero at quantization time.
-	        double epsilon = 0;
-	        if (_firstRound) {
-	        	_sendModel(val, prt, time );
+	    	_sendModel(val, prt, time, isState);
+	        /*if (_firstRound) {
+	        	_sendModel(val, prt, time, isState );
 	            _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
-	            epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
+	            _fmiModelDescription.continuousStates.get(index).quantum = 
+	            		_qssSolver.findQuantum(index) /_quantumScaleFactor;
 	            // Update model variable hasChanged field.
 	            //_updateModelVariableAttribute(modVarIdx, true);
 	        } else {
-	            if (Math.abs(val[0] - lastqSta) <= Math.abs(epsilon)) {
+	        	 double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
+	            if (Math.abs(val[0] - lastqSta) <= Math.abs(_fmiModelDescription.continuousStates.get(index).quantum)) {
 	                // Update model variable hasChanged field.
 	                //_updateModelVariableAttribute(modVarIdx, false);
 	                return;
 	            } else {
-	            	_sendModel(val, prt, time );
+	            	_sendModel(val, prt, time, isState );
 	                // Update model variable hasChanged field.
 	                //_updateModelVariableAttribute(modVarIdx, true);
 	                _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
-	                epsilon = _qssSolver.findQuantum(index) /_quantumScaleFactor;
+	                _fmiModelDescription.continuousStates.get(index).quantum = 
+	                		_qssSolver.findQuantum(index) /_quantumScaleFactor;
 	            }
-	        }
+	        }*/
 	    }
 	    // Handle outputs which are not states.
-	    else {
-	        double epsilon = 0;
-	        double lastDblOut = _outputs.get(index).lastDoubleOutput;
+	    else {     
 	        if (_firstRound) {
-	        	_sendModel(val, prt, time );
+	        	_sendModel(val, prt, time, isState);
 	            _outputs.get(index).lastDoubleOutput = val[0];
-	            epsilon = Math.abs(_outputQuantum * _outputs.get(index).lastDoubleOutput);
+	            _outputs.get(index).quantum = Math.abs(_outputQuantum 
+	            		* _outputs.get(index).lastDoubleOutput);
 	        } else {
-	            if (Math.abs(val[0] - lastDblOut) <= Math.abs(epsilon)) {
+	        	double lastDblOut = _outputs.get(index).lastDoubleOutput;
+	            if (Math.abs(val[0] - lastDblOut) <= Math.abs(_outputs.get(index).quantum)) {
 	                return;
 	            } else {
 	                // Check if any of output dependents has changed.
@@ -2028,12 +2052,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	                // which checks whether dependents have changed, we can capture that.
 	                //if (_cancelSendModelToPort(index))
 	                //    return;
-	                _sendModel(val, prt, time );
+	                _sendModel(val, prt, time, isState);
 	                _outputs.get(index).lastDoubleOutput = val[0];
-	                epsilon = Math.abs(_outputQuantum * _outputs.get(index).lastDoubleOutput);
+	                _outputs.get(index).quantum = Math.abs(_outputQuantum 
+	                		* _outputs.get(index).lastDoubleOutput);
 	            }
 	        }
 	    }
+	    
 	}
 
 	/** Populate the specified model with data from the specified token.
@@ -2154,6 +2180,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
             }
             // Set the continuous states.
+            // It is not possible to set only the states which have changed.
+            // The FMI enforces to act on the whole state vector.
             if (!_useRawJNI()) {
                 _fmiSetContinuousStates(stateVariables);
             } else {
@@ -2200,7 +2228,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         boolean updatedInputVarMdl = false;
         for (Input input : _inputs) {
             curIdx++;
-            // Guarantee that _inputs() as the the same count of inputs
+            // Guarantee that _inputs() has the same count of inputs
             // as it did during _initializeQssIntegrator_inputVars().
             // If not, then index {curIdx} can be wrong.
             if (input.port.hasNewToken(0)) {
