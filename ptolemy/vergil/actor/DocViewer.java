@@ -48,6 +48,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -763,6 +764,9 @@ public class DocViewer extends HTMLViewer {
         Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH
                 + _ICON_WINDOW_WIDTH + _SPACING, 40);
         titlePane.setPreferredSize(titleSize);
+        // Set the min and max size so that resizing the window does not expand the title.
+        titlePane.setMinimumSize(titleSize);
+        titlePane.setMaximumSize(titleSize);
         titlePane.setSize(titleSize);
         titlePane.setBorder(BorderFactory
                 .createEtchedBorder(EtchedBorder.RAISED));
@@ -775,7 +779,10 @@ public class DocViewer extends HTMLViewer {
         descriptionPanel.setLayout(new BoxLayout(descriptionPanel,
                 BoxLayout.X_AXIS));
         contentPane.add(Box.createRigidArea(verticalSpace));
-        contentPane.add(descriptionPanel);
+
+        // Use a JSplitPane below.
+        //contentPane.add(descriptionPanel);
+
         descriptionPanel.add(Box.createRigidArea(horizontalSpace));
         // Construct a blank composite actor into which to put
         // an instance of the actor.
@@ -805,11 +812,11 @@ public class DocViewer extends HTMLViewer {
         _graphPane = new GraphPane(controller, graphModel);
         _jgraph = new JGraph(_graphPane);
         _jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        // The icon window is fixed size.
-        _jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
-                _ICON_WINDOW_HEIGHT));
-        _jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH,
-                _ICON_WINDOW_HEIGHT));
+        // The icon window was of fixed size until we added the JSplitPane.
+        //_jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
+        //        _ICON_WINDOW_HEIGHT));
+        //_jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH,
+        //        _ICON_WINDOW_HEIGHT));
         _jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH,
                 _ICON_WINDOW_HEIGHT));
         _jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
@@ -821,6 +828,7 @@ public class DocViewer extends HTMLViewer {
         descriptionPane.addHyperlinkListener(this);
         descriptionPane.setContentType("text/html");
         descriptionPane.setEditable(false);
+
         JScrollPane scroller = new JScrollPane(descriptionPane);
         scroller.setPreferredSize(new Dimension(_DESCRIPTION_WIDTH,
                 _ICON_WINDOW_HEIGHT));
@@ -833,7 +841,10 @@ public class DocViewer extends HTMLViewer {
         JPanel middle = new JPanel();
         middle.setLayout(new BoxLayout(middle, BoxLayout.X_AXIS));
         contentPane.add(Box.createRigidArea(verticalSpace));
-        contentPane.add(middle);
+
+        // See JSplitPane below.
+        //contentPane.add(middle);
+
         _scroller = new JScrollPane(pane);
         // Default, which can be overridden by calling setSize().
         _scroller.setPreferredSize(new Dimension(_MAIN_WINDOW_WIDTH,
@@ -843,6 +854,30 @@ public class DocViewer extends HTMLViewer {
         middle.add(Box.createRigidArea(horizontalSpace));
         middle.add(_scroller);
         middle.add(Box.createRigidArea(horizontalSpace));
+
+        // Use a JSplitPane here.  See Kepler component documentation layout needs improvement
+        // https://projects.ecoinformatics.org/ecoinfo/issues/5720
+        JSplitPane upperSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                descriptionPanel, middle);
+        upperSplitPane.setPreferredSize(new Dimension(
+                      _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
+                      _ICON_WINDOW_HEIGHT + _MAIN_WINDOW_HEIGHT));
+        upperSplitPane.setOneTouchExpandable(true);
+        upperSplitPane.setDividerLocation(_ICON_WINDOW_HEIGHT);
+
+        // Add a panel for the icon + description and middle
+        JPanel descriptionMiddlePanel = new JPanel();
+        descriptionMiddlePanel.add(upperSplitPane);
+        descriptionMiddlePanel.setPreferredSize(new Dimension(
+                        _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
+                        _ICON_WINDOW_HEIGHT + _MAIN_WINDOW_HEIGHT));
+        descriptionMiddlePanel.setMinimumSize(new Dimension(
+                        _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
+                        _MAIN_WINDOW_HEIGHT));
+        descriptionMiddlePanel.setLayout(new BoxLayout(descriptionMiddlePanel, BoxLayout.X_AXIS));
+
+        //contentPane.add(upperSplitPane);
+        contentPane.add(descriptionMiddlePanel);
 
         // Panel for added sections at the bottom.
         JPanel bottom = new JPanel();
