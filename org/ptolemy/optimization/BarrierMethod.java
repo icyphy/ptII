@@ -68,7 +68,7 @@ public class BarrierMethod  {
             //check X0 feasibility and set initial s
             if (!objectivePh1.setInitialValue(_tolerance)) {
                 objectivePh1.calcFuncInternal(objectivePh1.currentX);
-                returnVal = optimizationOfGivenPhase(objectivePh1, 1, 50, 1.0);
+                returnVal = optimizationOfGivenPhase(objectivePh1, 1, _maxIterationNum, 1.0);
             } else {
                 //given starting point is already feasible
                 returnVal = CONVERGED;
@@ -85,7 +85,7 @@ public class BarrierMethod  {
         //check X0 feasibility and set initial s
         if (!objectivePh1.setInitialValue(_tolerance)) {
             objectivePh1.calcFuncInternal(objectivePh1.currentX);
-            returnVal = optimizationOfGivenPhase(objectivePh1, 1, 50, 100.0);
+            returnVal = optimizationOfGivenPhase(objectivePh1, 1, _maxIterationNum, 100.0);
         } else {
             //given starting point is already feasible
             returnVal = CONVERGED;
@@ -98,6 +98,13 @@ public class BarrierMethod  {
             System.out.println();
         }
         if (!objective.checkFeasibility()) {
+            if (_flagDebugPrint) {
+                System.out.print("fiResults: ");
+                for (int i=0; i<objective.fiResults.length; i++) {
+                    System.out.print(objective.fiResults[i]+", ");
+                }
+                System.out.println();
+            }
             /////////////////////////////////////////////////////
             //If we couldn't find feasible points,
             //we treat constraints as soft constraints and optimize given problem as possible.
@@ -106,7 +113,7 @@ public class BarrierMethod  {
             objectiveSoftConst.calcFuncInternal(objectiveSoftConst.currentX);
             int returnVal_soft = optimizationOfGivenPhase(objectiveSoftConst, 2, _maxIterationNum, 1.0E-50);
             if (_flagDebugPrint) {
-                System.out.print("Phase2WithSlack" + ": " + objectiveSoftConst.iterationCounter);
+                System.out.print("Phase2WithSoft" + ": " + objectiveSoftConst.iterationCounter);
                 if (returnVal_soft != CONVERGED) {
                     System.out.print(" Terminated by criteria No."+returnVal_soft);
                 }
@@ -128,6 +135,20 @@ public class BarrierMethod  {
                 System.out.print(" Terminated by criteria No."+returnVal);
             }
             System.out.println();
+        }
+        if (returnVal != CONVERGED) {
+            objective.iterationCounter = 0;
+            ApproximatedObjectiveFunction approxObjective = new ApproximatedObjectiveFunction(objective);
+            approxObjective.calcFuncInternal(approxObjective.currentX);
+            returnVal = optimizationOfGivenPhase(approxObjective, 2, _maxIterationNum, 1.0E-50);
+            objective.calcFuncInternal(approxObjective.currentX);
+            if (_flagDebugPrint) {
+                System.out.print("Phase2_Ext: "+approxObjective.iterationCounter);
+                if (returnVal != CONVERGED) {
+                    System.out.print(" Terminated by criteria No."+returnVal);
+                }
+                System.out.println();
+            }
         }
         /////////////////////////////////////////////////////
 
@@ -323,7 +344,7 @@ public class BarrierMethod  {
      * @return return code
      */
     private int innerLoop(ObjectiveFunction objective, int phase, double t, int maxInnerLoopIterationNum) {
-        for (int iteration = 0; ; iteration++) {
+        for (;;) {
             /////////////////////////////////////////////////
             // check exit condition
             // terminated by user
@@ -473,17 +494,17 @@ public class BarrierMethod  {
      * @param array : input array
      * @return maximum value
      */
-    private double maxValue(double[] array) {
-        return maxValue(array, 0, array.length);
-    }
-    private double maxValue(double[] array, int from_id, int check_num) {
-        double ret = array[from_id];
-        for (int i=from_id; i<from_id+check_num; i++) {
-            if (ret<array[i]) ret = array[i];
-        }
-        return ret;
-    }
-
+//    private double maxValue(double[] array) {
+//        return maxValue(array, 0, array.length);
+//    }
+//    private double maxValue(double[] array, int from_id, int check_num) {
+//        double ret = array[from_id];
+//        for(int i=from_id; i<from_id+check_num; i++) {
+//            if(ret<array[i]) ret = array[i];
+//        }
+//        return ret;
+//    }
+    
     /**
      * Compute phase1 or 2 of Barrier method. Which phase will be executed is defined by argument "phase".
      * @param objective : Objective Function class which defines objective functions.
