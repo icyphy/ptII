@@ -775,15 +775,17 @@ public class DocViewer extends HTMLViewer {
         titlePanel.add(Box.createRigidArea(horizontalSpace));
 
         // Panel for icon and description.
-        JPanel descriptionPanel = new JPanel();
-        descriptionPanel.setLayout(new BoxLayout(descriptionPanel,
-                BoxLayout.X_AXIS));
+        //JPanel descriptionPanel = new JPanel();
+
+        //descriptionPanel.setLayout(new BoxLayout(descriptionPanel,
+        //        BoxLayout.X_AXIS));
         contentPane.add(Box.createRigidArea(verticalSpace));
 
         // Use a JSplitPane below.
         //contentPane.add(descriptionPanel);
 
-        descriptionPanel.add(Box.createRigidArea(horizontalSpace));
+        //descriptionPanel.add(Box.createRigidArea(horizontalSpace));
+
         // Construct a blank composite actor into which to put
         // an instance of the actor.
         _iconContainer = new CompositeEntity();
@@ -821,8 +823,8 @@ public class DocViewer extends HTMLViewer {
                 _ICON_WINDOW_HEIGHT));
         _jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
         _jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
-        descriptionPanel.add(_jgraph);
-        descriptionPanel.add(Box.createRigidArea(horizontalSpace));
+        //descriptionPanel.add(_jgraph);
+        //descriptionPanel.add(Box.createRigidArea(horizontalSpace));
         // Create a pane in which to display the description.
         final JEditorPane descriptionPane = new JEditorPane();
         descriptionPane.addHyperlinkListener(this);
@@ -834,9 +836,12 @@ public class DocViewer extends HTMLViewer {
                 _ICON_WINDOW_HEIGHT));
         scroller.setBorder(BorderFactory
                 .createEtchedBorder(EtchedBorder.RAISED));
-        descriptionPanel.add(scroller);
-        descriptionPanel.add(Box.createRigidArea(horizontalSpace));
+        //descriptionPanel.add(scroller);
+        //descriptionPanel.add(Box.createRigidArea(horizontalSpace));
 
+        JSplitPane descriptionSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                _jgraph, scroller);
+        descriptionSplitPane.setDividerLocation(_ICON_WINDOW_WIDTH);
         // Add the main content pane now.
         JPanel middle = new JPanel();
         middle.setLayout(new BoxLayout(middle, BoxLayout.X_AXIS));
@@ -858,7 +863,8 @@ public class DocViewer extends HTMLViewer {
         // Use a JSplitPane here.  See Kepler component documentation layout needs improvement
         // https://projects.ecoinformatics.org/ecoinfo/issues/5720
         JSplitPane upperSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                descriptionPanel, middle);
+                descriptionSplitPane, middle);
+                //                descriptionPanel, middle);
         upperSplitPane.setPreferredSize(new Dimension(
                       _AUTHOR_WINDOW_WIDTH + _SEE_ALSO_WIDTH + _SPACING,
                       _ICON_WINDOW_HEIGHT + _MAIN_WINDOW_HEIGHT));
