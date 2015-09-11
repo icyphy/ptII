@@ -43,12 +43,23 @@ import com.jhlabs.image.AbstractBufferedImageOp;
 import com.kitfox.svg.app.beans.SVGIcon;
 
 /** An image filter that overlays SVG graphics.
- *  FIXME
- *  
+ *  The graphic can be specified by invoking
+ *  {@link #setGraphic(String)} or
+ *  {@link #setGraphicURI(String)}.
+ *  If both are invoked, then the graphic specified in the call to
+ *  {@link #setGraphic(String)} will be used.
+ *  You can specify a scale factor for the graphic using
+ *  {@link #setScale(double)} and a rotation using
+ *  {@link #setRotation(double)}.
+ *  The graphic can be offset from the default position (which places
+ *  its origin at the upper left of the image) by calling
+ *  {@link #setXOffset(double)} and {@link #setYOffset(double)}.
+ *  The offset will be applied after the scaling and rotation.
+ *  <p>
  *  This filter uses SVG Salamander, by Mark McKay, for rendering SVG.
  *  SVG Salamander is available under LGPL and BSD licenses.
  *  See https://java.net/projects/svgsalamander.
- *
+ *  <p>
  *  The filter architecture follows the pattern defined by Jerry Huxtable
  *  in the JH Labs Java Image Processing library, available from:
  *    http://www.jhlabs.com/ip/filters
@@ -99,7 +110,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
                 System.err.println("Failed to load graphic: " + e);
             }
         }
-        if (_graphicURI != null && !_graphicURI.trim().equals("")) {
+        if (!success && _graphicURI != null && !_graphicURI.trim().equals("")) {
             try {
                 URL url = FileUtilities.nameToURL(_graphicURI, null, null);
                 icon.setSvgURI(url.toURI());
@@ -129,9 +140,13 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         
         // Set offsets and rotation.
         AffineTransform transform = new AffineTransform();
-        transform.setToTranslation(_xOffset, _yOffset);
+        transform.setToScale(_scale, _scale);
+        transform.rotate(_rotation);
+        AffineTransform translation = new AffineTransform();
+        translation.setToTranslation(_xOffset, _yOffset);
+        transform.preConcatenate(translation);
         g.transform(transform);
-        
+                
         icon.paintIcon(null, g, 0, 0);
 
         g.dispose();
@@ -154,6 +169,22 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
      */
     public String getGraphicURI() {
         return _graphicURI;
+    }
+    
+    /** Get the rotation for the graphic in degrees, which defaults to 0.0.
+     *  @return The rotation for the graphic.
+     *  @see #setRotation(double)
+     */
+    public double getRotation() {
+        return _rotation * 180.0 / Math.PI;
+    }
+
+    /** Get the scale factor for the graphic, which defaults to 1.0.
+     *  @return The scale factor for the graphic.
+     *  @see #setScale(double)
+     */
+    public double getScale() {
+        return _scale;
     }
     
     /** Get the horizontal offset for the graphic, in pixels.
@@ -183,12 +214,30 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         _graphic = graphic;
     }
 
-    /** Set the specified URI for the graphic.
+    /** Set the specified URI for the graphic to use if no
+     *  graphic is specified using setGraphic().
      *  @param graphicURI An SVG specification for the graphic.
      *  @see #getGraphicURI()
+     *  @see #setGraphic(String)
      */
     public void setGraphicURI(String graphicURI) {
         _graphicURI = graphicURI;
+    }
+
+    /** Set the rotation for the graphic in degrees.
+     *  @param theta The rotation.
+     *  @see #getRotation()
+     */
+    public void setRotation(double theta) {
+        _rotation = theta * Math.PI / 180.0;
+    }
+
+    /** Set the scale factor for the graphic.
+     *  @param scale The scale factor.
+     *  @see #getScale()
+     */
+    public void setScale(double scale) {
+        _scale = scale;
     }
 
     /** Set the horizontal offset for the graphic.
@@ -231,6 +280,12 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     
     /** The version for the graphic. This gets incremented each time _graphic changes. */
     private int _graphicVersion = 0;
+    
+    /** The rotation for the graphic in radians. */
+    private double _rotation = 0.0;
+    
+    /** The scale factor for the graphic. */
+    private double _scale = 1.0;
     
     /** The horizontal location for the graphic. */
     private double _xOffset = 0;

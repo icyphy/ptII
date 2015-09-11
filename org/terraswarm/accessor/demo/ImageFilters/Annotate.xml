@@ -102,7 +102,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;Graphic&quot;:&quot;&quot;, &quot;GraphicURL&quot;:&quot;&quot;, &quot;XOffset&quot;:0, &quot;YOffset&quot;:0}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;Graphic&quot;:&quot;&quot;, &quot;GraphicURL&quot;:&quot;&quot;, &quot;XOffset&quot;:0, &quot;YOffset&quot;:0, &quot;Scale&quot;:1.0, &quot;Rotation&quot;:0}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
