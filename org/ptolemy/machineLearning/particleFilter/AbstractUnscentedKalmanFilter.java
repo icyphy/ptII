@@ -153,6 +153,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
+        super.attributeChanged(attribute);
         // If any parameter changes, then the next preinitialize()
         // will recreate the contents.
         _upToDate = false;
@@ -580,13 +581,11 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         choleskyDecomposition(covariance_matrix, sqrt_covariance_matrix);
         points[0].setValue(mean_state);  //first point is mean state
         double weight = Math.sqrt(_kai+_stateSpaceSize);
-        for (int i=1; i<points.length; i++) { //other points are defined by covariance
+        for (int i=1; i<points.length; i+=2) { //other points are defined by covariance
             int col_id = (i-1)/2;
-            double weight_sign = weight;
-            if ((i-1)%2==1) weight_sign = -weight;
-
             for (int p_it = 0; p_it < _stateSpaceSize; p_it++) {
-                points[i]._x_hat[p_it] = points[0]._x_hat[p_it] + weight_sign * sqrt_covariance_matrix[p_it][col_id];
+                points[i]._x_hat[p_it] = points[0]._x_hat[p_it] + weight * sqrt_covariance_matrix[p_it][col_id];
+                points[i+1]._x_hat[p_it] = points[0]._x_hat[p_it] - weight * sqrt_covariance_matrix[p_it][col_id];
             }
         }
     }
