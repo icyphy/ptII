@@ -211,7 +211,11 @@
 	  fix the errors in the next step with the <code>.classpath.default</code> file.
 	</li>
 
-        <li><b>If you have read/write access to the <a href="https://www.terraswarm.org/accessors/#in_browser" target="_top">accessors</a> repository</b>, then check out it out as follows (<i>If you don't have read/write access, then skip this step</i>):
+        <li><b>If you have read/write access to the <a href="https://www.terraswarm.org/accessors/#in_browser" target="_top">accessors</a> repository</b>, <b>and</b> your repo.eecs.berkeley.edu account name is an external name that is your email address, then check out it out as follows
+          <br/>(<i>If your repo.eecs.berkeley.edu account name is the same as your login
+            and you are checking out the ptII repo read/write and you have read/write access
+            to the TerraSwarm accessors repo, then you may skip this step</i>)
+          <br/>(<i>If you don't have read/write access, then skip this step</i>):
           <ol>
             <li>In Eclipse, add the <b>accessors</b> SVN Repository:
               <code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repositories</code>
@@ -253,6 +257,7 @@
 	          </center>
 	        </li>
               </ol>
+              <p>The goal here is to create <code>org/terraswarm/accessor/accessors/web</code>. 
             </li>
 
 	<li><b>If you have read/write access</b> go to <a href="setupSubversion.htm" target="main">Setup the Subversion Configuration to Sane Settings</a> so that if you commit files, they will have the appropriate settings.
