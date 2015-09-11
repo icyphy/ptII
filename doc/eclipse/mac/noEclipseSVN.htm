@@ -31,25 +31,29 @@
     </pre>
     <b>Note:</b> Most users will select the <code><b>/svn-anon/</b></code> URL above because
     they will be accessing the tree with <b>read-only</b> Subversion access.
-    <br/>If you have an UC Berkeley EECS LDAP account or have an external account on <code>repo.eecs.berkeley.edu</code>, then check out ptII with read/write access:</p>
-
-        <pre>
-	  svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
-	</pre>
-        <b>Accessors</b>: If you are working on <a href="https://www.terraswarm.org/accessors#in_browser" target="_top">Accessors</a> <b>and have access to the non-public TerraSwarm accessors repo</b> then you <b>must either</b>:
-        <ol>
-          <li> In the next step, <a href="setupClasspath.htm">Set up
-          the Eclipse ptII project .classpath for Ptolemy II</a>, run <code>./configure</code> (<i>preferred</i>)</li>
-          <li> <b>OR</b>, check out the accessors repo separately:
-            <pre>
-              cd $PTII/org/terraswarm/accessor
-              svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
-            </pre>
-          </li>
-        </ol>
-        If you are not developing accessors and/or don't have access to the TerraSwarm accessors repo, then ignore the above.
+    <br/>If you have an UC Berkeley EECS LDAP account or have an external account on <code>repo.eecs.berkeley.edu</code>, then check out ptII with read/write access:
+    <pre>
+      svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
+    </pre>
   </li>
-
+  <li> <b>Accessors</b>: 
+    If you are <b>not</b> working on <a href="https://www.terraswarm.org/accessors#in_browser" target="_top">Accessors</a> then <b>skip this step</b>
+    <br/>If you are working on accessors and you do not have read/write access to the
+    ptII svn repo, then <b>skip this step</b>
+    <br/>If you are working on accessors and have read/write access to ptII svn repo using an external account (an account that is an email address) on repo.eecs.berkeley.edu, then you will need to check out the Terraswarm accessors repo by hand separately:
+    <pre>
+      cd $PTII/org/terraswarm/accessor
+    </pre>
+    If you have don't have read/write access to the TerraSwarm accessors repo, use
+    <pre>
+      svn co https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors
+    </pre>
+    If you do have read/write access:
+    <pre>
+      svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+    </pre>
+    The goal of the above steps is to create <code>$PTII/org/terraswarm/accessor/accessors/web</code>.
+  </li>
   <li><a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
   </li>
 
