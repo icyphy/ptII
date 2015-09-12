@@ -1,3 +1,0 @@
-CFLAGS = -I..
-
-include ../Makefile
