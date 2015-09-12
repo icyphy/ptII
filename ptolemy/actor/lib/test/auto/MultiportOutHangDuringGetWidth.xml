@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultiportOutHangDuringGetWidth" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="AUTO">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 30}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 33, 1123, 853}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[889, 743]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{434.5, 361.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model hangs during preinitialize():&#10;&#10;        at java.util.LinkedList.addAll(LinkedList.java:408)&#10;        at java.util.LinkedList.addAll(LinkedList.java:387)&#10;        at java.util.LinkedList.&lt;init&gt;(LinkedList.java:119)&#10;        at ptolemy.actor.RelationWidthInference.inferWidths(RelationWidthInference.java:338\&#10;)&#10;        at ptolemy.actor.CompositeActor.inferWidths(CompositeActor.java:824)&#10;        at ptolemy.actor.IORelation.getWidth(IORelation.java:325)&#10;        at ptolemy.actor.IOPort._getWidth(IOPort.java:4999)&#10;        at ptolemy.actor.IOPort.getWidth(IOPort.java:1952)&#10;        at ptolemy.actor.IOPort._getReceivers(IOPort.java:4859)&#10;        at ptolemy.actor.IOPort.getReceivers(IOPort.java:1754)&#10;        at ptolemy.actor.IOPort.getInsideReceivers(IOPort.java:1365)&#10;        at ptolemy.domains.sdf.kernel.SDFScheduler._scheduleConnectedActors(SDFScheduler.ja\&#10;va:1513)&#10;        at ptolemy.domains.sdf.kernel.SDFScheduler._getSchedule(SDFScheduler.java:585)&#10;        at ptolemy.actor.sched.Scheduler.getSchedule(Scheduler.java:189)&#10;        at ptolemy.domains.sdf.kernel.SDFDirector.createSchedule(SDFDirector.java:408)&#10;        at ptolemy.domains.sdf.kernel.SDFDirector.preinitialize(SDFDirector.java:761)&#10;       at ptolemy.actor.CompositeActor.preinitialize(CompositeActor.java:1820)&#10;&#10;See &#10;https://projects.ecoinformatics.org/ecoinfo/issues/6577">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 280.0]">
+        </property>
+    </property>
+    <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 155.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 145}">
+        </property>
+    </entity>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 240}">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410, 125}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 215.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Minimum.input" relation="relation"/>
+    <link port="Minimum.input" relation="relation2"/>
+    <link port="Minimum.minimumValue" relation="relation3"/>
+    <link port="Minimum.minimumValue" relation="relation5"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Sinewave.output" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Display2.input" relation="relation5"/>
+</entity>
