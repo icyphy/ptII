@@ -325,7 +325,7 @@ function send(name, value, channel) {
     }
     var proxy = actor.getPortOrParameterProxy(name);
     if (!proxy) {
-        error('No such output: ' + name);
+        error('No such port: ' + name);
     } else {
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') ? channel : 0;
