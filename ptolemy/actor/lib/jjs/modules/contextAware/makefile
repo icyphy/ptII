@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/contextAware
 
-DIRS = 		demo
+DIRS = 		demo test
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -48,26 +48,26 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ContextAwareGUI.java \
 	ContextAwareHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	contextAware.js \
-	package.json \
-	
+	package.json
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
-	'ContextAwareHelper$$PingLinuxRunnable.class' \
-	'ContextAwareHelper$$PingWindowsRunnable.class' 
+	'ContextAwareHelper$$1.class' \
+	'ContextAwareHelper$$2.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
