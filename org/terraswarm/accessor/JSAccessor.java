@@ -265,13 +265,12 @@ public class JSAccessor extends JavaScript {
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == script) {
-            // Force the script to be marked not overridden.
+            // Indicate that the script is not overridden.
             // In other words, each time you set the value of the script,
             // the new value will be assumed to be that specified by the class
             // of which this accessor is an instance.  This means that each time
             // you perform an Update on the accessor, the script will be reloaded,
-            // even if you have overridden it.  This should be OK, since the script
-            // is visible only in expert mode.  Failing to do this results in
+            // even if you have overridden it.  Failing to do this results in
             // an Update NOT updating the script ever, which is definitely not what
             // we want.
             attribute.setDerivedLevel(Integer.MAX_VALUE);

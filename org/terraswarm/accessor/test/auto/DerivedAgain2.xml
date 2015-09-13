@@ -8,28 +8,28 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 526]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1229645120567195">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.222531340843, 216.93066406249997}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 35}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 15.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can see 2 inheritance levels above it.&#10;&#10;Base3:&#10;exports.baseField = 1;&#10;&#10;Derived3 extends Base3&#10;exports.derivedField = 2;&#10;&#10;DerivedAgain extends Derived3.&#10;&#10;ensure DerivedAgain can access baseField and derivedField">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can see 2 inheritance levels above it.&#10;&#10;BaseC:&#10;exports.baseField = 1;&#10;&#10;DerivedC extends BaseC&#10;exports.derivedField = 2;&#10;&#10;DerivedAgainB extends DerivedC.&#10;&#10;ensure DerivedAgainB can access baseField and derivedField">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, -15.0}">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 405.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -39,7 +39,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 280.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -49,17 +49,41 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 415.0}">
         </property>
     </entity>
-    <entity name="DerivedAgain" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Derived3');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   // Note that in ECMA 6, we can just say super.inputHandler().&#10;   this.ssuper.inputHandler();&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={879, 57, 535, 216}, maximized=false}">
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/DerivedAgain2.js">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 220.0}">
         </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={881, 303, 535, 216}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="DerivedAgainB" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('DerivedC');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   // Note that in ECMA 6, we can just say super.inputHandler().&#10;   this.ssuper.inputHandler();&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainB.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 405.0]">
         </property>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -77,42 +101,32 @@
             </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={879, 57, 535, 216}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 95.0]">
-        </property>
-    </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={881, 303, 535, 216}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 310.0]">
-        </property>
-    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{420.0, 155.0}">
+        <vertex name="vertex1" value="{225.0, 280.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=265.0,y=220.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={225.0,220.0} },{ head={id=&quot;DerivedAgainB.out1&quot;,x=125.0,y=405.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={205.0,395.0,205.0,280.0} },{ head={id=&quot;Test.input&quot;,x=275.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[420.0, 220.0]">
+        <vertex name="vertex1" value="{225.0, 415.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DerivedAgainB.out2&quot;,x=125.0,y=405.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=265.0,y=345.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={225.0,345.0} },{ head={id=&quot;Test2.input&quot;,x=275.0,y=415.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={} } }">
+        </property>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=405.0}, tail={id=&quot;DerivedAgainB.in1&quot;,x=125.0,y=405.0}, points={} } }">
+        </property>
     </relation>
-    <link port="SingleEvent.output" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation4"/>
-    <link port="DerivedAgain.in1" relation="relation"/>
-    <link port="DerivedAgain.out1" relation="relation3"/>
-    <link port="DerivedAgain.out2" relation="relation4"/>
     <link port="Display.input" relation="relation3"/>
     <link port="Display2.input" relation="relation4"/>
+    <link port="DerivedAgainB.in1" relation="relation2"/>
+    <link port="DerivedAgainB.out1" relation="relation3"/>
+    <link port="DerivedAgainB.out2" relation="relation4"/>
 </entity>

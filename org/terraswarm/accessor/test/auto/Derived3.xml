@@ -4,7 +4,7 @@
 <entity name="Derived3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 60, 928, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 60, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -17,7 +17,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can read a port defined in a base accessor,&#10;and that the fire() method is defined implicitly even if not explicitly.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can override the value of a field in the base.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 60.0]">
         </property>
@@ -27,17 +27,27 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 155.0]">
         </property>
     </entity>
-    <entity name="Derived2" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Base3');&#10;}&#10;&#10;exports.derivedField = 2;&#10;&#10;">
+    <entity name="DerivedC" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	extend('BaseC');&#10;}&#10;exports.baseField = 2;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Derived3.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedC.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 155.0]">
         </property>
@@ -58,6 +68,6 @@
     </relation>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Test.input" relation="relation2"/>
-    <link port="Derived2.in1" relation="relation"/>
-    <link port="Derived2.out1" relation="relation2"/>
+    <link port="DerivedC.in1" relation="relation"/>
+    <link port="DerivedC.out1" relation="relation2"/>
 </entity>

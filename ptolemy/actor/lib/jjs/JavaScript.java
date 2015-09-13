@@ -1051,6 +1051,9 @@ public class JavaScript extends TypedAtomicActor {
         Object token = null;
         Token previousValue = null;
         if (port == null) {
+            // No pre-existing port.
+            // If there is a parameter with the same name, then
+            // remove it, but preserve its value.
             Attribute previous = getAttribute(name);
             if (previous instanceof Parameter) {
                 previousValue = ((Parameter)previous).getToken();
@@ -1073,35 +1076,43 @@ public class JavaScript extends TypedAtomicActor {
                     port = parameter.getPort();
                 }
             } else {
+                // No pre-existing port, and options are given.
                 Object value = ((Map) options).get("value");
                 if (value == null && previousValue == null) {
                     // No value. Use an ordinary port.
                     port = (TypedIOPort) newPort(name);
                 } else {
                     parameter = new PortParameter(this, name);
-                    // Convert value to a Ptolemy Token.
-                    try {
-                        token = ((Invocable) _engine).invokeFunction(
-                                "convertToToken", value);
-                    } catch (Exception e) {
-                        throw new IllegalActionException(this, e,
-                                "Cannot convert value to a Ptolemy Token: "
-                                        + value);
-                    }
-                    if (!(token instanceof Token)) {
-                        throw new IllegalActionException(this,
-                                "Unsupported value: " + value);
-                    }
                     port = parameter.getPort();
                 }
             }
         } else {
+            // Pre-existing port.
             if (port == script.getPort() || port == error) {
                 throw new NameDuplicationException(this, "Name is reserved: "
                         + name);
             }
             if (port instanceof ParameterPort) {
                 parameter = ((ParameterPort) port).getParameter();
+            } else {
+                // Check to see whether there is now a default value.
+                // This might be a derived class that is adding a default
+                // value to a port that did not have one.
+                if (options != null) {
+                    Object value = ((Map) options).get("value");
+                    if (value != null) {
+                        // Sure enough, we need to replace the port
+                        // with a PortParameter.
+                        // NOTE: If there are connections to the port, these will be lost!
+                        // But there should never be connections in this case. The port
+                        // is the wrong type only if the base class provided no default value.
+                        // But in this case, we are still constructing the accessor, so
+                        // connections have not been made.
+                        port.setContainer(null);
+                        parameter = new PortParameter(this, name);
+                        port = parameter.getPort();
+                    }
+                }
             }
         }
         if (options instanceof Map) {
@@ -1123,17 +1134,38 @@ public class JavaScript extends TypedAtomicActor {
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
+            Object value = ((Map) options).get("value");
+            if (value != null) {
+                // Convert value to a Ptolemy Token.
+                try {
+                    token = ((Invocable) _engine).invokeFunction(
+                            "convertToToken", value);
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, e,
+                            "Cannot convert value to a Ptolemy Token: "
+                                    + value);
+                }
+                if (!(token instanceof Token)) {
+                    throw new IllegalActionException(this,
+                            "Unsupported value: " + value);
+                }
+            }
         }
         // Make sure to do this after setting the type to catch
         // string mode and type checks.
         if (parameter != null) {
-            // If the parameter already has a value, allow that to prevail.
-            if (token != null 
-                    && (parameter.getToken() == null
-                    || (parameter.isStringMode() && parameter.getExpression().equals("")))) {
+            // Set the value of the parameter unless
+            // the parameter already has a value that is an override,
+            // in which case, allow that to prevail by doing nothing here.
+            if (token != null && !parameter.isOverridden()) {
                 parameter.setToken((Token) token);
+                // Indicate that this parameter is defined as part of the class definition
+                // of the container.
+                parameter.setDerivedLevel(1);
+                // The above will have the side effect that a parameter will not be saved
+                // when you save the model unless it is overridden.
             }
-            // If there was a previous value, then override the
+            // If there was a previous value from a parameter that got deleted, then override the
             // specified value.
             if (previousValue != null) {
                 if (parameter.isStringMode() && previousValue instanceof StringToken) {
@@ -1343,6 +1375,7 @@ public class JavaScript extends TypedAtomicActor {
                         + name);
             }
         }
+
         if (options != null) {
             // Find the type, if it is specified.
             Type ptType = null;
@@ -1358,30 +1391,27 @@ public class JavaScript extends TypedAtomicActor {
                 _setOptionsForSelect(parameter, options);
 
             }
-            Token previousValue = ((Parameter) parameter).getToken();
-            if (previousValue == null
-                    || ((ptType == BaseType.STRING)
-                            && ((Parameter) parameter).isStringMode()
-                            && (((StringToken) previousValue).stringValue().equals("")))) {
-                // The parameter does not already have a value. Set the default.
-                Object value = options.get("value");
-                if (value != null) {
-                    // Convert value to a Ptolemy Token.
-                    Object token;
-                    try {
-                        token = ((Invocable) _engine).invokeFunction(
-                                "convertToToken", value);
-                    } catch (Exception e) {
-                        throw new IllegalActionException(this, e,
-                                "Cannot convert value to a Ptolemy Token: "
-                                        + value);
-                    }
-                    if (token instanceof Token) {
-                        ((Parameter) parameter).setToken((Token) token);
-                    } else {
-                        throw new IllegalActionException(this,
-                                "Unsupported value: " + value);
-                    }
+            // Check for value option.
+            Object value = options.get("value");
+            if (value != null && !parameter.isOverridden()) {
+                // There is a specified value, and the parameter value
+                // has not been overridden.
+
+                // Convert value to a Ptolemy Token.
+                Object token;
+                try {
+                    token = ((Invocable) _engine).invokeFunction(
+                            "convertToToken", value);
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, e,
+                            "Cannot convert value to a Ptolemy Token: "
+                                    + value);
+                }
+                if (token instanceof Token) {
+                    ((Parameter) parameter).setToken((Token) token);
+                } else {
+                    throw new IllegalActionException(this,
+                            "Unsupported value: " + value);
                 }
             }
 
@@ -1390,6 +1420,12 @@ public class JavaScript extends TypedAtomicActor {
                 _setPortDescription(parameter, description.toString());
             }
         }
+        // Indicate that this parameter is defined as part of the class definition
+        // of the container.
+        parameter.setDerivedLevel(1);
+        // The above will have the side effect that a parameter will not be saved
+        // when you save the model unless it is overridden.
+
         // Parameters may be immediately referenced in the setup function, so we
         // need to create a proxy for them now.
         if (_proxies.get(parameter) == null) {
@@ -2332,7 +2368,6 @@ public class JavaScript extends TypedAtomicActor {
                 if (_inputHandlers != null && _hasNewInput) {
                     for (Runnable function : _inputHandlers) {
                         if (function != null) {
-                            // FIXME: Need to invoke the function so that 'this' is the exports object!
                             function.run();
                             if (_debugging) {
                                 _debug("Invoked handler function for "
@@ -2486,9 +2521,13 @@ public class JavaScript extends TypedAtomicActor {
          */
         public void set(Token token) throws IllegalActionException {
             if (_parameter == null) {
-                throw new IllegalActionException(JavaScript.this,
-                        "Cannot call set on a port " + _port.getName()
-                                + ". Use send().");
+                if (_port instanceof ParameterPort) {
+                    _parameter = ((ParameterPort)_port).getParameter();
+                } else {
+                    throw new IllegalActionException(JavaScript.this,
+                            "Cannot call set on a port " + _port.getName()
+                            + ". Use send().");
+                }
             }
             _parameter.setToken(token);
         }

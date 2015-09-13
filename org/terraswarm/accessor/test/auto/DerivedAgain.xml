@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999957}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999952}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
@@ -21,7 +21,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can see 2 inheritance levels above it.&#10;&#10;Base3:&#10;exports.baseField = 1;&#10;&#10;Derived3 extends Base3&#10;exports.derivedField = 2;&#10;&#10;DerivedAgain extends Derived3.&#10;&#10;ensure DerivedAgain can access baseField and derivedField">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can see 2 inheritance levels above it.&#10;&#10;Base3:&#10;exports.baseField = 1;&#10;&#10;DerivedC extends BaseC&#10;exports.derivedField = 2;&#10;&#10;DerivedAgainA extends DerivedC.&#10;&#10;ensure DerivedAgainA can access baseField and derivedField">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 315.0]">
         </property>
@@ -52,31 +52,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 225.0]">
         </property>
     </entity>
-    <entity name="DerivedAgain" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('Derived3');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   Object.getPrototypeOf(exports).inputHandler.apply(this);&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/DerivedAgain.js">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 210.0]">
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <port name="in1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="out1" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="out2" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={879, 57, 535, 216}, maximized=false}">
         </property>
@@ -92,6 +67,45 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 310.0]">
         </property>
+    </entity>
+    <entity name="DerivedAgainA" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('DerivedC');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   Object.getPrototypeOf(exports).inputHandler.apply(this);&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainA.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 210.0]">
+        </property>
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="out1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="out2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -110,9 +124,9 @@
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation4"/>
-    <link port="DerivedAgain.in1" relation="relation"/>
-    <link port="DerivedAgain.out1" relation="relation3"/>
-    <link port="DerivedAgain.out2" relation="relation4"/>
     <link port="Display.input" relation="relation3"/>
     <link port="Display2.input" relation="relation4"/>
+    <link port="DerivedAgainA.in1" relation="relation"/>
+    <link port="DerivedAgainA.out1" relation="relation3"/>
+    <link port="DerivedAgainA.out2" relation="relation4"/>
 </entity>

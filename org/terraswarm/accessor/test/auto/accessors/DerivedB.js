@@ -1,5 +1,5 @@
 exports.setup = function() {
-   extend('Base2');
+   extend('BaseB');
 }
 //Override input Handler of base
 exports.inputHandler = function() {
