@@ -1,10 +1,19 @@
 [
     "Accessor1.xml",
     "Accessor2.xml",
-    "Base.js",
+    "BaseA.js",
+    "BaseB.js",
+    "BaseC.js",
+    "BaseD.js",
     "CallbackWithSuppress.xml",
-    "Derived.js",
-    "DerivedAgain.js",
+    "DerivedA.js",
+    "DerivedB.js",
+    "DerivedC.js",
+    "DerivedD.js",
+    "DerivedE.js",
+    "DerivedAgainA.js",
+    "DerivedAgainB.js",
+    "DerivedAgainD.js",
     "HandlerWithSuppress.xml",
     "SendNullToOwnInput.xml"
 ]

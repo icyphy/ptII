@@ -1,21 +1,19 @@
 exports.setup = function() {
-   extend('Base');
+   extend('BaseA');
    input('in2');
    output('output');
    console.log('derived set up');
 }
 
-var handle;
 exports.initialize = function() {
-   Object.getPrototypeOf(exports).initialize.apply(this);
+   this.ssuper.initialize();
    console.log('derived init');
-   handle = addInputHandler('in1', function() {
+   addInputHandler('in1', function() {
       send('output', get('in1'));
    });
 }
 
-exports.wrapup1 = function() {
+exports.wrapup = function() {
    console.log('derived wrapped up');
-   removeInputHandler(handle);
 }
 

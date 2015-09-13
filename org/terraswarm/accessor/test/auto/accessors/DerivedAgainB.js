@@ -1,5 +1,5 @@
 exports.setup = function() {
-   extend('Derived3');
+   extend('DerivedC');
    output('out2');
 }
 
@@ -7,7 +7,8 @@ exports.setup = function() {
 //base and derived
 exports.inputHandler = function() {
    // Invoke the base class inputHandler, defined two levels up.
-   Object.getPrototypeOf(exports).inputHandler.apply(this);
+   // Note that in ECMA 6, we can just say super.inputHandler().
+   this.ssuper.inputHandler();
    send('out2', this.derivedField);
 }
 
