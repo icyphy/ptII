@@ -107,6 +107,8 @@
         </property>
         <property name="throttleFactor" class="ptolemy.data.expr.Parameter" value="100">
         </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8091">
+        </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -143,6 +145,8 @@
             </property>
             <property name="connection" class="ptolemy.kernel.util.StringAttribute" value="An output produced when a connection opens or closes. The output is a JSON object with two fields, a 'socketID', which is a unique ID for this client connection, and a 'status' field, which is the string 'open' or 'closed'.">
             </property>
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8091">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
