@@ -1362,6 +1362,10 @@ public class JavaScript extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "Must specify a name to create a parameter.");
         }
+        if (name.equals("throttleFactor")) {
+            System.out.println("FIXME");
+        }
+
         Attribute parameter = getAttribute(name);
         if (parameter == null) {
             parameter = new Parameter(this, name);
@@ -1413,6 +1417,11 @@ public class JavaScript extends TypedAtomicActor {
                     throw new IllegalActionException(this,
                             "Unsupported value: " + value);
                 }
+                // Indicate that this parameter is defined as part of the class definition
+                // of the container.
+                parameter.setDerivedLevel(1);
+                // The above will have the side effect that a parameter will not be saved
+                // when you save the model unless it is overridden.
             }
 
             Object description = options.get("description");
@@ -1420,11 +1429,6 @@ public class JavaScript extends TypedAtomicActor {
                 _setPortDescription(parameter, description.toString());
             }
         }
-        // Indicate that this parameter is defined as part of the class definition
-        // of the container.
-        parameter.setDerivedLevel(1);
-        // The above will have the side effect that a parameter will not be saved
-        // when you save the model unless it is overridden.
 
         // Parameters may be immediately referenced in the setup function, so we
         // need to create a proxy for them now.
