@@ -94,7 +94,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8089">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8092">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 325.0]">
         </property>
@@ -137,7 +137,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8089">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8092">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
         </property>
