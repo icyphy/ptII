@@ -99,21 +99,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8087">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 325.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="toSend" class="ptolemy.kernel.util.StringAttribute" value="The data to be send to the web socket server, in JSON format.">
             </property>
-        </property>
-        <property name="numberOfRetries" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
-        <property name="timeBetweenRetries" class="ptolemy.data.expr.Parameter" value="100">
-        </property>
-        <property name="reconnectOnClose" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="discardMessagesBeforeOpen" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="throttleFactor" class="ptolemy.data.expr.Parameter" value="100">
         </property>
@@ -141,8 +131,6 @@
         <property name="hostInterface" class="ptolemy.data.expr.StringParameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-        </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8087">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
         </property>
