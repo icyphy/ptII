@@ -41,6 +41,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# Override the default of 8400 seconds in $PTII/util/testsuite/testDefs.tcl because the Coverity
+# server is swamped, so we increase the time here and set the default back to 7200 in testDefs.tcl
+set timeOutSeconds 9876
+
 # This is a bit of a hack.
 #
 # We use hudson to invoke "ant installers", which invokes 
