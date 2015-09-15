@@ -410,6 +410,11 @@ public class JavaScript extends TypedAtomicActor {
         // Create the script parameter and input port.
         script = new PortParameter(this, "script");
         script.setStringMode(true);
+        // We don't want $param substitution in the script.
+        // Causes no end of headaches, and anyway, the script should
+        // reference parameters using getParameter('name');
+        script.setSuppressVariableSubstitution(true);
+        
         ParameterPort scriptIn = script.getPort();
         cardinal = new StringAttribute(scriptIn, "_cardinal");
         cardinal.setExpression("SOUTH");
@@ -1701,7 +1706,8 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Invoke the specified method in the context of the exports object.
      *  If there is no such method in that context, attempt to invoke the
-     *  method in the top-level context.
+     *  method in the top-level context. The exports object becomes the
+     *  value of the 'this' variable during execution of the method.
      *  @param methodName The method name.
      *  @exception IllegalActionException If the method does not exist in either
      *   context, or if an error occurs invoking the method.
