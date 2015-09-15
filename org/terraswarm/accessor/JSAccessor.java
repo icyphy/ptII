@@ -265,6 +265,9 @@ public class JSAccessor extends JavaScript {
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == script) {
+            // NOTE: No longer want the following. The reload() function will
+            // ask if we want to overwrite the overridden value.
+            //
             // Indicate that the script is not overridden.
             // In other words, each time you set the value of the script,
             // the new value will be assumed to be that specified by the class
@@ -273,10 +276,10 @@ public class JSAccessor extends JavaScript {
             // even if you have overridden it.  Failing to do this results in
             // an Update NOT updating the script ever, which is definitely not what
             // we want.
-            attribute.setDerivedLevel(Integer.MAX_VALUE);
+            // attribute.setDerivedLevel(Integer.MAX_VALUE);
             // The above will have the side effect that a script will not be saved
             // when you save the model. Force it to be saved.
-            attribute.setPersistent(true);
+            // attribute.setPersistent(true);
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
             // Update the static cached version of this variable.
             _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
@@ -549,9 +552,19 @@ public class JSAccessor extends JavaScript {
            return;
            }
         */
+        if (script.isOverridden()) {
+            if (!MessageHandler.yesNoQuestion("Overwrite local changes?")) {
+                return;
+            }
+        }
         // Use FileParameter to preprocess the source to resolve
         // relative classpaths and references to $CLASSPATH, etc.
-        String moml = "<group name=\"doNotOverwriteOverrides\">"
+        // NOTE: This used to have name=\"doNotOverwriteOverrides\",
+        // but then the script would not be replaced, and reload would
+        // silently do nothing at all.  This is not OK.
+        // Anyway, avoiding overwriting overrides is already handled
+        // when the setup() method in the script is invoked.
+        String moml = "<group>"
             + JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
                     obeyCheckoutOrUpdateRepositoryParameter)
             + "</group>";
@@ -735,11 +748,11 @@ public class JSAccessor extends JavaScript {
     }
 
     /** Generate MoML for an Accessor. This produces only the body MoML.
-     *  It must be wrapped in an <entity></entity> or <class></class>
-     *  element to be instantiable, or in a <group></group> to be used
+     *  It must be wrapped in an &lt;entity&gt;&lt;/entity&gt; or &lt;class&gt;&lt;/class&gt;
+     *  element to be instantiable, or in a &lt;group&gt;&lt;/group&gt; to be used
      *  to update an accessor.
      *  The accessor is read in from a url, processed with
-     *  XSLT and MoML is returned.
+     *  XSLT (if XML) and MoML is returned.
      *
      *  <p>The first time this method is run, it will attempt to
      *  either checkout or update the TerraSwarm accessors repo
@@ -815,10 +828,12 @@ public class JSAccessor extends JavaScript {
                 }
 
                 result.append("<property name=\"script\" value=\"");
+                // NOTE: The following is no longer relevant. Not doing variable substitution
+                // in the script.
                 // Since $ causes the expression parser to try to substitute a variable, we need
                 // to escape it.
-                String escaped = contents.toString().replace("$", "$$");
-                result.append(StringUtilities.escapeForXML(escaped));
+                // String escaped = contents.toString().replaceAll("$", "$$");
+                result.append(StringUtilities.escapeForXML(contents.toString()));
                 result.append("\"/>");
                 return result.toString();
             } else if (extension.equals("xml")) {
