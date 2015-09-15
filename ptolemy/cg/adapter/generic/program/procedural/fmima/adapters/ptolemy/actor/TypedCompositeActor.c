@@ -275,7 +275,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
         outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator, TRUE);
 
         // Simulation loop
-        while (time < tEnd) {
+        while (time < (tEnd - h)) {
 
                 // Set connection values
                 for (int i = 0; i < NUMBER_OF_EDGES; i++) {
