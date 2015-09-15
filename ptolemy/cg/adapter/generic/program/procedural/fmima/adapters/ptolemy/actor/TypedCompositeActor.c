@@ -302,7 +302,6 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
                 // (II) Rollback FMUs
                 for (int i = 0; i < NUMBER_OF_FMUS; i++) {
                         if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
-                                fmi2Real maxStepSize;
                                 fmi2Status currentStatus = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
                                 if (currentStatus > fmi2Warning) {
                                         printf("Saving state of FMU (%s) failed. Terminating simulation. Terminating simulation.\n", NAMES_OF_FMUS[i]);
@@ -315,15 +314,17 @@ static int simulate(FMU *fmus, portConnection* connections, double h,
                                         terminateSimulation(fmus, 0, file, stepSize, nSteps);
                                         return 0;
                                 }
-                                fmi2Real lastSuccessfulTime;
-                                currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
-                                if (currentStatus > fmi2Warning) {
-                                        printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[i]);
-                                        terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                                        return 0;
+                                if (currentStatus >= fmi2Discard) {
+                                	fmi2Real lastSuccessfulTime;
+                                	currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
+                                	if (currentStatus > fmi2Warning) {
+                                			printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[i]);
+                                			terminateSimulation(fmus, 0, file, stepSize, nSteps);
+                                			return 0;
+                                	}
+                                	fmi2Real maxStepSize = lastSuccessfulTime - time;
+                                	stepSize = min(stepSize, maxStepSize);
                                 }
-                                maxStepSize = lastSuccessfulTime - time;
-                                stepSize = min(stepSize, maxStepSize);
                         }
                 }
 
