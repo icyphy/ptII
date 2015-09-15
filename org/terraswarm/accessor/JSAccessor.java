@@ -267,6 +267,9 @@ public class JSAccessor extends JavaScript {
         if (attribute == script) {
             // NOTE: No longer want the following. The reload() function will
             // ask if we want to overwrite the overridden value.
+            // FIXME: Can't seem to get it right!!!!!!!!!!!
+            // Really want to comment out the code below, but if we do,
+            // then we will _always_ be asked about the overwrite.
             //
             // Indicate that the script is not overridden.
             // In other words, each time you set the value of the script,
@@ -276,10 +279,10 @@ public class JSAccessor extends JavaScript {
             // even if you have overridden it.  Failing to do this results in
             // an Update NOT updating the script ever, which is definitely not what
             // we want.
-            // attribute.setDerivedLevel(Integer.MAX_VALUE);
+            attribute.setDerivedLevel(Integer.MAX_VALUE);
             // The above will have the side effect that a script will not be saved
             // when you save the model. Force it to be saved.
-            // attribute.setPersistent(true);
+            attribute.setPersistent(true);
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
             // Update the static cached version of this variable.
             _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
@@ -580,6 +583,15 @@ public class JSAccessor extends JavaScript {
                                 "Failed to reload accessor. Perhaps changes are too extensive."
                                 + " Try re-importing the accessor.");
                     }
+                    // Indicate that the script is not overridden.
+                    // In other words, each time you set the value of the script,
+                    // the new value will be assumed to be that specified by the class
+                    // of which this accessor is an instance.
+                    script.setDerivedLevel(Integer.MAX_VALUE);
+                    // The above will have the side effect that a script will not be saved
+                    // when you save the model. Force it to be saved so that there is always
+                    // a local copy.
+                    script.setPersistent(true);
                 }
             };
         request.setUndoable(true);
