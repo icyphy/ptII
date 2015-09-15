@@ -130,24 +130,25 @@ public class FreeVariableModelAnalysis {
         for (Object element : model.attributeList(Variable.class)) {
             Variable variable = (Variable) element;
             String expression = variable.getExpression();
-            ASTPtRootNode root;
+            ASTPtRootNode root = null;
 
-            if (variable.isStringMode()) {
+            if (variable.isStringMode() && !variable.isSuppressVariableSubstitution()) {
                 root = parser.generateStringParseTree(expression);
             } else {
                 root = parser.generateParseTree(expression);
             }
+            if (root != null) {
+                Set freeIdentifiers = new HashSet(
+                        collector.collectFreeVariables(root));
 
-            Set freeIdentifiers = new HashSet(
-                    collector.collectFreeVariables(root));
+                // Identifiers that reference other variables in the same container
+                // are bound, not free.
+                Set tempSet = new HashSet(variableNames);
+                tempSet.remove(variable.getName());
+                freeIdentifiers.removeAll(tempSet);
 
-            // Identifiers that reference other variables in the same container
-            // are bound, not free.
-            Set tempSet = new HashSet(variableNames);
-            tempSet.remove(variable.getName());
-            freeIdentifiers.removeAll(tempSet);
-
-            set.addAll(freeIdentifiers);
+                set.addAll(freeIdentifiers);
+            }
         }
 
         _entityToFreeVariableNameSet.put(model, set);
