@@ -723,7 +723,11 @@ public class RelationWidthInference {
             if (unspecifiedWidthsSize == 1
                     || unspecifiedWidthsSize % defaultWidth == 0
                     || defaultWidth == 0) {
-                int width = unspecifiedWidthsSize / defaultWidth;
+                int width = 0;
+                // Coverity: Avoid a divide by zero error.
+                if (defaultWidth != 0) {
+                    width = unspecifiedWidthsSize / defaultWidth;
+                }
                 assert width >= 0;
                 for (IORelation relation : outsideUnspecifiedWidths) {
                     relation._setInferredWidth(width);
