@@ -5,21 +5,25 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 95}">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 100.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={199, 165, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 187, 1092, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[858, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.0, 252.0}">
     </property>
     <entity name="ContextAware" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor discovers IOT services on web.&#10; *  It requires the contextAware module.  Please see:&#10; *  https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&#10; * &#10; *  @accessor contextAware&#10; *  @author Anne H. Ngu (angu@btxstate.edu)&#10; *  @input {number} just for testing &#10; *  @output {number} just for testing d&#10; *  @version $$Id$$ &#10; */&#10;&#10;var contextAware = require(&quot;contextAware&quot;);&#10;&#10;// Initialize the context aware service.&#10;var contextAwareService = new contextAware.DiscoveryOfRESTService();  &#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    input('input');&#10;    output('output');&#10;    extend(&quot;net/REST.js&quot;);&#10;}&#10;&#10;var handle;&#10;&#10;/** Upon receiving details of a REST service, construct a concrete accessor to access it.&#10; */&#10;exports.initialize = function () {&#10;    var serviceParam; //the input that is needed for the options port in REST&#10;    handle = addInputHandler('input', function() {&#10;        send('output', get('input') *2);&#10;        serviceParam = contextAwareService.discoverServices();&#10;	console.log(serviceParam);&#10;        send('options', &quot;\&quot;http://pluto.cs.txstate.edu:22001\&quot;&quot;);&#10;        send('command', 'gsn');&#10;        this.issueCommand(this.handleResponse);&#10;    });&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor discovers IOT services on web.&#10; *  It requires the contextAware module.  Please see:&#10; *  https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&#10; * &#10; *  @accessor contextAware&#10; *  @author Anne H. Ngu (angu@btxstate.edu)&#10; *  @input {number} just for testing &#10; *  @output {number} just for testing d&#10; *  @version $$Id$$ &#10; */&#10;&#10;var contextAware = require(&quot;contextAware&quot;);&#10;&#10;// Initialize the context aware service.&#10;var contextAwareService = new contextAware.DiscoveryOfRESTService();  &#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    input('input');&#10;    output('output');&#10;    extend(&quot;net/REST.js&quot;);&#10;}&#10;&#10;var handle;&#10;&#10;/** Upon receiving details of a REST service, construct a concrete accessor to access it.&#10; */&#10;exports.initialize = function () {&#10;    var serviceParam; //the input that is needed for the options port in REST&#10;    handle = addInputHandler('input', function() {&#10;        send('output', get('input') *2);&#10;        serviceParam = contextAwareService.discoverServices();&#10;	console.log(&quot;org/terraswarm/accessor/accessors/web/contextAware/ContextAware.js: serviceParam: &quot; + serviceParam);&#10;        set('options', &quot;{\&quot;url\&quot;:\&quot;http://pluto.cs.txstate.edu:22001\&quot;}&quot;);&#10;        //send('options', &quot;{\&quot;url\&quot;:\&quot;http://pluto.cs.txstate.edu:22001\&quot;}&quot;);&#10;        send('command', 'gsn');&#10;        this.ssuper.initialize();&#10;        this.issueCommand(this.handleResponse);&#10;    });&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -37,7 +41,7 @@
             <property name="just (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;number&quot;]}) for testing d">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 295.0}">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -45,11 +49,11 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="3">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot;:&quot;http://pluto.cs.txstate.edu:22001&quot;}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="gsn">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -59,20 +63,6 @@
         </property>
         <property name="outputCompleteResponseOnly" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -94,48 +84,48 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="body" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 245}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 305.0}">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="707332070">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -144,42 +134,101 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 185}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 305.0}">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={770, 145, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{515, 150}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 170.0}">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{480, 265}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{635.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;200: OK&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 305.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[250.0, 150.0]">
+        <vertex name="vertex1" value="{240.0, 305.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=185.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=240.0,y=305.0}, points={} },{ head={id=&quot;ContextAware.input&quot;,x=325.0,y=295.0}, tail={id=&quot;relation.vertex1&quot;,x=240.0,y=305.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=60.0,y=305.0}, tail={id=&quot;Const.trigger&quot;,x=185.0,y=305.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ContextAware.output&quot;,x=325.0,y=295.0}, tail={id=&quot;Display.input&quot;,x=450.0,y=170.0}, points={395.0,275.0,395.0,170.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=750.0,y=225.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=635.0,y=225.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=145.0,y=185.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=355.0,y=130.0}, points={} },{ head={id=&quot;MicrostepDelay.input&quot;,x=635.0,y=225.0}, tail={id=&quot;Const2.output&quot;,x=575.0,y=225.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{510.0, 225.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation7.vertex1&quot;,x=510.0,y=225.0}, tail={id=&quot;Const2.trigger&quot;,x=575.0,y=225.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=550.0,y=170.0}, tail={id=&quot;relation7.vertex1&quot;,x=510.0,y=225.0}, points={510.0,170.0} },{ head={id=&quot;ContextAware.response&quot;,x=325.0,y=295.0}, tail={id=&quot;relation7.vertex1&quot;,x=510.0,y=225.0}, points={410.0,285.0,410.0,225.0} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ContextAware.status&quot;,x=325.0,y=295.0}, tail={id=&quot;Test.input&quot;,x=460.0,y=305.0}, points={} } }">
+        </property>
     </relation>
     <link port="ContextAware.input" relation="relation"/>
     <link port="ContextAware.output" relation="relation3"/>
-    <link port="ContextAware.options" relation="relation"/>
-    <link port="ContextAware.response" relation="relation4"/>
+    <link port="ContextAware.response" relation="relation7"/>
+    <link port="ContextAware.status" relation="relation4"/>
     <link port="SingleEvent.output" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation2"/>
     <link port="Display.input" relation="relation3"/>
-    <link port="Display2.input" relation="relation4"/>
+    <link port="Display2.input" relation="relation7"/>
+    <link port="Stop.input" relation="relation5"/>
+    <link port="MicrostepDelay.input" relation="relation6"/>
+    <link port="MicrostepDelay.output" relation="relation5"/>
+    <link port="Const2.output" relation="relation6"/>
+    <link port="Const2.trigger" relation="relation7"/>
+    <link port="Test.input" relation="relation4"/>
 </entity>
