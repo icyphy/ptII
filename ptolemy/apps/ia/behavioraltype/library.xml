@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<!-- Basic library, including mature directors, actors and utilities.  -->
-<entity name="library" class="ptolemy.actor.TypedCompositeActor">
-
-  <input source="ptolemy/apps/ia/behavioraltype/buffer/BufferWithCounter.xml"/>
-
-</entity>

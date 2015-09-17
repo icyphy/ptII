@@ -1,2 +1,0 @@
-#!/bin/sh
-echo "-pthread -I/usr/local/jmodelica/include/RuntimeLibrary -I/usr/local/jmodelica/ThirdParty/FMI/2.0 -I/usr/local/jmodelica/ThirdParty/Sundials/include -I/usr/local/jmodelica/include -DJMI_AD=JMI_AD_NONE -DFMUME20 -DFMUCS20"

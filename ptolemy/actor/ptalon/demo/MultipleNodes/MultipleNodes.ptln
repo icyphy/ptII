@@ -1,9 +1,0 @@
-/*attachDanglingPorts; */
-
-MultipleNodes is {
-	actor node = ptolemy.domains.wireless.lib.GraphicalLocator;
-	parameter n;
-	for i initially [[ 1 ]] [[ i <= n ]] {
-		node(outputRange := [[ 10 * i ]], _location := [[ [10*i, 10*i] ]]);
-	} next [[ i + 1 ]]
-}

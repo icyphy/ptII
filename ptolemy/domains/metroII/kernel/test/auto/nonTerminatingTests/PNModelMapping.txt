@@ -1,2 +1,0 @@
-MetroIICompositeActor.Ramp2.put.begin,MetroIIModalModel._Controller.state
-MetroIICompositeActor.Ramp.put.begin,MetroIIModalModel._Controller.state2
