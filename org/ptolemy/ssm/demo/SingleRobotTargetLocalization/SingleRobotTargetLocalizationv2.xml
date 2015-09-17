@@ -4,7 +4,7 @@
 <entity name="SingleRobotTargetLocalizationv2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 1401, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 167, 1401, 878}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1167, 768]">
     </property>
@@ -111,7 +111,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A single robot target localization example that uses the State Space mechanism. For &#10;the previous mechanism that does not require state space models ( TargetDynamics&#10;and MeasurementModels), please see:&#10;In this model, the behavior of the particle filter is given by the two state space actors&#10;it is associated with.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{275.0, 50.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{275.0, 50.0}">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -119,17 +119,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="TargetDynamics defines the state space model &#10;of the target, which defines the state to be estimated &#10;by the particle filter. The state corresponds to &#10;the x-y coordinates of the targets for this example &#10;in 2D space.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-210.0, 45.0]">
-            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-175.0, 85.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor describes the range measurement, &#10;also associated with the particle filter state estimator.&#10;Any output port of this model will appear as an input&#10;port to an associated estimator actor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-110.0, 40.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-110.0, 40.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="GaussianRangeMeasurement">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -270,7 +266,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-35.0, -545.0}">
             </property>
         </property>
-        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = 2.0, y = -2.572996239482619E-15}">
+        <property name="control_input" class="ptolemy.data.expr.Parameter" value="{x = -0.1255810390586, y = 1.9960534568565}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -489,7 +485,7 @@
         <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="{initialPosition.x, initialPosition.y}">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="100.0">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="37.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-160.0, -100.0}">
             </property>
@@ -515,7 +511,7 @@
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
                 </property>
             </property>
-            <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{x = 2.0, y = -2.572996239482619E-15}">
+            <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{x = -0.1255810390586, y = 1.9960534568565}">
             </property>
             <property name="DecoratorAttributesFor_Search Robot Dynamics2" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
                 <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="Search Robot.Search Robot Dynamics">
@@ -591,7 +587,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="-2.0366060636946095">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="-16.7299943204955">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -604,7 +600,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="0.1295351658489143">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="-17.750205492466865">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -614,10 +610,6 @@
             </entity>
         </entity>
         <entity name="Search Robot Dynamics" class="org.ptolemy.ssm.StateSpaceModel">
-            <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[0.001,0.0;0.0,0.001])">
-            </property>
-            <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
-            </property>
             <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x + control.x">
@@ -625,6 +617,10 @@
             <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y + control.y">
+            </property>
+            <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[0.001,0.0;0.0,0.001])">
+            </property>
+            <property name="decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -255.0}">
             </property>
@@ -680,7 +676,7 @@
         <link port="StateSpaceSimulator.state" relation="relation8"/>
         <link port="StateSpaceSimulator.control" relation="relation4"/>
     </entity>
-    <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+    <entity name="ParticleFilter" class="org.ptolemy.ssm.ParticleFilter">
         <display name="Particle Filter&#10;State Estimator"/>
         <property name="lowVarianceSampler" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -688,7 +684,7 @@
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nout">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="37.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 395.0}">
         </property>
@@ -705,11 +701,11 @@
             </property>
             <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="112.77801797168823">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="55.584420564313945">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x + Vtarget">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="10.303614309614984">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.762629520472299">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
@@ -740,7 +736,7 @@
         </property>
         <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="6.0229305678207">
         </property>
-        <property name="GaussianRangeMeasurement_z" class="ptolemy.data.expr.Parameter" value="110.9315535066262">
+        <property name="GaussianRangeMeasurement_z" class="ptolemy.data.expr.Parameter" value="68.4162297537911">
         </property>
         <property name="DecoratorAttributesFor_StateSpaceModel2" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="TargetDynamics">
@@ -764,9 +760,7 @@
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
         </property>
-        <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x = -0.0634303655249, y = 0.164171569031}">
-        </property>
-        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4, 0.2, 1.0, 1.0}">
+        <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x = -16.8585023387804, y = -15.7484311858013}">
         </property>
         <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -795,7 +789,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="111.82582174929996">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="54.60575691865284">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -808,7 +802,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="10.369622154269017">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.802679922548799">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -953,7 +947,7 @@
     <entity name="Target" class="org.ptolemy.ssm.StateSpaceSimulator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="{10.0,10.0}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="37.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 530.0]">
         </property>
@@ -1137,14 +1131,12 @@
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
         </property>
-        <property name="_decoratorHighlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.4, 0.0, 1.0}">
-        </property>
         <entity name="x_update" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x + Vtarget">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="109.50156587082724">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="45.711781264225834">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1157,7 +1149,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="10.314252028573502">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="10.270398556798659">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1167,8 +1159,6 @@
         </entity>
     </entity>
     <entity name="TargetDynamics" class="org.ptolemy.ssm.StateSpaceModel">
-        <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[0.01,0.0;0.0,0.01])">
-        </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="x_update" class="ptolemy.data.expr.Parameter" value="x + Vtarget">
@@ -1176,6 +1166,8 @@
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
+        </property>
+        <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[0.01,0.0;0.0,0.01])">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 225.0]">
         </property>
@@ -1219,7 +1211,7 @@
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Particles.input&quot;,x=750.0,y=365.0}, tail={id=&quot;ParticleFilterSSM.particleOutput&quot;,x=590.0,y=395.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Particles.input&quot;,x=750.0,y=365.0}, tail={id=&quot;ParticleFilter.particleOutput&quot;,x=590.0,y=395.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1229,7 +1221,7 @@
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ParticleFilterSSM.stateEstimate&quot;,x=590.0,y=395.0}, tail={id=&quot;State Estimate.input&quot;,x=730.0,y=600.0}, points={695.0,405.0,695.0,620.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ParticleFilter.stateEstimate&quot;,x=590.0,y=395.0}, tail={id=&quot;State Estimate.input&quot;,x=730.0,y=600.0}, points={695.0,405.0,695.0,620.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -1267,10 +1259,10 @@
     <link port="Search Robot.measurement" relation="relation7"/>
     <link port="Search Robot.target" relation="relation12"/>
     <link port="Search Robot.selfPosition" relation="relation4"/>
-    <link port="ParticleFilterSSM.particleOutput" relation="relation2"/>
-    <link port="ParticleFilterSSM.stateEstimate" relation="relation3"/>
-    <link port="ParticleFilterSSM.r1" relation="relation4"/>
-    <link port="ParticleFilterSSM.GaussianRangeMeasurement_z" relation="relation7"/>
+    <link port="ParticleFilter.particleOutput" relation="relation2"/>
+    <link port="ParticleFilter.stateEstimate" relation="relation3"/>
+    <link port="ParticleFilter.r1" relation="relation4"/>
+    <link port="ParticleFilter.GaussianRangeMeasurement_z" relation="relation7"/>
     <link port="State Estimate.input" relation="relation3"/>
     <link port="State Estimate.x" relation="relation5"/>
     <link port="State Estimate.y" relation="relation6"/>

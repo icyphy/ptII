@@ -41,16 +41,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class PredictorSSM extends AbstractPredictor
+public class Predictor extends AbstractPredictor
 implements StateSpaceActor {
 
-    public PredictorSSM(CompositeEntity container, String name)
+    public Predictor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _decorator = null;
     }
 
-    public PredictorSSM(Workspace workspace)
+    public Predictor(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
         _decorator = null;

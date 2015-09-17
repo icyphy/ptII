@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 60.0}">
         </property>
     </property>
-    <property name="robot_pos" class="ptolemy.data.expr.Parameter" value="{x = 50.0, y = -50.0}">
+    <property name="robot_pos" class="ptolemy.data.expr.Parameter" value="{x = 2.5, y = -2.5}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -133,7 +133,7 @@
     </property>
     <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="robot_pos2" class="ptolemy.data.expr.Parameter" value="{x = 0.0, y = -60.0}">
+    <property name="robot_pos2" class="ptolemy.data.expr.Parameter" value="{x = 47.5, y = -12.5}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -805,7 +805,7 @@
         <link port="Merge.output" relation="relation13"/>
         <link port="SetVariable3.input" relation="relation13"/>
     </entity>
-    <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+    <entity name="ParticleFilter" class="org.ptolemy.ssm.ParticleFilter">
         <property name="bootstrap" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="lowVarianceSampler" class="ptolemy.data.expr.Parameter" value="false">
@@ -814,7 +814,7 @@
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nout">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 255.0}">
         </property>
@@ -831,11 +831,11 @@
             </property>
             <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="13.941205679136605">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="-7.45580494177353">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x ">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="-5.534426832885133">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="-12.74393374133557">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y ">
             </property>
@@ -882,7 +882,7 @@
             <property name="R" class="ptolemy.data.expr.Parameter" value="[robot_pos2.x-x, y-robot_pos2.y ; robot_pos2.y-y, robot_pos2.x-x]">
             </property>
         </property>
-        <property name="CameraModel_z" class="ptolemy.data.expr.Parameter" value="[12.0692694254592; -9.7125616553543]">
+        <property name="CameraModel_z" class="ptolemy.data.expr.Parameter" value="[21.310573955657; -9.5744212990726]">
         </property>
         <property name="R" class="ptolemy.data.expr.Parameter" value="[robot_pos2.x-x, y-robot_pos2.y ; robot_pos2.y-y, robot_pos2.x-x]">
         </property>
@@ -912,8 +912,6 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="11.924540567460717">
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -924,8 +922,6 @@
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y ">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-            </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="-3.7482925404161316">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1011,10 +1007,6 @@
         </port>
     </entity>
     <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
-        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200-100,random()*200-100}">
-        </property>
-        <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[10.0,0.0;0.0,10.0])">
-        </property>
         <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="x_update" class="ptolemy.data.expr.Parameter" value="x ">
@@ -1022,6 +1014,10 @@
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="y_update" class="ptolemy.data.expr.Parameter" value="y ">
+        </property>
+        <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200-100,random()*200-100}">
+        </property>
+        <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0},[10.0,0.0;0.0,10.0])">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{565.0, 120.0}">
         </property>
@@ -1564,7 +1560,7 @@
         </property>
         <vertex name="vertex1" value="{370.0, 255.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation16.vertex1&quot;,x=370.0,y=255.0}, tail={id=&quot;Display.input&quot;,x=410.0,y=195.0}, points={370.0,195.0} },{ head={id=&quot;ParticleFilterSSM.CameraModel_z&quot;,x=480.0,y=255.0}, tail={id=&quot;relation16.vertex1&quot;,x=370.0,y=255.0}, points={} },{ head={id=&quot;RobotWithRangeSensor2.measurement&quot;,x=225.0,y=475.0}, tail={id=&quot;relation16.vertex1&quot;,x=370.0,y=255.0}, points={335.0,465.0,335.0,255.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation16.vertex1&quot;,x=370.0,y=255.0}, tail={id=&quot;Display.input&quot;,x=410.0,y=195.0}, points={370.0,195.0} },{ head={id=&quot;ParticleFilter.CameraModel_z&quot;,x=480.0,y=255.0}, tail={id=&quot;relation16.vertex1&quot;,x=370.0,y=255.0}, points={} },{ head={id=&quot;RobotWithRangeSensor2.measurement&quot;,x=225.0,y=475.0}, tail={id=&quot;relation16.vertex1&quot;,x=370.0,y=255.0}, points={335.0,465.0,335.0,255.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1591,8 +1587,8 @@
     <link port="RobotWithRangeSensor.controlInput" relation="relation6"/>
     <link port="RobotWithRangeSensor.target" relation="relation12"/>
     <link port="RobotWithRangeSensor.port" relation="relation"/>
-    <link port="ParticleFilterSSM.particleOutput" relation="relation4"/>
-    <link port="ParticleFilterSSM.CameraModel_z" relation="relation16"/>
+    <link port="ParticleFilter.particleOutput" relation="relation4"/>
+    <link port="ParticleFilter.CameraModel_z" relation="relation16"/>
     <link port="Target State2.input" relation="relation"/>
     <link port="Target State2.x" relation="relation3"/>
     <link port="Target State2.y" relation="relation5"/>
