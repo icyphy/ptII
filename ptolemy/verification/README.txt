@@ -1,2 +1,0 @@
-$Id$
-See README.html

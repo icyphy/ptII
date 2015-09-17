@@ -1,3 +1,0 @@
-First Name,Last Name,Work Email
-Claudius,Ptolomeus,ptolemy@ptolemy.org
-Tycho,Brahe,tycho@ptolemy.org

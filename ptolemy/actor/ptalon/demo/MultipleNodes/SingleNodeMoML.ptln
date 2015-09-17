@@ -1,6 +1,0 @@
-/*attachDanglingPorts; */
-
-SingleNodeMoML is {
-	actor node = ptolemy.domains.wireless.demo.SmallWorld.RelayNode;
-        node();
-}

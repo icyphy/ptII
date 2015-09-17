@@ -1,7 +1,0 @@
-attachDanglingPorts;
-
-Combine is {
-	actorparameter A;
-	A();
-	A();
-}

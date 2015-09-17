@@ -1,2 +1,0 @@
-#!/bin/sh
-echo "-I/usr/local/jmodelica/include/RuntimeLibrary"
