@@ -43,6 +43,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.MultiMap;
 import org.vertx.java.core.buffer.Buffer;
@@ -50,7 +52,6 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.HttpClientRequest;
 import org.vertx.java.core.http.HttpClientResponse;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.Token;
@@ -169,8 +170,6 @@ public class HttpClientHelper extends VertxHelperBase {
         // The argument is a path with a query, not a URI.
         String uri = urlSpec.get("path") + query;
         
-        String protocol = (String) urlSpec.get("protocol");
-
         // FIXME: How do we set the protocol?
         // It is specified in urlSpec.get("protocol").
         
@@ -245,8 +244,14 @@ public class HttpClientHelper extends VertxHelperBase {
                 _request.write(new Buffer(os.toByteArray()));
 
             } catch (IOException e) {
-                _currentObj.callMember("emit", "error",
-                        "Can't write image body to HTTP request");
+                String message = "Can't write image body to HTTP request";
+                try {
+                    _currentObj.callMember("emit", "error", message);
+                } catch (Throwable ex) {
+                    // There may be no error event handler registered.
+                    // Use the actor to report the error.
+                    _actor.error(message);
+                }
             }
         } else {
             
@@ -279,7 +284,13 @@ public class HttpClientHelper extends VertxHelperBase {
         @Override
         public void handle(Throwable throwable) {
             synchronized (_actor) {
-                _currentObj.callMember("emit", "error", throwable.getMessage());
+                try {
+                    _currentObj.callMember("emit", "error", throwable.getMessage());
+                } catch (Throwable ex) {
+                    // There may be no error event handler registered.
+                    // Use the actor to report the error.
+                    _actor.error(throwable.getMessage());
+                }
             }
         }
     }
@@ -300,9 +311,15 @@ public class HttpClientHelper extends VertxHelperBase {
                 int status = response.statusCode();
                 if (status >= 400) {
                     // An error occurred.
-                    _currentObj.callMember("emit", "error",
-                            "Request failed with code " + status + ": "
-                                    + response.statusMessage());
+                    String message = "Request failed with code " + status + ": "
+                            + response.statusMessage();
+                    try {
+                        _currentObj.callMember("emit", "error",  message);
+                    } catch (Throwable ex) {
+                        // There may be no error event handler registered.
+                        // Use the actor to report the error.
+                        _actor.error(message);
+                    }
                     return;
                 }
                 MultiMap headers = response.headers();
@@ -312,10 +329,17 @@ public class HttpClientHelper extends VertxHelperBase {
                     String newLocation = headers.get("Location");
                     if (newLocation != null) {
                         // FIXME: How to handle the redirect?
-                        _currentObj.callMember("emit", "error", "Redirect to "
+                        String message = "Redirect to "
                                 + newLocation
                                 + " not yet handled by HttpClientHelper. "
-                                + status + ": " + response.statusMessage());
+                                + status + ": " + response.statusMessage();
+                        try {
+                            _currentObj.callMember("emit", "error", message);
+                        } catch (Throwable ex) {
+                            // There may be no error event handler registered.
+                            // Use the actor to report the error.
+                            _actor.error(message);
+                        }
                         return;
                     }
                 }
