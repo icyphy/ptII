@@ -10,9 +10,11 @@
   </entity> 
   <entity name="GaussianMeasurementModel" class="org.ptolemy.ssm.GaussianMeasurementModel">
   </entity> 
-  <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+  <entity name="Map" class="org.ptolemy.ssm.Map">
   </entity> 
-  <entity name="PredictorSSM" class="org.ptolemy.ssm.PredictorSSM">
+  <entity name="ParticleFilter" class="org.ptolemy.ssm.ParticleFilter">
+  </entity> 
+  <entity name="Predictor" class="org.ptolemy.ssm.Predictor">
   </entity> 
   <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
   </entity> 

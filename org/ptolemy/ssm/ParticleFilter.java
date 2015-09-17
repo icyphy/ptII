@@ -54,10 +54,10 @@ and several measurements to be tied with itself via decorators.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public class ParticleFilterSSM extends AbstractParticleFilter implements
+public class ParticleFilter extends AbstractParticleFilter implements
         InferenceActor {
 
-    public ParticleFilterSSM(CompositeEntity container, String name)
+    public ParticleFilter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _decorator = null;
@@ -65,7 +65,7 @@ public class ParticleFilterSSM extends AbstractParticleFilter implements
         // TODO Auto-generated constructor stub
     }
 
-    public ParticleFilterSSM(Workspace workspace)
+    public ParticleFilter(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
         _decorator = null;

@@ -58,8 +58,8 @@ JSRCS = \
 	MirrorDecorator.java \
 	MirrorDecoratorAttributes.java \
 	MirrorDecoratorListener.java \
-	ParticleFilterSSM.java \
-	PredictorSSM.java \
+	ParticleFilter.java \
+	Predictor.java \
 	StateSpaceActor.java \
 	StateSpaceModel.java \
 	StateSpaceSimulator.java \
@@ -70,8 +70,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	GaussianMeasurementModelIcon.xml \
 	ssm.xml \
-	PredictorSSMIcon.xml \
-	ParticleFilterSSMIcon.xml \
+	PredictorIcon.xml \
+	ParticleFilterIcon.xml \
 	StateSpaceModelIcon.xml \
 	StateSpaceSimulatorIcon.xml
 

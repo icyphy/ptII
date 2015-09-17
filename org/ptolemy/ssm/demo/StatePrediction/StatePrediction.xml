@@ -935,7 +935,7 @@
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.4, 0.0, 1.0}">
         </property>
     </entity>
-    <entity name="PredictorSSM" class="org.ptolemy.ssm.PredictorSSM">
+    <entity name="Predictor" class="org.ptolemy.ssm.Predictor">
         <property name="t" class="ptolemy.data.expr.Parameter" value="93.0">
         </property>
         <property name="predictionStep" class="ptolemy.data.expr.Parameter" value="5">
@@ -1077,7 +1077,7 @@
             </property>
         </port>
     </entity>
-    <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+    <entity name="ParticleFilter" class="org.ptolemy.ssm.ParticleFilter">
         <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nout">
@@ -1264,7 +1264,7 @@
         </property>
         <vertex name="vertex1" value="{425.0, 340.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Search Robot.selfPosition&quot;,x=345.0,y=510.0}, tail={id=&quot;relation4.vertex1&quot;,x=425.0,y=340.0}, points={405.0,520.0,405.0,340.0} },{ head={id=&quot;Robot State.input&quot;,x=1100.0,y=320.0}, tail={id=&quot;relation4.vertex1&quot;,x=425.0,y=340.0}, points={} },{ head={id=&quot;ParticleFilterSSM.r1&quot;,x=590.0,y=490.0}, tail={id=&quot;relation4.vertex1&quot;,x=425.0,y=340.0}, points={425.0,480.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Search Robot.selfPosition&quot;,x=345.0,y=510.0}, tail={id=&quot;relation4.vertex1&quot;,x=425.0,y=340.0}, points={405.0,520.0,405.0,340.0} },{ head={id=&quot;Robot State.input&quot;,x=1100.0,y=320.0}, tail={id=&quot;relation4.vertex1&quot;,x=425.0,y=340.0}, points={} },{ head={id=&quot;ParticleFilter.r1&quot;,x=590.0,y=490.0}, tail={id=&quot;relation4.vertex1&quot;,x=425.0,y=340.0}, points={425.0,480.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -1284,7 +1284,7 @@
         </property>
         <vertex name="vertex1" value="[710.0, 480.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation17.vertex1&quot;,x=710.0,y=480.0}, tail={id=&quot;SequenceToArray.input&quot;,x=760.0,y=645.0}, points={710.0,635.0} },{ head={id=&quot;ParticleFilterSSM.particleOutput&quot;,x=590.0,y=490.0}, tail={id=&quot;relation17.vertex1&quot;,x=710.0,y=480.0}, points={} },{ head={id=&quot;Particles.input&quot;,x=1115.0,y=235.0}, tail={id=&quot;relation17.vertex1&quot;,x=710.0,y=480.0}, points={710.0,255.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation17.vertex1&quot;,x=710.0,y=480.0}, tail={id=&quot;SequenceToArray.input&quot;,x=760.0,y=645.0}, points={710.0,635.0} },{ head={id=&quot;ParticleFilter.particleOutput&quot;,x=590.0,y=490.0}, tail={id=&quot;relation17.vertex1&quot;,x=710.0,y=480.0}, points={} },{ head={id=&quot;Particles.input&quot;,x=1115.0,y=235.0}, tail={id=&quot;relation17.vertex1&quot;,x=710.0,y=480.0}, points={710.0,255.0} } }">
         </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
@@ -1337,14 +1337,14 @@
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="Target.trigger" relation="relation"/>
     <link port="Target.state" relation="relation12"/>
-    <link port="PredictorSSM.particleOutput" relation="relation2"/>
-    <link port="PredictorSSM.particleInput" relation="relation18"/>
+    <link port="Predictor.particleOutput" relation="relation2"/>
+    <link port="Predictor.particleInput" relation="relation18"/>
     <link port="Predicted Particles.input" relation="relation7"/>
     <link port="Predicted Particles.x" relation="relation19"/>
     <link port="Predicted Particles.y" relation="relation20"/>
-    <link port="ParticleFilterSSM.particleOutput" relation="relation17"/>
-    <link port="ParticleFilterSSM.r1" relation="relation4"/>
-    <link port="ParticleFilterSSM.GaussianRangeMeasurement_z" relation="relation3"/>
+    <link port="ParticleFilter.particleOutput" relation="relation17"/>
+    <link port="ParticleFilter.r1" relation="relation4"/>
+    <link port="ParticleFilter.GaussianRangeMeasurement_z" relation="relation3"/>
     <link port="SequenceToArray.input" relation="relation17"/>
     <link port="SequenceToArray.output" relation="relation18"/>
     <link port="ArrayToSequence.input" relation="relation2"/>
