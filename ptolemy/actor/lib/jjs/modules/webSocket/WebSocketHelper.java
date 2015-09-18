@@ -1,4 +1,4 @@
-/* AnExecute a script in JavaScript.
+/* Support for the websocket accessor.
 
 @Copyright (c) 2015 The Regents of the University of California.
 All rights reserved.
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @see WebSocketServerHelper
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (bilung)
+   @Pt.AcceptedRating Red (eal)
  */
 public class WebSocketHelper extends VertxHelperBase {
 
