@@ -101,11 +101,8 @@ import ptolemy.util.StringUtilities;
    </p>
    <p>
    The script may also reference parameters in the scope of this actor
-   using usual Ptolemy II $ syntax.  E.g., ${foo} in the script will be
-   replaced with the value of foo before the script is evaluated.
-   However, this use of parameters will retrieve the value of the parameter
-   only when the script is read, so updates to the
-   parameter value will not be noticed.
+   using get('<i>parameterName</i>').  To get a parameter in the container, use
+   actor.getContainer().getAttribute('<i>interval</i>').
    </p>
    <p>
    Your script can define zero or more of the following functions:</p>
