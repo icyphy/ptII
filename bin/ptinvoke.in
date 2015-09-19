@@ -1534,7 +1534,7 @@ if [ "$error" = "none" ]; then
 		
             STUB=$PTII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub 
             if [ ! -f "$STUB" ]; then
-               (cd $PTII/vendors; git clone https://github.com/tofi86/universalJavaApplicationStub.git)
+               (cd $PTII/vendors; git clone https://github.com/cxbrooks/universalJavaApplicationStub.git)
             fi
 
 	    if [ -f "$STUB" ]; then
@@ -1544,8 +1544,8 @@ if [ "$error" = "none" ]; then
             fi		     
             # Removed Java application stubs that are no longer used because we have the
             # universalJavaApplicationStub
-            rm -f $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub/JavaAppLauncher
-            rm -f $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub/JavaApplicationStub
+            rm -rf $MACAPP_APP/Contents/MacOS/JavaAppLauncher
+            rm -rf $MACAPP_APP/Contents/MacOS/JavaApplicationStub
 
 	    cat >$MACAPP_PLIST <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1611,12 +1611,14 @@ EOF2
       <string>$MACAPP_ARGUMENT</string>
       <key>Properties</key>
       <dict>
+        <key>user.lang</key>
+        <string>en</string>
+        <key>user.region</key>
+        <string>US</string>
         <key>java.library.path</key>
-        <string>\$APP_PACKAGE/../lib</string>
-        <key>APP_PACKAGE</key>
-        <string>\$APP_PACKAGE</string>
+        <string>\$JAVAROOT/../../../../../lib</string>
         <key>ptolemy.ptII.dir</key>
-        <string>\$APP_PACKAGE/../..</string>
+        <string>\$JAVAROOT/../../../../..</string>
       </dict>
     </dict>
   </dict>
@@ -1646,10 +1648,20 @@ EOF4
       # Here's the last part of the file:
       cat >>$MACAPP_PLIST <<EOF6        
       </array>
+      <key>VMOptions</key>
+      <string>-Xmx1024m</string>
       <key>Properties</key>
       <dict>
         <key>com.apple.mrj.application.apple.menu.about.name</key>
         <string>Vergil</string>
+        <key>java.library.path</key>
+        <string>\$JAVAROOT/../../../../../lib</string>
+        <key>ptolemy.ptII.dir</key>
+        <string>\$JAVAROOT/../../../../..</string>
+        <key>user.lang</key>
+        <string>en</string>
+        <key>user.region</key>
+        <string>US</string>
       </dict>
    </dict>
    </dict>
