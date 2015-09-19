@@ -323,7 +323,7 @@ public class JSAccessor extends JavaScript {
                 exec.setWorkingDirectory(accessorsRepoDirectory);
                 // Use --accept postpone so that the updated proceeds despite local mods.
                 // See http://lists.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-January/017045.html
-                String svnUpdateCommand = "svn update --accept postpone";
+                String svnUpdateCommand = "svn update --non-interactive --trust-server-cert --accept postpone";
                 execCommands.add(svnUpdateCommand);
                 _commands = "cd " + accessorsRepoDirectory + "\n" + svnUpdateCommand;
                 MessageHandler.status("Updating local copy of the accessors repository.");
