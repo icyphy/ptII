@@ -5848,8 +5848,7 @@ else
 fi
 
 if test -z "$PTSVGSALAMANDER_DIR"; then
-   #echo "FIXME: could not find svgSalamander.jar"
-   # updateExcludes "diva/util/java2d/svg/"
+   updateExcludes "com.jhlabs.image.svg"
 fi
 
 #--------------------------------------------------------------------
