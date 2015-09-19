@@ -333,4 +333,10 @@ public class ParticleFilter extends AbstractParticleFilter {
 
     }
 
+    @Override
+    protected boolean _satisfiesMapConstraints(double[] coordinates) {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
 }

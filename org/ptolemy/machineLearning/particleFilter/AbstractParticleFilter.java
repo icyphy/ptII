@@ -261,6 +261,9 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
                 _propagate();
             }
 
+            // If the particle filter is using a map association, set the weights of the particles
+            // that have drifted outside of the map.
+            _constrainParticles();
             _normalizeWeights();
             _sendStateEstimate();
             _generateOutputParticles();
@@ -534,6 +537,19 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    
+    protected abstract boolean _satisfiesMapConstraints(double[] coordinates);
+    /**
+     * Constrain particles within a map region if applicable.
+     */
+    protected void _constrainParticles() {
+        for (int i = 0; i < particles.length; i++) {
+            if (!_satisfiesMapConstraints(particles[i].getValue())) {
+                particles[i].setWeight(0.0);
+            }
+        }
+    }
+    
     private void _createRandomGenerator() throws IllegalActionException {
 
         _seed = ((LongToken) seed.getToken()).longValue();
