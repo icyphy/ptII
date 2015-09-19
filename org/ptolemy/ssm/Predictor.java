@@ -28,6 +28,8 @@ the copyright link on the splash page or see copyright.htm.
 */
 package org.ptolemy.ssm;
 
+import java.util.Set;
+
 import org.ptolemy.machineLearning.particleFilter.AbstractPredictor;
 
 import ptolemy.data.ArrayToken;
@@ -103,7 +105,8 @@ implements StateSpaceActor {
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
-        for (Decorator d : this.decorators()) {
+        Set<Decorator> decoratorSet =decorators();
+        for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
                 if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
