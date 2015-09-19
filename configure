@@ -13103,7 +13103,7 @@ $as_echo "$as_me: WARNING: Failed to find the svgSalamander.jar file.
 fi
 
 if test -z "$PTSVGSALAMANDER_DIR"; then
-   echo "FIXME: could not find svgSalamander.jar"
+   #echo "FIXME: could not find svgSalamander.jar"
    # updateExcludes "diva/util/java2d/svg/"
 fi
 
