@@ -28,6 +28,7 @@
 package org.ptolemy.ssm;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import org.ptolemy.machineLearning.particleFilter.AbstractParticleFilter;
 
@@ -124,8 +125,8 @@ public class ParticleFilter extends AbstractParticleFilter implements
     public boolean validUniqueDecoratorAssociationExists()
             throws IllegalActionException {
         boolean found = false;
-        /*Set test =*/decorators();
-        for (Decorator d : decorators()) {
+        Set<Decorator> decoratorSet =decorators();
+        for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
                 Parameter isEnabled = (Parameter) getDecoratorAttribute(d,
                         "enable");
@@ -235,5 +236,11 @@ public class ParticleFilter extends AbstractParticleFilter implements
                     + decoratorName);
         }
     }
+
+    @Override
+    protected boolean _satisfiesMapConstraints(double[] particleCoordinates) {
+        // No constraints for the basic particle filter.
+        return true;
+    } 
 
 }

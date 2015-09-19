@@ -28,6 +28,8 @@ the copyright link on the splash page or see copyright.htm.
 */
 package org.ptolemy.ssm;
 
+import java.util.Arrays;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -71,6 +73,9 @@ public class Map extends MirrorDecorator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Map newObject = (Map) super
                 .clone(workspace); 
+        newObject._origin = null;
+        newObject._occupancyGrid = null; 
+               
         return newObject;
     }
 
@@ -85,7 +90,7 @@ public class Map extends MirrorDecorator {
             _occupancyGrid = new int[_height][_width];
             for (int i=0; i < _height; i++) {
                 for (int j = 0; j < _width; j++) {
-                    int index = i * _width + j;
+                    int index = j + i*_width;
                     _occupancyGrid[i][j] = ((IntToken)gridContent[index]).intValue();
                 } 
             }
@@ -96,7 +101,9 @@ public class Map extends MirrorDecorator {
                     getElement(1)).doubleValue();
         } else if (attribute == resolution) {
             _resolution = ((DoubleToken) resolution.getToken()).doubleValue();
-        } 
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
     
     @Override
@@ -140,6 +147,17 @@ public class Map extends MirrorDecorator {
         
     } 
     
+    public int[][] getOccupancyGrid() {
+        int [][] copyOccupancy = new int[_occupancyGrid.length][_occupancyGrid[0].length];
+        for (int i = 0; i < copyOccupancy.length; i++) {
+            copyOccupancy[i] = Arrays.copyOf(_occupancyGrid[i],_occupancyGrid[i].length);
+        }
+        return copyOccupancy;
+    }
+    
+    public double[] getOrigin() {
+        return Arrays.copyOf(_origin, _origin.length);
+    }
     private int _width;
     private int _height;
     private int[][] _occupancyGrid;
