@@ -1544,11 +1544,44 @@ if [ "$error" = "none" ]; then
                 cp $STUB $MACAPP_APP/Contents/MacOS/
                 chmod a+x $MACAPP_APP/Contents/MacOS/universalJavaApplicationStub
             fi		     
+
             # Removed Java application stubs that are no longer used because we have the
             # universalJavaApplicationStub
             rm -rf $MACAPP_APP/Contents/MacOS/JavaAppLauncher
             rm -rf $MACAPP_APP/Contents/MacOS/JavaApplicationStub
 
+            # Create the license file.
+            STUB_LICENSE=$MACAPP_APP/Contents/MacOS/universalJavaApplicationStub-license.html
+            if [ ! -f "$STUB_LICENSE" ]; then
+                 cat > $STUB_LICENSE <<EOFL
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>License for universalJavaApplicationStub</title>
+</head>
+<body>
+  <h1>License for universalJavaApplicationStub</h1>
+
+  <p>Ptolemy uses <a href="https://github.com/tofi86/universalJavaApplicationStub#in_browser" target="_top">universalJavaApplicationStub</a> to provide a one-click application under Mac OS X.</p>
+  <p>On September 19, 2015, universalJavaApplicationStub had an MIT license, see
+<a href="https://github.com/tofi86/universalJavaApplicationStub/blob/master/LICENSE#in_browser" target="_top">https://github.com/tofi86/universalJavaApplicationStub/blob/master/LICENSE</a>.  That
+license is reproduced below:</p>
+<blockquote>
+<pre>
+EOFL
+            cat $PTII/vendors/universalJavaApplicationStub/LICENSE >> $STUB_LICENSE
+            cat >> $STUB_LICENSE <<EOFL2
+</pre>
+</blockquote>
+<p>For details about how we use this tool, see
+<a href="https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MacJavaApps#in_browser" target ="_top">Mac Java Apps</a>.</p>
+</body>
+</html>
+EOFL2
+            fi
+
+            # Create the Info.plist file.
 	    cat >$MACAPP_PLIST <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"

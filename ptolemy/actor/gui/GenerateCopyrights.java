@@ -107,250 +107,254 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
-        _addIfPresent(copyrightsMap, "com.cureos.numerics.Cobyla",
+        _addIfClassPresent(copyrightsMap, "com.cureos.numerics.Cobyla",
                 "com/cureos/jcobyla-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.github.sarxos.webcam.Webcam",
+        _addIfClassPresent(copyrightsMap, "com.github.sarxos.webcam.Webcam",
                 "lib/webcam-capture-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
+        _addIfClassPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.kitfox.svg.app.beans.SVGIcon",
+        _addIfClassPresent(copyrightsMap, "com.kitfox.svg.app.beans.SVGIcon",
                 "lib/svgSalamander-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.jhlabs.image.AbstractBufferedImageOp",
+        _addIfClassPresent(copyrightsMap, "com.jhlabs.image.AbstractBufferedImageOp",
                 "com/jhlabs/jhlabs-license.htm");
             
-        _addIfPresent(copyrightsMap, "com.microstar.xml.XmlParser",
+        _addIfClassPresent(copyrightsMap, "com.microstar.xml.XmlParser",
                 "com/microstar/xml/aelfred-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.sun.jna.Pointer",
+        _addIfClassPresent(copyrightsMap, "com.sun.jna.Pointer",
                 "lib/jna-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.sleepycat.db.Environment",
+        _addIfClassPresent(copyrightsMap, "com.sleepycat.db.Environment",
                 "ptdb/lib/db-dbxml-license.htm");
 
-        _addIfPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
+        _addIfClassPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
                 "lib/protobuf-license.htm");
 
-        _addIfPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
+        _addIfFilePresent(copyrightsMap,
+                "$CLASSPATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub",
+                "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html");
+        
+        _addIfClassPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
                 "diva/gui/ExtensionFileFilter-license.htm");
 
-        _addIfPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
+        _addIfClassPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
                 "edu/umich/eecs/april/april-license.htm");
 
-        _addIfPresent(copyrightsMap, "g4ltl.SolverUtility",
+        _addIfClassPresent(copyrightsMap, "g4ltl.SolverUtility",
                 "lib/g4ltl-license.htm");
 
-        _addIfPresent(copyrightsMap, "hla.rti.jlc.RtiFactory",
+        _addIfClassPresent(copyrightsMap, "hla.rti.jlc.RtiFactory",
                 "lib/jcerti-license.htm");
 
-        _addIfPresent(copyrightsMap, "interfaces.util.ChicUI",
+        _addIfClassPresent(copyrightsMap, "interfaces.util.ChicUI",
                 "lib/chic-license.htm");
 
-        _addIfPresent(copyrightsMap, "io.socket.SocketIO",
+        _addIfClassPresent(copyrightsMap, "io.socket.SocketIO",
                 "lib/socketio-license.htm");
 
-        _addIfPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
+        _addIfClassPresent(copyrightsMap, "javax.servlet.http.HttpServlet",
                 "lib/javax.servlet-api-license.htm");
 
-        _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
+        _addIfClassPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
+        _addIfClassPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "net.jimblackler.Utils.YieldAdapterIterator",
                 "net/jimblackler/Utils/jimblacklerUtils-license.htm");
 
-        _addIfPresent(copyrightsMap, "oscP5.OscP5", "lib/oscP5-license.htm");
+        _addIfClassPresent(copyrightsMap, "oscP5.OscP5", "lib/oscP5-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
+        _addIfClassPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
                 "lib/org.apache.oltu.oauth2-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
+        _addIfClassPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
                 "lib/jetty-all-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.eclipse.paho.client.mqttv3.MqttClient",
+        _addIfClassPresent(copyrightsMap, "org.eclipse.paho.client.mqttv3.MqttClient",
                 "lib/org.eclipse.paho.client.mqttv3-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.json.JSONObject",
+        _addIfClassPresent(copyrightsMap, "org.json.JSONObject",
                 "org/json/json-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.jsoup.parser.Parser",
+        _addIfClassPresent(copyrightsMap, "org.jsoup.parser.Parser",
                 "lib/jsoup-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.mozilla.javascript.Context",
+        _addIfClassPresent(copyrightsMap, "org.mozilla.javascript.Context",
                 "lib/js-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.junit.runner.JUnitCore",
+        _addIfClassPresent(copyrightsMap, "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.netbeans.api.visual.widget.Scene",
+        _addIfClassPresent(copyrightsMap, "org.netbeans.api.visual.widget.Scene",
                 "lib/netbeans-visual-library-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
+        _addIfClassPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
                 "org/ptolemy/fmi/driver/fmusdk-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
         // Vertx
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "com.fasterxml.jackson.core.base.GeneratorBase",
                 "lib/jackson-2.2.2-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "io.netty.handler.traffic.ChannelTrafficShapingHandler",
                 "lib/netty-all-4.0.21.Final-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
                 "lib/hazelcast-3.2.3-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.vertx.java.core.Vertx",
+        _addIfClassPresent(copyrightsMap, "org.vertx.java.core.Vertx",
                 "lib/vertx-2.1.5-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.gui.run.RunLayoutFrame",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.run.RunLayoutFrame",
                 "org/mlc/mlc-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
                 "ptolemy/actor/lib/colt/colt-copyright.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.actor.lib.database.DatabaseManager",
                 "com.mysql.jdbc.Driver",
                 "ptolemy/actor/lib/database/mysql-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
                 "ptolemy/actor/lib/excel/jxl-copyright.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.actor.lib.fmi.fmipp.FMUModelExchange",
                 "ptolemy/actor/lib/fmi/fmipp/fmipp-license.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
                 "ptolemy/actor/lib/io/comm/rxtx-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
                 "ptolemy/actor/lib/jjs/jjs-license.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jmf.JMFImageToken",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jmf.JMFImageToken",
                 "ptolemy/actor/lib/jmf/jmf-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
                 "ptolemy/actor/lib/joystick/joystick-copyright.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.actor.lib.logic.fuzzy.FuzzyLogic",
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
-        _addIfPresent(copyrightsMap, "javax.mail.Address",
+        _addIfClassPresent(copyrightsMap, "javax.mail.Address",
                 "lib/javamail-license.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
                 "ptolemy/actor/lib/opencv/opencv-copyright.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.actor.lib.opencv.javacv.CameraReader",
                 "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/jython-license.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.actor.ptalon.PtalonActor",
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.ptalon.PtalonActor",
                 "ptolemy/actor/ptalon/ptalon-copyright.html");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
                 "ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
+        _addIfClassPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
                 "ptolemy/backtrack/util/gcj-copyright.html");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.caltrop.actors.AbstractCalInterpreter",
                 "ptolemy/caltrop/cup-copyright.htm");
-        _addIfPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
+        _addIfClassPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
                 "ptolemy/caltrop/saxon-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGenerator",
                 "ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
+        _addIfClassPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-copyright.html");
 
-        _addIfPresent(copyrightsMap, "ptolemy.data.ontologies.Concept",
+        _addIfClassPresent(copyrightsMap, "ptolemy.data.ontologies.Concept",
                 "ptolemy/data/ontologies/doc/udunits2Database/udunits-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
+        _addIfClassPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
                 "ptolemy/domains/gr/lib/java3d-copyright.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
                 "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.domains.gro.kernel.GRODirector",
+        _addIfClassPresent(copyrightsMap, "ptolemy.domains.gro.kernel.GRODirector",
                 "ptolemy/domains/gro/JOGL-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.domains.psdf.kernel.PSDFScheduler",
                 "ptolemy/domains/psdf/mapss-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.domains.ptinyos.util.nc2moml.MoMLLib",
                 "ptolemy/domains/ptinyos/lib/jdom-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.graph.Element",
+        _addIfClassPresent(copyrightsMap, "ptolemy.graph.Element",
                 "ptolemy/graph/graph-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
+        _addIfClassPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
                 "ptolemy/gui/ExtensionFilenameFilter-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.homer.widgets.ResizableImageWidget",
                 "ptolemy/homer/widgets/ResizableImageWidget-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
+        _addIfClassPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/matlab-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.media.Audio",
+        _addIfClassPresent(copyrightsMap, "ptolemy.media.Audio",
                 "ptolemy/media/Audio-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.util.DoubleUtilities",
+        _addIfClassPresent(copyrightsMap, "ptolemy.util.DoubleUtilities",
                 "ptolemy/util/DoubleUtilities-license.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.util.test.junit.TclTests",
+        _addIfClassPresent(copyrightsMap, "ptolemy.util.test.junit.TclTests",
                 "lib/JUnitParams-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.vergil.basic.export.html.ExportHTMLAction",
                 "ptolemy/vergil/basic/export/html/javascript/javascript-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.vergil.basic.export.html.ExportToWeb",
                 "ptolemy/vergil/basic/export/html/javascript/fancybox/fancybox-license.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.vergil.basic.export.itextpdf.ExportPDFAction",
                 "ptolemy/vergil/basic/export/itextpdf/itextpdf-copyright.htm");
 
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.vergil.basic.layout.kieler.KielerLayout",
                 "lib/guava-license.htm");
-        _addIfPresent(copyrightsMap,
+        _addIfClassPresent(copyrightsMap,
                 "ptolemy.vergil.basic.layout.kieler.KielerGraphUtil",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
+        _addIfClassPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "tcl.lang.Shell", "lib/ptjacl-license.htm");
+        _addIfClassPresent(copyrightsMap, "tcl.lang.Shell", "lib/ptjacl-license.htm");
 
-        _addIfPresent(copyrightsMap, "thales.vergil.SingleWindowApplication",
+        _addIfClassPresent(copyrightsMap, "thales.vergil.SingleWindowApplication",
                 "thales/thalesSingleWindow-license.htm");
 
-        _addIfPresent(copyrightsMap, "org.jivesoftware.smack.XMPPConnection",
+        _addIfClassPresent(copyrightsMap, "org.jivesoftware.smack.XMPPConnection",
                 "lib/smack-license.htm");
 
         // Check for the _applicationCopyrights parameter
@@ -367,7 +371,7 @@ public class GenerateCopyrights {
                             .getElement(i)).get("actor");
                     StringToken copyrightToken = (StringToken) ((RecordToken) copyrightTokens
                             .getElement(i)).get("copyright");
-                    _addIfPresent(copyrightsMap, actorToken.stringValue(),
+                    _addIfClassPresent(copyrightsMap, actorToken.stringValue(),
                             copyrightToken.stringValue());
                 }
             }
@@ -708,14 +712,14 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library
      */
-    private static void _addIfPresent(Map<String, Set<String>> copyrightsMap,
+    private static void _addIfClassPresent(Map<String, Set<String>> copyrightsMap,
             String applicationClassName, String libraryClassName,
             String copyrightPath) {
         // If actor.lib.database.DatabaseManager is present, then
         // we look for MySQL JDBC packages.
         try {
             Class.forName(applicationClassName);
-            _addIfPresent(copyrightsMap, libraryClassName, copyrightPath);
+            _addIfClassPresent(copyrightsMap, libraryClassName, copyrightPath);
         } catch (Throwable throwable) {
             // Ignore, this just means that the applicationClassName
             // could not be found, so we need not include information
@@ -731,7 +735,7 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library.
      */
-    private static void _addIfPresent(Map<String, Set<String>> copyrightsMap,
+    private static void _addIfClassPresent(Map<String, Set<String>> copyrightsMap,
             String className, String copyrightPath) {
 
         boolean addIt = false;
@@ -772,6 +776,58 @@ public class GenerateCopyrights {
                 }
             } catch (Throwable throwable) {
                 // Ignore errors, it must means we
+            }
+        }
+    }
+
+
+    /* If a file name can be found as a resource, then add
+     * the file name and copyrightPath to copyrightsMap
+     * @param The map of copyrights.
+     * @param fileName The filename that begins with "$CLASSPATH", for example
+     * "$CLASSPATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub"
+     * @param copyrightPath The path or URL to the copyright for
+     * the library, for example
+     * "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html"
+     */
+    private static void _addIfFilePresent(Map<String, Set<String>> copyrightsMap,
+            String fileName, String copyrightPath) {
+
+        boolean addIt = false;
+
+        try {
+            File file = FileUtilities.nameToFile(fileName, null);
+            if (file == null) {
+                return;
+            } else if (file.isFile()) {
+                addIt = true;
+            }
+        } catch (Throwable throwable) {
+            // Usually, ignore, this just means that the classname could
+            // not be found, so we need not include information
+            // about the copyright.
+        }
+
+        if (addIt) {
+            try {
+                Set<String> entitiesSet = copyrightsMap.get(copyrightPath);
+
+                if (entitiesSet == null) {
+                    // This is the first time we've seen this copyright,
+                    // add a key/value pair to copyrights, where the key
+                    // is the URL of the copyright and the value is Set
+                    // of entities that correspond with that copyright.
+                    entitiesSet = new HashSet<String>();
+
+                    entitiesSet.add(fileName);
+                    copyrightsMap.put(copyrightPath, entitiesSet);
+                } else {
+                    // Other classes are using this copyright, so add this
+                    // one to the list.
+                    entitiesSet.add(fileName);
+                }
+            } catch (Throwable throwable) {
+                // Ignore errors.
             }
         }
     }
@@ -999,6 +1055,7 @@ public class GenerateCopyrights {
             { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
             { "udunits", " ", " ", "Y", " ",
                     "Similar to BSD.  No use of sponsor name in advertising" },
+            { "universalJavaApplicationStub", " ", " ", " ", " ", "MIT" },
             { "vertx", " ", " ", "Y", " ", "Apache License" },
             { "webcam", " ", " ", "Y", " ", "BSD and Apache Licenses" } };
 }
