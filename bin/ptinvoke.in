@@ -1534,7 +1534,9 @@ if [ "$error" = "none" ]; then
 		
             STUB=$PTII/vendors/universalJavaApplicationStub/src/universalJavaApplicationStub 
             if [ ! -f "$STUB" ]; then
-               (cd $PTII/vendors; git clone https://github.com/cxbrooks/universalJavaApplicationStub.git)
+		# Unfortunately, under RHEL, having LD_LIBRARY_PATH set can cause problems
+	        # with git.
+                (cd $PTII/vendors; LD_LIBRARY_PATH="" git clone https://github.com/cxbrooks/universalJavaApplicationStub.git)
             fi
 
 	    if [ -f "$STUB" ]; then
