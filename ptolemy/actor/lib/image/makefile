@@ -55,6 +55,7 @@ JSRCS = \
 	ImageRotate.java \
 	ImageTableau.java \
 	ImageToString.java \
+	PGMReader.java \
 	Transform.java \
 	URLToImage.java
 
