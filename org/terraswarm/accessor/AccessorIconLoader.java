@@ -120,7 +120,14 @@ public class AccessorIconLoader implements IconLoader {
                     // BluetoothDistance in org/terraswarm/accessor/demo/c4po/c4po.xml
                     // does not set accessorSource URL.  To trigger this, run
                     // "ant javadoc.actorIndex" and look for NPEs in the output. 
-                    URL accessorSourceURL = accessor.accessorSource.asURL();
+                    URL accessorSourceURL = null;
+                    try {
+                        accessorSourceURL = accessor.accessorSource.asURL();
+                    } catch (Exception ex) {
+                        // The above could fail if the accessor source is not available.
+                        // In this case, we assume the icon will also not be available.
+                        // Proceed anyway.
+                    }
                     if (accessorSourceURL != null) {
                         String source = accessorSourceURL.toExternalForm();
                         int tail = source.lastIndexOf(".js");
