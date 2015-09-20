@@ -98,14 +98,14 @@ public class ConstrainedParticleFilter extends ParticleFilter {
     }
     
     @Override
-    protected boolean _satisfiesMapConstraints(double[] coordinates) {
+    public boolean satisfiesMapConstraints(double[] coordinates) {
         double xCoord = coordinates[0];
         double yCoord = coordinates[1];
         int gridX = (int) Math.floor(xCoord/_resolution);
         int gridY = (int) Math.floor(yCoord/_resolution);
         
-        if (gridX >= 0 && gridY >=0 && gridX < _occupancyGrid.length && gridY < _occupancyGrid[0].length) {
-            return _occupancyGrid[gridX][gridY] == 255;
+        if (gridX >= 0 && gridY >=0 && gridY < _occupancyGrid.length && gridX < _occupancyGrid[0].length) {
+            return _occupancyGrid[gridY][gridX] == 255;
         } 
         
         return false;

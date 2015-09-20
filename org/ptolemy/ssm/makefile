@@ -51,8 +51,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	ConstrainedParticleFilter.java \
+	ConstrainedStateSpaceSimulator.java \
 	GaussianMeasurementModel.java \
 	InferenceActor.java \
+	MapConstrained.java \
 	MeasurementModel.java\
 	MeasurementModelAttributes.java \
 	MirrorDecorator.java \
@@ -68,6 +71,8 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
+	ConstrainedParticleFilterIcon.xml \
+	ConstrainedStateSpaceSimulatorIcon.xml \
 	GaussianMeasurementModelIcon.xml \
 	ssm.xml \
 	PredictorIcon.xml \

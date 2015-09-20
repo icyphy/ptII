@@ -27,6 +27,8 @@
  */
 package org.ptolemy.ssm;
 
+import java.util.Set;
+
 import org.ptolemy.machineLearning.particleFilter.AbstractStateSpaceSimulator;
 
 import ptolemy.data.ArrayToken;
@@ -64,6 +66,20 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
         _decorator = null;
+    }
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        StateSpaceSimulator newObject = (StateSpaceSimulator) super
+                .clone(workspace);
+        newObject._decorator = null; 
+        return newObject;
     }
 
 
@@ -118,7 +134,8 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
-        for (Decorator d : this.decorators()) {
+        Set<Decorator> decoratorSet =decorators();
+        for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
                 if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
@@ -149,4 +166,10 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
     }
 
     private StateSpaceModel _decorator;
+
+    @Override
+    public boolean satisfiesMapConstraints(double[] coordinates) {
+        // No map constraints for the base class
+        return true;
+    }
 }
