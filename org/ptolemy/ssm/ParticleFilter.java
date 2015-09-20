@@ -237,9 +237,9 @@ public class ParticleFilter extends AbstractParticleFilter implements
         }
     }
 
-    protected boolean _satisfiesMapConstraints(double[] particleCoordinates) {
-        // No constraints for the basic particle filter.
+    @Override
+    public boolean satisfiesMapConstraints(double[] coordinates) {
+        // No map constraints for this base class.
         return true;
-    } 
-
+    }
 }

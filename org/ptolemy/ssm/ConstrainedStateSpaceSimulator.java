@@ -27,14 +27,10 @@
  */
 package org.ptolemy.ssm;
 
-import java.util.Set;
-
-import org.ptolemy.machineLearning.particleFilter.AbstractStateSpaceSimulator;
-
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Decorator;
@@ -53,20 +49,34 @@ Defines an initial value for the state and simulates the model from there.
 @since Ptolemy II 10.1
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
-*/
-public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements StateSpaceActor {
+ */
+public class ConstrainedStateSpaceSimulator extends StateSpaceSimulator {
 
-    public StateSpaceSimulator(CompositeEntity container, String name)
+    public ConstrainedStateSpaceSimulator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _decorator = null;
+
+        maxTrialsToSatisfyConstraints = new Parameter(this,"maxTrialsToSatisfyConstraints");
+        maxTrialsToSatisfyConstraints.setExpression("1000");
+        _mapDecorator = null;
     }
 
-    public StateSpaceSimulator(Workspace workspace)
+    public ConstrainedStateSpaceSimulator(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
-        _decorator = null;
+        _mapDecorator = null;
     }
+
+    public Parameter maxTrialsToSatisfyConstraints;
+
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        if (attribute == maxTrialsToSatisfyConstraints) {
+            MAX_TRIALS = ((IntToken)maxTrialsToSatisfyConstraints.getToken()).intValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
 
     /** Clone the object into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -76,53 +86,22 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        StateSpaceSimulator newObject = (StateSpaceSimulator) super
+        ConstrainedStateSpaceSimulator newObject = (ConstrainedStateSpaceSimulator) super
                 .clone(workspace);
-        newObject._decorator = null; 
+        newObject._mapDecorator = null; 
         return newObject;
     }
 
-
-
-    /** Check the dimensions of all parameters and ports.
-     *  @exception IllegalActionException If the dimensions are illegal.
-     */
     @Override
-    protected void _checkParameters() throws IllegalActionException {
-        // Check state variable names.
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 
-        if (validUniqueDecoratorAssociationExists()) {
-            Parameter stateVariableNames =
-                    (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
-            _stateNames = (ArrayToken) stateVariableNames.getToken();
-            int n = _stateNames.length();
-            if (n < 1) {
-                throw new IllegalActionException(this, "There must be at "
-                        + "least one state variable for the state space model.");
-            }
-            for (int i = 0; i < n; i++) {
-                String name = ((StringToken) _stateNames.getElement(i))
-                        .stringValue().trim();
+        //get map decorator, update map
+        Parameter resolution = (Parameter) getDecoratorAttribute(_mapDecorator, "resolution");
+        _resolution = ((DoubleToken)resolution.getToken()).doubleValue();
+        _occupancyGrid = _mapDecorator.getOccupancyGrid(); 
 
-                if (name.equals("")) {
-                    throw new IllegalActionException(this, "A state variable "
-                            + "name should not be an empty string.");
-                }
-                // Check state equations.
-                String equation = name + "_update";
-                if (this.getUserDefinedParameter(equation) == null) {
-                    throw new IllegalActionException(
-                            this,
-                            "Please add a "
-                                    + "parameter with name \""
-                                    + equation
-                                    + "\" that gives the state update expression for state "
-                                    + name + ".");
-                }
-            }
-        } else {
-            throw new IllegalActionException(this, "No valid State Space Model association found!");
-        }
+
     }
 
     /**
@@ -133,18 +112,20 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
      */
     @Override
     public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
+        if ( !super.validUniqueDecoratorAssociationExists()) {
+            return false;
+        }
         boolean found = false;
-        Set<Decorator> decoratorSet =decorators();
-        for (Decorator d : decoratorSet) {
-            if (d instanceof StateSpaceModel) {
+        for (Decorator d : this.decorators()) {
+            if (d instanceof Map) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
                 if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
                     if (!found) {
                         found = true;
-                        _decorator = (StateSpaceModel) d;
+                        _mapDecorator = (Map) d;
                     } else {
                         throw new IllegalActionException(this, "A StateSpaceActor "
-                                + "can be associated with exactly one StateSpaceModel "
+                                + "can be associated with exactly one Map "
                                 + "at a time.");
                     }
                 }
@@ -153,23 +134,22 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
         return found;
     }
 
-    @Override
-    protected Parameter getUserDefinedParameter(String eqnName)
-            throws IllegalActionException {
-
-        if (_decorator != null) {
-            Attribute attr = this.getDecoratorAttribute(_decorator,eqnName);
-            return ((Parameter)attr);
-        } else {
-            throw new IllegalActionException("No decorator found!");
-        }
-    }
-
-    private StateSpaceModel _decorator;
 
     @Override
     public boolean satisfiesMapConstraints(double[] coordinates) {
-        // No map constraints for the base class
-        return true;
+        double xCoord = coordinates[0];
+        double yCoord = coordinates[1];
+        int gridX = (int) Math.floor(xCoord/_resolution);
+        int gridY = (int) Math.floor(yCoord/_resolution);
+
+        if (gridX >= 0 && gridY >=0 && gridY < _occupancyGrid.length && gridX < _occupancyGrid[0].length) {
+            return _occupancyGrid[gridY][gridX] == 255;
+        } 
+
+        return false;
     }
+
+    private Map _mapDecorator; 
+    private int[][] _occupancyGrid;
+    private double _resolution; 
 }
