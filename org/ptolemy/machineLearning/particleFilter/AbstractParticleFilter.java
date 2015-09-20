@@ -34,6 +34,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.ptolemy.machineLearning.Algorithms;
+import org.ptolemy.ssm.MapConstrained;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -92,7 +93,7 @@ import ptolemy.math.SignalProcessing;
  @Pt.AcceptedRating Red (ilgea)
 
  */
-public abstract class AbstractParticleFilter extends TypedCompositeActor {
+public abstract class AbstractParticleFilter extends TypedCompositeActor implements MapConstrained {
     /** Construct the composite actor with a name and a container.
      *  This constructor creates the ports, parameters, and the icon.
      * @param container The container.
@@ -537,14 +538,13 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    
-    protected abstract boolean _satisfiesMapConstraints(double[] coordinates);
+     
     /**
      * Constrain particles within a map region if applicable.
      */
     protected void _constrainParticles() {
         for (int i = 0; i < particles.length; i++) {
-            if (!_satisfiesMapConstraints(particles[i].getValue())) {
+            if (!satisfiesMapConstraints(particles[i].getValue())) {
                 particles[i].setWeight(0.0);
             }
         }
