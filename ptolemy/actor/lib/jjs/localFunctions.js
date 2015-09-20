@@ -147,6 +147,13 @@ function nullHandlerFunction() {}
  *        ... code specific to the current accessor ...
  *     };
  *  ```
+ *  or more simply
+ *  ```javascript
+ *     exports.initialize = function() {
+ *        ssuper.initialize.apply(this);
+ *        ... code specific to the current accessor ...
+ *     };
+ *  ```
  *
  *  In this implementation, the accessor definition is searched for in
  *  $PTII/org/terraswarm/accessor/accessors/web, which is expected to be a clone
