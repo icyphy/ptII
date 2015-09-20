@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.ptolemy.ssm.MapConstrained;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -81,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (ilgea)
 
  */
-public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
+public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor implements MapConstrained {
     /** Construct the composite actor with a name and a container.
      *  This constructor creates the ports, parameters, and the icon.
      * @param container The container.
@@ -429,6 +431,9 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _currentState[i] = ((DoubleToken)s0.getElement(i)).doubleValue();
         }
+        if (!satisfiesMapConstraints(_currentState)) {
+            throw new IllegalActionException("Initial state does not satisfy map constraints!");
+        }
     }
 
     /** Propagate particles according to the state update equations
@@ -470,23 +475,33 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
                     "Expression processNoise yields a null result.");
         }
 
-        for (int i = 0; i < _stateSpaceSize; i++) {
-            _parseTree = _updateTrees.get(_stateVariables[i]);
-            _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
-                    _scope);
-
-            if (_result == null) {
-                throw new IllegalActionException(
-                        "Expression yields a null result: "
-                                + _updateEquations.get(_stateVariables[i]).expression
-                                .getExpression());
+        // try to propagate state such that it satisfies map constraints, if any.
+        int trials = 0;
+        do {
+            for (int i = 0; i < _stateSpaceSize; i++) {
+                _parseTree = _updateTrees.get(_stateVariables[i]);
+                _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
+                        _scope);
+    
+                if (_result == null) {
+                    throw new IllegalActionException(
+                            "Expression yields a null result: "
+                                    + _updateEquations.get(_stateVariables[i]).expression
+                                    .getExpression());
+                }
+                double _meanEstimate = ((DoubleToken) _result
+                        .add(new DoubleToken(0.0))).doubleValue();
+                //FIXME: what if the process noise sample is not an array token?
+                double processNoiseForElement = ((DoubleToken) ((ArrayToken) processNoiseSample)
+                        .getElement(i)).doubleValue();
+                newState[i] = _meanEstimate + processNoiseForElement;
             }
-            double _meanEstimate = ((DoubleToken) _result
-                    .add(new DoubleToken(0.0))).doubleValue();
-            //FIXME: what if the process noise sample is not an array token?
-            double processNoiseForElement = ((DoubleToken) ((ArrayToken) processNoiseSample)
-                    .getElement(i)).doubleValue();
-            newState[i] = _meanEstimate + processNoiseForElement;
+            trials ++;
+        } while (! satisfiesMapConstraints(newState) && trials < MAX_TRIALS);
+        
+        if (! satisfiesMapConstraints(newState)) {
+            throw new IllegalActionException("Could not find a feasible state propagation that satisfies"
+                    + " current map constraints.");
         }
         _currentState = newState;
     }
@@ -577,6 +592,9 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor {
     private ParseTreeEvaluator _parseTreeEvaluator;
     private VariableScope _scope;
     private boolean _firstIteration;
+    
+    /** Maximum number of allowable trials to propagate state given map constraints. */
+    protected int MAX_TRIALS = 100;
 
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
     protected static final String PROCESS_NOISE = "processNoise";
