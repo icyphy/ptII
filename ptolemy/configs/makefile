@@ -129,6 +129,7 @@ OTHER_FILES_TO_BE_JARED = \
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		bcvtb/bcvtb.jar \
+		capecode/capecode.jar \
 		cyphysim/cyphysim.jar \
 		doc/doc.jar \
 		dsp/dsp.jar \

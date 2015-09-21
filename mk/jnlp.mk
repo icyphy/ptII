@@ -218,6 +218,57 @@ DSP_JNLP_JARS =	\
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR)
 
+#######
+#
+# CapeCode: This subset has the convenient feature that it
+# automatically imports all the accessors at
+# http://terraswarm.org/accessors and makes them available in an actor
+# library to drag and drop into models.
+
+# Jar files that will appear in a CapeCode only JNLP Ptolemy II Runtime.
+#
+# doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
+# but not hyvisual.
+
+CAPECODE_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
+
+CAPECODE_JNLP_JARS = \
+	edu/umich/eecs/april/april.jar \
+	org/json/json.jar \
+	$(CAPECODE_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR) \
+	$(EXPORT_JARS) \
+	$(PDFRENDERER_JARS) \
+	$(PTJAVASCRIPT_JARS) \
+	ptolemy/actor/lib/mail/mail.jar \
+	$(PTJAVAMAIL_JARS) \
+	$(PTRSYNTAXTEXTAREA_JAR) \
+	org/terraswarm/accessor/accessor.jar \
+	org/terraswarm/accessor/demo/demo.jar \
+	ptolemy/actor/gui/syntax/syntax.jar \
+	ptolemy/actor/lib/jjs/jjs.jar \
+	ptolemy/actor/lib/jjs/modules/demo.jar \
+	ptolemy/actor/lib/jjs/modules/modules.jar \
+	ptolemy/actor/lib/js/js.jar \
+	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar \
+	$(PTANGO_JAR_FILES) \
+	$(PTDATABASE_JNLP_JARS) \
+	$(PTERA_JARS) \
+	$(PTFMI_JARS) \
+	org/ptolemy/machineLearning/machineLearning.jar \
+	org/ptolemy/optimization/optimization.jar \
+	ptolemy/actor/gt/gt.jar \
+	ptolemy/vergil/gt/gt.jar \
+	ptolemy/data/ontologies/ontologies.jar \
+	ptolemy/domains/scr/scr.jar \
+	ptolemy/domains/scr/demo/demo.jar \
+	ptolemy/vergil/scr/scr.jar \
+	ptolemy/vergil/modal/fmv/fmv.jar \
+	ptolemy/vergil/ontologies/ontologies.jar \
+	$(RUN_JARS) \
+	$(WIRELESS_JARS)
 
 #######
 # CyPhySim: http://cyphysim.org
@@ -868,7 +919,8 @@ KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 MKJNLP =		$(PTII)/bin/mkjnlp
 
 # JNLP files that do the actual installation
-JNLPS =	vergilCyPhySim.jnlp \
+JNLPS =	vergilCapeCode.jnlp \
+	vergilCyPhySim.jnlp \
 	vergilBCVTB.jnlp \
 	vergilDSP.jnlp \
 	vergilHyVisual.jnlp \
@@ -936,6 +988,43 @@ $(JNLP_SANDBOX_MANIFEST):
 	echo "Application-Name: Ptolemy II" > $@
 	echo "Permissions: sandbox" >> $@
 
+
+# Web Start: CapeCode version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
+vergilCapeCode.jnlp: vergilCapeCode.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			vergilCapeCode.jnlp.in > $@
+	if [ ! -f $(SIGNED_DIR)/$(CAPECODE_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)/$(CAPECODE_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(CAPECODE_MAIN_JAR)`; \
+		cp -p $(CAPECODE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)`;\
+	fi
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(CAPECODE_MAIN_JAR) \
+		`echo $(CAPECODE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'`
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(CAPECODE_MAIN_JAR) contains the main class"
+	"$(JAR)" -umf $(PTII)/$(JNLP_MANIFEST) $(CAPECODE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(CAPECODE_MAIN_JAR)`; \
+	cp -p $(CAPECODE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)`
+	@echo "# Signing $(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)"
+	@"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		"$(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: CyPhySim version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
