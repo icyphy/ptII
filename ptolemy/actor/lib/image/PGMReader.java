@@ -123,8 +123,10 @@ public class PGMReader extends Source {
             FileReader stream = new FileReader(fileOrURL.asFile()); 
 
             // skip header.
-            for ( int i = 0 ; i < 4; i++) {
-                stream.read();
+            for ( int i = 0 ; i < 4; i++) { 
+                if (stream.read() == -1) {
+                    return false;
+                }
             }
             _grid = new int[_height*_width];
 

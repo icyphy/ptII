@@ -27,6 +27,8 @@
  */
 package org.ptolemy.ssm;
 
+import java.util.Set;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -116,7 +118,8 @@ public class ConstrainedStateSpaceSimulator extends StateSpaceSimulator {
             return false;
         }
         boolean found = false;
-        for (Decorator d : this.decorators()) {
+        Set<Decorator> cachedDecorators = this.decorators();
+        for (Decorator d : cachedDecorators) {
             if (d instanceof Map) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
                 if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {

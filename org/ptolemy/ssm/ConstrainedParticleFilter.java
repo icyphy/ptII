@@ -27,6 +27,8 @@
  */
 package org.ptolemy.ssm;
 
+import java.util.Set;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -63,8 +65,8 @@ public class ConstrainedParticleFilter extends ParticleFilter {
             return false;
         }
         boolean found = false;
-        /*Set test =*/decorators();
-        for (Decorator d : decorators()) {
+        Set<Decorator> cachedDecorators =decorators();
+        for (Decorator d : cachedDecorators) {
             if (d instanceof Map) {
                 Parameter isEnabled = (Parameter) getDecoratorAttribute(d,
                         "enable");
