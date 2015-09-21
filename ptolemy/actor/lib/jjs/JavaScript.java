@@ -379,6 +379,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (bilung)
  */
 public class JavaScript extends TypedAtomicActor {
+    
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>error</i> port and the <i>script</i> port parameter.
@@ -419,12 +420,7 @@ public class JavaScript extends TypedAtomicActor {
         showName.setExpression("true");
 
         // initialize the script to provide an empty template:
-        script.setExpression("// Put your JavaScript program here.\n"
-                + "// Add ports and parameters.\n"
-                + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
-                + "// Refer to parameters in scope using dollar-sign{parameterName}.\n"
-                + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
-                + "// Send to output ports using send(value, portName, channel).\n");
+        script.setToken(_INITIAL_SCRIPT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1777,6 +1773,15 @@ public class JavaScript extends TypedAtomicActor {
 
     /** The exports object defined in the script that is evaluated. */
     protected Object _exports;
+    
+    /** Initial script as a token. */
+    protected static StringToken _INITIAL_SCRIPT = new StringToken(
+            "// Put your JavaScript program here.\n"
+            + "// Add ports and parameters.\n"
+            + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
+            + "// Refer to parameters in scope using dollar-sign{parameterName}.\n"
+            + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
+            + "// Send to output ports using send(value, portName, channel).\n");
 
     /** JavaScript keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
