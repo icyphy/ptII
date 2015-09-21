@@ -31,14 +31,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
@@ -166,7 +169,22 @@ public class AccessorLibrary extends EntityLibrary {
                                 try {
                                     URL accessorURL = new URL(source, valueString);
                                     String moml = JSAccessor.accessorToMoML(newConfigureSource, false);
+                                    parser.clearTopObjectsList();
                                     parser.parse(accessorURL, moml);
+                                    List<NamedObj> created = parser.topObjectsCreated();
+                                    for (NamedObj toplevel : created) {
+                                        if (toplevel instanceof JavaScript) {
+                                            // Indicate that the script is not overridden.
+                                            // In other words, each time you set the value of the script,
+                                            // the new value will be assumed to be that specified by the class
+                                            // of which this accessor is an instance.
+                                            ((JavaScript)toplevel).script.setDerivedLevel(Integer.MAX_VALUE);
+                                            // The above will have the side effect that a script will not be saved
+                                            // when you save the model. Force it to be saved so that there is always
+                                            // a local copy.
+                                            ((JavaScript)toplevel).script.setPersistent(true);
+                                        }
+                                    }
                                 } catch (Throwable ex) {
                                     String message = "Loading accessor failed: " + valueString;
                                     MessageHandler.status(message);
