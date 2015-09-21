@@ -322,6 +322,12 @@ function removeInputHandler(handle) {
 }
 
 /** Send data to an output or an input.
+ *  If the type of the output or input is JSON, then the value
+ *  is converted to a JSON string using JSON.stringify(value) before sending.
+ *  If you are sending to an input, the value of that input will not be changed
+ *  immediately, but instead, after conclusion of the function calling send(),
+ *  any input handlers registered with that input and any fire() method defined
+ *  will be invoked.
  *  @param name The name of the output or input (a string).
  *  @param value The value to send.
  *  @param channel The (optional) channel number, where null is equivalent to 0.
@@ -347,8 +353,8 @@ function send(name, value, channel) {
 }
 
 /** Set the value of a parameter.
- *  NOTE: This function is not required by the accessor specification, and hence may not
- *  be supported by all swarmlet hosts.
+ *  Note that this can also be used to set the value of an input that has a
+ *  default value, instead of using send(), but no input handler will be triggered.
  *  @param parameter The parameter name (a string).
  *  @param value The value to set.
  */
@@ -358,10 +364,16 @@ function set(parameter, value) {
     }
     var proxy = actor.getPortOrParameterProxy(parameter);
     if (!proxy) {
-        throw('No such parameter: ' + parameter);
+        error('No such parameter: ' + parameter);
+    } else {
+        var token;
+        if (proxy.isJSON()) {
+            token = new StringToken(JSON.stringify(value));
+        } else {
+            token = convertToToken(value);
+        }
+        proxy.set(token);
     }
-    var token = convertToToken(value);
-    proxy.set(token);
 }
 
 //------------------------ Functions Invoked by JavaScript.java ------------------------
