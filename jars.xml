@@ -839,17 +839,23 @@
 	<include name="ptolemy/configs/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
-	<include name="ptolemy/configs/cyphysim/*.htm"/>
-	<include name="ptolemy/configs/cyphysim/*.jpg"/>
-	<include name="ptolemy/configs/cyphysim/*.png"/>
-	<include name="ptolemy/configs/cyphysim/*.txt"/>
-	<include name="ptolemy/configs/cyphysim/*.xml"/>
-
 	<include name="ptolemy/configs/bcvtb/*.htm"/>
 	<include name="ptolemy/configs/bcvtb/*.jpg"/>
 	<include name="ptolemy/configs/bcvtb/*.png"/>
 	<include name="ptolemy/configs/bcvtb/*.txt"/>
 	<include name="ptolemy/configs/bcvtb/*.xml"/>
+
+	<include name="ptolemy/configs/capecode/*.htm"/>
+	<include name="ptolemy/configs/capecode/*.jpg"/>
+	<include name="ptolemy/configs/capecode/*.png"/>
+	<include name="ptolemy/configs/capecode/*.txt"/>
+	<include name="ptolemy/configs/capecode/*.xml"/>
+        
+	<include name="ptolemy/configs/cyphysim/*.htm"/>
+	<include name="ptolemy/configs/cyphysim/*.jpg"/>
+	<include name="ptolemy/configs/cyphysim/*.png"/>
+	<include name="ptolemy/configs/cyphysim/*.txt"/>
+	<include name="ptolemy/configs/cyphysim/*.xml"/>
 
 	<include name="ptolemy/configs/doc/*.htm"/>
 	<include name="ptolemy/configs/doc/*.png"/>
