@@ -50,6 +50,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
@@ -265,24 +266,27 @@ public class JSAccessor extends JavaScript {
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == script) {
-            // NOTE: No longer want the following. The reload() function will
-            // ask if we want to overwrite the overridden value.
-            // FIXME: Can't seem to get it right!!!!!!!!!!!
-            // Really want to comment out the code below, but if we do,
-            // then we will _always_ be asked about the overwrite.
-            //
-            // Indicate that the script is not overridden.
-            // In other words, each time you set the value of the script,
-            // the new value will be assumed to be that specified by the class
-            // of which this accessor is an instance.  This means that each time
-            // you perform an Update on the accessor, the script will be reloaded,
-            // even if you have overridden it.  Failing to do this results in
-            // an Update NOT updating the script ever, which is definitely not what
-            // we want.
-            attribute.setDerivedLevel(Integer.MAX_VALUE);
-            // The above will have the side effect that a script will not be saved
-            // when you save the model. Force it to be saved.
-            attribute.setPersistent(true);
+            // If either the new script or the old script is the initial
+            // script created by the base class constructor, then
+            // indicate that the script is not overridden.
+            // The new value will be assumed to be that specified by the class
+            // of which this accessor is an instance.
+            // NOTE: Assume here that if the new script equals the old,
+            // then it will not marked as overridden unless it was
+            // previously marked as overridden. Trust the base classes
+            // to do that.
+            StringToken newScript = (StringToken)script.getToken();
+            if (_previousScript == null
+                    || _previousScript.equals(_INITIAL_SCRIPT)
+                    || _INITIAL_SCRIPT.equals(newScript)) {
+                // FIXME: Should this be MAX_VALUE or 1?
+                attribute.setDerivedLevel(Integer.MAX_VALUE);
+                // The above will have the side effect that a script will not be saved
+                // when you save the model. Force it to be saved.
+                // This ensures that the script is always available.
+                attribute.setPersistent(true);
+            }
+            _previousScript = newScript;
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
             // Update the static cached version of this variable.
             _checkoutOrUpdateAccessorsRepository = ((BooleanToken) checkoutOrUpdateAccessorsRepository.getToken()).booleanValue();
@@ -584,7 +588,7 @@ public class JSAccessor extends JavaScript {
                                 + " Try re-importing the accessor.");
                     }
                     // Indicate that the script is not overridden.
-                    // In other words, each time you set the value of the script,
+                    // In other words, each time you reload the script,
                     // the new value will be assumed to be that specified by the class
                     // of which this accessor is an instance.
                     script.setDerivedLevel(Integer.MAX_VALUE);
@@ -1058,6 +1062,11 @@ public class JSAccessor extends JavaScript {
     
     /** Last time of accessor respository update. */
     private static long _lastRepoUpdateTime = -1L;
+    
+    /** Previous value of the script parameter, or null if it has
+     *  not been set.
+     */
+    private StringToken _previousScript = null;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
