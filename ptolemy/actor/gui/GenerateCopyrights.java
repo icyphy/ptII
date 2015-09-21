@@ -241,6 +241,11 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
                 "ptolemy/actor/lib/jjs/jjs-license.htm");
+
+        _addIfFilePresent(copyrightsMap,
+                "$CLASSPATH/ptolemy/actor/lib/jjs/external/require.js",
+                "ptolemy/actor/lib/jjs/external/require.js-license.htm");
+
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jmf.JMFImageToken",
                 "ptolemy/actor/lib/jmf/jmf-copyright.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
@@ -1045,6 +1050,7 @@ public class GenerateCopyrights {
             { "ptalon", "Y", " ", "Y", " ", "Antler: Public Domain" },
             { "ptjacl", " ", " ", "Y", "Y", "Apache License + BSD + Oracle" },
             { "quicktime", " ", " ", " ", " ", "Apple" }, // License prohibits distribution
+            { "require.js", " ", " ", "Y", " ", "MIT" },
             { "rxtx", " ", "Y", " ", " ",
                     "GNU Lesser General Public 2.1 + Oracle" },
             { "saxon", " ", " ", "Y", " ", "Mozilla Public License" },
