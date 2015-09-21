@@ -30,6 +30,7 @@ package ptolemy.actor.gui.syntax;
 import java.awt.BorderLayout;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
@@ -82,8 +83,14 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
      *  @param title The title to put in the title bar.
      *  @param document The document containing text.
      */
-    protected void _init(String title, Document document) {
-        setTitle(title);
+    protected void _init(final String title, Document document) {
+        // No idea why this needs to be invoked later, but if it's invoked now,
+        // the title on the window ends up being "Unnamed".
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                setTitle(title);
+            }
+        });
 
         if (document instanceof RSyntaxDocument) {
             text = new RSyntaxTextArea((RSyntaxDocument)document);

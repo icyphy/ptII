@@ -98,14 +98,14 @@ public class TextEditorForStringAttributes extends TextEditor {
         _fileMenuItems[3].setMnemonic(KeyEvent.VK_A);
 
         // Remove various menu item.
-        _fileMenu.remove(7);
+        // _fileMenu.remove(7);
 
         // _fileMenu.remove(6);
-        _fileMenu.remove(5);
-        _fileMenu.remove(4);
-        _fileMenu.remove(2);
-        _fileMenu.remove(1);
-        _fileMenu.remove(0);
+        // _fileMenu.remove(5);
+        // _fileMenu.remove(4);
+        // _fileMenu.remove(2);
+        // _fileMenu.remove(1);
+        // _fileMenu.remove(0);
     }
 
     ///////////////////////////////////////////////////////////////////
