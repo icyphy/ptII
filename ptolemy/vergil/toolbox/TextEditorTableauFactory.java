@@ -177,6 +177,7 @@ public class TextEditorTableauFactory extends TableauFactory
         // If a syntaxStyle attribute is given, then use it.
         if (textEffigy == null) {
             textEffigy = _newTextEffigy(effigy, text);
+            textEffigy.identifier.setExpression(attribute.getName());
         }
 
         // textEffigy may already have a tableau.
