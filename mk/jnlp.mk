@@ -235,6 +235,7 @@ CAPECODE_MAIN_JAR = \
 
 CAPECODE_JNLP_JARS = \
 	edu/umich/eecs/april/april.jar \
+	com/cureos/cureos.jar \
 	org/json/json.jar \
 	$(CAPECODE_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
@@ -248,11 +249,17 @@ CAPECODE_JNLP_JARS = \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/demo/demo.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	lib/ptcolt.jar \
+	ptolemy/actor/lib/conversions/json/json.jar \
+	ptolemy/actor/lib/io/comm/comm.jar \
+	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/actor/lib/js/js.jar \
 	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar \
+	org/ptolemy/ptango/ptango.jar \
 	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(PTERA_JARS) \

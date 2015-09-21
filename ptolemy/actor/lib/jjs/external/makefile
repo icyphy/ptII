@@ -49,9 +49,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 
-	
 OTHER_FILES_TO_BE_JARED = \
 	require.js \
+	require.js-license.htm \
 	require.js.LICENSE.txt \
 	require.js.README.md
 

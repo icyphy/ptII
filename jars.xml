@@ -1778,7 +1778,11 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/jjs/*.class"/>
 	<include name="ptolemy/actor/lib/jjs/*.htm"/>
+	<include name="ptolemy/actor/lib/jjs/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/*.xml"/>
+	<include name="ptolemy/actor/lib/jjs/external/*.md"/>
+	<include name="ptolemy/actor/lib/jjs/external/*.htm"/>
+	<include name="ptolemy/actor/lib/jjs/external/*.js"/>
       </fileset>
     </jar>
 
