@@ -908,14 +908,19 @@ public class IOPort extends ComponentPort {
                 IORelation relation = (IORelation) insideRelations.next();
                 Receiver[][] deepReceiver = relation.deepReceivers(this);
 
-                if (deepReceiver != null) {
+                if (deepReceiver != null && deepReceiver.length > 0) {
                     int size = java.lang.Math.min(deepReceiver.length, width
                             - index);
 
                     for (int i = 0; i < size; i++) {
-                        if (deepReceiver[i] != null) {
-                            _insideReceivers[index++] = deepReceiver[i];
-                        }
+                        _insideReceivers[index++] = deepReceiver[i];
+                    }
+                } else {
+                    // Skip over the width of the relation.
+                    index += relation.getWidth();
+                    if (index >= _insideReceivers.length) {
+                        // No place to put any further receivers (paranoid coding).
+                        break;
                     }
                 }
             }
@@ -1784,7 +1789,7 @@ public class IOPort extends ComponentPort {
             if (!isOutput()) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
-
+            
             int width = getWidth();
 
             if (width <= 0) {
@@ -1819,7 +1824,7 @@ public class IOPort extends ComponentPort {
                 if (relation != null) {
                     Receiver[][] deepReceivers = relation.deepReceivers(this);
 
-                    if (deepReceivers != null) {
+                    if (deepReceivers != null && deepReceivers.length > 0) {
                         for (int i = 0; i < deepReceivers.length; i++) {
                             try {
                                 farReceivers[index] = deepReceivers[i];
@@ -1841,6 +1846,10 @@ public class IOPort extends ComponentPort {
                         // create a number of null entries in farReceivers
                         // corresponding to the width of relation r
                         index += relation.getWidth();
+                        if (index >= farReceivers.length) {
+                            // No place to put any further receivers (paranoid coding).
+                            break;
+                        }
                     }
                 }
             }
