@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="VectorAssemblerDisassemblerCT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 834, 634}, maximized=false}">
     </property>
@@ -52,10 +52,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 175.0]">
         </property>
     </entity>
-    <entity name="VectorDisassembler" class="ptolemy.actor.lib.VectorDisassembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
-        </property>
-    </entity>
     <entity name="ContinuousClock" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 100.0]">
         </property>
@@ -63,7 +59,7 @@
     <entity name="ContinuousClock2" class="ptolemy.domains.continuous.lib.ContinuousClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.1, 2.9}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 185.0]">
         </property>
     </entity>
     <entity name="ContinuousClock3" class="ptolemy.domains.continuous.lib.ContinuousClock">
@@ -102,10 +98,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 290.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="VectorDisassembler2" class="ptolemy.actor.lib.VectorDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 175.0]">
         </property>
-    </relation>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -136,28 +132,16 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="VectorAssembler.input" relation="relation7"/>
     <link port="VectorAssembler.input" relation="relation10"/>
     <link port="VectorAssembler.input" relation="relation11"/>
     <link port="VectorAssembler.output" relation="relation2"/>
-    <link port="VectorDisassembler.input" relation="relation2"/>
-    <link port="VectorDisassembler.output" relation="relation"/>
-    <link port="VectorDisassembler.output" relation="relation"/>
-    <link port="VectorDisassembler.output" relation="relation3"/>
-    <link port="VectorDisassembler.output" relation="relation4"/>
-    <link port="VectorDisassembler.output" relation="relation5"/>
     <link port="ContinuousClock.output" relation="relation8"/>
     <link port="ContinuousClock2.output" relation="relation9"/>
     <link port="ContinuousClock3.output" relation="relation6"/>
@@ -168,7 +152,11 @@
     <link port="PeriodicSampler.output" relation="relation10"/>
     <link port="PeriodicSampler.output" relation="relation11"/>
     <link port="NonStrictTest.input" relation="relation2"/>
-    <link port="NonStrictTest2.input" relation="relation3"/>
-    <link port="NonStrictTest3.input" relation="relation4"/>
-    <link port="NonStrictTest4.input" relation="relation5"/>
+    <link port="NonStrictTest2.input" relation="relation"/>
+    <link port="NonStrictTest3.input" relation="relation3"/>
+    <link port="NonStrictTest4.input" relation="relation4"/>
+    <link port="VectorDisassembler2.input" relation="relation2"/>
+    <link port="VectorDisassembler2.output" relation="relation"/>
+    <link port="VectorDisassembler2.output" relation="relation3"/>
+    <link port="VectorDisassembler2.output" relation="relation4"/>
 </entity>
