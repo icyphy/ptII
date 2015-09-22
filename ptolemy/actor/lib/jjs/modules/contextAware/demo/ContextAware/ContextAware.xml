@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 100.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 187, 1092, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 63, 1092, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[858, 524]">
     </property>
@@ -22,127 +22,8 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.0, 252.0}">
     </property>
-    <entity name="ContextAware" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor discovers IOT services on web.&#10; *  It requires the contextAware module.  Please see:&#10; *  https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&#10; * &#10; *  @accessor contextAware&#10; *  @author Anne H. Ngu (angu@btxstate.edu)&#10; *  @input {number} just for testing &#10; *  @output {number} just for testing d&#10; *  @version $$Id$$ &#10; */&#10;&#10;var contextAware = require(&quot;contextAware&quot;);&#10;&#10;// Initialize the context aware service.&#10;var contextAwareService = new contextAware.DiscoveryOfRESTService();  &#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    input('input');&#10;    output('output');&#10;    extend(&quot;net/REST.js&quot;);&#10;}&#10;&#10;/** Upon receiving details of a REST service, construct a concrete accessor to access it.&#10; */&#10;exports.initialize = function () {&#10;	// The superclass registers a handler for the 'trigger' input&#10;	// to issue an HTTP request based on the current inputs.&#10;	this.ssuper.initialize();&#10;	&#10;    var serviceParam; //the input that is needed for the options port in REST&#10;    &#10;    // Add a handler for the 'input' input.&#10;    addInputHandler('input', function() {&#10;        send('output', get('input') *2); // Test. FIXME: Remove this.&#10;        serviceParam = contextAwareService.discoverServices();&#10;		console.log(&quot;org/terraswarm/accessor/accessors/web/contextAware/ContextAware.js: serviceParam: &quot; + serviceParam);&#10;        send('options', {&quot;url&quot;: {&quot;host&quot;:&quot;pluto.cs.txstate.edu&quot;, &quot;port&quot;:22001}});&#10;        send('command', 'gsn');&#10;        // Cause the base class handler to issue the HTTP request.&#10;        send('trigger', true);&#10;    });&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/contextAware/ContextAware.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers IOT services on web.&#10; It requires the contextAware module.  Please see:&#10; https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Anne H. Ngu (angu@btxstate.edu)">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
-            </property>
-            <property name="just (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;number&quot;]}) for testing d">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 295.0}">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot;:{&quot;host&quot;:&quot;pluto.cs.txstate.edu&quot;,&quot;port&quot;:22001}}">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="gsn">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="outputCompleteResponseOnly" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="body" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="response" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="status" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="headers" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 305.0}">
-        </property>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="707332070">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 305.0}">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={733, 71, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 170.0}">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -182,20 +63,129 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 305.0}">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{240.0, 305.0}">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=185.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=240.0,y=305.0}, points={} },{ head={id=&quot;ContextAware.input&quot;,x=325.0,y=295.0}, tail={id=&quot;relation.vertex1&quot;,x=240.0,y=305.0}, points={} } }">
+    <entity name="ContextAware" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor discovers IOT services on web.&#10; *  It requires the contextAware module.  Please see:&#10; *  https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&#10; * &#10; *  @accessor contextAware&#10; *  @author Anne H. Ngu (angu@btxstate.edu)&#10; *  @input {number} input to the accessor&#10; *	@parameter {{string} the name of the REST service that context aware tries&#10; *     to adapt. A list of available services are presented as option.&#10; &#10; *  @version $$Id$$ &#10; */&#10;&#10;var contextAware = require(&quot;contextAware&quot;);&#10;&#10;// Initialize the context aware service discovery class. Not used currently&#10;var contextAwareService = new contextAware.DiscoveryOfRESTService();  &#10;&#10;var selectedService;&#10;&#10;&#10;exports.setup = function () {&#10;     input('input');&#10;     // a simple UI interface to start the dialog with users&#10;     parameter('RESTSource', { 'type': 'string',&#10;                               'value': 'Make a selection',&#10;                               'options':contextAware.services()}&#10;     );&#10;     selectedService = getParameter('RESTSource');&#10;     if (selectedService == 'GSN')&#10;       implement(&quot;contextAware/GSNInterface.js&quot;);&#10;     else if (selectedService == 'Paraimpu') {&#10;       implement(&quot;contextAware/ParaimpuInterface.js&quot;);&#10;      }&#10;     else {&#10;        console.log(&quot;Cannot load service interface !!&quot;);&#10;     }&#10;     extend(&quot;net/REST.js&quot;);&#10;}&#10;&#10;/** Upon receiving details of a REST service, construct a concrete accessor to access it.&#10; */&#10;exports.initialize = function () {&#10;	// The superclass registers a handler for the 'trigger' input&#10;	// to issue an HTTP request based on the current inputs.&#10;	this.ssuper.initialize();&#10;	&#10;    var serviceParam; //the input that is needed for the options port in REST&#10;    &#10;    // Add a handler for the 'input' input.&#10;    addInputHandler('input', function() {&#10;        serviceParam = contextAwareService.discoverServices();&#10;		console.log(&quot;org/terraswarm/accessor/accessors/web/contextAware/ContextAware.js: serviceParam: &quot; + serviceParam);&#10;        var serviceURL = getParameter('ipAddress');&#10;        //var serviceURL = {&quot;url&quot;:{&quot;host&quot;:getParameter('ipAddress'), &quot;port&quot;: getParameter('port')}};&#10;        send ('options',  serviceURL);&#10;        if (selectedService == 'GSN') {&#10;            send ('command', 'gsn');&#10;        }&#10;        else if (selectedService == 'Paraimpu') {&#10;            send ('command', 'v1/things');&#10;            //var arg = 'access_token:'+ getParameter('accessToken');&#10;            //sample access token to use &quot;46e0ee55195c4dd9dca295a7ac8282d28f4a2259&quot;&#10;            var arg = {&quot;access_token&quot;: getParameter('accessToken')};&#10;            console.log(&quot;org/terraswarm/accessor/accessors/web/contextAware/ContextAware.js: access_token:&quot; + arg);&#10;            send ('arguments', arg);&#10;        }&#10;        else {console.log(&quot;no REST service details found&quot;);}&#10;  &#10;        //ex. of valid json format for reference&#10;        //send('options', {&quot;url&quot;:&quot;http://pluto.cs.txstate.edu:22001&quot;});&#10;        //send('options', {&quot;url&quot;:{&quot;host&quot;:&quot;pluto.cs.txstate.edu&quot;,&quot;port&quot;:22001}});&#10;        //send('command', 'gsn');&#10;&#10;        // Cause the base class handler to issue the HTTP request.&#10;        send('trigger', true);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=60.0,y=305.0}, tail={id=&quot;Const.trigger&quot;,x=185.0,y=305.0}, points={} } }">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/contextAware/ContextAware.js">
         </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ContextAware.output&quot;,x=325.0,y=295.0}, tail={id=&quot;Display.input&quot;,x=450.0,y=170.0}, points={395.0,275.0,395.0,170.0} } }">
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers IOT services on web.&#10; It requires the contextAware module.  Please see:&#10; https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Anne H. Ngu (angu@btxstate.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="just (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;number&quot;]}) for testing d">
+            </property>
         </property>
-    </relation>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 250.0]">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="RESTSource" class="ptolemy.data.expr.Parameter" value="GSN">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://pluto.cs.txstate.edu:22001&quot;">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="gsn">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="ipAddress" class="ptolemy.data.expr.Parameter" value="http://pluto.cs.txstate.edu:22001">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="22001">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="username" class="ptolemy.data.expr.Parameter" value="admin">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="password" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=750.0,y=225.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=635.0,y=225.0}, points={} } }">
         </property>
@@ -212,23 +202,19 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation7.vertex1&quot;,x=510.0,y=225.0}, tail={id=&quot;Const2.trigger&quot;,x=575.0,y=225.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=550.0,y=170.0}, tail={id=&quot;relation7.vertex1&quot;,x=510.0,y=225.0}, points={510.0,170.0} },{ head={id=&quot;ContextAware.response&quot;,x=325.0,y=295.0}, tail={id=&quot;relation7.vertex1&quot;,x=510.0,y=225.0}, points={410.0,285.0,410.0,225.0} } }">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ContextAware.status&quot;,x=325.0,y=295.0}, tail={id=&quot;Test.input&quot;,x=460.0,y=305.0}, points={} } }">
-        </property>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ContextAware.input" relation="relation"/>
-    <link port="ContextAware.output" relation="relation3"/>
-    <link port="ContextAware.response" relation="relation7"/>
-    <link port="ContextAware.status" relation="relation4"/>
-    <link port="SingleEvent.output" relation="relation2"/>
-    <link port="Const.output" relation="relation"/>
-    <link port="Const.trigger" relation="relation2"/>
-    <link port="Display.input" relation="relation3"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
     <link port="Display2.input" relation="relation7"/>
     <link port="Stop.input" relation="relation5"/>
     <link port="MicrostepDelay.input" relation="relation6"/>
     <link port="MicrostepDelay.output" relation="relation5"/>
     <link port="Const2.output" relation="relation6"/>
     <link port="Const2.trigger" relation="relation7"/>
-    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="ContextAware.input" relation="relation"/>
+    <link port="ContextAware.response" relation="relation7"/>
+    <link port="ContextAware.status" relation="relation2"/>
 </entity>

@@ -2,44 +2,42 @@ package ptolemy.actor.lib.jjs.modules.contextAware;
 
 
     import java.awt.Component;
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
-    import java.io.FileReader;
-    import java.io.IOException;
-    import java.lang.reflect.Array;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Array;
 
     import ptolemy.actor.TypedIOPort;
-    import ptolemy.actor.gui.EditorPaneFactory;
-    import ptolemy.data.type.BaseType;
-    import ptolemy.kernel.CompositeEntity;
-    import ptolemy.kernel.util.IllegalActionException;
-    import ptolemy.kernel.util.NameDuplicationException;
-    import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.gui.EditorPaneFactory;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
     import javax.script.Invocable;
-    import javax.script.ScriptException;
-    import javax.swing.JOptionPane;
-    import javax.swing.event.ListSelectionEvent;
-    import javax.swing.event.ListSelectionListener;
-    import javax.xml.transform.TransformerConfigurationException;
+import javax.script.ScriptException;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.xml.transform.TransformerConfigurationException;
 
-    import org.terraswarm.accessor.JSAccessor;
+import org.terraswarm.accessor.JSAccessor;
 
     public class ContextAwareHelper {
         
-        //This class sets up the GUI panel
-        protected ContextAwareGUI GUI;
-      
-        protected String iotmw;
-        protected String service;
-        public String[] middlewareList = {"GSN", "Paraimpu","GWeb", "GG", "JJ"};
-        public String [] paramList =  {"username", "password","ipAddress", "port"};
+        //This class sets up the dialog with the user and discovers details of a specific REST service
+        
+        public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
+        public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
 
         public ContextAwareHelper() {
-          // GUI = new ContextAwareGUI(middlewareList);
+          // GUI = new ContextAwareGUI(iotServiecList);
         }  
         
         //Factory class that allows us to create our own GUI
+        // do not know how to use it with accessor
         /*
         public class Factory extends EditorPaneFactory throws Exceptions {
             public Factory(NamedObj, String name) 
@@ -54,50 +52,57 @@ package ptolemy.actor.lib.jjs.modules.contextAware;
         }
         
        */
-        //////////////////////////////////////////////////////
-        ///        Functions Called from the Accessor      ///
-        
+    
+        /** Return an array of iot REST  service names that are available to the user.
+         */
+       
+        public  String[] availableServices() {
+        	return iotServiceList;
+           
+        }
         
         //Dialog Box to select a service the accessor mimics. 
         public void chooseSensor(String[] sensors) {
             
-            service = (String)JOptionPane.showInputDialog(null,
-                                                         "Choose service to retreive data from:\n",
-                                                         "Service Selection",
+            _sensorService = (String)JOptionPane.showInputDialog(null,
+                                                         "Choose sensor to retreive data from:\n",
+                                                         "Sensor Selection",
                                                          JOptionPane.PLAIN_MESSAGE,
                                                          null, sensors,
                                                          "1");
         }
         
-        public String getMiddleware() {
-          // return iotmw;
-            return "GSN";
-        }    
-        
-        //retrieve data from a text field in the GUI
-        // need to know which MW and which index of the parameter is needed
-        
-        //public String getParameterData(int index) {
-        public String getParameterData(String iotmw){
+        public String getSelectedService() {
+        	//return _selectedService;
+        	return "GSN";
+        }
+        //FIXME:retrieve data entered by a user from a text field in the GUI
+  
+        public String getSelectedServiceParameter(String selectedService){
             //return GUI.textFields.get(index).getText();
-        	if (iotmw.equals("GSN")) {
+        	if (selectedService.equals("GSN")) {
         		return "pluto.cs.txstate.edu";}
         	else return "";
         }
         
         
-        //get name of sensor
+        //get name of a particular sensor in a service
         public String getService() {
-            return service;
+            return _sensorService;
         }
         
-       public String listMiddleware() {
-           this.setMiddleware(middlewareList);
-            return iotmw;
+       
+        /** FIXME: need to implement a discovery process that takes into account user's preferences and locations
+         * currently, just present the set of known services to users and return the selected service
+         * @return _selectedServiceParam 
+         */
+       public String discoverServices() {
+           this.setSelectedService(iotServiceList);
+            return _selectedServiceParam;
        }
         
-        //initializes the list of available middleware and creates GUI
-        public void setMiddleware(String[] list) {
+        //initializes the list of available iot REST services and creates GUI
+        public void setSelectedService(String[] list) {
             
             GUI = new ContextAwareGUI(list);
       
@@ -128,8 +133,6 @@ package ptolemy.actor.lib.jjs.modules.contextAware;
  
         
         
-        
-        
         //////////////////////////////////////////////////////
         ///                Private Methods                 ///
         
@@ -152,15 +155,15 @@ package ptolemy.actor.lib.jjs.modules.contextAware;
 
             });
         
-            //when ever the type of middleware changes, get the parameters required
+            //when ever the type of REST service changes, get the parameters required
             GUI._list.addListSelectionListener(new ListSelectionListener() {
                 @Override        
                 public void valueChanged(ListSelectionEvent e) {
-                    iotmw = new String((String) GUI._list.getSelectedValue());               
+                    _selectedServiceParam = new String((String) GUI._list.getSelectedValue());               
                     try {
-                        System.out.println("getParameters" + iotmw);
-                        setParameters(paramList);
-                        for (int i = 0; i< paramList.length; i++) {
+                        System.out.println("getParameters" + _selectedServiceParam);
+                        setParameters(defaultParamList);
+                        for (int i = 0; i< defaultParamList.length; i++) {
                            System.out.println( GUI.textFields.get(i).getText());
                     
                         }
@@ -174,5 +177,9 @@ package ptolemy.actor.lib.jjs.modules.contextAware;
             });
         }
       
+        protected ContextAwareGUI GUI;
+        
+        protected String _selectedServiceParam;
+        protected String _sensorService;
     }
 
