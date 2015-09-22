@@ -4110,7 +4110,27 @@ public class IOPort extends ComponentPort {
                     result.append(_getIndentPrefix(indent + 1) + "{\n");
 
                     // cd $PTII/ptolemy/configs/test; ptjacl allConfigs.tcl
-                    // was failing with NPE here.
+                    // was failing with NPE here because of the
+                    // RendezvousSynchrony design pattern has a null
+                    // receiver.  This can probably be ignored, it was
+                    // uncovered by recent changes to IOPort.
+                    //
+                    // To replicate, uncomment the receiver == null clause and then do:
+                    //
+                    // bash-3.2$ $PTII/bin/ptjacl
+                    // % java::new ptolemy.moml.MoMLParser
+                    // java0x1
+                    // % set parser [java::new ptolemy.moml.MoMLParser]
+                    // java0x2
+                    // % set t [$parser parseFile /Users/cxh/ptII/ptolemy/actor/designs/RendezvousSynchrony.xml]
+                    // java0x3
+                    // % $t description
+                    // java.lang.NullPointerException: _description had a null reciever?.RendezvousSynchrony._A1_.input
+                    //
+                    //if (receiver == null) {
+                    //    throw new NullPointerException("_description had a null receiver?" + getFullName());
+                    //}
+
                     if (receiver != null) {
                         for (int j = 0; j < receiver.length; j++) {
                             result.append(_getIndentPrefix(indent + 2));
@@ -4122,7 +4142,7 @@ public class IOPort extends ComponentPort {
                             
                             result.append("}\n");
                         }
-                    }
+                        //}
                     result.append(_getIndentPrefix(indent + 1) + "}\n");
                 }
 
