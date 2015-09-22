@@ -4142,7 +4142,7 @@ public class IOPort extends ComponentPort {
                             
                             result.append("}\n");
                         }
-                        //}
+                    }
                     result.append(_getIndentPrefix(indent + 1) + "}\n");
                 }
 
