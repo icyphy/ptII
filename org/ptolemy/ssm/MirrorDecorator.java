@@ -51,16 +51,17 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-/**
-A  special decorator that mirrors its parameters and ports to the decorated actor.
-The ports are added to the decorated container, whereas the parameters are contained
-by the DecoratorAttributes object.
 
-@author Ilge Akkaya
-@version $Id$
-@since Ptolemy II 10.0
-@Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating
+/**
+ * A special decorator that mirrors its parameters and ports to the decorated actor.
+ * The ports are added to the decorated container, whereas the parameters are contained
+ * by the DecoratorAttributes object.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (ilgea)
  */
 public class MirrorDecorator extends TypedAtomicActor implements Decorator {
 

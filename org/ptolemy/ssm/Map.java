@@ -47,9 +47,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+/** 
+ * An occupancy grid map.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class Map extends MirrorDecorator {
  
-
     /** Construct a StateSpaceModel with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -69,16 +77,30 @@ public class Map extends MirrorDecorator {
         _init();
     }
 
-    @Override
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Map newObject = (Map) super
-                .clone(workspace); 
-        newObject._origin = null;
-        newObject._occupancyGrid = null; 
-               
-        return newObject;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
 
+    /** The occupancy grid map. */
+    public PortParameter map;
+
+    /** A 2-d array denoting the map origin in x and y directions
+     * respectively.
+     */
+    public Parameter origin;
+
+    /** Map resolution in meters/pixel.
+     */
+    public Parameter resolution;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Update the state accordingly.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If
+     *   <i>stateVariableNamest</i> cannot be evaluated or cannot be
+     *   converted to the output type, or if the superclass throws it.
+     */
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -106,24 +128,49 @@ public class Map extends MirrorDecorator {
         }
     }
     
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Map newObject = (Map) super
+                .clone(workspace); 
+        newObject._origin = null;
+        newObject._occupancyGrid = null; 
+        try {
+            newObject.origin.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
+            System.out.println("ssm.Map.clone()");
+        } catch (Throwable throwable) {
+            throw new CloneNotSupportedException("Failed to clone " + this.getFullName()
+                                                 + ": " + throwable);
+        }
+        return newObject;
+    }
+
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
         map.update();
     }
  
-
-    /** A 2-d array denoting the map origin in x and y directions respectively.
-     */
-    public Parameter origin;
-
-    /** Map resolution in meters/pixel.
-     */
-    public Parameter resolution;
+    public int[][] getOccupancyGrid() {
+        int [][] copyOccupancy = new int[_occupancyGrid.length][_occupancyGrid[0].length];
+        for (int i = 0; i < copyOccupancy.length; i++) {
+            copyOccupancy[i] = Arrays.copyOf(_occupancyGrid[i],_occupancyGrid[i].length);
+        }
+        return copyOccupancy;
+    }
     
-    /** The occupancy grid map. */
-    public PortParameter map;
- 
+    public double[] getOrigin() {
+        return Arrays.copyOf(_origin, _origin.length);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
@@ -147,17 +194,9 @@ public class Map extends MirrorDecorator {
         
     } 
     
-    public int[][] getOccupancyGrid() {
-        int [][] copyOccupancy = new int[_occupancyGrid.length][_occupancyGrid[0].length];
-        for (int i = 0; i < copyOccupancy.length; i++) {
-            copyOccupancy[i] = Arrays.copyOf(_occupancyGrid[i],_occupancyGrid[i].length);
-        }
-        return copyOccupancy;
-    }
-    
-    public double[] getOrigin() {
-        return Arrays.copyOf(_origin, _origin.length);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     private int _width;
     private int _height;
     private int[][] _occupancyGrid;

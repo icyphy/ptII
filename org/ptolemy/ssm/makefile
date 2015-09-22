@@ -55,6 +55,7 @@ JSRCS = \
 	ConstrainedStateSpaceSimulator.java \
 	GaussianMeasurementModel.java \
 	InferenceActor.java \
+	Map.java \
 	MapConstrained.java \
 	MeasurementModel.java\
 	MeasurementModelAttributes.java \
@@ -67,13 +68,15 @@ JSRCS = \
 	StateSpaceModel.java \
 	StateSpaceSimulator.java \
 	StatePredictorWithAccControl.java \
-	StatePredictorWithControl.java
+	StatePredictorWithControl.java \
+	UnscentedKalmanFilterSSM.java
 
 
 OTHER_FILES_TO_BE_JARED = \
 	ConstrainedParticleFilterIcon.xml \
 	ConstrainedStateSpaceSimulatorIcon.xml \
 	GaussianMeasurementModelIcon.xml \
+	MapIcon.xml \
 	ssm.xml \
 	PredictorIcon.xml \
 	ParticleFilterIcon.xml \
