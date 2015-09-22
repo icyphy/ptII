@@ -55,7 +55,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 310.0]">
         </property>
-        <property name="in1" class="ptolemy.actor.parameters.PortParameter" value="1111">
+        <property name="in1" class="ptolemy.actor.parameters.PortParameter" value="2222">
         </property>
         <port name="in1" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
