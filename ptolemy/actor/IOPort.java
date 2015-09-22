@@ -4109,17 +4109,20 @@ public class IOPort extends ComponentPort {
                     // One list item per group
                     result.append(_getIndentPrefix(indent + 1) + "{\n");
 
-                    for (int j = 0; j < receiver.length; j++) {
-                        result.append(_getIndentPrefix(indent + 2));
-                        result.append("{");
+                    // cd $PTII/ptolemy/configs/test; ptjacl allConfigs.tcl
+                    // was failing with NPE here.
+                    if (receiver != null) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            result.append(_getIndentPrefix(indent + 2));
+                            result.append("{");
 
-                        if (receiver[j] != null) {
-                            result.append(receiver[j].getClass().getName());
+                            if (receiver[j] != null) {
+                                result.append(receiver[j].getClass().getName());
+                            }
+                            
+                            result.append("}\n");
                         }
-
-                        result.append("}\n");
                     }
-
                     result.append(_getIndentPrefix(indent + 1) + "}\n");
                 }
 
