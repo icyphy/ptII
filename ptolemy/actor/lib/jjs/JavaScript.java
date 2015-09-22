@@ -772,11 +772,19 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
             // Even if the input width is zero, there might be a token
-            // that the actor has sent to itself.
-            if (input.getWidth() == 0 && proxy._localInputTokens != null
-                    && proxy._localInputTokens.size() > 0) {
-                tokens.put(0, proxy._localInputTokens.remove(0));
-                hasInput = true;
+            // that the actor has sent to itself or has set a default value.
+            if (input.getWidth() == 0) {
+                if (proxy._localInputTokens != null
+                        && proxy._localInputTokens.size() > 0) {
+                    tokens.put(0, proxy._localInputTokens.remove(0));
+                    hasInput = true;
+                } else {
+                    Token defaultValue = input.defaultValue.getToken();
+                    if (defaultValue != null) {
+                        tokens.put(0, defaultValue);
+                        hasInput = true;
+                    }
+                }
             }
             _inputTokens.put(input, tokens);
             if (hasInput) {
@@ -2536,9 +2544,14 @@ public class JavaScript extends TypedAtomicActor {
                 if (_port instanceof ParameterPort) {
                     _parameter = ((ParameterPort)_port).getParameter();
                 } else {
-                    throw new IllegalActionException(JavaScript.this,
-                            "Cannot call set on a port " + _port.getName()
-                            + ". Use send().");
+                    if (!_port.isInput()) {
+                        throw new IllegalActionException(JavaScript.this,
+                                "Cannot set the default value a port that is not an input: " + _port.getName());
+                    }
+                    // Ideally, we would change port from an ordinary port to a ParameterPort.
+                    // Instead, we just set the default value of the port.
+                    _port.defaultValue.setToken(token);
+                    return;
                 }
             }
             _parameter.setToken(token);
