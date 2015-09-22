@@ -357,10 +357,44 @@ function send(name, value, channel) {
  *  default value, instead of using send(), but no input handler will be triggered.
  *  @param parameter The parameter name (a string).
  *  @param value The value to set.
+ *  @deprecated Use setParameter() or setDefault().
  */
 function set(parameter, value) {
+    setParameter(parameter, value);
+}
+
+/** Set the default value of an input. Note that unlike
+ *  using send(), no input handler will be triggered.
+ *  Also, unlike send(), the provided value will be persistent,
+ *  in that once it is set, the host will store the new value along with the model.
+ *  @param input The input name (a string).
+ *  @param value The value to set.
+ */
+function setDefault(input, value) {
+    if (typeof input !== 'string') {
+        throw('input argument is required to be a string. Got: ' + (typeof input));
+    }
+    var proxy = actor.getPortOrParameterProxy(input);
+    if (!proxy) {
+        error('No such input: ' + input);
+    } else {
+        var token;
+        if (proxy.isJSON()) {
+            token = new StringToken(JSON.stringify(value));
+        } else {
+            token = convertToToken(value);
+        }
+        proxy.set(token);
+    }
+}
+
+/** Set the value of a parameter.
+ *  @param parameter The parameter name (a string).
+ *  @param value The value to set.
+ */
+function setParameter(parameter, value) {
     if (typeof parameter !== 'string') {
-        throw('parameter argument is required to be a string. Got: ' + (typeof name));
+        throw('parameter argument is required to be a string. Got: ' + (typeof parameter));
     }
     var proxy = actor.getPortOrParameterProxy(parameter);
     if (!proxy) {

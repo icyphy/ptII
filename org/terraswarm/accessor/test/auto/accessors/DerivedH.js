@@ -8,7 +8,7 @@ exports.setup = function() {
 exports.fire = function() {
     var value = get('trigger');
     if (value !== null) {
-        set('in1', value);
+        setDefault('in1', value);
     }
     this.ssuper.fire();
 }

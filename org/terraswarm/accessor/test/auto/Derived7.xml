@@ -4,7 +4,7 @@
 <entity name="Derived7" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 60, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 51, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -17,13 +17,13 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can set the value of in input of its base class.&#10;There is no microstep delay before that input is used.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can set the value of in input of its base class&#10;that initially has no default value.&#10;There is no microstep delay before that input is used.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 60.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 190.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -31,7 +31,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 180.0]">
         </property>
     </entity>
     <entity name="DerivedG" class="org.terraswarm.accessor.JSAccessor">
@@ -41,7 +41,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/DerivedG.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedG.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -49,15 +49,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
         </property>
-        <property name="in1" class="ptolemy.actor.parameters.PortParameter" value="true">
-        </property>
-        <port name="in1" class="ptolemy.actor.parameters.ParameterPort">
+        <port name="in1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -71,12 +69,12 @@
             </property>
         </port>
     </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="SingleEvent.output" relation="relation3"/>
-    <link port="Test.input" relation="relation"/>
-    <link port="DerivedG.output" relation="relation"/>
-    <link port="DerivedG.trigger" relation="relation3"/>
+    <link port="SingleEvent.output" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="DerivedG.output" relation="relation3"/>
+    <link port="DerivedG.trigger" relation="relation2"/>
 </entity>
