@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
 @version $Id$
 @since Ptolemy II 10.1
 @Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating
+@Pt.AcceptedRating Red (ilgea)
 */
 public class MirrorDecoratorAttributes extends DecoratorAttributes
 implements MirrorDecoratorListener{
@@ -193,7 +193,7 @@ implements MirrorDecoratorListener{
     }
 
     /**
-     * Send out an
+     * Send out an event.
      */
     @Override
     public void event(MirrorDecorator ssm, DecoratorEvent eventType, String portName) {
@@ -268,28 +268,27 @@ implements MirrorDecoratorListener{
         }
     }
 
-
-
-
     /**
-     * Remove all decorated ports from the container
+     * Remove all decorated ports from the container.
      * @exception NameDuplicationException
      * @exception IllegalActionException
      */
     public void removeDecorationsFromContainer()
             throws IllegalActionException, NameDuplicationException {
         if (this._decorator != null) {
-            for (Port p : _cachedDecoratorPorts.values()) {
-                p.setContainer(null);
+            for (Port port : _cachedDecoratorPorts.values()) {
+                if (port != null) {
+                    port.setContainer(null);
+                }
             }
 
-            for (Parameter p : _cachedDecoratorPortParameters.values()) {
+            for (Parameter parameter : _cachedDecoratorPortParameters.values()) {
                 ParameterPort expectedPort = (ParameterPort) ((ComponentEntity)this.
-                        getContainer()).getPort(p.getName());
+                        getContainer()).getPort(parameter.getName());
                 if (expectedPort != null) {
                     expectedPort.setContainer(null);
                 }
-                p.setContainer(null);
+                parameter.setContainer(null);
             }
 
             _cachedDecoratorPorts.clear();
@@ -341,16 +340,16 @@ implements MirrorDecoratorListener{
         }
     }
 
-    /** Boolean indicating  enable status of the decorator */
+    /** Boolean indicating  enable status of the decorator. */
     protected boolean _enabled;
 
     /** Cached list of decorator ports that are added to the container by this
-     * class
+     * class.
      */
     protected Map<String,Port> _cachedDecoratorPorts;
 
     /** Cached list of decorator parameters that are added to the container by this
-     * class
+     * class.
      */
     protected Map<String,Parameter> _cachedDecoratorPortParameters;
 
