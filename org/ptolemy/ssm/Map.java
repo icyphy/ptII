@@ -138,15 +138,8 @@ public class Map extends MirrorDecorator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Map newObject = (Map) super
                 .clone(workspace); 
-        newObject._origin = null;
+        newObject._origin = new double[2];
         newObject._occupancyGrid = null; 
-        try {
-            newObject.origin.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
-            System.out.println("ssm.Map.clone()");
-        } catch (Throwable throwable) {
-            throw new CloneNotSupportedException("Failed to clone " + this.getFullName()
-                                                 + ": " + throwable);
-        }
         return newObject;
     }
 
