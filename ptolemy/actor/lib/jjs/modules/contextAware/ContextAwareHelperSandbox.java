@@ -1,4 +1,4 @@
-// Set up the parameters with the details of the specific REST service.
+// Set up the parameters with the details of the specific REST service (Sand box version).
 
 /* Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
@@ -28,17 +28,36 @@
 
 package ptolemy.actor.lib.jjs.modules.contextAware;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.EditorPaneFactory;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+
+import javax.script.Invocable;
+import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.xml.transform.TransformerConfigurationException;
+
+import org.terraswarm.accessor.JSAccessor;
 
 ///////////////////////////////////////////////////////////////////
-//// ContextAwareHelper
+//// ContextAwareHelperSandBox
 /** Set up the parameters with the details of the specific REST service.
+ *  
+ * <p>This is a sandbox or test version of ContextAwareHelper that
+ * is used for experimentation.</p>
  *
  * @author Anne Ngu
  * @version $Id$
@@ -46,7 +65,7 @@ import javax.swing.event.ListSelectionListener;
  * @Pt.ProposedRating Green (eal)
  * @Pt.AcceptedRating Green (bilung)
  */
-public class ContextAwareHelper {
+public class ContextAwareHelperSandBox {
         
     // FIXME: In Ptolemy, public fields go after the constructor and public methods.
     
@@ -54,7 +73,7 @@ public class ContextAwareHelper {
     public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
 
     // FIXME: Why have a nullary constructor?  Should this call super()?
-    public ContextAwareHelper() {
+    public ContextAwareHelperSandBox() {
         // GUI = new ContextAwareGUI(iotServiecList);
     }  
         
@@ -184,7 +203,7 @@ public class ContextAwareHelper {
         GUI._list.addListSelectionListener(new ListSelectionListener() {
                 @Override        
                 public void valueChanged(ListSelectionEvent e) {
-                    _selectedServiceParam = new String(GUI._list.getSelectedValue());               
+                    _selectedServiceParam = new String((String) GUI._list.getSelectedValue());               
                     try {
                         System.out.println("getParameters" + _selectedServiceParam);
                         setParameters(defaultParamList);
