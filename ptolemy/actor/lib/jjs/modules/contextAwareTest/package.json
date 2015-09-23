@@ -1,0 +1,11 @@
+{
+  "name": "contextAwareTest",
+  "version": "0.1.0",
+  "main": "contextAwareTest.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Anne H. Ngu"
+    , "email" : "angu@txstate.edu"}
+  ],
+  "description": "A module for supporting context aware accessors."
+}

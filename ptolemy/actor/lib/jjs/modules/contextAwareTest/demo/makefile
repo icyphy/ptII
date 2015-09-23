@@ -1,10 +1,10 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Java Ptolemy II JavaScript ContextAware demos
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,53 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/contextAware
+ME =		ptolemy/actor/lib/jjs/modules/contextAwareTest/demo
 
-DIRS = 		demo test
+DIRS =		ContextAwareTest
 
-# Root of the Java directory
-ROOT =		../../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	contextAware
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	ContextAwareTest/ContextAwareTest.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	ContextAwareGUI.java \
-	ContextAwareHelper.java \
-	ContextAwareHelperTest.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	contextAware.js \
-	package.json
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) \
-	'ContextAwareHelper$$1.class' \
-	'ContextAwareHelper$$2.class' 
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

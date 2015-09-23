@@ -29,9 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/contextAware
+ME =		ptolemy/actor/lib/jjs/modules/contextAwareTest
 
-DIRS = 		demo test
+DIRS = 		#demo test
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -43,17 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	contextAware
+PTPACKAGE = 	contextAwareTest
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ContextAwareGUI.java \
-	ContextAwareHelper.java \
 	ContextAwareHelperTest.java
 
 OTHER_FILES_TO_BE_JARED = \
-	contextAware.js \
+	contextAwareTest.js \
 	package.json
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -67,8 +65,8 @@ MISC_FILES =	test
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
-	'ContextAwareHelper$$1.class' \
-	'ContextAwareHelper$$2.class' 
+	'ContextAwareHelperTest$$1.class' \
+	'ContextAwareHelperTest$$2.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
