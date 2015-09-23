@@ -49,8 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	ContextAwareGUI.java \
-	ContextAwareHelper.java \
-	ContextAwareHelperTest.java
+	ContextAwareHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	contextAware.js \
