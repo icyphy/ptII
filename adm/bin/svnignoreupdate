@@ -56,6 +56,15 @@ do
     svn propset svn:ignore -F $svnIgnoreFile $alljsimpletestsDir
 done
 
+PtDocDirs=`egrep "\PtDoc.xml$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for PtDocDir in $PtDocDirs
+do
+    echo $PtDocDir
+    svn propget svn:ignore $PtDocDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo '*PtDoc.xml' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $PtDocDir
+done
+
 jarDirs=`egrep "\.jar$" $statusFile | xargs -n 1 dirname | sort | uniq`
 for jarDir in $jarDirs
 do
