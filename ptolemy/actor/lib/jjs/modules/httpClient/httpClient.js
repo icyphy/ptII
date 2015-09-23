@@ -9,7 +9,7 @@
  *    });
  * </pre>
  * Both http and https are supported.
-
+ *
  * @module httpClient
  * @author Marten Lohstroh and Edward A. Lee
  * @version $Id$
@@ -29,6 +29,7 @@ var EventEmitter = require('events').EventEmitter;
  *  or a map with the following fields (this helper class assumes
  *  all fields are present, so please be sure they are):
  *  <ul>
+ *  <li> body: The request body, if any.  This supports at least strings and image data.
  *  <li> headers: An object containing request headers. By default this
  *       is an empty object. Items may have a value that is an array of values,
  *       for headers with more than one value.
@@ -36,6 +37,11 @@ var EventEmitter = require('events').EventEmitter;
  *       in a pool to be used by other requests in the future. This defaults to false.
  *  <li> method: A string specifying the HTTP request method.
  *       This defaults to 'GET', but can also be 'PUT', 'POST', 'DELETE', etc.
+ *  <li> outputCompleteResponseOnly: If false, then the multiple invocations of the
+ *       callback may be invoked for each request. This defaults to true, in which case
+ *       there will be only one invocation of the callback.
+ *  <li> timeout: The amount of time (in milliseconds) to wait for a response
+ *       before triggering a null response and an error. This defaults to 5000.
  *  <li> url: A string that can be parsed as a URL, or an object containing
  *       the following fields:
  *       <ul>
@@ -136,6 +142,7 @@ function ClientRequest(options, reponseCallback) {
     'keepAlive':false,
     'method':'GET',
     'outputCompleteResponseOnly':true,
+    'timeout':5000,
     'trustAll':false,
   };
   var defaultURL = {
@@ -179,7 +186,11 @@ function ClientRequest(options, reponseCallback) {
   // Attach the callback to be invoked when this object issues
   // a 'response' event.  
   if (reponseCallback) {
-    self.once('response', reponseCallback);
+    if (options.outputCompleteResponseOnly) {
+      self.once('response', reponseCallback);
+    } else {
+      self.on('response', reponseCallback);
+    }
   }
   
   // Set the Content-Length header
@@ -225,20 +236,40 @@ ClientRequest.prototype.write = function(data, encoding) {
    throw("Write is implemented as part of ClientRequest()");
 }
 
+/** Internal function used to handle an error.
+ *  @param message The error message.
+ */
+ClientRequest.prototype._handleError = function(message) {
+    // There may be no registered error event handler.
+    try {
+        this.emit('error', message);
+    } catch(err) {
+        error(message);
+    }
+}
+
 /** Internal method used to handle a response. The argument is an
- *  an instance of the Java class org.vertx.java.core.http.HttpClientResponse.
+ *  an instance of the Java class org.vertx.java.core.http.HttpClientResponse,
+ *  or null if an error occurred.
  *  This method uses the data therein to construct an IncomingMessage object
  *  and pass that as an argument to the 'response' event of the ClientRequest.
- *  @param response The response from the server.
+ *  @param response The response from the server, or null to signal an error.
+ *  @param body The body of the response, or an error message for an error.
  */
 ClientRequest.prototype._response = function(response, body) {
-    var code = response.statusCode();
-    if (code >= 400) {
-        // An error occurred. Emit both an error event and a response event.
-        this.emit('error', 'Received response code ' + code + ". " + response.statusMessage());
+    if (response === null) {
+        this.emit('response', null);
+        this._handleError(body);
+        return;
     }
     var message = new IncomingMessage(response, body);
     this.emit('response', message);
+
+    var code = response.statusCode();
+    if (code >= 400) {
+        // An error occurred. Emit both an error event and a response event.
+        this._handleError('Received response code ' + code + ". " + response.statusMessage());
+    }
 }
 
 // NOTE: The following events are produce by IncomingMessage in Node.js
