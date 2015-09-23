@@ -59,13 +59,13 @@ import org.terraswarm.accessor.JSAccessor;
  * <p>This is a sandbox or test version of ContextAwareHelper that
  * is used for experimentation.</p>
  *
- * @author Anne Ngu
+ * @author Anne Ngu, Contributor: Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 11.0
  * @Pt.ProposedRating Green (eal)
  * @Pt.AcceptedRating Green (bilung)
  */
-public class ContextAwareHelperSandBox {
+public class ContextAwareHelperSandbox {
         
     // FIXME: In Ptolemy, public fields go after the constructor and public methods.
     
