@@ -1044,7 +1044,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
             RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted,
             SpecifiedSaveLabelDoesNotExist {
 
-        Time breakpoint = null;
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(proposedTime);
 
         if (_hlaLookAHead > 0) {
@@ -1094,6 +1093,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // Wait the time grant from the HLA/CERTI Federation (from the RTI).
         _federateAmbassador.timeAdvanceGrant = false;
+        int cntTick = 0;
         while (!(_federateAmbassador.timeAdvanceGrant)) {
             if (_debugging) {
                 _debug(this.getDisplayName() + " proposeTime() -"
@@ -1101,27 +1101,34 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + certiProposedTime.getTime() + ") by calling tick2()");
             }
             _rtia.tick2();
+            cntTick++;
         }
-
-        // At this step we are sure that the HLA logical time of the
-        // Federate has been updated (by the reception of the TAG callback
-        // (timeAdvanceGrant()) and its value is the proposedTime or
-        // less, so we have a breakpoint time.
-        try {
-            CertiLogicalTime hlaTimeGranted = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
-            breakpoint = _convertToPtolemyTime(hlaTimeGranted);
-            if (_debugging) {
-                _debug("TAG for " + hlaTimeGranted + "model moves to"
-                        + breakpoint.getDoubleValue());
+        
+        // If we get any rav-event
+        if (cntTick != 1){
+            // Store reflected attributes RAV as events on HLASubscriber actors.
+            _putReflectedAttributesOnHlaSubscribers();
+            
+            // At this step we are sure that the HLA logical time of the
+            // Federate has been updated (by the reception of the TAG callback
+            // (timeAdvanceGrant()) and its value is the proposedTime or
+            // less, so we have a breakpoint time.
+            try {
+                CertiLogicalTime hlaTimeGranted = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
+                Time breakpoint = _convertToPtolemyTime(hlaTimeGranted);
+                if (_debugging) {
+                    _debug("TAG for " + hlaTimeGranted + "model moves to"
+                            + breakpoint.getDoubleValue());
+                }
+                // So we'd like to propose the breakpoint time instead.
+                proposedTime = breakpoint;
+            } catch (IllegalActionException e) {
+                throw new IllegalActionException(this, e,
+                        "The breakpoint time is not a valid Ptolemy time");
             }
-        } catch (IllegalActionException e) {
-            throw new IllegalActionException(this, e,
-                    "The breakpoint time is not a valid Ptolemy time");
         }
-
-        // Store reflected attributes RAV as events on HLASubscriber actors.
-        _putReflectedAttributesOnHlaSubscribers();
-        return breakpoint;
+        
+        return proposedTime;
     }
 
     /**
