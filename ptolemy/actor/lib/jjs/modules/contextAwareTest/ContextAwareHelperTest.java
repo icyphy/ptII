@@ -1,4 +1,4 @@
-// Set up the parameters with the details of the specific REST service (Sand box version).
+// Set up the parameters with the details of the specific REST service (Test version).
 
 /* Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.actor.lib.jjs.modules.contextAware;
+package ptolemy.actor.lib.jjs.modules.contextAwareTest;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -52,11 +52,13 @@ import javax.xml.transform.TransformerConfigurationException;
 
 import org.terraswarm.accessor.JSAccessor;
 
+import ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareGUI;
+
 ///////////////////////////////////////////////////////////////////
-//// ContextAwareHelperSandBox
+//// ContextAwareHelperTest
 /** Set up the parameters with the details of the specific REST service.
  *  
- * <p>This is a sandbox or test version of ContextAwareHelper that
+ * <p>This is a test version of ContextAwareHelper that
  * is used for experimentation.</p>
  *
  * @author Anne Ngu, Contributor: Christopher Brooks
@@ -65,34 +67,7 @@ import org.terraswarm.accessor.JSAccessor;
  * @Pt.ProposedRating Green (eal)
  * @Pt.AcceptedRating Green (bilung)
  */
-public class ContextAwareHelperSandbox {
-        
-    // FIXME: In Ptolemy, public fields go after the constructor and public methods.
-    
-    public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
-    public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
-
-    // FIXME: Why have a nullary constructor?  Should this call super()?
-    public ContextAwareHelperSandbox() {
-        // GUI = new ContextAwareGUI(iotServiecList);
-    }  
-        
-    //Factory class that allows us to create our own GUI
-    // do not know how to use it with accessor
-    /*
-      public class Factory extends EditorPaneFactory throws Exceptions {
-      public Factory(NamedObj, String name) 
-      throws IllegalActionException, NameDuplicationException {
-      super(container, name);
-      }
-
-      @Override
-      public Component createEditorPane() {
-      return GUI._panel;
-      }
-      }
-        
-    */
+public class ContextAwareHelperTest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,6 +95,16 @@ public class ContextAwareHelperSandbox {
                 "1");
     }
         
+    /** FIXME: need to implement a discovery process that takes into account user's preferences and locations
+     * currently, just present the set of known services to users and return the selected service
+     * @return _selectedServiceParam 
+     */
+    public String discoverServices() {
+        this.setSelectedService(iotServiceList);
+        return _selectedServiceParam;
+    }
+        
+
     public String getSelectedService() {
         //return _selectedService;
         return "GSN";
@@ -134,21 +119,14 @@ public class ContextAwareHelperSandbox {
     }
         
         
-    //get name of a particular sensor in a service
+    /** Get the name of a particular sensor in a service.
+     * @return The name of the service.   
+     */   
     public String getService() {
         return _sensorService;
     }
         
        
-    /** FIXME: need to implement a discovery process that takes into account user's preferences and locations
-     * currently, just present the set of known services to users and return the selected service
-     * @return _selectedServiceParam 
-     */
-    public String discoverServices() {
-        this.setSelectedService(iotServiceList);
-        return _selectedServiceParam;
-    }
-        
     // FIXME: Use a Javadoc comment here.  Complete sentence that ends in a period.  Add @param.
     //initializes the list of available iot REST services and creates GUI
     public void setSelectedService(String[] list) {
@@ -176,7 +154,9 @@ public class ContextAwareHelperSandbox {
         }
     }
  
-        
+    // FIXME:Need comments
+    public String[] iotServiceList = {"GSN", "Paraimpu"/*, "Firebase"*/};
+    public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
         
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
