@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="REST" class="ptolemy.actor.TypedCompositeActor">
+<entity name="RESTWithTimeout" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 85, 934, 634}, maximized=false}">
@@ -23,9 +23,15 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Access a normal web page, and upon receiving&#10;the response, stop execution of the model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Access a web page with a very short timeout,&#10;sure to trigger, to test the timeout mechanism.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="May receive one or two error messages,&#10;depending on whether the connection times out.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 265.0]">
         </property>
     </property>
     <entity name="REST" class="org.terraswarm.accessor.JSAccessor">
@@ -74,6 +80,8 @@
             </property>
             <property name="timeout (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;int&quot;]}) The amount of time (in milliseconds) to wait for a response&#10;  before triggering a null response and an error. This defaults to 5000.">
             </property>
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <port name="command" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -149,12 +157,35 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 130.0}">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;200: OK&quot;}">
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{nil}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270, 190}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 75.0]">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true}">
+        </property>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 220.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -175,14 +206,19 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="REST.error" relation="relation6"/>
     <link port="REST.response" relation="relation4"/>
     <link port="REST.trigger" relation="relation"/>
-    <link port="REST.status" relation="relation5"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Stop.input" relation="relation3"/>
     <link port="MicrostepDelay.input" relation="relation2"/>
     <link port="MicrostepDelay.output" relation="relation3"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Const.trigger" relation="relation4"/>
-    <link port="Test.input" relation="relation5"/>
+    <link port="Test2.input" relation="relation4"/>
+    <link port="Test3.input" relation="relation5"/>
+    <link port="Const2.output" relation="relation5"/>
+    <link port="Const2.trigger" relation="relation6"/>
 </entity>

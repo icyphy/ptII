@@ -79,6 +79,7 @@ public class HttpClientHelper extends VertxHelperBase {
      *  or a map with the following fields (this helper class assumes
      *  all fields are present, so please be sure they are):
      *  <ul>
+     *  <li> body: The request body, if any.  This supports at least strings and image data.
      *  <li> headers: An object containing request headers. By default this
      *       is an empty object. Items may have a value that is an array of values,
      *       for headers with more than one value.
@@ -86,6 +87,11 @@ public class HttpClientHelper extends VertxHelperBase {
      *       in a pool to be used by other requests in the future. This defaults to false.
      *  <li> method: A string specifying the HTTP request method.
      *       This defaults to 'GET', but can also be 'PUT', 'POST', 'DELETE', etc.
+     *  <li> outputCompleteResponseOnly: If false, then the multiple invocations of the
+     *       callback may be invoked for each request. This defaults to true, in which case
+     *       there will be only one invocation of the callback.
+     *  <li> timeout: The amount of time (in milliseconds) to wait for a response
+     *       before triggering a null response and an error. This defaults to 5000.
      *  <li> url: A string that can be parsed as a URL, or an object containing
      *       the following fields:
      *       <ul>
@@ -100,7 +106,7 @@ public class HttpClientHelper extends VertxHelperBase {
      *       <li> query: A query string to be appended to the path, such as '?page=12'.
      *       </ul>
      *  </ul>
-     *  @param currentObj The JavaScript instance of the Socket.
+     *  @param currentObj The JavaScript instance using this helper.
      *  @param options The options.
      *  @return A new HttpClientHelper instance.
      */
@@ -130,14 +136,13 @@ public class HttpClientHelper extends VertxHelperBase {
     ////                     private constructors                   ////
 
     /** Private constructor to open an HTTP client.
-     *  @param currentObj The JavaScript instance of Socket that this helps.
-     *  @param address The URL of the WebSocket host with an optional port number
-     *   (e.g. 'ws://localhost:8000'). If no port number is given, 80 is used.
+     *  @param currentObj The JavaScript instance that this helps.
+     *  @param options The options for the request.
      */
     private HttpClientHelper(ScriptObjectMirror currentObj,
             Map<String, Object> options) {
         super(currentObj);
-        HttpClient client = _vertx.createHttpClient();
+        _client = _vertx.createHttpClient();
 
         // NOTE: Vert.x documentation states about HttpClient:
         // "If an instance is instantiated from some other arbitrary Java thread
@@ -146,16 +151,22 @@ public class HttpClientHelper extends VertxHelperBase {
         // Hence, the HttpClient we just created will be assigned its own
         // event loop. We need to ensure that callbacks are mutually exclusive
         // with other Java code here.
+        
+        // FIXME: The above seems to create two zombie threads for each
+        // HTTP request. I can't find a way to kill them!!!
+        // Probably have to bite the bullet and create a Verticle.
 
         Map<String, Object> urlSpec = (Map<String, Object>) options.get("url");
 
-        client.setHost((String) urlSpec.get("host"));
-        client.setPort((int) urlSpec.get("port"));
-        client.exceptionHandler(new HttpClientExceptionHandler());
+        _client.setHost((String) urlSpec.get("host"));
+        _client.setPort((int) urlSpec.get("port"));
+        _client.exceptionHandler(new HttpClientExceptionHandler());
         if ((boolean) options.get("keepAlive")) {
-            client.setKeepAlive(true);
+            _client.setKeepAlive(true);
         }
-        // FIXME: Provide a timeout. Use setTimeout() of the client.
+        // NOTE: We use the timeout parameter both for connect and response.
+        // Should these be different numbers?
+        _client.setConnectTimeout((Integer)options.get("timeout"));
 
         String query = "";
         Object queryObject = urlSpec.get("query");
@@ -175,7 +186,7 @@ public class HttpClientHelper extends VertxHelperBase {
         
         // If https, client should use SSL
         if (urlSpec.get("protocol").toString().equalsIgnoreCase("https")) {
-            client.setSSL(true);
+            _client.setSSL(true);
         }
 
         Object complete = options.get("outputCompleteResponseOnly");
@@ -183,8 +194,13 @@ public class HttpClientHelper extends VertxHelperBase {
             _outputCompleteResponseOnly = false;
         }
 
-        _request = client.request((String) options.get("method"), uri,
+        _request = _client.request((String) options.get("method"), uri,
                 new HttpClientResponseHandler());
+        
+        // NOTE: We use the timeout parameter both for connect and response.
+        // Should these be different numbers?
+        _request.setTimeout((Integer)options.get("timeout"));
+        _request.exceptionHandler(new HttpClientExceptionHandler());
 
         // Handle the headers.
         Map headers = (Map) options.get("headers");
@@ -244,7 +260,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 _request.write(new Buffer(os.toByteArray()));
 
             } catch (IOException e) {
-                String message = "Can't write image body to HTTP request";
+                String message = "Can't write image body to HTTP request: " + e.toString();
                 try {
                     _currentObj.callMember("emit", "error", message);
                 } catch (Throwable ex) {
@@ -266,6 +282,9 @@ public class HttpClientHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
+    /** The HTTP client for this request. */
+    private HttpClient _client;
+    
     /** Boolean indicating whether outputting partial responses is permitted. */
     private boolean _outputCompleteResponseOnly = true;
 
@@ -284,12 +303,10 @@ public class HttpClientHelper extends VertxHelperBase {
         @Override
         public void handle(Throwable throwable) {
             synchronized (_actor) {
-                try {
-                    _currentObj.callMember("emit", "error", throwable.getMessage());
-                } catch (Throwable ex) {
-                    // There may be no error event handler registered.
-                    // Use the actor to report the error.
-                    _actor.error(throwable.getMessage());
+                _currentObj.callMember("_response", null, throwable.getMessage());
+                if (_client != null) {
+                    _client.close();
+                    _client = null;
                 }
             }
         }
@@ -304,22 +321,18 @@ public class HttpClientHelper extends VertxHelperBase {
         private boolean _inSegment;
 
         @Override
-        public void handle(HttpClientResponse response) {
+        public void handle(final HttpClientResponse response) {
             synchronized (_actor) {
                 _response = response;
                 // The response is not yet complete, but we have some information.
                 int status = response.statusCode();
                 if (status >= 400) {
-                    // An error occurred.
-                    String message = "Request failed with code " + status + ": "
-                            + response.statusMessage();
-                    try {
-                        _currentObj.callMember("emit", "error",  message);
-                    } catch (Throwable ex) {
-                        // There may be no error event handler registered.
-                        // Use the actor to report the error.
-                        _actor.error(message);
-                    }
+                    // An error occurred. Null argument indicates error.
+                    _currentObj.callMember("_handleResponse", null,
+                            "Request failed with code " + status + ": "
+                            + response.statusMessage());
+                    _client.close();
+                    _client = null;
                     return;
                 }
                 MultiMap headers = response.headers();
@@ -329,17 +342,13 @@ public class HttpClientHelper extends VertxHelperBase {
                     String newLocation = headers.get("Location");
                     if (newLocation != null) {
                         // FIXME: How to handle the redirect?
-                        String message = "Redirect to "
+                        _currentObj.callMember("_handleResponse", null,
+                                "Redirect to "
                                 + newLocation
                                 + " not yet handled by HttpClientHelper. "
-                                + status + ": " + response.statusMessage();
-                        try {
-                            _currentObj.callMember("emit", "error", message);
-                        } catch (Throwable ex) {
-                            // There may be no error event handler registered.
-                            // Use the actor to report the error.
-                            _actor.error(message);
-                        }
+                                + status + ": " + response.statusMessage());
+                        _client.close();
+                        _client = null;
                         return;
                     }
                 }
@@ -392,6 +401,8 @@ public class HttpClientHelper extends VertxHelperBase {
                                             response, body.getBytes());
                                 }
                                 _response = null;
+                                _client.close();
+                                _client = null;
                             }
                         }
                     });
@@ -400,6 +411,8 @@ public class HttpClientHelper extends VertxHelperBase {
                         public void handle(Object body) {
                             synchronized (_actor) {
                                 _response = null;
+                                _client.close();
+                                _client = null;
                             }
                         }
                     });
@@ -466,11 +479,10 @@ public class HttpClientHelper extends VertxHelperBase {
                                                                 .println("Input data is apparently not an image.");
                                                     }
                                                 } catch (IOException e) {
-                                                    // FIXME: What to do here?
                                                     _currentObj.callMember(
                                                             "_response",
-                                                            response,
-                                                            body.getBytes());
+                                                            null,
+                                                            e.toString());
                                                 }
                                             }
                                         }
@@ -500,7 +512,7 @@ public class HttpClientHelper extends VertxHelperBase {
                                     }
 
                                 } else {
-                                    // FIXME: Need to handle other MIME types.Z
+                                    // FIXME: Need to handle other MIME types.
                                     _currentObj.callMember("_response",
                                             response, body.getBytes());
                                 }
