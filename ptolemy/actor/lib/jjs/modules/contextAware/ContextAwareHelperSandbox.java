@@ -73,7 +73,7 @@ public class ContextAwareHelperSandbox {
     public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
 
     // FIXME: Why have a nullary constructor?  Should this call super()?
-    public ContextAwareHelperSandBox() {
+    public ContextAwareHelperSandbox() {
         // GUI = new ContextAwareGUI(iotServiecList);
     }  
         
