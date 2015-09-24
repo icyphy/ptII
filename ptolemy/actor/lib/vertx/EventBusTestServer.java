@@ -28,15 +28,15 @@ the copyright link on the splash page or see copyright.htm.
 */
 package ptolemy.actor.lib.vertx;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.EventBus;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.http.HttpServer;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.sockjs.SockJSServer;
-import org.vertx.java.platform.Verticle;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.sockjs.SockJSServer;
+import io.vertx.core.AbstractVerticle;
 
 /**
  * EventBusTestServer class.
@@ -47,7 +47,7 @@ import org.vertx.java.platform.Verticle;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class EventBusTestServer extends Verticle {
+public class EventBusTestServer implements AbstractVerticle {
     @Override
     public void start() {
         HttpServer server = vertx.createHttpServer();

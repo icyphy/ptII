@@ -27,8 +27,8 @@
  */
 package ptolemy.actor.lib.jjs.modules;
 
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.VertxFactory;
+import io.vertx.core.Vertx;
+import io.vertx.core.spi.VertxFactory;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
