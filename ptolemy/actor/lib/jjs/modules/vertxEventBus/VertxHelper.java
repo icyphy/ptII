@@ -195,7 +195,7 @@ public class VertxHelper {
      * @param message A text message to be sent.
      */
     public void publish(String address, String message) {
-        JsonObject json = new JsonObject().putString("type", "publish")
+        JsonObject json = new JsonObject().put("type", "publish")
                 .putString("address", address).putString("body", message);
         try {
             _sendTextFrame(json);
@@ -208,7 +208,7 @@ public class VertxHelper {
      * @param address The address on the bus that should be suscribed to.
      */
     public void registerHandler(String address) {
-        JsonObject message = new JsonObject().putString("type", "register")
+        JsonObject message = new JsonObject().put("type", "register")
                 .putString("address", address);
         _webSocket.writeTextFrame(message.encode());
     }
@@ -288,7 +288,7 @@ public class VertxHelper {
             /* Create SockJS and bridge it to the Event Bus */
             SockJSServer sockJSServer = _vertx.createSockJSServer(_httpServer);
             sockJSServer.bridge(
-                    new JsonObject().putString("prefix", "/eventbus"),
+                    new JsonObject().put("prefix", "/eventbus"),
                     permitted, permitted);
         }
         /* Start the server */
