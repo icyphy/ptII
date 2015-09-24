@@ -64,7 +64,7 @@ public class EventBusTestServer implements AbstractVerticle {
 
         /* Create SockJS and bridge it to the Event Bus */
         SockJSServer sockJSServer = vertx.createSockJSServer(server);
-        sockJSServer.bridge(new JsonObject().putString("prefix", "/eventbus")
+        sockJSServer.bridge(new JsonObject().put("prefix", "/eventbus")
                 .putNumber("heartbeat_period", 400)
                 .putNumber("session_timeout", 50000)
                 .putNumber("ping_interval", 100000)

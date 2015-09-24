@@ -148,7 +148,7 @@ public class VertxBusHandler extends TypedAtomicActor {
             if (publish.hasToken(i)) {
                 String tokenString = publish.get(0).toString();
                 // Remove leading and trailing double quotes.
-                JsonObject msg = new JsonObject().putString("type", "publish")
+                JsonObject msg = new JsonObject().put("type", "publish")
                         .putString("address", _address)
                         .putString("body", tokenString);
 
@@ -206,7 +206,7 @@ public class VertxBusHandler extends TypedAtomicActor {
         _periodicPing = _vertx.setPeriodic(3000, new Handler<Long>() {
             @Override
             public void handle(Long timerID) {
-                JsonObject json = new JsonObject().putString("type", "ping");
+                JsonObject json = new JsonObject().put("type", "ping");
                 try {
                     _sendTextFrame(json);
                 } catch (IllegalActionException e) {
@@ -252,7 +252,7 @@ public class VertxBusHandler extends TypedAtomicActor {
                 @Override
                 public void handle(WebSocket websocket) {
                     //register
-                    JsonObject msg = new JsonObject().putString("type",
+                    JsonObject msg = new JsonObject().put("type",
                             "register").putString("address", _address);
                     websocket.writeTextFrame(msg.encode());
                     _websocket = websocket;
