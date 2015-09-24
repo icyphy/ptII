@@ -1327,9 +1327,14 @@ public class TableauFrame extends Top {
                 // Check that _tableau is not null because running
                 // ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
                 // and saving BaseOptimization.xml could result in an NPE.
+                // NO: Leave the old tableau open on Save As.
+                // Failing to do this can sometimes make the old tableau impossible
+                // to open again, perhaps because of memory leak cleaning in dispose().
+                /*
                 if (_tableau != null && !_tableau.equals(newTableau)) {
                     dispose();
                 }
+                */
             }
             return newURL;
         } catch (Exception ex) {
