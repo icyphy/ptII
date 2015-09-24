@@ -533,6 +533,13 @@ Initializable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Get the persistent expression as a string, to be used to export to MoML.
+     *  @return The persistent expression as a string.
+     */
+    protected String _getCurrentExpression() {
+        return _persistentExpression;
+    }
+
     /** Override the base class to also propagate the associated port.
      *  @param container Object to contain the new object.
      *  @exception IllegalActionException If the object
