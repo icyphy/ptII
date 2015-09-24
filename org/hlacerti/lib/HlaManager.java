@@ -1103,12 +1103,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _rtia.tick2();
             cntTick++;
         }
-        
+
         // If we get any rav-event
-        if (cntTick != 1){
+        if (cntTick != 1) {
             // Store reflected attributes RAV as events on HLASubscriber actors.
             _putReflectedAttributesOnHlaSubscribers();
-            
+
             // At this step we are sure that the HLA logical time of the
             // Federate has been updated (by the reception of the TAG callback
             // (timeAdvanceGrant()) and its value is the proposedTime or
@@ -1127,7 +1127,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         "The breakpoint time is not a valid Ptolemy time");
             }
         }
-        
+
         return proposedTime;
     }
 
@@ -1249,7 +1249,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             + certiNextPointInTime.getTime()
                             + ") by calling tick2()");
                 }
-
+                _rtia.timeAdvanceRequest(certiNextPointInTime);
+                
                 try {
                     _rtia.tick2();
                 } catch (SpecifiedSaveLabelDoesNotExist e) {
@@ -1262,16 +1263,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     throw new IllegalActionException(this, e,
                             "RTIinternalError ");
                 }
-            }
 
-            // End the loop with one TAR call.
-            if (_debugging) {
-                _debug(this.getDisplayName()
-                        + " proposeTime() -  call CERTI TAR -"
-                        + " timeAdvanceRequest("
-                        + certiNextPointInTime.getTime() + ")");
+                // End the loop with one TAR call.
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " proposeTime() -  call CERTI TAR -"
+                            + " timeAdvanceRequest("
+                            + certiNextPointInTime.getTime() + ")");
+                }
+                _rtia.timeAdvanceRequest(certiNextPointInTime);
             }
-            _rtia.timeAdvanceRequest(certiNextPointInTime);
         }
         return null;
     }
