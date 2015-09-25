@@ -155,7 +155,7 @@ public class ContextAwareHelperTest {
     }
  
     // FIXME:Need comments
-    public String[] iotServiceList = {"GSN", "Paraimpu"/*, "Firebase"*/};
+    public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
     public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
         
     ///////////////////////////////////////////////////////////////////
