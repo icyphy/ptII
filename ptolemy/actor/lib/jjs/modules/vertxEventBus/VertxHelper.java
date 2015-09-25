@@ -41,7 +41,7 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.WebSocket;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.sockjs.SockJSServer;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.kernel.util.IllegalActionException;
@@ -286,8 +286,8 @@ public class VertxHelper {
             permitted.add(new JsonObject());
 
             /* Create SockJS and bridge it to the Event Bus */
-            SockJSServer sockJSServer = _vertx.createSockJSServer(_httpServer);
-            sockJSServer.bridge(
+            SockJSHandler sockJSHandler = _vertx.createSockJSHandler(_httpServer);
+            sockJSHandler.bridge(
                     new JsonObject().put("prefix", "/eventbus"),
                     permitted, permitted);
         }
