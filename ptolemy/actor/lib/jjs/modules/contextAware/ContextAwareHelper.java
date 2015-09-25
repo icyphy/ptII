@@ -114,6 +114,6 @@ public class ContextAwareHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private String[] _iotServiceList = { "GSN", "Paraimpu" };
+    private String[] _iotServiceList = { "GSN", "Paraimpu", "Firebase" };
 
 }
