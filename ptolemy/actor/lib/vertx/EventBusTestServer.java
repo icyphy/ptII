@@ -35,7 +35,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.sockjs.SockJSServer;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.core.AbstractVerticle;
 
 /**
@@ -47,7 +47,7 @@ import io.vertx.core.AbstractVerticle;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class EventBusTestServer implements AbstractVerticle {
+public class EventBusTestServer extends AbstractVerticle {
     @Override
     public void start() {
         HttpServer server = vertx.createHttpServer();
@@ -63,12 +63,12 @@ public class EventBusTestServer implements AbstractVerticle {
         permitted.add(new JsonObject());
 
         /* Create SockJS and bridge it to the Event Bus */
-        SockJSServer sockJSServer = vertx.createSockJSServer(server);
-        sockJSServer.bridge(new JsonObject().put("prefix", "/eventbus")
-                .putNumber("heartbeat_period", 400)
-                .putNumber("session_timeout", 50000)
-                .putNumber("ping_interval", 100000)
-                .putNumber("vertxbus_ping_interval", 100000),
+        SockJSHandler sockJSHandler = vertx.createSockJSHandler(server);
+        sockJSHandler.bridge(new JsonObject().put("prefix", "/eventbus")
+                .put("heartbeat_period", 400)
+                .put("session_timeout", 50000)
+                .put("ping_interval", 100000)
+                .put("vertxbus_ping_interval", 100000),
                 permitted, permitted);
 
         EventBus eb = vertx.eventBus();
