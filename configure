@@ -13533,7 +13533,7 @@ fi
             # Vert.x 2.x jars:
             #jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
             # Vert.x 3.x jars:
-            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar netty-buffer-*.jar netty-codec-^h*.jar netty-codec-http-*.jar netty-common-*.jar netty-handler-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vergx-lang-js-3.0.0.jar vertx-service-proxy-*.jar"
+            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar netty-buffer-*.jar netty-codec-^h*.jar netty-codec-http-*.jar netty-common-*.jar netty-handler-*.jar vertx-codegen-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vergx-lang-js-3.0.0.jar vertx-service-proxy-*.jar vertx-web-*jar"
 
             for jar in $jars
     	    do
