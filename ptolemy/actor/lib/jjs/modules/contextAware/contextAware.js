@@ -18,6 +18,9 @@ var ContextAwareHelper = Java
 		.type('ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareHelper');
 var helper = new ContextAwareHelper();
 
+
+////////////////////////////////////////////////////////////
+////Functions provided in this module.
 /**
  * Use a helper class to return a list of known services
  */
