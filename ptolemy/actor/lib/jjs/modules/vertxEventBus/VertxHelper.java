@@ -143,7 +143,7 @@ public class VertxHelper {
                                             @Override
                                             public void handle(Long timerID) {
                                                 JsonObject json = new JsonObject()
-                                                        .putString("type",
+                                                        .put("type",
                                                                 "ping");
                                                 try {
                                                     _sendTextFrame(json);
@@ -196,7 +196,7 @@ public class VertxHelper {
      */
     public void publish(String address, String message) {
         JsonObject json = new JsonObject().put("type", "publish")
-                .putString("address", address).putString("body", message);
+                .put("address", address).put("body", message);
         try {
             _sendTextFrame(json);
         } catch (IllegalActionException e) {
@@ -209,7 +209,7 @@ public class VertxHelper {
      */
     public void registerHandler(String address) {
         JsonObject message = new JsonObject().put("type", "register")
-                .putString("address", address);
+                .put("address", address);
         _webSocket.writeTextFrame(message.encode());
     }
 
