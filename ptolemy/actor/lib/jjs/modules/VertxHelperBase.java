@@ -28,7 +28,6 @@
 package ptolemy.actor.lib.jjs.modules;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.spi.VertxFactory;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
@@ -59,6 +58,6 @@ public class VertxHelperBase extends HelperBase {
     ////                     protected fields                        ////
 
     /** Global instance of Vert.x core. */
-    protected static Vertx _vertx = VertxFactory.newVertx();
+    protected static Vertx _vertx = Vertx.vertx();
 
 }

@@ -130,5 +130,5 @@ public class VertxBrowserHelper {
     ////                     private fields                        ////
 
     /** Instance of Vertx. Apparently we need only one. */
-    private static Vertx _vertx = VertxFactory.newVertx();
+    private static Vertx _vertx = Vertx.vertx();
 }

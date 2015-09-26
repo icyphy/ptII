@@ -49,8 +49,10 @@ import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpMethod;
 
 import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
@@ -142,9 +144,22 @@ public class HttpClientHelper extends VertxHelperBase {
     private HttpClientHelper(ScriptObjectMirror currentObj,
             Map<String, Object> options) {
         super(currentObj);
-        _client = _vertx.createHttpClient();
+        Map<String, Object> urlSpec = (Map<String, Object>) options.get("url");
 
-        // NOTE: Vert.x documentation states about HttpClient:
+        _client = _vertx.createHttpClient(new HttpClientOptions()
+                .setDefaultHost((String) urlSpec.get("host"))
+                .setDefaultPort((int) urlSpec.get("port"))
+                .setKeepAlive((boolean) options.get("keepAlive"))
+                // NOTE: We use the timeout parameter both for connect and response.
+                // Should these be different numbers?
+                .setConnectTimeout((Integer)options.get("timeout"))
+                // FIXME: How do we set the protocol?
+                // It is specified in urlSpec.get("protocol").
+                .setSsl(urlSpec.get("protocol").toString().equalsIgnoreCase("https"))
+                                          );
+
+
+        // NOTE: Vert.x (2.x?) documentation states about HttpClient:
         // "If an instance is instantiated from some other arbitrary Java thread
         // (i.e. when running embedded) then and event loop will be assigned
         // to the instance and used when any of its handlers are called."
@@ -156,17 +171,7 @@ public class HttpClientHelper extends VertxHelperBase {
         // HTTP request. I can't find a way to kill them!!!
         // Probably have to bite the bullet and create a Verticle.
 
-        Map<String, Object> urlSpec = (Map<String, Object>) options.get("url");
-
-        _client.setHost((String) urlSpec.get("host"));
-        _client.setPort((int) urlSpec.get("port"));
-        _client.exceptionHandler(new HttpClientExceptionHandler());
-        if ((boolean) options.get("keepAlive")) {
-            _client.setKeepAlive(true);
-        }
-        // NOTE: We use the timeout parameter both for connect and response.
-        // Should these be different numbers?
-        _client.setConnectTimeout((Integer)options.get("timeout"));
+        //_client.exceptionHandler(new HttpClientExceptionHandler());
 
         String query = "";
         Object queryObject = urlSpec.get("query");
@@ -181,21 +186,15 @@ public class HttpClientHelper extends VertxHelperBase {
         // The argument is a path with a query, not a URI.
         String uri = urlSpec.get("path") + query;
         
-        // FIXME: How do we set the protocol?
-        // It is specified in urlSpec.get("protocol").
-        
-        // If https, client should use SSL
-        if (urlSpec.get("protocol").toString().equalsIgnoreCase("https")) {
-            _client.setSSL(true);
-        }
-
         Object complete = options.get("outputCompleteResponseOnly");
         if (complete instanceof Boolean && !(Boolean) complete) {
             _outputCompleteResponseOnly = false;
         }
 
-        _request = _client.request((String) options.get("method"), uri,
-                new HttpClientResponseHandler());
+        
+        HttpMethod httpMethod = HttpMethod.valueOf(((String) options.get("method")).trim().toUpperCase());
+
+        _request = _client.request(httpMethod, uri, new HttpClientResponseHandler());
         
         // NOTE: We use the timeout parameter both for connect and response.
         // Should these be different numbers?
@@ -257,7 +256,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 ImageIO.write(bufferedImage, imageType, os);
                 _request.putHeader("Content-Length", 
                         Integer.toString(os.toByteArray().length));
-                _request.write(new Buffer(os.toByteArray()));
+                _request.write(Buffer.buffer(os.toByteArray()));
 
             } catch (IOException e) {
                 String message = "Can't write image body to HTTP request: " + e.toString();
@@ -418,7 +417,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     });
                     _imageParts = new LinkedList<byte[]>();
                     _inSegment = false;
-                    response.dataHandler(new Handler<Buffer>() {
+                    response.handler(new Handler<Buffer>() {
                         public void handle(Buffer body) {
                             // FIXME: There seems to be no way to stop this stream!!!
                             // This function gets invoked even after the model stops!
