@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Derived9" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DerivedAgain5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 60, 934, 634}, maximized=false}">
@@ -25,55 +25,16 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{foo=1111}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 335.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{foo = 2222}, {foo = 1111}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{foo = 42}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 335.0]">
         </property>
-    </entity>
-    <entity name="DerivedI" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that sends to in1, which has type JSON.&#10;exports.setup = function() {&#10;   extend('BaseD');&#10;   input('in1', {'type':'JSON', 'value':'{&quot;foo&quot;:42}'});&#10;   input('trigger');&#10;   parameter('test', {'type':'int', 'value':42});&#10;}&#10;&#10;exports.fire = function() {&#10;    var value = get('trigger');&#10;    if (value !== null) {&#10;        send('in1', value);&#10;    }&#10;    this.ssuper.fire();&#10;}&#10;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/DerivedI.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 335.0]">
-        </property>
-        <property name="in1" class="ptolemy.actor.parameters.PortParameter" value="{&quot;foo&quot;:2222}">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <port name="in1" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
@@ -81,7 +42,7 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -94,17 +55,61 @@
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 205.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=85.0,y=345.0}, tail={id=&quot;DerivedI.trigger&quot;,x=185.0,y=335.0}, points={} } }">
+    <entity name="DerivedAgainE" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class to test hiding of ports and parameters.&#10;exports.setup = function() {&#10;   extend('DerivedI');&#10;   input('in1', {'visibility':'expert'});&#10;   input('trigger', {'visibility':'none'});&#10;   input('anotherTrigger');&#10;   parameter('test', {'visibility':'expert'});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-    </relation>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="/ptII/org/terraswarm/accessor/test/auto/accessors/DerivedAgainE.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 335.0]">
+        </property>
+        <property name="in1" class="ptolemy.actor.parameters.PortParameter" value="{&quot;foo&quot;:42}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="in1" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="anotherTrigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=340.0,y=275.0}, tail={id=&quot;Test2.input&quot;,x=455.0,y=275.0}, points={} } }">
         </property>
@@ -121,14 +126,16 @@
         <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=340.0,y=275.0}, points={260.0,275.0} },{ head={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, tail={id=&quot;CurrentMicrostep.trigger&quot;,x=325.0,y=205.0}, points={260.0,205.0} },{ head={id=&quot;Test.input&quot;,x=310.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, points={} },{ head={id=&quot;DerivedI.output&quot;,x=185.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, points={} } }">
         </property>
     </relation>
-    <link port="SingleEvent.output" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
     <link port="Test.input" relation="relation5"/>
-    <link port="DerivedI.output" relation="relation5"/>
-    <link port="DerivedI.trigger" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation5"/>
     <link port="Test2.input" relation="relation3"/>
     <link port="CurrentMicrostep.output" relation="relation4"/>
     <link port="CurrentMicrostep.trigger" relation="relation5"/>
     <link port="Test3.input" relation="relation4"/>
+    <link port="DerivedAgainE.output" relation="relation5"/>
+    <link port="DerivedAgainE.anotherTrigger" relation="relation"/>
 </entity>

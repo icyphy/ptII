@@ -57,6 +57,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -72,6 +73,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -1156,6 +1158,47 @@ public class JavaScript extends TypedAtomicActor {
                             "Unsupported value: " + value);
                 }
             }
+            Object visibility = ((Map) options).get("visibility");
+            if (visibility instanceof String) {
+                String generic = ((String) visibility).trim().toLowerCase();
+                switch (generic) {
+                case "none":
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.NONE);
+                    }
+                    if (port != null) {
+                        new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                    }
+                    break;
+                case "expert":
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.EXPERT);
+                    }
+                    if (port != null) {
+                        new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                    }
+                    break;
+                case "noteditable":
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.NOT_EDITABLE);
+                    }
+                    if (port != null) {
+                        new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                    }
+                    break;
+                default:
+                    // Assume "full".
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.FULL);
+                    }
+                    if (port != null) {
+                        Attribute hide = port.getAttribute("_hide");
+                        if (hide != null) {
+                            hide.setContainer(null);
+                        }
+                    }
+                }
+            }
         }
         // Make sure to do this after setting the type to catch
         // string mode and type checks.
@@ -1428,6 +1471,33 @@ public class JavaScript extends TypedAtomicActor {
                 parameter.setDerivedLevel(1);
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
+            }
+
+            Object visibility = ((Map) options).get("visibility");
+            if (visibility instanceof String) {
+                String generic = ((String) visibility).trim().toLowerCase();
+                switch (generic) {
+                case "none":
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.NONE);
+                    }
+                    break;
+                case "expert":
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.EXPERT);
+                    }
+                    break;
+                case "noteditable":
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.NOT_EDITABLE);
+                    }
+                    break;
+                default:
+                    // Assume "full".
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.FULL);
+                    }
+                }
             }
 
             Object description = options.get("description");
