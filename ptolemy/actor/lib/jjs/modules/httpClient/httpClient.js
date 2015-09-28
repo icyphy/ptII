@@ -57,7 +57,8 @@ var EventEmitter = require('events').EventEmitter;
  *       </ul>
  *  </ul>
  *  @param options The options or URL.
- *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
  *  @return An instance of ClientRequest.
  */
 exports.request = function(options, responseCallback) {
@@ -96,7 +97,8 @@ exports.request = function(options, responseCallback) {
  *  by request() (an instance of ClientRequest). See request() for documentation of
  *  the arguments.
  *  @param options The options.
- *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
  */
 exports.get = function(options, reponseCallback) {
   var request = exports.request(options, reponseCallback);
@@ -132,7 +134,8 @@ exports.get = function(options, reponseCallback) {
  *  </ul>
  *  @constructor
  *  @param options The options.
- *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
  */
 function ClientRequest(options, reponseCallback) {
   var self = this;
