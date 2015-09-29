@@ -73,8 +73,7 @@ public class HttpClientHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a HttpClientHelper instance for the specified JavaScript
-     *  Socket instance for the client side of the socket.
+    /** Create a HttpClientHelper instance for the specified JavaScript instance.
      *  The options argument can be a string URL
      *  or a map with the following fields (this helper class assumes
      *  all fields are present, so please be sure they are):
@@ -180,9 +179,6 @@ public class HttpClientHelper extends VertxHelperBase {
         // NOTE: Documentation of Vertx 2.15 is wrong.
         // The argument is a path with a query, not a URI.
         String uri = urlSpec.get("path") + query;
-        
-        // FIXME: How do we set the protocol?
-        // It is specified in urlSpec.get("protocol").
         
         // If https, client should use SSL
         if (urlSpec.get("protocol").toString().equalsIgnoreCase("https")) {
