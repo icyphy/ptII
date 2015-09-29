@@ -30,7 +30,7 @@
            <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
            <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
            <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
-
+           <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay"/>
            <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
              <doc>Monitor and display values</doc>
              <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>

@@ -34,6 +34,8 @@
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         </entity>
 
+        <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader"/>
+
         <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
           <doc>Produce strings from an interactive shell on the screen</doc>
         </entity>
