@@ -54,6 +54,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.conversions.json.TokenToJSON;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
@@ -406,6 +407,7 @@ public class JavaScript extends TypedAtomicActor {
         cardinal.setExpression("SOUTH");
         SingletonParameter showName = new SingletonParameter(error, "_showName");
         showName.setExpression("true");
+        showName.setPersistent(false);
 
         // Create the script parameter and input port.
         script = new PortParameter(this, "script");
@@ -420,6 +422,7 @@ public class JavaScript extends TypedAtomicActor {
         cardinal.setExpression("SOUTH");
         showName = new SingletonParameter(scriptIn, "_showName");
         showName.setExpression("true");
+        showName.setPersistent(false);
 
         // initialize the script to provide an empty template:
         script.setToken(_INITIAL_SCRIPT);
@@ -1123,6 +1126,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
+        
         if (options instanceof Map) {
             Object type = ((Map) options).get("type");
             if (type instanceof String) {
@@ -1161,30 +1165,26 @@ public class JavaScript extends TypedAtomicActor {
             Object visibility = ((Map) options).get("visibility");
             if (visibility instanceof String) {
                 String generic = ((String) visibility).trim().toLowerCase();
+                boolean hide = false;
+
                 switch (generic) {
                 case "none":
                     if (parameter != null) {
                         parameter.setVisibility(Settable.NONE);
                     }
-                    if (port != null) {
-                        new SingletonParameter(port, "_hide", BooleanToken.TRUE);
-                    }
+                    hide = true;
                     break;
                 case "expert":
                     if (parameter != null) {
                         parameter.setVisibility(Settable.EXPERT);
                     }
-                    if (port != null) {
-                        new SingletonParameter(port, "_hide", BooleanToken.TRUE);
-                    }
+                    hide = true;
                     break;
                 case "noteditable":
                     if (parameter != null) {
                         parameter.setVisibility(Settable.NOT_EDITABLE);
                     }
-                    if (port != null) {
-                        new SingletonParameter(port, "_hide", BooleanToken.TRUE);
-                    }
+                    hide = true;
                     break;
                 default:
                     // Assume "full".
@@ -1192,11 +1192,16 @@ public class JavaScript extends TypedAtomicActor {
                         parameter.setVisibility(Settable.FULL);
                     }
                     if (port != null) {
-                        Attribute hide = port.getAttribute("_hide");
-                        if (hide != null) {
-                            hide.setContainer(null);
+                        Attribute hideParam = port.getAttribute("_hide");
+                        if (hideParam != null) {
+                            hideParam.setContainer(null);
                         }
                     }
+                }
+                if (hide && port != null) {
+                    SingletonParameter hideParam = new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                    // Prevent export.
+                    hideParam.setPersistent(false);
                 }
             }
         }
@@ -1207,6 +1212,11 @@ public class JavaScript extends TypedAtomicActor {
             // the parameter already has a value that is an override,
             // in which case, allow that to prevail by doing nothing here.
             if (token != null && !parameter.isOverridden()) {
+                if (parameter.getAttribute("_JSON") != null && !(token instanceof StringToken)) {
+                    // Attempt to convert the token to a JSON string.
+                    String json = TokenToJSON.constructJSON((Token)token);
+                    token = new StringToken(json);
+                }
                 parameter.setToken((Token) token);
                 // Indicate that this parameter is defined as part of the class definition
                 // of the container.
@@ -1734,11 +1744,13 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     @Override
-    protected void _addPort(TypedIOPort port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(TypedIOPort port)
+            throws IllegalActionException, NameDuplicationException {
         super._addPort(port);
         SingletonParameter showName = new SingletonParameter(port, "_showName");
         showName.setExpression("true");
+        // Prevent export.
+        showName.setPersistent(false);
     }
 
     /** Check the validity of a name. This implementation throws an exception
@@ -2213,7 +2225,9 @@ public class JavaScript extends TypedAtomicActor {
             /** The following doesn't work. Not persistent.
             parameter.setStringMode(true);
             */
-            new SingletonAttribute(parameter, "_stringMode");
+            SingletonAttribute mark = new SingletonAttribute(parameter, "_stringMode");
+            // Mark this implied; otherwise it's existence forces moml export.
+            mark.setDerivedLevel(1);
             _markJSONmode(parameter, JSONmode);
         }
     }
