@@ -2106,8 +2106,12 @@ public class JavaScript extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         if (JSONmode) {
             // Put in a hint that the string value needs to be JSON.
-            SingletonAttribute mark = new SingletonAttribute(typeable, "_JSON");
-            mark.setPersistent(false);
+            /* SingletonAttribute mark = */ new SingletonAttribute(typeable, "_JSON");
+            // Do not make this non-persistent, so when the model is saved and then
+            // re-opened, it will give an error that it cannot evaluate the value
+            // because it does not know to interpret it as an arbitrary string rather
+            // an expression.
+            // mark.setPersistent(false);
             if (typeable instanceof PortParameter) {
                 _markJSONmode(((PortParameter)typeable).getPort(), true);
             }
@@ -2225,9 +2229,13 @@ public class JavaScript extends TypedAtomicActor {
             /** The following doesn't work. Not persistent.
             parameter.setStringMode(true);
             */
-            SingletonAttribute mark = new SingletonAttribute(parameter, "_stringMode");
+            /* SingletonAttribute mark = */ new SingletonAttribute(parameter, "_stringMode");
             // Mark this implied; otherwise it's existence forces moml export.
-            mark.setDerivedLevel(1);
+            // NO! This makes it non-persistent, so when the model is saved and then
+            // re-opened, it will give an error that it cannot evaluate the value
+            // because it does not know to interpret it as an arbitrary string rather
+            // an expression.
+            // mark.setDerivedLevel(1);
             _markJSONmode(parameter, JSONmode);
         }
     }
