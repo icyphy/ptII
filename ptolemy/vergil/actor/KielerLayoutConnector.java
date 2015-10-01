@@ -27,16 +27,11 @@
  */
 package ptolemy.vergil.actor;
 
-import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import diva.canvas.Figure;
 import diva.canvas.Site;
-import diva.canvas.TransformContext;
-import diva.canvas.connector.BasicManhattanRouter;
-import diva.canvas.connector.PerimeterSite;
 import ptolemy.kernel.Relation;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint;
 import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
@@ -53,6 +48,7 @@ import ptolemy.vergil.kernel.Link;
  * to relations.
  *
  * @author Christian Motika
+ * @see ptolemy.vergil.modal.KielerLayoutArcConnector
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cmot)
  */
@@ -126,7 +122,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             GeneralPath path = new GeneralPath();
 
             // we need the "real" start and end points, i.e. the anchor points on the sites
-            Point2D[] startEnd = _getHeadTailPoints(bendPointList);
+            Point2D[] startEnd = KielerLayoutUtil.getHeadTailPoints(this, bendPointList);
             double startX = startEnd[0].getX();
             double startY = startEnd[0].getY();
             double previousX = startX;
@@ -244,83 +240,6 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      */
     public static void setLayoutInProgress(boolean inProgress) {
         _layoutInProgress = inProgress;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     * Get the center point of a Perimeter Site. Copied the idea from
-     * {@link PerimeterSite#getPoint(double)}.
-     *
-     * @param site the site
-     * @return the center point of the shape that corresponds to the site
-     */
-    private Point2D _getCenterPoint(Site site) {
-        Figure figure = site.getFigure();
-        if (figure == null) {
-            return site.getPoint();
-        }
-        // Port figures return bounds that are relative to the containing node.
-        if (site instanceof PortConnectSite
-                && figure.getParent() instanceof Figure) {
-            figure = (Figure) figure.getParent();
-        }
-        Rectangle bounds = figure.getShape().getBounds();
-        return new Point2D.Double(bounds.getCenterX(), bounds.getCenterY());
-    }
-
-    /**
-     * Get the starting and ending points of a connector. Copied some code from
-     * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
-     * @param bendPoints a list of bendpoints to determine the anchor point on the site
-     * @return the anchor points at the start and end of the
-     * connection, i.e. a Point2D array of size 2
-     */
-    private Point2D[] _getHeadTailPoints(List<Point2D> bendPoints) {
-        TransformContext currentContext = getTransformContext();
-        Point2D headPt, tailPt;
-        Site headSite = getHeadSite();
-        Site tailSite = getTailSite();
-        if (currentContext != null) {
-            headPt = _getCenterPoint(headSite);
-            tailPt = _getCenterPoint(tailSite);
-            // get neighbor point to head and tail to determine the output sides
-            Point2D headBend, tailBend;
-            if (!bendPoints.isEmpty()) {
-                headBend = bendPoints.get(0);
-                tailBend = bendPoints.get(bendPoints.size() - 1);
-            } else {
-                headBend = tailPt;
-                tailBend = headPt;
-            }
-            // now change the "Normal" side of the site
-            headSite.setNormal(_getNormal(headPt, headBend));
-            tailSite.setNormal(_getNormal(tailPt, tailBend));
-            // and get the points again
-            headPt = headSite.getPoint(currentContext);
-            tailPt = tailSite.getPoint(currentContext);
-        } else {
-            // fallback if called too early, i.e. no context available
-            tailPt = tailSite.getPoint();
-            headPt = headSite.getPoint();
-        }
-        Point2D[] result = { headPt, tailPt };
-        return result;
-    }
-
-    /**
-     * Get the angle in radians from the origin to the other point.
-     *
-     * @param origin the original point
-     * @param other the other point
-     * @return angle in radians
-     */
-    private double _getNormal(Point2D origin, Point2D other) {
-        double normalX = other.getX() - origin.getX();
-        double normalY = other.getY() - origin.getY();
-        double theta = Math.atan2(normalY, normalX);
-        return theta;
     }
 
     ///////////////////////////////////////////////////////////////////

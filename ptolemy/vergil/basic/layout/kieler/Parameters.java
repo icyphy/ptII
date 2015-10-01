@@ -39,6 +39,7 @@ import de.cau.cs.kieler.klay.layered.p1cycles.CycleBreakingStrategy;
 import de.cau.cs.kieler.klay.layered.p2layers.LayeringStrategy;
 import de.cau.cs.kieler.klay.layered.p3order.CrossingMinimizationStrategy;
 import de.cau.cs.kieler.klay.layered.p4nodes.NodePlacementStrategy;
+import de.cau.cs.kieler.klay.layered.properties.FixedAlignment;
 import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.graph.GraphModel;
 import ptolemy.data.BooleanToken;
@@ -56,7 +57,7 @@ import ptolemy.vergil.modal.FSMGraphModel;
  * which is attached to composite entities when the configuration dialog is opened.
  *
  * @see LayoutConfiguration
- * @author Miro Spoenemann, Christoph Daniel Schulze
+ * @author Miro Spoenemann, Christoph Daniel Schulze, Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (msp)
@@ -111,6 +112,7 @@ public class Parameters {
             if (minimizeBendsToken.booleanValue()) {
                 parentLayout.setProperty(Properties.NODE_PLACER,
                         NodePlacementStrategy.BRANDES_KOEPF);
+                parentLayout.setProperty(Properties.FIXED_ALIGNMENT, FixedAlignment.BALANCED);
             } else {
                 parentLayout.setProperty(Properties.NODE_PLACER,
                         NodePlacementStrategy.LINEAR_SEGMENTS);
@@ -148,6 +150,27 @@ public class Parameters {
                     // Don't change the configuration in all other cases
                 }
             }
+            
+            // For FSMs the user can choose whether he wants to use splines
+            // or not. Depending on the choice we have to adapt the layout options
+            if (graphModel instanceof FSMGraphModel) {
+                
+                BooleanToken useSplines = BooleanToken
+                        .convert(configuration.drawSplines.getToken());
+                parentLayout.setProperty(SPLINES, useSplines.booleanValue());
+                
+                if (useSplines.booleanValue()) {
+                    // spline routing
+                    parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
+                            EdgeRouting.SPLINES);
+
+                } else {
+                    // arc-style routing
+                    float spacing = parentLayout.getProperty(SPACING);
+                    parentLayout.setProperty(SPACING, 2 * spacing);
+                }
+            }
+            
 
         } else {
             parentLayout.setProperty(LayoutOptions.SPACING,
@@ -158,17 +181,29 @@ public class Parameters {
                     NodePlacementStrategy.BRANDES_KOEPF);
         }
 
+        // Defaults
+        // Note that when the layout configuration dialog of a model has never been opened,
+        // there is no configuration element and thus the previous code is not executed
         if (graphModel instanceof ActorGraphModel) {
             // Set default values for actor models.
             parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
                     EdgeRouting.ORTHOGONAL);
+
         } else if (graphModel instanceof FSMGraphModel) {
             // Set default values for modal models.
+
             parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
                     EdgeRouting.SPLINES);
-            float spacing = parentLayout.getProperty(SPACING);
-            parentLayout.setProperty(SPACING, 2 * spacing);
+            
+            // The node placement algorithm to use
+            parentLayout.setProperty(Properties.NODE_PLACER,
+                    NodePlacementStrategy.BRANDES_KOEPF);
+            parentLayout.setProperty(Properties.FIXED_ALIGNMENT,
+                    FixedAlignment.BALANCED);
+            parentLayout.setProperty(
+                    Properties.OBJ_SPACING_IN_LAYER_FACTOR, 6f);
         }
+        
     }
 
     /** Layout option that determines whether decoration nodes are included in layout. */
@@ -188,6 +223,11 @@ public class Parameters {
     public static final IProperty<Float> ASPECT_RATIO = new Property<Float>(
             LayoutOptions.ASPECT_RATIO,
             (float) LayoutConfiguration.DEF_ASPECT_RATIO);
+    
+    /** Layout option that determines whether splines should be used for FSMs. */
+    public static final IProperty<Boolean> SPLINES = new Property<Boolean>(
+            "ptolemy.vergil.basic.layout.splines",
+            LayoutConfiguration.DEF_USE_SPLINES);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

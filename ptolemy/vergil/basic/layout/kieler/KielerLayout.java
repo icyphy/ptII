@@ -60,15 +60,19 @@ import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.AbstractLayoutProvider;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
 import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement;
+import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
 import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.options.SizeConstraint;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
+import de.cau.cs.kieler.klay.layered.properties.LayerConstraint;
+import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -106,6 +110,7 @@ import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.modal.FSMGraphModel;
+import ptolemy.vergil.modal.KielerLayoutArcConnector;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
 ///////////////////////////////////////////////////////////////////
@@ -160,7 +165,8 @@ import ptolemy.vergil.toolbox.SnapConstraint;
  * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>),
  *         Christian Motika (<a href="mailto:cmot@informatik.uni-kiel.de">cmot</a>),
  *         Miro Sp&ouml;nemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>) ,
- *         Christoph Daniel Schulze (<a href="mailto:cds@informatik.uni-kiel.de">cds</a>)
+ *         Christoph Daniel Schulze (<a href="mailto:cds@informatik.uni-kiel.de">cds</a>),
+ *         Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
@@ -214,6 +220,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     public void layout(Object composite) {
         
         KielerLayoutConnector.setLayoutInProgress(true);
+        KielerLayoutArcConnector.setLayoutInProgress(true);
 
         // some variables for time statistics
         long overallTime = System.currentTimeMillis();
@@ -283,6 +290,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
 
         KielerLayoutConnector.setLayoutInProgress(false);
+        KielerLayoutArcConnector.setLayoutInProgress(false);
     }
 
     /**
@@ -376,8 +384,15 @@ public class KielerLayout extends AbstractGlobalLayout {
         } else if (graphModel instanceof FSMGraphModel) {
             // apply edge layout - one single point for specifying a curve
             for (Pair<KEdge, Link> entry : _edgeList) {
-                _applyEdgeLayoutCurve(entry.getFirst(), entry.getSecond(),
-                        layoutRequest);
+                
+                if (parentNode.getData(KLayoutData.class)
+                        .getProperty(Parameters.SPLINES)) {
+                    _applyEdgeLayoutBendPointAnnotation(entry.getFirst(),
+                            entry.getSecond(), layoutRequest);
+                } else {
+                    _applyEdgeLayoutCurve(entry.getFirst(), entry.getSecond(),
+                            layoutRequest);
+                }
             }
         }
 
@@ -413,12 +428,22 @@ public class KielerLayout extends AbstractGlobalLayout {
             KVector kpoint = relativeKPoint.createVector();
             KimlUtil.toAbsolute(kpoint, parentNode);
 
-            // calculate the snap-to-grid coordinates
-            double[] snapToGridBendPoint = SnapConstraint.constrainPoint(
-                    kpoint.x, kpoint.y);
+            // calculate the snap-to-grid coordinates unless we route 
+            // edges as splines. With splines the snap to grid feature would
+            // drastically deform the spline routes
+            if (parentNode.getData(KLayoutData.class)
+                    .getProperty(LayoutOptions.EDGE_ROUTING) != EdgeRouting.SPLINES) {
+                
+                double[] snapToGridBendPoint = SnapConstraint
+                        .constrainPoint(kpoint.x, kpoint.y);
+                layoutHintBendPoints[index] = snapToGridBendPoint[0];
+                layoutHintBendPoints[index + 1] = snapToGridBendPoint[1];
+            } else {
+                
+                layoutHintBendPoints[index] = kpoint.x;
+                layoutHintBendPoints[index + 1] = kpoint.y;
+            }
 
-            layoutHintBendPoints[index] = snapToGridBendPoint[0];
-            layoutHintBendPoints[index + 1] = snapToGridBendPoint[1];
             index += 2;
         }
 
@@ -511,6 +536,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         _ptolemy2KielerPorts = LinkedListMultimap.create();
         _divaEdgeSource = Maps.newHashMap();
         _divaEdgeTarget = Maps.newHashMap();
+        _divaLabel = Maps.newHashMap();
         _edgeList = Lists.newLinkedList();
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
 
@@ -736,6 +762,9 @@ public class KielerLayout extends AbstractGlobalLayout {
                 .setYpos((edgeLayout.getSourcePoint().getY() + edgeLayout
                         .getTargetPoint().getY()) / 2);
                 kedge.getLabels().add(label);
+                
+                // remember it
+                _divaLabel.put(label, labelFigure);
             }
         }
     }
@@ -840,7 +869,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                     PortConstraints.FIXED_POS);
         }
-
+        
         // set the node label
         KLabel label = KimlUtil.createInitializedLabel(knode);
         label.setText(semanticNode.getDisplayName());
@@ -978,6 +1007,18 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                 PortConstraints.FREE);
 
+        if (state.isInitialState.getValueAsString()
+                .equals(Boolean.TRUE.toString())) {
+            nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
+                    LayerConstraint.FIRST);
+        }
+
+        if (state.isFinalState.getValueAsString()
+                .equals(Boolean.TRUE.toString())) {
+            nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
+                    LayerConstraint.LAST);
+        }
+        
         KLabel label = KimlUtil.createInitializedLabel(knode);
         label.setText(state.getDisplayName());
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
@@ -1441,6 +1482,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     private Map<Link, Object> _divaEdgeTarget;
 
+    /**
+     * Mapping of KIELER labels to corresponding diva labels.
+     */
+    private Map<KLabel, LabelFigure> _divaLabel;
+    
     /**
      * List of KIELER edges and corresponding Diva links.
      */
