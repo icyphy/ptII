@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Settable;
  * layout action to generate a configuration for the layout algorithm.
  *
  * @see ptolemy.vergil.basic.layout.kieler.KielerLayoutAction
- * @author Miro Spoenemann, Christoph Daniel Schulze
+ * @author Miro Spoenemann, Christoph Daniel Schulze, Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (msp)
@@ -128,6 +128,11 @@ public class LayoutConfiguration extends Attribute {
         logAspectRatio.maxLabel.setVisibility(Settable.NONE);
         logAspectRatio.precision.setVisibility(Settable.NONE);
 
+        drawSplines = new Parameter(this, "useSplines");
+        drawSplines.setDisplayName("Use splines in FSMs");
+        drawSplines.setTypeEquals(BaseType.BOOLEAN);
+        drawSplines.setExpression(Boolean.toString(DEF_USE_SPLINES));
+        
         interactionMode = new ChoiceParameter(this, "interactionMode",
                 InteractionMode.class);
         interactionMode.setDisplayName("Interaction mode");
@@ -161,6 +166,9 @@ public class LayoutConfiguration extends Attribute {
 
     /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
     public ChoiceParameter interactionMode;
+    
+    /** Whether the edges of FSMs should be routed and drawn as splines. */
+    public Parameter drawSplines;
 
     /** Customized help file to be displayed by the layout configuration dialog. */
     public StringParameter helpURL;
@@ -182,6 +190,9 @@ public class LayoutConfiguration extends Attribute {
 
     /** Default value for aspectRatio (non-logarithmic). */
     public static final double DEF_ASPECT_RATIO = 1.6;
+    
+    /** Default value for useSplines. */
+    public static final boolean DEF_USE_SPLINES = true;
 
     /** Default value for interaction mode. */
     public static final InteractionMode DEF_INTERACTION_MODE = InteractionMode.None;
