@@ -109,10 +109,10 @@ public class Parameters {
             BooleanToken minimizeBendsToken = BooleanToken
                     .convert(configuration.minimizeBends.getToken());
             if (minimizeBendsToken.booleanValue()) {
-                parentLayout.setProperty(Properties.NODEPLACE,
+                parentLayout.setProperty(Properties.NODE_PLACER,
                         NodePlacementStrategy.BRANDES_KOEPF);
             } else {
-                parentLayout.setProperty(Properties.NODEPLACE,
+                parentLayout.setProperty(Properties.NODE_PLACER,
                         NodePlacementStrategy.LINEAR_SEGMENTS);
             }
 
@@ -136,7 +136,7 @@ public class Parameters {
                 // The switch cases fall through on purpose!
                 switch (interactionMode) {
                 case Full:
-                    parentLayout.setProperty(Properties.CROSSMIN,
+                    parentLayout.setProperty(Properties.CROSS_MIN,
                             CrossingMinimizationStrategy.INTERACTIVE);
                 case Columns:
                     parentLayout.setProperty(Properties.NODE_LAYERING,
@@ -154,7 +154,7 @@ public class Parameters {
                     SPACING.getDefault());
             parentLayout.setProperty(LayoutOptions.ASPECT_RATIO,
                     ASPECT_RATIO.getDefault());
-            parentLayout.setProperty(Properties.NODEPLACE,
+            parentLayout.setProperty(Properties.NODE_PLACER,
                     NodePlacementStrategy.BRANDES_KOEPF);
         }
 
@@ -165,7 +165,7 @@ public class Parameters {
         } else if (graphModel instanceof FSMGraphModel) {
             // Set default values for modal models.
             parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
-                    EdgeRouting.POLYLINE);
+                    EdgeRouting.SPLINES);
             float spacing = parentLayout.getProperty(SPACING);
             parentLayout.setProperty(SPACING, 2 * spacing);
         }

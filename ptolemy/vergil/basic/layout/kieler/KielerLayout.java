@@ -101,8 +101,8 @@ import ptolemy.vergil.actor.ActorGraphModel.ExternalPortModel;
 import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.KielerLayoutConnector;
 import ptolemy.vergil.actor.PortTerminal;
-import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.basic.RelativeLocatable;
+import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.modal.FSMGraphModel;
@@ -212,6 +212,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     @Override
     public void layout(Object composite) {
+        
         KielerLayoutConnector.setLayoutInProgress(true);
 
         // some variables for time statistics
@@ -403,7 +404,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             ApplyLayoutRequest layoutRequest) throws IllegalActionException {
         List<KPoint> bendPoints = kedge.getData(KEdgeLayout.class)
                 .getBendPoints();
-
+        
         // Translate bend points into an array of doubles for the layout hint attribute.
         double[] layoutHintBendPoints = new double[bendPoints.size() * 2];
         int index = 0;
@@ -832,7 +833,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT,
-                SizeConstraint.FIXED);
+               SizeConstraint.fixed());
         if (semanticNode instanceof Attribute) {
             nodeLayout.setProperty(LayoutOptions.COMMENT_BOX, true);
         } else {
@@ -891,7 +892,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         layout.setHeight((float) figureBounds.getHeight()
                 + INNER_PORT_HEIGHT_OFFSET);
         layout.setWidth((float) figureBounds.getWidth());
-        layout.setProperty(LayoutOptions.SIZE_CONSTRAINT, SizeConstraint.FIXED);
+        layout.setProperty(LayoutOptions.SIZE_CONSTRAINT, SizeConstraint.fixed());
         layout.setXpos((float) figureBounds.getMinX());
         layout.setYpos((float) figureBounds.getMinY());
 
@@ -952,7 +953,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT,
-                SizeConstraint.FIXED);
+                SizeConstraint.fixed());
         nodeLayout.setProperty(LayoutOptions.HYPERNODE, true);
         return knode;
     }
@@ -973,7 +974,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT,
-                SizeConstraint.FIXED);
+                SizeConstraint.fixed());
         nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                 PortConstraints.FREE);
 
