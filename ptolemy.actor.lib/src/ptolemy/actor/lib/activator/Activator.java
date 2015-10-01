@@ -33,11 +33,8 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
 import org.ptolemy.commons.ThreeDigitVersionSpecification;
 import org.ptolemy.commons.VersionSpecification;
-import org.ptolemy.osgi.DefaultModelElementClassProvider;
 import org.ptolemy.osgi.ModelElementClassProvider;
-
-import ptolemy.actor.lib.Const;
-import ptolemy.actor.lib.Counter;
+import org.ptolemy.osgi.PackageBasedModelElementClassProvider;
 
 /**
  * This activator registers an actor provider for the MyConst custom actor implementation.
@@ -61,9 +58,18 @@ public class Activator implements BundleActivator {
 	      bundleVersion.getMicro(), 
 	      bundleVersion.getQualifier());
 	  
+//    _apSvcReg = context.registerService(ModelElementClassProvider.class.getName(), 
+//        new DefaultModelElementClassProvider(providerVersion, Const.class, Counter.class),
+//        null);
+    
     _apSvcReg = context.registerService(ModelElementClassProvider.class.getName(), 
-        new DefaultModelElementClassProvider(providerVersion, Const.class, Counter.class),
+        new PackageBasedModelElementClassProvider(this.getClass().getClassLoader(),
+            "ptolemy.actor",
+            "ptolemy.data",
+            "ptolemy.kernel"
+            ),
         null);
+
 	}
 
 	public void stop(BundleContext context) throws Exception {
