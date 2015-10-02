@@ -93,6 +93,10 @@ public class UndoLayoutAction implements UndoAction {
     public void removeConnection(LayoutHint layoutHint) {
         _connRemoveEntries.add(layoutHint);
     }
+    
+    public void addConnection(NamedObj container, LayoutHint layoutHint) {
+        _connAddEntries.add(new ConnectionHintEntry(container, layoutHint));
+    }
 
     /**
      * Execute the undo or redo action. This sets all previously configured locations,
