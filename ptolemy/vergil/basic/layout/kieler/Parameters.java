@@ -88,6 +88,33 @@ public class Parameters {
         parentLayout.setProperty(LayoutOptions.BORDER_SPACING, 5.0f);
         parentLayout.setProperty(Properties.EDGE_SPACING_FACTOR, 1.5f);
 
+        // Defaults
+        // Note that when the layout configuration dialog of a model has never been opened,
+        // there is no configuration element and thus the previous code is not executed
+        if (graphModel instanceof ActorGraphModel) {
+            // Set default values for actor models.
+            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
+                    EdgeRouting.ORTHOGONAL);
+
+        } else if (graphModel instanceof FSMGraphModel) {
+            // Set default values for modal models.
+
+            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
+                    EdgeRouting.SPLINES);
+            
+            // to place input port left and output ports right ...
+            // TODO however this completely breaks the positioning of further decorations
+            // parentLayout.setProperty(LayoutOptions.SEPARATE_CC, false);
+            
+            // The node placement algorithm to use
+            parentLayout.setProperty(Properties.NODE_PLACER,
+                    NodePlacementStrategy.BRANDES_KOEPF);
+            parentLayout.setProperty(Properties.FIXED_ALIGNMENT,
+                    FixedAlignment.BALANCED);
+            parentLayout.setProperty(
+                    Properties.OBJ_SPACING_IN_LAYER_FACTOR, 8f);
+        }
+        
         // Copy values specified by user.
         List<LayoutConfiguration> configAttributes = _compositeEntity
                 .attributeList(LayoutConfiguration.class);
@@ -158,15 +185,18 @@ public class Parameters {
                         .convert(configuration.drawSplines.getToken());
                 parentLayout.setProperty(SPLINES, useSplines.booleanValue());
                 
+                float spacing = parentLayout.getProperty(SPACING);
                 if (useSplines.booleanValue()) {
                     // spline routing
                     parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
                             EdgeRouting.SPLINES);
+                    parentLayout.setProperty(SPACING, spacing / 2f);
 
                 } else {
                     // arc-style routing
-                    float spacing = parentLayout.getProperty(SPACING);
-                    parentLayout.setProperty(SPACING, 2 * spacing);
+                    parentLayout.setProperty(SPACING, spacing / 2f);
+                    parentLayout.setProperty(
+                            Properties.OBJ_SPACING_IN_LAYER_FACTOR, 20f);
                 }
             }
             
@@ -178,29 +208,6 @@ public class Parameters {
                     ASPECT_RATIO.getDefault());
             parentLayout.setProperty(Properties.NODE_PLACER,
                     NodePlacementStrategy.BRANDES_KOEPF);
-        }
-
-        // Defaults
-        // Note that when the layout configuration dialog of a model has never been opened,
-        // there is no configuration element and thus the previous code is not executed
-        if (graphModel instanceof ActorGraphModel) {
-            // Set default values for actor models.
-            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
-                    EdgeRouting.ORTHOGONAL);
-
-        } else if (graphModel instanceof FSMGraphModel) {
-            // Set default values for modal models.
-
-            parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
-                    EdgeRouting.SPLINES);
-            
-            // The node placement algorithm to use
-            parentLayout.setProperty(Properties.NODE_PLACER,
-                    NodePlacementStrategy.BRANDES_KOEPF);
-            parentLayout.setProperty(Properties.FIXED_ALIGNMENT,
-                    FixedAlignment.BALANCED);
-            parentLayout.setProperty(
-                    Properties.OBJ_SPACING_IN_LAYER_FACTOR, 6f);
         }
         
     }

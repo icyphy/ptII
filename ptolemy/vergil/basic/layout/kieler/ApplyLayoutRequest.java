@@ -156,6 +156,17 @@ public class ApplyLayoutRequest extends ChangeRequest {
             undoLayoutAction.addCurve(new CurveEntry(entry._transition, token
                     .doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
+            
+            Attribute attribute = entry._transition.getAttribute("_layoutHint");
+            if (attribute != null) {
+                // FIXME undo from arcs to splines does not work
+                // the interpretation of bendpoints as splines is only performed
+                // when the parameter 'useSplines' is set. We would have to change
+                // the parameter in the undo action as well to make it work.
+                // LayoutHint layoutHint = (LayoutHint) attribute;
+                // undoLayoutAction.addConnection(entry._transition, layoutHint);
+                entry._transition.removeAttribute(attribute);
+            }
         }
 
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(source);
