@@ -1049,7 +1049,6 @@ public class TextEditor extends TableauFrame
                 _undo();
             } catch (CannotUndoException ex) {
                 // Ignore.
-                System.out.println("FIXME");
             }
         }
     }
