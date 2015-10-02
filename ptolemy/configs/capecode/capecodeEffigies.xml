@@ -7,6 +7,7 @@
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
+          <property name="stopWhenQueueIsEmpty" value="false"/>
         </property>
       </entity>
     </entity>
