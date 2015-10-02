@@ -33,6 +33,9 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+import javax.swing.SwingConstants;
+
+import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
 import diva.canvas.toolbox.LabelFigure;
@@ -136,7 +139,7 @@ public class KielerLayoutArcConnector extends ArcConnector {
         if (considerBendPoints) {
             
             repaint();
-
+            
             // The following code proceeds as follows:
             // We drop the first and the last point of the curve that 
             //  klay calculated. This is due to the #_applyEdgeLayoutBendPointAnnotation
@@ -209,15 +212,22 @@ public class KielerLayoutArcConnector extends ArcConnector {
             // Now set the shape.
             setShape(path);
             
-            // Move the label.
-            int count = bendPointList.size();
-            // Pick a location for the label in the middle of the connector.
-            Point2D point1 = bendPointList.get(count / 2 - 1);
-            Point2D point2 = bendPointList.get(count / 2);
-            
-            _labelLocation = new Point2D.Double(
-                    (point1.getX() + point2.getX()) / 2,
-                    (point1.getY() + point2.getY()) / 2);
+            // Move the label
+            if (layoutHintItem.getLabelLocation() != null) {
+                // either we got a position for the label from KIELER
+                Point2D.Double loc = layoutHintItem.getLabelLocation();
+                _labelLocation = new Point2D.Double(loc.x, loc.y);
+            } else {
+                // ... or we pick a location for the label in the middle of the connector.
+                int count = bendPointList.size();
+                Point2D point1 = bendPointList.get(count / 2 - 1);
+                Point2D point2 = bendPointList.get(count / 2);
+
+                _labelLocation = new Point2D.Double(
+                        (point1.getX() + point2.getX()) / 2,
+                        (point1.getY() + point2.getY()) / 2);
+            }
+
             repositionLabel();
 
             repaint();
@@ -234,14 +244,22 @@ public class KielerLayoutArcConnector extends ArcConnector {
         if (label != null) {
             
             if (_labelLocation != null) {
-                label.translateTo(_labelLocation);
+                
+                Point2D pos = (Point2D) _labelLocation.clone();
+                CanvasUtilities.translate(pos, label.getPadding(), SwingConstants.NORTH_WEST);
+                label.translateTo(pos);
+
+                // the positions calculated by KIELER are always for the top-left corner of an element
+                label.setAnchor(SwingConstants.NORTH_WEST);
+                
             } else {
                 Point2D pt = getArcMidpoint();
                 label.translateTo(pt);
+                
+                // FIXME: Need a way to override the positioning.
+                label.autoAnchor(getShape());
             }
             
-            // FIXME: Need a way to override the positioning.
-            label.autoAnchor(getShape());
         }
     }
 

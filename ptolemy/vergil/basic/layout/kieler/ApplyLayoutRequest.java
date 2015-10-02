@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic.layout.kieler;
 
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -89,6 +90,21 @@ public class ApplyLayoutRequest extends ChangeRequest {
         _connectionEntries.add(new ConnectionEntry(relation, head, tail,
                 bendPoints));
     }
+    
+    /**
+     * Add a new connection routing change to the request.
+     *
+     * @param relation The relation that owns the connection.
+     * @param head The head object of the connection.
+     * @param tail The tail object of the connection.
+     * @param bendPoints The new bend points.
+     * @param labelLocation The location of a label, may be null
+     */
+    public void addConnection(Relation relation, NamedObj head, NamedObj tail,
+            double[] bendPoints, Point2D.Double labelLocation) {
+        _connectionEntries.add(new ConnectionEntry(relation, head, tail,
+                bendPoints, labelLocation));
+    }
 
     /**
      * Add a new transition curve change to the request.
@@ -128,7 +144,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             if (attribute instanceof LayoutHint) {
                 LayoutHint layoutHint = (LayoutHint) attribute;
                 layoutHint.setLayoutHintItem(entry._head, entry._tail,
-                        entry._bendPoints);
+                        entry._bendPoints, entry._labelLocation);
                 undoLayoutAction.removeConnection(layoutHint);
             }
         }
@@ -182,13 +198,20 @@ public class ApplyLayoutRequest extends ChangeRequest {
         NamedObj _head;
         NamedObj _tail;
         double[] _bendPoints;
+        Point2D.Double _labelLocation;
 
         ConnectionEntry(Relation relation, NamedObj head, NamedObj tail,
-                double[] bendPoints) {
+                double[] bendPoints, Point2D.Double labelLocation) {
             this._relation = relation;
             this._head = head;
             this._tail = tail;
             this._bendPoints = bendPoints;
+            this._labelLocation = labelLocation;
+        }
+        
+        ConnectionEntry(Relation relation, NamedObj head, NamedObj tail,
+                double[] bendPoints) {
+            this(relation, head, tail, bendPoints, null);
         }
     }
 
