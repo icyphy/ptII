@@ -1421,9 +1421,6 @@ public class JavaScript extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "Must specify a name to create a parameter.");
         }
-        if (name.equals("throttleFactor")) {
-            System.out.println("FIXME");
-        }
 
         Attribute parameter = getAttribute(name);
         if (parameter == null) {
