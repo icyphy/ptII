@@ -4,20 +4,22 @@
 <entity name="createMap" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 50}">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1493, 339, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000004">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999994, 252.0000000000001}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5, -20}">
+        </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;var testmessage = &quot;&quot;;&#10;&#10;&#10;mapManager = require('mapManager.js');&#10;&#10;myCoords = new mapManager.CoordinateSystem(&quot;Joey&quot;);&#10;yourCoords = new mapManager.CoordinateSystem(&quot;Sally&quot;);&#10;myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;yourMap = new mapManager.Map(&quot;yourMapName&quot;, mapManager.SpaceTypeEnum.TOPOLOGICAL, yourCoords);&#10;badMap = new mapManager.Map(&quot;badMapName&quot;, mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;&#10;&#10;testmessage += &quot;Adding myMapName\n&quot;;&#10;testmessage += mapManager.addMap(myMap) + &quot;\n&quot;;&#10;testmessage += &quot;Adding myMap again, should print false\n&quot;;&#10;testmessage += mapManager.addMap(myMap) + &quot;\n&quot;;&#10;&#10;mapManager.addMap(yourMap);&#10;mapManager.addMap(badMap);&#10;&#10;testmessage += &quot;printing maps \n&quot;;&#10;testmessage += mapManager.mapsToString() +&quot;\n&quot;;&#10;testmessage += mapManager.removeMap(&quot;badMapName&quot;) + &quot;\n&quot;;&#10;testmessage += &quot;printing maps with badMapName removed\n&quot;;&#10;testmessage += mapManager.mapsToString() + &quot;\n&quot;;&#10;&#10;send(output, testmessage);">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;exports.initialize = function(){&#10;var testmessage = &quot;&quot;;&#10;&#10;mapManager = require('mapManager');&#10;&#10;myCoords = new mapManager.CoordinateSystem(&quot;Joey&quot;);&#10;yourCoords = new mapManager.CoordinateSystem(&quot;Sally&quot;);&#10;myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;yourMap = new mapManager.Map(&quot;yourMapName&quot;, mapManager.SpaceTypeEnum.TOPOLOGICAL, yourCoords);&#10;badMap = new mapManager.Map(&quot;badMapName&quot;, mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;&#10;testmessage += &quot;Adding myMapName, should print true\n&quot;;&#10;testmessage += mapManager.addMap(myMap) + &quot;\n&quot;;&#10;testmessage += &quot;Adding myMap again, should print false\n&quot;;&#10;testmessage += mapManager.addMap(myMap) + &quot;\n&quot;;&#10;&#10;mapManager.addMap(yourMap);&#10;mapManager.addMap(badMap);&#10;&#10;testmessage += &quot;printing maps \n&quot;;&#10;testmessage += mapManager.mapsToString() +&quot;\n&quot;;&#10;testmessage += mapManager.removeMap(&quot;badMapName&quot;) + &quot;\n&quot;;&#10;testmessage += &quot;printing maps with badMapName removed\n&quot;;&#10;testmessage += mapManager.mapsToString() + &quot;\n&quot;;&#10;&#10;&#10;send(&quot;output&quot;, testmessage);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -29,12 +31,49 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
         </property>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Adding myMapName, should print true\ntrue\nAdding myMap again, should print false\nfalse\nprinting maps \n{ myMapName: { mapName: myMapName, spaceType: Euclidean, coordinateSystem: Joey }, yourMapName: { mapName: yourMapName, spaceType: Topological, coordinateSystem: Sally }, badMapName: { mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey } }\ntrue\nprinting maps with badMapName removed\n{ myMapName: { mapName: myMapName, spaceType: Euclidean, coordinateSystem: Joey }, yourMapName: { mapName: yourMapName, spaceType: Topological, coordinateSystem: Sally } }\n&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 280}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1191, 677, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{720, 260}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display2.input" relation="relation"/>
 </entity>
