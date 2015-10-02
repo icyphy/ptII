@@ -1,0 +1,40 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="createMap" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 50}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    </property>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;var testmessage = &quot;&quot;;&#10;&#10;&#10;mapManager = require('mapManager.js');&#10;&#10;myCoords = new mapManager.CoordinateSystem(&quot;Joey&quot;);&#10;yourCoords = new mapManager.CoordinateSystem(&quot;Sally&quot;);&#10;myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;yourMap = new mapManager.Map(&quot;yourMapName&quot;, mapManager.SpaceTypeEnum.TOPOLOGICAL, yourCoords);&#10;badMap = new mapManager.Map(&quot;badMapName&quot;, mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;&#10;&#10;testmessage += &quot;Adding myMapName\n&quot;;&#10;testmessage += mapManager.addMap(myMap) + &quot;\n&quot;;&#10;testmessage += &quot;Adding myMap again, should print false\n&quot;;&#10;testmessage += mapManager.addMap(myMap) + &quot;\n&quot;;&#10;&#10;mapManager.addMap(yourMap);&#10;mapManager.addMap(badMap);&#10;&#10;testmessage += &quot;printing maps \n&quot;;&#10;testmessage += mapManager.mapsToString() +&quot;\n&quot;;&#10;testmessage += mapManager.removeMap(&quot;badMapName&quot;) + &quot;\n&quot;;&#10;testmessage += &quot;printing maps with badMapName removed\n&quot;;&#10;testmessage += mapManager.mapsToString() + &quot;\n&quot;;&#10;&#10;send(output, testmessage);">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 195.0]">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+</entity>

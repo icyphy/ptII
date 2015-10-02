@@ -1,0 +1,28 @@
+
+var testmessage = "";
+
+
+mapManager = require('mapManager.js');
+
+myCoords = new mapManager.CoordinateSystem("Joey");
+yourCoords = new mapManager.CoordinateSystem("Sally");
+myMap = new mapManager.Map("myMapName" , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
+yourMap = new mapManager.Map("yourMapName", mapManager.SpaceTypeEnum.TOPOLOGICAL, yourCoords);
+badMap = new mapManager.Map("badMapName", mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
+
+
+testmessage += "Adding myMapName\n";
+testmessage += mapManager.addMap(myMap) + "\n";
+testmessage += "Adding myMap again, should print false\n";
+testmessage += mapManager.addMap(myMap) + "\n";
+
+mapManager.addMap(yourMap);
+mapManager.addMap(badMap);
+
+testmessage += "printing maps \n";
+testmessage += mapManager.mapsToString() +"\n";
+testmessage += mapManager.removeMap("badMapName") + "\n";
+testmessage += "printing maps with badMapName removed\n";
+testmessage += mapManager.mapsToString() + "\n";
+
+send(output, testmessage);

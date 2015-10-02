@@ -1,0 +1,11 @@
+{
+  "name": "mapManager",
+  "version": "0.1.0",
+  "main": "mapManager.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Matt Weber"
+    , "email" : "matt.weber@eecs.berkeley.edu"}
+  ],
+  "description": "A package to mantain and reconcile differe representations of space."
+}
