@@ -76,7 +76,8 @@ import ptolemy.vergil.actor.KielerLayoutConnector;
  * {@link LayoutHintItem} objects because one Relation can correspond to
  * multiple links, which are not real objects in the Ptolemy abstract syntax and
  * therefore can not carry any attributes. Each item carries a list of
- * bendpoints for a specific link.
+ * bendpoints for a specific link as well as a location for a label
+ * of the link (if it exists).
  * <p>
  * The LayoutHint uses a Ptolemy Expression as its value in which the
  * {@link LayoutHintItem} objects are encoded. Therefore the Expression is
@@ -95,7 +96,8 @@ import ptolemy.vergil.actor.KielerLayoutConnector;
  *   {
  *     head={id="Ramp.output",x=320.0,y=225.0},
  *     tail={id="CompositeActor.port2",x=580.0,y=200.0,index=3},
- *     points={135.0,25.0,135.0,125.0}
+ *     points={135.0,25.0,135.0,125.0},
+ *     labelLocation={x=340.0,y=210.0}
  *   }
  * }
  * </pre>
@@ -104,7 +106,7 @@ import ptolemy.vergil.actor.KielerLayoutConnector;
  * {@link LayoutHintItem} is unambiguously identified by its head and tail,
  * which are Ptolemy objects like {@link Port}s or {@link Relation}s. The
  * methods to access this are {@link #getLayoutHintItem(Object, Object)},
- * {@link #setLayoutHintItem(NamedObj, NamedObj, double[])} and
+ * {@link #setLayoutHintItem(NamedObj, NamedObj, double[], Point2D.Double)} and
  * {@link #removeLayoutHintItem(LayoutHintItem)}.</p>
  *
  * <p> The class extends {@link SingletonAttribute} because every
@@ -119,7 +121,7 @@ import ptolemy.vergil.actor.KielerLayoutConnector;
  * Some of the standard code for example for value listeners is copied from
  * {@link Location}.</p>
  *
- * @author Hauke Fuhrmann, (kieler@informatik.uni-kiel.de)
+ * @author Hauke Fuhrmann, (kieler@informatik.uni-kiel.de), Ulf Rueegg
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (haf)
  * @Pt.AcceptedRating Red (haf)
@@ -392,10 +394,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param tail the tail object of the corresponding link
      * @param bendPoints an array of double coordinates, where always two
      *            correspond to a bend point
+     * @param labelLocation the location of a label if it exists, may be null
      * @see #getLayoutHintItem(Object, Object)
      */
     public void setLayoutHintItem(NamedObj head, NamedObj tail,
-            double[] bendPoints) {
+            double[] bendPoints, Point2D.Double labelLocation) {
         _expressionSet = false;
         LayoutHintItem item = getLayoutHintItem(head, tail);
         if (item == null) {
@@ -410,6 +413,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
 
         item.setBendpoints(bendPoints);
 
+        item.setLabelLocation(labelLocation);
+        
         if (_valueListeners != null) {
             Iterator listeners = _valueListeners.iterator();
 
@@ -540,6 +545,16 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                             .intValue();
                 }
 
+                // label location
+                Point2D.Double labelLocation = null;
+                Token labelLocationToken = layoutItem.get("labelLocation");
+                if (labelLocationToken != null) {
+                    labelLocation = new Point2D.Double();
+                    RecordToken labelRecord = (RecordToken) labelLocationToken;
+                    labelLocation.x = ((DoubleToken) labelRecord.get("x")).doubleValue();
+                    labelLocation.y = ((DoubleToken) labelRecord.get("y")).doubleValue();
+                }
+                
                 // The LayoutHintItem record contains a points entry, containing
                 // an array of bend points.
                 ArrayToken bendPoints = (ArrayToken) layoutItem.get("points");
@@ -553,7 +568,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     // create new LayoutHintItem and add it to this LayoutHint
                     LayoutHintItem item = new LayoutHintItem(head, tail,
                             headLocation, tailLocation, headMultiportWidth,
-                            tailMultiportWidth);
+                            tailMultiportWidth, labelLocation);
                     double[] primitiveBendPoints = new double[bendPoints
                                                               .length()];
                     for (int ii = 0; ii < bendPoints.length(); ii++) {
@@ -730,12 +745,13 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          */
         public LayoutHintItem(NamedObj head, NamedObj tail,
                 Point2D.Double locationHead, Point2D.Double locationTail,
-                int multiportWidthHead, int multiportWidthTail) {
+                int multiportWidthHead, int multiportWidthTail, Point2D.Double labelPosition) {
             this(head, tail);
             this._headLocation = locationHead;
             this._tailLocation = locationTail;
-            _headMultiportIndex[1] = multiportWidthHead;
-            _tailMultiportIndex[1] = multiportWidthTail;
+            this._headMultiportIndex[1] = multiportWidthHead;
+            this._tailMultiportIndex[1] = multiportWidthTail;
+            this._labelLocation = labelPosition;
         }
 
         /**
@@ -768,6 +784,16 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
             return list;
         }
+        
+        /**
+         * A {@link Point2D} representing the position where a label of an 
+         * edge should be positioned.
+         * 
+         * @return the label location.
+         */
+        public Point2D.Double getLabelLocation() {
+            return _labelLocation;
+        }
 
         /**
          * Get the String representation of the Ptolemy Expression by which this
@@ -794,6 +820,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     buffer.append(",");
                 }
                 buffer.append(_bendPoints[i] + "," + _bendPoints[i + 1]);
+            }
+            if (_labelLocation != null) {
+                buffer.append("}, " + "labelLocation={");
+                buffer.append("x=" + _labelLocation.x);
+                buffer.append(",y="+_labelLocation.y);
             }
             buffer.append("} }");
             return buffer.toString();
@@ -887,6 +918,15 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             _bendPoints = bendPoints;
             _updateHeadTailLocations();
         }
+        
+        /**
+         * Sets the position a label should be placed at. 
+         * 
+         * @param labelLocation a {@link Point2D} with the position, may be null. 
+         */
+        public void setLabelLocation(Point2D.Double labelLocation) {
+            _labelLocation = labelLocation;
+        }
 
         /**
          * Get a String representation of a LayoutHint which will be the same as
@@ -942,6 +982,8 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 _bendPoints[i] += x;
                 _bendPoints[i + 1] += y;
             }
+            _labelLocation.x += x;
+            _labelLocation.y += y;
         }
 
         /**
@@ -1043,5 +1085,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         private Point2D.Double _tailLocation = new Point2D.Double();
         /** Width and index of the multiport, if the tail actually is a multiport. */
         private int[] _tailMultiportIndex = { 1, 1 };
+        /** The position of a label if it exists. */
+        private Point2D.Double _labelLocation = null;
     }
 }

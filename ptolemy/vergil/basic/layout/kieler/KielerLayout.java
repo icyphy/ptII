@@ -447,17 +447,29 @@ public class KielerLayout extends AbstractGlobalLayout {
             index += 2;
         }
 
+        // we support exactly one label (if one exists at all)
+        Point2D.Double labelLocation = null;
+        for (KLabel label : kedge.getLabels()) {
+            labelLocation = new Point2D.Double();
+            KVector pos = label.getData(KShapeLayout.class).createVector();
+            KimlUtil.toAbsolute(pos, parentNode);
+            labelLocation.x = pos.x;
+            labelLocation.y = pos.y;
+            break;
+        }
+        
         Relation relation = link.getRelation();
         NamedObj head = (NamedObj) link.getHead();
         NamedObj tail = (NamedObj) link.getTail();
         // Determine correct direction of the edge.
         if (head != _divaEdgeSource.get(link)) {
             layoutRequest.addConnection(relation, tail, head,
-                    layoutHintBendPoints);
+                    layoutHintBendPoints, labelLocation);
         } else {
             layoutRequest.addConnection(relation, head, tail,
-                    layoutHintBendPoints);
+                    layoutHintBendPoints, labelLocation);
         }
+        
     }
 
     private void _applyEdgeLayoutCurve(KEdge kedge, Link link,

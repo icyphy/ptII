@@ -112,7 +112,6 @@ public class Parameters {
             if (minimizeBendsToken.booleanValue()) {
                 parentLayout.setProperty(Properties.NODE_PLACER,
                         NodePlacementStrategy.BRANDES_KOEPF);
-                parentLayout.setProperty(Properties.FIXED_ALIGNMENT, FixedAlignment.BALANCED);
             } else {
                 parentLayout.setProperty(Properties.NODE_PLACER,
                         NodePlacementStrategy.LINEAR_SEGMENTS);
