@@ -372,6 +372,8 @@ $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankRefactored.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/RLC/RLC.xml
+$CLASSPATH/ptolemy/domains/atc/demo/FirstPolicy/FirstPolicy.xml
+$CLASSPATH/ptolemy/domains/atc/demo/SecondPolicy/SecondPolicy.xml
 $CLASSPATH/ptolemy/domains/ca/demo/Conway/Conway.xml
 $CLASSPATH/ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.xml
 $CLASSPATH/ptolemy/domains/ci/demo/Router/Router.xml
