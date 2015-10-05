@@ -166,7 +166,6 @@ NATIVE_SIGNED_LIB_JARS = \
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
-			lib/guava.jar \
 			lib/kieler.jar \
 			lib/jython.jar \
 			lib/ptCal.jar \
@@ -190,7 +189,6 @@ CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/ptliblicenses.jar \
-	lib/guava.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
