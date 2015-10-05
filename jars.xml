@@ -154,6 +154,7 @@
     <include name="ptolemy/domains/dt/demo/demo.jar" />
     <include name="ptolemy/domains/dt/doc/doc.jar" />
     <include name="ptolemy/domains/experimentalDomains.jar" />
+    <include name="ptolemy/domains/fmima/fmima.jar" />
     <include name="ptolemy/domains/giotto/giotto.jar" />
     <include name="ptolemy/domains/giotto/demo/demo.jar" />
     <include name="ptolemy/domains/giotto/doc/doc.jar" />
@@ -2587,6 +2588,15 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/dt/kernel/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/fmima/fmima.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/fmima/fmima.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/fmima/kernel/*.java"/>
       </fileset>
     </jar>
 
