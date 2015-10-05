@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/mapManager
 
-DIRS = 		#test demo
+DIRS = 		test #demo
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -43,16 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	location
+PTPACKAGE = 	mapManager
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = 
-	
 
 OTHER_FILES_TO_BE_JARED = \
-	package.json \
-	location.js
+	mapManager.js \
+	package.json
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
