@@ -637,6 +637,7 @@ ALLPACKAGES = \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.de.lib.aspect \
 	ptolemy.domains.dt.kernel \
+	ptolemy.domains.fmima.kernel \
 	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.hdf.kernel \

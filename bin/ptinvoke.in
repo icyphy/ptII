@@ -625,12 +625,11 @@ if [ "$PTJXTA_DIR" = "jxta" ]; then
 fi
 
 #### KIELER
-# PTKIELER_DIR is set to kieler if configure found kieler.jar and guava.jar
+# PTKIELER_DIR is set to kieler if configure found kieler.jar.
 PTKIELER_DIR=@PTKIELER_DIR@
-GUAVA_JAR=@GUAVA_JAR@
 KIELER_JAR=@KIELER_JAR@
 if [ "$PTKIELER_DIR" = "kieler" ]; then 
-    KIELER_JARS="${CLASSPATHSEPARATOR}${KIELER_JAR}${CLASSPATHSEPARATOR}${GUAVA_JAR}"
+    KIELER_JARS="${CLASSPATHSEPARATOR}${KIELER_JAR}
 fi
 
 #### PDFRenderer
