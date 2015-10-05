@@ -1,5 +1,5 @@
 /* A receiver for modeling air traffic control systems.
-
+ 
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -41,31 +41,15 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class ATCReceiver extends DEReceiver {
 
-    /** Construct an empty ATCReceiver with no container.
-     */
     public ATCReceiver() {
-        super();
+        // TODO Auto-generated constructor stub
     }
 
-    /** Construct an empty ATCReceiver with the specified container.
-     *  @param container The container.
-     *  @exception IllegalActionException If the container does
-     *  not accept this receiver.
-     */
     public ATCReceiver(IOPort container) throws IllegalActionException {
         super(container);
+        // TODO Auto-generated constructor stub
     }
-
-    /** Put a token into this receiver and post a trigger event to the director.
-     *  The director will be responsible to dequeue the trigger event at
-     *  the correct timestamp and microstep and invoke the corresponding actor
-     *  whose input port contains this receiver. This receiver may contain
-     *  more than one events.
-     *  @param token The token to be put, or null to put no token.
-     *  @exception IllegalActionException If cannot get the director or if
-     *   the current microstep is zero.
-     *  @exception NoRoomException Not thrown in this class.
-     */
+    
     @Override
     public void put(Token token) throws IllegalActionException, NoRoomException {
         IOPort port = getContainer();

@@ -52,7 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ATCDirector.java \
+	AbstractATCDirector.java \
 	ATCReceiver.java \
 	Rejecting.java
 
