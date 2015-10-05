@@ -1,8 +1,7 @@
-# Makefile for the Java classes used to implement the Ptolemy Air Traffic Control domain.
-#
-# @Authors: (makefile only) Christopher Brooks, based on a file by Thomas M. Parks
+# Makefile for PtolemyII Air Traffic Control demos
 #
 # @Version: $Id$
+# @Author: Christopher Hylands
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -28,47 +27,45 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/atc
+ME =		ptolemy/domains/atc/demo
 
-DIRS =		kernel lib demo test
+# Keep these alphabetical please.
+DIRS =		FirstPolicy SecondPolicy
 
 # Root of Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	atc
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	kernel/kernel.jar \
-	lib/lib.jar
+	FirstPolicy/FirstPolicy.jar \
+	SecondPolicy/SecondPolicy.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
-
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib test
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

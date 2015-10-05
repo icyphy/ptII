@@ -124,8 +124,9 @@
     <include name="ptolemy/domains/algebraic/algebraic.jar" />
     <include name="ptolemy/domains/algebraic/demo.jar" />
     <include name="ptolemy/domains/atc/atc.jar" />
+    <include name="ptolemy/domains/atc/demo/demo.jar" />
     <include name="ptolemy/domains/ca/ca.jar" />
-    <include name="ptolemy/domains/ca/demo.jar" />
+    <include name="ptolemy/domains/ca/demo/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />
     <include name="ptolemy/domains/ci/demo/demo.jar" />
     <include name="ptolemy/domains/ci/demo/Conway/Conway.jar" />
@@ -2397,6 +2398,17 @@
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/atc/kernel/*.class"/>
 	<include name="ptolemy/domains/atc/lib/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/atc/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/atc/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/atc/demo/*/*.txt"/>
+	<include name="ptolemy/domains/atc/demo/*/*.xml"/>
+	<include name="ptolemy/domains/atc/demo/track*/*.txt"/>
       </fileset>
     </jar>
 
