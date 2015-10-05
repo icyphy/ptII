@@ -51,8 +51,9 @@
     <include name="org/terraswarm/ros/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
-    <include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/BCVTBApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/CapeCodeApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/DSPApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/FullApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/HyVisualApplication.jar" />
