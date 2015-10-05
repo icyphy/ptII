@@ -875,7 +875,6 @@ ECLIPSE_CLASSPATHENTRY_LIBS
 ECLIPSE_EXCLUDING_SRC
 GC_LD_DIRECTIVE
 GC_INCLUDE_DIR
-GUAVA_JAR
 ECLIPSE_DIR
 ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS
 CMKIT_DIR
@@ -1021,7 +1020,6 @@ with_junitparams
 with_jxl
 with_jython
 with_kieler_jar
-with_guava_jar
 with_javacv
 with_oscp5
 with_rxtx
@@ -1762,8 +1760,6 @@ Optional Packages:
 			  is searched for jython
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
-  --with-guava-jar=JARFILE       use JARFILE,
-                              defaults to \$PTII/lib/guava.jar
   --with-javacv=JAR       use the javaCV JAR,
                           defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar
   --with-oscp5=JAR       use oscP5.jar from JAR,
@@ -9679,7 +9675,6 @@ PTKIELER_DIR=
 
 # Directory that contains the kieler jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
-GUAVA_JAR='${PTII}/lib/guava.jar'
 
 if test ! -d "$KIELER_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $KIELER_USER_DIR is not present,
@@ -9702,39 +9697,9 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $KIELER_JAR" >&5
 $as_echo "$KIELER_JAR" >&6; }; fi
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for guava jar file used by Kieler layout " >&5
-$as_echo_n "checking for guava jar file used by Kieler layout ... " >&6; }
-
-# Check whether --with-guava-jar was given.
-if test "${with_guava_jar+set}" = set; then :
-  withval=$with_guava_jar; GUAVA_JAR=$withval
-else
-  GUAVA_JAR=$PTII/lib/guava.jar
-fi
-
-	if test -f "$GUAVA_JAR"; then
-	    # Set to kieler and used in
-	    # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
-	    PTKIELER_DIR=kieler
-        else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Guava Jar file.
-    Guava is used by the KIELER Layout tool.
-    Guava is the Google Core Libraries for Java and is available from
-    http://code.google.com/p/guava-libraries/
-    You need not use KIELER unless you plan on using the KIELER layout
-    facility in $KIELER_USER_DIR
-    The Guava jar is usually found at $PTII/lib/guava.jar." >&5
-$as_echo "$as_me: WARNING: Failed to find the Guava Jar file.
-    Guava is used by the KIELER Layout tool.
-    Guava is the Google Core Libraries for Java and is available from
-    http://code.google.com/p/guava-libraries/
-    You need not use KIELER unless you plan on using the KIELER layout
-    facility in $KIELER_USER_DIR
-    The Guava jar is usually found at $PTII/lib/guava.jar." >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	GUAVA_JAR='${PTII}/lib/guava.jar'
-
-        fi
+        # Set to kieler and used in
+	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	PTKIELER_DIR=kieler
     fi
 
     if test "$PTKIELER_DIR" = ""; then
@@ -9757,7 +9722,6 @@ if test -z "$PTKIELER_DIR"; then
    updateExcludes "ptolemy/vergil/basic/layout/kieler/"
 else
    updateClasspath "$KIELER_JAR"
-   updateClasspath "$GUAVA_JAR"
 fi
 
 
@@ -14096,10 +14060,6 @@ fi
 
 
 # Location of GNU Awk, used by maven
-
-
-# The Guava Jar file, used by Kieler which is used to layout models.  See
-# http://code.google.com/p/guava-libraries/
 
 
 # Directory that contains gc.h, used in copernicus/c
