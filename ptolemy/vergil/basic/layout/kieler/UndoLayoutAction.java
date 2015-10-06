@@ -37,6 +37,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.LayoutHint;
 import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.CurveEntry;
 import ptolemy.vergil.basic.layout.kieler.ApplyLayoutRequest.LocationEntry;
 

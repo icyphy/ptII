@@ -78,6 +78,7 @@ JSRCS = \
 	IOPortController.java \
 	KielerLayoutConnector.java \
 	KielerLayoutUtil.java \
+	LayoutHint.java \
 	LinkController.java \
 	LinkManhattanConnector.java \
 	PortConnectSite.java \

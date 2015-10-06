@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.vergil.basic.layout.kieler;
+package ptolemy.vergil.actor;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -66,7 +66,6 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Vertex;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.actor.KielerLayoutConnector;
 
 ///////////////////////////////////////////////////////////////////
 ////                      LayoutHint
@@ -1043,10 +1042,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             // a composite actor, so take the actor's position instead of the port's
             // internal position.
             if (obj instanceof ComponentPort) {
-                return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj
+                return (Point2D.Double) KielerLayoutUtil.getLocationPoint(obj
                         .getContainer());
             }
-            return (Point2D.Double) PtolemyModelUtil._getLocationPoint(obj);
+            return (Point2D.Double) KielerLayoutUtil.getLocationPoint(obj);
         }
 
         /**

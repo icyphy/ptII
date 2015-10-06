@@ -109,6 +109,7 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorGraphModel.ExternalPortModel;
 import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.KielerLayoutConnector;
+import ptolemy.vergil.actor.KielerLayoutUtil;
 import ptolemy.vergil.actor.PortTerminal;
 import ptolemy.vergil.basic.RelativeLocatable;
 import ptolemy.vergil.basic.RelativeLocation;
@@ -953,12 +954,12 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param attribute the attribute for which to create a dummy edge
      */
     private void _createKEdgeForAttribute(NamedObj attribute) {
-        Locatable source = PtolemyModelUtil._getLocation(attribute);
+        Locatable source = KielerLayoutUtil.getLocation(attribute);
         if (source instanceof RelativeLocation) {
             NamedObj referenceObj = PtolemyModelUtil
                     ._getReferencedObj((RelativeLocation) source);
             if (referenceObj != null) {
-                Locatable target = PtolemyModelUtil._getLocation(referenceObj);
+                Locatable target = KielerLayoutUtil.getLocation(referenceObj);
                 KNode sourceNode = _kieler2ptolemyDivaNodes.inverse().get(
                         source);
                 KNode targetNode = _kieler2ptolemyDivaNodes.inverse().get(
@@ -1416,7 +1417,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     private void _kNode2Ptolemy(KVector pos, Object divaNode,
             Locatable locatable) {
-        Point2D location = PtolemyModelUtil._getLocationPoint(locatable);
+        Point2D location = KielerLayoutUtil.getLocationPoint(locatable);
         if (divaNode != null) {
             Rectangle2D divaBounds;
             if (locatable instanceof RelativeLocation) {
