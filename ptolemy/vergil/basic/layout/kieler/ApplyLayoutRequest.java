@@ -40,6 +40,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.LayoutHint;
 
 /**
  * A change request specialized for application of automatically computed layout.
