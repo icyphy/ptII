@@ -34,6 +34,8 @@ import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.EditorPaneFactory;
@@ -50,6 +52,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.xml.transform.TransformerConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
 import org.terraswarm.accessor.JSAccessor;
 
 import ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareGUI;
@@ -81,6 +87,7 @@ public class ContextAwareHelperTest {
         return iotServiceList;
            
     }
+   
         
     /** Dialog Box to select a service the accessor mimics. 
      *  @param sensors FIXME
@@ -95,6 +102,23 @@ public class ContextAwareHelperTest {
                 "1");
     }
         
+    public ArrayList  convertXMLtoJSON(String response) {
+        try{
+            JSONObject xmlJson = XML.toJSONObject(response);
+            String prettyString = xmlJson.toString(4);
+            System.out.println(prettyString);
+            Iterator x = xmlJson.keys();
+            ArrayList jsonArray=new ArrayList();
+            while(x.hasNext()){
+                String key=(String)x.next();
+                jsonArray.add(xmlJson.get(key));
+            }
+            return jsonArray;
+        } catch (JSONException je) {
+            System.out.println(je.toString());
+            return null;
+        }
+    }
     /** FIXME: need to implement a discovery process that takes into account user's preferences and locations
      * currently, just present the set of known services to users and return the selected service
      * @return _selectedServiceParam 
@@ -103,8 +127,18 @@ public class ContextAwareHelperTest {
         this.setSelectedService(iotServiceList);
         return _selectedServiceParam;
     }
-        
-
+    
+    public String[] getGsnOutput() {
+        return gsnOutputPort;
+    }
+    public String[] getFirebaseOutput(){
+        return firebaseOutputPort;
+    }
+    
+    public String[] getParaimpuOutput() {
+        return paraimpuOutputPort;
+    }
+    
     public String getSelectedService() {
         //return _selectedService;
         return "GSN";
@@ -156,6 +190,9 @@ public class ContextAwareHelperTest {
  
     // FIXME:Need comments
     public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
+    public String[] gsnOutputPort = {"sound", "sensorName"};
+    public String[] firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
+    public String[] paraimpuOutputPort = {"payload","producer", "thingId"};
     public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
         
     ///////////////////////////////////////////////////////////////////
