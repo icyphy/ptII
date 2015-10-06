@@ -159,11 +159,13 @@ public class KielerLayoutArcConnector extends ArcConnector {
 
             // Rotate the edge's start/end decorator (if any).
             double tailNormal = 0, headNormal = 0;
-            headNormal = KielerLayoutUtil.getNormal(headTail[0],
-                    bendPointList.get(0));
-            tailNormal = KielerLayoutUtil.getNormal(headTail[1],
-                    bendPointList.get(bendPointList.size() - 1));
-
+            if (!bendPointList.isEmpty()) {
+                headNormal = KielerLayoutUtil.getNormal(headTail[0],
+                        bendPointList.get(0));
+                tailNormal = KielerLayoutUtil.getNormal(headTail[1],
+                        bendPointList.get(bendPointList.size() - 1));
+            }
+            
             tailSite.setNormal(tailNormal);
             headSite.setNormal(headNormal);
             
