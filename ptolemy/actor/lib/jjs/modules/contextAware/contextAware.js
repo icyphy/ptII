@@ -21,11 +21,40 @@ var helper = new ContextAwareHelper();
 
 ////////////////////////////////////////////////////////////
 ////Functions provided in this module.
+
+/** 
+ * use a helper class to return the list of data to be extracted from the GSN service
+ */
+exports.gsnServices=function() {
+	return Java.from(helper.getGsnOutput());
+}
+
+/** 
+* use a helper class to return the list of data to be extracted from  the Firebase service
+*/
+
+exports.firebaseServices = function() {
+	return Java.from(helper.getFirebaseOutput());
+}
+/** 
+* use a helper class to return the list of data to be extracted from  the Paraimpu service
+*/
+exports.paraimpuServices = function() {
+	return Java.from(helper.getParaimpuOutput());
+}
+
 /**
- * Use a helper class to return a list of known services
+ * Use a helper class to return a list of known REST services
  */
 exports.services = function() {
 	return Java.from(helper.availableServices());
+}
+
+/**
+ * Use a helper class to convert  xml data format to json data format
+ */
+exports.xmlToJson= function(response) {
+	return Java.from(helper.convertXMLtoJSON(response));
 }
 
 exports.DiscoveryOfRESTService = DiscoveryOfRESTService;
