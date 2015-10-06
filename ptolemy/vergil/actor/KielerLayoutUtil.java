@@ -36,6 +36,12 @@ import diva.canvas.TransformContext;
 import diva.canvas.connector.BasicManhattanRouter;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.PerimeterSite;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 
 /**
  * Static helper class for the KIELER classes 
@@ -123,4 +129,89 @@ public final class KielerLayoutUtil {
         double theta = Math.atan2(normalY, normalX);
         return theta;
     }
+    
+    /**
+     * Find a location for the given object.
+     *
+     * @param namedObj a model object
+     * @return the object's location, or {@code null} if there is no location
+     */
+    public static Locatable getLocation(NamedObj namedObj) {
+        if (namedObj instanceof Locatable) {
+            return (Location) namedObj;
+        } else {
+            NamedObj object = namedObj;
+
+            // Search for the next entity in the hierarchy that has
+            // a location attribute.
+            while (object != null) {
+                Attribute attribute = object.getAttribute("_location");
+                if (attribute instanceof Locatable) {
+                    return (Locatable) attribute;
+                }
+                List<Locatable> locatables = object
+                        .attributeList(Locatable.class);
+                if (!locatables.isEmpty()) {
+                    return locatables.get(0);
+                }
+                // Relations are directly contained in a composite entity, so
+                // don't take any parent location.
+                if (object instanceof Relation) {
+                    object = null;
+                } else {
+                    object = object.getContainer();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the location given by the location attribute of the given input
+     * object. If the Ptolemy object has no location attribute, return double
+     * zero.
+     *
+     * @param namedObj The Ptolemy object for which the location should be
+     *            retrieved.
+     * @return A vector corresponding to the location (x and y) of the object.
+     *          Will return a zero vector if no location attribute is set for the object.
+     */
+    public static Point2D getLocationPoint(NamedObj namedObj) {
+        Point2D point = getLocationPoint(getLocation(namedObj));
+        if (point == null) {
+            point = new Point2D.Double();
+        }
+        return point;
+    }
+
+    /**
+     * Retrieve the actual position from a locatable instance.
+     *
+     * @param locatable a locatable
+     * @return the actual position, or null if none is found
+     */
+    public static Point2D getLocationPoint(Locatable locatable) {
+        if (locatable != null) {
+            double[] coords = locatable.getLocation();
+            try {
+                /* Workaround for a strange behavior: If loading a model
+                 * from MoML, a Location might have set a valid expression with
+                 * non trivial values, but it hasn't been validated and therefore
+                 * the value is still {0,0}
+                 */
+                if (coords[0] == 0 && coords[1] == 0) {
+                    locatable.validate();
+                    coords = locatable.getLocation();
+                }
+                Point2D.Double location = new Point2D.Double();
+                location.x = coords[0];
+                location.y = coords[1];
+                return location;
+            } catch (IllegalActionException e) {
+                // nothing, use default value
+            }
+        }
+        return null;
+    }
+
 }

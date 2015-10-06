@@ -33,8 +33,7 @@ import java.util.List;
 
 import diva.canvas.Site;
 import ptolemy.kernel.Relation;
-import ptolemy.vergil.basic.layout.kieler.LayoutHint;
-import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
+import ptolemy.vergil.actor.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
 
 ///////////////////////////////////////////////////////////////////

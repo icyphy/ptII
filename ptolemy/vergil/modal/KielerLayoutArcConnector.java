@@ -41,8 +41,8 @@ import diva.canvas.connector.ArcConnector;
 import diva.canvas.toolbox.LabelFigure;
 import ptolemy.kernel.Relation;
 import ptolemy.vergil.actor.KielerLayoutUtil;
-import ptolemy.vergil.basic.layout.kieler.LayoutHint;
-import ptolemy.vergil.basic.layout.kieler.LayoutHint.LayoutHintItem;
+import ptolemy.vergil.actor.LayoutHint;
+import ptolemy.vergil.actor.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
 
 ///////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ import ptolemy.vergil.kernel.Link;
  * @version $Id$
  * @author Ulf Rueegg
  * @see ptolemy.vergil.actor.KielerLayoutConnector
- * @since Ptolemy II 12.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating red (uru)
  */
 
