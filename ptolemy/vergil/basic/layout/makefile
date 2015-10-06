@@ -56,7 +56,9 @@ PTCLASSALLJARS = \
 	kieler/kieler.jar
 
 JSRCS = \
-	LayoutConfiguration.java
+	AbstractLayoutConfiguration.java \
+	ActorLayoutConfiguration.java \
+	ModalLayoutConfiguration.java
 
 OTHER_FILES_TO_BE_JARED = \
 	layout.htm
