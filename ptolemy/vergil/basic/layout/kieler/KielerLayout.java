@@ -291,8 +291,15 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             long momlRequestOverhead = System.currentTimeMillis();
 
+            // Create a special change request to apply the computed layout to the model.
+            ApplyLayoutRequest layoutRequest = new ApplyLayoutRequest(
+                    _compositeEntity);
+            
             // Apply layout to ptolemy model.
-            _recursivelyApplyLayout(parentNode);
+            _recursivelyApplyLayout(parentNode, layoutRequest);
+            
+            // Let the composite actor execute the actual changes.
+            _compositeEntity.requestChange(layoutRequest);
 
             momlRequestOverhead = System.currentTimeMillis()
                     - momlRequestOverhead;
@@ -385,19 +392,20 @@ public class KielerLayout extends AbstractGlobalLayout {
      * 
      * @param parentNode The KIELER graph object containing all layout information
      *            to apply to the Ptolemy model
+     * @param layoutRequest the common layout request for the current layout run
      * @exception IllegalActionException if routing of edges fails.
      */
-    private void _recursivelyApplyLayout(KNode parentNode)
+    private void _recursivelyApplyLayout(KNode parentNode, ApplyLayoutRequest layoutRequest)
             throws IllegalActionException {
 
         // the _applyLayout method applies positions to the 
         // children of a node
         if (!parentNode.getChildren().isEmpty()) {
-            _applyLayout(parentNode);
+            _applyLayout(parentNode, layoutRequest);
 
             for (KNode child : parentNode.getChildren()) {
                 if (!child.getChildren().isEmpty()) {
-                    _recursivelyApplyLayout(child);
+                    _recursivelyApplyLayout(child, layoutRequest);
                 }
             }
         }
@@ -413,12 +421,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      *
      * @param parentNode The KIELER graph object containing all layout information
      *            to apply to the Ptolemy model
+     * @param layoutRequest the common layout request for the current layout run
      * @exception IllegalActionException if routing of edges fails.
      */
-    private void _applyLayout(KNode parentNode) throws IllegalActionException {
-        // Create a special change request to apply the computed layout to the model.
-        ApplyLayoutRequest layoutRequest = new ApplyLayoutRequest(
-                _compositeEntity);
+    private void _applyLayout(KNode parentNode,
+            ApplyLayoutRequest layoutRequest) throws IllegalActionException {
 
         // Apply node layout.
         for (KNode knode : parentNode.getChildren()) {
@@ -464,9 +471,6 @@ public class KielerLayout extends AbstractGlobalLayout {
                 }
             }
         }
-
-        // Let the composite actor execute the actual changes.
-        _compositeEntity.requestChange(layoutRequest);
     }
 
     /**
@@ -1099,7 +1103,6 @@ public class KielerLayout extends AbstractGlobalLayout {
             } else {
                 knode.setParent(_fsmInputOutput);
             }
-            
         }
 
         Rectangle2D figureBounds = getLayoutTarget().getBounds(divaLocation);
