@@ -85,7 +85,7 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="2.0">
             <display name="Object spacing"/>
         </property>

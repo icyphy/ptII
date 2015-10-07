@@ -536,7 +536,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, -195.0]">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.42000000000000004">
                 <display name="Aspect ratio"/>
             </property>
@@ -765,7 +765,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{190.81909547738695, -706.4949748743718}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <port name="MeasurementDataFromOthers" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

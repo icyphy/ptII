@@ -23,7 +23,7 @@
 	<property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
 	</property>
 	<property name="_layoutConfiguration"
-		class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+		class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
 	</property>
 	<property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter"
 		value="true">

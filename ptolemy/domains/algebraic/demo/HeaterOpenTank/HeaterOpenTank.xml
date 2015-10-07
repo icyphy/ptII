@@ -162,7 +162,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{425.0919993936863, 483.0506495507316}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <property name="pAtm" class="ptolemy.data.expr.Parameter" value="101325">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -423,7 +423,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.4326171874997, 478.1164713541667}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <property name="m0" class="ptolemy.data.expr.Parameter" value="0.2">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -543,7 +543,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{296.9326171875, 478.5529240262681}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <property name="k" class="ptolemy.data.expr.Parameter" value="1.0E6">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

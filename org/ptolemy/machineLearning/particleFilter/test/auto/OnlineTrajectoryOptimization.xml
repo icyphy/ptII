@@ -1690,7 +1690,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-285.0, -155.0}">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.42000000000000004">
                 <display name="Aspect ratio"/>
             </property>
@@ -2522,7 +2522,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-285.0, -155.0}">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.42000000000000004">
                 <display name="Aspect ratio"/>
             </property>
@@ -3354,7 +3354,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-285.0, -155.0}">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.42000000000000004">
                 <display name="Aspect ratio"/>
             </property>
@@ -4186,7 +4186,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-285.0, -155.0}">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.42000000000000004">
                 <display name="Aspect ratio"/>
             </property>

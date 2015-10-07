@@ -34,7 +34,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 120.0}">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
     </property>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{FALSE, TRUE}">

@@ -404,7 +404,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, -155.0}">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.64">
                 <display name="Aspect ratio"/>
             </property>
@@ -1017,7 +1017,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1414.382558139535, -526.9521802325584}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <property name="N_Particles" class="ptolemy.data.expr.Parameter" value="N_Particles">
             </property>
