@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic.layout;
 
+import de.cau.cs.kieler.kiml.options.Direction;
+import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,6 +53,12 @@ public class ModalLayoutConfiguration extends AbstractLayoutConfiguration {
     
     /** Default value for useSplines. */
     public static final boolean DEF_USE_SPLINES = true;
+    
+    /** Specifies the direction into which the "flow" of the layout points. */
+    public ChoiceParameter direction;
+    
+    /** Default direction. */
+    public static final Direction DEF_DIRECTION = Direction.DOWN;
 
     /**
      * Creates an initializes a layout configuration specifically tailored 
@@ -72,7 +80,9 @@ public class ModalLayoutConfiguration extends AbstractLayoutConfiguration {
         drawSplines.setTypeEquals(BaseType.BOOLEAN);
         drawSplines.setExpression(Boolean.toString(DEF_USE_SPLINES));
 
+        direction = new ChoiceParameter(this, "direction", Direction.class);
+        direction.setDisplayName("Layout Direction");
+        direction.setExpression(DEF_DIRECTION.toString());
+        
     }
-    
-    
 }

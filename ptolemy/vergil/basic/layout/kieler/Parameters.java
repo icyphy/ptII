@@ -243,20 +243,21 @@ public class Parameters {
      *  
      * @param parentLayout
      *          the layout of the parent node
-     * @param modelConfiguration
+     * @param modalConfiguration
      *          the container with user-specified options, may be null
      * @throws IllegalActionException
      *          thrown if one of the parameters has the wrong type
      */
     private void _applyModalConfiguration(KLayoutData parentLayout,
-            ModalLayoutConfiguration modelConfiguration)
+            ModalLayoutConfiguration modalConfiguration)
                     throws IllegalActionException {
 
         // Set default values for modal models.
         parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
                 EdgeRouting.SPLINES);
-        parentLayout.setProperty(LayoutOptions.DIRECTION, Direction.DOWN);
-        
+        parentLayout.setProperty(LayoutOptions.DIRECTION,
+                ModalLayoutConfiguration.DEF_DIRECTION);
+
         float spacing = parentLayout.getProperty(SPACING);
         parentLayout.setProperty(SPACING, spacing / 2f);
         parentLayout.setProperty(Properties.OBJ_SPACING_IN_LAYER_FACTOR, 8f);
@@ -268,12 +269,12 @@ public class Parameters {
                 FixedAlignment.BALANCED);
         
         // User-specified
-        if (modelConfiguration != null) {
+        if (modalConfiguration != null) {
             
             // For FSMs the user can choose whether he wants to use splines
             // or not. Depending on the choice we have to adapt the layout options
             BooleanToken useSplines = BooleanToken
-                    .convert(modelConfiguration.drawSplines.getToken());
+                    .convert(modalConfiguration.drawSplines.getToken());
             parentLayout.setProperty(SPLINES, useSplines.booleanValue());
             
             if (useSplines.booleanValue()) {
@@ -286,6 +287,10 @@ public class Parameters {
                 parentLayout.setProperty(
                         Properties.OBJ_SPACING_IN_LAYER_FACTOR, 20f);
             }
+            
+            // direction
+            Direction dir = (Direction) modalConfiguration.direction.getChosenValue();
+            parentLayout.setProperty(LayoutOptions.DIRECTION, dir);
         }
     }
 
