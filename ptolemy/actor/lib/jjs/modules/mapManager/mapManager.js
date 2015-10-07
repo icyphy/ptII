@@ -226,7 +226,7 @@ function Entity(name){
 		return _simpleHashToString(this.containingMaps);
 	}
 
-	this.entityAliasesToString = function() {
+	this.aliasesToString = function() {
 		return _simpleHashToString(this.aliases);
 	}
 
@@ -236,11 +236,11 @@ function Entity(name){
 	 		throw "Incorrect arguments to addAlias.";
 	 	}
 
-
 	 	//Check to see if this entity has been registered.
 	 	if( ! entities.hasOwnProperty(alias._key()) ){
 	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity an alias.";
 	 	} 
+
 
 
 	 	//Check to see if alias has been registered. If not, throw exception.
@@ -248,10 +248,11 @@ function Entity(name){
 	 		throw "Attempt to add an unregistered entity as an alias to " + this.toString();
 	 	} 
 
-	 	if( this.aliases.hasOwnProperty(alias._key())){
+		//Todo, check to make sure this logic is correct, I realize aliases can exist in code too
+	 	if( (alias === this) || this.aliases.hasOwnProperty(alias._key())){
 	 		return false;
 	 	} else {
-	 		this.aliases[entity_key()] = alias;
+	 		this.aliases[alias._key()] = alias;
 	 		return true;
 	 	}
 	}
@@ -469,14 +470,18 @@ exports.registerMap = function(map){
 	}
 }
 
-exports.getMapFromKey = function(mapKey){
-	if( ! (typeof mapKey === "string")  ){
-		throw "Incorrect arguments to getMap";
-	}
 
-	return maps[mapKey];
+//Removed this function. The problem is mapKeys are implemented as private functions.
+//There is no situation (for now) when the user has a mapKey but no map.
 
-}
+// exports.getMapFromKey = function(mapKey){
+// 	if( ! (typeof mapKey === "string")  ){
+// 		throw "Incorrect arguments to getMap";
+// 	}
+
+// 	return maps[mapKey];
+
+// }
 
 //Todo think through the implications of unregistering a map.
 //Should this even be allowed?
