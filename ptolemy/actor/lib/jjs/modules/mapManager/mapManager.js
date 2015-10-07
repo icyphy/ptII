@@ -10,7 +10,7 @@
 //This is a simple hash
 var maps = {};
 
-//Todo: delete this? I made the decision to maitain each alias's entities with the entity.
+//Todo: delete this? I made the decision to maintain each alias's entities with the entity.
 //Hash mapping source entities with their destination alter ego. he pairs are stored as parameters with the value true.
 //This is a keyed hash
 //var entityAliases = {};
@@ -410,7 +410,11 @@ function Map(mapName, spaceType, coordinateSystem){
 		}
 
 		if (! entities.hasOwnProperty(entity._key()) ){
-			throw "Cannot add unregistered entity to map" + this.toString();
+			throw "Cannot add unregistered entity to map" + entity.toString();
+		}
+
+		if (! maps.hasOwnProperty(this._key()) ){
+			throw "Cannot add an entity to an unregistred map" + this.toString();
 		}
 
 		if( this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMaps.hasOwnProperty(this._key()) ){
@@ -425,6 +429,15 @@ function Map(mapName, spaceType, coordinateSystem){
 	this.removeEntity = function(entity) {
 		if ( ! (entity instanceof Entity )  ){
 			throw "Incorrect arguments to Map.addEntity."
+		}
+
+
+		if (! entities.hasOwnProperty(entity._key()) ){
+			throw "Cannot remove an unregistered entity from the map" + entity.toString();
+		}
+
+		if (! maps.hasOwnProperty(this._key()) ){
+			throw "Cannot remove an entity from an unregistred map" + this.toString();
 		}
 
 		if( ! (this.mapEntities.hasOwnProperty(entity._key()) && entity.containingMaps.hasOwnProperty(this._key())) ){
