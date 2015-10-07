@@ -1,4 +1,0 @@
-aircraftId	currentTime	delayOfaircraft	trackId	trackLoad
-2	2.3255225409	0.0	19	1
-2	3.3255225409	1.0	19	1
-2	4.3255225409	2.0	19	1

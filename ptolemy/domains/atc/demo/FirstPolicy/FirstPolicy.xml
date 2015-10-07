@@ -2,21 +2,23 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FirstPolicy" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.1_20141218">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="ATCDirector" class="ptolemy.domains.atc.kernel.policy1.ATCDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -130.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 874}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 628]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 764]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6211852543163789">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{637.8203125000003, 329.8335429705107}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{679.6757812500003, 439.3016920089722}">
     </property>
-    <property name="isStormy" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}">
+    <property name="isStormy" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -38,7 +40,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <entity name="Track1-1" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track1/track11.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track11.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -46,11 +48,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(0)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 175.0}">
         </property>
     </entity>
     <entity name="Track2-1" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track2/track21.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track21.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="7">
         </property>
@@ -58,11 +62,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(6)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 265.0}">
         </property>
     </entity>
     <entity name="Track3-1" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track3/track31.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track31.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="13">
         </property>
@@ -70,11 +76,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(12)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 345.0]">
         </property>
     </entity>
     <entity name="Track4-1" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track4/track41.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track41.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="19">
         </property>
@@ -82,11 +90,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(18)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 425.0]">
         </property>
     </entity>
     <entity name="Track5-1" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track5/track51.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track51.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="25">
         </property>
@@ -94,11 +104,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(24)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 510.0}">
         </property>
     </entity>
     <entity name="Track1-2" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track1/track12.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track12.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -106,11 +118,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(1)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 180.0]">
         </property>
     </entity>
     <entity name="Track2-2" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track2/track22.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track22.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="8">
         </property>
@@ -118,11 +132,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(7)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 270.0}">
         </property>
     </entity>
     <entity name="Track3-2" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track3/track32.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track32.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="14">
         </property>
@@ -130,11 +146,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(13)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 350.0]">
         </property>
     </entity>
     <entity name="Track4-2" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track4/track42.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track42.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -146,7 +164,7 @@
         </property>
     </entity>
     <entity name="Track5-2" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track5/track52.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track52.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="26">
         </property>
@@ -154,11 +172,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(25)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 510.0}">
         </property>
     </entity>
     <entity name="Track1-3" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track1/track13.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track13.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -166,11 +186,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(2)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 185.0]">
         </property>
     </entity>
     <entity name="Track2-3" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track2/track23.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track23.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="9">
         </property>
@@ -178,11 +200,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(8)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 275.0}">
         </property>
     </entity>
     <entity name="Track3-3" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track3/track33.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track33.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="15">
         </property>
@@ -190,11 +214,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(14)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 355.0]">
         </property>
     </entity>
     <entity name="Track4-3" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track4/track43.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track43.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="21">
         </property>
@@ -202,11 +228,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(20)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 435.0}">
         </property>
     </entity>
     <entity name="Track5-3" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track5/track53.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track53.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="27">
         </property>
@@ -214,11 +242,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(26)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{690.0, 510.0}">
         </property>
     </entity>
     <entity name="Track1-4" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track1/track14.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track14.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="4">
         </property>
@@ -226,11 +256,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(3)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 190.0}">
         </property>
     </entity>
     <entity name="Track2-4" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track2/track24.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track24.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -238,11 +270,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(9)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="17">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 280.0]">
         </property>
     </entity>
     <entity name="Track3-4" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track3/track34.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track34.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="16">
         </property>
@@ -250,11 +284,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(15)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 360.0]">
         </property>
     </entity>
     <entity name="Track4-4" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track4/track44.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track44.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="22">
         </property>
@@ -262,11 +298,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(21)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 435.0]">
         </property>
     </entity>
     <entity name="Track5-4" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track5/track54.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track54.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="28">
         </property>
@@ -274,11 +312,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(27)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{800.0, 510.0}">
         </property>
     </entity>
     <entity name="Track1-5" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track1/track15.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track15.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="5">
         </property>
@@ -286,11 +326,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(4)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{715.0, 195.0}">
         </property>
     </entity>
     <entity name="Track2-5" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track2/track25.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track25.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="11">
         </property>
@@ -298,11 +340,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(10)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{770.0, 285.0}">
         </property>
     </entity>
     <entity name="Track3-5" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track3/track35.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track35.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="17">
         </property>
@@ -310,11 +354,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(16)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{830.0, 365.0}">
         </property>
     </entity>
     <entity name="Track4-5" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track4/track45.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track45.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="23">
         </property>
@@ -322,11 +368,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(22)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{885.0, 440.0}">
         </property>
     </entity>
     <entity name="Track5-5" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track5/track55.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track55.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="29">
         </property>
@@ -334,11 +382,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(28)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[935.0, 510.0]">
         </property>
     </entity>
     <entity name="Track1-6" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track1/track16.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track16.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="6">
         </property>
@@ -346,11 +396,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(5)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[830.0, 200.0]">
         </property>
     </entity>
     <entity name="Track2-6" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track2/track26.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track26.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="12">
         </property>
@@ -358,11 +410,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(11)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{885.0, 290.0}">
         </property>
     </entity>
     <entity name="Track3-6" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track3/track36.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track36.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="18">
         </property>
@@ -370,11 +424,13 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(17)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{940.0, 370.0}">
         </property>
     </entity>
     <entity name="Track4-6" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track4/track46.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track46.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="24">
         </property>
@@ -382,17 +438,21 @@
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(23)">
         </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{1010.0, 450.0}">
         </property>
     </entity>
     <entity name="Track5-6" class="ptolemy.domains.atc.lib.Track">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track5/track56.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track56.txt">
         </property>
         <property name="trackId" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{24,-1,41}">
         </property>
         <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(29)">
+        </property>
+        <property name="aircraftID" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 510.0]">
         </property>
