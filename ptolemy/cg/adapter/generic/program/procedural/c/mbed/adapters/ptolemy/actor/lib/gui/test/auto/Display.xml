@@ -32,7 +32,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 120.0}">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 280, 484, 208}, maximized=false}">

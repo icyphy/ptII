@@ -88,7 +88,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[153.0, 20.0]">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.31999999999999995">
             <display name="Aspect ratio"/>
         </property>
@@ -1232,7 +1232,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-16755.0, -17340.0]">
                 </property>
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
                 <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
                     <display name="Include decorations"/>
                 </property>

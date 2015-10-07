@@ -130,7 +130,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 635.0]">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="4.4">
             <display name="Object spacing"/>
         </property>

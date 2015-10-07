@@ -120,7 +120,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[133.5, 140.0]">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Include decorations"/>
         </property>

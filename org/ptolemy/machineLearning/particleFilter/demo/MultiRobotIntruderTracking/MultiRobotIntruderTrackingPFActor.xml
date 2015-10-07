@@ -193,7 +193,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, -155.0}">
             </property>
         </property>
-        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+        <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-0.42000000000000004">
                 <display name="Aspect ratio"/>
             </property>
@@ -1256,7 +1256,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1579.6769622093022, 584.3846293604647}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, -50.0}">
@@ -2238,7 +2238,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.3790829145729, 425.9430747487437}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
                 <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="true">
                     <display name="Include decorations"/>
                 </property>

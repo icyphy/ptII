@@ -838,7 +838,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{349.3790829145729, 425.9430747487437}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
                 <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="true">
                     <display name="Include decorations"/>
                 </property>
@@ -1770,7 +1770,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{896.3443781407033, 541.7766959798997}">
             </property>
-            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+            <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
             </property>
             <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{-190.0, -5.0}">
