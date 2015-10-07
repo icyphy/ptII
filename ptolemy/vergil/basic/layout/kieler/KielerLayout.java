@@ -497,6 +497,10 @@ public class KielerLayout extends AbstractGlobalLayout {
         double[] layoutHintBendPoints = new double[bendPoints.size() * 2];
         int index = 0;
         KNode parentNode = KielerGraphUtil._getParent(kedge);
+        if (parentNode == null) {
+            throw new IllegalStateException(
+                    "Internal layout error. Every edge in the layout graph must have a parent.");
+        }
         for (KPoint relativeKPoint : bendPoints) {
             KVector kpoint = relativeKPoint.createVector();
             KimlUtil.toAbsolute(kpoint, parentNode);
@@ -553,14 +557,24 @@ public class KielerLayout extends AbstractGlobalLayout {
             KEdgeLayout edgeLayout = kedge.getData(KEdgeLayout.class);
             List<KPoint> bendPoints = edgeLayout.getBendPoints();
 
-            KShapeLayout sourceLayout = kedge.getSource().getData(
-                    KShapeLayout.class);
+            KNode source = kedge.getSource();
+            if (source == null) {
+                throw new IllegalStateException(
+                        "Internal layout error. "
+                        + "Every edge must have a source node.");
+            }
+            KShapeLayout sourceLayout = source.getData(KShapeLayout.class);
             double sourcex = sourceLayout.getXpos() + sourceLayout.getWidth()
                     / 2;
             double sourcey = sourceLayout.getYpos() + sourceLayout.getHeight()
                     / 2;
-            KShapeLayout targetLayout = kedge.getTarget().getData(
-                    KShapeLayout.class);
+            KNode target = kedge.getTarget();
+            if (target == null) {
+                throw new IllegalStateException(
+                        "Internal layout error. "
+                        + "Every edge must have a source node.");
+            }
+            KShapeLayout targetLayout = target.getData(KShapeLayout.class);
             double targetx = targetLayout.getXpos() + targetLayout.getWidth()
                     / 2;
             double targety = targetLayout.getYpos() + targetLayout.getHeight()
