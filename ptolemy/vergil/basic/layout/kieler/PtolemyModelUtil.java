@@ -58,7 +58,8 @@ import ptolemy.vergil.basic.RelativeLocation;
  *
  * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>),
  *         Christian Motika (<a href="mailto:cmot@informatik.uni-kiel.de">cmot</a>),
- *         Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>)
+ *         Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>),
+ *         Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
@@ -234,4 +235,23 @@ public final class PtolemyModelUtil {
         return SwingConstants.SOUTH;
     }
 
+    /**
+     * @param state
+     *          a {@link State} to test
+     * @return whether the passed state has the isInitialState parameter set to true.
+     */
+    protected static boolean _isInitialState(State state) {
+        return state.isInitialState.getValueAsString()
+                .equals(Boolean.TRUE.toString());
+    }
+    
+    /**
+     * @param state
+     *          a {@link State} to test
+     * @return whether the passed state has the isFinalState parameter set to true.
+     */
+    protected static boolean _isFinalState(State state) {
+        return state.isFinalState.getValueAsString()
+                .equals(Boolean.TRUE.toString());
+    }
 }
