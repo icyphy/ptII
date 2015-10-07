@@ -225,14 +225,14 @@ public class ArcConnector extends AbstractConnector {
         // Figure out the centers of the attached figures
         Point2D headCenter;
 
-        if (tailFigure != null) {
+        if (tailFigure != null && tailFigure.getParent() != null) {
             tailCenter = CanvasUtilities.getCenterPoint(tailFigure,
                     currentContext);
         } else {
             tailCenter = tailPt;
         }
 
-        if (headFigure != null) {
+        if (headFigure != null && headFigure.getParent() != null) {
             headCenter = CanvasUtilities.getCenterPoint(headFigure,
                     currentContext);
         } else {
