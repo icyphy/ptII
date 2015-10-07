@@ -1203,14 +1203,14 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                 PortConstraints.FREE);
 
-        if (state.isInitialState.getValueAsString()
-                .equals(Boolean.TRUE.toString())) {
+        if (PtolemyModelUtil._isInitialState(state)
+                && !PtolemyModelUtil._isFinalState(state)) {
             nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
                     LayerConstraint.FIRST);
         }
 
-        if (state.isFinalState.getValueAsString()
-                .equals(Boolean.TRUE.toString())) {
+        if (!PtolemyModelUtil._isInitialState(state)
+                && PtolemyModelUtil._isFinalState(state)) {
             nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
                     LayerConstraint.LAST);
         }

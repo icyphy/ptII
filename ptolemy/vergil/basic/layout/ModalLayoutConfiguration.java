@@ -76,12 +76,12 @@ public class ModalLayoutConfiguration extends AbstractLayoutConfiguration {
         super(container, name);
 
         drawSplines = new Parameter(this, "useSplines");
-        drawSplines.setDisplayName("Use splines in FSMs");
+        drawSplines.setDisplayName("Use splines for arcs");
         drawSplines.setTypeEquals(BaseType.BOOLEAN);
         drawSplines.setExpression(Boolean.toString(DEF_USE_SPLINES));
 
         direction = new ChoiceParameter(this, "direction", Direction.class);
-        direction.setDisplayName("Layout Direction");
+        direction.setDisplayName("Layout direction");
         direction.setExpression(DEF_DIRECTION.toString());
         
     }
