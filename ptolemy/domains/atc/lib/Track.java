@@ -27,7 +27,9 @@
  */
 package ptolemy.domains.atc.lib;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import ptolemy.actor.Director;
@@ -35,6 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -52,6 +55,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
 /** A model of a track in air traffic control systems.
  *  This track can have no more than one aircraft in transit.
@@ -97,6 +102,32 @@ public class Track extends  TrackWriter implements Rejecting{
         
         stormy=new Parameter(this, "stormy");
         stormy.setTypeEquals(BaseType.BOOLEAN);
+        
+        _attachText("_iconDescription", "<svg> <path d=\"M 194.67321,2.8421709e-14 L 70.641958,53.625 "
+                + "C 60.259688,46.70393 36.441378,32.34961 31.736508,30.17602 C -7.7035221,11.95523 "
+                + "-5.2088921,44.90709 11.387258,54.78122 C 15.926428,57.48187 39.110778,71.95945 "
+                + "54.860708,81.15624 L 72.766958,215.09374 L 94.985708,228.24999 L 106.51696,107.31249 "
+                + "L 178.04821,143.99999 L 181.89196,183.21874 L 196.42321,191.84374 L 207.51696,149.43749 "
+                + "L 207.64196,149.49999 L 238.45446,117.96874 L 223.57946,109.96874 L 187.95446,126.87499 "
+                + "L 119.67321,84.43749 L 217.36071,12.25 L 194.67321,2.8421709e-14 z\" "
+                + "style=\"fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;"
+                + "stroke-linejoin:miter;stroke-opacity:1\" id=\"path5724\"/></svg>");
+
+        // Create an icon for this sensor node.
+        EditorIcon node_icon = new EditorIcon(this, "_icon");
+
+        _shape = new ResizablePolygonAttribute(node_icon, "_circle");
+        _shape.centered.setToken("true");
+        _shape.width.setToken("40");
+        _shape.height.setToken("40");
+        _shape.vertices.setExpression("{194.67321,2.8421709e-14, 70.641958,53.625, "
+                + "60.259688,46.70393, 36.441378,32.34961, 31.736508,30.17602, -7.7035221,11.95523, "
+                + "-5.2088921,44.90709, 11.387258,54.78122, 15.926428,57.48187, 39.110778,71.95945, "
+                + "54.860708,81.15624, 72.766958,215.09374, 94.985708,228.24999, 106.51696,107.31249, "
+                + "178.04821,143.99999, 181.89196,183.21874, 196.42321,191.84374, 207.51696,149.43749, "
+                + "207.64196,149.49999, 238.45446,117.96874, 223.57946,109.96874, 187.95446,126.87499, "
+                + "119.67321,84.43749, 217.36071,12.25, 194.67321,2.8421709e-14}");
+        _shape.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
     }
     
     public TypedIOPort input;
@@ -150,12 +181,14 @@ public class Track extends  TrackWriter implements Rejecting{
             _writingToFile((Token)_writeToFile);
             ////**************
             try{
-                if(_OutRoute==0)
+                if(_OutRoute==0) {
                     northOutput.send(0, _inTransit);
-                else if(_OutRoute==1)
+                } else if(_OutRoute==1) {
                     eastOutput.send(0, _inTransit);
-                else
+                } else {
                     southOutput.send(0, _inTransit);
+                }
+                _setIcon(-1);
             }
             catch (NoRoomException ex){
              // Token rejected by the destination.
@@ -175,9 +208,10 @@ public class Track extends  TrackWriter implements Rejecting{
                     _director.fireAt(this, _transitExpires);
                 }
                 else
-                {// Send airplane throught another route
+                {// Send airplane through another route
                     Map<String, Token> newAircraft=new TreeMap<String, Token>();
                     newAircraft.put("aircraftId",( (RecordToken)_inTransit).get("aircraftId"));
+                    _setIcon(-1);
                     newAircraft.put("aircraftSpeed", ((RecordToken)_inTransit).get("aircraftSpeed"));
                     newAircraft.put("flightMap", (Token)temp.get("flightMap"));
                     newAircraft.put("priorTrack", ((RecordToken)_inTransit).get("priorTrack"));
@@ -216,6 +250,9 @@ public class Track extends  TrackWriter implements Rejecting{
                 ///////////////////////////////////*************write to file
                 _valuesForFile[0]=_id;
                 _valuesForFile[1]=((RecordToken)inputAircraft).get("aircraftId");
+                
+                _setIcon(((IntToken)_valuesForFile[1]).intValue());
+                
                 _valuesForFile[2]=new DoubleToken(currentTime.getDoubleValue());
                 _valuesForFile[3]=new IntToken(_counter);
                 _valuesForFile[4]=new DoubleToken(_delayOfEachAirplanes);
@@ -245,7 +282,7 @@ public class Track extends  TrackWriter implements Rejecting{
             }
   
     }
-    
+
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -258,7 +295,37 @@ public class Track extends  TrackWriter implements Rejecting{
        _called=false;
        _counter=0;
        _delayOfEachAirplanes=0.0;
+       _setIcon(-1);
     }
+    
+    /** Set the visual indication of the icon for the specified ID.
+     *  @param id The aircraft ID or -1 to indicate no aircraft.
+     *  @throws IllegalActionException
+     */
+    protected void _setIcon(int id) throws IllegalActionException {
+        ArrayToken color = _idToColor.get(id);
+        if (color == null) {
+            if (id < 0) {
+                color = _noAircraftColor;
+            } else {
+                Token[] colorSpec = new DoubleToken[4];
+                colorSpec[0] = new DoubleToken(_random.nextDouble());
+                colorSpec[1] = new DoubleToken(_random.nextDouble());
+                colorSpec[2] = new DoubleToken(_random.nextDouble());
+                colorSpec[3] = new DoubleToken(1.0);
+                color = new ArrayToken(colorSpec);
+            }
+            _idToColor.put(id, color);
+        }
+        _shape.fillColor.setToken(color);
+    }
+    
+    private static Map<Integer,ArrayToken> _idToColor = new HashMap<Integer,ArrayToken>();
+    private Random _random = new Random();
+    private ResizablePolygonAttribute _shape;
+    private DoubleToken _one = new DoubleToken(1.0);
+    private Token[] _white = {_one, _one, _one, _one};
+    private ArrayToken _noAircraftColor = new ArrayToken(_white);
    
     //** New added variables to measure some parameters
     private int _counter;
