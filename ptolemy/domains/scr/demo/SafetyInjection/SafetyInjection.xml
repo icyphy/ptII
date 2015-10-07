@@ -488,7 +488,7 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SafetyInjection_out.output&quot;,x=-90.0,y=125.0}, tail={id=&quot;safetyInjection._location&quot;,x=10.0,y=125.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SafetyInjection_out.output&quot;,x=-90.0,y=125.0}, tail={id=&quot;safetyInjection._location&quot;,x=10.0,y=125.0}, points={} } }">
                 </property>
             </relation>
             <link port="safetyInjection" relation="relation"/>

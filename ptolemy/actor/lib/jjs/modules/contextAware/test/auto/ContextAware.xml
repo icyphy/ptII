@@ -195,11 +195,11 @@
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=590.0,y=165.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=470.0,y=165.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=590.0,y=165.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=470.0,y=165.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=470.0,y=165.0}, tail={id=&quot;Const2.output&quot;,x=410.0,y=165.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=470.0,y=165.0}, tail={id=&quot;Const2.output&quot;,x=410.0,y=165.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

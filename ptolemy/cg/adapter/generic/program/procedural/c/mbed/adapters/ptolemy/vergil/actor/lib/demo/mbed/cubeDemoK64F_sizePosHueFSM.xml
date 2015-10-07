@@ -485,7 +485,7 @@ Then delete this annotation.</text>
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;LEDCube.deltaSize&quot;,x=370.0,y=295.0}, tail={id=&quot;ModalModel.deltaSize&quot;,x=220.0,y=180.0}, points={290.0,275.0,290.0,180.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;LEDCube.deltaSize&quot;,x=370.0,y=295.0}, tail={id=&quot;ModalModel.deltaSize&quot;,x=220.0,y=180.0}, points={290.0,275.0,290.0,180.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -493,11 +493,11 @@ Then delete this annotation.</text>
         </property>
         <vertex name="vertex1" value="{275.0, 240.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, tail={id=&quot;LEDCube.deltaY&quot;,x=370.0,y=295.0}, points={275.0,295.0} },{ head={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, tail={id=&quot;LEDCube.deltaZ&quot;,x=370.0,y=295.0}, points={275.0,305.0} },{ head={id=&quot;LEDCube.deltaX&quot;,x=370.0,y=295.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, points={275.0,285.0} },{ head={id=&quot;Const.output&quot;,x=150.0,y=240.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, tail={id=&quot;LEDCube.deltaY&quot;,x=370.0,y=295.0}, points={275.0,295.0} },{ head={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, tail={id=&quot;LEDCube.deltaZ&quot;,x=370.0,y=295.0}, points={275.0,305.0} },{ head={id=&quot;LEDCube.deltaX&quot;,x=370.0,y=295.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, points={275.0,285.0} },{ head={id=&quot;Const.output&quot;,x=150.0,y=240.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=240.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;LEDCube.hue&quot;,x=370.0,y=295.0}, tail={id=&quot;Const2.output&quot;,x=235.0,y=315.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;LEDCube.hue&quot;,x=370.0,y=295.0}, tail={id=&quot;Const2.output&quot;,x=235.0,y=315.0}, points={} } }">
         </property>
     </relation>
     <link port="LEDCube.deltaSize" relation="relation"/>

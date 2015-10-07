@@ -505,31 +505,31 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=275.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=160.0,y=-10.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=275.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=160.0,y=-10.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=70.0,y=60.0}, tail={id=&quot;Pstop_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=70.0,y=60.0}, tail={id=&quot;Pstop_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=75.0,y=125.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=125.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=75.0,y=125.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=125.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=75.0,y=265.0}, tail={id=&quot;Cyel_out.output&quot;,x=-40.0,y=265.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=75.0,y=265.0}, tail={id=&quot;Cyel_out.output&quot;,x=-40.0,y=265.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=75.0,y=195.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-40.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=75.0,y=195.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-40.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <link port="Pgo" relation="relation"/>
@@ -697,43 +697,43 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=255.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=140.0,y=-10.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=255.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=140.0,y=-10.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=50.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-65.0,y=265.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=50.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-65.0,y=265.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=50.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-65.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=50.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-65.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=50.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-65.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=50.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-65.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=50.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-65.0,y=130.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=50.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-65.0,y=130.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RemoveNilTokens.output&quot;,x=50.0,y=345.0}, tail={id=&quot;set_scr_count.input&quot;,x=175.0,y=345.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;RemoveNilTokens.output&quot;,x=50.0,y=345.0}, tail={id=&quot;set_scr_count.input&quot;,x=175.0,y=345.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;set_scr_count_expression.output&quot;,x=-120.0,y=345.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=50.0,y=345.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;set_scr_count_expression.output&quot;,x=-120.0,y=345.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=50.0,y=345.0}, points={} } }">
                 </property>
             </relation>
             <link port="Pgo" relation="relation"/>
@@ -899,31 +899,31 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=250.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=140.0,y=-10.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=250.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=140.0,y=-10.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=55.0,y=195.0}, tail={id=&quot;Pstop_out.output&quot;,x=-60.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=55.0,y=195.0}, tail={id=&quot;Pstop_out.output&quot;,x=-60.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=45.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-65.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=45.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-65.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=55.0,y=130.0}, tail={id=&quot;Cyel_out.output&quot;,x=-60.0,y=130.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=55.0,y=130.0}, tail={id=&quot;Cyel_out.output&quot;,x=-60.0,y=130.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=280.0,y=60.0}, tail={id=&quot;Cgrn_out.output&quot;,x=170.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=280.0,y=60.0}, tail={id=&quot;Cgrn_out.output&quot;,x=170.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1105,43 +1105,43 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=280.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=280.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=75.0,y=195.0}, tail={id=&quot;Pstop_out.output&quot;,x=-40.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=75.0,y=195.0}, tail={id=&quot;Pstop_out.output&quot;,x=-40.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=75.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=75.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=75.0,y=130.0}, tail={id=&quot;Cyel_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=75.0,y=130.0}, tail={id=&quot;Cyel_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=315.0,y=60.0}, tail={id=&quot;Cgrn_out.output&quot;,x=205.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=315.0,y=60.0}, tail={id=&quot;Cgrn_out.output&quot;,x=205.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;set_scr_count.input&quot;,x=225.0,y=275.0}, tail={id=&quot;RemoveNilTokens.output&quot;,x=100.0,y=275.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;set_scr_count.input&quot;,x=225.0,y=275.0}, tail={id=&quot;RemoveNilTokens.output&quot;,x=100.0,y=275.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;set_scr_count_expression.output&quot;,x=-40.0,y=275.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=100.0,y=275.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;set_scr_count_expression.output&quot;,x=-40.0,y=275.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=100.0,y=275.0}, points={} } }">
                 </property>
             </relation>
             <link port="Pgo" relation="relation"/>
@@ -1307,31 +1307,31 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=275.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pgo._location&quot;,x=275.0,y=-10.0}, tail={id=&quot;Pgo_out.output&quot;,x=165.0,y=-10.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=80.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-35.0,y=265.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Pstop._location&quot;,x=80.0,y=265.0}, tail={id=&quot;Pstop_out.output&quot;,x=-35.0,y=265.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=70.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cred._location&quot;,x=70.0,y=60.0}, tail={id=&quot;Cred_out.output&quot;,x=-40.0,y=60.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=80.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-35.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cyel._location&quot;,x=80.0,y=195.0}, tail={id=&quot;Cyel_out.output&quot;,x=-35.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=70.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Cgrn._location&quot;,x=70.0,y=130.0}, tail={id=&quot;Cgrn_out.output&quot;,x=-40.0,y=130.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1501,47 +1501,47 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Sec&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;DiscreteClock.output&quot;,x=-62.5,y=128.416748046875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SCRModel.Sec&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;DiscreteClock.output&quot;,x=-62.5,y=128.416748046875}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale.output&quot;,x=222.5,y=-146.583251953125}, points={287.5,-21.583251953125,287.5,-146.583251953125} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale.output&quot;,x=222.5,y=-146.583251953125}, points={287.5,-21.583251953125,287.5,-146.583251953125} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale2.output&quot;,x=222.5,y=-81.583251953125}, points={272.5,-16.583251953125,272.5,-81.583251953125} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale2.output&quot;,x=222.5,y=-81.583251953125}, points={272.5,-16.583251953125,272.5,-81.583251953125} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale3.output&quot;,x=222.5,y=-11.583251953125}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale3.output&quot;,x=222.5,y=-11.583251953125}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale4.output&quot;,x=222.5,y=63.416748046875}, points={272.5,-6.583251953125,272.5,63.416748046875} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale4.output&quot;,x=222.5,y=63.416748046875}, points={272.5,-6.583251953125,272.5,63.416748046875} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale5.output&quot;,x=222.5,y=148.416748046875}, points={287.5,-1.583251953125,287.5,148.416748046875} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=347.5,y=-1.583251953125,index=5}, tail={id=&quot;Scale5.output&quot;,x=222.5,y=148.416748046875}, points={287.5,-1.583251953125,287.5,148.416748046875} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Pgo&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale.input&quot;,x=222.5,y=-146.583251953125}, points={127.5,108.416748046875,127.5,-146.583251953125} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SCRModel.Pgo&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale.input&quot;,x=222.5,y=-146.583251953125}, points={127.5,108.416748046875,127.5,-146.583251953125} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Pstop&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale2.input&quot;,x=222.5,y=-81.583251953125}, points={142.5,118.416748046875,142.5,-81.583251953125} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SCRModel.Pstop&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale2.input&quot;,x=222.5,y=-81.583251953125}, points={142.5,118.416748046875,142.5,-81.583251953125} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Cred&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale3.input&quot;,x=222.5,y=-11.583251953125}, points={157.5,128.416748046875,157.5,-11.583251953125} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SCRModel.Cred&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale3.input&quot;,x=222.5,y=-11.583251953125}, points={157.5,128.416748046875,157.5,-11.583251953125} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Cyel&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale4.input&quot;,x=222.5,y=63.416748046875}, points={172.5,138.416748046875,172.5,63.416748046875} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SCRModel.Cyel&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale4.input&quot;,x=222.5,y=63.416748046875}, points={172.5,138.416748046875,172.5,63.416748046875} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SCRModel.Cgrn&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale5.input&quot;,x=222.5,y=148.416748046875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SCRModel.Cgrn&quot;,x=57.5,y=128.416748046875}, tail={id=&quot;Scale5.input&quot;,x=222.5,y=148.416748046875}, points={} } }">
         </property>
     </relation>
     <link port="SCRModel.Sec" relation="relation3"/>

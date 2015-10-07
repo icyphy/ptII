@@ -291,19 +291,19 @@
             </property>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=175.0,y=275.0,index=2}, tail={id=&quot;SingleEvent2.output&quot;,x=90.0,y=205.0}, points={140.0,270.0,140.0,205.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=175.0,y=275.0,index=2}, tail={id=&quot;SingleEvent2.output&quot;,x=90.0,y=205.0}, points={140.0,270.0,140.0,205.0} } }">
             </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimeDelay.output&quot;,x=90.0,y=275.0}, tail={id=&quot;Merge.input&quot;,x=175.0,y=275.0,index=2}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimeDelay.output&quot;,x=90.0,y=275.0}, tail={id=&quot;Merge.input&quot;,x=175.0,y=275.0,index=2}, points={} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port_0._location&quot;,x=225.0,y=275.0}, tail={id=&quot;Merge.output&quot;,x=175.0,y=275.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port_0._location&quot;,x=225.0,y=275.0}, tail={id=&quot;Merge.output&quot;,x=175.0,y=275.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port_3._location&quot;,x=20.0,y=275.0}, tail={id=&quot;TimeDelay.input&quot;,x=90.0,y=275.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port_3._location&quot;,x=20.0,y=275.0}, tail={id=&quot;TimeDelay.input&quot;,x=90.0,y=275.0}, points={} } }">
             </property>
         </relation>
         <link port="port_0" relation="relation"/>

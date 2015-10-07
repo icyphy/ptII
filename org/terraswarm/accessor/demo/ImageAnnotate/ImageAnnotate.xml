@@ -315,39 +315,39 @@
         </property>
         <vertex name="vertex1" value="{245.0, 315.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.input&quot;,x=330.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;Camera.image&quot;,x=175.0,y=315.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;MostRecent.trigger&quot;,x=495.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={495.0,365.0,245.0,365.0} },{ head={id=&quot;ImageAnnotate.image&quot;,x=785.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={695.0,160.0,695.0,205.0,245.0,205.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.input&quot;,x=330.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;Camera.image&quot;,x=175.0,y=315.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={} },{ head={id=&quot;MostRecent.trigger&quot;,x=495.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={495.0,365.0,245.0,365.0} },{ head={id=&quot;ImageAnnotate.image&quot;,x=785.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=315.0}, points={695.0,160.0,695.0,205.0,245.0,205.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=330.0,y=305.0}, tail={id=&quot;MostRecent.input&quot;,x=495.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=330.0,y=305.0}, tail={id=&quot;MostRecent.input&quot;,x=495.0,y=305.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=900.0,y=140.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=785.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=900.0,y=140.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=785.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=315.0}, tail={id=&quot;Camera.trigger&quot;,x=175.0,y=315.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=315.0}, tail={id=&quot;Camera.trigger&quot;,x=175.0,y=315.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=330.0,y=305.0}, tail={id=&quot;Scale.input&quot;,x=495.0,y=150.0}, points={405.0,315.0,405.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=330.0,y=305.0}, tail={id=&quot;Scale.input&quot;,x=495.0,y=150.0}, points={405.0,315.0,405.0,150.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.rotation&quot;,x=785.0,y=140.0}, tail={id=&quot;Accumulator.output&quot;,x=625.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.rotation&quot;,x=785.0,y=140.0}, tail={id=&quot;Accumulator.output&quot;,x=625.0,y=150.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MovingAverage.output&quot;,x=625.0,y=305.0}, tail={id=&quot;ImageAnnotate.translate&quot;,x=785.0,y=140.0}, points={710.0,305.0,710.0,170.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MovingAverage.output&quot;,x=625.0,y=305.0}, tail={id=&quot;ImageAnnotate.translate&quot;,x=785.0,y=140.0}, points={710.0,305.0,710.0,170.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MovingAverage.input&quot;,x=625.0,y=305.0}, tail={id=&quot;MostRecent.output&quot;,x=495.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MovingAverage.input&quot;,x=625.0,y=305.0}, tail={id=&quot;MostRecent.output&quot;,x=495.0,y=305.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=495.0,y=150.0}, tail={id=&quot;Accumulator.input&quot;,x=625.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=495.0,y=150.0}, tail={id=&quot;Accumulator.input&quot;,x=625.0,y=150.0}, points={} } }">
         </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>

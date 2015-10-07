@@ -76,11 +76,11 @@
         </property>
         <vertex name="vertex1" value="{95.0, 175.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, tail={id=&quot;TimedPlotter.input&quot;,x=240.0,y=180.0,index=2}, points={95.0,220.0,195.0,220.0,195.0,180.0} },{ head={id=&quot;Integrator.derivative&quot;,x=140.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=265.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={95.0,265.0} },{ head={id=&quot;inc20.counter&quot;,x=35.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, tail={id=&quot;TimedPlotter.input&quot;,x=240.0,y=180.0,index=2}, points={95.0,220.0,195.0,220.0,195.0,180.0} },{ head={id=&quot;Integrator.derivative&quot;,x=140.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} },{ head={id=&quot;Test.input&quot;,x=145.0,y=265.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={95.0,265.0} },{ head={id=&quot;inc20.counter&quot;,x=35.0,y=175.0}, tail={id=&quot;relation2.vertex1&quot;,x=95.0,y=175.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=240.0,y=180.0,index=2}, tail={id=&quot;Integrator.state&quot;,x=140.0,y=175.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=240.0,y=180.0,index=2}, tail={id=&quot;Integrator.state&quot;,x=140.0,y=175.0}, points={} } }">
         </property>
     </relation>
     <link port="Test.input" relation="relation2"/>

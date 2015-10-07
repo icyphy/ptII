@@ -32,7 +32,7 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=120.0,y=145.0}, tail={id=&quot;Display.input&quot;,x=190.0,y=145.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=120.0,y=145.0}, tail={id=&quot;Display.input&quot;,x=190.0,y=145.0}, points={} } }">
         </property>
     </relation>
     <link port="Const.output" relation="relation"/>

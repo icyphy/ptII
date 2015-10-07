@@ -61,7 +61,7 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=75.0,y=160.0}, tail={id=&quot;LineWriter.input&quot;,x=190.0,y=170.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=75.0,y=160.0}, tail={id=&quot;LineWriter.input&quot;,x=190.0,y=170.0}, points={} } }">
         </property>
     </relation>
     <link port="Ramp.output" relation="relation"/>

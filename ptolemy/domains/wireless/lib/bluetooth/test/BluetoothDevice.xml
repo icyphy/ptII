@@ -289,49 +289,49 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=170.0,y=330.0}, tail={id=&quot;SingleEvent.output&quot;,x=60.0,y=330.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=170.0,y=330.0}, tail={id=&quot;SingleEvent.output&quot;,x=60.0,y=330.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst2.trigger&quot;,x=450.0,y=55.0}, tail={id=&quot;SingleEvent2.output&quot;,x=335.0,y=55.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst2.trigger&quot;,x=450.0,y=55.0}, tail={id=&quot;SingleEvent2.output&quot;,x=335.0,y=55.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=170.0,y=330.0}, tail={id=&quot;BluetoothDevice.Wired Input&quot;,x=350.0,y=465.0}, points={235.0,330.0,235.0,455.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=170.0,y=330.0}, tail={id=&quot;BluetoothDevice.Wired Input&quot;,x=350.0,y=465.0}, points={235.0,330.0,235.0,455.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst2.output&quot;,x=450.0,y=55.0}, tail={id=&quot;BluetoothDevice2.Wired Input&quot;,x=630.0,y=190.0}, points={515.0,55.0,515.0,180.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst2.output&quot;,x=450.0,y=55.0}, tail={id=&quot;BluetoothDevice2.Wired Input&quot;,x=630.0,y=190.0}, points={515.0,55.0,515.0,180.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst3.trigger&quot;,x=155.0,y=395.0}, tail={id=&quot;SingleEvent3.output&quot;,x=55.0,y=395.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst3.trigger&quot;,x=155.0,y=395.0}, tail={id=&quot;SingleEvent3.output&quot;,x=55.0,y=395.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BluetoothDevice.Wired Input - Detail&quot;,x=350.0,y=465.0}, tail={id=&quot;StringConst3.output&quot;,x=155.0,y=395.0}, points={220.0,465.0,220.0,395.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;BluetoothDevice.Wired Input - Detail&quot;,x=350.0,y=465.0}, tail={id=&quot;StringConst3.output&quot;,x=155.0,y=395.0}, points={220.0,465.0,220.0,395.0} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BluetoothDevice2.Wired Input - Detail&quot;,x=630.0,y=190.0}, tail={id=&quot;StringConst4.output&quot;,x=435.0,y=120.0}, points={500.0,190.0,500.0,120.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;BluetoothDevice2.Wired Input - Detail&quot;,x=630.0,y=190.0}, tail={id=&quot;StringConst4.output&quot;,x=435.0,y=120.0}, points={500.0,190.0,500.0,120.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BluetoothDevice.Wired Input - Data&quot;,x=350.0,y=465.0}, tail={id=&quot;StringConst5.output&quot;,x=155.0,y=475.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;BluetoothDevice.Wired Input - Data&quot;,x=350.0,y=465.0}, tail={id=&quot;StringConst5.output&quot;,x=155.0,y=475.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst5.trigger&quot;,x=155.0,y=475.0}, tail={id=&quot;SingleEvent5.output&quot;,x=55.0,y=475.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst5.trigger&quot;,x=155.0,y=475.0}, tail={id=&quot;SingleEvent5.output&quot;,x=55.0,y=475.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst4.trigger&quot;,x=435.0,y=120.0}, tail={id=&quot;SingleEvent4.output&quot;,x=335.0,y=120.0}, points={} },{ head={id=&quot;StringConst6.trigger&quot;,x=435.0,y=200.0}, tail={id=&quot;SingleEvent6.output&quot;,x=335.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst4.trigger&quot;,x=435.0,y=120.0}, tail={id=&quot;SingleEvent4.output&quot;,x=335.0,y=120.0}, points={} },{ head={id=&quot;StringConst6.trigger&quot;,x=435.0,y=200.0}, tail={id=&quot;SingleEvent6.output&quot;,x=335.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BluetoothDevice2.Wired Input - Data&quot;,x=630.0,y=190.0}, tail={id=&quot;StringConst6.output&quot;,x=435.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;BluetoothDevice2.Wired Input - Data&quot;,x=630.0,y=190.0}, tail={id=&quot;StringConst6.output&quot;,x=435.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">

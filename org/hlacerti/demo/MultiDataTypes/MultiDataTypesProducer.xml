@@ -268,39 +268,39 @@
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=275.0,y=170.0}, tail={id=&quot;StringConst.trigger&quot;,x=410.0,y=170.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=275.0,y=170.0}, tail={id=&quot;StringConst.trigger&quot;,x=410.0,y=170.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent3.output&quot;,x=335.0,y=95.0}, tail={id=&quot;Const.trigger&quot;,x=450.0,y=95.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent3.output&quot;,x=335.0,y=95.0}, tail={id=&quot;Const.trigger&quot;,x=450.0,y=95.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent4.output&quot;,x=35.0,y=170.0}, tail={id=&quot;Const2.trigger&quot;,x=150.0,y=170.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent4.output&quot;,x=35.0,y=170.0}, tail={id=&quot;Const2.trigger&quot;,x=150.0,y=170.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;val5._location&quot;,x=260.0,y=95.0}, tail={id=&quot;SingleEvent5.output&quot;,x=185.0,y=95.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;val5._location&quot;,x=260.0,y=95.0}, tail={id=&quot;SingleEvent5.output&quot;,x=185.0,y=95.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;val3._location&quot;,x=500.0,y=95.0}, tail={id=&quot;Const.output&quot;,x=450.0,y=95.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;val3._location&quot;,x=500.0,y=95.0}, tail={id=&quot;Const.output&quot;,x=450.0,y=95.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;val2._location&quot;,x=110.0,y=95.0}, tail={id=&quot;SingleEvent2.output&quot;,x=35.0,y=95.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;val2._location&quot;,x=110.0,y=95.0}, tail={id=&quot;SingleEvent2.output&quot;,x=35.0,y=95.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;val._location&quot;,x=490.0,y=170.0}, tail={id=&quot;StringConst.output&quot;,x=410.0,y=170.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;val._location&quot;,x=490.0,y=170.0}, tail={id=&quot;StringConst.output&quot;,x=410.0,y=170.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;val4._location&quot;,x=200.0,y=170.0}, tail={id=&quot;Const2.output&quot;,x=150.0,y=170.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;val4._location&quot;,x=200.0,y=170.0}, tail={id=&quot;Const2.output&quot;,x=150.0,y=170.0}, points={} } }">
             </property>
         </relation>
         <link port="val" relation="relation7"/>

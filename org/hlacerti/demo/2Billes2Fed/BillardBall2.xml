@@ -457,11 +457,11 @@
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Accumulator.input&quot;,x=310.0,y=195.0}, tail={id=&quot;Const2.output&quot;,x=225.0,y=300.0}, points={} },{ head={id=&quot;Accumulator.input&quot;,x=285.0,y=110.0}, tail={id=&quot;Const.output&quot;,x=200.0,y=110.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Accumulator.input&quot;,x=310.0,y=195.0}, tail={id=&quot;Const2.output&quot;,x=225.0,y=300.0}, points={} },{ head={id=&quot;Accumulator.input&quot;,x=285.0,y=110.0}, tail={id=&quot;Const.output&quot;,x=200.0,y=110.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Accumulator2.input&quot;,x=320.0,y=300.0}, tail={id=&quot;Const.output&quot;,x=225.0,y=195.0}, points={} },{ head={id=&quot;Accumulator2.input&quot;,x=280.0,y=260.0}, tail={id=&quot;Const2.output&quot;,x=200.0,y=260.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Accumulator2.input&quot;,x=320.0,y=300.0}, tail={id=&quot;Const.output&quot;,x=225.0,y=195.0}, points={} },{ head={id=&quot;Accumulator2.input&quot;,x=280.0,y=260.0}, tail={id=&quot;Const2.output&quot;,x=200.0,y=260.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -485,23 +485,23 @@
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression2.in&quot;,x=810.0,y=195.0}, tail={id=&quot;TrueGate.output&quot;,x=720.0,y=195.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression2.in&quot;,x=810.0,y=195.0}, tail={id=&quot;TrueGate.output&quot;,x=720.0,y=195.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SetVariable.input&quot;,x=905.0,y=195.0}, tail={id=&quot;Expression2.output&quot;,x=810.0,y=195.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SetVariable.input&quot;,x=905.0,y=195.0}, tail={id=&quot;Expression2.output&quot;,x=810.0,y=195.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression3.in&quot;,x=810.0,y=260.0}, tail={id=&quot;TrueGate2.output&quot;,x=715.0,y=260.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression3.in&quot;,x=810.0,y=260.0}, tail={id=&quot;TrueGate2.output&quot;,x=715.0,y=260.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SetVariable2.input&quot;,x=905.0,y=260.0}, tail={id=&quot;Expression3.output&quot;,x=810.0,y=260.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SetVariable2.input&quot;,x=905.0,y=260.0}, tail={id=&quot;Expression3.output&quot;,x=810.0,y=260.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TrueGate2.input&quot;,x=715.0,y=260.0}, tail={id=&quot;Expression4.output&quot;,x=530.0,y=260.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrueGate2.input&quot;,x=715.0,y=260.0}, tail={id=&quot;Expression4.output&quot;,x=530.0,y=260.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -509,7 +509,7 @@
             </property>
             <vertex name="vertex1" value="[340.0, 110.0]">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Accumulator.output&quot;,x=285.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=365.0,y=110.0}, points={} },{ head={id=&quot;X._location&quot;,x=390.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=365.0,y=110.0}, points={} },{ head={id=&quot;Expression.X&quot;,x=530.0,y=195.0}, tail={id=&quot;relation5.vertex1&quot;,x=365.0,y=110.0}, points={365.0,195.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Accumulator.output&quot;,x=285.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=365.0,y=110.0}, points={} },{ head={id=&quot;X._location&quot;,x=390.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=365.0,y=110.0}, points={} },{ head={id=&quot;Expression.X&quot;,x=530.0,y=195.0}, tail={id=&quot;relation5.vertex1&quot;,x=365.0,y=110.0}, points={365.0,195.0} } }">
             </property>
         </relation>
         <link port="X" relation="relation5"/>

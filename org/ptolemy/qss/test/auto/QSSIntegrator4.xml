@@ -76,13 +76,13 @@
         </property>
         <vertex name="vertex1" value="{230.0, 140.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=230.0,y=140.0}, tail={id=&quot;TimedPlotter.input&quot;,x=285.0,y=70.0,index=3}, points={230.0,70.0} },{ head={id=&quot;Test.input&quot;,x=280.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=230.0,y=140.0}, points={} },{ head={id=&quot;QSSIntegrator.q&quot;,x=150.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=230.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=230.0,y=140.0}, tail={id=&quot;TimedPlotter.input&quot;,x=285.0,y=70.0,index=3}, points={230.0,70.0} },{ head={id=&quot;Test.input&quot;,x=280.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=230.0,y=140.0}, points={} },{ head={id=&quot;QSSIntegrator.q&quot;,x=150.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=230.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{100.0, 140.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=100.0,y=140.0}, tail={id=&quot;TimedPlotter.input&quot;,x=285.0,y=70.0,index=3}, points={100.0,60.0} },{ head={id=&quot;relation2.vertex1&quot;,x=100.0,y=140.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=150.0,y=140.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=100.0,y=140.0}, tail={id=&quot;DiscreteClock.output&quot;,x=15.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=100.0,y=140.0}, tail={id=&quot;TimedPlotter.input&quot;,x=285.0,y=70.0,index=3}, points={100.0,60.0} },{ head={id=&quot;relation2.vertex1&quot;,x=100.0,y=140.0}, tail={id=&quot;QSSIntegrator.u&quot;,x=150.0,y=140.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=100.0,y=140.0}, tail={id=&quot;DiscreteClock.output&quot;,x=15.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <link port="Test.input" relation="relation3"/>

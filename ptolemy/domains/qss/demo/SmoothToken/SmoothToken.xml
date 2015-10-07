@@ -105,11 +105,11 @@
         </property>
         <vertex name="vertex1" value="{255.0, 235.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.input&quot;,x=350.0,y=235.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={} },{ head={id=&quot;TimedDisplay3.input&quot;,x=295.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={255.0,170.0} },{ head={id=&quot;SmoothZeroCrossingDetector.input&quot;,x=305.0,y=110.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={255.0,110.0} },{ head={id=&quot;DiscreteClock2.output&quot;,x=55.0,y=235.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Sampler.input&quot;,x=350.0,y=235.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={} },{ head={id=&quot;TimedDisplay3.input&quot;,x=295.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={255.0,170.0} },{ head={id=&quot;SmoothZeroCrossingDetector.input&quot;,x=305.0,y=110.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={255.0,110.0} },{ head={id=&quot;DiscreteClock2.output&quot;,x=55.0,y=235.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.trigger&quot;,x=350.0,y=235.0}, tail={id=&quot;DiscreteClock.output&quot;,x=185.0,y=325.0}, points={350.0,325.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Sampler.trigger&quot;,x=350.0,y=235.0}, tail={id=&quot;DiscreteClock.output&quot;,x=185.0,y=325.0}, points={350.0,325.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -117,11 +117,11 @@
         </property>
         <vertex name="vertex1" value="{555.0, 235.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.output&quot;,x=350.0,y=235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=235.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=595.0,y=165.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=235.0}, points={555.0,165.0} },{ head={id=&quot;TimedDisplay2.input&quot;,x=595.0,y=235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Sampler.output&quot;,x=350.0,y=235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=235.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=595.0,y=165.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=235.0}, points={555.0,165.0} },{ head={id=&quot;TimedDisplay2.input&quot;,x=595.0,y=235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SmoothZeroCrossingDetector.output&quot;,x=305.0,y=110.0}, tail={id=&quot;TimedDisplay.input&quot;,x=480.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SmoothZeroCrossingDetector.output&quot;,x=305.0,y=110.0}, tail={id=&quot;TimedDisplay.input&quot;,x=480.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <link port="Sampler.input" relation="relation"/>

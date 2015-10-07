@@ -86,31 +86,31 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp2.output&quot;,x=95.0,y=110.0}, tail={id=&quot;Minimum0.input&quot;,x=195.0,y=185.0,index=3}, points={145.0,110.0,145.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp2.output&quot;,x=95.0,y=110.0}, tail={id=&quot;Minimum0.input&quot;,x=195.0,y=185.0,index=3}, points={145.0,110.0,145.0,175.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp3.output&quot;,x=95.0,y=180.0}, tail={id=&quot;Minimum0.input&quot;,x=195.0,y=185.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp3.output&quot;,x=95.0,y=180.0}, tail={id=&quot;Minimum0.input&quot;,x=195.0,y=185.0,index=3}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp4.output&quot;,x=95.0,y=245.0}, tail={id=&quot;Minimum0.input&quot;,x=195.0,y=185.0,index=3}, points={145.0,245.0,145.0,185.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp4.output&quot;,x=95.0,y=245.0}, tail={id=&quot;Minimum0.input&quot;,x=195.0,y=185.0,index=3}, points={145.0,245.0,145.0,185.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test16.input&quot;,x=305.0,y=150.0}, tail={id=&quot;Minimum0.minimumValue&quot;,x=195.0,y=185.0}, points={250.0,150.0,250.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test16.input&quot;,x=305.0,y=150.0}, tail={id=&quot;Minimum0.minimumValue&quot;,x=195.0,y=185.0}, points={250.0,150.0,250.0,175.0} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test12.input&quot;,x=305.0,y=215.0}, tail={id=&quot;Minimum0.channelNumber&quot;,x=195.0,y=185.0}, points={250.0,215.0,250.0,195.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test12.input&quot;,x=305.0,y=215.0}, tail={id=&quot;Minimum0.channelNumber&quot;,x=195.0,y=185.0}, points={250.0,215.0,250.0,195.0} } }">
         </property>
     </relation>
     <link port="Ramp2.output" relation="relation2"/>

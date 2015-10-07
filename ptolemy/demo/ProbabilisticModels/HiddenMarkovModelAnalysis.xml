@@ -399,7 +399,7 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=400.0,y=395.0}, tail={id=&quot;Const.output&quot;,x=355.0,y=395.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=400.0,y=395.0}, tail={id=&quot;Const.output&quot;,x=355.0,y=395.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -409,7 +409,7 @@
                 </vertex>
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=355.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} },{ head={id=&quot;p._location&quot;,x=325.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={305.0,330.0} },{ head={id=&quot;Gaussian.output&quot;,x=245.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=355.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} },{ head={id=&quot;p._location&quot;,x=325.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={305.0,330.0} },{ head={id=&quot;Gaussian.output&quot;,x=245.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} } }">
                 </property>
             </relation>
             <link port="p" relation="relation2"/>
@@ -470,7 +470,7 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=375.0,y=330.0}, tail={id=&quot;Const.output&quot;,x=330.0,y=330.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=375.0,y=330.0}, tail={id=&quot;Const.output&quot;,x=330.0,y=330.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -480,7 +480,7 @@
                 </vertex>
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=330.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=330.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=215.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=330.0}, points={} },{ head={id=&quot;p._location&quot;,x=300.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=330.0}, points={275.0,265.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=330.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=330.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=215.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=330.0}, points={} },{ head={id=&quot;p._location&quot;,x=300.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=275.0,y=330.0}, points={275.0,265.0} } }">
                 </property>
             </relation>
             <link port="p" relation="relation2"/>
@@ -541,7 +541,7 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=400.0,y=395.0}, tail={id=&quot;Const.output&quot;,x=355.0,y=395.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;state._location&quot;,x=400.0,y=395.0}, tail={id=&quot;Const.output&quot;,x=355.0,y=395.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -551,7 +551,7 @@
                 </vertex>
                 <property name="color" class="ptolemy.actor.gui.ColorAttribute">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=355.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} },{ head={id=&quot;p._location&quot;,x=325.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={305.0,330.0} },{ head={id=&quot;Gaussian.output&quot;,x=245.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=355.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} },{ head={id=&quot;p._location&quot;,x=325.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={305.0,330.0} },{ head={id=&quot;Gaussian.output&quot;,x=245.0,y=395.0}, tail={id=&quot;relation3.vertex1&quot;,x=305.0,y=395.0}, points={} } }">
                 </property>
             </relation>
             <link port="p" relation="relation2"/>
@@ -584,7 +584,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -592,7 +592,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -602,7 +602,7 @@
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HMM.p&quot;,x=35.0,y=300.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=240.0}, points={85.0,290.0,85.0,240.0} },{ head={id=&quot;Switch.input&quot;,x=150.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=240.0}, points={105.0,185.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HMM.p&quot;,x=35.0,y=300.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=240.0}, points={85.0,290.0,85.0,240.0} },{ head={id=&quot;Switch.input&quot;,x=150.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=105.0,y=240.0}, points={105.0,185.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -610,7 +610,7 @@
         </property>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=150.0,y=185.0,index=3}, tail={id=&quot;Histogram.input&quot;,x=255.0,y=195.0,index=3}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -618,7 +618,7 @@
         </property>
         <vertex name="vertex1" value="[120.0, 340.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=105.0,y=310.0}, tail={id=&quot;.Scale.input&quot;,x=155.0,y=310.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=105.0,y=310.0}, tail={id=&quot;.Scale.input&quot;,x=155.0,y=310.0}, points={} } }">
         </property>
     </relation>
     <link port="Switch.input" relation="relation5"/>

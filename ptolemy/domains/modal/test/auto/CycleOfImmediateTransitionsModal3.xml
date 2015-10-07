@@ -424,13 +424,13 @@
                 </property>
                 <vertex name="A_immediate4_1893289564_i_RELATIONVERTEX" value="{135.0, 15.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;__1063672062_region_1.A_immediate4_1893289564_i&quot;,x=195.0,y=15.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=135.0,y=15.0}, points={} },{ head={id=&quot;A_immediate4_1893289564_i._location&quot;,x=-25.0,y=15.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=135.0,y=15.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;__1063672062_region_1.A_immediate4_1893289564_i&quot;,x=195.0,y=15.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=135.0,y=15.0}, points={} },{ head={id=&quot;A_immediate4_1893289564_i._location&quot;,x=-25.0,y=15.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=135.0,y=15.0}, points={} } }">
                 </property>
             </relation>
             <relation name="A_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=285.0,y=-20.0}, tail={id=&quot;__1063672062_region_1.A_immediate4_1893289564_o&quot;,x=195.0,y=15.0}, points={245.0,-10.0,245.0,5.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=285.0,y=-20.0}, tail={id=&quot;__1063672062_region_1.A_immediate4_1893289564_o&quot;,x=195.0,y=15.0}, points={245.0,-10.0,245.0,5.0} } }">
                 </property>
             </relation>
             <relation name="A_immediate4_1893289564_o_RELATION" class="ptolemy.actor.TypedIORelation">
@@ -438,13 +438,13 @@
                 </property>
                 <vertex name="A_immediate4_1893289564_o_RELATIONVERTEX" value="{365.0, -10.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;A_immediate4_1893289564_o_COMBINE.output&quot;,x=285.0,y=-20.0}, tail={id=&quot;A_immediate4_1893289564_o_RELATION.A_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=-10.0}, points={} },{ head={id=&quot;A_immediate4_1893289564_o._location&quot;,x=400.0,y=-10.0}, tail={id=&quot;A_immediate4_1893289564_o_RELATION.A_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=-10.0}, points={375.0,-10.0,375.0,-10.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;A_immediate4_1893289564_o_COMBINE.output&quot;,x=285.0,y=-20.0}, tail={id=&quot;A_immediate4_1893289564_o_RELATION.A_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=-10.0}, points={} },{ head={id=&quot;A_immediate4_1893289564_o._location&quot;,x=400.0,y=-10.0}, tail={id=&quot;A_immediate4_1893289564_o_RELATION.A_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=-10.0}, points={375.0,-10.0,375.0,-10.0} } }">
                 </property>
             </relation>
             <relation name="B_immediate4_1893289564_o__1063672062_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=285.0,y=35.0}, tail={id=&quot;__1063672062_region_1.B_immediate4_1893289564_o&quot;,x=195.0,y=15.0}, points={245.0,45.0,245.0,25.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=285.0,y=35.0}, tail={id=&quot;__1063672062_region_1.B_immediate4_1893289564_o&quot;,x=195.0,y=15.0}, points={245.0,45.0,245.0,25.0} } }">
                 </property>
             </relation>
             <relation name="B_immediate4_1893289564_o_RELATION" class="ptolemy.actor.TypedIORelation">
@@ -452,7 +452,7 @@
                 </property>
                 <vertex name="B_immediate4_1893289564_o_RELATIONVERTEX" value="{365.0, 45.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;B_immediate4_1893289564_o_COMBINE.output&quot;,x=285.0,y=35.0}, tail={id=&quot;B_immediate4_1893289564_o_RELATION.B_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=45.0}, points={} },{ head={id=&quot;B_immediate4_1893289564_o._location&quot;,x=400.0,y=45.0}, tail={id=&quot;B_immediate4_1893289564_o_RELATION.B_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=45.0}, points={375.0,45.0,375.0,45.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;B_immediate4_1893289564_o_COMBINE.output&quot;,x=285.0,y=35.0}, tail={id=&quot;B_immediate4_1893289564_o_RELATION.B_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=45.0}, points={} },{ head={id=&quot;B_immediate4_1893289564_o._location&quot;,x=400.0,y=45.0}, tail={id=&quot;B_immediate4_1893289564_o_RELATION.B_immediate4_1893289564_o_RELATIONVERTEX&quot;,x=365.0,y=45.0}, points={375.0,45.0,375.0,45.0} } }">
                 </property>
             </relation>
             <link port="A_immediate4_1893289564_i" relation="A_immediate4_1893289564_i_RELATION"/>
@@ -746,25 +746,25 @@
         </property>
         <vertex name="A_immediate4_1893289564_i_RELATIONVERTEX" value="{180.0, 5.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.A_immediate4_1893289564_i&quot;,x=245.0,y=0.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=180.0,y=5.0}, points={190.0,0.0,190.0,5.0} },{ head={id=&quot;A_immediate4_1893289564_o_COMBINE.output&quot;,x=130.0,y=5.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=180.0,y=5.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.A_immediate4_1893289564_i&quot;,x=245.0,y=0.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=180.0,y=5.0}, points={190.0,0.0,190.0,5.0} },{ head={id=&quot;A_immediate4_1893289564_o_COMBINE.output&quot;,x=130.0,y=5.0}, tail={id=&quot;A_immediate4_1893289564_i_RELATION.A_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=180.0,y=5.0}, points={} } }">
         </property>
     </relation>
     <relation name="A_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.A_immediate4_1893289564_o&quot;,x=245.0,y=0.0}, tail={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=130.0,y=5.0,index=2}, points={295.0,-10.0,295.0,40.0,65.0,40.0,65.0,0.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.A_immediate4_1893289564_o&quot;,x=245.0,y=0.0}, tail={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=130.0,y=5.0,index=2}, points={295.0,-10.0,295.0,40.0,65.0,40.0,65.0,0.0} } }">
         </property>
     </relation>
     <relation name="B_immediate4_1893289564_oimmediate4_1893289564_region_2_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.B_immediate4_1893289564_o&quot;,x=245.0,y=0.0}, tail={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=360.0,y=15.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_2.B_immediate4_1893289564_o&quot;,x=245.0,y=0.0}, tail={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=360.0,y=15.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="A_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.A_immediate4_1893289564_o&quot;,x=0.0,y=20.0}, tail={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=130.0,y=5.0,index=2}, points={80.0,10.0,80.0,5.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.A_immediate4_1893289564_o&quot;,x=0.0,y=20.0}, tail={id=&quot;A_immediate4_1893289564_o_COMBINE.trigger&quot;,x=130.0,y=5.0,index=2}, points={80.0,10.0,80.0,5.0} } }">
         </property>
     </relation>
     <relation name="B_immediate4_1893289564_i_RELATION" class="ptolemy.actor.TypedIORelation">
@@ -772,13 +772,13 @@
         </property>
         <vertex name="B_immediate4_1893289564_i_RELATIONVERTEX" value="{430.0, 70.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.B_immediate4_1893289564_i&quot;,x=0.0,y=20.0}, tail={id=&quot;B_immediate4_1893289564_i_RELATION.B_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=430.0,y=70.0}, points={-55.0,20.0,-55.0,70.0} },{ head={id=&quot;B_immediate4_1893289564_o_COMBINE.output&quot;,x=360.0,y=15.0}, tail={id=&quot;B_immediate4_1893289564_i_RELATION.B_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=430.0,y=70.0}, points={410.0,15.0,410.0,70.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.B_immediate4_1893289564_i&quot;,x=0.0,y=20.0}, tail={id=&quot;B_immediate4_1893289564_i_RELATION.B_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=430.0,y=70.0}, points={-55.0,20.0,-55.0,70.0} },{ head={id=&quot;B_immediate4_1893289564_o_COMBINE.output&quot;,x=360.0,y=15.0}, tail={id=&quot;B_immediate4_1893289564_i_RELATION.B_immediate4_1893289564_i_RELATIONVERTEX&quot;,x=430.0,y=70.0}, points={410.0,15.0,410.0,70.0} } }">
         </property>
     </relation>
     <relation name="B_immediate4_1893289564_oimmediate4_1893289564_region_1_COMBINERELATION" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.B_immediate4_1893289564_o&quot;,x=0.0,y=20.0}, tail={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=360.0,y=15.0,index=2}, points={50.0,30.0,50.0,55.0,310.0,55.0,310.0,15.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;immediate4_1893289564_region_1.B_immediate4_1893289564_o&quot;,x=0.0,y=20.0}, tail={id=&quot;B_immediate4_1893289564_o_COMBINE.trigger&quot;,x=360.0,y=15.0,index=2}, points={50.0,30.0,50.0,55.0,310.0,55.0,310.0,15.0} } }">
         </property>
     </relation>
     <link port="immediate4_1893289564_region_2.A_immediate4_1893289564_i" relation="A_immediate4_1893289564_i_RELATION"/>

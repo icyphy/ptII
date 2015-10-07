@@ -660,7 +660,7 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Integrator.derivative&quot;,x=215.0,y=110.0}, tail={id=&quot;Expression2.output&quot;,x=130.0,y=110.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Integrator.derivative&quot;,x=215.0,y=110.0}, tail={id=&quot;Expression2.output&quot;,x=130.0,y=110.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
