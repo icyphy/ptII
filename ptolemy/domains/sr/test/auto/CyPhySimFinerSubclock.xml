@@ -158,7 +158,7 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NonStrictTest.input&quot;,x=305.0,y=190.0}, tail={id=&quot;CurrentTime.output&quot;,x=200.0,y=190.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NonStrictTest.input&quot;,x=305.0,y=190.0}, tail={id=&quot;CurrentTime.output&quot;,x=200.0,y=190.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -166,17 +166,17 @@
                 </property>
                 <vertex name="vertex1" value="{140.0, 190.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.trigger&quot;,x=200.0,y=190.0}, tail={id=&quot;relation2.vertex1&quot;,x=140.0,y=190.0}, points={} },{ head={id=&quot;Scale.output&quot;,x=80.0,y=190.0}, tail={id=&quot;relation2.vertex1&quot;,x=140.0,y=190.0}, points={} },{ head={id=&quot;out._location&quot;,x=160.0,y=125.0}, tail={id=&quot;relation2.vertex1&quot;,x=140.0,y=190.0}, points={140.0,125.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime.trigger&quot;,x=200.0,y=190.0}, tail={id=&quot;relation2.vertex1&quot;,x=140.0,y=190.0}, points={} },{ head={id=&quot;Scale.output&quot;,x=80.0,y=190.0}, tail={id=&quot;relation2.vertex1&quot;,x=140.0,y=190.0}, points={} },{ head={id=&quot;out._location&quot;,x=160.0,y=125.0}, tail={id=&quot;relation2.vertex1&quot;,x=140.0,y=190.0}, points={140.0,125.0} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;in._location&quot;,x=15.0,y=190.0}, tail={id=&quot;Scale.input&quot;,x=80.0,y=190.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;in._location&quot;,x=15.0,y=190.0}, tail={id=&quot;Scale.input&quot;,x=80.0,y=190.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NonStrictTest.input&quot;,x=305.0,y=190.0}, tail={id=&quot;CurrentTime.output&quot;,x=200.0,y=190.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NonStrictTest.input&quot;,x=305.0,y=190.0}, tail={id=&quot;CurrentTime.output&quot;,x=200.0,y=190.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -197,7 +197,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NonStrictTest2.input&quot;,x=425.0,y=90.0}, tail={id=&quot;CurrentTime.output&quot;,x=320.0,y=90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NonStrictTest2.input&quot;,x=425.0,y=90.0}, tail={id=&quot;CurrentTime.output&quot;,x=320.0,y=90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -205,11 +205,11 @@
         </property>
         <vertex name="vertex1" value="{255.0, 155.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Periodic Composite.out&quot;,x=155.0,y=155.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=155.0}, points={} },{ head={id=&quot;CurrentTime.trigger&quot;,x=320.0,y=90.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=155.0}, points={255.0,90.0} },{ head={id=&quot;NonStrictTest.input&quot;,x=305.0,y=155.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Periodic Composite.out&quot;,x=155.0,y=155.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=155.0}, points={} },{ head={id=&quot;CurrentTime.trigger&quot;,x=320.0,y=90.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=155.0}, points={255.0,90.0} },{ head={id=&quot;NonStrictTest.input&quot;,x=305.0,y=155.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=65.0,y=155.0}, tail={id=&quot;Periodic Composite.in&quot;,x=155.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=65.0,y=155.0}, tail={id=&quot;Periodic Composite.in&quot;,x=155.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <link port="NonStrictTest.input" relation="relation2"/>

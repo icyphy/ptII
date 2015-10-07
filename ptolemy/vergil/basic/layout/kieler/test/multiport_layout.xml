@@ -131,51 +131,51 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=270.0,y=25.0}, tail={id=&quot;CompositeActor.port&quot;,x=20.0,y=200.0,index=2}, points={315.0,25.0,315.0,85.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=270.0,y=25.0}, tail={id=&quot;CompositeActor.port&quot;,x=20.0,y=200.0,index=2}, points={315.0,25.0,315.0,85.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;CompositeActor.port&quot;,x=20.0,y=200.0,index=2}, points={160.0,80.0,160.0,60.0,305.0,60.0,305.0,90.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;CompositeActor.port&quot;,x=20.0,y=200.0,index=2}, points={160.0,80.0,160.0,60.0,305.0,60.0,305.0,90.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, tail={id=&quot;port3._location&quot;,x=485.0,y=40.0}, points={450.0,90.0,450.0,40.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, tail={id=&quot;port3._location&quot;,x=485.0,y=40.0}, points={450.0,90.0,450.0,40.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Discard.input&quot;,x=250.0,y=125.0,index=2}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={245.0,85.0,295.0,85.0,295.0,140.0,370.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Discard.input&quot;,x=250.0,y=125.0,index=2}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={245.0,85.0,295.0,85.0,295.0,140.0,370.0,140.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port5._location&quot;,x=265.0,y=195.0}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={265.0,160.0,295.0,160.0,295.0,150.0,375.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port5._location&quot;,x=265.0,y=195.0}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={265.0,160.0,295.0,160.0,295.0,150.0,375.0,150.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=235.0,y=320.0}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={230.0,235.0,305.0,235.0,305.0,160.0,380.0,160.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=235.0,y=320.0}, tail={id=&quot;CompositeActor.port3&quot;,x=300.0,y=380.0,index=3}, points={230.0,235.0,305.0,235.0,305.0,160.0,380.0,160.0} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=235.0,y=320.0}, tail={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, points={235.0,245.0,315.0,245.0,315.0,170.0,440.0,170.0,440.0,95.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port6._location&quot;,x=235.0,y=320.0}, tail={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, points={235.0,245.0,315.0,245.0,315.0,170.0,440.0,170.0,440.0,95.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={170.0,85.0,170.0,-15.0,460.0,-15.0,460.0,145.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={170.0,85.0,170.0,-15.0,460.0,-15.0,460.0,145.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={450.0,100.0,450.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CompositeActor.port2&quot;,x=580.0,y=200.0,index=3}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={450.0,100.0,450.0,150.0} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[200.0,75.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Discard.input&quot;,x=250.0,y=125.0,index=2}, tail={id=&quot;relation11.vertex1&quot;,x=200.0,y=75.0}, points={250.0,75.0} },{ head={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, tail={id=&quot;relation11.vertex1&quot;,x=200.0,y=75.0}, points={190.0,215.0,190.0,75.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Discard.input&quot;,x=250.0,y=125.0,index=2}, tail={id=&quot;relation11.vertex1&quot;,x=200.0,y=75.0}, points={250.0,75.0} },{ head={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, tail={id=&quot;relation11.vertex1&quot;,x=200.0,y=75.0}, points={190.0,215.0,190.0,75.0} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[180.0,215.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, points={160.0,90.0,160.0,215.0} },{ head={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={190.0,215.0,190.0,355.0,450.0,355.0,450.0,155.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=15.0,y=80.0}, tail={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, points={160.0,90.0,160.0,215.0} },{ head={id=&quot;relation12.vertex1&quot;,x=180.0,y=215.0}, tail={id=&quot;port4._location&quot;,x=495.0,y=155.0}, points={190.0,215.0,190.0,355.0,450.0,355.0,450.0,155.0} } }">
         </property>
     </relation>
     <link port="port" relation="relation"/>

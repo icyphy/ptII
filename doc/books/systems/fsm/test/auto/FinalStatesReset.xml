@@ -198,7 +198,7 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FSMActor.reset&quot;,x=205.0,y=105.0}, tail={id=&quot;Sequence.output&quot;,x=110.0,y=105.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FSMActor.reset&quot;,x=205.0,y=105.0}, tail={id=&quot;Sequence.output&quot;,x=110.0,y=105.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -206,11 +206,11 @@
         </property>
         <vertex name="vertex1" value="{265.0, 105.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=265.0,y=105.0}, tail={id=&quot;IsPresent.input&quot;,x=320.0,y=80.0}, points={265.0,80.0} },{ head={id=&quot;FSMActor.out&quot;,x=205.0,y=105.0}, tail={id=&quot;relation3.vertex1&quot;,x=265.0,y=105.0}, points={} },{ head={id=&quot;NonStrictTest.input&quot;,x=325.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=265.0,y=105.0}, points={265.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=265.0,y=105.0}, tail={id=&quot;IsPresent.input&quot;,x=320.0,y=80.0}, points={265.0,80.0} },{ head={id=&quot;FSMActor.out&quot;,x=205.0,y=105.0}, tail={id=&quot;relation3.vertex1&quot;,x=265.0,y=105.0}, points={} },{ head={id=&quot;NonStrictTest.input&quot;,x=325.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=265.0,y=105.0}, points={265.0,140.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;IsPresent.output&quot;,x=320.0,y=80.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=430.0,y=80.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;IsPresent.output&quot;,x=320.0,y=80.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=430.0,y=80.0}, points={} } }">
         </property>
     </relation>
     <link port="FSMActor.out" relation="relation3"/>

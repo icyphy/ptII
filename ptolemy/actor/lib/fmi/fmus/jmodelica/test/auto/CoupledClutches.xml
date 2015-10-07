@@ -2102,7 +2102,7 @@
         </property>
         <vertex name="vertex1" value="{455.0, 40.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, tail={id=&quot;Test.input&quot;,x=505.0,y=40.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, points={455.0,275.0} },{ head={id=&quot;CoupledClutches2.J1_flange_a_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, points={300.0,550.0,300.0,40.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, tail={id=&quot;Test.input&quot;,x=505.0,y=40.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, points={455.0,275.0} },{ head={id=&quot;CoupledClutches2.J1_flange_a_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation9.vertex1&quot;,x=455.0,y=40.0}, points={300.0,550.0,300.0,40.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -2110,7 +2110,7 @@
         </property>
         <vertex name="vertex1" value="{425.0, 110.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, tail={id=&quot;Test2.input&quot;,x=505.0,y=110.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, points={425.0,280.0} },{ head={id=&quot;CoupledClutches2.J1_flange_b_phi&quot;,x=195.0,y=590.0}, tail={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, points={315.0,560.0,315.0,110.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, tail={id=&quot;Test2.input&quot;,x=505.0,y=110.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, points={425.0,280.0} },{ head={id=&quot;CoupledClutches2.J1_flange_b_phi&quot;,x=195.0,y=590.0}, tail={id=&quot;relation.vertex1&quot;,x=425.0,y=110.0}, points={315.0,560.0,315.0,110.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -2118,7 +2118,7 @@
         </property>
         <vertex name="vertex1" value="{410.0, 175.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, tail={id=&quot;Test3.input&quot;,x=505.0,y=175.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, points={410.0,285.0} },{ head={id=&quot;CoupledClutches2.J1_flange_b_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, points={330.0,570.0,330.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, tail={id=&quot;Test3.input&quot;,x=505.0,y=175.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, points={410.0,285.0} },{ head={id=&quot;CoupledClutches2.J1_flange_b_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation2.vertex1&quot;,x=410.0,y=175.0}, points={330.0,570.0,330.0,175.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -2126,7 +2126,7 @@
         </property>
         <vertex name="vertex1" value="{440.0, 290.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, tail={id=&quot;Test4.input&quot;,x=505.0,y=240.0}, points={440.0,240.0} },{ head={id=&quot;CoupledClutches2.J1_phi&quot;,x=195.0,y=590.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, points={345.0,580.0,345.0,290.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, tail={id=&quot;Test4.input&quot;,x=505.0,y=240.0}, points={440.0,240.0} },{ head={id=&quot;CoupledClutches2.J1_phi&quot;,x=195.0,y=590.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, points={345.0,580.0,345.0,290.0} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=290.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -2134,7 +2134,7 @@
         </property>
         <vertex name="vertex1" value="{410.0, 380.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, tail={id=&quot;Test5.input&quot;,x=505.0,y=380.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, points={410.0,295.0} },{ head={id=&quot;CoupledClutches2.J1_w&quot;,x=195.0,y=590.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, points={360.0,600.0,360.0,380.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, tail={id=&quot;Test5.input&quot;,x=505.0,y=380.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, points={410.0,295.0} },{ head={id=&quot;CoupledClutches2.J1_w&quot;,x=195.0,y=590.0}, tail={id=&quot;relation4.vertex1&quot;,x=410.0,y=380.0}, points={360.0,600.0,360.0,380.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -2142,7 +2142,7 @@
         </property>
         <vertex name="vertex1" value="{425.0, 445.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, tail={id=&quot;Test6.input&quot;,x=505.0,y=445.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, points={425.0,300.0} },{ head={id=&quot;CoupledClutches2.clutch3_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, points={375.0,610.0,375.0,445.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, tail={id=&quot;Test6.input&quot;,x=505.0,y=445.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, points={425.0,300.0} },{ head={id=&quot;CoupledClutches2.clutch3_tau&quot;,x=195.0,y=590.0}, tail={id=&quot;relation5.vertex1&quot;,x=425.0,y=445.0}, points={375.0,610.0,375.0,445.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -2150,7 +2150,7 @@
         </property>
         <vertex name="vertex1" value="{440.0, 510.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, tail={id=&quot;Test7.input&quot;,x=505.0,y=510.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, points={440.0,305.0} },{ head={id=&quot;CoupledClutches2.sin1_y&quot;,x=195.0,y=590.0}, tail={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, points={390.0,620.0,390.0,510.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, tail={id=&quot;Test7.input&quot;,x=505.0,y=510.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, points={440.0,305.0} },{ head={id=&quot;CoupledClutches2.sin1_y&quot;,x=195.0,y=590.0}, tail={id=&quot;relation6.vertex1&quot;,x=440.0,y=510.0}, points={390.0,620.0,390.0,510.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -2158,7 +2158,7 @@
         </property>
         <vertex name="vertex1" value="{455.0, 630.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, tail={id=&quot;Test8.input&quot;,x=505.0,y=630.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, points={455.0,310.0} },{ head={id=&quot;CoupledClutches2.sin2_y&quot;,x=195.0,y=590.0}, tail={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, tail={id=&quot;Test8.input&quot;,x=505.0,y=630.0}, points={} },{ head={id=&quot;SequencePlotter.input&quot;,x=530.0,y=310.0,index=8}, tail={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, points={455.0,310.0} },{ head={id=&quot;CoupledClutches2.sin2_y&quot;,x=195.0,y=590.0}, tail={id=&quot;relation7.vertex1&quot;,x=455.0,y=630.0}, points={} } }">
         </property>
     </relation>
     <link port="SequencePlotter.input" relation="relation9"/>

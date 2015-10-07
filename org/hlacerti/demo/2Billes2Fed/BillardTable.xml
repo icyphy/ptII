@@ -174,7 +174,7 @@
             </property>
             <vertex name="vertex1" value="[340.0, 175.0]">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HlaSubscriber2.output&quot;,x=260.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=340.0,y=175.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HlaSubscriber2.output&quot;,x=260.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=340.0,y=175.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -182,7 +182,7 @@
             </property>
             <vertex name="vertex1" value="{340.0, 110.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HlaSubscriber.output&quot;,x=260.0,y=110.0}, tail={id=&quot;relation2.vertex1&quot;,x=340.0,y=110.0}, points={} },{ head={id=&quot;X._location&quot;,x=360.0,y=50.0}, tail={id=&quot;relation2.vertex1&quot;,x=340.0,y=110.0}, points={340.0,50.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HlaSubscriber.output&quot;,x=260.0,y=110.0}, tail={id=&quot;relation2.vertex1&quot;,x=340.0,y=110.0}, points={} },{ head={id=&quot;X._location&quot;,x=360.0,y=50.0}, tail={id=&quot;relation2.vertex1&quot;,x=340.0,y=110.0}, points={340.0,50.0} } }">
             </property>
         </relation>
         <link port="X" relation="relation2"/>

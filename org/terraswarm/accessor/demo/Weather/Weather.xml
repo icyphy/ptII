@@ -232,27 +232,27 @@
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;GeoCoder.location&quot;,x=60.0,y=135.0}, tail={id=&quot;Weather.location&quot;,x=200.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GeoCoder.location&quot;,x=60.0,y=135.0}, tail={id=&quot;Weather.location&quot;,x=200.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=55.0,y=245.0,index=2}, tail={id=&quot;SingleEvent.output&quot;,x=-45.0,y=240.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=55.0,y=245.0,index=2}, tail={id=&quot;SingleEvent.output&quot;,x=-45.0,y=240.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=-70.0,y=135.0}, tail={id=&quot;Merge.output&quot;,x=55.0,y=245.0}, points={-135.0,125.0,-135.0,200.0,130.0,200.0,130.0,245.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=-70.0,y=135.0}, tail={id=&quot;Merge.output&quot;,x=55.0,y=245.0}, points={-135.0,125.0,-135.0,200.0,130.0,200.0,130.0,245.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;GeoCoder.address&quot;,x=60.0,y=135.0}, tail={id=&quot;InteractiveShell.output&quot;,x=-70.0,y=135.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GeoCoder.address&quot;,x=60.0,y=135.0}, tail={id=&quot;InteractiveShell.output&quot;,x=-70.0,y=135.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=295.0,y=175.0}, tail={id=&quot;Weather.weather&quot;,x=200.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=295.0,y=175.0}, tail={id=&quot;Weather.weather&quot;,x=200.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=55.0,y=245.0,index=2}, tail={id=&quot;MicrostepDelay.output&quot;,x=295.0,y=175.0}, points={0.0,245.0,0.0,280.0,375.0,280.0,375.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=55.0,y=245.0,index=2}, tail={id=&quot;MicrostepDelay.output&quot;,x=295.0,y=175.0}, points={0.0,245.0,0.0,280.0,375.0,280.0,375.0,175.0} } }">
         </property>
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>

@@ -106,7 +106,7 @@
         </property>
         <vertex name="vertex1" value="{225.0, 280.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=265.0,y=220.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={225.0,220.0} },{ head={id=&quot;DerivedAgainB.out1&quot;,x=125.0,y=405.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={205.0,395.0,205.0,280.0} },{ head={id=&quot;Test.input&quot;,x=275.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=265.0,y=220.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={225.0,220.0} },{ head={id=&quot;DerivedAgainB.out1&quot;,x=125.0,y=405.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={205.0,395.0,205.0,280.0} },{ head={id=&quot;Test.input&quot;,x=275.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=225.0,y=280.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -114,11 +114,11 @@
         </property>
         <vertex name="vertex1" value="{225.0, 415.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DerivedAgainB.out2&quot;,x=125.0,y=405.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=265.0,y=345.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={225.0,345.0} },{ head={id=&quot;Test2.input&quot;,x=275.0,y=415.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DerivedAgainB.out2&quot;,x=125.0,y=405.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=265.0,y=345.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={225.0,345.0} },{ head={id=&quot;Test2.input&quot;,x=275.0,y=415.0}, tail={id=&quot;relation4.vertex1&quot;,x=225.0,y=415.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=405.0}, tail={id=&quot;DerivedAgainB.in1&quot;,x=125.0,y=405.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=405.0}, tail={id=&quot;DerivedAgainB.in1&quot;,x=125.0,y=405.0}, points={} } }">
         </property>
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>

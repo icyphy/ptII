@@ -337,15 +337,15 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=225.0,y=225.0}, tail={id=&quot;PID.input&quot;,x=325.0,y=235.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=225.0,y=225.0}, tail={id=&quot;PID.input&quot;,x=325.0,y=235.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DesiredVoltage.output&quot;,x=110.0,y=160.0}, tail={id=&quot;AddSubtract.plus&quot;,x=225.0,y=225.0}, points={185.0,160.0,185.0,215.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DesiredVoltage.output&quot;,x=110.0,y=160.0}, tail={id=&quot;AddSubtract.plus&quot;,x=225.0,y=225.0}, points={185.0,160.0,185.0,215.0} } }">
                 </property>
             </relation>
             <relation name="relation4_" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PID.output&quot;,x=325.0,y=235.0}, tail={id=&quot;drive._location&quot;,x=390.0,y=235.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PID.output&quot;,x=325.0,y=235.0}, tail={id=&quot;drive._location&quot;,x=390.0,y=235.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">

@@ -278,11 +278,11 @@
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=50.0,y=75.0}, tail={id=&quot;Ramp.trigger&quot;,x=185.0,y=85.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=50.0,y=75.0}, tail={id=&quot;Ramp.trigger&quot;,x=185.0,y=85.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=185.0,y=85.0}, tail={id=&quot;Noisy Sinusoid.n&quot;,x=360.0,y=85.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=185.0,y=85.0}, tail={id=&quot;Noisy Sinusoid.n&quot;,x=360.0,y=85.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5_0" class="ptolemy.actor.TypedIORelation">
@@ -299,19 +299,19 @@
         </property>
         <vertex name="vertex1" value="{100.0, 190.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequenceToArray.input&quot;,x=150.0,y=200.0}, tail={id=&quot;relation5.vertex1&quot;,x=100.0,y=190.0}, points={} },{ head={id=&quot;.Noisy Sinusoid.output&quot;,x=360.0,y=85.0}, tail={id=&quot;relation5.vertex1&quot;,x=500.0,y=85.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=140.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=100.0,y=190.0}, points={100.0,120.0} },{ head={id=&quot;NoisySinusoid.port_0&quot;,x=30.0,y=190.0}, tail={id=&quot;relation5.vertex1&quot;,x=100.0,y=190.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequenceToArray.input&quot;,x=150.0,y=200.0}, tail={id=&quot;relation5.vertex1&quot;,x=100.0,y=190.0}, points={} },{ head={id=&quot;.Noisy Sinusoid.output&quot;,x=360.0,y=85.0}, tail={id=&quot;relation5.vertex1&quot;,x=500.0,y=85.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=140.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=100.0,y=190.0}, points={100.0,120.0} },{ head={id=&quot;NoisySinusoid.port_0&quot;,x=30.0,y=190.0}, tail={id=&quot;relation5.vertex1&quot;,x=100.0,y=190.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequenceToArray.output&quot;,x=150.0,y=200.0}, tail={id=&quot;FFT.signalIn&quot;,x=300.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequenceToArray.output&quot;,x=150.0,y=200.0}, tail={id=&quot;FFT.signalIn&quot;,x=300.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FFT.fftOutput&quot;,x=300.0,y=200.0}, tail={id=&quot;JavaScript.input&quot;,x=470.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FFT.fftOutput&quot;,x=300.0,y=200.0}, tail={id=&quot;JavaScript.input&quot;,x=470.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=600.0,y=200.0}, tail={id=&quot;JavaScript.output&quot;,x=470.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=600.0,y=200.0}, tail={id=&quot;JavaScript.output&quot;,x=470.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <link port="SequenceToArray.input" relation="relation5"/>

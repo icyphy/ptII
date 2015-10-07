@@ -209,7 +209,7 @@
 			<property name="color" class="ptolemy.actor.gui.ColorAttribute">
 			</property>
 			<property name="_layoutHint"
-				class="ptolemy.vergil.basic.layout.kieler.LayoutHint"
+				class="ptolemy.vergil.actor.LayoutHint"
 				value="{ { head={id=&quot;RecordDisassembler.x&quot;,x=300.0,y=205.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=460.0,y=225.0}, points={} } }">
 			</property>
 		</relation>
@@ -217,7 +217,7 @@
 			<property name="color" class="ptolemy.actor.gui.ColorAttribute">
 			</property>
 			<property name="_layoutHint"
-				class="ptolemy.vergil.basic.layout.kieler.LayoutHint"
+				class="ptolemy.vergil.actor.LayoutHint"
 				value="{ { head={id=&quot;RecordDisassembler.y&quot;,x=300.0,y=205.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=460.0,y=225.0}, points={} } }">
 			</property>
 		</relation>

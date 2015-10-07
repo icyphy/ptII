@@ -190,27 +190,27 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=425.0,y=110.0}, tail={id=&quot;Expression.output&quot;,x=305.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=425.0,y=110.0}, tail={id=&quot;Expression.output&quot;,x=305.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=130.0}, tail={id=&quot;Foscam.trigger&quot;,x=150.0,y=120.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=130.0}, tail={id=&quot;Foscam.trigger&quot;,x=150.0,y=120.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Errors.input&quot;,x=280.0,y=310.0}, tail={id=&quot;Foscam.error&quot;,x=150.0,y=120.0}, points={150.0,310.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Errors.input&quot;,x=280.0,y=310.0}, tail={id=&quot;Foscam.error&quot;,x=150.0,y=120.0}, points={150.0,310.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Headers.input&quot;,x=280.0,y=255.0}, tail={id=&quot;Foscam.headers&quot;,x=150.0,y=120.0}, points={225.0,255.0,225.0,130.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Headers.input&quot;,x=280.0,y=255.0}, tail={id=&quot;Foscam.headers&quot;,x=150.0,y=120.0}, points={225.0,255.0,225.0,130.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=625.0,y=250.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=505.0,y=250.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=625.0,y=250.0}, tail={id=&quot;MicrostepDelay.output&quot;,x=505.0,y=250.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=505.0,y=250.0}, tail={id=&quot;Const.output&quot;,x=440.0,y=250.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=505.0,y=250.0}, tail={id=&quot;Const.output&quot;,x=440.0,y=250.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -218,11 +218,11 @@
         </property>
         <vertex name="vertex1" value="{375.0, 200.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Foscam.status&quot;,x=150.0,y=120.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={240.0,120.0,240.0,200.0} },{ head={id=&quot;Const.trigger&quot;,x=440.0,y=250.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={375.0,250.0} },{ head={id=&quot;Status.input&quot;,x=415.0,y=200.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Foscam.status&quot;,x=150.0,y=120.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={240.0,120.0,240.0,200.0} },{ head={id=&quot;Const.trigger&quot;,x=440.0,y=250.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={375.0,250.0} },{ head={id=&quot;Status.input&quot;,x=415.0,y=200.0}, tail={id=&quot;relation3.vertex1&quot;,x=375.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Foscam.response&quot;,x=150.0,y=120.0}, tail={id=&quot;Expression.in&quot;,x=305.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Foscam.response&quot;,x=150.0,y=120.0}, tail={id=&quot;Expression.in&quot;,x=305.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <link port="SingleEvent.output" relation="relation7"/>

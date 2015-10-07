@@ -44,15 +44,15 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringToDouble.output&quot;,x=275.0,y=110.0}, tail={id=&quot;Test.input&quot;,x=400.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringToDouble.output&quot;,x=275.0,y=110.0}, tail={id=&quot;Test.input&quot;,x=400.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=65.0,y=110.0}, tail={id=&quot;TokenToExpression.input&quot;,x=140.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=65.0,y=110.0}, tail={id=&quot;TokenToExpression.input&quot;,x=140.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringToDouble.input&quot;,x=275.0,y=110.0}, tail={id=&quot;TokenToExpression.output&quot;,x=140.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringToDouble.input&quot;,x=275.0,y=110.0}, tail={id=&quot;TokenToExpression.output&quot;,x=140.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <link port="StringToDouble.input" relation="relation2"/>

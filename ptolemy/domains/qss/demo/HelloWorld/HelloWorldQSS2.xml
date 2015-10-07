@@ -402,7 +402,7 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=325.0}, tail={id=&quot;Const2.trigger&quot;,x=135.0,y=325.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=325.0}, tail={id=&quot;Const2.trigger&quot;,x=135.0,y=325.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -410,7 +410,7 @@
         </property>
         <vertex name="vertex1" value="[280.0, 325.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, tail={id=&quot;QSSIntegrator2.u&quot;,x=330.0,y=325.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=440.0,y=325.0,index=2}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={395.0,320.0,395.0,275.0,280.0,275.0} },{ head={id=&quot;QSSIntegrator.q&quot;,x=210.0,y=325.0}, tail={id=&quot;relation6.vertex1&quot;,x=280.0,y=325.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

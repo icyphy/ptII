@@ -111,31 +111,31 @@
         </property>
         <vertex name="vertex1" value="{165.0, 110.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp2.trigger&quot;,x=235.0,y=200.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=110.0}, points={165.0,190.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=85.0,y=110.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=110.0}, points={} },{ head={id=&quot;Ramp.trigger&quot;,x=235.0,y=120.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=110.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp2.trigger&quot;,x=235.0,y=200.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=110.0}, points={165.0,190.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=85.0,y=110.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=110.0}, points={} },{ head={id=&quot;Ramp.trigger&quot;,x=235.0,y=120.0}, tail={id=&quot;relation6.vertex1&quot;,x=165.0,y=110.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.start&quot;,x=85.0,y=110.0}, tail={id=&quot;SingleEvent.output&quot;,x=-20.0,y=200.0}, points={75.0,200.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.start&quot;,x=85.0,y=110.0}, tail={id=&quot;SingleEvent.output&quot;,x=-20.0,y=200.0}, points={75.0,200.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscSender.negTag&quot;,x=370.0,y=120.0}, tail={id=&quot;Ramp2.output&quot;,x=235.0,y=200.0}, points={285.0,130.0,285.0,200.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;OscSender.negTag&quot;,x=370.0,y=120.0}, tail={id=&quot;Ramp2.output&quot;,x=235.0,y=200.0}, points={285.0,130.0,285.0,200.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscSender.tag&quot;,x=370.0,y=120.0}, tail={id=&quot;Ramp.output&quot;,x=235.0,y=120.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;OscSender.tag&quot;,x=370.0,y=120.0}, tail={id=&quot;Ramp.output&quot;,x=235.0,y=120.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscReceiver.tag&quot;,x=115.0,y=30.0}, tail={id=&quot;Synchronizer.input&quot;,x=225.0,y=25.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;OscReceiver.tag&quot;,x=115.0,y=30.0}, tail={id=&quot;Synchronizer.input&quot;,x=225.0,y=25.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;OscReceiver.negTag&quot;,x=115.0,y=30.0}, tail={id=&quot;Synchronizer.input&quot;,x=225.0,y=25.0,index=2}, points={190.0,40.0,190.0,25.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;OscReceiver.negTag&quot;,x=115.0,y=30.0}, tail={id=&quot;Synchronizer.input&quot;,x=225.0,y=25.0,index=2}, points={190.0,40.0,190.0,25.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=345.0,y=25.0}, tail={id=&quot;Synchronizer.output&quot;,x=225.0,y=25.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=345.0,y=25.0}, tail={id=&quot;Synchronizer.output&quot;,x=225.0,y=25.0}, points={} } }">
         </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation6"/>

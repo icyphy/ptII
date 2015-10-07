@@ -36,11 +36,11 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CancelFireAtTest.out&quot;,x=70.0,y=140.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=200.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CancelFireAtTest.out&quot;,x=70.0,y=140.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=200.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=305.0,y=140.0}, tail={id=&quot;CurrentTime.output&quot;,x=200.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=305.0,y=140.0}, tail={id=&quot;CurrentTime.output&quot;,x=200.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <link port="CancelFireAtTest.out" relation="relation"/>

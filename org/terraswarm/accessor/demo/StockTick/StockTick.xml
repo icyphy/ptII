@@ -154,7 +154,7 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=465.0,y=145.0}, tail={id=&quot;Display.input&quot;,x=585.0,y=145.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=465.0,y=145.0}, tail={id=&quot;Display.input&quot;,x=585.0,y=145.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -162,7 +162,7 @@
         </property>
         <vertex name="vertex1" value="{235.0, 155.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=235.0,y=155.0}, tail={id=&quot;StockTick.symbol&quot;,x=300.0,y=155.0}, points={} },{ head={id=&quot;Expression.symbol&quot;,x=465.0,y=145.0}, tail={id=&quot;relation3.vertex1&quot;,x=235.0,y=155.0}, points={355.0,135.0,355.0,105.0,235.0,105.0} },{ head={id=&quot;ArrayToSequence.output&quot;,x=140.0,y=155.0}, tail={id=&quot;relation3.vertex1&quot;,x=235.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=235.0,y=155.0}, tail={id=&quot;StockTick.symbol&quot;,x=300.0,y=155.0}, points={} },{ head={id=&quot;Expression.symbol&quot;,x=465.0,y=145.0}, tail={id=&quot;relation3.vertex1&quot;,x=235.0,y=155.0}, points={355.0,135.0,355.0,105.0,235.0,105.0} },{ head={id=&quot;ArrayToSequence.output&quot;,x=140.0,y=155.0}, tail={id=&quot;relation3.vertex1&quot;,x=235.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

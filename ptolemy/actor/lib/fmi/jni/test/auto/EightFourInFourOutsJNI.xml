@@ -1053,87 +1053,87 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u&quot;,x=-5.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u&quot;,x=-5.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y1&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u2&quot;,x=-5.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y1&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u2&quot;,x=-5.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y2&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u3&quot;,x=-5.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y2&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u3&quot;,x=-5.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y3&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u4&quot;,x=-5.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.y3&quot;,x=-130.0,y=-90.0}, tail={id=&quot;FourInFourOuts2.u4&quot;,x=-5.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u&quot;,x=125.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u&quot;,x=125.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y1&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u2&quot;,x=125.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y1&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u2&quot;,x=125.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y2&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u3&quot;,x=125.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y2&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u3&quot;,x=125.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y3&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u4&quot;,x=125.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts2.y3&quot;,x=-5.0,y=-90.0}, tail={id=&quot;FourInFourOuts3.u4&quot;,x=125.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u&quot;,x=260.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u&quot;,x=260.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y1&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u2&quot;,x=260.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y1&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u2&quot;,x=260.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y2&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u3&quot;,x=260.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y2&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u3&quot;,x=260.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y3&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u4&quot;,x=260.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts3.y3&quot;,x=125.0,y=-90.0}, tail={id=&quot;FourInFourOuts4.u4&quot;,x=260.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u&quot;,x=390.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u&quot;,x=390.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y1&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u2&quot;,x=390.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y1&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u2&quot;,x=390.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y2&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u3&quot;,x=390.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y2&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u3&quot;,x=390.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y3&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u4&quot;,x=390.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts4.y3&quot;,x=260.0,y=-90.0}, tail={id=&quot;FourInFourOuts5.u4&quot;,x=390.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u&quot;,x=525.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u&quot;,x=525.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y1&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u2&quot;,x=525.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y1&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u2&quot;,x=525.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y2&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u3&quot;,x=525.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y2&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u3&quot;,x=525.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y3&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u4&quot;,x=525.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts5.y3&quot;,x=390.0,y=-90.0}, tail={id=&quot;FourInFourOuts6.u4&quot;,x=525.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.u4&quot;,x=-130.0,y=-90.0}, tail={id=&quot;DiscreteClock.output&quot;,x=-265.0,y=-70.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.u4&quot;,x=-130.0,y=-90.0}, tail={id=&quot;DiscreteClock.output&quot;,x=-265.0,y=-70.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
@@ -1141,55 +1141,55 @@
         </property>
         <vertex name="vertex1" value="{-190.0, -200.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.u2&quot;,x=-130.0,y=-90.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={-190.0,-100.0} },{ head={id=&quot;FourInFourOuts.u3&quot;,x=-130.0,y=-90.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={-190.0,-80.0} },{ head={id=&quot;FourInFourOuts.u&quot;,x=-130.0,y=-90.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={-190.0,-110.0} },{ head={id=&quot;SingleEvent.output&quot;,x=-375.0,y=-200.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts.u2&quot;,x=-130.0,y=-90.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={-190.0,-100.0} },{ head={id=&quot;FourInFourOuts.u3&quot;,x=-130.0,y=-90.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={-190.0,-80.0} },{ head={id=&quot;FourInFourOuts.u&quot;,x=-130.0,y=-90.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={-190.0,-110.0} },{ head={id=&quot;SingleEvent.output&quot;,x=-375.0,y=-200.0}, tail={id=&quot;relation23.vertex1&quot;,x=-190.0,y=-200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u&quot;,x=655.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u&quot;,x=655.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y1&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u2&quot;,x=655.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y1&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u2&quot;,x=655.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y2&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u3&quot;,x=655.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y2&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u3&quot;,x=655.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y3&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u4&quot;,x=655.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts6.y3&quot;,x=525.0,y=-90.0}, tail={id=&quot;FourInFourOuts7.u4&quot;,x=655.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y3&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u4&quot;,x=790.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y3&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u4&quot;,x=790.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y2&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u3&quot;,x=790.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y2&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u3&quot;,x=790.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation29" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y1&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u2&quot;,x=790.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y1&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u2&quot;,x=790.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u&quot;,x=790.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts7.y&quot;,x=655.0,y=-90.0}, tail={id=&quot;FourInFourOuts8.u&quot;,x=790.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y3&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u4&quot;,x=920.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y3&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u4&quot;,x=920.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y2&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u3&quot;,x=920.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y2&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u3&quot;,x=920.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation33" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y1&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u2&quot;,x=920.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y1&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u2&quot;,x=920.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation34" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u&quot;,x=920.0,y=-90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FourInFourOuts8.y&quot;,x=790.0,y=-90.0}, tail={id=&quot;FourInFourOuts9.u&quot;,x=920.0,y=-90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation36" class="ptolemy.actor.TypedIORelation">
@@ -1197,7 +1197,7 @@
         </property>
         <vertex name="vertex1" value="{1015.0, -110.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation36.vertex1&quot;,x=1015.0,y=-110.0}, tail={id=&quot;Test.input&quot;,x=1065.0,y=-110.0}, points={} },{ head={id=&quot;FourInFourOuts9.y&quot;,x=920.0,y=-90.0}, tail={id=&quot;relation36.vertex1&quot;,x=1015.0,y=-110.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=1055.0,y=-200.0}, tail={id=&quot;relation36.vertex1&quot;,x=1015.0,y=-110.0}, points={1015.0,-200.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation36.vertex1&quot;,x=1015.0,y=-110.0}, tail={id=&quot;Test.input&quot;,x=1065.0,y=-110.0}, points={} },{ head={id=&quot;FourInFourOuts9.y&quot;,x=920.0,y=-90.0}, tail={id=&quot;relation36.vertex1&quot;,x=1015.0,y=-110.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=1055.0,y=-200.0}, tail={id=&quot;relation36.vertex1&quot;,x=1015.0,y=-110.0}, points={1015.0,-200.0} } }">
         </property>
     </relation>
     <link port="FourInFourOuts.u" relation="relation23"/>

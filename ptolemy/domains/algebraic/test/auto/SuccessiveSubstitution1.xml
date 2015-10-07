@@ -116,7 +116,7 @@
             </property>
             <vertex name="vertex1" value="{-270.0, 60.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;UnaryMathFunction.input&quot;,x=-220.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=-270.0,y=60.0}, points={} },{ head={id=&quot;UnaryMathFunction.output&quot;,x=-220.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=-270.0,y=60.0}, points={-130.0,60.0,-130.0,-40.0,-270.0,-40.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;UnaryMathFunction.input&quot;,x=-220.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=-270.0,y=60.0}, points={} },{ head={id=&quot;UnaryMathFunction.output&quot;,x=-220.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=-270.0,y=60.0}, points={-130.0,60.0,-130.0,-40.0,-270.0,-40.0} } }">
             </property>
         </relation>
         <link port="output" relation="relation2"/>

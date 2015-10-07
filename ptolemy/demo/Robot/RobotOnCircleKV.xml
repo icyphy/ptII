@@ -350,15 +350,15 @@
         </property>
         <vertex name="vertex1" value="[175.0, 245.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=255.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=175.0,y=245.0}, points={175.0,175.0} },{ head={id=&quot;TokenToJSON.input&quot;,x=225.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=175.0,y=245.0}, points={} },{ head={id=&quot;Robot.robotPosition&quot;,x=70.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=175.0,y=245.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=255.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=175.0,y=245.0}, points={175.0,175.0} },{ head={id=&quot;TokenToJSON.input&quot;,x=225.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=175.0,y=245.0}, points={} },{ head={id=&quot;Robot.robotPosition&quot;,x=70.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=175.0,y=245.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.key&quot;,x=405.0,y=225.0}, tail={id=&quot;Const.output&quot;,x=255.0,y=175.0}, points={310.0,215.0,310.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.key&quot;,x=405.0,y=225.0}, tail={id=&quot;Const.output&quot;,x=255.0,y=175.0}, points={310.0,215.0,310.0,175.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=405.0,y=225.0}, tail={id=&quot;TokenToJSON.output&quot;,x=225.0,y=245.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=405.0,y=225.0}, tail={id=&quot;TokenToJSON.output&quot;,x=225.0,y=245.0}, points={} } }">
         </property>
     </relation>
     <link port="KeyValueStore.key" relation="relation"/>

@@ -189,11 +189,11 @@
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=335.0,y=530.0}, tail={id=&quot;SampleDelay.output&quot;,x=775.0,y=530.0}, points={270.0,520.0,270.0,430.0,855.0,430.0,855.0,530.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=335.0,y=530.0}, tail={id=&quot;SampleDelay.output&quot;,x=775.0,y=530.0}, points={270.0,520.0,270.0,430.0,855.0,430.0,855.0,530.0} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=335.0,y=530.0}, tail={id=&quot;ExpressionToToken.input&quot;,x=435.0,y=530.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=335.0,y=530.0}, tail={id=&quot;ExpressionToToken.input&quot;,x=435.0,y=530.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -201,11 +201,11 @@
                 </property>
                 <vertex name="vertex1" value="{695.0, 530.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=775.0,y=530.0}, tail={id=&quot;relation4.vertex1&quot;,x=695.0,y=530.0}, points={} },{ head={id=&quot;ExpressionToToken.output&quot;,x=430.0,y=530.0}, tail={id=&quot;relation4.vertex1&quot;,x=685.0,y=530.0}, points={700.0,475.0,700.0,430.0,295.0,430.0} },{ head={id=&quot;out._location&quot;,x=715.0,y=465.0}, tail={id=&quot;relation4.vertex1&quot;,x=695.0,y=530.0}, points={695.0,465.0} },{ head={id=&quot;TokenToExpression.output&quot;,x=570.0,y=530.0}, tail={id=&quot;relation4.vertex1&quot;,x=695.0,y=530.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=775.0,y=530.0}, tail={id=&quot;relation4.vertex1&quot;,x=695.0,y=530.0}, points={} },{ head={id=&quot;ExpressionToToken.output&quot;,x=430.0,y=530.0}, tail={id=&quot;relation4.vertex1&quot;,x=685.0,y=530.0}, points={700.0,475.0,700.0,430.0,295.0,430.0} },{ head={id=&quot;out._location&quot;,x=715.0,y=465.0}, tail={id=&quot;relation4.vertex1&quot;,x=695.0,y=530.0}, points={695.0,465.0} },{ head={id=&quot;TokenToExpression.output&quot;,x=570.0,y=530.0}, tail={id=&quot;relation4.vertex1&quot;,x=695.0,y=530.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ExpressionToToken.output&quot;,x=435.0,y=530.0}, tail={id=&quot;TokenToExpression.input&quot;,x=570.0,y=530.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ExpressionToToken.output&quot;,x=435.0,y=530.0}, tail={id=&quot;TokenToExpression.input&quot;,x=570.0,y=530.0}, points={} } }">
                 </property>
             </relation>
             <link port="out" relation="relation4"/>

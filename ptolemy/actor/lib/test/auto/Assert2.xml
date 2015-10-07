@@ -93,19 +93,19 @@
         </property>
         <vertex name="vertex1" value="{170.0, 105.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Assert.foo&quot;,x=235.0,y=150.0}, tail={id=&quot;relation2.vertex1&quot;,x=170.0,y=105.0}, points={170.0,140.0} },{ head={id=&quot;Const.output&quot;,x=55.0,y=105.0}, tail={id=&quot;relation2.vertex1&quot;,x=170.0,y=105.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Assert.foo&quot;,x=235.0,y=150.0}, tail={id=&quot;relation2.vertex1&quot;,x=170.0,y=105.0}, points={170.0,140.0} },{ head={id=&quot;Const.output&quot;,x=55.0,y=105.0}, tail={id=&quot;relation2.vertex1&quot;,x=170.0,y=105.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Assert.bar&quot;,x=235.0,y=150.0}, tail={id=&quot;Const2.output&quot;,x=130.0,y=160.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Assert.bar&quot;,x=235.0,y=150.0}, tail={id=&quot;Const2.output&quot;,x=130.0,y=160.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Assert._correspondingOutputPort_foo&quot;,x=235.0,y=150.0}, tail={id=&quot;Test.input&quot;,x=355.0,y=145.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Assert._correspondingOutputPort_foo&quot;,x=235.0,y=150.0}, tail={id=&quot;Test.input&quot;,x=355.0,y=145.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Assert._correspondingOutputPort_bar&quot;,x=235.0,y=150.0}, tail={id=&quot;Test.input&quot;,x=355.0,y=145.0,index=2}, points={300.0,160.0,300.0,145.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Assert._correspondingOutputPort_bar&quot;,x=235.0,y=150.0}, tail={id=&quot;Test.input&quot;,x=355.0,y=145.0,index=2}, points={300.0,160.0,300.0,145.0} } }">
         </property>
     </relation>
     <link port="Const.output" relation="relation2"/>

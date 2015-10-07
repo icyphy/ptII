@@ -415,7 +415,7 @@
         </property>
         <vertex name="vertex1" value="{210.0, 180.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;QSSIntegrator2.u&quot;,x=255.0,y=180.0}, tail={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, points={} },{ head={id=&quot;QSSIntegrator.q&quot;,x=135.0,y=180.0}, tail={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, points={} },{ head={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, tail={id=&quot;Sampler.input&quot;,x=555.0,y=105.0}, points={210.0,105.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;QSSIntegrator2.u&quot;,x=255.0,y=180.0}, tail={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, points={} },{ head={id=&quot;QSSIntegrator.q&quot;,x=135.0,y=180.0}, tail={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, points={} },{ head={id=&quot;relation5.vertex1&quot;,x=210.0,y=180.0}, tail={id=&quot;Sampler.input&quot;,x=555.0,y=105.0}, points={210.0,105.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

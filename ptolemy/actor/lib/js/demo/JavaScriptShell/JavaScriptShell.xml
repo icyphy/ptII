@@ -245,23 +245,23 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=90.972412109375,y=165.341796875}, tail={id=&quot;SampleDelay.output&quot;,x=380.972412109375,y=215.341796875}, points={25.972412109375,155.341796875,25.972412109375,215.341796875} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=90.972412109375,y=165.341796875}, tail={id=&quot;SampleDelay.output&quot;,x=380.972412109375,y=215.341796875}, points={25.972412109375,155.341796875,25.972412109375,215.341796875} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=380.972412109375,y=215.341796875}, tail={id=&quot;ModalModel.output&quot;,x=500.972412109375,y=155.341796875}, points={550.972412109375,215.341796875,550.972412109375,155.341796875} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=380.972412109375,y=215.341796875}, tail={id=&quot;ModalModel.output&quot;,x=500.972412109375,y=155.341796875}, points={550.972412109375,215.341796875,550.972412109375,155.341796875} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=90.972412109375,y=165.341796875}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=250.972412109375,y=155.341796875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=90.972412109375,y=165.341796875}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=250.972412109375,y=155.341796875}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringReplace.output&quot;,x=400.972412109375,y=155.341796875}, tail={id=&quot;ModalModel.script&quot;,x=500.972412109375,y=155.341796875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringReplace.output&quot;,x=400.972412109375,y=155.341796875}, tail={id=&quot;ModalModel.script&quot;,x=500.972412109375,y=155.341796875}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringReplace.replacement&quot;,x=400.972412109375,y=155.341796875}, tail={id=&quot;EscapeQuotes.output&quot;,x=250.972412109375,y=155.341796875}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringReplace.replacement&quot;,x=400.972412109375,y=155.341796875}, tail={id=&quot;EscapeQuotes.output&quot;,x=250.972412109375,y=155.341796875}, points={} } }">
         </property>
     </relation>
     <link port="InteractiveShell.input" relation="relation3"/>

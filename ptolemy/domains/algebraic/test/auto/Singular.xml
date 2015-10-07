@@ -112,7 +112,7 @@
             </property>
             <vertex name="vertex1" value="{220.0, 285.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=275.0,y=285.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=285.0}, points={330.0,285.0,330.0,195.0,220.0,195.0} },{ head={id=&quot;x._location&quot;,x=245.0,y=230.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=285.0}, points={220.0,230.0} },{ head={id=&quot;Expression.x&quot;,x=275.0,y=285.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=285.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=275.0,y=285.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=285.0}, points={330.0,285.0,330.0,195.0,220.0,195.0} },{ head={id=&quot;x._location&quot;,x=245.0,y=230.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=285.0}, points={220.0,230.0} },{ head={id=&quot;Expression.x&quot;,x=275.0,y=285.0}, tail={id=&quot;relation.vertex1&quot;,x=220.0,y=285.0}, points={} } }">
             </property>
         </relation>
         <link port="x" relation="relation"/>

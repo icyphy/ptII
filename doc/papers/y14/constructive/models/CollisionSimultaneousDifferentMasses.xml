@@ -771,11 +771,11 @@
             </port>
         </entity>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PlotMomentumAndEnergy.input&quot;,x=375.0,y=275.0,index=2}, tail={id=&quot;Momentum.output&quot;,x=225.0,y=270.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PlotMomentumAndEnergy.input&quot;,x=375.0,y=275.0,index=2}, tail={id=&quot;Momentum.output&quot;,x=225.0,y=270.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PlotMomentumAndEnergy.input&quot;,x=375.0,y=275.0,index=2}, tail={id=&quot;Energy.output&quot;,x=230.0,y=355.0}, points={330.0,275.0,330.0,355.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PlotMomentumAndEnergy.input&quot;,x=375.0,y=275.0,index=2}, tail={id=&quot;Energy.output&quot;,x=230.0,y=355.0}, points={330.0,275.0,330.0,355.0} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -783,7 +783,7 @@
             </property>
             <vertex name="vertex1" value="{100.0, 200.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=100.0,y=200.0}, tail={id=&quot;Energy.vLeft&quot;,x=230.0,y=355.0}, points={100.0,345.0} },{ head={id=&quot;vLeft._location&quot;,x=35.0,y=200.0}, tail={id=&quot;relation6.vertex1&quot;,x=100.0,y=200.0}, points={} },{ head={id=&quot;Momentum.vLeft&quot;,x=225.0,y=270.0}, tail={id=&quot;relation6.vertex1&quot;,x=100.0,y=200.0}, points={100.0,260.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=100.0,y=200.0}, tail={id=&quot;Energy.vLeft&quot;,x=230.0,y=355.0}, points={100.0,345.0} },{ head={id=&quot;vLeft._location&quot;,x=35.0,y=200.0}, tail={id=&quot;relation6.vertex1&quot;,x=100.0,y=200.0}, points={} },{ head={id=&quot;Momentum.vLeft&quot;,x=225.0,y=270.0}, tail={id=&quot;relation6.vertex1&quot;,x=100.0,y=200.0}, points={100.0,260.0} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -791,7 +791,7 @@
             </property>
             <vertex name="vertex1" value="{85.0, 270.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=85.0,y=270.0}, tail={id=&quot;Energy.vMiddle&quot;,x=230.0,y=355.0}, points={85.0,355.0} },{ head={id=&quot;vMiddle._location&quot;,x=20.0,y=270.0}, tail={id=&quot;relation.vertex1&quot;,x=85.0,y=270.0}, points={} },{ head={id=&quot;Momentum.vMiddle&quot;,x=225.0,y=270.0}, tail={id=&quot;relation.vertex1&quot;,x=85.0,y=270.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=85.0,y=270.0}, tail={id=&quot;Energy.vMiddle&quot;,x=230.0,y=355.0}, points={85.0,355.0} },{ head={id=&quot;vMiddle._location&quot;,x=20.0,y=270.0}, tail={id=&quot;relation.vertex1&quot;,x=85.0,y=270.0}, points={} },{ head={id=&quot;Momentum.vMiddle&quot;,x=225.0,y=270.0}, tail={id=&quot;relation.vertex1&quot;,x=85.0,y=270.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -799,7 +799,7 @@
             </property>
             <vertex name="vertex1" value="{70.0, 335.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=70.0,y=335.0}, tail={id=&quot;Energy.vRight&quot;,x=230.0,y=355.0}, points={70.0,365.0} },{ head={id=&quot;Momentum.vRight&quot;,x=225.0,y=270.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=335.0}, points={70.0,280.0} },{ head={id=&quot;vRight._location&quot;,x=30.0,y=335.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=335.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=70.0,y=335.0}, tail={id=&quot;Energy.vRight&quot;,x=230.0,y=355.0}, points={70.0,365.0} },{ head={id=&quot;Momentum.vRight&quot;,x=225.0,y=270.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=335.0}, points={70.0,280.0} },{ head={id=&quot;vRight._location&quot;,x=30.0,y=335.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=335.0}, points={} } }">
             </property>
         </relation>
         <link port="vLeft" relation="relation6"/>

@@ -276,19 +276,19 @@
         </property>
         <vertex name="vertex1" value="{260.0, 210.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequenceToArray.input&quot;,x=310.0,y=220.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=210.0}, points={} },{ head={id=&quot;SequenceScope2.input&quot;,x=300.0,y=140.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=210.0}, points={260.0,140.0} },{ head={id=&quot;AudioCapture2.signal&quot;,x=175.0,y=210.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=210.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequenceToArray.input&quot;,x=310.0,y=220.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=210.0}, points={} },{ head={id=&quot;SequenceScope2.input&quot;,x=300.0,y=140.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=210.0}, points={260.0,140.0} },{ head={id=&quot;AudioCapture2.signal&quot;,x=175.0,y=210.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=210.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=50.0,y=210.0}, tail={id=&quot;AudioCapture2.trigger&quot;,x=175.0,y=210.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=50.0,y=210.0}, tail={id=&quot;AudioCapture2.trigger&quot;,x=175.0,y=210.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.FFT.fftOutput&quot;,x=510.0,y=150.0}, tail={id=&quot;JavaScript.input&quot;,x=470.0,y=200.0}, points={} },{ head={id=&quot;JavaScript.input&quot;,x=635.0,y=220.0}, tail={id=&quot;FFT2.fftOutput&quot;,x=465.0,y=220.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.FFT.fftOutput&quot;,x=510.0,y=150.0}, tail={id=&quot;JavaScript.input&quot;,x=470.0,y=200.0}, points={} },{ head={id=&quot;JavaScript.input&quot;,x=635.0,y=220.0}, tail={id=&quot;FFT2.fftOutput&quot;,x=465.0,y=220.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequenceToArray.output&quot;,x=310.0,y=220.0}, tail={id=&quot;FFT2.signalIn&quot;,x=465.0,y=220.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequenceToArray.output&quot;,x=310.0,y=220.0}, tail={id=&quot;FFT2.signalIn&quot;,x=465.0,y=220.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

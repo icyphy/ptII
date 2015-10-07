@@ -118,11 +118,11 @@
         </property>
         <vertex name="vertex1" value="{435.0, 95.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=435.0,y=95.0}, tail={id=&quot;IsPresent.input&quot;,x=490.0,y=65.0}, points={435.0,65.0} },{ head={id=&quot;NonStrictTest.input&quot;,x=490.0,y=125.0}, tail={id=&quot;relation5.vertex1&quot;,x=435.0,y=95.0}, points={435.0,125.0} },{ head={id=&quot;FSMActor.out&quot;,x=375.0,y=95.0}, tail={id=&quot;relation5.vertex1&quot;,x=435.0,y=95.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=435.0,y=95.0}, tail={id=&quot;IsPresent.input&quot;,x=490.0,y=65.0}, points={435.0,65.0} },{ head={id=&quot;NonStrictTest.input&quot;,x=490.0,y=125.0}, tail={id=&quot;relation5.vertex1&quot;,x=435.0,y=95.0}, points={435.0,125.0} },{ head={id=&quot;FSMActor.out&quot;,x=375.0,y=95.0}, tail={id=&quot;relation5.vertex1&quot;,x=435.0,y=95.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;IsPresent.output&quot;,x=490.0,y=65.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=595.0,y=65.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;IsPresent.output&quot;,x=490.0,y=65.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=595.0,y=65.0}, points={} } }">
         </property>
     </relation>
     <link port="FSMActor.in" relation="relation2"/>

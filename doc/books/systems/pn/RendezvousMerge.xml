@@ -85,15 +85,15 @@
         </property>
     </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=285.0,y=150.0}, tail={id=&quot;Display.input&quot;,x=350.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=285.0,y=150.0}, tail={id=&quot;Display.input&quot;,x=350.0,y=150.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp1.output&quot;,x=180.0,y=65.0}, tail={id=&quot;Merge.input&quot;,x=285.0,y=150.0,index=2}, points={250.0,65.0,250.0,145.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp1.output&quot;,x=180.0,y=65.0}, tail={id=&quot;Merge.input&quot;,x=285.0,y=150.0,index=2}, points={250.0,65.0,250.0,145.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=285.0,y=150.0,index=2}, tail={id=&quot;Ramp2.output&quot;,x=180.0,y=150.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=285.0,y=150.0,index=2}, tail={id=&quot;Ramp2.output&quot;,x=180.0,y=150.0}, points={} } }">
         </property>
     </relation>
     <link port="Ramp1.output" relation="relation"/>
