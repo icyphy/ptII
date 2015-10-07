@@ -149,6 +149,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
 
                     // Create KIELER layouter for this layout target.
                     KielerLayout layout = new KielerLayout(layoutTarget);
+                    // the cast is save because of the #accept() method
                     layout.setModel((CompositeEntity) model);
                     layout.setTop(graphFrame);
 
