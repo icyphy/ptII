@@ -1085,6 +1085,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Get initial state values from FMU.
         final int stateCt = _qssSolver.getStateCount();
         _states = new double[stateCt];
+        _stateVariables = new double[stateCt];
         if (!_useRawJNI()) {
             final int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
@@ -2148,9 +2149,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     .get(qIdx).port;
 
             // Record the changes in this variable.
-            if (qIdx > -1) {
-                // Record the changes in the continuous state.
+            if (qIdx > -1) {            
+                // Signalize at least one quantization event.
                 needQuantizationEvents.add(true);
+                // Only update the variables which have changed
+                _stateVariables[qIdx] = _qssSolver.getStateModel(qIdx).coeffs[0];
             }
 
             // Send model to the port
@@ -2172,20 +2175,27 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Check if any state variable had a quantization event. If true
         // then update the continuous states in the FMU before updating the outputs.
         // This is needed particularly if an output depends on a state.
-        final double[] stateVariables = new double[stateCt];
+        //final double[] stateVariables = new double[stateCt];
         final double timeValue = currentTime.getDoubleValue();
-        if (_firstRound || needQuantizationEvents.contains(true)) {
+        if (_firstRound) {
             // In the first round we assume that all states have changed.
             for (int i = 0; i < stateCt; i++) {
-                stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
+                _stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
             }
+            if (!_useRawJNI()) {
+                _fmiSetContinuousStates(_stateVariables);
+            } else {
+                _fmiSetContinuousStatesJNI(_stateVariables, timeValue);
+            }
+        }
+        else if (needQuantizationEvents.contains(true)) {
             // Set the continuous states.
             // It is not possible to set only the states which have changed.
             // The FMI enforces to act on the whole state vector.
             if (!_useRawJNI()) {
-                _fmiSetContinuousStates(stateVariables);
+                _fmiSetContinuousStates(_stateVariables);
             } else {
-                _fmiSetContinuousStatesJNI(stateVariables, timeValue);
+                _fmiSetContinuousStatesJNI(_stateVariables, timeValue);
             }
         }
 
@@ -2366,6 +2376,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** The new states computed in fire, to be committed in postfire. */
     private double[] _states;
+    
+    /** The new updated states. */
+    private double[] _stateVariables;
 
     /** Vector of state value references. */
     private long[] _stateValueReferences;
