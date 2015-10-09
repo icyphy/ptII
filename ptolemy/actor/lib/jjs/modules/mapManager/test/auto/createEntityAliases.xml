@@ -4,7 +4,7 @@
 <entity name="createEntityAliases" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1550, 145, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={418, 22, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -13,13 +13,13 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999994, 252.00000000000017}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-5, -20}">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;exports.initialize = function(){&#10;var outMessage = &quot;&quot;;&#10;&#10;mapManager = require('mapManager');&#10;&#10;&#10;//The names in this test seem to be more ontological than entity alias based,&#10;//but it's just a test of the mechanism.&#10;&#10;var cat = new mapManager.Entity(&quot;cat&quot;);&#10;var mammal = new mapManager.Entity(&quot;mammal&quot;);&#10;var animals = [&#10;	cat,&#10;	new mapManager.Entity(&quot;bird&quot;),&#10;	new mapManager.Entity(&quot;dog&quot;),&#10;	new mapManager.Entity(&quot;fish&quot;),&#10;	new mapManager.Entity(&quot;walrus&quot;),&#10;	new mapManager.Entity(&quot;salmon&quot;),&#10;	mammal&#10;];&#10;&#10;for( var i = 0; i &lt; animals.length; i++){&#10;	mapManager.registerEntity(animals[i]);&#10;}&#10;&#10;&#10;outMessage += &quot;Global Entities:\n&quot;;&#10;outMessage += mapManager.entitiesToString() + &quot;\n&quot;;&#10;&#10;var zebra = new mapManager.Entity(&quot;zebra&quot;)&#10;outMessage += &quot;Zebra is an unregistered entity\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alis cat as itself (should print false)\n&quot;;&#10;outMessage += cat.addAlias(cat) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alis cat as mammal (should print true)\n&quot;;&#10;outMessage += cat.addAlias(mammal) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alis cat as mammal again (should print false)\n&quot;;&#10;outMessage += cat.addAlias(mammal) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Printing cat's aliases (should just be mammal)\n&quot;;&#10;outMessage += cat.aliasesToString() + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Giving mammal many aliases and printing them\n&quot;;&#10;&#10;&#10;for( var i = 0; i &lt; animals.length; i++){&#10;	mammal.addAlias(animals[i]);&#10;}&#10;&#10;outMessage += mammal.aliasesToString() + &quot;\n&quot;;&#10;&#10;&#10;//var myCoords = new mapManager.CoordinateSystem(&quot;myCoords&quot;)&#10;//var myMap = new mapManager.Map( &quot;myMapName&quot;, MapManager.SpaceTypeEnum.Euclidean , myCoords); &#10;&#10;&#10;&#10;&#10;&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;exports.initialize = function(){&#10;var outMessage = &quot;&quot;;&#10;&#10;mapManager = require('mapManager');&#10;&#10;&#10;//The names in this test seem to be more ontological than entity alias based,&#10;//but it's just a test of the mechanism.&#10;&#10;var cat = new mapManager.Entity(&quot;cat&quot;);&#10;var mammal = new mapManager.Entity(&quot;mammal&quot;);&#10;var animals = [&#10;	cat,&#10;	new mapManager.Entity(&quot;bird&quot;),&#10;	new mapManager.Entity(&quot;dog&quot;),&#10;	new mapManager.Entity(&quot;fish&quot;),&#10;	new mapManager.Entity(&quot;walrus&quot;),&#10;	new mapManager.Entity(&quot;salmon&quot;),&#10;	mammal&#10;];&#10;&#10;for( var i = 0; i &lt; animals.length; i++){&#10;	mapManager.registerEntity(animals[i]);&#10;}&#10;&#10;&#10;outMessage += &quot;Global Entities:\n&quot;;&#10;outMessage += mapManager.entitiesToString() + &quot;\n&quot;;&#10;&#10;var zebra = new mapManager.Entity(&quot;zebra&quot;)&#10;outMessage += &quot;Zebra is an unregistered entity\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alias cat as itself (should print false)\n&quot;;&#10;outMessage += cat.addAlias(cat) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alias cat as mammal (should print true)\n&quot;;&#10;outMessage += cat.addAlias(mammal) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alias cat as mammal again (should print false)\n&quot;;&#10;outMessage += cat.addAlias(mammal) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Printing cat's aliases (should just be mammal)\n&quot;;&#10;outMessage += cat.aliasesToString() + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Giving mammal aliases with cat, bird, dog, fish, walrus, salmon, and mammal.\n&quot;;&#10;for( var i = 0; i &lt; animals.length; i++){&#10;	mammal.addAlias(animals[i]);&#10;}&#10;&#10;outMessage += mammal.aliasesToString() + &quot;\n&quot;;&#10;&#10;&#10;//var myCoords = new mapManager.CoordinateSystem(&quot;myCoords&quot;)&#10;//var myMap = new mapManager.Map( &quot;myMapName&quot;, MapManager.SpaceTypeEnum.Euclidean , myCoords); &#10;&#10;send(&quot;output&quot;, outMessage);&#10;&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -40,9 +40,9 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Global Entities:\n{ cat: { name: cat }, bird: { name: bird }, dog: { name: dog }, fish: { name: fish }, walrus: { name: walrus }, salmon: { name: salmon }, mammal: { name: mammal } }\nZebra is an unregistered entity\nAttempting to alias cat as itself (should print false)\nfalse\nAttempting to alias cat as mammal (should print true)\ntrue\nAttempting to alias cat as mammal again (should print false)\nfalse\nPrinting cat's aliases (should just be mammal)\n{ mammal: { name: mammal } }\nGiving mammal aliases with cat, bird, dog, fish, walrus, salmon, and mammal.\n{ cat: { name: cat }, bird: { name: bird }, dog: { name: dog }, fish: { name: fish }, walrus: { name: walrus }, salmon: { name: salmon } }\n&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 145.0]">
         </property>
