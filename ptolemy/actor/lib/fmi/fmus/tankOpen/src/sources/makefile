@@ -1,6 +1,6 @@
 # $Id$
 # The name of the FMU to be built.
-FMU_NAME = tankOpen 
+FMU_NAME = tankOpen
 
 # Need sqrt()
 USERLIBS = -lm
