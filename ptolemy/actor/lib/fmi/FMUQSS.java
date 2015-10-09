@@ -2115,7 +2115,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Initialize.
         final int stateCt = _qssSolver.getStateCount();
-        List<Boolean> needQuantizationEvents = new LinkedList<Boolean>();
+        boolean needQuantizationEvents = false;
 
         if (_debugging) {
             _debugToStdOut(String.format(
@@ -2147,14 +2147,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // TODO: Convert this to export models, not just values.
             final TypedIOPort outPort = _fmiModelDescription.continuousStates
                     .get(qIdx).port;
-
-            // Record the changes in this variable.
-            if (qIdx > -1) {            
-                // Signalize at least one quantization event.
-                needQuantizationEvents.add(true);
-                // Only update the variables which have changed
-                _stateVariables[qIdx] = _qssSolver.getStateModel(qIdx).coeffs[0];
-            }
+    
+            // Signalize a quantization event.
+            needQuantizationEvents = true;
+            // Only update the variables which have changed
+            _stateVariables[qIdx] = _qssSolver.getStateModel(qIdx).coeffs[0];
 
             // Send model to the port
             if (outPort.getWidth() > 0){
@@ -2169,7 +2166,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                                 .identityHashCode(this), qIdx, _qssSolver
                                 .getStateModel(qIdx).toString()));
             }
-
         }
 
         // Check if any state variable had a quantization event. If true
@@ -2188,7 +2184,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _fmiSetContinuousStatesJNI(_stateVariables, timeValue);
             }
         }
-        else if (needQuantizationEvents.contains(true)) {
+        else if (needQuantizationEvents) {
             // Set the continuous states.
             // It is not possible to set only the states which have changed.
             // The FMI enforces to act on the whole state vector.
