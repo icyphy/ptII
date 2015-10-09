@@ -2398,6 +2398,7 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/atc/kernel/*.class"/>
+	<include name="ptolemy/domains/atc/kernel/policy*/*.class"/>
 	<include name="ptolemy/domains/atc/lib/*.class"/>
       </fileset>
     </jar>

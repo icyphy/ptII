@@ -622,6 +622,8 @@ ALLPACKAGES = \
 	ptolemy.caltrop.util \
 	ptolemy.domains.algebraic.kernel \
 	ptolemy.domains.atc.kernel \
+	ptolemy.domains.atc.kernel.policy1 \
+	ptolemy.domains.atc.kernel.policy2 \
 	ptolemy.domains.atc.lib \
 	ptolemy.domains.ca.kernel \
 	ptolemy.domains.ca.lib \
