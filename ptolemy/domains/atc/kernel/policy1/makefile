@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy ATC domain kernel
+# Makefile for the Java classes used to implement the Ptolemy ATC domain kernel policy1
 #
 # @Authors: (makefile only) Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/atc/kernel
+ME =		ptolemy/domains/atc/kernel/policy1
 
-DIRS =		policy1 policy2
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,21 +42,19 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	kernel
-#PTCLASSJAR =	$(PTPACKAGE).jar
+DIRS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Used to build jar files
+PTPACKAGE = 	policy1
+PTCLASSJAR =	$(PTPACKAGE).jar
+
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	policy1/policy1.jar \
-	policy2/policy2.jar
+#PTCLASSALLJARS =
 
 JSRCS = \
-	AbstractATCDirector.java \
-	ATCReceiver.java \
-	Rejecting.java
+	ATCDirector.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -67,9 +65,7 @@ MISC_FILES =	$(DIRS) #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	policy1 \
-	policy2
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
