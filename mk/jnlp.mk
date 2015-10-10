@@ -246,6 +246,7 @@ CAPECODE_JNLP_JARS = \
 	$(PTRSYNTAXTEXTAREA_JAR) \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/demo/demo.jar \
+	org/ptolemy/ssm/ssm.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \

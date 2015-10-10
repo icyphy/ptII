@@ -4247,6 +4247,7 @@
 	 >
       <fileset dir="${basedir}">
         <include name="org/ptolemy/ssm/*.class"/>
+        <include name="org/ptolemy/ssm/*.xml"/>
       </fileset>
   </jar>
 
