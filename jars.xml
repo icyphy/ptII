@@ -5847,15 +5847,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/gui/jnlp/CyPhySimApplication.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/gui/jnlp/CyPhySimApplication.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
-	<include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.class"/>
-      </fileset>
-    </jar>
     <!-- ptolemy/actor/gui/jnlp/BCVTBApplication.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/gui/jnlp/BCVTBApplication.jar"
@@ -5865,6 +5856,27 @@
 	<include name="ptolemy/actor/gui/jnlp/BCVTBApplication.class"/>
       </fileset>
     </jar>
+
+    <!-- ptolemy/actor/gui/jnlp/CapeCodeApplication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/jnlp/CapeCodeApplication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+	<include name="ptolemy/actor/gui/jnlp/CapeCodeApplication.class"/>
+      </fileset>
+    </jar>
+    
+    <!-- ptolemy/actor/gui/jnlp/CyPhySimApplication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/jnlp/CyPhySimApplication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+	<include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.class"/>
+      </fileset>
+    </jar>
+    
     <!-- ptolemy/actor/gui/jnlp/DSPApplication.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/gui/jnlp/DSPApplication.jar"
