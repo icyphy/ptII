@@ -260,20 +260,22 @@ CAPECODE_JNLP_JARS = \
 	org/ptolemy/ptango/ptango.jar \
 	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
-	$(PTERA_JARS) \
-	$(PTFMI_JARS) \
 	org/ptolemy/machineLearning/machineLearning.jar \
-	org/ptolemy/optimization/optimization.jar \
-	ptolemy/actor/gt/gt.jar \
-	ptolemy/vergil/gt/gt.jar \
-	ptolemy/data/ontologies/ontologies.jar \
-	ptolemy/domains/scr/scr.jar \
-	ptolemy/domains/scr/demo/demo.jar \
-	ptolemy/vergil/scr/scr.jar \
-	ptolemy/vergil/modal/fmv/fmv.jar \
-	ptolemy/vergil/ontologies/ontologies.jar \
-	$(RUN_JARS) \
-	$(WIRELESS_JARS)
+	org/ptolemy/optimization/optimization.jar
+
+# As per Edward, exclude these from CapeCode
+#	ptolemy/actor/gt/gt.jar
+#	ptolemy/vergil/gt/gt.jar 
+#	ptolemy/data/ontologies/ontologies.jar
+#	ptolemy/domains/scr/scr.jar
+#	ptolemy/domains/scr/demo/demo.jar
+#	ptolemy/vergil/scr/scr.jar
+#	ptolemy/vergil/modal/fmv/fmv.jar
+#	ptolemy/vergil/ontologies/ontologies.jar
+#	$(RUN_JARS)
+#	$(PTERA_JARS)
+#	$(PTFMI_JARS)
+#	$(WIRELESS_JARS)
 
 #######
 # CyPhySim: http://cyphysim.org

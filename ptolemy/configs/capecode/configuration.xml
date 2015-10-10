@@ -162,22 +162,31 @@
             <!--input source="ptolemy/actor/lib/aspect/aspect.xml"/-->
             <!--input source="ptolemy/configs/cosimulation.xml"/-->
             <input source="ptolemy/actor/lib/database/database.xml"/>
-            <input source="ptolemy/configs/capecode/gr.xml"/>
+
+            <!-- Shipping Java-3D is a nightmare -->
+            <!-- input source="ptolemy/configs/capecode/gr.xml"/ -->
+
             <!--input source="ptolemy/actor/lib/image/image.xml"/-->
             <!--input source="ptolemy/vergil/actor/lib/interactive.xml"/-->
-	        <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
+	    <input source="org/ptolemy/machineLearning/machineLearning.xml"/>
             <input source="ptolemy/actor/lib/mail/mail.xml"/>
 
             <!-- openmodelica actors not really working -->
 	    <!-- input source="ptolemy/domains/openmodelica/lib/openmodelicaentities.xml"/ -->
 
             <input source="org/ptolemy/optimization/optimization.xml"/>
-	    <input source="org/ptolemy/ptango/lib/ptango.xml"/>
-            <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
+            
+            <!-- Not sure if we want to include Ptango, so let's exclude it. -->
+            <!-- input source="org/ptolemy/ptango/lib/ptango.xml"/ -->
+
+            <!-- The Ontology facility should not be included in CapeCode. -->
+            <!-- input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/ -->
+
             <input source="ptolemy/actor/lib/security/security.xml"/>
 
             <!-- FIXME:  would provide a composite pre-populated with a director, rather than providing the director. -->
-            <input source="ptolemy/domains/wireless/wireless.xml"/>
+            <!-- We probably don't want the wireless domain -->
+            <!-- input source="ptolemy/domains/wireless/wireless.xml"/-->
 
             <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
           </group>
