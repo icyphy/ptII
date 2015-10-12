@@ -28,6 +28,8 @@
 package ptolemy.domains.atc.kernel.policy2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -74,6 +76,7 @@ public class ATCDirector extends AbstractATCDirector {
         _inTransit=new TreeMap<>();
         _airportsId= new ArrayList<>();
         _airplanesId=new ArrayList<>();
+        _airplanesColor=new HashMap<Integer,ArrayToken>();
         super.initialize();
     }
         
@@ -294,8 +297,30 @@ public class ATCDirector extends AbstractATCDirector {
         _airportsId.add(airportId);
         
     }
+	
+	/** Return airplane's color. If the airplane has not color, set a color for that and store it.  
+     *  @param id id of the airplane
+     *  @throws IllegalActionException 
+     */
+    public ArrayToken handleAirplaneColor(int id) throws IllegalActionException{
+        ArrayToken color = _airplanesColor.get(id);
+        
+        if (color == null) {
+            Token[] colorSpec = new DoubleToken[4];
+            colorSpec[0] = new DoubleToken(_random.nextDouble());
+            colorSpec[1] = new DoubleToken(_random.nextDouble());
+            colorSpec[2] = new DoubleToken(_random.nextDouble());
+            colorSpec[3] = new DoubleToken(1.0);
+            color = new ArrayToken(colorSpec);
+            _airplanesColor.put(id, color);
+        }
+        
+        return color;
+    }
     
      //private variables which show situation of tracks 
+	 
+	private Random _random=new Random();
     
     /**  _stormyTracks stores which track is stormy:first element is id of the track and last is a boolean token*/
     private Map<Integer, Token> _stormyTracks=new TreeMap<>();
@@ -311,4 +336,7 @@ public class ATCDirector extends AbstractATCDirector {
     
     /** _airplanesId stores airplanes id */
     private ArrayList<Integer> _airplanesId=new ArrayList<>();
+	
+	/** _airplanesColor stores a color for each airplane*/
+    private Map<Integer,ArrayToken> _airplanesColor = new HashMap<Integer,ArrayToken>();
 }
