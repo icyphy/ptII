@@ -27,9 +27,8 @@
  */
 package ptolemy.domains.atc.lib;
 
-import java.util.HashMap;
+
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
 import ptolemy.actor.Director;
@@ -57,6 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
+import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
 /** A model of a track in air traffic control systems.
  *  This track can have no more than one aircraft in transit.
@@ -116,7 +116,14 @@ public class Track extends  TrackWriter implements Rejecting{
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
 
-        _shape = new ResizablePolygonAttribute(node_icon, "_circle");
+	_circle = new EllipseAttribute(node_icon, "_circleShap");
+        _circle.centered.setToken("true");
+        _circle.width.setToken("40");
+        _circle.height.setToken("40");
+        _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
+        _circle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
+		
+        _shape = new ResizablePolygonAttribute(node_icon, "_trackShape");
         _shape.centered.setToken("true");
         _shape.width.setToken("40");
         _shape.height.setToken("40");
@@ -155,6 +162,12 @@ public class Track extends  TrackWriter implements Rejecting{
         if (attribute == stormy) {
              if(stormy.getToken()!=null){
                 _isStormy=stormy.getToken();
+		//change color of the storm zone
+                if(((BooleanToken)_isStormy).booleanValue()==true)
+                    _circle.fillColor.setToken("{1.0,0.2,0.2,1.0}");
+                else
+                    _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
+                //
                 ((AbstractATCDirector)director).handleTrackAttributeChanged(this);
             }
         }else {
@@ -211,7 +224,8 @@ public class Track extends  TrackWriter implements Rejecting{
                 {// Send airplane through another route
                     Map<String, Token> newAircraft=new TreeMap<String, Token>();
                     newAircraft.put("aircraftId",( (RecordToken)_inTransit).get("aircraftId"));
-                    _setIcon(-1);
+					//remove the following setIcon: because airplane is flying in this track until reaches to another
+                    //_setIcon(-1);
                     newAircraft.put("aircraftSpeed", ((RecordToken)_inTransit).get("aircraftSpeed"));
                     newAircraft.put("flightMap", (Token)temp.get("flightMap"));
                     newAircraft.put("priorTrack", ((RecordToken)_inTransit).get("priorTrack"));
@@ -303,25 +317,14 @@ public class Track extends  TrackWriter implements Rejecting{
      *  @throws IllegalActionException
      */
     protected void _setIcon(int id) throws IllegalActionException {
-        ArrayToken color = _idToColor.get(id);
-        if (color == null) {
-            if (id < 0) {
-                color = _noAircraftColor;
-            } else {
-                Token[] colorSpec = new DoubleToken[4];
-                colorSpec[0] = new DoubleToken(_random.nextDouble());
-                colorSpec[1] = new DoubleToken(_random.nextDouble());
-                colorSpec[2] = new DoubleToken(_random.nextDouble());
-                colorSpec[3] = new DoubleToken(1.0);
-                color = new ArrayToken(colorSpec);
-            }
-            _idToColor.put(id, color);
+        ArrayToken color = _noAircraftColor;
+        if(id>-1){
+            color = ((AbstractATCDirector)_director).handleAirplaneColor(id);
         }
         _shape.fillColor.setToken(color);
     }
     
-    private static Map<Integer,ArrayToken> _idToColor = new HashMap<Integer,ArrayToken>();
-    private Random _random = new Random();
+    private EllipseAttribute _circle;
     private ResizablePolygonAttribute _shape;
     private DoubleToken _one = new DoubleToken(1.0);
     private Token[] _white = {_one, _one, _one, _one};

@@ -34,7 +34,10 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -46,6 +49,9 @@ import ptolemy.domains.atc.kernel.Rejecting;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.kernel.attributes.RectangleAttribute;
+import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
 /** This actor models a destination airport. It just receives an airplane.
  *  @author Maryam Bagheri
@@ -69,6 +75,25 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         delay= new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1");
+		
+		EditorIcon node_icon = new EditorIcon(this, "_icon");
+        
+        //rectangle
+        _rectangle=new RectangleAttribute(node_icon, "_rectangleShape");
+        _rectangle.centered.setToken("true");
+        _rectangle.width.setToken("60");
+        _rectangle.height.setToken("50");
+        _rectangle.rounding.setToken("10");
+        _rectangle.lineColor.setToken("{0.0, 0.0, 0.0, 1.0}");
+        _rectangle.fillColor.setToken("{0.8,0.8,1.0,1.0}");
+        
+        //inner triangle of the icon
+        _shape = new ResizablePolygonAttribute(node_icon, "_triangleShape");
+        _shape.centered.setToken("true");
+        _shape.width.setToken("40");
+        _shape.height.setToken("40");
+        _shape.vertices.setExpression("{0.0,1.0,0.0,-1.0,2.0,0.0}");
+        _shape.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
         
     }
     
@@ -97,6 +122,9 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         Time currentTime = director.getModelTime();
         if (currentTime.equals(_transitExpires) && _inTransit != null) {
                 output.send(0, _inTransit);
+		//Set icon to white color
+                _setIcon(-1);
+				
                 _inTransit = null;
                 _called=false;
                 return;
@@ -105,6 +133,10 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         for(int i=0; i< input.getWidth();i++)
             if(input.hasNewToken(i)){
                 _inTransit=input.get(i);
+		//Set icon to color of the airplane
+                int id=((IntToken)((RecordToken)_inTransit).get("aircraftId")).intValue();
+                _setIcon(id);
+                //
                 _transitExpires = currentTime.add(((DoubleToken)delay.getToken()).doubleValue());
                 director.fireAt(this, _transitExpires);
             }
@@ -117,8 +149,32 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         ((AbstractATCDirector)_director).handleInitializedDestination(this);
         _inTransit=null;
         _called=false;
+		_setIcon(-1);
     }
     
+	/** Set the visual indication of the icon for the specified ID.
+     *  @param id The aircraft ID or -1 to indicate no aircraft.
+     *  @throws IllegalActionException
+     */
+    protected void _setIcon(int id) throws IllegalActionException {
+        ArrayToken color = _noAircraftColor;
+            if (id > -1) {
+                Director _director=getDirector();
+                color = ((AbstractATCDirector)_director).handleAirplaneColor(id);
+                if(color==null)
+                    throw new IllegalActionException("Color for the airplane "+id+" has not been set");
+            } 
+        _shape.fillColor.setToken(color);
+    }
+	
+    //to change color of the icon
+    private ResizablePolygonAttribute _shape;
+    private RectangleAttribute _rectangle;
+    private DoubleToken _one = new DoubleToken(1.0);
+    private Token[] _white = {_one, _one, _one, _one};
+    private ArrayToken _noAircraftColor = new ArrayToken(_white);
+    //
+	
     private Token _inTransit;
     private Time _transitExpires;
     private boolean _called;
