@@ -119,4 +119,10 @@ public abstract class AbstractATCDirector extends DEDirector {
      */
     public abstract void handleInitializedDestination( DestinationAirport destinationAirport)
             throws IllegalActionException;
+			
+	/** Return airplane's color. If the airplane has not color, set a color for that and store it.  
+     *  @param id id of the airplane
+     *  @throws IllegalActionException 
+     */
+    public abstract ArrayToken handleAirplaneColor(int id) throws IllegalActionException;
 }
