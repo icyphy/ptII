@@ -1012,6 +1012,7 @@ with_oauthclient
 with_oauthcommon
 with_socketio
 with_jna_jar
+with_gdp_jar
 with_joystick_jar
 with_ptjacl_jar
 with_jsoup
@@ -1743,6 +1744,8 @@ Optional Packages:
                           defaults to \$PTII/lib/socketio.jar
   --with-jna-jar=JARFILE       use JNA from JARFILE,
                           defaults to \$PTII/jna-4.0.0-variadic.jar
+  --with-gdp-jar=JARFILE       use GDP from JARFILE,
+                          defaults to \$PTII/lib/gdp-0.3-1.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -9032,7 +9035,7 @@ PTFMI_DIR=
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES=
 
-# PTGDP_DIR is set to fmi if jna.jar was found
+# PTGDP_DIR is set to gdp if jna.jar was found
 # $PTII/org/terraswarm/makefile uses PTGDP_DIR
 PTGDP_DIR=
 
@@ -9048,11 +9051,13 @@ JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar
 #JNA_DEFAULT_JAR=jna-4.1.0-variadic.jar
 
 # We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
-JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
-if test ! -d "$JNA_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_USER_DIR is not present,
+JNA_USER_DIR_FMI="$PTII/ptolemy/actor/lib/fmi"
+JNA_USER_DIR_GDP="$PTII/ptolemy/actor/lib/jjs/modules/gdp"
+
+if test ! -d "$JNA_USER_DIR_FMI" -a ! -d "$JNA_USER_DIR_GDP"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_USER_DIR_FMI and $JNA_USER_DIR_GDP are not present,
     so we need not find the JNA - The Java Native Access utility." >&5
-$as_echo "$JNA_USER_DIR is not present,
+$as_echo "$JNA_USER_DIR_FMI and $JNA_USER_DIR_GDP are not present,
     so we need not find the JNA - The Java Native Access utility." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Native Access (JNA) jar" >&5
@@ -9071,11 +9076,33 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA
 $as_echo "$JNA_JAR" >&6; }; fi
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
-	PTGDP_DIR=gdp
-	if test -d "$PTII/org/terraswarm/gdp"; then
-	    PTGDP_PACKAGES="org.terraswarm.gdp org.terraswarm.gdp.apps"
-        fi
         updateClasspath "$JNA_JAR"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GDP jar file" >&5
+$as_echo_n "checking for GDP jar file... " >&6; }
+
+# Check whether --with-gdp-jar was given.
+if test "${with_gdp_jar+set}" = set; then :
+  withval=$with_gdp_jar; GDP_JAR=$withval
+else
+  GDP_JAR=$PTII/lib/gdp-0.3-1.jar
+fi
+
+        if test -f "$GDP_JAR"; then
+             if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GDP_JAR" >&5
+$as_echo "$GDP_JAR" >&6; }; fi
+	     PTGDP_DIR=gdp
+             updateClasspath "$GDP_JAR"
+             PTGDP_PACKAGES=ptolemy.actor.lib.jjs/gdp
+        else
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/gdp-0.3-1.jar
+   GDP is the Global Dataplane.  The GDP is only necessary for
+   use the GDP Accessor." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTII/lib/gdp-0.3-1.jar
+   GDP is the Global Dataplane.  The GDP is only necessary for
+   use the GDP Accessor." >&2;}
+             updateExcludes "ptolemy/actor/lib/jjs/gdp"
+        fi
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     JNA is the Java Native Access interfaced, used by the
@@ -9090,6 +9117,7 @@ $as_echo "$as_me: WARNING: Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     These actors are optional, but require JNA.
     For more information about JNA, see https://github.com/twall/jna" >&2;}
         updateExcludes "ptolemy/actor/lib/fmi/"
+        updateExcludes "ptolemy/actor/lib/jjs/gdp"
     fi
 fi
 
@@ -14420,8 +14448,8 @@ fi
 # Packages in Ptolemy that depend on g4ltl.jar
 
 
-# PTGDP_DIR is set to fmi if jna.jar was found
-# $PTII/ptolemy/actor/lib/makefile uses PTGDP_DIR
+# PTGDP_DIR is set to gdp if jna.jar was found
+# $PTII/org/terraswarm/makefile uses PTGDP_DIR
 
 
 # PTGDP_PACKAGES is used in doc/makefile
