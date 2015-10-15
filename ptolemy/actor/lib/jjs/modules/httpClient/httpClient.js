@@ -100,8 +100,8 @@ exports.request = function(options, responseCallback) {
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.
  */
-exports.get = function(options, reponseCallback) {
-  var request = exports.request(options, reponseCallback);
+exports.get = function(options, responseCallback) {
+  var request = exports.request(options, responseCallback);
   request.end();
   return request;
 };
@@ -137,7 +137,7 @@ exports.get = function(options, reponseCallback) {
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.
  */
-function ClientRequest(options, reponseCallback) {
+function ClientRequest(options, responseCallback) {
   var self = this;
 
   var defaultOptions = {
@@ -188,11 +188,11 @@ function ClientRequest(options, reponseCallback) {
 
   // Attach the callback to be invoked when this object issues
   // a 'response' event.  
-  if (reponseCallback) {
+  if (responseCallback) {
     if (options.outputCompleteResponseOnly) {
-      self.once('response', reponseCallback);
+      self.once('response', responseCallback);
     } else {
-      self.on('response', reponseCallback);
+      self.on('response', responseCallback);
     }
   }
   
