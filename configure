@@ -781,6 +781,7 @@ PTGRDOMAIN_JAR
 PTGMP_LIB
 PTGMP_LD_FLAGS
 PTGMP_INCLUDE
+GDP_JAR
 PTGDP_PACKAGES
 PTGDP_DIR
 PTG4LTL_PACKAGES
@@ -14453,6 +14454,8 @@ fi
 
 
 # PTGDP_PACKAGES is used in doc/makefile
+
+
 
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
