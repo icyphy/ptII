@@ -6939,6 +6939,8 @@ AC_SUBST(PTGDP_DIR)
 # PTGDP_PACKAGES is used in doc/makefile
 AC_SUBST(PTGDP_PACKAGES)
 
+AC_SUBST(GDP_JAR)
+
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
 AC_SUBST(PTGMP_INCLUDE)
