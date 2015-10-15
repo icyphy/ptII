@@ -3128,7 +3128,7 @@ PTFMI_DIR=
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES=
 
-# PTGDP_DIR is set to fmi if jna.jar was found
+# PTGDP_DIR is set to gdp if jna.jar was found
 # $PTII/org/terraswarm/makefile uses PTGDP_DIR
 PTGDP_DIR=
 
@@ -6917,8 +6917,8 @@ AC_SUBST(PTG4LTL_DIR)
 # Packages in Ptolemy that depend on g4ltl.jar
 AC_SUBST(PTG4LTL_PACKAGES)
 
-# PTGDP_DIR is set to fmi if jna.jar was found
-# $PTII/ptolemy/actor/lib/makefile uses PTGDP_DIR
+# PTGDP_DIR is set to gdp if jna.jar was found
+# $PTII/org/terraswarm/makefile uses PTGDP_DIR
 AC_SUBST(PTGDP_DIR)
 
 # PTGDP_PACKAGES is used in doc/makefile
