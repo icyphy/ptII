@@ -297,9 +297,9 @@ fi
 #### Global Data Plane (GDP)
 # PTGDP_DIR is set to gdp if configure found the JNA jar file and the GDP jar file.
 PTGDP_DIR=@PTGDP_DIR@
-GDP_JAR="@GDP_JAR@"
+PTGDP_JAR="@PTGDP_JAR@"
 if [ "$PTGDP_DIR" = "gdp" ]; then
-    GDP_JARS="${CLASSPATHSEPARATOR}@GDP_JAR@"
+    GDP_JARS="${CLASSPATHSEPARATOR}@PTGDP_JAR@"
 fi
 
 #### iText PDF
