@@ -324,7 +324,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 int status = response.statusCode();
                 if (status >= 400) {
                     // An error occurred. Null argument indicates error.
-                    _currentObj.callMember("_handleResponse", null,
+                    _currentObj.callMember("_response", null,
                             "Request failed with code " + status + ": "
                             + response.statusMessage());
                     _client.close();
@@ -338,7 +338,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     String newLocation = headers.get("Location");
                     if (newLocation != null) {
                         // FIXME: How to handle the redirect?
-                        _currentObj.callMember("_handleResponse", null,
+                        _currentObj.callMember("_response", null,
                                 "Redirect to "
                                 + newLocation
                                 + " not yet handled by HttpClientHelper. "
