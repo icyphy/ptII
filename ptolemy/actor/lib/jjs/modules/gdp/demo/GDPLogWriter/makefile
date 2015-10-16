@@ -1,8 +1,8 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript gdp module
+# Makefile for Ptolemy II GDPLogWriter demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -29,48 +29,58 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/gdp
-
-DIRS = 		# demo test
+ME =		ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriter
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../../
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	GDP
+PTPACKAGE = 	GDPLogWriter
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	GDPHelper.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	GDP.js \
-    package.json
+OTHER_FILES_TO_BE_JARED = 	GDPLogWriter.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer GDPLogWriter.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" GDPLogWriter.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" GDPLogWriter.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

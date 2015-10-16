@@ -3132,6 +3132,9 @@ PTFMI_PACKAGES=
 # $PTII/org/terraswarm/makefile uses PTGDP_DIR
 PTGDP_DIR=
 
+# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
+PTGDP_JAR=
+
 # PTGDP_PACKAGES is used in doc/makefile
 PTGDP_PACKAGES=
 
@@ -3164,18 +3167,18 @@ else
         AC_MSG_CHECKING([for GDP jar file])
         AC_ARG_WITH(gdp-jar, [  --with-gdp-jar=JARFILE       use GDP from JARFILE,
                           defaults to \$PTII/lib/gdp-0.3-1.jar],
-   	    GDP_JAR=$withval,
-	    GDP_JAR=$PTII/lib/gdp-0.3-1.jar)
-        if test -f "$GDP_JAR"; then
-             PT_MSG_RESULT($GDP_JAR)
+   	    PTGDP_JAR=$withval,
+	    PTGDP_JAR=$PTII/lib/gdp-0.3-1.jar)
+        if test -f "$PTGDP_JAR"; then
+             PT_MSG_RESULT($PTGDP_JAR)
 	     PTGDP_DIR=gdp
-             updateClasspath "$GDP_JAR"
-             PTGDP_PACKAGES=ptolemy.actor.lib.jjs/gdp
+             updateClasspath "$PTGDP_JAR"
+             PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
         else
-             AC_MSG_WARN([Failed to find $PTII/lib/gdp-0.3-1.jar
-   GDP is the Global Dataplane.  The GDP is only necessary for
-   use the GDP Accessor.])
-             updateExcludes "ptolemy/actor/lib/jjs/gdp"
+             AC_MSG_WARN([Failed to find $PTII/lib/gdp-0.3-1.jar,
+   which supplies an implementation of the Global Data Plane.
+   The GDP is only necessary for use with the GDP Accessor.])
+             updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
         fi
     else
         AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
@@ -3185,7 +3188,7 @@ else
     These actors are optional, but require JNA.
     For more information about JNA, see https://github.com/twall/jna])
         updateExcludes "ptolemy/actor/lib/fmi/"
-        updateExcludes "ptolemy/actor/lib/jjs/gdp"
+        updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
     fi
 fi
 
@@ -6936,10 +6939,11 @@ AC_SUBST(PTG4LTL_PACKAGES)
 # $PTII/org/terraswarm/makefile uses PTGDP_DIR
 AC_SUBST(PTGDP_DIR)
 
+# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
+AC_SUBST(PTGDP_JAR)
+
 # PTGDP_PACKAGES is used in doc/makefile
 AC_SUBST(PTGDP_PACKAGES)
-
-AC_SUBST(GDP_JAR)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
