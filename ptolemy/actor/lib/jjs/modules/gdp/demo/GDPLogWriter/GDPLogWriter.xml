@@ -5,30 +5,30 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225, 140}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.5, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 24, 1366, 744}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1152, 655]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{566.0, 317.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 258.5}">
     </property>
     <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[159.5, 80.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A GDP Log writer accessor example, that &#10;writes the current date every second to a &#10;log. The name of the log is a configuration &#10;parameter; make sure that the log exists &#10;before running this model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[289.5, 40.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 235}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[84.5, 175.0]">
         </property>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
@@ -41,7 +41,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[589.5, 275.0]">
         </property>
     </entity>
     <entity name="GDPLogAppend" class="org.terraswarm.accessor.JSAccessor">
@@ -59,7 +59,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[564.5, 185.0]">
         </property>
         <property name="logname" class="ptolemy.data.expr.Parameter" value="log1">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -74,26 +74,32 @@
     </entity>
     <entity name="CurrentDate" class="ptolemy.actor.lib.CurrentDate">
         <doc>Output the current date.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[264.5, 275.0]">
         </property>
     </entity>
     <entity name="DateToString" class="ptolemy.actor.lib.conversions.DateToString">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[379.5, 275.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentDate.output&quot;,x=264.5,y=275.0}, tail={id=&quot;DateToString.input&quot;,x=379.5,y=275.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[160.0, 235.0]">
+        <vertex name="vertex1" value="[189.5, 175.0]">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentDate.trigger&quot;,x=264.5,y=275.0}, tail={id=&quot;relation3.vertex1&quot;,x=189.5,y=175.0}, points={189.5,275.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=84.5,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=189.5,y=175.0}, points={} },{ head={id=&quot;GDPLogAppend.trigger&quot;,x=564.5,y=185.0}, tail={id=&quot;relation3.vertex1&quot;,x=189.5,y=175.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[355.0, 295.0]">
+        <vertex name="vertex1" value="[489.5, 275.0]">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GDPLogAppend.data&quot;,x=564.5,y=185.0}, tail={id=&quot;relation4.vertex1&quot;,x=489.5,y=275.0}, points={489.5,195.0} },{ head={id=&quot;MonitorValue.input&quot;,x=589.5,y=275.0}, tail={id=&quot;relation4.vertex1&quot;,x=489.5,y=275.0}, points={} },{ head={id=&quot;DateToString.output&quot;,x=379.5,y=275.0}, tail={id=&quot;relation4.vertex1&quot;,x=489.5,y=275.0}, points={} } }">
+        </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="MonitorValue.input" relation="relation4"/>
