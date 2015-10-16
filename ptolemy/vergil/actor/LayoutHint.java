@@ -981,8 +981,10 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                 _bendPoints[i] += x;
                 _bendPoints[i + 1] += y;
             }
-            _labelLocation.x += x;
-            _labelLocation.y += y;
+            if (_labelLocation != null) {
+                _labelLocation.x += x;
+                _labelLocation.y += y;
+            }
         }
 
         /**
