@@ -2062,6 +2062,63 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	    }
 	    
 	}
+	
+    /** Set the FMU inputs at current time.
+     *  @param currentTime The current model time.
+     *  @exception IllegalActionException If the specified token cannot be converted
+     *   to a double.
+     */
+    private void _setFMUInputsAtCurrentTime(Time currentTime)
+            throws IllegalActionException {
+        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
+        // then the convert method does nothing and just returns the token.
+        // Otherwise, it attempts to convert it to a DoubleToken, and throws
+        // an exception if such conversion is not possible.
+        int curIdx = -1;
+        double timeValue = currentTime.getDoubleValue();
+        for (Input input : _inputs) {
+            curIdx++;
+            // In higher order QSS, higher order derivatives are approximated.
+            // This happens by evaluating the FMU at two time instants.
+            // The consequence of this approach is that inputs of the FMU are computed
+            // at a time that might be different from the time when the FMUs should
+            // produce outputs. To ensure that inputs of the FMUs are in sync with outputs
+            // we use this function to evaluate the inputs at the time when outputs are produced.
+            final FMIScalarVariable scalar = input.scalarVariable;
+            if (!(scalar.type instanceof FMIRealType)) {
+                new Exception(
+                        "Warning: The input variable "
+                                + scalar.name
+                                + " is of type "
+                                + scalar.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
+                continue;
+            }
+            ModelPolynomial ivMdl = _qssSolver.getInputVariableModel(curIdx);
+            // Check if the input is a smooth token. This can be done by 
+            // checking whether whether higher order coefficients are zero.
+            int sum = 0;
+            for (int i = 1; i < ivMdl.coeffs.length; i++) {
+                sum += ivMdl.coeffs[i];
+            }
+           
+            // Only reset inputs which are smooth token. Other inputs are side  
+            // effect free from the function which triggers a rate event.
+            if (sum != 0) {
+                // Evaluate the input model at the current time.
+                double currentInputValue = _qssSolver.getInputVariableModel(
+                        curIdx).evaluate(currentTime);
+                if (!_useRawJNI()) {
+                    scalar.setDouble(_fmiComponent, currentInputValue);
+                } else {
+                    final double uu[] = { currentInputValue };
+                    final long uuRef[] = { _inputValueReferences[curIdx] };
+                    _fmiSetRealJNI(uu, uuRef, timeValue);
+                }
+            }
+        }
+    }
 
 	/** Populate the specified model with data from the specified token.
      *  If the token is a SmoothToken, then insert in the model any derivatives
@@ -2195,6 +2252,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
         }
 
+        // Update the inputs at the current time so the outputs get the correct values
+        // This is particularly important if an output depends on an input.
+        _setFMUInputsAtCurrentTime(currentTime);
+        
         // A quantization-event implies other FMU outputs change.
         // Produce outputs to all outputs that do not depend on the states.
         _produceOutputs(currentTime);
