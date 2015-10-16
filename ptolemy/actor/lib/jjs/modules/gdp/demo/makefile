@@ -1,4 +1,4 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript gdp module
+# Makefile for Java Ptolemy II JavaScript Global Data Plane (GDP) Accessor demos
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -29,48 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/gdp
+ME =		ptolemy/actor/lib/jjs/modules/gdp/demo
 
-DIRS = 		# demo test
+DIRS =		GDPLogWriter
 
-# Root of the Java directory
-ROOT =		../../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	GDP
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	GDPLogWriter/GDPLogWriter.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	GDPHelper.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	GDP.js \
-    package.json
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
