@@ -203,7 +203,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Give {inputVariable} to the FMU.
         for (int ii = 0; ii < _inputs.size(); ++ii) {
             final FMIScalarVariable scalar = _inputs.get(ii).scalarVariable;
-            if (scalar.type instanceof FMIRealType) {
+            if (!(scalar.type instanceof FMIRealType)) {
+            	new Exception(
+                        "Warning: The input variable "
+                                + scalar.name
+                                + " is of type "
+                                + scalar.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
+            	continue;
+            }	
+            else {
                 if (!_useRawJNI()) {
                     scalar.setDouble(_fmiComponent, inputVariables[ii]);
                 } else {
@@ -211,15 +221,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     final long uuRef[] = { _inputValueReferences[ii] };
                     _fmiSetRealJNI(uu, uuRef, timeValue);
                 }
-            } else {
-                new Exception(
-                        "Warning: The input variable "
-                                + scalar.name
-                                + " is of type "
-                                + scalar.type
-                                + " .But only variables from type FMIRealType are updated.")
-                        .printStackTrace();
-            }
+            } 
         }
 
         // Give {stateVariableDerivative} to FMU and evaluate the derivative function.
@@ -1933,7 +1935,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 continue;
             }
             FMIScalarVariable scalarVariable = output.scalarVariable;
-            if (scalarVariable.type instanceof FMIRealType) {
+            if (!(scalarVariable.type instanceof FMIRealType)) {
+            	new Exception(
+                        "Warning: The output variable "
+                                + scalarVariable.name
+                                + " is of type "
+                                + scalarVariable.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
+            	continue;    	
+            }   	
+            else {
                 final double[] oo = new double[1];
                 if (!_useRawJNI()) {
                     double result = scalarVariable.getDouble(_fmiComponent);
@@ -1944,15 +1956,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 }
                 // Send the initial output values to the port.
                 _sendModelToPort(oo, port, currentTime, ii, false);
-
-            } else {
-                new Exception(
-                        "Warning: The output variable "
-                                + scalarVariable.name
-                                + " is of type "
-                                + scalarVariable.type
-                                + " .But only variables from type FMIRealType are updated.")
-                        .printStackTrace();
             }
         }
     }
