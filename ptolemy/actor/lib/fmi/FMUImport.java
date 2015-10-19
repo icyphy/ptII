@@ -1100,15 +1100,15 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     token = new DoubleToken(result);
                     if (_useQSS) {
                         if (_firstFire) {
-                            _outputs.get(index).lastDoubleOutput = result;
+                            _outputs.get(index).lastOutputPortValue = result;
                             _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
                         }
                         // Produce an output if the quantum has been crossed.
                         else {
-                            if (Math.abs(result - output.lastDoubleOutput) <= _outputs.get(index).quantum) {
+                            if (Math.abs(result - output.lastOutputPortValue) <= _outputs.get(index).quantum) {
                                 continue;
                             } else {
-                                _outputs.get(index).lastDoubleOutput = result;
+                                _outputs.get(index).lastOutputPortValue = result;
                                 _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
                             }
                         }
@@ -4784,9 +4784,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The flag which indicates that input changed. */
         public boolean hasChanged;
+        
+        /** The last input double variable. */
+		public double lastInputModelValue;
 
         /** The last double token seen at the input port. */
-        public double lastDoubleInput;
+        public double lastInputPortValue;
 
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
@@ -4796,6 +4799,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The start value for this variable, or null if it is not given. */
         public Double start;
+
     }
 
     /** A data structure representing an output from the FMU. */
@@ -4809,7 +4813,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         public List<FMIScalarVariable> inputStateDependentScalarVariables;
 
         /** The last double output seen at the input port. */
-        public double lastDoubleOutput;
+        public double lastOutputPortValue;
 
         /** The FMI scalar variable for this output. */
         public FMIScalarVariable scalarVariable;
