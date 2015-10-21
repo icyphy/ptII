@@ -2255,18 +2255,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Check if any state variable had a quantization event. If true
         // then update the continuous states in the FMU before updating the outputs.
         // This is needed particularly if an output depends on a state.
-        //final double[] stateVariables = new double[stateCt];
         final double timeValue = currentTime.getDoubleValue();
-        if (_firstRound) {
-            // In the first round we assume that all states have changed.
+        if (_firstRound || needQuantizationEvents) {
             for (int i = 0; i < stateCt; i++) {
-                _stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
+                _stateVariables[i] = _qssSolver.evaluateStateModelContinuous(i, currentTime);
             }
             _setContinuousStates(timeValue);
-        }
-        else if (needQuantizationEvents) {
-            // Set the continuous states.
-        	_setContinuousStates(timeValue);
         }
 
         // Update the inputs at the current time so the outputs get the correct values
@@ -2320,7 +2314,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (input.port.hasNewToken(0)) {
                 // Here, have a new value on the input port.
                 final Token token = input.port.get(0);
-                if (!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
+                _updateInputModel(input, currentTime, token, curIdx);
+                //if (!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
                 // Specify input which has changed.
                 // final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates.get(input.scalarVariable.name);
                 // _updateModelVariableAttribute (modVarIdx, true);
