@@ -1099,9 +1099,16 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     }
                     token = new DoubleToken(result);
                     if (_useQSS) {
-                        if (_firstFire) {
+                    	if (_firstFire || Math.abs(result - _outputs.get(index).lastOutputPortValue) > _threshold ) {
+                    		_outputs.get(index).lastOutputPortValue = result;
+                    	}
+                    	else{
+                    		continue;
+                    	}                	
+                     /*                      
+                     if (_firstFire) {
                             _outputs.get(index).lastOutputPortValue = result;
-                            _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
+                            _outputs.get(index).quantum = Math.abs(_threshold * result);
                         }
                         // Produce an output if the quantum has been crossed.
                         else {
@@ -1109,9 +1116,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                                 continue;
                             } else {
                                 _outputs.get(index).lastOutputPortValue = result;
-                                _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
+                                _outputs.get(index).quantum = Math.abs(_threshold * result);
                             }
                         }
+                        */
                     }
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     if (_useRawJNI()) {
@@ -1531,7 +1539,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _numberOfTimeEvents = 0;
         
         // Check if the QSS director is used at the top level.
-        // This call initialize the _outputQuantum as well as
+        // This call initialize the _threshold as well as
         // the flag which indicates that QSS director is used here.
         _hasQSSDirector();
 
@@ -4297,9 +4305,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             useQSS = true;
             // Get the quantum which will be used to determine whether
             // outputs should be produced or not.
-            _outputQuantum = Math.max(
-                    ((QSSDirector) getDirector()).getRelativeQuantum(),
-                    ((QSSDirector) getDirector()).getAbsoluteQuantum());
+            //_threshold = Math.max(
+            //        ((QSSDirector) getDirector()).getRelativeQuantum(),
+            //        ((QSSDirector) getDirector()).getAbsoluteQuantum());
             _useQSS = true;
         }   	
         return (useQSS);
@@ -4363,8 +4371,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     protected double _fmiVersion;
 
-    /** The output quantum if QSS is used. */
-    protected double _outputQuantum;
+    /** The delta to exceed to produce outputs if QSS is used. */
+    protected double _threshold = 1e-16;
 
     /** For model exchange, the FMU state variables. */
     protected DoubleBuffer _states;
@@ -4773,8 +4781,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     
     /** Boolean indicating that QSS is used */
     private boolean _useQSS = false;
-
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
