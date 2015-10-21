@@ -2013,11 +2013,16 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	        }*/
 	    }
 	    // Handle outputs which are not states.
-	    else {     
-	        if (_firstRound) {
+	    else {   
+	    	if (_firstRound || Math.abs(val[0] - _outputs.get(index).lastOutputPortValue) > _threshold) {
+	    		_sendModel(val, prt, time, isState);
+	    		_outputs.get(index).lastOutputPortValue = val[0];
+	    	}	    	
+            /*	        
+              if (_firstRound) {
 	        	_sendModel(val, prt, time, isState);
 	            _outputs.get(index).lastOutputPortValue = val[0];
-	            _outputs.get(index).quantum = Math.abs(_outputQuantum 
+	            _outputs.get(index).quantum = Math.abs(_threshold 
 	            		* _outputs.get(index).lastOutputPortValue);
 	        } else {
 	        	double lastDblOut = _outputs.get(index).lastOutputPortValue;
@@ -2036,10 +2041,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	                //    return;
 	                _sendModel(val, prt, time, isState);
 	                _outputs.get(index).lastOutputPortValue = val[0];
-	                _outputs.get(index).quantum = Math.abs(_outputQuantum 
+	                _outputs.get(index).quantum = Math.abs(_threshold 
 	                		* _outputs.get(index).lastOutputPortValue);
 	            }
 	        }
+	        */
 	    }
 	    
 	}
@@ -2173,7 +2179,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 			double value, long valueReference, int curIdx)
 			throws IllegalActionException {
 		if (_firstRound
-				|| Math.abs((_inputs.get(curIdx).lastInputModelValue - value)) > 1e-16) {
+				|| Math.abs((_inputs.get(curIdx).lastInputModelValue - value)) > _threshold) {
 			if (!_useRawJNI()) {
 				scalar.setDouble(_fmiComponent, value);
 			} else {
