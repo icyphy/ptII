@@ -4828,8 +4828,5 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
 
-        /** The Quantum value of the output. */
-		public double quantum;
-
     }
 }
