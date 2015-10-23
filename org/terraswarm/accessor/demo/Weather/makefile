@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II ImageFilters demo
+# Makefile for Ptolemy II Weather demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/ImageFilters
+ME =		org/terraswarm/accessor/demo/Weather
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,34 +41,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ImageFilters
+PTPACKAGE = 	Weather
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	ImageFilters.xml \
-	Annotate.xml \
-	Average.xml \
-	BicubicScale.xml \
-	Block.xml \
-	Border.xml \
-	BoxBlur.xml \
-	Bump.xml \
-	ChannelMix.xml \
-	Chrome.xml \
-	Circle.xml \
-	ColorHalftone.xml \
-	Contour.xml \
-	Contrast.xml \
-	Crop.xml \
-	Crystallize.xml \
-	Gray.xml \
-	Invert.xml \
-	LensBlur.xml \
-	Random.xml \
-	Solarize.xml \
-	Threshold.xml
+OTHER_FILES_TO_BE_JARED = 	Weather.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -92,16 +70,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer ImageFilters.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer Weather.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" ImageFilters.xml
+	"$(PTII)/bin/ptolemy" Weather.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" ImageFilters.xml
+	"$(PTII)/bin/vergil" Weather.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
