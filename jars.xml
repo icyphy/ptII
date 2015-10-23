@@ -4268,6 +4268,7 @@
       <fileset dir="${basedir}">
         <include name="org/terraswarm/accessor/demo/*/*.class"/>
         <include name="org/terraswarm/accessor/demo/*/*.js"/>
+        <include name="org/terraswarm/accessor/demo/*/*.svg"/>
         <include name="org/terraswarm/accessor/demo/*/*.xml"/>
       </fileset>
     </jar>
