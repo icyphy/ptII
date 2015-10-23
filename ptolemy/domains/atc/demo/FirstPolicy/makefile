@@ -46,7 +46,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	FirstPolicy.xml
+OTHER_FILES_TO_BE_JARED = \
+	Airplanes.txt \
+	FirstPolicy.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

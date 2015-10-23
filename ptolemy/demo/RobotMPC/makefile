@@ -48,6 +48,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 EXAMPLE_MODELS = \
 	CollisionAvoidance.xml \
 	CollisionAvoidanceWithAccModel.xml \
+	CollisionAvoidanceWithObservationRobots.xml \
+	CollisionAvoidanceWithUncertainMeasurement.xml \
 	SimpleChase.xml
 
 OTHER_FILES_TO_BE_JARED = \

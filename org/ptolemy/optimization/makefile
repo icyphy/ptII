@@ -56,7 +56,8 @@ JSRCS = \
 	CompositeOptimizer.java \
 	CompositeOptimizerUsingGradient.java \
 	ObjectiveFunction.java \
-	ObjectiveFunctionWithSoftConstraints.java
+	ObjectiveFunctionWithSoftConstraints.java \
+	PositionConstraintCalculator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	CompositeOptimizerIcon.xml \

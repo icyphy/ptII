@@ -62,7 +62,8 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'SyntaxTextEditorForStringAttributes$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
