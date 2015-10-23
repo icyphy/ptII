@@ -202,6 +202,10 @@ public class GenerateCopyrights {
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
+        _addIfClassPresent(copyrightsMap,
+                "org.terraswarm.gdp.GDP_GCL",
+                "lib/gdp-license.htm");
+
         // Vertx
         _addIfClassPresent(copyrightsMap,
                 "com.fasterxml.jackson.core.base.GeneratorBase",
