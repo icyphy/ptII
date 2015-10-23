@@ -105,6 +105,8 @@ OPTIONAL_FILES = \
 	'MoveAction$$3.class' \
 	'MoveAction$$2$$1.class' \
 	'MoveAction$$MoveType.class' \
+	'RemoveIconAction$$1$$1.class' \
+	'RemoveIconAction$$1.class' \
 	'VisibleParameterEditorFactory$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

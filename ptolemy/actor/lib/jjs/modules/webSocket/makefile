@@ -75,6 +75,7 @@ OPTIONAL_FILES = \
 	'WebSocketHelper$$ExceptionHandler.class' \
 	'WebSocketHelper$$HttpClientExceptionHandler.class' \
 	'WebSocketHelper$$HttpClientExceptionHandler$$1.class' \
+	'WebSocketHelper$$WebSocketCloseHandler.class' \
 	'WebSocketHelper$$WebSocketExceptionHandler.class' \
 	'WebSocketServerHelper$$1.class' \
 	'WebSocketServerHelper$$2.class'

@@ -55,7 +55,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	ImportFMUAction.java \
-	ImportFMUForQSSAction.java
+	ImportFMUForQSSAction.java \
+	ImportFMUHybridAction.java
 
 OTHER_FILES_TO_BE_JARED =
 

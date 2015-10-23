@@ -91,6 +91,7 @@ MISC_FILES = test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'AccessorIconLoader$$1.class' \
 	'JSAccessor$$1.class' \
 	'JSAccessor$$2.class' \
         'JSAccessor$$ActionableAttribute.class'

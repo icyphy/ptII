@@ -60,6 +60,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	PeriodicSampler.xml \
 	PeriodicSamplerIcon.xml \
+	SmoothZeroCrossingDetectorIcon.xml \
 	qssentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
