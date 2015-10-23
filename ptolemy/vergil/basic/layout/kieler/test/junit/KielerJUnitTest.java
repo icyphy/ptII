@@ -137,14 +137,27 @@ public class KielerJUnitTest {
      */
     @org.junit.Test
     public void runModulation() throws Exception {
-        _layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
+        System.out.println("KielerJUnitTest.java: runModulation() start");
+        try {
+            _layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
+        } catch (Error error) {
+            error.printStackTrace();
+        }
+
+
+
+        System.out.println("KielerJUnitTest.java: runModulation() end");
     }
 
     @org.junit.Test
     public void runCarTracking() throws Exception {
-        _layoutTest(
+        try { 
+            _layoutTest(
                 "$CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml",
                 false);
+        } catch (Error error) {
+            error.printStackTrace();
+        }
     }
 
     @org.junit.Test
