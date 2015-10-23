@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	CloneTest.java \
+	ParameterCloneTest.java \
 	TestSharedParameter.java
 
 # Non-graphical Java tests written in Tcl
