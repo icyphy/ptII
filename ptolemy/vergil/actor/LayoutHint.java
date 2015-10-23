@@ -289,7 +289,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
      * @param tail The ending point of the link, e.g. a Ptolemy Port or
      *            Relation.
      * @return the LayoutHintItem stored for this link or null
-     * @see #setLayoutHintItem(NamedObj, NamedObj, double[])
+     * @see #setLayoutHintItem(NamedObj, NamedObj, double[], Point2D.Double)
      */
     public LayoutHintItem getLayoutHintItem(Object head, Object tail) {
         for (LayoutHintItem item : _layoutHintItems) {

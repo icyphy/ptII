@@ -38,13 +38,15 @@ import org.json.XML;
  * for invoking a specific REST service. The context includes the required input to the service and the
  * expected response from the service. No dialog is implemented yet!!
  * @author Anne H. Ngu (angu@txstate.edu) 
- * @version 
- *
+ * @version $Id$
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class ContextAwareHelper {
     /** Create an instance of a GUI object to collect details about a service.
      */
     public ContextAwareHelper() {
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////
