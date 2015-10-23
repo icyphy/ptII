@@ -6,6 +6,8 @@
 //******************************************************************************************
 
 
+
+
 //Hash mapping "map._key()" strings to "map objects"
 //This is a simple hash
 var maps = {};
@@ -167,7 +169,11 @@ function __coordinateTransformationKey( domainName, codomainName ){
 //Public Enums
 //******************************************************************************************
 
-//enum definition for spaceType
+//
+/**
+* @enum
+*/
+
 exports.SpaceTypeEnum = {
 	EUCLIDEAN : "Euclidean",
 	METRIC : "Metric",
@@ -180,21 +186,30 @@ exports.SpaceTypeEnum = {
 //Public toString functions for MapManager hashes
 //******************************************************************************************
 
-
+/**
+* Returns the current state of the global maps storage as a string.
+* @function
+* @returns {string}
+*/
 exports.mapsToString = function(){
 	return _simpleHashToString(maps);
 }
 
+/**
+* Returns the current state of the global coordinate transformations storage as a string.
+* @function
+* @returns {string}
+*/
 exports.coordinateTransformationsToString = function(){
 	return _keyedHashToString(coordinateTransformations);
 }
 
-//Removed due to change of entity aliases as being stored with the entity
 
-// exports.entityAliasesToString = function(){
-// 	return _keyedHashToString(entityAliases);
-// }
-
+/**
+* Returns the current state of the global entities storage as a string.
+* @function
+* @returns {string}
+*/
 exports.entitiesToString = function(){
 	return _simpleHashToString(entities);
 }
@@ -205,6 +220,11 @@ exports.entitiesToString = function(){
 //******************************************************************************************
 
 //Todo what about other ontological metadata?
+/**
+* @constructor
+* @param {string} name - The name of the entity
+*/
+
 function Entity(name){
 	if(! (typeof name === "string") ) {
 		throw "Incorrect arguments to Entity constructor.";
@@ -218,19 +238,38 @@ function Entity(name){
 		return this.name;
 	}
 
+	/**
+	* @function
+	* @returns {string} string representation of this object.
+	*/
 	this.toString = function(){
 		return "{ " + "name: " + this.name + " }";
 	}
 
+	/**
+	* @function
+	* @returns {string} string representation of the maps this entity has been added to.
+	*/
 	this.containingMapsToString = function() {
 		return _simpleHashToString(this.containingMaps);
 	}
 
+	/**
+	* @function
+	* @returns {string} string representation of this entity's aliases.
+	*/
 	this.aliasesToString = function() {
 		return _simpleHashToString(this.aliases);
 	}
 
 
+	//Todo should this be registerAlias instead? What counts as registering or adding?
+	/**
+	* Indicate that an entity has another name on another map.
+	* @function
+	* @param {Entity} alias - The Entity on the different map
+	* @returns {boolean} if the entity alias was successfully added returns true, false otherwise.
+	*/
 	this.addAlias = function( alias ){
 	 	if( ! ( alias instanceof Entity )){
 	 		throw "Incorrect arguments to addAlias.";
@@ -240,8 +279,6 @@ function Entity(name){
 	 	if( ! entities.hasOwnProperty(alias._key()) ){
 	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity an alias.";
 	 	} 
-
-
 
 	 	//Check to see if alias has been registered. If not, throw exception.
 	 	if( ! entities.hasOwnProperty(alias._key()) ){
@@ -260,7 +297,13 @@ function Entity(name){
 
 exports.Entity = Entity;
 
-//Note that for now entities cannot be unregistered.
+	//Note that for now entities cannot be unregistered.
+	/**
+	* Before any entity can be used by mapManager, it must first be registered so it can be placed in the global entity storage.
+	* @function
+	* @param {Entity} entity - The entity object to be registered by the map manager.
+	* @returns {boolean} if the entity was successfully registered returns true, false otherwise.
+	*/
 exports.registerEntity = function(entity){
 	if( ! ( entity instanceof Entity) ){
 		throw "Incorrect arguments to registerEntity.";
@@ -330,13 +373,21 @@ exports.registerEntity = function(entity){
 //CoordinateTransformation Specific functions
 //******************************************************************************************
 
-//type definition for coordinateSystem? What exactly is a coordinate system? I think it has functions?
+/**
+* @constructor
+* @param {name} name - The name of the coordinate system.
+*/
 function CoordinateSystem(name ){
 	if( typeof name !== "string"){
 		throw "Incorrect arguments to CoordinateSystem constructor.";
 	}
 
 	this.name = name;
+
+	/**
+	* @function
+	* @returns {string} string representation of this object.
+	*/
 	this.toString = function() {
 		return name;
 	};
@@ -344,9 +395,20 @@ function CoordinateSystem(name ){
 
 exports.CoordinateSystem =  CoordinateSystem;
 
-//Todo consider changing the language to "registerCoordainteTransformation" for consistancy.
+//Todo should the domainName and codomainName be strings or actual coordinate system objects?
 //Todo break the assumption that there only has to be one transformation from a particular domain to codomain.
-exports.addCoordinateTransformation = function addCoordinateTransformation( domainName, codomainName, transformation ){
+/**
+* Before any coordinate transformation can be used by mapManager,
+* it must first be registered so it can be placed in the global coordinate transformation storage.
+* @function
+* @param {String} domainName - The name of domain coordinate system.
+* @param {String} codomainName - The name of codomain coordinate system.
+* @param {function} codomainName - A function that takes one argument,
+* a point in the domain, and returns a point in the codomain
+* @returns {boolean} if the coordinate transformation was successfully registered returns true, false otherwise.
+*/
+
+exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ){
 	if( ! ( typeof domainName === "string" && typeof codomainName === "string" && typeof transformation === "function" )  ){
 		throw "Incorrect arguments to addCoordinateTransformation constructor."
 	}
@@ -361,7 +423,14 @@ exports.addCoordinateTransformation = function addCoordinateTransformation( doma
 	}
 }
 
-//Function to get coordinate transformations out of the coordinateTransformations hash.
+/**
+* Retrieve a previously registered coordinate transformation from the global storage.
+* @function
+* @param {String} domainName - The name of domain coordinate system.
+* @param {String} codomainName - The name of codomain coordinate system.
+* @returns {boolean} A function that takes one argument,
+* a point in the domain, and returns a point in the codomain
+*/
 exports.getCoordinateTransformation = function getCoordinateTransformation( domainName, codomainName){
 	if( ! ( typeof domainName === "string" && typeof codomainName === "string" )){
 		throw "Incorrect arguments to getCoordinateTransformation constructor."
@@ -380,7 +449,16 @@ exports.getCoordinateTransformation = function getCoordinateTransformation( doma
 //Maps Specific functions
 //******************************************************************************************
 
-//constructor for Map
+
+
+/**
+
+* @typedef {Map}
+* @constructor
+* @param {mapName} string - The name of the map.
+* @param {SpaceTypeEnum} spaceTypeEnum - The variety of mathematical space this map considers.
+* @param {CoordinateSystem} coordinateSystem - The coordinate system with respect to which this map gives position.
+*/
 function Map(mapName, spaceType, coordinateSystem){
 
 	//Todo find a way to type check spaceType against SpaceTypeEnum
@@ -392,18 +470,29 @@ function Map(mapName, spaceType, coordinateSystem){
 	this.mapName = mapName;
 	this.mapEntities = {}; //set of entities this map contains
 
+	this._key = function(){
+		return mapName;
+	}
 
 	this.mapEntitiesToString = function(){
 		return _simpleHashToString(this.mapEntities);
 	}
 
+
+	/**
+	* @function
+	* @returns {string} string representation of this object.
+	*/
 	this.toString = function() {
 		return "{ mapName: " + mapName + ", spaceType: " + this.spaceType + ", coordinateSystem: " + this.coordinateSystem + " }";
 	}
 
-	this._key = function(){
-		return mapName;
-	}
+	/**
+	* Attach an entity to this map. This does not entail giving it a position.
+	* @function
+	* @param {Entity} entity - The entity to be attached to this map
+	* @returns {boolean} if successful returns true, false otherwise.
+	*/
 
 	this.addEntity = function(entity) {
 		if ( ! (entity instanceof Entity )  ){
@@ -427,6 +516,14 @@ function Map(mapName, spaceType, coordinateSystem){
 		}
 	}
 
+
+	//Todo: should it be allowed to remove an entity?
+	/**
+	* Unattach an entity from this map.
+	* @function
+	* @param {Entity} entity - The entity to be unattached from this map
+	* @returns {boolean} if successful returns true, false otherwise.
+	*/
 	this.removeEntity = function(entity) {
 		if ( ! (entity instanceof Entity )  ){
 			throw "Incorrect arguments to Map.addEntity."
@@ -453,6 +550,13 @@ function Map(mapName, spaceType, coordinateSystem){
 
 exports.Map = Map;
 
+
+/**
+* Before any map can be used by mapManager, it must first be registered so it can be placed in the global map storage.
+* @function
+* @param {Map} map - The map object to be registered by the map manager.
+* @returns {boolean} if the map was successfully registered returns true, false otherwise.
+*/
 exports.registerMap = function(map){
 	if( ! (map instanceof Map) ){
 		throw "Incorrect arguments to registerMap.";
