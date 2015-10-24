@@ -58,8 +58,8 @@ public class ConditionsTableModel extends AbstractTableModel {
 
     /** Construct a new conditions table model for a given output port and
      *  the FSMActor. Initialize the column count to 3.
-     * @param port
-     * @param model
+     * @param port The port.
+     * @param model The model
      */
     public ConditionsTableModel(IOPort port, FSMActor model) {
         _model = model;
@@ -83,6 +83,8 @@ public class ConditionsTableModel extends AbstractTableModel {
      * Check that all values are unique.
      * Check that pairwise OR of events in a row is always false.
      * --- check coverage: AND of all events in a row is true
+     * @exception IllegalActionException If thrown while checking
+     * the disjointness.
      */
     public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),

@@ -45,7 +45,7 @@ import ptolemy.util.MessageHandler;
  *  says "Hello World".
  *  <p>
  *  To place this attribute in model, in Vergil, select
- *  Graph->Instantiate Attribute and specify for the class
+ *  Graph-&gt;Instantiate Attribute and specify for the class
  *  name: doc.tutorial.graph.HelloWorld. Alternatively,
  *  you can paste the following MoML code into the model:
  *  <pre>

@@ -297,7 +297,7 @@ implements ExecutionListener {
 
     /** If there is an associated BasicGraphFrame, use it to report an error.
      *  Otherwise, report to standard error.
-     *  @param exception The exception.
+     *  @param error The throwable.
      */
     protected void _report(Throwable error) {
         BasicGraphFrame frame = getFrame();

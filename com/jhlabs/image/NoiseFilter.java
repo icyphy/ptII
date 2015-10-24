@@ -44,10 +44,8 @@ public class NoiseFilter extends PointFilter {
 
     /**
      * Set the amount of effect.
-     * @param amount the amount
-    * @min-value 0
-    * @max-value 1
-    * @see #getAmount
+     * @param amount the amount  The minimum value is 0.0, the maximum is 1.0
+     * @see #getAmount()
      */
     public void setAmount(int amount) {
         this.amount = amount;
@@ -56,7 +54,7 @@ public class NoiseFilter extends PointFilter {
     /**
      * Get the amount of noise.
      * @return the amount
-    * @see #setAmount
+     * @see #setAmount(int)
      */
     public int getAmount() {
         return amount;

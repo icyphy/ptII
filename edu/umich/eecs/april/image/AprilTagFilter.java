@@ -155,6 +155,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      * allowed to grow when the component is small in size. This
      * threshold affects how much. The default is 1200.
      * @see #setMagThresh(double)
+     * @return The mag threshold
      */
     public double getMagThresh() {
         return _magThresh;
@@ -164,6 +165,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      *  when connecting edges, in radians. This defaults to the radian
      *  equivalent of 30 degrees.
      *  @see #setMaxEdgeCost(double)
+     *  @return The maximum angle range allowed.
      */
     public double getMaxEdgeCost() {
         return _maxEdgeCost;

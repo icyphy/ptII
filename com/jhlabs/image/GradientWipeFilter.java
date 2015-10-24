@@ -45,10 +45,8 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the softness of the dissolve in the range 0..1.
-     * @param softness the softness
-    * @min-value 0
-    * @max-value 1
-    * @see #getSoftness
+     * @param softness the softness. min-value: 0, max-value: 1
+     * @see #getSoftness()
      */
     public void setSoftness(float softness) {
         this.softness = softness;
@@ -57,7 +55,7 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
     /**
      * Get the softness of the dissolve.
      * @return the softness
-    * @see #setSoftness
+    * @see #setSoftness(float)
      */
     public float getSoftness() {
         return softness;

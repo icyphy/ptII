@@ -1,5 +1,29 @@
-/**
- * 
+/* A director that implements the FMI Master Algorithm Hybrid Co-simulation model of computation. 
+
+   Copyright (c) 2015 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
+
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
+
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
+
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+
  */
 package ptolemy.domains.fmima.kernel;
 
@@ -10,39 +34,50 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * @author fabio
- *
+ * A director that implements the FMI Master Algorithm Hybrid Co-simulation model of computation. 
+ * @author Fabio Cremona
+ * @version $Id: FMUImport.java 73691 2015-10-22 15:12:47Z tsnouidui@lbl.gov $
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class FMIMADirector extends DEDirector {
-
-    /**
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
+    /** Construct a director in the default Workspace.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
+     */   
     public FMIMADirector() throws IllegalActionException, NameDuplicationException {
-        // TODO Auto-generated constructor stub
+        super();
     }
 
-    /**
-     * @param workspace
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct a director in the given Workspace.
+     *  @param workspace The workspace. Container of this director.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
     public FMIMADirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @param container
-     * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Construct a director in the given container with the given name.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *  @param container Container of this director.
+     *  @param name Name of this director.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container is not a
+     *   CompositeActor and the name collides with an entity in the container.
      */
     public FMIMADirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
     }
     
     /** Fire actors according to events in the event queue. The actual
@@ -93,5 +128,4 @@ public class FMIMADirector extends DEDirector {
             _debug("DE director fired!");
         }
     }
-
 }

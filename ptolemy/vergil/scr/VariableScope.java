@@ -61,6 +61,7 @@ public class VariableScope extends ModelScope {
 
     /** Look up and return the attribute with the specified name in the
      *  scope. Return null if such an attribute does not exist.
+     *  @param name The name of the attribute.
      *  @return The attribute with the specified name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
@@ -84,6 +85,7 @@ public class VariableScope extends ModelScope {
     /** Look up and return the type of the attribute with the
      *  specified name in the scope. Return null if such an
      *  attribute does not exist.
+     *  @param name The name of the attribute.
      *  @return The attribute with the specified name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.

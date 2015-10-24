@@ -121,9 +121,8 @@ public class SmartBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the horizontal size of the blur.
-     * @param hRadius the radius of the blur in the horizontal direction
-    * @min-value 0
-    * @see #getHRadius
+     * @param hRadius the radius of the blur in the horizontal direction.  The minimum value is 0.
+     * @see #getHRadius()
      */
     public void setHRadius(int hRadius) {
         this.hRadius = hRadius;
@@ -132,7 +131,7 @@ public class SmartBlurFilter extends AbstractBufferedImageOp {
     /**
      * Get the horizontal size of the blur.
      * @return the radius of the blur in the horizontal direction
-    * @see #setHRadius
+     * @see #setHRadius(int)
      */
     public int getHRadius() {
         return hRadius;
@@ -140,9 +139,8 @@ public class SmartBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the vertical size of the blur.
-     * @param vRadius the radius of the blur in the vertical direction
-    * @min-value 0
-    * @see #getVRadius
+     * @param vRadius the radius of the blur in the vertical direction. The minimum value is 0.
+     * @see #getVRadius()
      */
     public void setVRadius(int vRadius) {
         this.vRadius = vRadius;
@@ -151,7 +149,7 @@ public class SmartBlurFilter extends AbstractBufferedImageOp {
     /**
      * Get the vertical size of the blur.
      * @return the radius of the blur in the vertical direction
-    * @see #setVRadius
+     * @see #setVRadius(int)
      */
     public int getVRadius() {
         return vRadius;
@@ -159,9 +157,8 @@ public class SmartBlurFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the radius of the effect.
-     * @param radius the radius
-    * @min-value 0
-    * @see #getRadius
+     * @param radius the radius.  The minimum value is 0.
+     * @see #getRadius()
      */
     public void setRadius(int radius) {
         this.hRadius = this.vRadius = radius;
@@ -170,7 +167,7 @@ public class SmartBlurFilter extends AbstractBufferedImageOp {
     /**
      * Get the radius of the effect.
      * @return the radius
-    * @see #setRadius
+     * @see #setRadius(int)
      */
     public int getRadius() {
         return hRadius;

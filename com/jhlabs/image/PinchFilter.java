@@ -114,9 +114,8 @@ public class PinchFilter extends TransformFilter {
 
     /**
      * Set the radius of the effect.
-     * @param radius the radius
-    * @min-value 0
-    * @see #getRadius
+     * @param radius the radius.  The minimum value is 0.0, the maximum is 1.0
+     * @see #getRadius()
      */
     public void setRadius(float radius) {
         this.radius = radius;
@@ -125,7 +124,7 @@ public class PinchFilter extends TransformFilter {
     /**
      * Get the radius of the effect.
      * @return the radius
-    * @see #setRadius
+     * @see #setRadius(float)
      */
     public float getRadius() {
         return radius;
@@ -133,10 +132,8 @@ public class PinchFilter extends TransformFilter {
 
     /**
      * Set the amount of pinch.
-     * @param amount the amount
-    * @min-value -1
-    * @max-value 1
-    * @see #getAmount
+     * @param amount the amount  The minimum value is -1.0, the maximum is 1.0
+     * @see #getAmount()
      */
     public void setAmount(float amount) {
         this.amount = amount;
@@ -145,7 +142,7 @@ public class PinchFilter extends TransformFilter {
     /**
      * Get the amount of pinch.
      * @return the amount
-    * @see #setAmount
+     * @see #setAmount(float)
      */
     public float getAmount() {
         return amount;

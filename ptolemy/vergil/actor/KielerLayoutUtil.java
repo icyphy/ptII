@@ -80,6 +80,7 @@ public final class KielerLayoutUtil {
     /**
      * Get the starting and ending points of a connector. Copied some code from
      * {@link BasicManhattanRouter#routeManhattan(diva.canvas.connector.ManhattanConnector)}.
+     * @param connector The connector.
      * @param bendPoints a list of bendpoints to determine the anchor point on the site
      * @return the anchor points at the start and end of the
      * connection, i.e. a Point2D array of size 2
