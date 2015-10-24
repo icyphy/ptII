@@ -48,18 +48,26 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** Read a PGM file and output it as an occupancy grid. Most ROS maps are represented as a portable bitmap
- * therefore this actor is a helper for reading a saved map scan. 
+/** Read a PGM file and output it as an occupancy grid. Most ROS maps
+ * are represented as a portable bitmap therefore this actor is a
+ * helper for reading a saved map scan.
+ *
  *  @author Ilge Akkaya
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Red (ilgea)
  *  @Pt.AcceptedRating 
- *
  */
 public class PGMReader extends Source {
-
-
+    /** Construct an actor with the given container and name.
+     *  The output and trigger ports are also constructed.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public PGMReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
@@ -106,13 +114,13 @@ public class PGMReader extends Source {
             super.attributeChanged(attribute);
         }
     }
+
     @Override
     public boolean prefire() throws IllegalActionException {
         if (!super.prefire()) {
             return false;
         }
         try { 
-
             Scanner scan = new Scanner(new FileInputStream(fileOrURL.asFile()));
             scan.next(); // the magic number: used to determine the PGM format.
             _width = scan.nextInt();
@@ -120,49 +128,51 @@ public class PGMReader extends Source {
             scan.nextInt();  // max value
             scan.close();
 
-            FileReader stream = new FileReader(fileOrURL.asFile()); 
+            FileReader stream = null;
+            try {
+                stream = new FileReader(fileOrURL.asFile()); 
 
-            // skip header.
-            for ( int i = 0 ; i < 4; i++) { 
-                if (stream.read() == -1) {
-                    return false;
-                }
-            }
-            _grid = new int[_height*_width];
-
-            for (int col = 0; col < _width; col++) { 
-                for (int row = 0; row < _height; row++) {
-                    int intVal = stream.read();
-                    if (!_quantize) {
-                        _grid[row*_width + col] = intVal; 
-                    } else {
-                        int index=0;
-                        for (int i = 0; i < _levels.length; i ++) {
-                            if (i==0 ) {
-                                if (intVal < _levels[i]) {
-                                    index = 0;
-                                } else {
-                                    continue;
-                                }
-                            } else if( intVal > _levels[i-1] && intVal <= _levels[i]) {
-                                index = i;
-                            } else if( intVal > _levels[i] && i >= _levels.length -1) {
-                                index = i;
-                            } 
-                        }
-                        _grid[row + col*_height] = _levels[index];   
-
+                // Skip header.
+                for ( int i = 0 ; i < 4; i++) { 
+                    if (stream.read() == -1) {
+                        return false;
                     }
                 }
-            } 
-            stream.close();
+                _grid = new int[_height*_width];
+
+                for (int col = 0; col < _width; col++) { 
+                    for (int row = 0; row < _height; row++) {
+                        int intVal = stream.read();
+                        if (!_quantize) {
+                            _grid[row*_width + col] = intVal; 
+                        } else {
+                            int index=0;
+                            for (int i = 0; i < _levels.length; i ++) {
+                                if (i==0 ) {
+                                    if (intVal < _levels[i]) {
+                                        index = 0;
+                                    } else {
+                                        continue;
+                                    }
+                                } else if( intVal > _levels[i-1] && intVal <= _levels[i]) {
+                                    index = i;
+                                } else if( intVal > _levels[i] && i >= _levels.length -1) {
+                                    index = i;
+                                } 
+                            }
+                            _grid[row + col*_height] = _levels[index];   
+
+                        }
+                    }
+                } 
+            } finally {
+                if (stream != null) {
+                    stream.close();
+                }
+            }
         } catch (IOException e) {
             throw new IllegalActionException(this, e.getMessage());
         }
-
-
-
-
         return super.prefire(); 
     }
 

@@ -138,6 +138,7 @@ public class RestrictedJavaScriptInterface {
      *  classpath of the current Java process.
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
+     *  @return The resource
      *  @throws IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".

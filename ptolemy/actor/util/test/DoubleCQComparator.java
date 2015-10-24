@@ -70,13 +70,25 @@ public class DoubleCQComparator implements CQComparator {
         Double a = (Double) object1;
         Double b = (Double) object2;
 
-        if (a.doubleValue() < b.doubleValue()) {
-            return -1;
-        } else if (a.doubleValue() > b.doubleValue()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        // FindBugs: http://findbugs.sourceforge.net/bugDescriptions.html#CO_COMPARETO_INCORRECT_FLOATING
+
+        // "This method compares double or float values using pattern
+        // like this: val1 > val2 ? 1 : val1 < val2 ? -1 : 0. This
+        // pattern works incorrectly for -0.0 and NaN values which may
+        // result in incorrect sorting result or broken collection (if
+        // compared values are used as keys). Consider using
+        // Double.compare or Float.compare static methods which handle
+        // all the special cases correctly."
+
+        return a.compareTo(b);
+
+        // if (a.doubleValue() < b.doubleValue()) {
+        //      return -1;
+        // } else if (a.doubleValue() > b.doubleValue()) {
+        //     return 1;
+        // } else {
+        //     return 0;
+        // }
     }
 
     /** Given an entry, a zero reference, and a bin width, return a

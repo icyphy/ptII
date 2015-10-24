@@ -149,6 +149,10 @@ public class KielerJUnitTest {
         System.out.println("KielerJUnitTest.java: runModulation() end");
     }
 
+    /** Test the layout of the CarTracking model.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
     @org.junit.Test
     public void runCarTracking() throws Exception {
         try { 
@@ -160,6 +164,10 @@ public class KielerJUnitTest {
         }
     }
 
+    /** Test the layout of the Router model.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
     @org.junit.Test
     public void runRouter() throws Exception {
         _layoutTest("$CLASSPATH/ptolemy/demo/ExecDemos/Demos/Router.xml",
@@ -169,6 +177,10 @@ public class KielerJUnitTest {
     /* ----------------------------
      *          FSM Tests
      * ---------------------------- */
+    /** Test the layout of the CSPDomain FSM Model.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
     @org.junit.Test
     public void runCSPDomain() throws Exception {
         _layoutTest(
@@ -176,6 +188,10 @@ public class KielerJUnitTest {
                 false);
     }
 
+    /** Test the layout of the Interrupter FSM Model.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
     @org.junit.Test
     public void runInterrupter() throws Exception {
         _layoutTest(
@@ -183,6 +199,10 @@ public class KielerJUnitTest {
                 false);
     }
 
+    /** Test the layout of the Monitor FSM Model.
+     * @exception Exception If there is a problem reading or laying
+     * out a model.
+     */
     @org.junit.Test
     public void runMonitor() throws Exception {
         _layoutTest(

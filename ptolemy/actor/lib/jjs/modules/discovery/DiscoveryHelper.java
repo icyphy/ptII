@@ -261,52 +261,58 @@ public class DiscoveryHelper {
         try {
             Process process = Runtime.getRuntime().exec(_arpCommand);
 
-            BufferedReader stdOut = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+            BufferedReader stdOut = null;
+            try {
+                stdOut = new BufferedReader(new InputStreamReader(
+                                process.getInputStream()));
+                String line;
 
-            String line;
-
-            while ((line = stdOut.readLine()) != null) {
-                if (_debugging) {
-                    System.out.println("Discovery: arp returns \"" + line
-                            + "\"");
-                }
-                StringTokenizer tokenizer = new StringTokenizer(line, " ");
-                String token, name, ip;
-
-                // Example arp data:
-                // <incomplete> for not-found MACs
-                // EPSON3FDF60 (192.168.5.2) at ac:18:26:3f:bf:20 [ether] on
-                //  eth0
-                // NAUSPIT8 (192.168.5.9) at <incomplete> on eth0
-                // The host machine will not be listed
-
-                if (tokenizer.countTokens() >= 4) {
-                    // Check if IP address has been added to _ipMap by ping
-                    // If not, skip this device - it's unavailable
-
-                    // Tokens are: name, IP address, "at", mac
-                    name = (String) tokenizer.nextElement();
-                    token = (String) tokenizer.nextElement();
-                    ip = token.substring(1, token.length() - 1);
-
+                while ((line = stdOut.readLine()) != null) {
                     if (_debugging) {
-                        System.out.println("Discovery: name: " + name
-                                + ", mac: " + token + " ,ip: " + ip);
+                        System.out.println("Discovery: arp returns \"" + line
+                                + "\"");
                     }
-                    JSONObject object;
-                    for (String key : _ipMap.keySet()) {
-                        object = _ipMap.get(key);
-                        if (object.get("IPAddress").toString()
-                                .equalsIgnoreCase(ip)) {
-                            token = (String) tokenizer.nextElement();
-                            token = (String) tokenizer.nextElement();
-                            object.put("name", name);
-                            object.put("mac", token);
+                    StringTokenizer tokenizer = new StringTokenizer(line, " ");
+                    String token, name, ip;
 
-                            _ipMap.put(key, object);
+                    // Example arp data:
+                    // <incomplete> for not-found MACs
+                    // EPSON3FDF60 (192.168.5.2) at ac:18:26:3f:bf:20 [ether] on
+                    //  eth0
+                    // NAUSPIT8 (192.168.5.9) at <incomplete> on eth0
+                    // The host machine will not be listed
+
+                    if (tokenizer.countTokens() >= 4) {
+                        // Check if IP address has been added to _ipMap by ping
+                        // If not, skip this device - it's unavailable
+
+                        // Tokens are: name, IP address, "at", mac
+                        name = (String) tokenizer.nextElement();
+                        token = (String) tokenizer.nextElement();
+                        ip = token.substring(1, token.length() - 1);
+
+                        if (_debugging) {
+                            System.out.println("Discovery: name: " + name
+                                    + ", mac: " + token + " ,ip: " + ip);
+                        }
+                        JSONObject object;
+                        for (String key : _ipMap.keySet()) {
+                            object = _ipMap.get(key);
+                            if (object.get("IPAddress").toString()
+                                    .equalsIgnoreCase(ip)) {
+                                token = (String) tokenizer.nextElement();
+                                token = (String) tokenizer.nextElement();
+                                object.put("name", name);
+                                object.put("mac", token);
+
+                                _ipMap.put(key, object);
+                            }
                         }
                     }
+                }
+            } finally {
+                if (stdOut != null) {
+                    stdOut.close();
                 }
             }
         } catch (IOException e) {
@@ -334,30 +340,36 @@ public class DiscoveryHelper {
         try {
             Process process = Runtime.getRuntime().exec(_arpCommand);
 
-            BufferedReader stdOut = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+            BufferedReader stdOut = null;
+            try {
+                stdOut = new BufferedReader(new InputStreamReader(
+                                process.getInputStream()));
+                String line;
+                int index;
+                JSONObject object;
 
-            String line;
-            int index;
-            JSONObject object;
-
-            while ((line = stdOut.readLine()) != null) {
-                for (String key : _ipMap.keySet()) {
-                    object = _ipMap.get(key);
-                    index = line.indexOf(object.getString("IPAddress"));
-                    if (index != -1) {
-                        // The Interface: IP entry is the host machine.  Its mac
-                        // is not listed.  Would need ipconfig /all to get it
-                        // TODO:  Do we want host mac?
-                        if (index != 2) {
-                            object.put("mac", "Host machine");
-                        } else {
-                            // MAC address is fixed # of chars after IP address
-                            object.put("mac",
-                                    line.substring(index + 22, index + 39));
+                while ((line = stdOut.readLine()) != null) {
+                    for (String key : _ipMap.keySet()) {
+                        object = _ipMap.get(key);
+                        index = line.indexOf(object.getString("IPAddress"));
+                        if (index != -1) {
+                            // The Interface: IP entry is the host machine.  Its mac
+                            // is not listed.  Would need ipconfig /all to get it
+                            // TODO:  Do we want host mac?
+                            if (index != 2) {
+                                object.put("mac", "Host machine");
+                            } else {
+                                // MAC address is fixed # of chars after IP address
+                                object.put("mac",
+                                        line.substring(index + 22, index + 39));
+                            }
+                            _ipMap.put(key, object);
                         }
-                        _ipMap.put(key, object);
                     }
+                }
+            } finally {
+                if (stdOut != null) {
+                    stdOut.close();
                 }
             }
         } catch (IOException e) {
@@ -383,23 +395,32 @@ public class DiscoveryHelper {
             BufferedReader stdOut = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
 
-            String line;
+            try {
+                stdOut = new BufferedReader(new InputStreamReader(
+                                process.getInputStream()));
 
-            // Sample nmap output:
-            // Starting Nmap 6.47 ( http://nmap.org ) at 2015-05-02 18:08 Eastern Daylight Time
-            //
-            // Nmap scan report for EPSON3FBF20 (192.168.5.1)
-            // Host is up (0.12s latency).
-            // MAC Address: AD:19:27:3E:BE:21 (Seiko Epson)
-            // Nmap scan report for NP-2L543W046400 (192.168.5.4)
-            // Host is up (0.12s latency).
-            // MAC Address: DD:3B:5F:D0:B7:B2 (Roku)
-            // Nmap done: 256 IP addresses (5 hosts up) scanned in 13.59 seconds
+                String line;
 
-            while ((line = stdOut.readLine()) != null) {
-                // Look for "Nmap scan"
-                if (line.startsWith("Nmap scan")) {
-                    readDeviceNmap(line, stdOut);
+                // Sample nmap output:
+                // Starting Nmap 6.47 ( http://nmap.org ) at 2015-05-02 18:08 Eastern Daylight Time
+                //
+                // Nmap scan report for EPSON3FBF20 (192.168.5.1)
+                // Host is up (0.12s latency).
+                // MAC Address: AD:19:27:3E:BE:21 (Seiko Epson)
+                // Nmap scan report for NP-2L543W046400 (192.168.5.4)
+                // Host is up (0.12s latency).
+                // MAC Address: DD:3B:5F:D0:B7:B2 (Roku)
+                // Nmap done: 256 IP addresses (5 hosts up) scanned in 13.59 seconds
+
+                while ((line = stdOut.readLine()) != null) {
+                    // Look for "Nmap scan"
+                    if (line.startsWith("Nmap scan")) {
+                        readDeviceNmap(line, stdOut);
+                    }
+                }
+            } finally {
+                if (stdOut != null) {
+                    stdOut.close();
                 }
             }
         } catch (IOException e) {
@@ -417,68 +438,74 @@ public class DiscoveryHelper {
         JSONObject device = null;
 
         try {
-            BufferedReader stdOut = new BufferedReader(new InputStreamReader(
+            BufferedReader stdOut = null;
+            try {
+                stdOut = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
+                String line;
 
-            String line;
-
-            while ((line = stdOut.readLine()) != null) {
-                if (_debugging) {
-                    System.out.println("pingLinux(" + testIP + "): " + line);
-                }
-                // Example reply from a device that's on and available
-                // PING 192.168.5.6 (192.168.5.6) 56(84) bytes of data.
-                // 64 bytes from 192.168.5.6: icmp_seq=1 ttl=64 time=381 ms
-                // 64 bytes from 192.168.5.6: icmp_seq=2 ttl=64 time=97.9 ms
-                //
-                // --- 192.168.254.6 ping statistics ---
-                // 2 packets transmitted, 2 received, 0% packet loss, time 1000ms
-
-                // Look for "2 received" or "1 received" (Ok if one dropped)
-
-                int found = line.indexOf("2 received");
-                if (found < 0) {
-                    found = line.indexOf("1 received");
-                    if (found < 0) {
-                        // Think different.  Mac OS returns something a bit different
-                        // bash-3.2$ bash-3.2$ ping -c 2 192.168.1.2
-                        // PING 192.168.1.2 (192.168.1.2): 56 data bytes
-                        // 64 bytes from 192.168.1.2: icmp_seq=0 ttl=255 time=6.733 ms
-                        // 64 bytes from 192.168.1.2: icmp_seq=1 ttl=255 time=5.336 ms
-                        //
-                        // --- 192.168.1.2 ping statistics ---
-                        // 2 packets transmitted, 2 packets received, 0.0% packet loss
-                        // round-trip min/avg/max/stddev = 5.336/6.034/6.733/0.699 ms
-                        // bash-3.2$
-
-                        found = line.indexOf("2 packets received");
-                        if (found < 0) {
-                            found = line.indexOf("1 packets received");
-                        }
-                    }
-                }
-
-                if (found > 0) {
-                    // Store IP.  Name and mac address are determined in arp
-                    // The host machine is pingable but has no arp entry
+                while ((line = stdOut.readLine()) != null) {
                     if (_debugging) {
-                        System.out.println("Device available at " + testIP);
+                        System.out.println("pingLinux(" + testIP + "): " + line);
                     }
-                    try {
-                        if (testIP.equalsIgnoreCase(_hostIP)) {
-                            device = new JSONObject("{\"IPAddress\": " + testIP
-                                    + "," + "\"name\": \"Host machine\""
-                                    + ", \"mac\": \"Host machine\"}");
-                        } else {
-                            device = new JSONObject("{\"IPAddress\": " + testIP
-                                    + "," + "\"name\": \"Unknown\""
-                                    + ", \"mac\": \"Unknown\"}");
-                        }
+                    // Example reply from a device that's on and available
+                    // PING 192.168.5.6 (192.168.5.6) 56(84) bytes of data.
+                    // 64 bytes from 192.168.5.6: icmp_seq=1 ttl=64 time=381 ms
+                    // 64 bytes from 192.168.5.6: icmp_seq=2 ttl=64 time=97.9 ms
+                    //
+                    // --- 192.168.254.6 ping statistics ---
+                    // 2 packets transmitted, 2 received, 0% packet loss, time 1000ms
 
-                    } catch (JSONException e) {
-                        System.err.println("Error creating JSON object "
-                                + "for device at IP " + testIP);
+                    // Look for "2 received" or "1 received" (Ok if one dropped)
+
+                    int found = line.indexOf("2 received");
+                    if (found < 0) {
+                        found = line.indexOf("1 received");
+                        if (found < 0) {
+                            // Think different.  Mac OS returns something a bit different
+                            // bash-3.2$ bash-3.2$ ping -c 2 192.168.1.2
+                            // PING 192.168.1.2 (192.168.1.2): 56 data bytes
+                            // 64 bytes from 192.168.1.2: icmp_seq=0 ttl=255 time=6.733 ms
+                            // 64 bytes from 192.168.1.2: icmp_seq=1 ttl=255 time=5.336 ms
+                            //
+                            // --- 192.168.1.2 ping statistics ---
+                            // 2 packets transmitted, 2 packets received, 0.0% packet loss
+                            // round-trip min/avg/max/stddev = 5.336/6.034/6.733/0.699 ms
+                            // bash-3.2$
+
+                            found = line.indexOf("2 packets received");
+                            if (found < 0) {
+                                found = line.indexOf("1 packets received");
+                            }
+                        }
                     }
+
+                    if (found > 0) {
+                        // Store IP.  Name and mac address are determined in arp
+                        // The host machine is pingable but has no arp entry
+                        if (_debugging) {
+                            System.out.println("Device available at " + testIP);
+                        }
+                        try {
+                            if (testIP.equalsIgnoreCase(_hostIP)) {
+                                device = new JSONObject("{\"IPAddress\": " + testIP
+                                        + "," + "\"name\": \"Host machine\""
+                                        + ", \"mac\": \"Host machine\"}");
+                            } else {
+                                device = new JSONObject("{\"IPAddress\": " + testIP
+                                        + "," + "\"name\": \"Unknown\""
+                                        + ", \"mac\": \"Unknown\"}");
+                            }
+
+                        } catch (JSONException e) {
+                            System.err.println("Error creating JSON object "
+                                    + "for device at IP " + testIP);
+                        }
+                    }
+                }
+            } finally {
+                if (stdOut != null) {
+                    stdOut.close();
                 }
             }
         } catch (IOException e) {

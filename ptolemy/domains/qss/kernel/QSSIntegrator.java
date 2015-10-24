@@ -301,9 +301,11 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     ////                         public methods                    ////
 
     /** Notify this actor that the specified attribute has changed.
-     *  If the attribute is <i>propagateInputDerivatives</i>, then notify the
-     *  director that the schedule is now invalid.
+     *  If the attribute is <i>propagateInputDerivatives</i>, then
+     *  notify the director that the schedule is now invalid.
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If there is problem handling
+     *  the parameter.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute == propagateInputDerivatives) {
@@ -328,6 +330,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     }
 
     /** Set the derivative equal to the input.
+     *  @param time The time.
+     *  @param xx The values.
+     *  @param uu The derivatives.
      *  @return Success (0 for success, else user-defined error code).
      */
     @Override
@@ -345,10 +350,14 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     }
 
     /** Return 0. This actor does not provide directional derivatives.
+     *  @param index The index.  Ignored in this base class.
+     *  @param xx_dot The values.  Ignored in this base class.
+     *  @param uu_dot The derivatives.  Ignored in this base class.
      *  @return 0.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     @Override
-    public double evaluateDirectionalDerivatives(int idx, double[] xx_dot,
+    public double evaluateDirectionalDerivatives(int index, double[] xx_dot,
             double[] uu_dot) throws IllegalActionException {
         return 0;
     }
@@ -589,6 +598,11 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         _inputChanged = 0;
     }
 
+    /** Return the value of the propagateInputDerivatives parameter.
+     *  @return the value of the propagateInputDerivatives parameter.
+     *  @exception IllegalActionException If the
+     *  propagateInputDerivatives parameter cannot be read.
+     */
     public boolean propagatesInputDerivatives() throws IllegalActionException {
         return ((BooleanToken)propagateInputDerivatives.getToken()).booleanValue();
     }
