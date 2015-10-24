@@ -38,9 +38,8 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramPacket;
 import io.vertx.core.datagram.DatagramSocket;
 import io.vertx.core.datagram.impl.InternetProtocolFamily;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 ////UDPSocketHelper

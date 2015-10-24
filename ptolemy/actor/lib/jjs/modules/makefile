@@ -66,8 +66,7 @@ PTCLASSALLJARS =
 #	webSocket/webSocket.jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	VertxHelperBase.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED =
 

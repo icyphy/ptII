@@ -41,15 +41,13 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import io.vertx.core.Handler;
 import io.vertx.core.VoidHandler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.WebSocket;
 import io.vertx.core.http.WebSocketBase;
-
-import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.kernel.util.IllegalActionException;
