@@ -51,10 +51,8 @@ public class SparkleFilter extends PointFilter {
 
     /**
      * Set the amount of sparkle.
-     * @param amount the amount
-    * @min-value 0
-    * @max-value 1
-    * @see #getAmount
+     * @param amount the amount.  The minimum value is 0, the maximum value is 1.
+     * @see #getAmount()
      */
     public void setAmount(int amount) {
         this.amount = amount;
@@ -63,7 +61,7 @@ public class SparkleFilter extends PointFilter {
     /**
      * Get the amount of sparkle.
      * @return the amount
-    * @see #setAmount
+     * @see #setAmount(int)
      */
     public int getAmount() {
         return amount;

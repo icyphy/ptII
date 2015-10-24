@@ -55,7 +55,7 @@ import ptolemy.moml.MoMLParser;
  // PNDirectory: After 2.2, 'Initial_queue_capacity'
  // property is now 'initialQueueCapacity'
 
- HashMap pnDirectorChanges = new HashMap<String, String>();
+ HashMap pnDirectorChanges = new HashMap&lt;String, String&gt;();
  // Key = property name, Value = new class name
  pnDirectorChanges.put("Initial_queue_capacity",
  "initialQueueCapacity");
