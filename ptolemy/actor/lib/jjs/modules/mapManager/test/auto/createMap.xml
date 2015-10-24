@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="createMap" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 158, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000004">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999994, 252.00000000000017}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5, -20}">
+        </property>
+    </property>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;exports.initialize = function(){&#10;var outMessage = &quot;&quot;;&#10;&#10;mapManager = require('mapManager');&#10;&#10;myCoords = new mapManager.CoordinateSystem(&quot;Joey&quot;);&#10;yourCoords = new mapManager.CoordinateSystem(&quot;Sally&quot;);&#10;myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;yourMap = new mapManager.Map(&quot;yourMapName&quot;, mapManager.SpaceTypeEnum.TOPOLOGICAL, yourCoords);&#10;badMap = new mapManager.Map(&quot;badMapName&quot;, mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;&#10;outMessage += &quot;Registering myMap, should print true\n&quot;;&#10;outMessage += mapManager.registerMap(myMap) + &quot;\n&quot;;&#10;outMessage += &quot;Registering myMap again, should print false\n&quot;;&#10;outMessage += mapManager.registerMap(myMap) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Registering yourMap, should print true\n&quot;;&#10;outMessage += mapManager.registerMap(yourMap) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Printing maps. badMap is not registered, should not be printed. \n&quot;;&#10;outMessage += mapManager.mapsToString() +&quot;\n&quot;;&#10;&#10;outMessage += &quot;Creating and registering sampleEntity\n&quot;;&#10;sampleEntity = new mapManager.Entity(&quot;sampleEntity&quot;);&#10;mapManager.registerEntity(sampleEntity);&#10;&#10;outMessage += &quot;Attempting to add sampleEntity to myMap (should print true)\n&quot;;&#10;outMessage += myMap.addEntity(sampleEntity) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to add sampleEntity to badMap (should print exception)\n&quot;;&#10;&#10;try{&#10;	badMap.addEntity(sampleEntity);&#10;	outMessage += &quot;Test failure, this line should not execute :-( \n&quot;;&#10;} catch(e){&#10;	outMessage += e + &quot;\n&quot;;&#10;}&#10;&#10;outMessage += &quot;Attempting to remove sampleEntity from myMap (should print true)\n&quot;;&#10;outMessage += myMap.removeEntity(sampleEntity) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to remove sampleEntity from badMap (should print exception)\n&quot;;&#10;try{&#10;	badMap.removeEntity(sampleEntity);&#10;	outMessage += &quot;Test failure, this line should not execute :-( \n&quot;;&#10;} catch(e){&#10;	outMessage += e + &quot;\n&quot;;&#10;}&#10;&#10;&#10;&#10;send(&quot;output&quot;, outMessage);&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Registering myMap, should print true\ntrue\nRegistering myMap again, should print false\nfalse\nRegistering yourMap, should print true\ntrue\nPrinting maps. badMap is not registered, should not be printed. \n{ myMapName: { mapName: myMapName, spaceType: Euclidean, coordinateSystem: Joey }, yourMapName: { mapName: yourMapName, spaceType: Topological, coordinateSystem: Sally } }\nCreating and registering sampleEntity\nAttempting to add sampleEntity to myMap (should print true)\ntrue\nAttempting to add sampleEntity to badMap (should print exception)\nCannot add an entity to an unregistred map{ mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey }\nAttempting to remove sampleEntity from myMap (should print true)\ntrue\nAttempting to remove sampleEntity from badMap (should print exception)\nCannot remove an entity from an unregistred map{ mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey }\n&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 867, 349}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[867, 305]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 280}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 637, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{720, 260}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display2.input" relation="relation"/>
+</entity>

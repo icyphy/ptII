@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="createEntityAliases" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={418, 22, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000004">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999994, 252.00000000000017}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5, -20}">
+        </property>
+    </property>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;exports.initialize = function(){&#10;var outMessage = &quot;&quot;;&#10;&#10;mapManager = require('mapManager');&#10;&#10;&#10;//The names in this test seem to be more ontological than entity alias based,&#10;//but it's just a test of the mechanism.&#10;&#10;var cat = new mapManager.Entity(&quot;cat&quot;);&#10;var mammal = new mapManager.Entity(&quot;mammal&quot;);&#10;var animals = [&#10;	cat,&#10;	new mapManager.Entity(&quot;bird&quot;),&#10;	new mapManager.Entity(&quot;dog&quot;),&#10;	new mapManager.Entity(&quot;fish&quot;),&#10;	new mapManager.Entity(&quot;walrus&quot;),&#10;	new mapManager.Entity(&quot;salmon&quot;),&#10;	mammal&#10;];&#10;&#10;for( var i = 0; i &lt; animals.length; i++){&#10;	mapManager.registerEntity(animals[i]);&#10;}&#10;&#10;&#10;outMessage += &quot;Global Entities:\n&quot;;&#10;outMessage += mapManager.entitiesToString() + &quot;\n&quot;;&#10;&#10;var zebra = new mapManager.Entity(&quot;zebra&quot;)&#10;outMessage += &quot;Zebra is an unregistered entity\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alias cat as itself (should print false)\n&quot;;&#10;outMessage += cat.addAlias(cat) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alias cat as mammal (should print true)\n&quot;;&#10;outMessage += cat.addAlias(mammal) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Attempting to alias cat as mammal again (should print false)\n&quot;;&#10;outMessage += cat.addAlias(mammal) + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Printing cat's aliases (should just be mammal)\n&quot;;&#10;outMessage += cat.aliasesToString() + &quot;\n&quot;;&#10;&#10;outMessage += &quot;Giving mammal aliases with cat, bird, dog, fish, walrus, salmon, and mammal.\n&quot;;&#10;for( var i = 0; i &lt; animals.length; i++){&#10;	mammal.addAlias(animals[i]);&#10;}&#10;&#10;outMessage += mammal.aliasesToString() + &quot;\n&quot;;&#10;&#10;&#10;//var myCoords = new mapManager.CoordinateSystem(&quot;myCoords&quot;)&#10;//var myMap = new mapManager.Map( &quot;myMapName&quot;, MapManager.SpaceTypeEnum.Euclidean , myCoords); &#10;&#10;send(&quot;output&quot;, outMessage);&#10;&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 165.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
+        </port>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Global Entities:\n{ cat: { name: cat }, bird: { name: bird }, dog: { name: dog }, fish: { name: fish }, walrus: { name: walrus }, salmon: { name: salmon }, mammal: { name: mammal } }\nZebra is an unregistered entity\nAttempting to alias cat as itself (should print false)\nfalse\nAttempting to alias cat as mammal (should print true)\ntrue\nAttempting to alias cat as mammal again (should print false)\nfalse\nPrinting cat's aliases (should just be mammal)\n{ mammal: { name: mammal } }\nGiving mammal aliases with cat, bird, dog, fish, walrus, salmon, and mammal.\n{ cat: { name: cat }, bird: { name: bird }, dog: { name: dog }, fish: { name: fish }, walrus: { name: walrus }, salmon: { name: salmon } }\n&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 867, 349}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[867, 305]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 280}">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 637, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{720, 260}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[185.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display2.input" relation="relation"/>
+</entity>

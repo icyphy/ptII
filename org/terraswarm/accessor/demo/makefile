@@ -32,8 +32,11 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS = AprilTags Audio Camera HappySadStock HueToggle ImageFilters KeyValueStoreClient MoC StockTick \
-	SwarmAcousticService UDPSocket VertxBus WebSocketClient c4po
+DIRS = AprilTags Audio Camera HappySadStock HueToggle \
+	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
+	MoC MotionDetector StockTick \
+	SwarmAcousticService UDPSocket VertxBus \
+	Weather WebSocketClient WebSocketImage c4po
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
@@ -59,14 +62,19 @@ PTCLASSALLJARS = \
 	Camera/Camera.jar \
 	HappySadStock/HappySadStock.jar \
 	HueToggle/HueToggle.jar \
+	IMUSensor/IMUSensor.jar \
+	ImageAnnotate/ImageAnnotate.jar \
 	ImageFilters/ImageFilters.jar \
 	KeyValueStoreClient/KeyValueStoreClient.jar \
 	MoC/MoC.jar \
+	MotionDetector/MotionDetector.jar \
 	StockTick/StockTick.jar \
 	SwarmAcousticService/SwarmAcousticService.jar \
 	UDPSocket/UDPSocket.jar \
 	VertxBus/VertxBus.jar \
+	Weather/Weather.jar \
 	WebSocketClient/WebSocketClient.jar \
+	WebSocketImage/WebSocketImage.jar \
 	c4po/c4po.jar
 
 JSRCS = 

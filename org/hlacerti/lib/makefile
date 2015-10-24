@@ -77,6 +77,7 @@ MISC_FILES = test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'CertiRtig$$_StreamReaderThread.class' \
+	'HlaManager$$ETimeManagementService.class' \
 	'HlaManager$$PtolemyFederateAmbassadorInner.class' \
 	'HlaManager$$1.class' \
 	'HlaManager$$PtolemyFederateAmbassadorInner$$1.class' \

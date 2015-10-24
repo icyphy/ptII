@@ -177,7 +177,7 @@
         </property>
         <vertex name="vertex1" value="{130.0, 230.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=50.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=230.0}, points={} },{ head={id=&quot;Sequence.enable&quot;,x=205.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=230.0}, points={} },{ head={id=&quot;Uniform.trigger&quot;,x=225.0,y=135.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=230.0}, points={130.0,125.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=50.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=230.0}, points={} },{ head={id=&quot;Sequence.enable&quot;,x=205.0,y=230.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=230.0}, points={} },{ head={id=&quot;Uniform.trigger&quot;,x=225.0,y=135.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=230.0}, points={130.0,125.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

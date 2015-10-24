@@ -31,6 +31,8 @@
 
 ME =		ptolemy/domains/atc/kernel
 
+DIRS =		policy1 policy2
+
 # Root of the Java directory
 ROOT =		../../../..
 
@@ -40,19 +42,19 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =
-
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
+#PTCLASSJAR =	$(PTPACKAGE).jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
-
-#PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSALLJARS = \
+	policy1/policy1.jar \
+	policy2/policy2.jar
 
 JSRCS = \
-	ATCDirector.java \
+	AbstractATCDirector.java \
 	ATCReceiver.java \
 	Rejecting.java
 
@@ -65,7 +67,9 @@ MISC_FILES =	$(DIRS) #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	policy1 \
+	policy2
 
 JCLASS = $(JSRCS:%.java=%.class)
 

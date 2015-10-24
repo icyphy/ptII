@@ -160,19 +160,19 @@
             </property>
             <vertex name="vertex" value="[-40.0,105.0]">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Feedback0.input&quot;,x=25.0,y=145.0}, tail={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, points={-30.0,145.0,-30.0,105.0} },{ head={id=&quot;Feedforward0.input&quot;,x=20.0,y=0.0}, tail={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, points={-30.0,0.0,-30.0,105.0} },{ head={id=&quot;Integrator0.state&quot;,x=405.0,y=140.0}, tail={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, points={455.0,140.0,455.0,180.0,355.0,180.0,355.0,200.0,-30.0,200.0,-30.0,105.0} },{ head={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, tail={id=&quot;Integrator1.derivative&quot;,x=25.0,y=70.0}, points={-30.0,105.0,-30.0,70.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Feedback0.input&quot;,x=25.0,y=145.0}, tail={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, points={-30.0,145.0,-30.0,105.0} },{ head={id=&quot;Feedforward0.input&quot;,x=20.0,y=0.0}, tail={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, points={-30.0,0.0,-30.0,105.0} },{ head={id=&quot;Integrator0.state&quot;,x=405.0,y=140.0}, tail={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, points={455.0,140.0,455.0,180.0,355.0,180.0,355.0,200.0,-30.0,200.0,-30.0,105.0} },{ head={id=&quot;node0.vertex&quot;,x=-40.0,y=105.0}, tail={id=&quot;Integrator1.derivative&quot;,x=25.0,y=70.0}, points={-30.0,105.0,-30.0,70.0} } }">
             </property>
         </relation>
         <relation name="_R" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Feedback0.output&quot;,x=25.0,y=145.0}, tail={id=&quot;InputAdder.plus&quot;,x=300.0,y=115.0,index=3}, points={90.0,145.0,90.0,50.0,245.0,50.0,245.0,95.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Feedback0.output&quot;,x=25.0,y=145.0}, tail={id=&quot;InputAdder.plus&quot;,x=300.0,y=115.0,index=3}, points={90.0,145.0,90.0,50.0,245.0,50.0,245.0,95.0} } }">
             </property>
         </relation>
         <relation name="_R2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Feedforward0.output&quot;,x=20.0,y=0.0}, tail={id=&quot;OutputAdder.plus&quot;,x=290.0,y=0.0,index=2}, points={80.0,0.0,80.0,-35.0,235.0,-35.0,235.0,-15.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Feedforward0.output&quot;,x=20.0,y=0.0}, tail={id=&quot;OutputAdder.plus&quot;,x=290.0,y=0.0,index=2}, points={80.0,0.0,80.0,-35.0,235.0,-35.0,235.0,-15.0} } }">
             </property>
         </relation>
         <relation name="node1" class="ptolemy.actor.TypedIORelation">
@@ -180,31 +180,31 @@
             </property>
             <vertex name="vertex" value="[100.0,35.0]">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Integrator1.state&quot;,x=25.0,y=70.0}, tail={id=&quot;node1.vertex&quot;,x=100.0,y=35.0}, points={80.0,70.0,80.0,35.0} },{ head={id=&quot;Feedback1.input&quot;,x=180.0,y=95.0}, tail={id=&quot;node1.vertex&quot;,x=100.0,y=35.0}, points={115.0,95.0,115.0,35.0} },{ head={id=&quot;node1.vertex&quot;,x=100.0,y=35.0}, tail={id=&quot;Feedforward1.input&quot;,x=175.0,y=10.0}, points={115.0,35.0,115.0,10.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Integrator1.state&quot;,x=25.0,y=70.0}, tail={id=&quot;node1.vertex&quot;,x=100.0,y=35.0}, points={80.0,70.0,80.0,35.0} },{ head={id=&quot;Feedback1.input&quot;,x=180.0,y=95.0}, tail={id=&quot;node1.vertex&quot;,x=100.0,y=35.0}, points={115.0,95.0,115.0,35.0} },{ head={id=&quot;node1.vertex&quot;,x=100.0,y=35.0}, tail={id=&quot;Feedforward1.input&quot;,x=175.0,y=10.0}, points={115.0,35.0,115.0,10.0} } }">
             </property>
         </relation>
         <relation name="_R3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Feedback1.output&quot;,x=180.0,y=95.0}, tail={id=&quot;InputAdder.plus&quot;,x=300.0,y=115.0,index=3}, points={235.0,95.0,235.0,100.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Feedback1.output&quot;,x=180.0,y=95.0}, tail={id=&quot;InputAdder.plus&quot;,x=300.0,y=115.0,index=3}, points={235.0,95.0,235.0,100.0} } }">
             </property>
         </relation>
         <relation name="_R4" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Feedforward1.output&quot;,x=175.0,y=10.0}, tail={id=&quot;OutputAdder.plus&quot;,x=290.0,y=0.0,index=2}, points={235.0,10.0,235.0,-10.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Feedforward1.output&quot;,x=175.0,y=10.0}, tail={id=&quot;OutputAdder.plus&quot;,x=290.0,y=0.0,index=2}, points={235.0,10.0,235.0,-10.0} } }">
             </property>
         </relation>
         <relation name="_R5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InputAdder.output&quot;,x=300.0,y=115.0}, tail={id=&quot;Integrator0.derivative&quot;,x=405.0,y=140.0}, points={355.0,115.0,355.0,140.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InputAdder.output&quot;,x=300.0,y=115.0}, tail={id=&quot;Integrator0.derivative&quot;,x=405.0,y=140.0}, points={355.0,115.0,355.0,140.0} } }">
             </property>
         </relation>
         <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;input._location&quot;,x=205.0,y=155.0}, tail={id=&quot;InputAdder.plus&quot;,x=300.0,y=115.0,index=3}, points={235.0,165.0,235.0,105.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;input._location&quot;,x=205.0,y=155.0}, tail={id=&quot;InputAdder.plus&quot;,x=300.0,y=115.0,index=3}, points={235.0,165.0,235.0,105.0} } }">
             </property>
         </relation>
         <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">

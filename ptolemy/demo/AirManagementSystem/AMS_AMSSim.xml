@@ -2097,11 +2097,11 @@
         </configure>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AMS_AMSSim.T7&quot;,x=200.0,y=65.0}, tail={id=&quot;SequencePlotter.input&quot;,x=320.0,y=60.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AMS_AMSSim.T7&quot;,x=200.0,y=65.0}, tail={id=&quot;SequencePlotter.input&quot;,x=320.0,y=60.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AMS_AMSSim.cabin_t&quot;,x=200.0,y=65.0}, tail={id=&quot;SequencePlotter.input&quot;,x=320.0,y=60.0,index=2}, points={270.0,75.0,270.0,60.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AMS_AMSSim.cabin_t&quot;,x=200.0,y=65.0}, tail={id=&quot;SequencePlotter.input&quot;,x=320.0,y=60.0,index=2}, points={270.0,75.0,270.0,60.0} } }">
         </property>
     </relation>
     <link port="AMS_AMSSim.T7" relation="relation2"/>

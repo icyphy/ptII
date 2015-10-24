@@ -585,15 +585,15 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.A&quot;,x=314.0,y=119.9462890625}, tail={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, points={239.0,109.9462890625,239.0,129.9462890625} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ModalModel.A&quot;,x=314.0,y=119.9462890625}, tail={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, points={239.0,109.9462890625,239.0,129.9462890625} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, tail={id=&quot;ModalModel.B&quot;,x=314.0,y=119.9462890625}, points={254.0,134.9462890625,254.0,129.9462890625} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, tail={id=&quot;ModalModel.B&quot;,x=314.0,y=119.9462890625}, points={254.0,134.9462890625,254.0,129.9462890625} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, tail={id=&quot;ModalModel.R&quot;,x=314.0,y=119.9462890625}, points={239.0,139.9462890625,239.0,164.9462890625,314.0,164.9462890625} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=144.0,y=129.9462890625,index=3}, tail={id=&quot;ModalModel.R&quot;,x=314.0,y=119.9462890625}, points={239.0,139.9462890625,239.0,164.9462890625,314.0,164.9462890625} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

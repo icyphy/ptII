@@ -785,19 +785,19 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=245.0,y=235.0}, tail={id=&quot;PID.input&quot;,x=350.0,y=245.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=245.0,y=235.0}, tail={id=&quot;PID.input&quot;,x=350.0,y=245.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DesiredVoltage.output&quot;,x=135.0,y=180.0}, tail={id=&quot;AddSubtract.plus&quot;,x=245.0,y=235.0}, points={205.0,180.0,205.0,225.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DesiredVoltage.output&quot;,x=135.0,y=180.0}, tail={id=&quot;AddSubtract.plus&quot;,x=245.0,y=235.0}, points={205.0,180.0,205.0,225.0} } }">
             </property>
         </relation>
         <relation name="relation4_2" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PID.output&quot;,x=350.0,y=245.0}, tail={id=&quot;drive._location&quot;,x=415.0,y=245.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PID.output&quot;,x=350.0,y=245.0}, tail={id=&quot;drive._location&quot;,x=415.0,y=245.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -807,7 +807,7 @@
             </vertex>
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=70.0,y=245.0}, tail={id=&quot;DesiredVoltage.trigger&quot;,x=135.0,y=180.0}, points={70.0,180.0} },{ head={id=&quot;AddSubtract.minus&quot;,x=245.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=245.0}, points={} },{ head={id=&quot;voltage._location&quot;,x=20.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=245.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=70.0,y=245.0}, tail={id=&quot;DesiredVoltage.trigger&quot;,x=135.0,y=180.0}, points={70.0,180.0} },{ head={id=&quot;AddSubtract.minus&quot;,x=245.0,y=235.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=245.0}, points={} },{ head={id=&quot;voltage._location&quot;,x=20.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=70.0,y=245.0}, points={} } }">
             </property>
         </relation>
         <link port="voltage" relation="relation2"/>
@@ -847,25 +847,25 @@
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=510.0,y=245.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={} },{ head={id=&quot;DiscreteGenerator.voltage&quot;,x=360.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={} },{ head={id=&quot;Expression.voltage&quot;,x=335.0,y=340.0}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={445.0,340.0,445.0,245.0} },{ head={id=&quot;Controller.voltage&quot;,x=345.0,y=180.0}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={445.0,180.0,445.0,245.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=510.0,y=245.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={} },{ head={id=&quot;DiscreteGenerator.voltage&quot;,x=360.0,y=245.0}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={} },{ head={id=&quot;Expression.voltage&quot;,x=335.0,y=340.0}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={445.0,340.0,445.0,245.0} },{ head={id=&quot;Controller.voltage&quot;,x=345.0,y=180.0}, tail={id=&quot;relation2.vertex1&quot;,x=445.0,y=245.0}, points={445.0,180.0,445.0,245.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=335.0,y=340.0}, tail={id=&quot;Supervisor.fault&quot;,x=145.0,y=255.0}, points={145.0,340.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression.output&quot;,x=335.0,y=340.0}, tail={id=&quot;Supervisor.fault&quot;,x=145.0,y=255.0}, points={145.0,340.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=255.0}, tail={id=&quot;Supervisor.onOff&quot;,x=145.0,y=255.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=35.0,y=255.0}, tail={id=&quot;Supervisor.onOff&quot;,x=145.0,y=255.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Supervisor.loadAdmittance&quot;,x=145.0,y=255.0}, tail={id=&quot;DiscreteGenerator.loadAdmittance&quot;,x=360.0,y=245.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Supervisor.loadAdmittance&quot;,x=145.0,y=255.0}, tail={id=&quot;DiscreteGenerator.loadAdmittance&quot;,x=360.0,y=245.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -875,7 +875,7 @@
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=510.0,y=245.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=180.0}, points={465.0,240.0,465.0,130.0,250.0,130.0} },{ head={id=&quot;DiscreteGenerator.drive&quot;,x=360.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=180.0}, points={250.0,235.0} },{ head={id=&quot;Controller.drive&quot;,x=345.0,y=180.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=180.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=510.0,y=245.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=180.0}, points={465.0,240.0,465.0,130.0,250.0,130.0} },{ head={id=&quot;DiscreteGenerator.drive&quot;,x=360.0,y=245.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=180.0}, points={250.0,235.0} },{ head={id=&quot;Controller.drive&quot;,x=345.0,y=180.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=180.0}, points={} } }">
         </property>
     </relation>
     <link port="SingleEvent.output" relation="relation7"/>

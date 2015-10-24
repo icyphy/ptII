@@ -32,7 +32,7 @@
 
 ME =		ptolemy/domains/atc
 
-DIRS =		kernel lib test
+DIRS =		kernel lib demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..

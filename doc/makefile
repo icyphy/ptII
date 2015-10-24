@@ -622,6 +622,8 @@ ALLPACKAGES = \
 	ptolemy.caltrop.util \
 	ptolemy.domains.algebraic.kernel \
 	ptolemy.domains.atc.kernel \
+	ptolemy.domains.atc.kernel.policy1 \
+	ptolemy.domains.atc.kernel.policy2 \
 	ptolemy.domains.atc.lib \
 	ptolemy.domains.ca.kernel \
 	ptolemy.domains.ca.lib \
@@ -637,6 +639,7 @@ ALLPACKAGES = \
 	ptolemy.domains.ddf.lib \
 	ptolemy.domains.de.lib.aspect \
 	ptolemy.domains.dt.kernel \
+	ptolemy.domains.fmima.kernel \
 	ptolemy.domains.giotto.cgc \
 	ptolemy.domains.giotto.kernel \
 	ptolemy.domains.hdf.kernel \

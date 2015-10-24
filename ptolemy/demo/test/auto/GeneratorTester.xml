@@ -148,7 +148,7 @@
         </property>
         <vertex name="vertex1" value="{200.0, 125.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Generator.drive&quot;,x=265.0,y=260.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=125.0}, points={200.0,250.0} },{ head={id=&quot;DriveModel.output&quot;,x=85.0,y=125.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=125.0}, points={} },{ head={id=&quot;relation4.vertex1&quot;,x=200.0,y=125.0}, tail={id=&quot;TimedPlotter.input&quot;,x=415.0,y=130.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Generator.drive&quot;,x=265.0,y=260.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=125.0}, points={200.0,250.0} },{ head={id=&quot;DriveModel.output&quot;,x=85.0,y=125.0}, tail={id=&quot;relation4.vertex1&quot;,x=200.0,y=125.0}, points={} },{ head={id=&quot;relation4.vertex1&quot;,x=200.0,y=125.0}, tail={id=&quot;TimedPlotter.input&quot;,x=415.0,y=130.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

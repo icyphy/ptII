@@ -41,7 +41,11 @@ public class Diff {
      *  strings in a format similar to the Unix diff command.
      */
     public static String diff(String aString, String bString) {
-        String eol = System.getProperty("line.separator");
+        String systemEol = System.getProperty("line.separator");
+        // since a string my be loaded from a file
+        // that was saved on a different platform we must 
+        // allow any valid line separator to split the string
+        String eol = "\r\n?|\n";
         String[] aStringSplit = aString.split(eol);
         String[] bStringSplit = bString.split(eol);
         int aNumberOfLines = aStringSplit.length;
@@ -67,18 +71,18 @@ public class Diff {
                 i++;
                 j++;
             } else if (lcs[i + 1][j] >= lcs[i][j + 1]) {
-                result.append("< " + aStringSplit[i++] + eol);
+                result.append("< " + aStringSplit[i++] + systemEol);
             } else {
-                result.append("> " + bStringSplit[j++] + eol);
+                result.append("> " + bStringSplit[j++] + systemEol);
             }
         }
 
         // Append the remainder of the longer file.
         while (i < aNumberOfLines || j < bNumberOfLines) {
             if (i == aNumberOfLines) {
-                result.append("> " + aStringSplit[j++] + eol);
+                result.append("> " + aStringSplit[j++] + systemEol);
             } else if (j == bNumberOfLines) {
-                result.append("< " + bStringSplit[i++] + eol);
+                result.append("< " + bStringSplit[i++] + systemEol);
             }
         }
         return result.toString();

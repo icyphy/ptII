@@ -1127,7 +1127,7 @@ if test "$PRE_JDK18" = "yes" ; then
     done
 else
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTJJS_DIR=jjs
         # org.terraswarm.accessor depends on jjs/JavaScript.java so we
@@ -3132,9 +3132,12 @@ PTFMI_DIR=
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES=
 
-# PTGDP_DIR is set to fmi if jna.jar was found
+# PTGDP_DIR is set to gdp if jna.jar was found
 # $PTII/org/terraswarm/makefile uses PTGDP_DIR
 PTGDP_DIR=
+
+# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
+PTGDP_JAR=
 
 # PTGDP_PACKAGES is used in doc/makefile
 PTGDP_PACKAGES=
@@ -3148,9 +3151,11 @@ JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar
 #JNA_DEFAULT_JAR=jna-4.1.0-variadic.jar 
 
 # We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
-JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
-if test ! -d "$JNA_USER_DIR"; then
-    PT_MSG_STATUS([$JNA_USER_DIR is not present,
+JNA_USER_DIR_FMI="$PTII/ptolemy/actor/lib/fmi"
+JNA_USER_DIR_GDP="$PTII/ptolemy/actor/lib/jjs/modules/gdp"
+
+if test ! -d "$JNA_USER_DIR_FMI" -a ! -d "$JNA_USER_DIR_GDP"; then
+    PT_MSG_STATUS([$JNA_USER_DIR_FMI and $JNA_USER_DIR_GDP are not present,
     so we need not find the JNA - The Java Native Access utility.])
 else
     AC_MSG_CHECKING([for Java Native Access (JNA) jar])
@@ -3162,11 +3167,23 @@ else
         PT_MSG_RESULT($JNA_JAR)
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
-	PTGDP_DIR=gdp
-	if test -d "$PTII/org/terraswarm/gdp"; then
-	    PTGDP_PACKAGES="org.terraswarm.gdp org.terraswarm.gdp.apps"
-        fi
         updateClasspath "$JNA_JAR"
+        AC_MSG_CHECKING([for GDP jar file])
+        AC_ARG_WITH(gdp-jar, [  --with-gdp-jar=JARFILE       use GDP from JARFILE,
+                          defaults to \$PTII/lib/gdp-0.3-1.jar],
+   	    PTGDP_JAR=$withval,
+	    PTGDP_JAR=$PTII/lib/gdp-0.3-1.jar)
+        if test -f "$PTGDP_JAR"; then
+             PT_MSG_RESULT($PTGDP_JAR)
+	     PTGDP_DIR=gdp
+             updateClasspath "$PTGDP_JAR"
+             PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
+        else
+             AC_MSG_WARN([Failed to find $PTII/lib/gdp-0.3-1.jar,
+   which supplies an implementation of the Global Data Plane.
+   The GDP is only necessary for use with the GDP Accessor.])
+             updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
+        fi
     else
         AC_MSG_WARN([Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     JNA is the Java Native Access interfaced, used by the 
@@ -3175,6 +3192,7 @@ else
     These actors are optional, but require JNA.
     For more information about JNA, see https://github.com/twall/jna])
         updateExcludes "ptolemy/actor/lib/fmi/"
+        updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
     fi
 fi
 
@@ -3572,7 +3590,6 @@ PTKIELER_DIR=
 
 # Directory that contains the kieler jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
-GUAVA_JAR='${PTII}/lib/guava.jar'
 
 if test ! -d "$KIELER_USER_DIR"; then
     PT_MSG_STATUS([$KIELER_USER_DIR is not present,
@@ -3586,28 +3603,10 @@ else
 
     if test -f "$KIELER_JAR"; then
 	PT_MSG_RESULT([$KIELER_JAR])
-	AC_MSG_CHECKING([for guava jar file used by Kieler layout ])
-	AC_ARG_WITH(guava-jar, [  --with-guava-jar=JARFILE       use JARFILE,
-                              defaults to \$PTII/lib/guava.jar],
-	GUAVA_JAR=$withval,
-	GUAVA_JAR=$PTII/lib/guava.jar)
-	if test -f "$GUAVA_JAR"; then
-	    # Set to kieler and used in
-	    # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
-	    PTKIELER_DIR=kieler
-        else
-        AC_MSG_WARN([Failed to find the Guava Jar file.
-    Guava is used by the KIELER Layout tool.	
-    Guava is the Google Core Libraries for Java and is available from
-    http://code.google.com/p/guava-libraries/
-    You need not use KIELER unless you plan on using the KIELER layout
-    facility in $KIELER_USER_DIR
-    The Guava jar is usually found at $PTII/lib/guava.jar.])
-	# Note that we don't substitute in the ${PTII} here
-	GUAVA_JAR='${PTII}/lib/guava.jar'
-
-        fi
-    fi	
+        # Set to kieler and used in
+	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	PTKIELER_DIR=kieler
+    fi
 
     if test "$PTKIELER_DIR" = ""; then
         AC_MSG_WARN([Failed to find $KIELER_JAR
@@ -3624,7 +3623,6 @@ if test -z "$PTKIELER_DIR"; then
    updateExcludes "ptolemy/vergil/basic/layout/kieler/"
 else
    updateClasspath "$KIELER_JAR"
-   updateClasspath "$GUAVA_JAR"
 fi 
 
 
@@ -6597,10 +6595,6 @@ AC_SUBST(ECLIPSE_DIR)
 # Location of GNU Awk, used by maven
 AC_SUBST(GAWK)
 
-# The Guava Jar file, used by Kieler which is used to layout models.  See
-# http://code.google.com/p/guava-libraries/
-AC_SUBST(GUAVA_JAR)
-
 # Directory that contains gc.h, used in copernicus/c
 AC_SUBST(GC_INCLUDE_DIR)
 
@@ -6959,9 +6953,12 @@ AC_SUBST(PTG4LTL_DIR)
 # Packages in Ptolemy that depend on g4ltl.jar
 AC_SUBST(PTG4LTL_PACKAGES)
 
-# PTGDP_DIR is set to fmi if jna.jar was found
-# $PTII/ptolemy/actor/lib/makefile uses PTGDP_DIR
+# PTGDP_DIR is set to gdp if jna.jar was found
+# $PTII/org/terraswarm/makefile uses PTGDP_DIR
 AC_SUBST(PTGDP_DIR)
+
+# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
+AC_SUBST(PTGDP_JAR)
 
 # PTGDP_PACKAGES is used in doc/makefile
 AC_SUBST(PTGDP_PACKAGES)

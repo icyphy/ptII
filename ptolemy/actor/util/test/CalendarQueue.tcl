@@ -51,6 +51,36 @@ set comparator [java::new ptolemy.actor.util.test.DoubleCQComparator]
 ######################################################################
 ####
 #
+test CalendarQueue-1.1 {Test compare() } {
+    # FindBugs: http://findbugs.sourceforge.net/bugDescriptions.html#CO_COMPARETO_INCORRECT_FLOATING
+
+    # "This method compares double or float values using pattern
+    # like this: val1 > val2 ? 1 : val1 < val2 ? -1 : 0. This
+    # pattern works incorrectly for -0.0 and NaN values which may
+    # result in incorrect sorting result or broken collection (if
+    # compared values are used as keys). Consider using
+    # Double.compare or Float.compare static methods which handle
+    #  all the special cases correctly."
+    set minusZero [java::new Double "-0.0"]
+    set positiveInfinity [java::field -noconvert Double POSITIVE_INFINITY]
+    set zero [java::new Double "0.0"]
+
+    # Both elements of each inner list should be the same.
+    list \
+        [list [$comparator compare $minusZero $positiveInfinity] \
+             [$minusZero compareTo $positiveInfinity]] \
+        [list [$comparator compare $minusZero $zero] \
+             [$minusZero compareTo $zero]] \
+        [list [$comparator compare $zero $minusZero] \
+             [$zero compareTo $minusZero]] \
+        [list [$comparator compare $minusZero $minusZero] \
+             [$minusZero compareTo $minusZero]]
+
+} {{-1 -1} {-1 -1} {1 1} {0 0}}
+
+######################################################################
+####
+#
 test CalendarQueue-2.1 {Construct an empty queue and check defaults} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     list [$queue size] [$queue isEmpty]

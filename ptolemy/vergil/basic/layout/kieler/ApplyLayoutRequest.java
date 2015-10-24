@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
  */
 package ptolemy.vergil.basic.layout.kieler;
 
+import java.awt.geom.Point2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.LayoutHint;
 
 /**
  * A change request specialized for application of automatically computed layout.
@@ -89,6 +91,21 @@ public class ApplyLayoutRequest extends ChangeRequest {
         _connectionEntries.add(new ConnectionEntry(relation, head, tail,
                 bendPoints));
     }
+    
+    /**
+     * Add a new connection routing change to the request.
+     *
+     * @param relation The relation that owns the connection.
+     * @param head The head object of the connection.
+     * @param tail The tail object of the connection.
+     * @param bendPoints The new bend points.
+     * @param labelLocation The location of a label, may be null
+     */
+    public void addConnection(Relation relation, NamedObj head, NamedObj tail,
+            double[] bendPoints, Point2D.Double labelLocation) {
+        _connectionEntries.add(new ConnectionEntry(relation, head, tail,
+                bendPoints, labelLocation));
+    }
 
     /**
      * Add a new transition curve change to the request.
@@ -128,7 +145,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             if (attribute instanceof LayoutHint) {
                 LayoutHint layoutHint = (LayoutHint) attribute;
                 layoutHint.setLayoutHintItem(entry._head, entry._tail,
-                        entry._bendPoints);
+                        entry._bendPoints, entry._labelLocation);
                 undoLayoutAction.removeConnection(layoutHint);
             }
         }
@@ -140,6 +157,17 @@ public class ApplyLayoutRequest extends ChangeRequest {
             undoLayoutAction.addCurve(new CurveEntry(entry._transition, token
                     .doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
+            
+            Attribute attribute = entry._transition.getAttribute("_layoutHint");
+            if (attribute != null) {
+                // FIXME undo from arcs to splines does not work
+                // the interpretation of bendpoints as splines is only performed
+                // when the parameter 'useSplines' is set. We would have to change
+                // the parameter in the undo action as well to make it work.
+                // LayoutHint layoutHint = (LayoutHint) attribute;
+                // undoLayoutAction.addConnection(entry._transition, layoutHint);
+                entry._transition.removeAttribute(attribute);
+            }
         }
 
         UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(source);
@@ -182,13 +210,20 @@ public class ApplyLayoutRequest extends ChangeRequest {
         NamedObj _head;
         NamedObj _tail;
         double[] _bendPoints;
+        Point2D.Double _labelLocation;
 
         ConnectionEntry(Relation relation, NamedObj head, NamedObj tail,
-                double[] bendPoints) {
+                double[] bendPoints, Point2D.Double labelLocation) {
             this._relation = relation;
             this._head = head;
             this._tail = tail;
             this._bendPoints = bendPoints;
+            this._labelLocation = labelLocation;
+        }
+        
+        ConnectionEntry(Relation relation, NamedObj head, NamedObj tail,
+                double[] bendPoints) {
+            this(relation, head, tail, bendPoints, null);
         }
     }
 

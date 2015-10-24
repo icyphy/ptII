@@ -150,7 +150,7 @@
         </property>
         <vertex name="vertex1" value="[445.0, 265.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.CurrentTime.trigger&quot;,x=505.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,330.0} },{ head={id=&quot;.Test.input&quot;,x=490.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,265.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.CurrentTime.trigger&quot;,x=505.0,y=330.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,330.0} },{ head={id=&quot;.Test.input&quot;,x=490.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=190.0}, points={440.0,265.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

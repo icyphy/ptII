@@ -51,7 +51,7 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.IGuiAction;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
-import ptolemy.vergil.basic.layout.LayoutConfiguration;
+import ptolemy.vergil.basic.layout.AbstractLayoutConfiguration;
 import ptolemy.vergil.modal.FSMGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
@@ -149,6 +149,7 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
 
                     // Create KIELER layouter for this layout target.
                     KielerLayout layout = new KielerLayout(layoutTarget);
+                    // the cast is save because of the #accept() method
                     layout.setModel((CompositeEntity) model);
                     layout.setTop(graphFrame);
 
@@ -191,12 +192,12 @@ public class KielerLayoutAction extends Object implements IGuiAction, Filter {
     private boolean _useOldAlgorithm(NamedObj model) {
         try {
             // Find the model's LayoutConfiguration element
-            List<LayoutConfiguration> configAttributes = model
-                    .attributeList(LayoutConfiguration.class);
+            List<AbstractLayoutConfiguration> configAttributes = model
+                    .attributeList(AbstractLayoutConfiguration.class);
 
             // If there is such an element, check if the old algorithm is to be used
             if (!configAttributes.isEmpty()) {
-                LayoutConfiguration configuration = configAttributes.get(0);
+                AbstractLayoutConfiguration configuration = configAttributes.get(0);
 
                 BooleanToken useOldAlgorithm = BooleanToken
                         .convert(configuration.useOldAlgorithm.getToken());

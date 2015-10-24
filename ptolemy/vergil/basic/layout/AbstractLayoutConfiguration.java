@@ -43,13 +43,13 @@ import ptolemy.kernel.util.Settable;
  * layout action to generate a configuration for the layout algorithm.
  *
  * @see ptolemy.vergil.basic.layout.kieler.KielerLayoutAction
- * @author Miro Spoenemann, Christoph Daniel Schulze
+ * @author Miro Spoenemann, Christoph Daniel Schulze, Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (msp)
  * @Pt.AcceptedRating Red (msp)
  */
-public class LayoutConfiguration extends Attribute {
+public abstract class AbstractLayoutConfiguration extends Attribute {
 
     /** Available modes of user interaction. */
     public enum InteractionMode {
@@ -73,7 +73,7 @@ public class LayoutConfiguration extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public LayoutConfiguration(NamedObj container, String name)
+    public AbstractLayoutConfiguration(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -87,21 +87,6 @@ public class LayoutConfiguration extends Attribute {
         includeDecorations.setDisplayName("Include decorations");
         includeDecorations.setTypeEquals(BaseType.BOOLEAN);
         includeDecorations.setExpression(Boolean.toString(DEF_DECORATIONS));
-
-        minimizeBends = new Parameter(this, "minimizeBends");
-        minimizeBends.setDisplayName("Minimize edge bends");
-        minimizeBends.setTypeEquals(BaseType.BOOLEAN);
-        minimizeBends.setExpression(Boolean.toString(DEF_MINIMIZE_BENDS));
-        minimizeBends.setVisibility(Settable.EXPERT);
-
-        //        optimizeRelations = new Parameter(this, "optimizeRelations");
-        //        optimizeRelations.setDisplayName("Optimize relations");
-        //        optimizeRelations.setTypeEquals(BaseType.BOOLEAN);
-        //        optimizeRelations.setExpression(Boolean.toString(DEF_OPTIMIZE_RELATIONS));
-        // DEBUG Start
-        // This should be commented back in once the feature is finished.
-        //        optimizeRelations.setVisibility(Settable.EXPERT);
-        // DEBUG End
 
         spacing = new DoubleRangeParameter(this, "spacing");
         spacing.setDisplayName("Object spacing");
@@ -147,12 +132,6 @@ public class LayoutConfiguration extends Attribute {
     /** Whether to include unconnected nodes such as comments. */
     public Parameter includeDecorations;
 
-    /** Whether bends are minimized.  The default value is true. */
-    public Parameter minimizeBends;
-
-    //    /** Whether to try to optimize relation vertices or not. */
-    //    public Parameter optimizeRelations;
-
     /** The overall spacing between graph elements. */
     public DoubleRangeParameter spacing;
 
@@ -161,7 +140,7 @@ public class LayoutConfiguration extends Attribute {
 
     /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
     public ChoiceParameter interactionMode;
-
+    
     /** Customized help file to be displayed by the layout configuration dialog. */
     public StringParameter helpURL;
 
@@ -171,18 +150,12 @@ public class LayoutConfiguration extends Attribute {
     /** Default value for includeDecorations. */
     public static final boolean DEF_DECORATIONS = true;
 
-    /** Default value for minimizeBends. */
-    public static final boolean DEF_MINIMIZE_BENDS = true;
-
-    //    /** Default value for optimizeRelations. */
-    //    public static final boolean DEF_OPTIMIZE_RELATIONS = true;
-
     /** Default value for spacing. */
     public static final double DEF_SPACING = 10.0;
 
     /** Default value for aspectRatio (non-logarithmic). */
     public static final double DEF_ASPECT_RATIO = 1.6;
-
+    
     /** Default value for interaction mode. */
     public static final InteractionMode DEF_INTERACTION_MODE = InteractionMode.None;
 

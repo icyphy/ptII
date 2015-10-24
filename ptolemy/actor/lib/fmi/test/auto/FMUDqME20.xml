@@ -176,21 +176,21 @@
         </property>
         <vertex name="vertex1" value="[425.0, 280.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=575.0,y=285.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=425.0,y=280.0}, points={} },{ head={id=&quot;Test.input&quot;,x=475.0,y=215.0}, tail={id=&quot;relation3.vertex1&quot;,x=425.0,y=280.0}, points={425.0,215.0} },{ head={id=&quot;relation7.vertex1&quot;,x=305.0,y=355.0}, tail={id=&quot;relation3.vertex1&quot;,x=425.0,y=280.0}, points={305.0,280.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=575.0,y=285.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=425.0,y=280.0}, points={} },{ head={id=&quot;Test.input&quot;,x=475.0,y=215.0}, tail={id=&quot;relation3.vertex1&quot;,x=425.0,y=280.0}, points={425.0,215.0} },{ head={id=&quot;relation7.vertex1&quot;,x=305.0,y=355.0}, tail={id=&quot;relation3.vertex1&quot;,x=425.0,y=280.0}, points={305.0,280.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=55.0,y=355.0}, tail={id=&quot;Accumulator.input&quot;,x=140.0,y=355.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Scale.output&quot;,x=55.0,y=355.0}, tail={id=&quot;Accumulator.input&quot;,x=140.0,y=355.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Accumulator.output&quot;,x=140.0,y=355.0}, tail={id=&quot;SampleDelay.input&quot;,x=235.0,y=355.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Accumulator.output&quot;,x=140.0,y=355.0}, tail={id=&quot;SampleDelay.input&quot;,x=235.0,y=355.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[305.0, 355.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;dqME2.x&quot;,x=355.0,y=355.0}, tail={id=&quot;relation7.vertex1&quot;,x=305.0,y=355.0}, points={} },{ head={id=&quot;SampleDelay.output&quot;,x=235.0,y=355.0}, tail={id=&quot;relation7.vertex1&quot;,x=305.0,y=355.0}, points={} },{ head={id=&quot;relation7.vertex1&quot;,x=320.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=445.0,y=185.0}, points={320.0,185.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;dqME2.x&quot;,x=355.0,y=355.0}, tail={id=&quot;relation7.vertex1&quot;,x=305.0,y=355.0}, points={} },{ head={id=&quot;SampleDelay.output&quot;,x=235.0,y=355.0}, tail={id=&quot;relation7.vertex1&quot;,x=305.0,y=355.0}, points={} },{ head={id=&quot;relation7.vertex1&quot;,x=320.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=445.0,y=185.0}, points={320.0,185.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -198,7 +198,7 @@
         </property>
         <vertex name="vertex1" value="[525.0, 445.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=575.0,y=285.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={525.0,285.0} },{ head={id=&quot;Test2.input&quot;,x=575.0,y=445.0}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={} },{ head={id=&quot;Scale.input&quot;,x=55.0,y=355.0}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={5.0,355.0,5.0,445.0} },{ head={id=&quot;dqME2.der_x_&quot;,x=355.0,y=355.0}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={425.0,355.0,425.0,445.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequencePlotter.input&quot;,x=575.0,y=285.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={525.0,285.0} },{ head={id=&quot;Test2.input&quot;,x=575.0,y=445.0}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={} },{ head={id=&quot;Scale.input&quot;,x=55.0,y=355.0}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={5.0,355.0,5.0,445.0} },{ head={id=&quot;dqME2.der_x_&quot;,x=355.0,y=355.0}, tail={id=&quot;relation.vertex1&quot;,x=525.0,y=445.0}, points={425.0,355.0,425.0,445.0} } }">
         </property>
     </relation>
     <link port="SequencePlotter.input" relation="relation3"/>

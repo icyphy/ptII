@@ -7,6 +7,20 @@ exports.services = function() {
     return Java.from(helper.availableServices());
 }
 
+exports.gsnServices=function() {
+	return Java.from(helper.getGsnOutput());
+}
+exports.paraimpuServices = function() {
+	return Java.from(helper.getParaimpuOutput());
+}
+
+exports.firebaseServices = function() {
+	return Java.from(helper.getFirebaseOutput());
+}
+
+exports.xmlToJson= function(response) {
+	return Java.from(helper.convertXMLtoJSON(response));
+}
 exports.DiscoveryOfRESTService = DiscoveryOfRESTService;
 /** A discovery "class" that gathers details of a particular REST service. Not used now.
  */

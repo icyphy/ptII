@@ -166,7 +166,6 @@ NATIVE_SIGNED_LIB_JARS = \
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
-			lib/guava.jar \
 			lib/kieler.jar \
 			lib/jython.jar \
 			lib/ptCal.jar \
@@ -190,7 +189,6 @@ CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/ptliblicenses.jar \
-	lib/guava.jar \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
@@ -248,6 +246,7 @@ CAPECODE_JNLP_JARS = \
 	$(PTRSYNTAXTEXTAREA_JAR) \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/demo/demo.jar \
+	org/ptolemy/ssm/ssm.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
@@ -262,20 +261,22 @@ CAPECODE_JNLP_JARS = \
 	org/ptolemy/ptango/ptango.jar \
 	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
-	$(PTERA_JARS) \
-	$(PTFMI_JARS) \
 	org/ptolemy/machineLearning/machineLearning.jar \
-	org/ptolemy/optimization/optimization.jar \
-	ptolemy/actor/gt/gt.jar \
-	ptolemy/vergil/gt/gt.jar \
-	ptolemy/data/ontologies/ontologies.jar \
-	ptolemy/domains/scr/scr.jar \
-	ptolemy/domains/scr/demo/demo.jar \
-	ptolemy/vergil/scr/scr.jar \
-	ptolemy/vergil/modal/fmv/fmv.jar \
-	ptolemy/vergil/ontologies/ontologies.jar \
-	$(RUN_JARS) \
-	$(WIRELESS_JARS)
+	org/ptolemy/optimization/optimization.jar
+
+# As per Edward, exclude these from CapeCode
+#	ptolemy/actor/gt/gt.jar
+#	ptolemy/vergil/gt/gt.jar 
+#	ptolemy/data/ontologies/ontologies.jar
+#	ptolemy/domains/scr/scr.jar
+#	ptolemy/domains/scr/demo/demo.jar
+#	ptolemy/vergil/scr/scr.jar
+#	ptolemy/vergil/modal/fmv/fmv.jar
+#	ptolemy/vergil/ontologies/ontologies.jar
+#	$(RUN_JARS)
+#	$(PTERA_JARS)
+#	$(PTFMI_JARS)
+#	$(WIRELESS_JARS)
 
 #######
 # CyPhySim: http://cyphysim.org
@@ -318,6 +319,7 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/domains/algebraic/algebraic.jar \
 	ptolemy/domains/algebraic/demo/demo.jar \
 	ptolemy/domains/atc/atc.jar \
+	ptolemy/domains/fmima/fmima.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/qss/qss.jar \
@@ -614,6 +616,9 @@ FULL_10_0_JARS = \
 	$(PTOSCP5_JAR) \
 	org/ptolemy/ssm/ssm.jar \
 	$(METROII_JARS) \
+	ptolemy/domains/atc/atc.jar \
+	ptolemy/domains/atc/demo/demo.jar \
+	ptolemy/domains/fmima/fmima.jar \
 	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
@@ -884,9 +889,10 @@ ALL_L4J_JARS = \
 ALL_JNLP_JARS = \
 	$(ALL_L4J_JARS) \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
+	$(BCVTB_MAIN_JAR) \
+	$(CAPECODE_MAIN_JAR) \
 	$(CYPHY_MAIN_JAR) \
 	$(DSP_MAIN_JAR) \
-	$(BCVTB_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(PTINY_MAIN_JAR) \
 	$(PTINY_KEPLER_MAIN_JAR) \

@@ -782,6 +782,7 @@ PTGMP_LIB
 PTGMP_LD_FLAGS
 PTGMP_INCLUDE
 PTGDP_PACKAGES
+PTGDP_JAR
 PTGDP_DIR
 PTG4LTL_PACKAGES
 PTG4LTL_DIR
@@ -875,7 +876,6 @@ ECLIPSE_CLASSPATHENTRY_LIBS
 ECLIPSE_EXCLUDING_SRC
 GC_LD_DIRECTIVE
 GC_INCLUDE_DIR
-GUAVA_JAR
 ECLIPSE_DIR
 ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS
 CMKIT_DIR
@@ -1013,6 +1013,7 @@ with_oauthclient
 with_oauthcommon
 with_socketio
 with_jna_jar
+with_gdp_jar
 with_joystick_jar
 with_ptjacl_jar
 with_jsoup
@@ -1021,7 +1022,6 @@ with_junitparams
 with_jxl
 with_jython
 with_kieler_jar
-with_guava_jar
 with_javacv
 with_oscp5
 with_rxtx
@@ -1745,6 +1745,8 @@ Optional Packages:
                           defaults to \$PTII/lib/socketio.jar
   --with-jna-jar=JARFILE       use JNA from JARFILE,
                           defaults to \$PTII/jna-4.0.0-variadic.jar
+  --with-gdp-jar=JARFILE       use GDP from JARFILE,
+                          defaults to \$PTII/lib/gdp-0.3-1.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -1762,8 +1764,6 @@ Optional Packages:
 			  is searched for jython
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
-  --with-guava-jar=JARFILE       use JARFILE,
-                              defaults to \$PTII/lib/guava.jar
   --with-javacv=JAR       use the javaCV JAR,
                           defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar
   --with-oscp5=JAR       use oscP5.jar from JAR,
@@ -4505,7 +4505,7 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
     done
 else
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTJJS_DIR=jjs
         # org.terraswarm.accessor depends on jjs/JavaScript.java so we
@@ -9040,9 +9040,12 @@ PTFMI_DIR=
 # PTFMI_PACKAGES is used in doc/makefile
 PTFMI_PACKAGES=
 
-# PTGDP_DIR is set to fmi if jna.jar was found
+# PTGDP_DIR is set to gdp if jna.jar was found
 # $PTII/org/terraswarm/makefile uses PTGDP_DIR
 PTGDP_DIR=
+
+# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
+PTGDP_JAR=
 
 # PTGDP_PACKAGES is used in doc/makefile
 PTGDP_PACKAGES=
@@ -9056,11 +9059,13 @@ JNA_DEFAULT_JAR=jna-4.0.0-variadic.jar
 #JNA_DEFAULT_JAR=jna-4.1.0-variadic.jar
 
 # We only need look for jmf if $PTII/ptolemy/actor/lib/fmi exists
-JNA_USER_DIR="$PTII/ptolemy/actor/lib/fmi"
-if test ! -d "$JNA_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_USER_DIR is not present,
+JNA_USER_DIR_FMI="$PTII/ptolemy/actor/lib/fmi"
+JNA_USER_DIR_GDP="$PTII/ptolemy/actor/lib/jjs/modules/gdp"
+
+if test ! -d "$JNA_USER_DIR_FMI" -a ! -d "$JNA_USER_DIR_GDP"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_USER_DIR_FMI and $JNA_USER_DIR_GDP are not present,
     so we need not find the JNA - The Java Native Access utility." >&5
-$as_echo "$JNA_USER_DIR is not present,
+$as_echo "$JNA_USER_DIR_FMI and $JNA_USER_DIR_GDP are not present,
     so we need not find the JNA - The Java Native Access utility." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Native Access (JNA) jar" >&5
@@ -9079,11 +9084,33 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA
 $as_echo "$JNA_JAR" >&6; }; fi
 	PTFMI_DIR=fmi
 	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
-	PTGDP_DIR=gdp
-	if test -d "$PTII/org/terraswarm/gdp"; then
-	    PTGDP_PACKAGES="org.terraswarm.gdp org.terraswarm.gdp.apps"
-        fi
         updateClasspath "$JNA_JAR"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GDP jar file" >&5
+$as_echo_n "checking for GDP jar file... " >&6; }
+
+# Check whether --with-gdp-jar was given.
+if test "${with_gdp_jar+set}" = set; then :
+  withval=$with_gdp_jar; PTGDP_JAR=$withval
+else
+  PTGDP_JAR=$PTII/lib/gdp-0.3-1.jar
+fi
+
+        if test -f "$PTGDP_JAR"; then
+             if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTGDP_JAR" >&5
+$as_echo "$PTGDP_JAR" >&6; }; fi
+	     PTGDP_DIR=gdp
+             updateClasspath "$PTGDP_JAR"
+             PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
+        else
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/gdp-0.3-1.jar,
+   which supplies an implementation of the Global Data Plane.
+   The GDP is only necessary for use with the GDP Accessor." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTII/lib/gdp-0.3-1.jar,
+   which supplies an implementation of the Global Data Plane.
+   The GDP is only necessary for use with the GDP Accessor." >&2;}
+             updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
+        fi
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     JNA is the Java Native Access interfaced, used by the
@@ -9098,6 +9125,7 @@ $as_echo "$as_me: WARNING: Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
     These actors are optional, but require JNA.
     For more information about JNA, see https://github.com/twall/jna" >&2;}
         updateExcludes "ptolemy/actor/lib/fmi/"
+        updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
     fi
 fi
 
@@ -9683,7 +9711,6 @@ PTKIELER_DIR=
 
 # Directory that contains the kieler jar files
 KIELER_JAR='${PTII}/lib/kieler.jar'
-GUAVA_JAR='${PTII}/lib/guava.jar'
 
 if test ! -d "$KIELER_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $KIELER_USER_DIR is not present,
@@ -9706,39 +9733,9 @@ fi
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $KIELER_JAR" >&5
 $as_echo "$KIELER_JAR" >&6; }; fi
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for guava jar file used by Kieler layout " >&5
-$as_echo_n "checking for guava jar file used by Kieler layout ... " >&6; }
-
-# Check whether --with-guava-jar was given.
-if test "${with_guava_jar+set}" = set; then :
-  withval=$with_guava_jar; GUAVA_JAR=$withval
-else
-  GUAVA_JAR=$PTII/lib/guava.jar
-fi
-
-	if test -f "$GUAVA_JAR"; then
-	    # Set to kieler and used in
-	    # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
-	    PTKIELER_DIR=kieler
-        else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Guava Jar file.
-    Guava is used by the KIELER Layout tool.
-    Guava is the Google Core Libraries for Java and is available from
-    http://code.google.com/p/guava-libraries/
-    You need not use KIELER unless you plan on using the KIELER layout
-    facility in $KIELER_USER_DIR
-    The Guava jar is usually found at $PTII/lib/guava.jar." >&5
-$as_echo "$as_me: WARNING: Failed to find the Guava Jar file.
-    Guava is used by the KIELER Layout tool.
-    Guava is the Google Core Libraries for Java and is available from
-    http://code.google.com/p/guava-libraries/
-    You need not use KIELER unless you plan on using the KIELER layout
-    facility in $KIELER_USER_DIR
-    The Guava jar is usually found at $PTII/lib/guava.jar." >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	GUAVA_JAR='${PTII}/lib/guava.jar'
-
-        fi
+        # Set to kieler and used in
+	# $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
+	PTKIELER_DIR=kieler
     fi
 
     if test "$PTKIELER_DIR" = ""; then
@@ -9761,7 +9758,6 @@ if test -z "$PTKIELER_DIR"; then
    updateExcludes "ptolemy/vergil/basic/layout/kieler/"
 else
    updateClasspath "$KIELER_JAR"
-   updateClasspath "$GUAVA_JAR"
 fi
 
 
@@ -14113,10 +14109,6 @@ fi
 # Location of GNU Awk, used by maven
 
 
-# The Guava Jar file, used by Kieler which is used to layout models.  See
-# http://code.google.com/p/guava-libraries/
-
-
 # Directory that contains gc.h, used in copernicus/c
 
 
@@ -14475,8 +14467,11 @@ fi
 # Packages in Ptolemy that depend on g4ltl.jar
 
 
-# PTGDP_DIR is set to fmi if jna.jar was found
-# $PTII/ptolemy/actor/lib/makefile uses PTGDP_DIR
+# PTGDP_DIR is set to gdp if jna.jar was found
+# $PTII/org/terraswarm/makefile uses PTGDP_DIR
+
+
+# The Global Data Plane (GDP) jar file.  Used in ptolemy/actor/lib/jjs/modules/gdp/makefile and in mk/ptII.mk.in
 
 
 # PTGDP_PACKAGES is used in doc/makefile

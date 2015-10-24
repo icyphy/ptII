@@ -138,7 +138,7 @@
         <relation name="relation2_0" class="ptolemy.actor.TypedIORelation">
             <property name="color" class="ptolemy.actor.gui.ColorAttribute">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.plus&quot;,x=5.0,y=310.0}, tail={id=&quot;port_0._location&quot;,x=-60.0,y=300.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AddSubtract.plus&quot;,x=5.0,y=310.0}, tail={id=&quot;port_0._location&quot;,x=-60.0,y=300.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">

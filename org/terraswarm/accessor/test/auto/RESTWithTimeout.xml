@@ -46,11 +46,15 @@
         <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, 140.0}">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot;:&quot;http://ptolemy.eecs.berkeley.edu&quot;}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
@@ -85,49 +89,37 @@
         </property>
         <port name="command" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="body" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -160,7 +152,9 @@
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{nil}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 75.0]">
         </property>
@@ -168,9 +162,9 @@
     <entity name="Test3" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true}">
         </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 220.0]">
         </property>
@@ -197,11 +191,11 @@
         </property>
         <vertex name="vertex1" value="{235.0, 130.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;REST.response&quot;,x=150.0,y=140.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, points={} },{ head={id=&quot;Display.input&quot;,x=275.0,y=85.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, points={235.0,85.0} },{ head={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, tail={id=&quot;Const.trigger&quot;,x=295.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.response&quot;,x=150.0,y=140.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, points={} },{ head={id=&quot;Display.input&quot;,x=275.0,y=85.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, points={235.0,85.0} },{ head={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, tail={id=&quot;Const.trigger&quot;,x=295.0,y=130.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=295.0,y=130.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=355.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=295.0,y=130.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=355.0,y=130.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">

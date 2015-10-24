@@ -461,23 +461,23 @@
                 </port>
             </entity>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port3._location&quot;,x=110.0,y=215.0}, tail={id=&quot;TimeDelay2.input&quot;,x=185.0,y=215.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port3._location&quot;,x=110.0,y=215.0}, tail={id=&quot;TimeDelay2.input&quot;,x=185.0,y=215.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=110.0,y=140.0}, tail={id=&quot;TimeDelay.input&quot;,x=185.0,y=140.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=110.0,y=140.0}, tail={id=&quot;TimeDelay.input&quot;,x=185.0,y=140.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port4._location&quot;,x=330.0,y=145.0}, tail={id=&quot;Merge2.output&quot;,x=270.0,y=145.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port4._location&quot;,x=330.0,y=145.0}, tail={id=&quot;Merge2.output&quot;,x=270.0,y=145.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=270.0,y=145.0,index=2}, tail={id=&quot;TimeDelay.output&quot;,x=185.0,y=140.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=270.0,y=145.0,index=2}, tail={id=&quot;TimeDelay.output&quot;,x=185.0,y=140.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=270.0,y=145.0,index=2}, tail={id=&quot;TimeDelay2.output&quot;,x=185.0,y=215.0}, points={235.0,145.0,235.0,215.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=270.0,y=145.0,index=2}, tail={id=&quot;TimeDelay2.output&quot;,x=185.0,y=215.0}, points={235.0,145.0,235.0,215.0} } }">
                 </property>
             </relation>
             <link port="port2" relation="relation"/>
@@ -541,11 +541,11 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PtidesPlatform.port2&quot;,x=160.0,y=290.0}, tail={id=&quot;SingleEvent.output&quot;,x=60.0,y=220.0}, points={110.0,280.0,110.0,220.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PtidesPlatform.port2&quot;,x=160.0,y=290.0}, tail={id=&quot;SingleEvent.output&quot;,x=60.0,y=220.0}, points={110.0,280.0,110.0,220.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PtidesPlatform.port3&quot;,x=160.0,y=290.0}, tail={id=&quot;SingleEvent2.output&quot;,x=55.0,y=300.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PtidesPlatform.port3&quot;,x=160.0,y=290.0}, tail={id=&quot;SingleEvent2.output&quot;,x=55.0,y=300.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -553,15 +553,15 @@
         </property>
         <vertex name="vertex1" value="{230.0, 290.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentMicrostep.trigger&quot;,x=295.0,y=220.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, points={230.0,220.0} },{ head={id=&quot;.Discard.input&quot;,x=310.0,y=160.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=225.0}, points={310.0,120.0,230.0,120.0} },{ head={id=&quot;PtidesPlatform.port4&quot;,x=160.0,y=290.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=310.0,y=155.0}, points={230.0,155.0} },{ head={id=&quot;Test2.input&quot;,x=280.0,y=290.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentMicrostep.trigger&quot;,x=295.0,y=220.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, points={230.0,220.0} },{ head={id=&quot;.Discard.input&quot;,x=310.0,y=160.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=225.0}, points={310.0,120.0,230.0,120.0} },{ head={id=&quot;PtidesPlatform.port4&quot;,x=160.0,y=290.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, points={} },{ head={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=310.0,y=155.0}, points={230.0,155.0} },{ head={id=&quot;Test2.input&quot;,x=280.0,y=290.0}, tail={id=&quot;relation2.vertex1&quot;,x=230.0,y=290.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentMicrostep.output&quot;,x=295.0,y=220.0}, tail={id=&quot;Test.input&quot;,x=425.0,y=220.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentMicrostep.output&quot;,x=295.0,y=220.0}, tail={id=&quot;Test.input&quot;,x=425.0,y=220.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=310.0,y=155.0}, tail={id=&quot;Test3.input&quot;,x=425.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=310.0,y=155.0}, tail={id=&quot;Test3.input&quot;,x=425.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <link port="PtidesPlatform.port2" relation="relation3"/>

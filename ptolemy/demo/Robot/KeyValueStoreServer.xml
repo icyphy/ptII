@@ -38,7 +38,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 55.0]">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Include decorations"/>
         </property>
@@ -300,87 +300,87 @@
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.uri&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.uri&quot;,x=105.0,y=530.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.uri&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.uri&quot;,x=105.0,y=530.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.parameters&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.parameters&quot;,x=105.0,y=530.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.parameters&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.parameters&quot;,x=105.0,y=530.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.headers&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.headers&quot;,x=105.0,y=530.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.headers&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.headers&quot;,x=105.0,y=530.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=590.0,y=180.0}, tail={id=&quot;HttpRequestHandler2.uri&quot;,x=100.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=590.0,y=180.0}, tail={id=&quot;HttpRequestHandler2.uri&quot;,x=100.0,y=200.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=590.0,y=180.0}, tail={id=&quot;MicrostepDelay2.input&quot;,x=225.0,y=295.0}, points={850.0,180.0,850.0,295.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=590.0,y=180.0}, tail={id=&quot;MicrostepDelay2.input&quot;,x=225.0,y=295.0}, points={850.0,180.0,850.0,295.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary.triggerKeys&quot;,x=530.0,y=500.0}, tail={id=&quot;HttpRequestHandler3.uri&quot;,x=325.0,y=415.0}, points={530.0,575.0,440.0,575.0,440.0,395.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.triggerKeys&quot;,x=530.0,y=500.0}, tail={id=&quot;HttpRequestHandler3.uri&quot;,x=325.0,y=415.0}, points={530.0,575.0,440.0,575.0,440.0,395.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary.keys&quot;,x=530.0,y=500.0}, tail={id=&quot;TokenToJSON.input&quot;,x=650.0,y=440.0}, points={615.0,480.0,615.0,440.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.keys&quot;,x=530.0,y=500.0}, tail={id=&quot;TokenToJSON.input&quot;,x=650.0,y=440.0}, points={615.0,480.0,615.0,440.0} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TokenToJSON.output&quot;,x=650.0,y=440.0}, tail={id=&quot;MicrostepDelay3.input&quot;,x=495.0,y=345.0}, points={720.0,440.0,720.0,345.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TokenToJSON.output&quot;,x=650.0,y=440.0}, tail={id=&quot;MicrostepDelay3.input&quot;,x=495.0,y=345.0}, points={720.0,440.0,720.0,345.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.readKey&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.readKey&quot;,x=530.0,y=500.0}, points={425.0,500.0,425.0,480.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.readKey&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.readKey&quot;,x=530.0,y=500.0}, points={425.0,500.0,425.0,480.0} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.value&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.value&quot;,x=530.0,y=500.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.value&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.value&quot;,x=530.0,y=500.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.writeKey&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.writeKey&quot;,x=530.0,y=500.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.writeKey&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.writeKey&quot;,x=530.0,y=500.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=500.0,y=790.0}, tail={id=&quot;Merge.output&quot;,x=665.0,y=615.0}, points={720.0,790.0,720.0,615.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=500.0,y=790.0}, tail={id=&quot;Merge.output&quot;,x=665.0,y=615.0}, points={720.0,790.0,720.0,615.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler2.responseBody&quot;,x=100.0,y=200.0}, tail={id=&quot;MicrostepDelay2.output&quot;,x=225.0,y=295.0}, points={-25.0,180.0,-25.0,295.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler2.responseBody&quot;,x=100.0,y=200.0}, tail={id=&quot;MicrostepDelay2.output&quot;,x=225.0,y=295.0}, points={-25.0,180.0,-25.0,295.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=500.0,y=790.0}, tail={id=&quot;HttpRequestHandler.responseBody&quot;,x=105.0,y=530.0}, points={-25.0,790.0,-25.0,510.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=500.0,y=790.0}, tail={id=&quot;HttpRequestHandler.responseBody&quot;,x=105.0,y=530.0}, points={-25.0,790.0,-25.0,510.0} } }">
         </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler3.responseBody&quot;,x=325.0,y=415.0}, tail={id=&quot;MicrostepDelay3.output&quot;,x=495.0,y=345.0}, points={200.0,395.0,200.0,345.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler3.responseBody&quot;,x=325.0,y=415.0}, tail={id=&quot;MicrostepDelay3.output&quot;,x=495.0,y=345.0}, points={200.0,395.0,200.0,345.0} } }">
         </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler.responseCode&quot;,x=105.0,y=530.0}, tail={id=&quot;MicrostepDelay4.output&quot;,x=285.0,y=745.0}, points={-20.0,520.0,-20.0,745.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler.responseCode&quot;,x=105.0,y=530.0}, tail={id=&quot;MicrostepDelay4.output&quot;,x=285.0,y=745.0}, points={-20.0,520.0,-20.0,745.0} } }">
         </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.responseCode&quot;,x=315.0,y=520.0}, tail={id=&quot;Merge2.input&quot;,x=505.0,y=695.0,index=2}, points={425.0,540.0,425.0,690.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.responseCode&quot;,x=315.0,y=520.0}, tail={id=&quot;Merge2.input&quot;,x=505.0,y=695.0,index=2}, points={425.0,540.0,425.0,690.0} } }">
         </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MicrostepDelay4.input&quot;,x=285.0,y=745.0}, tail={id=&quot;Merge2.output&quot;,x=505.0,y=695.0}, points={615.0,745.0,615.0,695.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay4.input&quot;,x=285.0,y=745.0}, tail={id=&quot;Merge2.output&quot;,x=505.0,y=695.0}, points={615.0,745.0,615.0,695.0} } }">
         </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ConstructLookup.response&quot;,x=315.0,y=520.0}, tail={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, points={435.0,530.0,435.0,605.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.response&quot;,x=315.0,y=520.0}, tail={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, points={435.0,530.0,435.0,605.0} } }">
         </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, tail={id=&quot;StringConst2.output&quot;,x=815.0,y=445.0}, points={615.0,610.0,615.0,645.0,890.0,645.0,890.0,445.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, tail={id=&quot;StringConst2.output&quot;,x=815.0,y=445.0}, points={615.0,610.0,615.0,645.0,890.0,645.0,890.0,445.0} } }">
         </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary.result&quot;,x=530.0,y=500.0}, tail={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, points={620.0,490.0,620.0,615.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.result&quot;,x=530.0,y=500.0}, tail={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, points={620.0,490.0,620.0,615.0} } }">
         </property>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
@@ -388,11 +388,11 @@
         </property>
         <vertex name="vertex1" value="{720.0, 520.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=780.0,y=520.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={} },{ head={id=&quot;StringConst2.trigger&quot;,x=815.0,y=445.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={720.0,445.0} },{ head={id=&quot;Dictionary.notFound&quot;,x=530.0,y=500.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=780.0,y=520.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={} },{ head={id=&quot;StringConst2.trigger&quot;,x=815.0,y=445.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={720.0,445.0} },{ head={id=&quot;Dictionary.notFound&quot;,x=530.0,y=500.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=505.0,y=695.0,index=2}, tail={id=&quot;Const.output&quot;,x=780.0,y=520.0}, points={440.0,695.0,440.0,650.0,880.0,650.0,880.0,520.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=505.0,y=695.0,index=2}, tail={id=&quot;Const.output&quot;,x=780.0,y=520.0}, points={440.0,695.0,440.0,650.0,880.0,650.0,880.0,520.0} } }">
         </property>
     </relation>
     <link port="MicrostepDelay.input" relation="relation17"/>

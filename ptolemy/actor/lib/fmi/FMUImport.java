@@ -1099,19 +1099,27 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     }
                     token = new DoubleToken(result);
                     if (_useQSS) {
-                        if (_firstFire) {
-                            _outputs.get(index).lastDoubleOutput = result;
-                            _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
+                    	if (_firstFire || Math.abs(result - _outputs.get(index).lastOutputPortValue) > _threshold ) {
+                    		_outputs.get(index).lastOutputPortValue = result;
+                    	}
+                    	else{
+                    		continue;
+                    	}                	
+                     /*                      
+                     if (_firstFire) {
+                            _outputs.get(index).lastOutputPortValue = result;
+                            _outputs.get(index).quantum = Math.abs(_threshold * result);
                         }
                         // Produce an output if the quantum has been crossed.
                         else {
-                            if (Math.abs(result - output.lastDoubleOutput) <= _outputs.get(index).quantum) {
+                            if (Math.abs(result - output.lastOutputPortValue) <= _outputs.get(index).quantum) {
                                 continue;
                             } else {
-                                _outputs.get(index).lastDoubleOutput = result;
-                                _outputs.get(index).quantum = Math.abs(_outputQuantum * result);
+                                _outputs.get(index).lastOutputPortValue = result;
+                                _outputs.get(index).quantum = Math.abs(_threshold * result);
                             }
                         }
+                        */
                     }
                 } else if (scalarVariable.type instanceof FMIStringType) {
                     if (_useRawJNI()) {
@@ -1531,7 +1539,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _numberOfTimeEvents = 0;
         
         // Check if the QSS director is used at the top level.
-        // This call initialize the _outputQuantum as well as
+        // This call initialize the _threshold as well as
         // the flag which indicates that QSS director is used here.
         _hasQSSDirector();
 
@@ -4297,9 +4305,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             useQSS = true;
             // Get the quantum which will be used to determine whether
             // outputs should be produced or not.
-            _outputQuantum = Math.max(
-                    ((QSSDirector) getDirector()).getRelativeQuantum(),
-                    ((QSSDirector) getDirector()).getAbsoluteQuantum());
+            //_threshold = Math.max(
+            //        ((QSSDirector) getDirector()).getRelativeQuantum(),
+            //        ((QSSDirector) getDirector()).getAbsoluteQuantum());
             _useQSS = true;
         }   	
         return (useQSS);
@@ -4363,8 +4371,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      */
     protected double _fmiVersion;
 
-    /** The output quantum if QSS is used. */
-    protected double _outputQuantum;
+    /** The delta to exceed to produce outputs if QSS is used. */
+    protected double _threshold = 1e-16;
 
     /** For model exchange, the FMU state variables. */
     protected DoubleBuffer _states;
@@ -4773,8 +4781,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     
     /** Boolean indicating that QSS is used */
     private boolean _useQSS = false;
-
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -4784,9 +4791,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The flag which indicates that input changed. */
         public boolean hasChanged;
+        
+        /** The last input double variable. */
+		public double lastInputModelValue;
 
         /** The last double token seen at the input port. */
-        public double lastDoubleInput;
+        public double lastInputPortValue;
 
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
@@ -4796,6 +4806,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The start value for this variable, or null if it is not given. */
         public Double start;
+
     }
 
     /** A data structure representing an output from the FMU. */
@@ -4809,16 +4820,13 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         public List<FMIScalarVariable> inputStateDependentScalarVariables;
 
         /** The last double output seen at the input port. */
-        public double lastDoubleOutput;
+        public double lastOutputPortValue;
 
         /** The FMI scalar variable for this output. */
         public FMIScalarVariable scalarVariable;
 
         /** The Ptolemy output port for this output. */
         public TypedIOPort port;
-
-        /** The Quantum value of the output. */
-		public double quantum;
 
     }
 }

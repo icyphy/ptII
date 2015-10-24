@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	ContextAware.xml \
+	ContextAwareFirebase.xml \
 	testInheritance.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)

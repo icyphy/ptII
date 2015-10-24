@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 
  <p>Invoke with:</p>
  <pre>
- java -classpath $PTII ptolemy.parameters.test.CloneTest
+ java -classpath $PTII ptolemy.actor.parameters.test.CloneTest
  </pre>
 
  @author Christopher Brooks

@@ -51,8 +51,9 @@
     <include name="org/terraswarm/ros/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
     <include name="ptolemy/actor/gt/gt.jar" />
-    <include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/BCVTBApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/CapeCodeApplication.jar" />
+    <include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/DSPApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/FullApplication.jar" />
     <include name="ptolemy/actor/gui/jnlp/HyVisualApplication.jar" />
@@ -124,8 +125,9 @@
     <include name="ptolemy/domains/algebraic/algebraic.jar" />
     <include name="ptolemy/domains/algebraic/demo.jar" />
     <include name="ptolemy/domains/atc/atc.jar" />
+    <include name="ptolemy/domains/atc/demo/demo.jar" />
     <include name="ptolemy/domains/ca/ca.jar" />
-    <include name="ptolemy/domains/ca/demo.jar" />
+    <include name="ptolemy/domains/ca/demo/demo.jar" />
     <include name="ptolemy/domains/ci/ci.jar" />
     <include name="ptolemy/domains/ci/demo/demo.jar" />
     <include name="ptolemy/domains/ci/demo/Conway/Conway.jar" />
@@ -154,6 +156,7 @@
     <include name="ptolemy/domains/dt/demo/demo.jar" />
     <include name="ptolemy/domains/dt/doc/doc.jar" />
     <include name="ptolemy/domains/experimentalDomains.jar" />
+    <include name="ptolemy/domains/fmima/fmima.jar" />
     <include name="ptolemy/domains/giotto/giotto.jar" />
     <include name="ptolemy/domains/giotto/demo/demo.jar" />
     <include name="ptolemy/domains/giotto/doc/doc.jar" />
@@ -2395,7 +2398,19 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/atc/kernel/*.class"/>
+	<include name="ptolemy/domains/atc/kernel/policy*/*.class"/>
 	<include name="ptolemy/domains/atc/lib/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/atc/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/atc/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/atc/demo/*/*.txt"/>
+	<include name="ptolemy/domains/atc/demo/*/*.xml"/>
+	<include name="ptolemy/domains/atc/demo/track*/*.txt"/>
       </fileset>
     </jar>
 
@@ -2587,6 +2602,15 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/dt/kernel/*.class"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/fmima/fmima.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/fmima/fmima.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/fmima/kernel/*.java"/>
       </fileset>
     </jar>
 
@@ -4223,6 +4247,7 @@
 	 >
       <fileset dir="${basedir}">
         <include name="org/ptolemy/ssm/*.class"/>
+        <include name="org/ptolemy/ssm/*.xml"/>
       </fileset>
   </jar>
 
@@ -4243,6 +4268,7 @@
       <fileset dir="${basedir}">
         <include name="org/terraswarm/accessor/demo/*/*.class"/>
         <include name="org/terraswarm/accessor/demo/*/*.js"/>
+        <include name="org/terraswarm/accessor/demo/*/*.svg"/>
         <include name="org/terraswarm/accessor/demo/*/*.xml"/>
       </fileset>
     </jar>
@@ -5822,15 +5848,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/actor/gui/jnlp/CyPhySimApplication.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/gui/jnlp/CyPhySimApplication.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
-	<include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.class"/>
-      </fileset>
-    </jar>
     <!-- ptolemy/actor/gui/jnlp/BCVTBApplication.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/gui/jnlp/BCVTBApplication.jar"
@@ -5840,6 +5857,27 @@
 	<include name="ptolemy/actor/gui/jnlp/BCVTBApplication.class"/>
       </fileset>
     </jar>
+
+    <!-- ptolemy/actor/gui/jnlp/CapeCodeApplication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/jnlp/CapeCodeApplication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+	<include name="ptolemy/actor/gui/jnlp/CapeCodeApplication.class"/>
+      </fileset>
+    </jar>
+    
+    <!-- ptolemy/actor/gui/jnlp/CyPhySimApplication.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/gui/jnlp/CyPhySimApplication.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/gui/jnlp/MenuApplication.class"/>
+	<include name="ptolemy/actor/gui/jnlp/CyPhySimApplication.class"/>
+      </fileset>
+    </jar>
+    
     <!-- ptolemy/actor/gui/jnlp/DSPApplication.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/gui/jnlp/DSPApplication.jar"

@@ -1,0 +1,11 @@
+{
+  "name": "gdp",
+  "version": "0.3.1",
+  "main": "GDP.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Nitesh Mor"
+    , "email" : "mor@eecs.berkeley.edu"}
+  ],
+  "description": "A module for accessing GDP."
+}

@@ -68,12 +68,14 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  @param rows The number of rows.
      *  @param columns The number of columns.
      *  @param title The window title to use.
+     *  @param document The document to use.  If the value is null,
+     *  the the text from the attribute.
      */
     public TextEditorForStringAttributes(TextEditorFactory factory,
             Attribute attributeToEdit, int rows, int columns, String title,
             Document document) {
         super(title, document);
-        this._factory = factory;
+        _factory = factory;
         _attributeToEdit = attributeToEdit;
         if (document == null) {
             text.append(TextEditorTableauFactory.getTextToEdit(_attributeToEdit));

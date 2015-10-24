@@ -208,7 +208,7 @@
         </property>
         <vertex name="vertex1" value="{200.0, 90.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=100.0,y=90.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={} },{ head={id=&quot;BooleanSelect.trueInput&quot;,x=255.0,y=90.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={200.0,80.0} },{ head={id=&quot;ModalModel.T&quot;,x=275.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={200.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=100.0,y=90.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={} },{ head={id=&quot;BooleanSelect.trueInput&quot;,x=255.0,y=90.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={200.0,80.0} },{ head={id=&quot;ModalModel.T&quot;,x=275.0,y=185.0}, tail={id=&quot;relation5.vertex1&quot;,x=200.0,y=90.0}, points={200.0,175.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -216,7 +216,7 @@
         </property>
         <vertex name="vertex1" value="{185.0, 195.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BooleanSelect.control&quot;,x=255.0,y=90.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={255.0,135.0,185.0,135.0} },{ head={id=&quot;Bernoulli.output&quot;,x=100.0,y=225.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={150.0,225.0,150.0,195.0} },{ head={id=&quot;ModalModel.control&quot;,x=275.0,y=185.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;BooleanSelect.control&quot;,x=255.0,y=90.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={255.0,135.0,185.0,135.0} },{ head={id=&quot;Bernoulli.output&quot;,x=100.0,y=225.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={150.0,225.0,150.0,195.0} },{ head={id=&quot;ModalModel.control&quot;,x=275.0,y=185.0}, tail={id=&quot;relation6.vertex1&quot;,x=185.0,y=195.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -224,25 +224,25 @@
         </property>
         <vertex name="vertex1" value="{170.0, 150.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.F&quot;,x=275.0,y=185.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={170.0,185.0} },{ head={id=&quot;Ramp2.output&quot;,x=100.0,y=160.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={150.0,160.0,150.0,150.0} },{ head={id=&quot;BooleanSelect.falseInput&quot;,x=255.0,y=90.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={170.0,100.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ModalModel.F&quot;,x=275.0,y=185.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={170.0,185.0} },{ head={id=&quot;Ramp2.output&quot;,x=100.0,y=160.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={150.0,160.0,150.0,150.0} },{ head={id=&quot;BooleanSelect.falseInput&quot;,x=255.0,y=90.0}, tail={id=&quot;relation7.vertex1&quot;,x=170.0,y=150.0}, points={170.0,100.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;BooleanSelect.output&quot;,x=255.0,y=90.0}, tail={id=&quot;Equals.input&quot;,x=410.0,y=140.0,index=2}, points={350.0,90.0,350.0,135.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;BooleanSelect.output&quot;,x=255.0,y=90.0}, tail={id=&quot;Equals.input&quot;,x=410.0,y=140.0,index=2}, points={350.0,90.0,350.0,135.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.output&quot;,x=275.0,y=185.0}, tail={id=&quot;Equals.input&quot;,x=410.0,y=140.0,index=2}, points={350.0,185.0,350.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ModalModel.output&quot;,x=275.0,y=185.0}, tail={id=&quot;Equals.input&quot;,x=410.0,y=140.0,index=2}, points={350.0,185.0,350.0,140.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Equals.output&quot;,x=410.0,y=140.0}, tail={id=&quot;NonStrictTest.input&quot;,x=505.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Equals.output&quot;,x=410.0,y=140.0}, tail={id=&quot;NonStrictTest.input&quot;,x=505.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <link port="ModalModel.T" relation="relation5"/>

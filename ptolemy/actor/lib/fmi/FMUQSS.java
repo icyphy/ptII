@@ -200,27 +200,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _fmiSetContinuousStatesJNI(stateVariables, timeValue);
         }
 
-        // Give {inputVariable} to the FMU.
-        for (int ii = 0; ii < _inputs.size(); ++ii) {
-            final FMIScalarVariable scalar = _inputs.get(ii).scalarVariable;
-            if (scalar.type instanceof FMIRealType) {
-                if (!_useRawJNI()) {
-                    scalar.setDouble(_fmiComponent, inputVariables[ii]);
-                } else {
-                    final double uu[] = { inputVariables[ii] };
-                    final long uuRef[] = { _inputValueReferences[ii] };
-                    _fmiSetRealJNI(uu, uuRef, timeValue);
-                }
-            } else {
-                new Exception(
-                        "Warning: The input variable "
-                                + scalar.name
-                                + " is of type "
-                                + scalar.type
-                                + " .But only variables from type FMIRealType are updated.")
-                        .printStackTrace();
-            }
-        }
+        // Update the FMUs inputs if needed.
+        _setFMUInputsAtCurrentTime (time, inputVariables, false);
 
         // Give {stateVariableDerivative} to FMU and evaluate the derivative function.
         if (!_useRawJNI()) {
@@ -1085,6 +1066,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Get initial state values from FMU.
         final int stateCt = _qssSolver.getStateCount();
         _states = new double[stateCt];
+        _stateVariables = new double[stateCt];
         if (!_useRawJNI()) {
             final int fmiFlag = ((Integer) _fmiGetContinuousStatesFunction
                     .invoke(Integer.class, new Object[] { _fmiComponent,
@@ -1635,22 +1617,22 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         else if (token instanceof SmoothToken
                 && (((SmoothToken) token).derivativeValues() == null)) {
             final double inputDoubleValue = ((SmoothToken) token).doubleValue();
-            if (inputDoubleValue != input.lastDoubleInput) {
+            if (inputDoubleValue != input.lastInputPortValue) {
                 // Update the model.
                 _updateInputModel(input, currentTime, token, curIdx);
                 // Save the last double seen at this port
-                _inputs.get(curIdx).lastDoubleInput = inputDoubleValue;
+                _inputs.get(curIdx).lastInputPortValue = inputDoubleValue;
                 return true;
             }
         }
         // Handle cases where we have a double token.
         else if (token instanceof DoubleToken) {
             final double inputDoubleValue = ((DoubleToken) token).doubleValue();
-            if (inputDoubleValue != input.lastDoubleInput) {
+            if (inputDoubleValue != input.lastInputPortValue) {
                 // Update the model.
                 _updateInputModel(input, currentTime, token, curIdx);
                 // Save the last double seen at this port.
-                _inputs.get(curIdx).lastDoubleInput = inputDoubleValue;
+                _inputs.get(curIdx).lastInputPortValue = inputDoubleValue;
                 return true;
             }
         } else if (!(token instanceof SmoothToken)
@@ -1818,6 +1800,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         final int ivCt = _qssSolver.getInputVariableCount();
         if (ivCt > 0) {
             _inputVariableModels = new ModelPolynomial[ivCt];
+            _inputVariableValues = new double[ivCt];
         }
 
         // Create input variable models.
@@ -1872,7 +1855,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 }
             }
             // Save the last double token seen at this port.
-            _inputs.get(ii).lastDoubleInput = initialValue;
+            _inputs.get(ii).lastInputPortValue = initialValue;
 
             // Get the model.
             // We only initialize the first coefficient
@@ -1932,7 +1915,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 continue;
             }
             FMIScalarVariable scalarVariable = output.scalarVariable;
-            if (scalarVariable.type instanceof FMIRealType) {
+            if (!(scalarVariable.type instanceof FMIRealType)) {
+            	new Exception(
+                        "Warning: The output variable "
+                                + scalarVariable.name
+                                + " is of type "
+                                + scalarVariable.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
+            	continue;    	
+            }   	
+            else {
                 final double[] oo = new double[1];
                 if (!_useRawJNI()) {
                     double result = scalarVariable.getDouble(_fmiComponent);
@@ -1943,15 +1936,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 }
                 // Send the initial output values to the port.
                 _sendModelToPort(oo, port, currentTime, ii, false);
-
-            } else {
-                new Exception(
-                        "Warning: The output variable "
-                                + scalarVariable.name
-                                + " is of type "
-                                + scalarVariable.type
-                                + " .But only variables from type FMIRealType are updated.")
-                        .printStackTrace();
             }
         }
     }
@@ -2029,17 +2013,20 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	        }*/
 	    }
 	    // Handle outputs which are not states.
-	    else {     
-	        if (_firstRound) {
+	    else {   
+	    	if (_firstRound || Math.abs(val[0] - _outputs.get(index).lastOutputPortValue) > _threshold) {
+	    		_sendModel(val, prt, time, isState);
+	    		_outputs.get(index).lastOutputPortValue = val[0];
+	    	}	    	
+            /*	        
+              if (_firstRound) {
 	        	_sendModel(val, prt, time, isState);
-	            _outputs.get(index).lastDoubleOutput = val[0];
-	            _outputs.get(index).quantum = Math.abs(_outputQuantum 
-	            		* _outputs.get(index).lastDoubleOutput);
+	            _outputs.get(index).lastOutputPortValue = val[0];
+	            _outputs.get(index).quantum = Math.abs(_threshold 
+	            		* _outputs.get(index).lastOutputPortValue);
 	        } else {
-	        	double lastDblOut = _outputs.get(index).lastDoubleOutput;
-	            if (Math.abs(val[0] - lastDblOut) <= Math.abs(_outputs.get(index).quantum)) {
-	                return;
-	            } else {
+	        	double lastDblOut = _outputs.get(index).lastOutputPortValue;
+	            if (Math.abs(val[0] - lastDblOut) > Math.abs(_outputs.get(index).quantum)) {
 	                // Check if any of output dependents has changed.
 	                // If not then do not commit any changes. This is particularly
 	                // important for outputs which are function of states.
@@ -2053,13 +2040,91 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 	                //if (_cancelSendModelToPort(index))
 	                //    return;
 	                _sendModel(val, prt, time, isState);
-	                _outputs.get(index).lastDoubleOutput = val[0];
-	                _outputs.get(index).quantum = Math.abs(_outputQuantum 
-	                		* _outputs.get(index).lastDoubleOutput);
+	                _outputs.get(index).lastOutputPortValue = val[0];
+	                _outputs.get(index).quantum = Math.abs(_threshold 
+	                		* _outputs.get(index).lastOutputPortValue);
 	            }
 	        }
+	        */
 	    }
 	    
+	}
+	
+	/** Set the continuous states at the current time.
+     *  @param timeValue The current time.
+     *  @exception IllegalActionException If the continuous states cannot be set.
+     */
+    private void _setContinuousStates(double timeValue)
+            throws IllegalActionException {
+        // It is not possible to set only the states which have changed.
+        // The FMI enforces to act on the whole state vector.
+        if (!_useRawJNI()) {
+            _fmiSetContinuousStates(_stateVariables);
+        } else {
+            _fmiSetContinuousStatesJNI(_stateVariables, timeValue);
+        }
+    }
+  	
+    /** Set the FMU inputs at current time.
+     *  @param currentTime The current model time.
+     *  @param inpuVariables The input variable values
+     *  @param evaluate A flag to re-evaluate the input at current time.
+     *  @exception IllegalActionException If the specified token cannot be converted
+     *   to a double.
+     */
+    private void _setFMUInputsAtCurrentTime(Time currentTime, double [] inputVariables, boolean evaluate)
+            throws IllegalActionException {
+        // Convert to a DoubleToken. If token is a SmoothToken or DoubleToken,
+        // then the convert method does nothing and just returns the token.
+        // Otherwise, it attempts to convert it to a DoubleToken, and throws
+        // an exception if such conversion is not possible.
+        int curIdx = -1;
+        double timeValue = currentTime.getDoubleValue();
+        for (Input input : _inputs) {
+            curIdx++;
+            // Note: In higher order QSS, higher order derivatives are approximated.
+            // This happens by evaluating the FMU at two time instants.
+            // The consequence of this approach is that inputs of the FMU are computed
+            // at a time that might be different from the time when the FMUs should
+            // produce outputs. To ensure that inputs of the FMUs are in sync with outputs
+            // we use this function to evaluate the inputs at the time when outputs are produced.
+            // This happens when thi function is called with evalaute set to true.
+            final FMIScalarVariable scalar = input.scalarVariable;
+            if (!(scalar.type instanceof FMIRealType)) {
+                new Exception(
+                        "Warning: The input variable "
+                                + scalar.name
+                                + " is of type "
+                                + scalar.type
+                                + " .But only variables from type FMIRealType are updated.")
+                        .printStackTrace();
+                continue;
+            }
+			if (evaluate) {
+				ModelPolynomial ivMdl = _qssSolver
+						.getInputVariableModel(curIdx);
+				// Check if the input is a smooth token. This can be done by
+				// checking whether whether higher order coefficients are zero.
+				int sum = 0;
+				for (int i = 1; i < ivMdl.coeffs.length; i++) {
+					sum += ivMdl.coeffs[i];
+				}
+
+				// Reevaluate inputs which are smooth token.
+				if (sum != 0) {
+					// Reevaluate the input model at the current time.
+					double smoothTokenInputVariable = _qssSolver.getInputVariableModel(
+							curIdx).evaluate(currentTime);
+					// Set the inputs of the FMUs which are smooth token.
+					_setRealInputs(timeValue, scalar, smoothTokenInputVariable,
+							_inputValueReferences[curIdx], curIdx);
+				}
+			} else {
+				// Set the inputs of the FMUs.
+				_setRealInputs(timeValue, scalar, inputVariables[curIdx],
+						_inputValueReferences[curIdx], curIdx);
+			}
+		}
 	}
 
 	/** Populate the specified model with data from the specified token.
@@ -2100,6 +2165,32 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
         }
     }
+	/**
+	 * Set the FMU inputs at current time.
+	 * 
+	 * @param timeValue The current time in double.
+	 * @param scalar The scalar variable.
+	 * @param value The scalar variable value.
+	 * @param valueReference The scalar variable value reference.
+	 * @param curIdx The scalar input index.
+	 * @exception IllegalActionException If the specified token cannot be converted to a double.
+	 */
+	private void _setRealInputs(double timeValue, FMIScalarVariable scalar,
+			double value, long valueReference, int curIdx)
+			throws IllegalActionException {
+		if (_firstRound
+				|| Math.abs((_inputs.get(curIdx).lastInputModelValue - value)) > _threshold) {
+			if (!_useRawJNI()) {
+				scalar.setDouble(_fmiComponent, value);
+			} else {
+				final double uu[] = { value };
+				final long uuRef[] = { valueReference };
+				_fmiSetRealJNI(uu, uuRef, timeValue);
+			}
+			_inputs.get(curIdx).lastInputModelValue = value;
+
+		}
+	}
 
     /**
      * Trigger quantization-events if necessary.
@@ -2114,7 +2205,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Initialize.
         final int stateCt = _qssSolver.getStateCount();
-        List<Boolean> needQuantizationEvents = new LinkedList<Boolean>();
+        boolean needQuantizationEvents = false;
 
         if (_debugging) {
             _debugToStdOut(String.format(
@@ -2146,12 +2237,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // TODO: Convert this to export models, not just values.
             final TypedIOPort outPort = _fmiModelDescription.continuousStates
                     .get(qIdx).port;
-
-            // Record the changes in this variable.
-            if (qIdx > -1) {
-                // Record the changes in the continuous state.
-                needQuantizationEvents.add(true);
-            }
+    
+            // Signalize a quantization event.
+            needQuantizationEvents = true;
+            // Only update the variables which have changed
+            _stateVariables[qIdx] = _qssSolver.getStateModel(qIdx).coeffs[0];
 
             // Send model to the port
             if (outPort.getWidth() > 0){
@@ -2166,29 +2256,25 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                                 .identityHashCode(this), qIdx, _qssSolver
                                 .getStateModel(qIdx).toString()));
             }
-
         }
 
         // Check if any state variable had a quantization event. If true
         // then update the continuous states in the FMU before updating the outputs.
         // This is needed particularly if an output depends on a state.
-        final double[] stateVariables = new double[stateCt];
         final double timeValue = currentTime.getDoubleValue();
-        if (_firstRound || needQuantizationEvents.contains(true)) {
-            // In the first round we assume that all states have changed.
+        if (_firstRound || needQuantizationEvents) {
             for (int i = 0; i < stateCt; i++) {
-                stateVariables[i] = _qssSolver.getStateModel(i).coeffs[0];
+                _stateVariables[i] = _qssSolver.evaluateStateModelContinuous(i, currentTime);
             }
-            // Set the continuous states.
-            // It is not possible to set only the states which have changed.
-            // The FMI enforces to act on the whole state vector.
-            if (!_useRawJNI()) {
-                _fmiSetContinuousStates(stateVariables);
-            } else {
-                _fmiSetContinuousStatesJNI(stateVariables, timeValue);
-            }
+            _setContinuousStates(timeValue);
         }
 
+        // Update the inputs at the current time so the outputs get the correct values
+        // This is particularly important if an output depends on an input.
+        
+        // Update the FMUs inputs if needed.
+        _setFMUInputsAtCurrentTime (currentTime, null, true);
+        
         // A quantization-event implies other FMU outputs change.
         // Produce outputs to all outputs that do not depend on the states.
         _produceOutputs(currentTime);
@@ -2234,7 +2320,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (input.port.hasNewToken(0)) {
                 // Here, have a new value on the input port.
                 final Token token = input.port.get(0);
-                if (!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
+                _updateInputModel(input, currentTime, token, curIdx);
+                //if (!_handleInput(input, currentTime, token, curIdx) && !_firstRound) continue;
                 // Specify input which has changed.
                 // final int modVarIdx = _modelVariableIndexesOfInputsAndContinuousStates.get(input.scalarVariable.name);
                 // _updateModelVariableAttribute (modVarIdx, true);
@@ -2336,6 +2423,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** Models for communicating with the integrator. */
     private ModelPolynomial[] _inputVariableModels;
+    
+    /** The new updated states. */
+    private double[] _inputVariableValues;
 
     /** Vector of input value references. */
     private long[] _inputValueReferences;
@@ -2366,6 +2456,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** The new states computed in fire, to be committed in postfire. */
     private double[] _states;
+    
+    /** The new updated states. */
+    private double[] _stateVariables;
 
     /** Vector of state value references. */
     private long[] _stateValueReferences;

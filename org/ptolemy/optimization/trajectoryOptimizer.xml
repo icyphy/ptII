@@ -168,27 +168,27 @@
                 </property>
                 <vertex name="vertex1" value="{75.0, 75.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Constraints.x&quot;,x=250.0,y=75.0}, tail={id=&quot;relation9.vertex1&quot;,x=75.0,y=75.0}, points={} },{ head={id=&quot;x._location&quot;,x=-40.0,y=70.0}, tail={id=&quot;relation9.vertex1&quot;,x=75.0,y=75.0}, points={} },{ head={id=&quot;AddSubtract.plus&quot;,x=240.0,y=145.0,index=2}, tail={id=&quot;relation9.vertex1&quot;,x=75.0,y=75.0}, points={75.0,130.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Constraints.x&quot;,x=250.0,y=75.0}, tail={id=&quot;relation9.vertex1&quot;,x=75.0,y=75.0}, points={} },{ head={id=&quot;x._location&quot;,x=-40.0,y=70.0}, tail={id=&quot;relation9.vertex1&quot;,x=75.0,y=75.0}, points={} },{ head={id=&quot;AddSubtract.plus&quot;,x=240.0,y=145.0,index=2}, tail={id=&quot;relation9.vertex1&quot;,x=75.0,y=75.0}, points={75.0,130.0} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;g(x)._location&quot;,x=455.0,y=70.0}, tail={id=&quot;Constraints.output&quot;,x=250.0,y=75.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;g(x)._location&quot;,x=455.0,y=70.0}, tail={id=&quot;Constraints.output&quot;,x=250.0,y=75.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;intruderPosition._location&quot;,x=220.0,y=250.0}, tail={id=&quot;CostFunction.intruderPosition&quot;,x=675.0,y=240.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;intruderPosition._location&quot;,x=220.0,y=250.0}, tail={id=&quot;CostFunction.intruderPosition&quot;,x=675.0,y=240.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=240.0,y=145.0}, tail={id=&quot;CostFunction.robotPosition&quot;,x=675.0,y=240.0}, points={425.0,145.0,425.0,230.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=240.0,y=145.0}, tail={id=&quot;CostFunction.robotPosition&quot;,x=675.0,y=240.0}, points={425.0,145.0,425.0,230.0} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;f(x)._location&quot;,x=915.0,y=235.0}, tail={id=&quot;CostFunction.output&quot;,x=675.0,y=240.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;f(x)._location&quot;,x=915.0,y=235.0}, tail={id=&quot;CostFunction.output&quot;,x=675.0,y=240.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;robotPosition._location&quot;,x=5.0,y=135.0}, tail={id=&quot;AddSubtract.plus&quot;,x=240.0,y=145.0,index=2}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;robotPosition._location&quot;,x=5.0,y=135.0}, tail={id=&quot;AddSubtract.plus&quot;,x=240.0,y=145.0,index=2}, points={} } }">
                 </property>
             </relation>
             <link port="f(x)" relation="relation2"/>

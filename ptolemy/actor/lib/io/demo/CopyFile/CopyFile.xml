@@ -55,7 +55,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;LineReader.output&quot;,x=105.0,y=160.0}, tail={id=&quot;LineWriter.input&quot;,x=220.0,y=160.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;LineReader.output&quot;,x=105.0,y=160.0}, tail={id=&quot;LineWriter.input&quot;,x=220.0,y=160.0}, points={} } }">
         </property>
     </relation>
     <link port="LineReader.output" relation="relation"/>

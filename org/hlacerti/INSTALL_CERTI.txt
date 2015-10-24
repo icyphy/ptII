@@ -1,6 +1,51 @@
 -- Author: Gilles Lasnier (gilles.lasnier@isae.fr)
 -- @version: $Id$
 
+Install certi (an open source RTI following the hla standard) latest version.  As of 10/17/15, that was version 3.5.1.
+Download the gzipped tar file from:
+http://download.savannah.gnu.org/releases/certi/
+
+Here a receipe for installing certi:
+   mkdir $HOME/pthla
+   cd $HOME/pthla
+   tar xvfz CERTI-3.5.1-Source.tar.gz # (or double click to expand)
+   mv CERTI-3.5.1-Source certi # (or create a symbolic link: ln -s CERTI-3.5.1-Source certi)
+   mkdir $HOME/pthla/certi-tools
+   cd $HOME/pthla/certi
+   mkdir $HOME/pthla/certi/build-certi’
+   cd $HOME/pthla/certi/build-certi
+   cmake -DCMAKE_INSTALL_PREFIX=$HOME/pthla/certi-tools  ../
+   make
+   make install
+
+CERTI has been compiled and installed in the ’$HOME/pthla/certi-tools’ folder. CERTI provides a script to set the environment (global variables, binaries, etc) to allow the correct launch of RTIG process, RTIA process and federates. To set the CERTI environment properly in a terminal run the command:
+
+Put the following line in your ~/.bash_profile file:
+
+   source $HOME/pthla/certi-tools/share/scripts/myCERTI_env.sh
+
+To test the installation:
+
+1. open 3 terminals (make sure you open new terminals or source ~/.bash_profile in already open terminals)
+2. go to the first terminal and execute the command "rtig"
+3. go to second terminal and call a billard federate "1" (-n name)
+      billard -n1 -fTest -FTest.fed -t10
+   DO NOT HIT ENTER YET.
+4. go to the third terminal and call a billard federate "2" (-n name)
+      billard -n2 -fTest -FTest.fed -t10
+   DO NOT HIT ENTER YET.
+5. go back to second terminal (of step 3) and press "ENTER"
+
+The billard demo that has been run is in $HOME/pthla/certi/test/Billard/
+
+
+To run the Ptolemy demos:
+
+cd $PTII/org/hlacerti/demo/Billard
+
+
+################################### FIXME: Old instructions below
+
 Installation and deployment of CERTI
 
 Requirements: we assume that you have a

@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="JazzImprovisation" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 50, 1365, 850}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={75, 50, 1359, 856}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1131, 740]">
     </property>
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-5150.0, -2010.0}">
         </property>
     </property>
-    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.LayoutConfiguration">
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Include decorations"/>
         </property>
@@ -653,7 +653,7 @@ Then delete this annotation.</text>
             </property>
         </entity>
         <relation name="relation28" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SetVariable6.input&quot;,x=-4065.0,y=-2140.0}, tail={id=&quot;NoteParser.bars&quot;,x=-4220.0,y=-2215.0}, points={-4220.0,-2140.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SetVariable6.input&quot;,x=-4065.0,y=-2140.0}, tail={id=&quot;NoteParser.bars&quot;,x=-4220.0,y=-2215.0}, points={-4220.0,-2140.0} } }">
             </property>
         </relation>
         <relation name="relation33" class="ptolemy.actor.TypedIORelation">
@@ -661,19 +661,19 @@ Then delete this annotation.</text>
             </property>
             <vertex name="vertex1" value="{-4835.0, -2070.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader2.trigger&quot;,x=-4755.0,y=-2195.0}, tail={id=&quot;relation33.vertex1&quot;,x=-4835.0,y=-2070.0}, points={-4835.0,-2205.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=-5005.0,y=-2070.0}, tail={id=&quot;relation33.vertex1&quot;,x=-4835.0,y=-2070.0}, points={} },{ head={id=&quot;CSVReader.trigger&quot;,x=-4755.0,y=-2060.0}, tail={id=&quot;relation33.vertex1&quot;,x=-4835.0,y=-2070.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CSVReader2.trigger&quot;,x=-4755.0,y=-2195.0}, tail={id=&quot;relation33.vertex1&quot;,x=-4835.0,y=-2070.0}, points={-4835.0,-2205.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=-5005.0,y=-2070.0}, tail={id=&quot;relation33.vertex1&quot;,x=-4835.0,y=-2070.0}, points={} },{ head={id=&quot;CSVReader.trigger&quot;,x=-4755.0,y=-2060.0}, tail={id=&quot;relation33.vertex1&quot;,x=-4835.0,y=-2070.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader2.output&quot;,x=-4755.0,y=-2195.0}, tail={id=&quot;RecordDisassembler2.input&quot;,x=-4655.0,y=-2325.0}, points={-4675.0,-2205.0,-4675.0,-2305.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CSVReader2.output&quot;,x=-4755.0,y=-2195.0}, tail={id=&quot;RecordDisassembler2.input&quot;,x=-4655.0,y=-2325.0}, points={-4675.0,-2205.0,-4675.0,-2305.0} } }">
             </property>
         </relation>
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ChordParser.chordName&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;RecordDisassembler2.chordName&quot;,x=-4655.0,y=-2325.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ChordParser.chordName&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;RecordDisassembler2.chordName&quot;,x=-4655.0,y=-2325.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ChordParser.chordDuration&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;RecordDisassembler2.chordDuration&quot;,x=-4655.0,y=-2325.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ChordParser.chordDuration&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;RecordDisassembler2.chordDuration&quot;,x=-4655.0,y=-2325.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
@@ -681,39 +681,39 @@ Then delete this annotation.</text>
             </property>
             <vertex name="vertex1" value="{-5160.0, -1905.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteParser.resetFO&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={-4325.0,-2205.0,-4325.0,-1905.0} },{ head={id=&quot;Const.trigger&quot;,x=-5095.0,y=-2125.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={-5160.0,-2125.0} },{ head={id=&quot;InitialActions.output&quot;,x=-5220.0,y=-1905.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={} },{ head={id=&quot;TimeDelay2.input&quot;,x=-5110.0,y=-1980.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={-5160.0,-1980.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteParser.resetFO&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={-4325.0,-2205.0,-4325.0,-1905.0} },{ head={id=&quot;Const.trigger&quot;,x=-5095.0,y=-2125.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={-5160.0,-2125.0} },{ head={id=&quot;InitialActions.output&quot;,x=-5220.0,y=-1905.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={} },{ head={id=&quot;TimeDelay2.input&quot;,x=-5110.0,y=-1980.0}, tail={id=&quot;relation18.vertex1&quot;,x=-5160.0,y=-1905.0}, points={-5160.0,-1980.0} } }">
             </property>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.start&quot;,x=-5005.0,y=-2070.0}, tail={id=&quot;TimeDelay2.output&quot;,x=-5110.0,y=-1980.0}, points={-5015.0,-1980.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.start&quot;,x=-5005.0,y=-2070.0}, tail={id=&quot;TimeDelay2.output&quot;,x=-5110.0,y=-1980.0}, points={-5015.0,-1980.0} } }">
             </property>
         </relation>
         <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteParser.timestamp&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;RecordDisassembler.timestamp&quot;,x=-4460.0,y=-2245.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteParser.timestamp&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;RecordDisassembler.timestamp&quot;,x=-4460.0,y=-2245.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ChordParser.endChord&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;Const3.output&quot;,x=-4585.0,y=-2185.0}, points={-4520.0,-2275.0,-4520.0,-2185.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ChordParser.endChord&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;Const3.output&quot;,x=-4585.0,y=-2185.0}, points={-4520.0,-2275.0,-4520.0,-2185.0} } }">
             </property>
         </relation>
         <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader2.endOfFile&quot;,x=-4755.0,y=-2195.0}, tail={id=&quot;Const3.trigger&quot;,x=-4585.0,y=-2185.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CSVReader2.endOfFile&quot;,x=-4755.0,y=-2195.0}, tail={id=&quot;Const3.trigger&quot;,x=-4585.0,y=-2185.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteParser.endTraining&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;Const4.output&quot;,x=-4405.0,y=-2050.0}, points={-4310.0,-2195.0,-4310.0,-2050.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteParser.endTraining&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;Const4.output&quot;,x=-4405.0,y=-2050.0}, points={-4310.0,-2195.0,-4310.0,-2050.0} } }">
             </property>
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CSVReader.endOfFile&quot;,x=-4755.0,y=-2060.0}, tail={id=&quot;Const4.trigger&quot;,x=-4405.0,y=-2050.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CSVReader.endOfFile&quot;,x=-4755.0,y=-2060.0}, tail={id=&quot;Const4.trigger&quot;,x=-4405.0,y=-2050.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation25_7" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;notes._location&quot;,x=-4080.0,y=-2225.0}, tail={id=&quot;NoteParser.notes&quot;,x=-4220.0,y=-2215.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;notes._location&quot;,x=-4080.0,y=-2225.0}, tail={id=&quot;NoteParser.notes&quot;,x=-4220.0,y=-2215.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation34" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;chords._location&quot;,x=-4290.0,y=-2295.0}, tail={id=&quot;ChordParser.chords&quot;,x=-4400.0,y=-2295.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;chords._location&quot;,x=-4290.0,y=-2295.0}, tail={id=&quot;ChordParser.chords&quot;,x=-4400.0,y=-2295.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -721,7 +721,7 @@ Then delete this annotation.</text>
             </property>
             <vertex name="vertex1" value="{-4935.0, -2125.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SetVariable2.input&quot;,x=-4885.0,y=-2125.0}, tail={id=&quot;relation.vertex1&quot;,x=-4935.0,y=-2125.0}, points={} },{ head={id=&quot;start._location&quot;,x=-4910.0,y=-2185.0}, tail={id=&quot;relation.vertex1&quot;,x=-4935.0,y=-2125.0}, points={-4935.0,-2185.0} },{ head={id=&quot;Const.output&quot;,x=-5095.0,y=-2125.0}, tail={id=&quot;relation.vertex1&quot;,x=-4935.0,y=-2125.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SetVariable2.input&quot;,x=-4885.0,y=-2125.0}, tail={id=&quot;relation.vertex1&quot;,x=-4935.0,y=-2125.0}, points={} },{ head={id=&quot;start._location&quot;,x=-4910.0,y=-2185.0}, tail={id=&quot;relation.vertex1&quot;,x=-4935.0,y=-2125.0}, points={-4935.0,-2185.0} },{ head={id=&quot;Const.output&quot;,x=-5095.0,y=-2125.0}, tail={id=&quot;relation.vertex1&quot;,x=-4935.0,y=-2125.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -729,19 +729,19 @@ Then delete this annotation.</text>
             </property>
             <vertex name="vertex1" value="{-4505.0, -2135.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;training._location&quot;,x=-4480.0,y=-2135.0}, tail={id=&quot;relation2.vertex1&quot;,x=-4505.0,y=-2135.0}, points={} },{ head={id=&quot;RecordDisassembler.input&quot;,x=-4460.0,y=-2245.0}, tail={id=&quot;relation2.vertex1&quot;,x=-4505.0,y=-2135.0}, points={-4505.0,-2225.0} },{ head={id=&quot;CSVReader.output&quot;,x=-4755.0,y=-2060.0}, tail={id=&quot;relation2.vertex1&quot;,x=-4505.0,y=-2135.0}, points={-4675.0,-2070.0,-4675.0,-2135.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;training._location&quot;,x=-4480.0,y=-2135.0}, tail={id=&quot;relation2.vertex1&quot;,x=-4505.0,y=-2135.0}, points={} },{ head={id=&quot;RecordDisassembler.input&quot;,x=-4460.0,y=-2245.0}, tail={id=&quot;relation2.vertex1&quot;,x=-4505.0,y=-2135.0}, points={-4505.0,-2225.0} },{ head={id=&quot;CSVReader.output&quot;,x=-4755.0,y=-2060.0}, tail={id=&quot;relation2.vertex1&quot;,x=-4505.0,y=-2135.0}, points={-4675.0,-2070.0,-4675.0,-2135.0} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteParser.dur&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;RecordDisassembler.dur&quot;,x=-4460.0,y=-2245.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteParser.dur&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;RecordDisassembler.dur&quot;,x=-4460.0,y=-2245.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteParser.freq&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;RecordDisassembler.freq&quot;,x=-4460.0,y=-2245.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteParser.freq&quot;,x=-4220.0,y=-2215.0}, tail={id=&quot;RecordDisassembler.freq&quot;,x=-4460.0,y=-2245.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ChordParser.chordIndex&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;RecordDisassembler2.chordIndex&quot;,x=-4655.0,y=-2325.0}, points={-4520.0,-2285.0,-4520.0,-2295.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ChordParser.chordIndex&quot;,x=-4400.0,y=-2295.0}, tail={id=&quot;RecordDisassembler2.chordIndex&quot;,x=-4655.0,y=-2325.0}, points={-4520.0,-2285.0,-4520.0,-2295.0} } }">
             </property>
         </relation>
         <link port="notes" relation="relation25_7"/>
@@ -1395,15 +1395,15 @@ Then delete this annotation.</text>
                 </property>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;RecordDisassembler2.duration&quot;,x=-4885.0,y=-1205.0}, tail={id=&quot;AbsoluteValue.input&quot;,x=-4710.0,y=-1175.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;RecordDisassembler2.duration&quot;,x=-4885.0,y=-1205.0}, tail={id=&quot;AbsoluteValue.input&quot;,x=-4710.0,y=-1175.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AbsoluteValue.output&quot;,x=-4710.0,y=-1175.0}, tail={id=&quot;Accumulator.input&quot;,x=-4610.0,y=-1175.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AbsoluteValue.output&quot;,x=-4710.0,y=-1175.0}, tail={id=&quot;Accumulator.input&quot;,x=-4610.0,y=-1175.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=-4920.0,y=-1185.0}, tail={id=&quot;RecordDisassembler2.input&quot;,x=-4885.0,y=-1205.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port._location&quot;,x=-4920.0,y=-1185.0}, tail={id=&quot;RecordDisassembler2.input&quot;,x=-4885.0,y=-1205.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -1456,31 +1456,31 @@ Then delete this annotation.</text>
             </property>
         </entity>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple2.x&quot;,x=-4660.0,y=-1260.0}, points={-4565.0,-1190.0,-4565.0,-1270.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple2.x&quot;,x=-4660.0,y=-1260.0}, points={-4565.0,-1190.0,-4565.0,-1270.0} } }">
             </property>
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple2.y&quot;,x=-4660.0,y=-1260.0}, points={-4595.0,-1170.0,-4595.0,-1250.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple2.y&quot;,x=-4660.0,y=-1260.0}, points={-4595.0,-1170.0,-4595.0,-1250.0} } }">
             </property>
         </relation>
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple1.x&quot;,x=-4780.0,y=-1175.0}, points={-4580.0,-1185.0,-4580.0,-1225.0,-4715.0,-1225.0,-4715.0,-1185.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputX&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToTuple1.x&quot;,x=-4780.0,y=-1175.0}, points={-4580.0,-1185.0,-4580.0,-1225.0,-4715.0,-1225.0,-4715.0,-1185.0} } }">
             </property>
         </relation>
         <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToMidiKey.midiKey&quot;,x=-4665.0,y=-1165.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYPlotter.inputY&quot;,x=-4520.0,y=-1175.0,index=2}, tail={id=&quot;NoteToMidiKey.midiKey&quot;,x=-4665.0,y=-1165.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteToMidiKey.letterNote&quot;,x=-4665.0,y=-1165.0}, tail={id=&quot;NoteToTuple1.y&quot;,x=-4780.0,y=-1175.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteToMidiKey.letterNote&quot;,x=-4665.0,y=-1165.0}, tail={id=&quot;NoteToTuple1.y&quot;,x=-4780.0,y=-1175.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteToTuple2.port&quot;,x=-4660.0,y=-1260.0}, tail={id=&quot;original._location&quot;,x=-4750.0,y=-1260.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteToTuple2.port&quot;,x=-4660.0,y=-1260.0}, tail={id=&quot;original._location&quot;,x=-4750.0,y=-1260.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation7_6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;NoteToTuple1.port&quot;,x=-4780.0,y=-1175.0}, tail={id=&quot;impro._location&quot;,x=-4850.0,y=-1175.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;NoteToTuple1.port&quot;,x=-4780.0,y=-1175.0}, tail={id=&quot;impro._location&quot;,x=-4850.0,y=-1175.0}, points={} } }">
             </property>
         </relation>
         <link port="original" relation="relation2"/>

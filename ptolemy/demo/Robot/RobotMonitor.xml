@@ -221,27 +221,27 @@
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=230.0,y=185.0}, tail={id=&quot;ArrayToElements.input&quot;,x=335.0,y=185.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=230.0,y=185.0}, tail={id=&quot;ArrayToElements.input&quot;,x=335.0,y=185.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;x._location&quot;,x=450.0,y=130.0}, tail={id=&quot;ArrayToElements.output&quot;,x=335.0,y=185.0,index=2}, points={430.0,130.0,430.0,185.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;x._location&quot;,x=450.0,y=130.0}, tail={id=&quot;ArrayToElements.output&quot;,x=335.0,y=185.0,index=2}, points={430.0,130.0,430.0,185.0} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=335.0,y=185.0,index=2}, tail={id=&quot;y._location&quot;,x=450.0,y=190.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=335.0,y=185.0,index=2}, tail={id=&quot;y._location&quot;,x=450.0,y=190.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=230.0,y=185.0}, tail={id=&quot;KeyValueStore.result&quot;,x=135.0,y=195.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=230.0,y=185.0}, tail={id=&quot;KeyValueStore.result&quot;,x=135.0,y=195.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=20.0,y=205.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=135.0,y=195.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=20.0,y=205.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=135.0,y=195.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -359,35 +359,35 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=330.0,y=175.0}, tail={id=&quot;ArrayToElements.input&quot;,x=430.0,y=175.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=330.0,y=175.0}, tail={id=&quot;ArrayToElements.input&quot;,x=430.0,y=175.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=205.0,y=175.0}, tail={id=&quot;JSONToToken.input&quot;,x=330.0,y=175.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=205.0,y=175.0}, tail={id=&quot;JSONToToken.input&quot;,x=330.0,y=175.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;ArrayToElements.output&quot;,x=430.0,y=175.0,index=2}, points={540.0,160.0,540.0,175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;ArrayToElements.output&quot;,x=430.0,y=175.0,index=2}, points={540.0,160.0,540.0,175.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;MultiInstanceComposite.x&quot;,x=180.0,y=100.0}, points={555.0,165.0,555.0,50.0,295.0,50.0,295.0,95.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYScope.inputX&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;MultiInstanceComposite.x&quot;,x=180.0,y=100.0}, points={555.0,165.0,555.0,50.0,295.0,50.0,295.0,95.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;ArrayToElements.output&quot;,x=430.0,y=175.0,index=2}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;ArrayToElements.output&quot;,x=430.0,y=175.0,index=2}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;MultiInstanceComposite.y&quot;,x=180.0,y=100.0}, points={525.0,185.0,525.0,105.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;XYScope.inputY&quot;,x=605.0,y=175.0,index=2}, tail={id=&quot;MultiInstanceComposite.y&quot;,x=180.0,y=100.0}, points={525.0,185.0,525.0,105.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MultiInstanceComposite.error&quot;,x=180.0,y=100.0}, tail={id=&quot;Errors.input&quot;,x=340.0,y=265.0,index=2}, points={295.0,115.0,295.0,260.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MultiInstanceComposite.error&quot;,x=180.0,y=100.0}, tail={id=&quot;Errors.input&quot;,x=340.0,y=265.0,index=2}, points={295.0,115.0,295.0,260.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.error&quot;,x=205.0,y=175.0}, tail={id=&quot;Errors.input&quot;,x=340.0,y=265.0,index=2}, points={205.0,265.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.error&quot;,x=205.0,y=175.0}, tail={id=&quot;Errors.input&quot;,x=340.0,y=265.0,index=2}, points={205.0,265.0} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -395,7 +395,7 @@
         </property>
         <vertex name="vertex1" value="{105.0, 185.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MultiInstanceComposite.trigger&quot;,x=180.0,y=100.0}, tail={id=&quot;relation10.vertex1&quot;,x=105.0,y=185.0}, points={105.0,105.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=25.0,y=185.0}, tail={id=&quot;relation10.vertex1&quot;,x=105.0,y=185.0}, points={} },{ head={id=&quot;KeyValueStore.remove&quot;,x=205.0,y=175.0}, tail={id=&quot;relation10.vertex1&quot;,x=105.0,y=185.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MultiInstanceComposite.trigger&quot;,x=180.0,y=100.0}, tail={id=&quot;relation10.vertex1&quot;,x=105.0,y=185.0}, points={105.0,105.0} },{ head={id=&quot;DiscreteClock.output&quot;,x=25.0,y=185.0}, tail={id=&quot;relation10.vertex1&quot;,x=105.0,y=185.0}, points={} },{ head={id=&quot;KeyValueStore.remove&quot;,x=205.0,y=175.0}, tail={id=&quot;relation10.vertex1&quot;,x=105.0,y=185.0}, points={} } }">
         </property>
     </relation>
     <link port="XYScope.inputX" relation="relation2"/>

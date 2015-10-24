@@ -1,0 +1,1690 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FirstPolicy" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="ATCDirector" class="ptolemy.domains.atc.kernel.policy1.ATCDirector">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -130.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1386, 788}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1158, 672]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6211852543163789">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{641.0399639423082, 365.2497088358953}">
+    </property>
+    <property name="isStormy" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -155.0}">
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <entity name="Airport" class="ptolemy.domains.atc.lib.Airport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="31">
+        </property>
+        <property name="connectedTracks" class="ptolemy.data.expr.Parameter" value="{1,7,13,19,25}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="CSVReader" class="ptolemy.actor.lib.io.CSVReader">
+        <property name="fileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$CLASSPATH/ptolemy/domains/atc/demo/FirstPolicy/Airplanes.txt">
+        </property>
+        <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="MeasuringParameters" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1505.0, 780.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 744}, maximized=true}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 628]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{574.0, 480.015625}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 360.0]">
+            </property>
+        </port>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 460.0]">
+            </property>
+            <port name="aircraftId" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="dipartureTimeFromAirport" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+            <port name="arrivalTimeToAirport" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 225.0]">
+            </property>
+        </entity>
+        <entity name="delayInAirportParameters" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 390.0]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 121, 928, 616}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.0, 238.125}">
+            </property>
+            <port name="currentTime" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 250.0]">
+                </property>
+            </port>
+            <port name="aircraftId" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 30.0]">
+                </property>
+            </port>
+            <port name="departureFromAirport" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 145.0]">
+                </property>
+            </port>
+            <port name="arrivalToAirport" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
+                </property>
+            </port>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 170.0]">
+                </property>
+            </entity>
+            <entity name="RA" class="ptolemy.actor.lib.RecordAssembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 90.0]">
+                </property>
+                <port name="aircraftId" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="arrivalToAirport" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="departureFromAirport" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="delayInAirport" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="Average" class="ptolemy.actor.lib.Average">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 350.0]">
+                </property>
+            </entity>
+            <entity name="RA2" class="ptolemy.actor.lib.RecordAssembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{452.0, 237.0}">
+                </property>
+                <port name="currentTime" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="averageOfDelayInAirport" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="WriteToDelayInAirport" class="ptolemy.actor.lib.io.CSVWriter">
+                <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="delayInAirport.txt">
+                </property>
+                <property name="append" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="alwaysFlush" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 120.0}">
+                </property>
+            </entity>
+            <entity name="WriteToAverageDelayInAirport" class="ptolemy.actor.lib.io.CSVWriter">
+                <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="averageDelayInAirport.txt">
+                </property>
+                <property name="append" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="alwaysFlush" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 265.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[320.0, 170.0]">
+                </vertex>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[130.0, 160.0]">
+                </vertex>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[135.0, 190.0]">
+                </vertex>
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="currentTime" relation="relation6"/>
+            <link port="aircraftId" relation="relation7"/>
+            <link port="departureFromAirport" relation="relation"/>
+            <link port="arrivalToAirport" relation="relation4"/>
+            <link port="AddSubtract.plus" relation="relation"/>
+            <link port="AddSubtract.minus" relation="relation4"/>
+            <link port="AddSubtract.output" relation="relation2"/>
+            <link port="RA.output" relation="relation5"/>
+            <link port="RA.aircraftId" relation="relation7"/>
+            <link port="RA.arrivalToAirport" relation="relation4"/>
+            <link port="RA.departureFromAirport" relation="relation"/>
+            <link port="RA.delayInAirport" relation="relation2"/>
+            <link port="Average.input" relation="relation2"/>
+            <link port="Average.output" relation="relation3"/>
+            <link port="RA2.output" relation="relation8"/>
+            <link port="RA2.currentTime" relation="relation6"/>
+            <link port="RA2.averageOfDelayInAirport" relation="relation3"/>
+            <link port="WriteToDelayInAirport.input" relation="relation5"/>
+            <link port="WriteToAverageDelayInAirport.input" relation="relation8"/>
+        </entity>
+        <entity name="flightDurationParameters" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 235.0]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 76, 928, 616}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.0, 253.125}">
+            </property>
+            <port name="currentTime" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 145.0]">
+                </property>
+            </port>
+            <port name="aircraftId" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 35.0]">
+                </property>
+            </port>
+            <port name="departureFromAirport" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 100.0]">
+                </property>
+            </port>
+            <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 120.0]">
+                </property>
+            </entity>
+            <entity name="RA" class="ptolemy.actor.lib.RecordAssembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 35.0]">
+                </property>
+                <port name="aircraftId" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="departureFromAirport" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="arrivalToDestination" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="flightDuration" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="Average" class="ptolemy.actor.lib.Average">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 260.0]">
+                </property>
+            </entity>
+            <entity name="RA2" class="ptolemy.actor.lib.RecordAssembler">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 205.0]">
+                </property>
+                <port name="currentTime" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="averageOfFlightDuration" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="WriteToFlightDuration" class="ptolemy.actor.lib.io.CSVWriter">
+                <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="flightDuration.txt">
+                </property>
+                <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="alwaysFlush" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 65.0}">
+                </property>
+            </entity>
+            <entity name="WriteToAverageFlightDuration" class="ptolemy.actor.lib.io.CSVWriter">
+                <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="averageFlightDuration.txt">
+                </property>
+                <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="alwaysFlush" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 235.0]">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[255.0, 120.0]">
+                </vertex>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[65.0, 100.0]">
+                </vertex>
+            </relation>
+            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[85.0, 145.0]">
+                </vertex>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="currentTime" relation="relation7"/>
+            <link port="aircraftId" relation="relation5"/>
+            <link port="departureFromAirport" relation="relation6"/>
+            <link port="AddSubtract.plus" relation="relation7"/>
+            <link port="AddSubtract.minus" relation="relation6"/>
+            <link port="AddSubtract.output" relation="relation2"/>
+            <link port="RA.output" relation="relation"/>
+            <link port="RA.aircraftId" relation="relation5"/>
+            <link port="RA.departureFromAirport" relation="relation6"/>
+            <link port="RA.arrivalToDestination" relation="relation7"/>
+            <link port="RA.flightDuration" relation="relation2"/>
+            <link port="Average.input" relation="relation2"/>
+            <link port="Average.output" relation="relation3"/>
+            <link port="RA2.output" relation="relation4"/>
+            <link port="RA2.currentTime" relation="relation7"/>
+            <link port="RA2.averageOfFlightDuration" relation="relation3"/>
+            <link port="WriteToFlightDuration.input" relation="relation"/>
+            <link port="WriteToAverageFlightDuration.input" relation="relation4"/>
+        </entity>
+        <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 710.0]">
+            </property>
+        </entity>
+        <entity name="Counter" class="ptolemy.actor.lib.Counter">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 590.0]">
+            </property>
+        </entity>
+        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 655.0]">
+            </property>
+            <port name="numOfReachedAirplanes" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="currentTIme" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Throughput" class="ptolemy.actor.lib.io.CSVWriter">
+            <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="Throughput.txt">
+            </property>
+            <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="alwaysFlush" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="separator" class="ptolemy.data.expr.StringParameter" value="tab">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 685.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="100">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 535.0]">
+            </property>
+        </entity>
+        <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
+            <doc>Output the current time.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[536.6329498291016, 569.8670959472656]">
+            </property>
+        </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={563, 296, 239, 175}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[223, 116]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 570.0]">
+            </property>
+        </entity>
+        <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 570.0]">
+            </property>
+        </entity>
+        <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 570.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[145.0, 360.0]">
+            </vertex>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[420.0, 470.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[455.0, 480.0]">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[515.0, 490.0]">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[310.0, 225.0]">
+            </vertex>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[60.0, 360.0]">
+            </vertex>
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[60.0, 535.0]">
+            </vertex>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[320.0, 590.0]">
+            </vertex>
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation6"/>
+        <link port="RecordDisassembler.input" relation="relation"/>
+        <link port="RecordDisassembler.aircraftId" relation="relation2"/>
+        <link port="RecordDisassembler.dipartureTimeFromAirport" relation="relation3"/>
+        <link port="RecordDisassembler.arrivalTimeToAirport" relation="relation4"/>
+        <link port="CurrentTime.output" relation="relation5"/>
+        <link port="CurrentTime.trigger" relation="relation"/>
+        <link port="delayInAirportParameters.currentTime" relation="relation5"/>
+        <link port="delayInAirportParameters.aircraftId" relation="relation2"/>
+        <link port="delayInAirportParameters.departureFromAirport" relation="relation3"/>
+        <link port="delayInAirportParameters.arrivalToAirport" relation="relation4"/>
+        <link port="flightDurationParameters.currentTime" relation="relation5"/>
+        <link port="flightDurationParameters.aircraftId" relation="relation2"/>
+        <link port="flightDurationParameters.departureFromAirport" relation="relation3"/>
+        <link port="CurrentTime2.output" relation="relation8"/>
+        <link port="CurrentTime2.trigger" relation="relation10"/>
+        <link port="Counter.increment" relation="relation10"/>
+        <link port="Counter.output" relation="relation7"/>
+        <link port="RecordAssembler.output" relation="relation9"/>
+        <link port="RecordAssembler.numOfReachedAirplanes" relation="relation7"/>
+        <link port="RecordAssembler.currentTIme" relation="relation8"/>
+        <link port="Throughput.input" relation="relation9"/>
+        <link port="Const.output" relation="relation14"/>
+        <link port="Const.trigger" relation="relation10"/>
+        <link port="CurrentTime3.output" relation="relation13"/>
+        <link port="CurrentTime3.trigger" relation="relation12"/>
+        <link port="Display.input" relation="relation13"/>
+        <link port="TrueGate.input" relation="relation11"/>
+        <link port="TrueGate.output" relation="relation12"/>
+        <link port="Equals.input" relation="relation14"/>
+        <link port="Equals.input" relation="relation7"/>
+        <link port="Equals.output" relation="relation11"/>
+        <link relation1="relation" relation2="relation6"/>
+        <link relation1="relation6" relation2="relation10"/>
+    </entity>
+    <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1420.0, 780.0]">
+        </property>
+    </entity>
+    <entity name="Arrival" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="117.0">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0,1.3255225409,1.5514828083,3.143669637,3.2168567202,5.0299194824,5.6643715782,5.8615222579,6.1100480767,6.3978578378,8.5853688293,9.110258097,11.1441186357,11.4403116094,14.0664186398,14.1704695273,16.8064358027,20.4379383512,23.4514820815,23.9450154903,26.7767495295,26.8052485228,27.8055392137,27.945452584,28.2418248306,29.6477237097,29.6862715711,29.8102120162,29.9631597705,30.9785445645,31.718988027,32.1522171317,32.6565876364,35.0280229329,35.1727255426,35.8280448831,36.8068921259,37.6308955318,37.7674345115,38.1740186541,39.9831671228,40.9147435744,41.6948938549,46.8677844949,47.459776788,50.4204367732,51.1568054474,53.6983926479,53.7699164801,54.042095304,54.2733636178,54.8619553372,56.1273502112,58.548594908,59.4123316267,59.8800289782,60.0668238826,61.8140377405,62.7155483955,63.5226745797,63.831126081,64.0460597882,64.4275509335,67.8316332753,69.853083613,72.6281717777,73.3556198613,73.7820716821,73.853524647,74.1169784904,74.6023572666,75.0710342214,78.2396590252,79.528186638,80.450886114,80.6672249153,83.537355896,85.7017437562,90.0642854947,90.6000065836,90.8134601012,94.3469772458,94.7389512869,96.0279968271,96.2658242641,96.6974832915,98.3909177958,105.801891328,109.9706860777,110.3482042455,111.8163027156,111.8912684386,112.3322473754,112.3633192539,113.8148906322,114.2568399429,115.0864170471,115.107511563,115.9608652174,116.1442587074}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-200.0, 360.0}">
+        </property>
+    </entity>
+    <entity name="trackSelection" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="151.00">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0,0.3610044485,1.1894324648,1.2676577669,2.8371340683,6.0779263935,7.0024899353,7.6281032263,7.9461658087,8.6171359568,8.7412262294,20.0429883261,21.37170248,21.6999622133,21.7718204482,23.5418734029,24.7039242576,28.5759984058,30.6306432611,32.0342632298,33.2550163887,34.3462307771,35.3040163888,36.8150351812,38.0604519313,38.1625269756,38.6193993038,39.397623532,43.0942431563,43.988695346,45.344783034,45.4493787718,47.3157351801,47.4693809719,47.5920298459,47.8497583692,48.5440265547,50.5668672039,51.0267631869,52.2998357798,52.5241679929,53.1531304361,53.5126253117,54.1158853125,56.084484432,56.5579449289,57.1786548169,59.228920399,59.2901902217,60.0368174664,60.5165089767,60.9564975136,64.7230804385,64.831899403,67.7166525068,68.2912993164,68.3961899986,69.2433333794,71.5630209641,71.7161035951,76.1349272759,76.3783583655,76.7634580965,78.7163916505,80.4217673449,82.6316480384,82.7606280445,86.2586520438,88.5831210835,88.8810571754,90.1867795972,90.3853154779,92.6031733862,94.0127651109,94.265589199,96.3401029384,98.8138324778,100.0439168994,100.4800870315,100.5796963272,101.2295269052,101.9124084131,102.1514278751,103.3590343731,104.0930486062,104.7271645349,105.1913103162,105.266965933,106.5634605332,106.9739993167,108.5462236092,108.8647131186,110.3723115055,110.4323722268,112.7854811169,115.5054262546,119.4444017903,122.4427237782,124.0655734922,124.3714348006,124.8862706024,125.6356217322,126.6851515548,127.2918462247,127.8757277811,129.651532679,129.6787037552,130.3740155419,131.0728802482,131.6156181243,131.7523312825,133.7081982651,134.060662607,137.0093827247,137.5849477344,138.6952555466,138.8582045575,139.1763181479,140.5777721035,140.9179429193,141.7201011902,142.0926362609,142.3124043578,143.3401690402,143.4664089246,144.1165044921,144.2918213646,145.2294756957,145.324999721,145.7852085504,149.6238788047,150}&#10;">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,1,1,1,20,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,26,18,1,20,1,1,1,1,10,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,18,1,1,1,1,1,1,1,1,1,12,1,1,1,1,1,26,1,1,1,1,1,1,1,1,17,1,1,1,1,1,1,24,1,1,1,1,17,18,1,1,1,1,1,1,1,13,1,1,1,1,1,1,1,1,1,18,24,12,10,13,1,1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 600.0]">
+        </property>
+    </entity>
+    <entity name="changeValue" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="151.0">
+        </property>
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="Infinity">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0,0.3610044485,1.1894324648,1.2676577669,2.8371340683,6.0779263935,7.0024899353,7.6281032263,7.9461658087,8.6171359568,8.7412262294,20.0429883261,21.37170248,21.6999622133,21.7718204482,23.5418734029,24.7039242576,28.5759984058,30.6306432611,32.0342632298,33.2550163887,34.3462307771,35.3040163888,36.8150351812,38.0604519313,38.1625269756,38.6193993038,39.397623532,43.0942431563,43.988695346,45.344783034,45.4493787718,47.3157351801,47.4693809719,47.5920298459,47.8497583692,48.5440265547,50.5668672039,51.0267631869,52.2998357798,52.5241679929,53.1531304361,53.5126253117,54.1158853125,56.084484432,56.5579449289,57.1786548169,59.228920399,59.2901902217,60.0368174664,60.5165089767,60.9564975136,64.7230804385,64.831899403,67.7166525068,68.2912993164,68.3961899986,69.2433333794,71.5630209641,71.7161035951,76.1349272759,76.3783583655,76.7634580965,78.7163916505,80.4217673449,82.6316480384,82.7606280445,86.2586520438,88.5831210835,88.8810571754,90.1867795972,90.3853154779,92.6031733862,94.0127651109,94.265589199,96.3401029384,98.8138324778,100.0439168994,100.4800870315,100.5796963272,101.2295269052,101.9124084131,102.1514278751,103.3590343731,104.0930486062,104.7271645349,105.1913103162,105.266965933,106.5634605332,106.9739993167,108.5462236092,108.8647131186,110.3723115055,110.4323722268,112.7854811169,115.5054262546,119.4444017903,122.4427237782,124.0655734922,124.3714348006,124.8862706024,125.6356217322,126.6851515548,127.2918462247,127.8757277811,129.651532679,129.6787037552,130.3740155419,131.0728802482,131.6156181243,131.7523312825,133.7081982651,134.060662607,137.0093827247,137.5849477344,138.6952555466,138.8582045575,139.1763181479,140.5777721035,140.9179429193,141.7201011902,142.0926362609,142.3124043578,143.3401690402,143.4664089246,144.1165044921,144.2918213646,145.2294756957,145.324999721,145.7852085504,149.6238788047,150}&#10;">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 695.0]">
+        </property>
+    </entity>
+    <entity name="stormHandling" class="ptolemy.domains.atc.lib.StormHandling">
+        <property name="numberOfTracks" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 610.0]">
+        </property>
+        <port name="selectedTrack" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="selectedValue" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="trackStatus" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="isStormy">
+        </property>
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 610.0]">
+        </property>
+    </entity>
+    <entity name="Track3-6" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track36.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{12,37,24}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(17)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.689671394453, 0.6938689667057, 0.562594823825, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1140.0, 355.0}">
+        </property>
+    </entity>
+    <entity name="Track2-6" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track26.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{6,36,18}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(11)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1095.0, 245.0}">
+        </property>
+    </entity>
+    <entity name="Track1-6" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track16.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{34,35,12}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(5)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1025.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Track4-6" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track46.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="24">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{18,38,30}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(23)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1230.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="Track5-6" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track56.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="30">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{24,-1,41}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(29)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1265.0, 545.0}">
+        </property>
+    </entity>
+    <entity name="Track3-5" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track35.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="17">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{11,18,23}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(16)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[975.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="Track2-5" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track25.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{5,12,17}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(10)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[925.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="Track5-5" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track55.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="29">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{23,30,41}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(28)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1120.0, 545.0}">
+        </property>
+    </entity>
+    <entity name="Track1-5" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track15.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{34,6,11}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(4)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[885.0, 115.0]">
+        </property>
+    </entity>
+    <entity name="Track4-5" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track45.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="23">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{17,24,29}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(22)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1065.0, 450.0}">
+        </property>
+    </entity>
+    <entity name="Track4-3" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track43.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="21">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{15,22,27}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(20)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="Track2-4" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track24.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{4,11,16}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(9)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[775.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="Track3-3" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track33.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="15">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{9,16,21}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(14)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 335.0}">
+        </property>
+    </entity>
+    <entity name="Track5-4" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track54.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="28">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{22,29,40}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(27)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0920954986217, 0.1777310897827, 0.9406648290665, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{980.0, 545.0}">
+        </property>
+    </entity>
+    <entity name="Track4-4" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track44.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="22">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{16,23,28}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(21)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[920.0, 445.0]">
+        </property>
+    </entity>
+    <entity name="Track3-4" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track34.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{10,17,22}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(15)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 345.0]">
+        </property>
+    </entity>
+    <entity name="Track1-4" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track14.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{33,5,10}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(3)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 105.0]">
+        </property>
+    </entity>
+    <entity name="Track2-3" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track23.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{3,10,15}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(8)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 220.0}">
+        </property>
+    </entity>
+    <entity name="Track1-3" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track13.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{33,4,9}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(2)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2244056885521, 0.6970622573325, 0.1394280012651, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 95.0}">
+        </property>
+    </entity>
+    <entity name="Track4-2" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track42.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{14,21,26}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(19)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 435.0]">
+        </property>
+    </entity>
+    <entity name="Track5-3" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track53.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="27">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{21,28,40}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(26)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 545.0}">
+        </property>
+    </entity>
+    <entity name="Track2-2" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track22.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{2,9,14}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(7)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Track3-2" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track32.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{8,15,20}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(13)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Track5-2" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track52.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="26">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{20,27,39}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(25)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3711686931893, 0.5946024228541, 0.1957324711142, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[670.0, 545.0]">
+        </property>
+    </entity>
+    <entity name="Track1-2" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track12.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{32,3,8}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(1)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 85.0}">
+        </property>
+    </entity>
+    <entity name="Track4-1" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track41.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="19">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{13,20,25}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(18)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2664404523146, 0.0925424507378, 0.1698196755471, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 430.0}">
+        </property>
+    </entity>
+    <entity name="Track3-1" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track31.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="13">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{7,14,19}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(12)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 325.0}">
+        </property>
+    </entity>
+    <entity name="Track2-1" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track21.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{1,8,13}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(6)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Track5-1" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track51.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{19,26,39}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(24)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.1163709299858, 0.0612800221903, 0.0114127789183, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 545.0}">
+        </property>
+    </entity>
+    <entity name="Track1-1" class="ptolemy.domains.atc.lib.Track">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="track11.txt">
+        </property>
+        <property name="trackId" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="neighbors{North,East,South" class="ptolemy.data.expr.Parameter" value="{32,2,7}">
+        </property>
+        <property name="stormy" class="ptolemy.data.expr.Parameter" value="isStormy(0)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 75.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="38">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1305.0, 450.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport2" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="39">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 735.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport3" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 700.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport4" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="32">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1325.0, -115.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport5" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="33">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1310.0, -40.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport6" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="34">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1295.0, 50.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport8" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="36">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4193733228598, 0.3392129876319, 0.4526719817936, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1265.0, 245.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport9" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="37">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1280.0, 355.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport10" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="41">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1190.0, 665.0]">
+        </property>
+    </entity>
+    <entity name="DestinationAirport7" class="ptolemy.domains.atc.lib.DestinationAirport">
+        <property name="airportId" class="ptolemy.data.expr.Parameter" value="35">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_triangleShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1280.0, 125.0]">
+        </property>
+    </entity>
+    <relation name="relation101" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-20.0, 360.0]">
+        </vertex>
+    </relation>
+    <relation name="relation89" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation96" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation97" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation98" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation99" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation41" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation42" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation38" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation40" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation39" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation37" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation36" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation43" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation44" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation45" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation46" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation47" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation48" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation49" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation50" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation51" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation52" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation53" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation54" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation55" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation56" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation57" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation58" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation59" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation60" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation61" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation62" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation63" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation64" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation65" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation66" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation67" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation68" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation69" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation70" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation71" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation72" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation73" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation74" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation75" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation76" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation77" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation95" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation78" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation79" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation80" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation81" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation82" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation83" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation84" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation85" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation86" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation87" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation88" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation90" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation91" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation92" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation93" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation94" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation100" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation102" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation103" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation104" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation105" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation106" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation107" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation108" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation109" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation110" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Airport.input" relation="relation101"/>
+    <link port="Airport.Output" insertAt="2" relation="relation"/>
+    <link port="Airport.Output" relation="relation2"/>
+    <link port="Airport.Output" relation="relation3"/>
+    <link port="Airport.Output" relation="relation4"/>
+    <link port="Airport.Output" relation="relation5"/>
+    <link port="CSVReader.output" relation="relation101"/>
+    <link port="CSVReader.trigger" relation="relation96"/>
+    <link port="MeasuringParameters.port" relation="relation89"/>
+    <link port="Merge.input" relation="relation100"/>
+    <link port="Merge.input" relation="relation102"/>
+    <link port="Merge.input" relation="relation103"/>
+    <link port="Merge.input" relation="relation104"/>
+    <link port="Merge.input" relation="relation105"/>
+    <link port="Merge.input" relation="relation106"/>
+    <link port="Merge.input" relation="relation107"/>
+    <link port="Merge.input" relation="relation108"/>
+    <link port="Merge.input" relation="relation109"/>
+    <link port="Merge.input" relation="relation110"/>
+    <link port="Merge.output" relation="relation89"/>
+    <link port="Arrival.output" relation="relation96"/>
+    <link port="trackSelection.output" relation="relation97"/>
+    <link port="changeValue.output" relation="relation98"/>
+    <link port="stormHandling.selectedTrack" relation="relation97"/>
+    <link port="stormHandling.selectedValue" relation="relation98"/>
+    <link port="stormHandling.trackStatus" relation="relation99"/>
+    <link port="SetVariable.input" relation="relation99"/>
+    <link port="Track3-6.input" relation="relation33"/>
+    <link port="Track3-6.input" relation="relation47"/>
+    <link port="Track3-6.input" relation="relation95"/>
+    <link port="Track3-6.northOutput" relation="relation50"/>
+    <link port="Track3-6.eastOutput" relation="relation86"/>
+    <link port="Track3-6.southOutput" relation="relation51"/>
+    <link port="Track2-6.input" relation="relation30"/>
+    <link port="Track2-6.input" relation="relation16"/>
+    <link port="Track2-6.input" relation="relation50"/>
+    <link port="Track2-6.northOutput" relation="relation32"/>
+    <link port="Track2-6.eastOutput" relation="relation85"/>
+    <link port="Track2-6.southOutput" relation="relation33"/>
+    <link port="Track1-6.input" relation="relation14"/>
+    <link port="Track1-6.input" insertAt="2" relation="relation32"/>
+    <link port="Track1-6.northOutput" relation="relation83"/>
+    <link port="Track1-6.eastOutput" relation="relation84"/>
+    <link port="Track1-6.southOutput" relation="relation16"/>
+    <link port="Track4-6.input" relation="relation51"/>
+    <link port="Track4-6.input" relation="relation64"/>
+    <link port="Track4-6.input" relation="relation77"/>
+    <link port="Track4-6.northOutput" relation="relation95"/>
+    <link port="Track4-6.eastOutput" relation="relation87"/>
+    <link port="Track4-6.southOutput" relation="relation66"/>
+    <link port="Track5-6.input" relation="relation66"/>
+    <link port="Track5-6.input" relation="relation76"/>
+    <link port="Track5-6.northOutput" relation="relation77"/>
+    <link port="Track5-6.southOutput" relation="relation93"/>
+    <link port="Track3-5.input" relation="relation31"/>
+    <link port="Track3-5.input" relation="relation44"/>
+    <link port="Track3-5.input" relation="relation49"/>
+    <link port="Track3-5.northOutput" relation="relation46"/>
+    <link port="Track3-5.eastOutput" relation="relation47"/>
+    <link port="Track3-5.southOutput" relation="relation48"/>
+    <link port="Track2-5.input" relation="relation27"/>
+    <link port="Track2-5.input" relation="relation15"/>
+    <link port="Track2-5.input" relation="relation46"/>
+    <link port="Track2-5.northOutput" relation="relation29"/>
+    <link port="Track2-5.eastOutput" relation="relation30"/>
+    <link port="Track2-5.southOutput" relation="relation31"/>
+    <link port="Track5-5.input" relation="relation65"/>
+    <link port="Track5-5.input" relation="relation74"/>
+    <link port="Track5-5.northOutput" relation="relation75"/>
+    <link port="Track5-5.eastOutput" relation="relation76"/>
+    <link port="Track5-5.southOutput" relation="relation92"/>
+    <link port="Track1-5.input" relation="relation12"/>
+    <link port="Track1-5.input" insertAt="2" relation="relation29"/>
+    <link port="Track1-5.northOutput" relation="relation82"/>
+    <link port="Track1-5.eastOutput" relation="relation14"/>
+    <link port="Track1-5.southOutput" relation="relation15"/>
+    <link port="Track4-5.input" relation="relation48"/>
+    <link port="Track4-5.input" relation="relation62"/>
+    <link port="Track4-5.input" relation="relation75"/>
+    <link port="Track4-5.northOutput" relation="relation49"/>
+    <link port="Track4-5.eastOutput" relation="relation64"/>
+    <link port="Track4-5.southOutput" relation="relation65"/>
+    <link port="Track4-3.input" relation="relation42"/>
+    <link port="Track4-3.input" relation="relation56"/>
+    <link port="Track4-3.input" relation="relation71"/>
+    <link port="Track4-3.northOutput" relation="relation58"/>
+    <link port="Track4-3.eastOutput" relation="relation59"/>
+    <link port="Track4-3.southOutput" relation="relation60"/>
+    <link port="Track2-4.input" relation="relation13"/>
+    <link port="Track2-4.input" insertAt="2" relation="relation24"/>
+    <link port="Track2-4.input" relation="relation43"/>
+    <link port="Track2-4.northOutput" relation="relation26"/>
+    <link port="Track2-4.eastOutput" relation="relation27"/>
+    <link port="Track2-4.southOutput" relation="relation28"/>
+    <link port="Track3-3.input" relation="relation25"/>
+    <link port="Track3-3.input" insertAt="2" relation="relation38"/>
+    <link port="Track3-3.input" relation="relation58"/>
+    <link port="Track3-3.northOutput" relation="relation40"/>
+    <link port="Track3-3.eastOutput" relation="relation41"/>
+    <link port="Track3-3.southOutput" relation="relation42"/>
+    <link port="Track5-4.input" relation="relation63"/>
+    <link port="Track5-4.input" relation="relation72"/>
+    <link port="Track5-4.northOutput" relation="relation73"/>
+    <link port="Track5-4.eastOutput" relation="relation74"/>
+    <link port="Track5-4.southOutput" relation="relation94"/>
+    <link port="Track4-4.input" relation="relation45"/>
+    <link port="Track4-4.input" relation="relation59"/>
+    <link port="Track4-4.input" relation="relation73"/>
+    <link port="Track4-4.northOutput" relation="relation61"/>
+    <link port="Track4-4.eastOutput" relation="relation62"/>
+    <link port="Track4-4.southOutput" relation="relation63"/>
+    <link port="Track3-4.input" relation="relation41"/>
+    <link port="Track3-4.input" relation="relation28"/>
+    <link port="Track3-4.input" relation="relation61"/>
+    <link port="Track3-4.northOutput" relation="relation43"/>
+    <link port="Track3-4.eastOutput" relation="relation44"/>
+    <link port="Track3-4.southOutput" relation="relation45"/>
+    <link port="Track1-4.input" relation="relation10"/>
+    <link port="Track1-4.input" insertAt="2" relation="relation26"/>
+    <link port="Track1-4.northOutput" relation="relation81"/>
+    <link port="Track1-4.eastOutput" relation="relation12"/>
+    <link port="Track1-4.southOutput" relation="relation13"/>
+    <link port="Track2-3.input" relation="relation40"/>
+    <link port="Track2-3.input" relation="relation21"/>
+    <link port="Track2-3.input" relation="relation11"/>
+    <link port="Track2-3.northOutput" relation="relation23"/>
+    <link port="Track2-3.eastOutput" relation="relation24"/>
+    <link port="Track2-3.southOutput" relation="relation25"/>
+    <link port="Track1-3.input" relation="relation8"/>
+    <link port="Track1-3.input" insertAt="2" relation="relation23"/>
+    <link port="Track1-3.northOutput" relation="relation80"/>
+    <link port="Track1-3.eastOutput" relation="relation10"/>
+    <link port="Track1-3.southOutput" relation="relation11"/>
+    <link port="Track4-2.input" relation="relation39"/>
+    <link port="Track4-2.input" relation="relation53"/>
+    <link port="Track4-2.input" relation="relation69"/>
+    <link port="Track4-2.northOutput" relation="relation55"/>
+    <link port="Track4-2.eastOutput" relation="relation56"/>
+    <link port="Track4-2.southOutput" relation="relation57"/>
+    <link port="Track5-3.input" relation="relation60"/>
+    <link port="Track5-3.input" relation="relation70"/>
+    <link port="Track5-3.northOutput" relation="relation71"/>
+    <link port="Track5-3.eastOutput" relation="relation72"/>
+    <link port="Track5-3.southOutput" relation="relation91"/>
+    <link port="Track2-2.input" relation="relation9"/>
+    <link port="Track2-2.input" insertAt="2" relation="relation18"/>
+    <link port="Track2-2.input" insertAt="4" relation="relation37"/>
+    <link port="Track2-2.northOutput" relation="relation20"/>
+    <link port="Track2-2.eastOutput" relation="relation21"/>
+    <link port="Track2-2.southOutput" relation="relation22"/>
+    <link port="Track3-2.input" relation="relation22"/>
+    <link port="Track3-2.input" insertAt="2" relation="relation35"/>
+    <link port="Track3-2.input" relation="relation55"/>
+    <link port="Track3-2.northOutput" relation="relation37"/>
+    <link port="Track3-2.eastOutput" relation="relation38"/>
+    <link port="Track3-2.southOutput" relation="relation39"/>
+    <link port="Track5-2.input" relation="relation57"/>
+    <link port="Track5-2.input" relation="relation68"/>
+    <link port="Track5-2.northOutput" relation="relation69"/>
+    <link port="Track5-2.eastOutput" relation="relation70"/>
+    <link port="Track5-2.southOutput" relation="relation90"/>
+    <link port="Track1-2.input" relation="relation6"/>
+    <link port="Track1-2.input" insertAt="2" relation="relation20"/>
+    <link port="Track1-2.northOutput" relation="relation79"/>
+    <link port="Track1-2.eastOutput" relation="relation8"/>
+    <link port="Track1-2.southOutput" relation="relation9"/>
+    <link port="Track4-1.input" insertAt="1" relation="relation36"/>
+    <link port="Track4-1.input" relation="relation67"/>
+    <link port="Track4-1.input" relation="relation4"/>
+    <link port="Track4-1.northOutput" relation="relation52"/>
+    <link port="Track4-1.eastOutput" relation="relation53"/>
+    <link port="Track4-1.southOutput" relation="relation54"/>
+    <link port="Track3-1.input" relation="relation19"/>
+    <link port="Track3-1.input" relation="relation52"/>
+    <link port="Track3-1.input" relation="relation3"/>
+    <link port="Track3-1.northOutput" relation="relation34"/>
+    <link port="Track3-1.eastOutput" relation="relation35"/>
+    <link port="Track3-1.southOutput" relation="relation36"/>
+    <link port="Track2-1.input" insertAt="1" relation="relation7"/>
+    <link port="Track2-1.input" insertAt="3" relation="relation34"/>
+    <link port="Track2-1.input" relation="relation2"/>
+    <link port="Track2-1.northOutput" relation="relation17"/>
+    <link port="Track2-1.eastOutput" relation="relation18"/>
+    <link port="Track2-1.southOutput" relation="relation19"/>
+    <link port="Track5-1.input" relation="relation54"/>
+    <link port="Track5-1.input" relation="relation5"/>
+    <link port="Track5-1.northOutput" relation="relation67"/>
+    <link port="Track5-1.eastOutput" relation="relation68"/>
+    <link port="Track5-1.southOutput" relation="relation88"/>
+    <link port="Track1-1.input" insertAt="1" relation="relation17"/>
+    <link port="Track1-1.input" relation="relation"/>
+    <link port="Track1-1.northOutput" relation="relation78"/>
+    <link port="Track1-1.eastOutput" relation="relation6"/>
+    <link port="Track1-1.southOutput" relation="relation7"/>
+    <link port="DestinationAirport.input" relation="relation87"/>
+    <link port="DestinationAirport.output" relation="relation110"/>
+    <link port="DestinationAirport2.input" relation="relation88"/>
+    <link port="DestinationAirport2.input" relation="relation90"/>
+    <link port="DestinationAirport2.output" relation="relation100"/>
+    <link port="DestinationAirport3.input" relation="relation91"/>
+    <link port="DestinationAirport3.input" relation="relation94"/>
+    <link port="DestinationAirport3.output" relation="relation102"/>
+    <link port="DestinationAirport4.input" relation="relation78"/>
+    <link port="DestinationAirport4.input" relation="relation79"/>
+    <link port="DestinationAirport4.output" relation="relation104"/>
+    <link port="DestinationAirport5.input" relation="relation80"/>
+    <link port="DestinationAirport5.input" relation="relation81"/>
+    <link port="DestinationAirport5.output" relation="relation105"/>
+    <link port="DestinationAirport6.input" relation="relation82"/>
+    <link port="DestinationAirport6.input" relation="relation83"/>
+    <link port="DestinationAirport6.output" relation="relation106"/>
+    <link port="DestinationAirport8.input" relation="relation85"/>
+    <link port="DestinationAirport8.output" relation="relation108"/>
+    <link port="DestinationAirport9.input" relation="relation86"/>
+    <link port="DestinationAirport9.output" relation="relation109"/>
+    <link port="DestinationAirport10.input" relation="relation92"/>
+    <link port="DestinationAirport10.input" relation="relation93"/>
+    <link port="DestinationAirport10.output" relation="relation103"/>
+    <link port="DestinationAirport7.input" relation="relation84"/>
+    <link port="DestinationAirport7.output" relation="relation107"/>
+</entity>

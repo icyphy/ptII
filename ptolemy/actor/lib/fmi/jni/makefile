@@ -52,7 +52,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	HOW_TO_UPDATE.txt \
 	fmi2.h \
-	jniToFmu.c
+	jniToFmu.c \
+	libJNIFMU.dll
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

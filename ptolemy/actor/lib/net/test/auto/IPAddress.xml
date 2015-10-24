@@ -59,7 +59,7 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;StringMatches.output&quot;,x=345.0,y=140.0}, tail={id=&quot;Test.input&quot;,x=445.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringMatches.output&quot;,x=345.0,y=140.0}, tail={id=&quot;Test.input&quot;,x=445.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -67,7 +67,7 @@
         </property>
         <vertex name="vertex1" value="{255.0, 195.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.Display.input&quot;,x=310.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=270.0,y=205.0}, points={270.0,260.0} },{ head={id=&quot;StringMatches.matchString&quot;,x=345.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, points={255.0,150.0} },{ head={id=&quot;IPAddress.output&quot;,x=165.0,y=185.0}, tail={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, points={} },{ head={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, tail={id=&quot;LineWriter.input&quot;,x=330.0,y=205.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.Display.input&quot;,x=310.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=270.0,y=205.0}, points={270.0,260.0} },{ head={id=&quot;StringMatches.matchString&quot;,x=345.0,y=140.0}, tail={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, points={255.0,150.0} },{ head={id=&quot;IPAddress.output&quot;,x=165.0,y=185.0}, tail={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, points={} },{ head={id=&quot;relation3.vertex1&quot;,x=255.0,y=195.0}, tail={id=&quot;LineWriter.input&quot;,x=330.0,y=205.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -75,7 +75,7 @@
         </property>
         <vertex name="vertex1" value="{235.0, 130.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=270.0,y=135.0}, tail={id=&quot;.Display2.input&quot;,x=310.0,y=135.0}, points={} },{ head={id=&quot;StringConst.output&quot;,x=65.0,y=130.0}, tail={id=&quot;relation.vertex1&quot;,x=235.0,y=130.0}, points={} },{ head={id=&quot;StringMatches.pattern&quot;,x=345.0,y=140.0}, tail={id=&quot;relation.vertex1&quot;,x=235.0,y=130.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=270.0,y=135.0}, tail={id=&quot;.Display2.input&quot;,x=310.0,y=135.0}, points={} },{ head={id=&quot;StringConst.output&quot;,x=65.0,y=130.0}, tail={id=&quot;relation.vertex1&quot;,x=235.0,y=130.0}, points={} },{ head={id=&quot;StringMatches.pattern&quot;,x=345.0,y=140.0}, tail={id=&quot;relation.vertex1&quot;,x=235.0,y=130.0}, points={} } }">
         </property>
     </relation>
     <link port="IPAddress.output" relation="relation3"/>

@@ -163,6 +163,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.SimpleMessageHandler;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
+import ptolemy.vergil.modal.FSMGraphModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import ptolemy.vergil.tree.ClassAndEntityTreeModel;
@@ -4859,9 +4860,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         @Override
         public void actionPerformed(ActionEvent e) {
             NamedObj model = getModel();
+            
             Attribute attribute = model.getAttribute("_layoutConfiguration");
             if (attribute == null) {
-                String momlChange = "<property name=\"_layoutConfiguration\" class=\"ptolemy.vergil.basic.layout.LayoutConfiguration\"/>";
+                
+                String layoutConfiguration = "ptolemy.vergil.basic.layout.ActorLayoutConfiguration";
+                if (_getGraphModel() instanceof FSMGraphModel) {
+                    layoutConfiguration = "ptolemy.vergil.basic.layout.ModalLayoutConfiguration";
+                }
+                
+                String momlChange = "<property name=\"_layoutConfiguration\" class=\"" + layoutConfiguration + "\"/>";
                 model.requestChange(new MoMLChangeRequest(this, model,
                         momlChange, false));
                 attribute = model.getAttribute("_layoutConfiguration");

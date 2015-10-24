@@ -60,15 +60,23 @@ import de.cau.cs.kieler.core.math.KVector;
 import de.cau.cs.kieler.core.util.Pair;
 import de.cau.cs.kieler.kiml.AbstractLayoutProvider;
 import de.cau.cs.kieler.kiml.klayoutdata.KEdgeLayout;
+import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
 import de.cau.cs.kieler.kiml.klayoutdata.KPoint;
 import de.cau.cs.kieler.kiml.klayoutdata.KShapeLayout;
+import de.cau.cs.kieler.kiml.options.Alignment;
+import de.cau.cs.kieler.kiml.options.Direction;
 import de.cau.cs.kieler.kiml.options.EdgeLabelPlacement;
+import de.cau.cs.kieler.kiml.options.EdgeRouting;
 import de.cau.cs.kieler.kiml.options.LayoutOptions;
 import de.cau.cs.kieler.kiml.options.PortConstraints;
 import de.cau.cs.kieler.kiml.options.PortSide;
 import de.cau.cs.kieler.kiml.options.SizeConstraint;
 import de.cau.cs.kieler.kiml.util.KimlUtil;
 import de.cau.cs.kieler.klay.layered.LayeredLayoutProvider;
+import de.cau.cs.kieler.klay.layered.p3order.CrossingMinimizationStrategy;
+import de.cau.cs.kieler.klay.layered.p4nodes.NodePlacementStrategy;
+import de.cau.cs.kieler.klay.layered.properties.LayerConstraint;
+import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -81,6 +89,7 @@ import diva.graph.modular.EdgeModel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.gui.Top;
@@ -100,12 +109,14 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorGraphModel.ExternalPortModel;
 import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.KielerLayoutConnector;
+import ptolemy.vergil.actor.KielerLayoutUtil;
 import ptolemy.vergil.actor.PortTerminal;
-import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.basic.RelativeLocatable;
+import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.modal.FSMGraphModel;
+import ptolemy.vergil.modal.KielerLayoutArcConnector;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
 ///////////////////////////////////////////////////////////////////
@@ -160,7 +171,8 @@ import ptolemy.vergil.toolbox.SnapConstraint;
  * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>),
  *         Christian Motika (<a href="mailto:cmot@informatik.uni-kiel.de">cmot</a>),
  *         Miro Sp&ouml;nemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>) ,
- *         Christoph Daniel Schulze (<a href="mailto:cds@informatik.uni-kiel.de">cds</a>)
+ *         Christoph Daniel Schulze (<a href="mailto:cds@informatik.uni-kiel.de">cds</a>),
+ *         Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
@@ -212,7 +224,9 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     @Override
     public void layout(Object composite) {
+        
         KielerLayoutConnector.setLayoutInProgress(true);
+        KielerLayoutArcConnector.setLayoutInProgress(true);
 
         // some variables for time statistics
         long overallTime = System.currentTimeMillis();
@@ -220,6 +234,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         _report("Performing KIELER layout... ");
         long graphOverhead = overallTime;
 
+        _graphModel = getLayoutTarget().getGraphModel();
+        
         // Create a KGraph for the KIELER layout algorithm.
         KNode parentNode = KimlUtil.createInitializedNode();
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
@@ -229,28 +245,42 @@ public class KielerLayout extends AbstractGlobalLayout {
             parentLayout.setHeight(contentSize.height);
         }
 
+        // Some layouts (such as FSM) may build a skeleton 
+        // of hierarchical nodes to separate certain elements
+        // of the diagram from each other
+        // The 'mainModelNode' is the node that is supposed
+        // to hold the actual elements of the ptolemy model
+        KNode mainModelNode = parentNode;
+        KShapeLayout mainModelLayout = parentLayout;
+        if (_graphModel instanceof FSMGraphModel) {
+            // create a FSM skeleton to separate input and output ports
+            mainModelNode = _createFsmSkeleton(parentNode);
+            mainModelLayout = mainModelNode.getData(KShapeLayout.class);
+        }
+        
         try {
             // Configure the layout algorithm by annotating the graph.
             Parameters parameters = new Parameters(_compositeEntity);
-            parameters.configureLayout(parentLayout, getLayoutTarget()
+            parameters.configureLayout(mainModelLayout, getLayoutTarget()
                     .getGraphModel());
 
             // Now read Ptolemy model and fill the KGraph with the model data.
-            _createGraph(composite, parentNode);
+            _createGraph(composite, mainModelNode);
             graphOverhead = System.currentTimeMillis() - graphOverhead;
 
             // Create the layout provider which performs the actual layout algorithm.
             InstancePool<AbstractLayoutProvider> layouterPool = _getLayouterPool();
             AbstractLayoutProvider layoutProvider = layouterPool.fetch();
-
+            
             // Create a progress monitor for execution time measurement.
             IKielerProgressMonitor progressMonitor = new BasicProgressMonitor();
 
             // Perform layout on the created graph.
-            layoutProvider.doLayout(parentNode, progressMonitor);
-
+            _recursivelyLayout(parentNode, layoutProvider, progressMonitor);
+            
             // Write to XML file for debugging layout (requires XMI resource factory).
             if (DEBUG) {
+                KimlUtil.persistDataElements(parentNode);
                 KielerGraphUtil._writeToFile(parentNode);
             }
 
@@ -261,8 +291,15 @@ public class KielerLayout extends AbstractGlobalLayout {
 
             long momlRequestOverhead = System.currentTimeMillis();
 
+            // Create a special change request to apply the computed layout to the model.
+            ApplyLayoutRequest layoutRequest = new ApplyLayoutRequest(
+                    _compositeEntity);
+            
             // Apply layout to ptolemy model.
-            _applyLayout(parentNode);
+            _recursivelyApplyLayout(parentNode, layoutRequest);
+            
+            // Let the composite actor execute the actual changes.
+            _compositeEntity.requestChange(layoutRequest);
 
             momlRequestOverhead = System.currentTimeMillis()
                     - momlRequestOverhead;
@@ -282,6 +319,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
 
         KielerLayoutConnector.setLayoutInProgress(false);
+        KielerLayoutArcConnector.setLayoutInProgress(false);
     }
 
     /**
@@ -327,6 +365,53 @@ public class KielerLayout extends AbstractGlobalLayout {
     ////                         private methods                   ////
 
     /**
+     * Performs a recursive layout inside-out (if necessary).
+     * 
+     * @param parentNode
+     *          a node for which to apply the layout
+     * @param layoutProvider
+     *          the layout provider to execute the layout
+     * @param progressMonitor 
+     *          a progress monitor to measure execution time
+     */
+    private void _recursivelyLayout(KNode parentNode,
+            AbstractLayoutProvider layoutProvider,
+            IKielerProgressMonitor progressMonitor) {
+        
+        for (KNode child : parentNode.getChildren()) {
+            if(!child.getChildren().isEmpty())
+            layoutProvider.doLayout(child, progressMonitor.subTask(1));
+        }
+
+        layoutProvider.doLayout(parentNode, progressMonitor);
+    }
+
+    /**
+     * Recusively applies {@link #_applyLayout(KNode)} to any {@link KNode} 
+     * that has further children.
+     * 
+     * @param parentNode The KIELER graph object containing all layout information
+     *            to apply to the Ptolemy model
+     * @param layoutRequest the common layout request for the current layout run
+     * @exception IllegalActionException if routing of edges fails.
+     */
+    private void _recursivelyApplyLayout(KNode parentNode, ApplyLayoutRequest layoutRequest)
+            throws IllegalActionException {
+
+        // the _applyLayout method applies positions to the 
+        // children of a node
+        if (!parentNode.getChildren().isEmpty()) {
+            _applyLayout(parentNode, layoutRequest);
+
+            for (KNode child : parentNode.getChildren()) {
+                if (!child.getChildren().isEmpty()) {
+                    _recursivelyApplyLayout(child, layoutRequest);
+                }
+            }
+        }
+    }
+    
+    /**
      * Traverse a composite KNode containing corresponding KIELER nodes, ports
      * and edges for the Ptolemy model and apply all layout information
      * contained by it back to the Ptolemy model. Do most changes to the Ptolemy
@@ -336,12 +421,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      *
      * @param parentNode The KIELER graph object containing all layout information
      *            to apply to the Ptolemy model
+     * @param layoutRequest the common layout request for the current layout run
      * @exception IllegalActionException if routing of edges fails.
      */
-    private void _applyLayout(KNode parentNode) throws IllegalActionException {
-        // Create a special change request to apply the computed layout to the model.
-        ApplyLayoutRequest layoutRequest = new ApplyLayoutRequest(
-                _compositeEntity);
+    private void _applyLayout(KNode parentNode,
+            ApplyLayoutRequest layoutRequest) throws IllegalActionException {
 
         // Apply node layout.
         for (KNode knode : parentNode.getChildren()) {
@@ -373,15 +457,20 @@ public class KielerLayout extends AbstractGlobalLayout {
                         entry.getSecond(), layoutRequest);
             }
         } else if (graphModel instanceof FSMGraphModel) {
+            
             // apply edge layout - one single point for specifying a curve
             for (Pair<KEdge, Link> entry : _edgeList) {
-                _applyEdgeLayoutCurve(entry.getFirst(), entry.getSecond(),
-                        layoutRequest);
+                
+                if (parentNode.getData(KLayoutData.class)
+                        .getProperty(Parameters.SPLINES)) {
+                    _applyEdgeLayoutBendPointAnnotation(entry.getFirst(),
+                            entry.getSecond(), layoutRequest);
+                } else {
+                    _applyEdgeLayoutCurve(entry.getFirst(), entry.getSecond(),
+                            layoutRequest);
+                }
             }
         }
-
-        // Let the composite actor execute the actual changes.
-        _compositeEntity.requestChange(layoutRequest);
     }
 
     /**
@@ -403,35 +492,61 @@ public class KielerLayout extends AbstractGlobalLayout {
             ApplyLayoutRequest layoutRequest) throws IllegalActionException {
         List<KPoint> bendPoints = kedge.getData(KEdgeLayout.class)
                 .getBendPoints();
-
+        
         // Translate bend points into an array of doubles for the layout hint attribute.
         double[] layoutHintBendPoints = new double[bendPoints.size() * 2];
         int index = 0;
         KNode parentNode = KielerGraphUtil._getParent(kedge);
+        if (parentNode == null) {
+            throw new IllegalStateException(
+                    "Internal layout error. Every edge in the layout graph must have a parent.");
+        }
         for (KPoint relativeKPoint : bendPoints) {
             KVector kpoint = relativeKPoint.createVector();
             KimlUtil.toAbsolute(kpoint, parentNode);
 
-            // calculate the snap-to-grid coordinates
-            double[] snapToGridBendPoint = SnapConstraint.constrainPoint(
-                    kpoint.x, kpoint.y);
+            // calculate the snap-to-grid coordinates unless we route 
+            // edges as splines. With splines the snap to grid feature would
+            // drastically deform the spline routes
+            if (parentNode.getData(KLayoutData.class)
+                    .getProperty(LayoutOptions.EDGE_ROUTING) != EdgeRouting.SPLINES) {
+                
+                double[] snapToGridBendPoint = SnapConstraint
+                        .constrainPoint(kpoint.x, kpoint.y);
+                layoutHintBendPoints[index] = snapToGridBendPoint[0];
+                layoutHintBendPoints[index + 1] = snapToGridBendPoint[1];
+            } else {
+                
+                layoutHintBendPoints[index] = kpoint.x;
+                layoutHintBendPoints[index + 1] = kpoint.y;
+            }
 
-            layoutHintBendPoints[index] = snapToGridBendPoint[0];
-            layoutHintBendPoints[index + 1] = snapToGridBendPoint[1];
             index += 2;
         }
 
+        // we support exactly one label (if one exists at all)
+        Point2D.Double labelLocation = null;
+        for (KLabel label : kedge.getLabels()) {
+            labelLocation = new Point2D.Double();
+            KVector pos = label.getData(KShapeLayout.class).createVector();
+            KimlUtil.toAbsolute(pos, parentNode);
+            labelLocation.x = pos.x;
+            labelLocation.y = pos.y;
+            break;
+        }
+        
         Relation relation = link.getRelation();
         NamedObj head = (NamedObj) link.getHead();
         NamedObj tail = (NamedObj) link.getTail();
         // Determine correct direction of the edge.
         if (head != _divaEdgeSource.get(link)) {
             layoutRequest.addConnection(relation, tail, head,
-                    layoutHintBendPoints);
+                    layoutHintBendPoints, labelLocation);
         } else {
             layoutRequest.addConnection(relation, head, tail,
-                    layoutHintBendPoints);
+                    layoutHintBendPoints, labelLocation);
         }
+        
     }
 
     private void _applyEdgeLayoutCurve(KEdge kedge, Link link,
@@ -442,14 +557,24 @@ public class KielerLayout extends AbstractGlobalLayout {
             KEdgeLayout edgeLayout = kedge.getData(KEdgeLayout.class);
             List<KPoint> bendPoints = edgeLayout.getBendPoints();
 
-            KShapeLayout sourceLayout = kedge.getSource().getData(
-                    KShapeLayout.class);
+            KNode source = kedge.getSource();
+            if (source == null) {
+                throw new IllegalStateException(
+                        "Internal layout error. "
+                        + "Every edge must have a source node.");
+            }
+            KShapeLayout sourceLayout = source.getData(KShapeLayout.class);
             double sourcex = sourceLayout.getXpos() + sourceLayout.getWidth()
                     / 2;
             double sourcey = sourceLayout.getYpos() + sourceLayout.getHeight()
                     / 2;
-            KShapeLayout targetLayout = kedge.getTarget().getData(
-                    KShapeLayout.class);
+            KNode target = kedge.getTarget();
+            if (target == null) {
+                throw new IllegalStateException(
+                        "Internal layout error. "
+                        + "Every edge must have a source node.");
+            }
+            KShapeLayout targetLayout = target.getData(KShapeLayout.class);
             double targetx = targetLayout.getXpos() + targetLayout.getWidth()
                     / 2;
             double targety = targetLayout.getYpos() + targetLayout.getHeight()
@@ -458,14 +583,30 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Determine a reference point for drawing the curve.
             double exitAngle = 0;
             double refx = 0, refy = 0;
-            if (bendPoints.isEmpty()) {
+            
+            // 1) if the edge has a label, we use the label's center
+            //    as reference
+            // 2) if there are no bend points, use the the center of 
+            //    a straight line between source and target
+            // 3) if there are bend points, we use the center 
+            //    between the two "middle" bend points
+            if (!kedge.getLabels().isEmpty()) {
+                KLabel label = kedge.getLabels().get(0);
+                KShapeLayout labelLayout = label.getData(KShapeLayout.class);
+                KVector center = labelLayout.createVector().add(labelLayout.getWidth() / 2f, labelLayout.getHeight() / 2f);
+                refx = center.x;
+                refy = center.y;
+            } else if (bendPoints.isEmpty()) {
                 refx = (edgeLayout.getSourcePoint().getX() + edgeLayout
                         .getTargetPoint().getX()) / 2;
                 refy = (edgeLayout.getSourcePoint().getY() + edgeLayout
                         .getTargetPoint().getY()) / 2;
             } else {
-                refx = bendPoints.get(0).getX();
-                refy = bendPoints.get(0).getY();
+                int count = bendPoints.size();
+                KPoint point1 = bendPoints.get(count / 2 - 1);
+                KPoint point2 = bendPoints.get(count / 2);
+                refx = (point1.getX() + point2.getX()) / 2f;
+                refy = (point1.getY() + point2.getY()) / 2f;
             }
 
             // Take the angular difference between the reference point and
@@ -510,6 +651,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         _ptolemy2KielerPorts = LinkedListMultimap.create();
         _divaEdgeSource = Maps.newHashMap();
         _divaEdgeTarget = Maps.newHashMap();
+        _divaLabel = Maps.newHashMap();
         _edgeList = Lists.newLinkedList();
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
 
@@ -520,17 +662,16 @@ public class KielerLayout extends AbstractGlobalLayout {
         float globalX = Float.MAX_VALUE, globalY = Float.MAX_VALUE;
 
         // Traverse the ptolemy graph.
-        GraphModel graphModel = getLayoutTarget().getGraphModel();
         ExternalPortModel externalPortModel = null;
-        if (graphModel instanceof ActorGraphModel) {
-            externalPortModel = ((ActorGraphModel) graphModel)
+        if (_graphModel instanceof ActorGraphModel) {
+            externalPortModel = ((ActorGraphModel) _graphModel)
                     .getExternalPortModel();
         }
         List<Link> unprocessedEdges = new LinkedList<Link>();
         List<NamedObj> unprocessedRelatives = new LinkedList<NamedObj>();
 
         // Process nodes.
-        for (Iterator iterator = graphModel.nodes(composite); iterator
+        for (Iterator iterator = _graphModel.nodes(composite); iterator
                 .hasNext();) {
             Object node = iterator.next();
             if (!(node instanceof Locatable)) {
@@ -542,7 +683,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             // This breaks with Ptolemy/Diva abstraction; for now we need
             // the ptolemy actor to get the ports and port positions
             // and to distinguish actors and relation vertices.
-            NamedObj semanticNode = (NamedObj) graphModel
+            NamedObj semanticNode = (NamedObj) _graphModel
                     .getSemanticObject(node);
 
             if (doBoxLayout || PtolemyModelUtil._isConnected(semanticNode)) {
@@ -567,7 +708,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                         // create ports
                         _createKPorts(knode, inputs);
                         _createKPorts(knode, outputs);
-                        portIter = graphModel.nodes(node);
+                        portIter = _graphModel.nodes(node);
                     } else if (semanticNode instanceof RelativeLocatable) {
                         unprocessedRelatives.add(semanticNode);
                     }
@@ -595,7 +736,11 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 // Now do some common bookkeeping for all kinds of nodes.
                 if (knode != null) {
-                    knode.setParent(parentNode);
+                    // some nodes, such as FSM's ports may already 
+                    // be assigned to a node other than the parent node
+                    if (knode.getParent() == null) {
+                        knode.setParent(parentNode);
+                    }
                     // Get check bounds for global bounding box.
                     KShapeLayout layout = knode.getData(KShapeLayout.class);
                     if (layout.getXpos() < globalX) {
@@ -619,7 +764,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                             && externalPortModel != null) { // internal ports
                         edgeIterator = externalPortModel.outEdges(divaPort);
                     } else {
-                        edgeIterator = graphModel.outEdges(divaPort);
+                        edgeIterator = _graphModel.outEdges(divaPort);
                     }
                     while (edgeIterator.hasNext()) {
                         Object next = edgeIterator.next();
@@ -632,7 +777,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
 
         // Create KIELER edges for Diva edges.
-        if (graphModel instanceof ActorGraphModel) {
+        if (_graphModel instanceof ActorGraphModel) {
             _storeEndpoints(unprocessedEdges);
         }
         for (Link divaEdge : unprocessedEdges) {
@@ -649,6 +794,83 @@ public class KielerLayout extends AbstractGlobalLayout {
         parentLayout.setYpos(globalY);
     }
 
+    /**
+     * Creates a skeleton for placing elements of FSMs.
+     * 
+     * An {@link FSMGraphModel} can have input, output, and inputoutput 
+     * ports. Since the diagram is a state diagram the ports are 
+     * not connected to any other diagram element. To create a 
+     * clear visual experience, we place all inputs on the left 
+     * side of the actual diagram, all outputs on the right, and all 
+     * inputoutputs above the diagram. 
+     * 
+     * Inputs and outputs are stacked from top to bottom. Inputoutputs 
+     * are placed left to right. The user can change the order
+     * of ports to move related ports close to each other.
+     * 
+     * @param root
+     *          the root node of the layout graph
+     * @return
+     *          a node which should contain the actual diagram's elements
+     */
+    private KNode _createFsmSkeleton(KNode root) {
+        
+        _fsmInputOutput = KimlUtil.createInitializedNode();
+        _fsmInputOutput.getData(KShapeLayout.class).setPos(0, 0);
+        _fsmInputOutput.getData(KLayoutData.class)
+                .setProperty(LayoutOptions.SEPARATE_CC, false);
+        _fsmInputOutput.getData(KLayoutData.class).setProperty(Properties.CROSS_MIN,
+                CrossingMinimizationStrategy.INTERACTIVE);
+        _fsmInputOutput.getData(KLayoutData.class)
+            .setProperty(LayoutOptions.DIRECTION, Direction.DOWN);
+        
+        _fsmInput = KimlUtil.createInitializedNode();
+        _fsmInput.getData(KLayoutData.class)
+                .setProperty(LayoutOptions.SEPARATE_CC, false);
+        _fsmInput.getData(KLayoutData.class).setProperty(Properties.CROSS_MIN,
+                CrossingMinimizationStrategy.INTERACTIVE);
+
+        _fsmOutput = KimlUtil.createInitializedNode();
+        _fsmOutput.getData(KLayoutData.class)
+                .setProperty(LayoutOptions.SEPARATE_CC, false);
+        _fsmOutput.getData(KLayoutData.class).setProperty(Properties.CROSS_MIN,
+                CrossingMinimizationStrategy.INTERACTIVE);
+
+        KNode newRoot = KimlUtil.createInitializedNode();
+        newRoot.getData(KShapeLayout.class).setPos(0, 100);
+        
+        // add the skeleton to the root node
+        root.getChildren().add(_fsmInputOutput);
+        root.getChildren().add(_fsmInput);
+        root.getChildren().add(_fsmOutput);
+        root.getChildren().add(newRoot);
+        
+        // add edges to guarantee proper placement
+        KEdge dummyEdge = KimlUtil.createInitializedEdge();
+        dummyEdge.setSource(_fsmInput);
+        dummyEdge.setTarget(newRoot);
+        dummyEdge = KimlUtil.createInitializedEdge();
+        dummyEdge.setSource(_fsmInput);
+        dummyEdge.setTarget(_fsmInputOutput);
+        dummyEdge = KimlUtil.createInitializedEdge();
+        dummyEdge.setSource(newRoot);
+        dummyEdge.setTarget(_fsmOutput);
+        // this edge is necessary to center the input outputs
+        dummyEdge = KimlUtil.createInitializedEdge();
+        dummyEdge.setSource(_fsmInputOutput);
+        dummyEdge.setTarget(_fsmOutput);
+        
+        KLayoutData rootLayout = root.getData(KLayoutData.class);
+        // assure that the inputoutput port container is placed above the actual diagram
+        rootLayout.setProperty(Properties.CROSS_MIN,
+                CrossingMinimizationStrategy.INTERACTIVE);
+        // balanced positioning
+        rootLayout.setProperty(Properties.NODE_PLACER,
+                NodePlacementStrategy.SIMPLE);
+
+        return newRoot;
+    }
+    
     /**
      * Create a KIELER edge for a Ptolemy Diva edge object. The KEdge will be
      * setup between either two ports or relation vertices or mixed. Hence the
@@ -735,6 +957,9 @@ public class KielerLayout extends AbstractGlobalLayout {
                 .setYpos((edgeLayout.getSourcePoint().getY() + edgeLayout
                         .getTargetPoint().getY()) / 2);
                 kedge.getLabels().add(label);
+                
+                // remember it
+                _divaLabel.put(label, labelFigure);
             }
         }
     }
@@ -747,12 +972,12 @@ public class KielerLayout extends AbstractGlobalLayout {
      * @param attribute the attribute for which to create a dummy edge
      */
     private void _createKEdgeForAttribute(NamedObj attribute) {
-        Locatable source = PtolemyModelUtil._getLocation(attribute);
+        Locatable source = KielerLayoutUtil.getLocation(attribute);
         if (source instanceof RelativeLocation) {
             NamedObj referenceObj = PtolemyModelUtil
                     ._getReferencedObj((RelativeLocation) source);
             if (referenceObj != null) {
-                Locatable target = PtolemyModelUtil._getLocation(referenceObj);
+                Locatable target = KielerLayoutUtil.getLocation(referenceObj);
                 KNode sourceNode = _kieler2ptolemyDivaNodes.inverse().get(
                         source);
                 KNode targetNode = _kieler2ptolemyDivaNodes.inverse().get(
@@ -832,14 +1057,14 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT,
-                SizeConstraint.FIXED);
+               SizeConstraint.fixed());
         if (semanticNode instanceof Attribute) {
             nodeLayout.setProperty(LayoutOptions.COMMENT_BOX, true);
         } else {
             nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                     PortConstraints.FIXED_POS);
         }
-
+        
         // set the node label
         KLabel label = KimlUtil.createInitializedLabel(knode);
         label.setText(semanticNode.getDisplayName());
@@ -879,6 +1104,21 @@ public class KielerLayout extends AbstractGlobalLayout {
         layout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                 PortConstraints.FIXED_POS);
 
+        // Add ports of state diagrams to designated containers to pool them
+        if (_graphModel instanceof FSMGraphModel && port instanceof TypedIOPort) {
+            boolean isInput = ((TypedIOPort) port).isInput();
+            boolean isOutput = ((TypedIOPort) port).isOutput();
+            knode.getData(KLayoutData.class).setProperty(
+                    LayoutOptions.ALIGNMENT, Alignment.LEFT);
+            if (isInput && !isOutput) {
+                knode.setParent(_fsmInput);
+            } else if (isOutput && !isInput) {
+                knode.setParent(_fsmOutput);
+            } else {
+                knode.setParent(_fsmInputOutput);
+            }
+        }
+
         Rectangle2D figureBounds = getLayoutTarget().getBounds(divaLocation);
         Rectangle2D shapeBounds = figureBounds;
         // Try to find more specific bounds of the shape that do not include the name label.
@@ -891,7 +1131,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         layout.setHeight((float) figureBounds.getHeight()
                 + INNER_PORT_HEIGHT_OFFSET);
         layout.setWidth((float) figureBounds.getWidth());
-        layout.setProperty(LayoutOptions.SIZE_CONSTRAINT, SizeConstraint.FIXED);
+        layout.setProperty(LayoutOptions.SIZE_CONSTRAINT, SizeConstraint.fixed());
         layout.setXpos((float) figureBounds.getMinX());
         layout.setYpos((float) figureBounds.getMinY());
 
@@ -952,7 +1192,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT,
-                SizeConstraint.FIXED);
+                SizeConstraint.fixed());
         nodeLayout.setProperty(LayoutOptions.HYPERNODE, true);
         return knode;
     }
@@ -973,10 +1213,22 @@ public class KielerLayout extends AbstractGlobalLayout {
         nodeLayout.setXpos((float) bounds.getMinX());
         nodeLayout.setYpos((float) bounds.getMinY());
         nodeLayout.setProperty(LayoutOptions.SIZE_CONSTRAINT,
-                SizeConstraint.FIXED);
+                SizeConstraint.fixed());
         nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                 PortConstraints.FREE);
 
+        if (PtolemyModelUtil._isInitialState(state)
+                && !PtolemyModelUtil._isFinalState(state)) {
+            nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
+                    LayerConstraint.FIRST);
+        }
+
+        if (!PtolemyModelUtil._isInitialState(state)
+                && PtolemyModelUtil._isFinalState(state)) {
+            nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
+                    LayerConstraint.LAST);
+        }
+        
         KLabel label = KimlUtil.createInitializedLabel(knode);
         label.setText(state.getDisplayName());
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
@@ -1182,7 +1434,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     private void _kNode2Ptolemy(KVector pos, Object divaNode,
             Locatable locatable) {
-        Point2D location = PtolemyModelUtil._getLocationPoint(locatable);
+        Point2D location = KielerLayoutUtil.getLocationPoint(locatable);
         if (divaNode != null) {
             Rectangle2D divaBounds;
             if (locatable instanceof RelativeLocation) {
@@ -1441,6 +1693,11 @@ public class KielerLayout extends AbstractGlobalLayout {
     private Map<Link, Object> _divaEdgeTarget;
 
     /**
+     * Mapping of KIELER labels to corresponding diva labels.
+     */
+    private Map<KLabel, LabelFigure> _divaLabel;
+    
+    /**
      * List of KIELER edges and corresponding Diva links.
      */
     private List<Pair<KEdge, Link>> _edgeList;
@@ -1460,5 +1717,16 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Pointer to Top in order to report the current status.
      */
     private Top _top;
+    
+    /** The graph model that is about to be laid out. */
+    private GraphModel _graphModel;
+    
+    /** 
+     * When layouting FSMs, we use the following nodes to separate
+     * ports from the actual model.
+     */
+    private KNode _fsmInput;
+    private KNode _fsmOutput;
+    private KNode _fsmInputOutput;
 
 }

@@ -46,7 +46,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
@@ -661,19 +660,6 @@ public class JSAccessor extends JavaScript {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Override the base class so that the name of any port added is
-     *  shown.
-     *  @exception IllegalActionException If the superclass throws it.
-     *  @exception NameDuplicationException If the superclass throws it.
-     */
-    @Override
-    protected void _addPort(TypedIOPort port) throws IllegalActionException,
-            NameDuplicationException {
-        super._addPort(port);
-        SingletonParameter showName = new SingletonParameter(port, "_showName");
-        showName.setExpression("true");
-    }
 
     /** For the given URL specification, attempt to find a local copy of the resource
      *  and return that if it exists. Otherwise, return the URL specified.

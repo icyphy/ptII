@@ -598,7 +598,7 @@
             </property>
             <vertex name="vertex1" value="[190.0, 340.0]">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, tail={id=&quot;Test.input&quot;,x=300.0,y=210.0}, points={} },{ head={id=&quot;FileReader.output&quot;,x=195.0,y=210.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=375.0,y=145.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, points={250.0,145.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, tail={id=&quot;Test.input&quot;,x=300.0,y=210.0}, points={} },{ head={id=&quot;FileReader.output&quot;,x=195.0,y=210.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=375.0,y=145.0}, tail={id=&quot;relation3.vertex1&quot;,x=250.0,y=210.0}, points={250.0,145.0} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">

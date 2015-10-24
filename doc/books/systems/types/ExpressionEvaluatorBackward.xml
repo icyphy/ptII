@@ -58,15 +58,15 @@
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=160.0,y=140.0}, tail={id=&quot;SampleDelay.output&quot;,x=495.0,y=140.0}, points={50.0,130.0,50.0,95.0,610.0,95.0,610.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=160.0,y=140.0}, tail={id=&quot;SampleDelay.output&quot;,x=495.0,y=140.0}, points={50.0,130.0,50.0,95.0,610.0,95.0,610.0,140.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=160.0,y=140.0}, tail={id=&quot;ExpressionToToken.input&quot;,x=280.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=160.0,y=140.0}, tail={id=&quot;ExpressionToToken.input&quot;,x=280.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=495.0,y=140.0}, tail={id=&quot;ExpressionToToken.output&quot;,x=280.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=495.0,y=140.0}, tail={id=&quot;ExpressionToToken.output&quot;,x=280.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <link port="InteractiveShell.input" relation="relation4"/>
