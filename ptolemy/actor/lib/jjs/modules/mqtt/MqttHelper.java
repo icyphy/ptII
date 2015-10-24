@@ -208,7 +208,7 @@ public class MqttHelper {
      */
     public static String getDefaultId() {
         byte[] idBytes = new byte[8];
-        new Random().nextBytes(idBytes);
+        _random.nextBytes(idBytes);
         String newId = "mqttpt_"
                 + javax.xml.bind.DatatypeConverter.printHexBinary(idBytes);
         return newId;
@@ -224,6 +224,9 @@ public class MqttHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
+
+    /** Share the Random object. */
+    private static Random _random = new Random();
 
     /** Instance of the current JavaScript engine. */
     private static ScriptEngine _engine;
