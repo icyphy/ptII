@@ -15,7 +15,7 @@
  * @version $Id$
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
-
+ 
 // Java types used.
 var HttpClientHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper');
 var URL = Java.type('java.net.URL'); // FIXME: eventually, have a url module for this
@@ -57,7 +57,8 @@ var EventEmitter = require('events').EventEmitter;
  *       </ul>
  *  </ul>
  *  @param options The options or URL.
- *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
  *  @return An instance of ClientRequest.
  */
 exports.request = function(options, responseCallback) {
@@ -96,10 +97,11 @@ exports.request = function(options, responseCallback) {
  *  by request() (an instance of ClientRequest). See request() for documentation of
  *  the arguments.
  *  @param options The options.
- *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
  */
-exports.get = function(options, reponseCallback) {
-  var request = exports.request(options, reponseCallback);
+exports.get = function(options, responseCallback) {
+  var request = exports.request(options, responseCallback);
   request.end();
   return request;
 };
@@ -117,12 +119,13 @@ exports.get = function(options, reponseCallback) {
 // Event: 'unpipe'
 // Event: 'error'
 
-/** The object type returned by the request function.
+/** Constructor for the object type returned by the request() function.
  *  This object type provides the following functions:
  *  <ul>
  *  <li> end(): Call this to end the request. </li>
  *  <li> write(''data'', ''encoding''): Write data (e.g. for a POST request). </li>
  *  </ul>
+ *  The request will not be issued until you call end().
  *  See the documentation of the request function for an explanation of the arguments.
  *  This is an event emitter that emits the following events:
  *  <ul>
@@ -132,9 +135,10 @@ exports.get = function(options, reponseCallback) {
  *  </ul>
  *  @constructor
  *  @param options The options.
- *  @param responseCallback The callback function to call with an instance of IncomingMessage.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
  */
-function ClientRequest(options, reponseCallback) {
+function ClientRequest(options, responseCallback) {
   var self = this;
 
   var defaultOptions = {
@@ -185,11 +189,11 @@ function ClientRequest(options, reponseCallback) {
 
   // Attach the callback to be invoked when this object issues
   // a 'response' event.  
-  if (reponseCallback) {
+  if (responseCallback) {
     if (options.outputCompleteResponseOnly) {
-      self.once('response', reponseCallback);
+      self.once('response', responseCallback);
     } else {
-      self.on('response', reponseCallback);
+      self.on('response', responseCallback);
     }
   }
   
@@ -207,15 +211,16 @@ function ClientRequest(options, reponseCallback) {
   }
   
   console.log("Making an HTTP request: " + JSON.stringify(options));
-
-  this.helper = HttpClientHelper.createHttpClient(this, options);
+  
+  this.helper = HttpClientHelper.getOrCreateHelper(actor);
+  this.options = options;
 }
 util.inherits(ClientRequest, EventEmitter);
 exports.ClientRequest = ClientRequest;
 
-/** End a request. */
+/** Issue the request. */
 ClientRequest.prototype.end = function() {
-  this.helper.end();
+  this.helper.request(this, this.options);
 };
 
 /** Stop a response, if there is one active. This is useful if a streaming response
@@ -290,7 +295,6 @@ ClientRequest.prototype._response = function(response, body) {
  *  <li> statusCode: an integer indicating the status of the response. </li>
  *  <li> statusMessage: a string with the status message of the response. </li>
  *  </ul>
- *  FIXME: At this time, only UTF-8-encoded string bodies are supported.
  *  @constructor
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */

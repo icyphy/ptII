@@ -52,7 +52,8 @@ JSRCS = \
 	HelperBase.java \
 	JavaScript.java \
 	JSUtils.java \
-	RestrictedJavaScriptInterface.java
+	RestrictedJavaScriptInterface.java \
+	VertxHelperBase.java
 
 OTHER_FILES_TO_BE_JARED = \
 	basicFunctions.js \
