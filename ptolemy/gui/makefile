@@ -139,6 +139,8 @@ OPTIONAL_FILES = \
 	'SwingWorker$$1.class' \
 	'SwingWorker$$2.class' \
 	'SwingWorker$$ThreadVar.class' \
+	'Top$$1$$1.class' \
+	'Top$$1.class' \
 	'Top$$CenterOnScreenRunnable.class' \
 	'Top$$CloseWindowAdapter.class' \
 	'Top$$CloseWindowRunnable.class' \

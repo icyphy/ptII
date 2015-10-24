@@ -171,7 +171,7 @@
         </vertex>
         <property name="color" class="ptolemy.actor.gui.ColorAttribute">
         </property>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=215.0,y=405.0}, points={} },{ head={id=&quot;stepCounterExtendedFMI2.output&quot;,x=5.0,y=405.0}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=195.0,y=470.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, points={145.0,465.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=215.0,y=405.0}, points={} },{ head={id=&quot;stepCounterExtendedFMI2.output&quot;,x=5.0,y=405.0}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=195.0,y=470.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=405.0}, points={145.0,465.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -179,15 +179,15 @@
         </property>
         <vertex name="vertex1" value="{145.0, 540.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=160.0,y=530.0}, tail={id=&quot;Test.input&quot;,x=220.0,y=385.0,index=2}, points={160.0,385.0} },{ head={id=&quot;relation3.vertex1&quot;,x=160.0,y=530.0}, tail={id=&quot;Test2.input&quot;,x=345.0,y=530.0,index=2}, points={} },{ head={id=&quot;stepCounterExtendedFMI.output&quot;,x=10.0,y=540.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=195.0,y=470.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, points={145.0,470.0} },{ head={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, tail={id=&quot;Test3.input&quot;,x=195.0,y=605.0}, points={145.0,605.0} },{ head={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, tail={id=&quot;CurrentTime2.trigger&quot;,x=210.0,y=540.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=160.0,y=530.0}, tail={id=&quot;Test.input&quot;,x=220.0,y=385.0,index=2}, points={160.0,385.0} },{ head={id=&quot;relation3.vertex1&quot;,x=160.0,y=530.0}, tail={id=&quot;Test2.input&quot;,x=345.0,y=530.0,index=2}, points={} },{ head={id=&quot;stepCounterExtendedFMI.output&quot;,x=10.0,y=540.0}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, points={} },{ head={id=&quot;TimedPlotter.input&quot;,x=195.0,y=470.0,index=2}, tail={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, points={145.0,470.0} },{ head={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, tail={id=&quot;Test3.input&quot;,x=195.0,y=605.0}, points={145.0,605.0} },{ head={id=&quot;relation3.vertex1&quot;,x=145.0,y=540.0}, tail={id=&quot;CurrentTime2.trigger&quot;,x=210.0,y=540.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=215.0,y=405.0}, tail={id=&quot;Test4.input&quot;,x=320.0,y=405.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=215.0,y=405.0}, tail={id=&quot;Test4.input&quot;,x=320.0,y=405.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime2.output&quot;,x=210.0,y=540.0}, tail={id=&quot;Test2.input&quot;,x=320.0,y=540.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime2.output&quot;,x=210.0,y=540.0}, tail={id=&quot;Test2.input&quot;,x=320.0,y=540.0}, points={} } }">
         </property>
     </relation>
     <link port="Test.input" relation="relation2"/>

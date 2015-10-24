@@ -143,15 +143,15 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;alpha._location&quot;,x=220.0,y=265.0}, tail={id=&quot;HlaSubscriber3.output&quot;,x=90.0,y=265.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;alpha._location&quot;,x=220.0,y=265.0}, tail={id=&quot;HlaSubscriber3.output&quot;,x=90.0,y=265.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;stick._location&quot;,x=215.0,y=195.0}, tail={id=&quot;HlaSubscriber2.output&quot;,x=90.0,y=195.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;stick._location&quot;,x=215.0,y=195.0}, tail={id=&quot;HlaSubscriber2.output&quot;,x=90.0,y=195.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;q._location&quot;,x=190.0,y=125.0}, tail={id=&quot;HlaSubscriber.output&quot;,x=90.0,y=125.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;q._location&quot;,x=190.0,y=125.0}, tail={id=&quot;HlaSubscriber.output&quot;,x=90.0,y=125.0}, points={} } }">
             </property>
         </relation>
         <link port="stick" relation="relation2"/>

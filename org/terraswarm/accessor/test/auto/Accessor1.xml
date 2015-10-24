@@ -255,7 +255,7 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=285.0}, tail={id=&quot;Const2.trigger&quot;,x=175.0,y=285.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=285.0}, tail={id=&quot;Const2.trigger&quot;,x=175.0,y=285.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -263,7 +263,7 @@
         </property>
         <vertex name="vertex1" value="{585.0, 295.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=585.0,y=295.0}, tail={id=&quot;Accessor.stringInputWithoutValue&quot;,x=715.0,y=200.0}, points={585.0,210.0} },{ head={id=&quot;Test3.input&quot;,x=635.0,y=295.0}, tail={id=&quot;relation6.vertex1&quot;,x=585.0,y=295.0}, points={} },{ head={id=&quot;Accessor2.stringOutputWithoutValue&quot;,x=330.0,y=285.0}, tail={id=&quot;relation6.vertex1&quot;,x=585.0,y=295.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=585.0,y=295.0}, tail={id=&quot;Accessor.stringInputWithoutValue&quot;,x=715.0,y=200.0}, points={585.0,210.0} },{ head={id=&quot;Test3.input&quot;,x=635.0,y=295.0}, tail={id=&quot;relation6.vertex1&quot;,x=585.0,y=295.0}, points={} },{ head={id=&quot;Accessor2.stringOutputWithoutValue&quot;,x=330.0,y=285.0}, tail={id=&quot;relation6.vertex1&quot;,x=585.0,y=295.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

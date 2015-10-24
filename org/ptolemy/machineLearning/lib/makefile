@@ -50,6 +50,7 @@ PTPACKAGE = lib
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+        AFTEDiscriminant.java \
 	AFTEFast.java
 
 OTHER_FILES_TO_BE_JARED =
@@ -64,6 +65,9 @@ MISC_FILES = #test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = demo test \
+	'AFTEDiscriminant$$FFTWorker.class' \
+	'AFTEDiscriminant$$GammatoneFilter.class' \
+	'AFTEFast$$FFTWorker.class' \
 	'AFTEFast$$GammatoneFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

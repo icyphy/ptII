@@ -149,8 +149,9 @@ PTII_TOPDIR=	.cshrc \
 		thales \
 		util \
 		vergil.jnlp.in \
-		vergilCyPhySim.jnlp.in \
 		vergilBCVTB.jnlp.in \
+		vergilCapeCode.jnlp.in \
+		vergilCyPhySim.jnlp.in \
 		vergilDSP.jnlp.in \
 		vergilHyVisual.jnlp.in \
 		vergilPtiny.jnlp.in \

@@ -118,15 +118,11 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     </property>
     <port name="stringInput" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
     <port name="numericInput" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-        </property>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>

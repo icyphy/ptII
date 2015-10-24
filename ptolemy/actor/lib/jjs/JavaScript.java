@@ -54,9 +54,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.conversions.json.TokenToJSON;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -72,6 +74,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -404,6 +407,7 @@ public class JavaScript extends TypedAtomicActor {
         cardinal.setExpression("SOUTH");
         SingletonParameter showName = new SingletonParameter(error, "_showName");
         showName.setExpression("true");
+        showName.setPersistent(false);
 
         // Create the script parameter and input port.
         script = new PortParameter(this, "script");
@@ -418,6 +422,7 @@ public class JavaScript extends TypedAtomicActor {
         cardinal.setExpression("SOUTH");
         showName = new SingletonParameter(scriptIn, "_showName");
         showName.setExpression("true");
+        showName.setPersistent(false);
 
         // initialize the script to provide an empty template:
         script.setToken(_INITIAL_SCRIPT);
@@ -903,6 +908,7 @@ public class JavaScript extends TypedAtomicActor {
      *  classpath of the current Java process.
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
+     *  @return The resource
      *  @throws IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
@@ -940,15 +946,22 @@ public class JavaScript extends TypedAtomicActor {
         
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
-            BufferedReader in = new BufferedReader(new InputStreamReader(
+            BufferedReader in = null;
+            try {
+                in = new BufferedReader(new InputStreamReader(
                     url.openStream()));
-            StringBuffer contents = new StringBuffer();
-            String input;
-            while ((input = in.readLine()) != null) {
-                contents.append(input);
-                contents.append("\n");
+                StringBuffer contents = new StringBuffer();
+                String input;
+                while ((input = in.readLine()) != null) {
+                    contents.append(input);
+                    contents.append("\n");
+                }
+                return contents.toString();
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
             }
-            return contents.toString();
 
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "Failed to read URI: " + uri);
@@ -1121,6 +1134,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
+        
         if (options instanceof Map) {
             Object type = ((Map) options).get("type");
             if (type instanceof String) {
@@ -1156,6 +1170,48 @@ public class JavaScript extends TypedAtomicActor {
                             "Unsupported value: " + value);
                 }
             }
+            Object visibility = ((Map) options).get("visibility");
+            if (visibility instanceof String) {
+                String generic = ((String) visibility).trim().toLowerCase();
+                boolean hide = false;
+
+                switch (generic) {
+                case "none":
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.NONE);
+                    }
+                    hide = true;
+                    break;
+                case "expert":
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.EXPERT);
+                    }
+                    hide = true;
+                    break;
+                case "noteditable":
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.NOT_EDITABLE);
+                    }
+                    hide = true;
+                    break;
+                default:
+                    // Assume "full".
+                    if (parameter != null) {
+                        parameter.setVisibility(Settable.FULL);
+                    }
+                    if (port != null) {
+                        Attribute hideParam = port.getAttribute("_hide");
+                        if (hideParam != null) {
+                            hideParam.setContainer(null);
+                        }
+                    }
+                }
+                if (hide && port != null) {
+                    SingletonParameter hideParam = new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                    // Prevent export.
+                    hideParam.setPersistent(false);
+                }
+            }
         }
         // Make sure to do this after setting the type to catch
         // string mode and type checks.
@@ -1164,6 +1220,11 @@ public class JavaScript extends TypedAtomicActor {
             // the parameter already has a value that is an override,
             // in which case, allow that to prevail by doing nothing here.
             if (token != null && !parameter.isOverridden()) {
+                if (parameter.getAttribute("_JSON") != null && !(token instanceof StringToken)) {
+                    // Attempt to convert the token to a JSON string.
+                    String json = TokenToJSON.constructJSON((Token)token);
+                    token = new StringToken(json);
+                }
                 parameter.setToken((Token) token);
                 // Indicate that this parameter is defined as part of the class definition
                 // of the container.
@@ -1368,9 +1429,6 @@ public class JavaScript extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "Must specify a name to create a parameter.");
         }
-        if (name.equals("throttleFactor")) {
-            System.out.println("FIXME");
-        }
 
         Attribute parameter = getAttribute(name);
         if (parameter == null) {
@@ -1428,6 +1486,33 @@ public class JavaScript extends TypedAtomicActor {
                 parameter.setDerivedLevel(1);
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
+            }
+
+            Object visibility = ((Map) options).get("visibility");
+            if (visibility instanceof String) {
+                String generic = ((String) visibility).trim().toLowerCase();
+                switch (generic) {
+                case "none":
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.NONE);
+                    }
+                    break;
+                case "expert":
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.EXPERT);
+                    }
+                    break;
+                case "noteditable":
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.NOT_EDITABLE);
+                    }
+                    break;
+                default:
+                    // Assume "full".
+                    if (parameter instanceof Variable) {
+                        ((Variable) parameter).setVisibility(Settable.FULL);
+                    }
+                }
             }
 
             Object description = options.get("description");
@@ -1664,11 +1749,13 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     @Override
-    protected void _addPort(TypedIOPort port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(TypedIOPort port)
+            throws IllegalActionException, NameDuplicationException {
         super._addPort(port);
         SingletonParameter showName = new SingletonParameter(port, "_showName");
         showName.setExpression("true");
+        // Prevent export.
+        showName.setPersistent(false);
     }
 
     /** Check the validity of a name. This implementation throws an exception
@@ -2024,8 +2111,12 @@ public class JavaScript extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         if (JSONmode) {
             // Put in a hint that the string value needs to be JSON.
-            SingletonAttribute mark = new SingletonAttribute(typeable, "_JSON");
-            mark.setPersistent(false);
+            /* SingletonAttribute mark = */ new SingletonAttribute(typeable, "_JSON");
+            // Do not make this non-persistent, so when the model is saved and then
+            // re-opened, it will give an error that it cannot evaluate the value
+            // because it does not know to interpret it as an arbitrary string rather
+            // an expression.
+            // mark.setPersistent(false);
             if (typeable instanceof PortParameter) {
                 _markJSONmode(((PortParameter)typeable).getPort(), true);
             }
@@ -2143,7 +2234,13 @@ public class JavaScript extends TypedAtomicActor {
             /** The following doesn't work. Not persistent.
             parameter.setStringMode(true);
             */
-            new SingletonAttribute(parameter, "_stringMode");
+            /* SingletonAttribute mark = */ new SingletonAttribute(parameter, "_stringMode");
+            // Mark this implied; otherwise it's existence forces moml export.
+            // NO! This makes it non-persistent, so when the model is saved and then
+            // re-opened, it will give an error that it cannot evaluate the value
+            // because it does not know to interpret it as an arbitrary string rather
+            // an expression.
+            // mark.setDerivedLevel(1);
             _markJSONmode(parameter, JSONmode);
         }
     }

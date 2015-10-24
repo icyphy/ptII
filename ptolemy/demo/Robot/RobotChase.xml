@@ -229,21 +229,21 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=1225.0,y=-270.0}, tail={id=&quot;Team.remove&quot;,x=1340.0,y=-280.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=1225.0,y=-270.0}, tail={id=&quot;Team.remove&quot;,x=1340.0,y=-280.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=1425.0,y=-280.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=1540.0,y=-280.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.output&quot;,x=1425.0,y=-280.0}, tail={id=&quot;RemoveNilTokens.input&quot;,x=1540.0,y=-280.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=1425.0,y=-280.0}, tail={id=&quot;Team.result&quot;,x=1340.0,y=-280.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=1425.0,y=-280.0}, tail={id=&quot;Team.result&quot;,x=1340.0,y=-280.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1650.0,y=-280.0}, tail={id=&quot;RemoveNilTokens.output&quot;,x=1540.0,y=-280.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1650.0,y=-280.0}, tail={id=&quot;RemoveNilTokens.output&quot;,x=1540.0,y=-280.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -519,19 +519,19 @@
             </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=415.0,y=0.0}, tail={id=&quot;Merge.input&quot;,x=500.0,y=65.0,index=2}, points={465.0,0.0,465.0,60.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=415.0,y=0.0}, tail={id=&quot;Merge.input&quot;,x=500.0,y=65.0,index=2}, points={465.0,0.0,465.0,60.0} } }">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=500.0,y=65.0,index=2}, tail={id=&quot;TimeDelay.output&quot;,x=415.0,y=65.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=500.0,y=65.0,index=2}, tail={id=&quot;TimeDelay.output&quot;,x=415.0,y=65.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=310.0,y=65.0}, tail={id=&quot;TimeDelay.input&quot;,x=415.0,y=65.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AddSubtract.output&quot;,x=310.0,y=65.0}, tail={id=&quot;TimeDelay.input&quot;,x=415.0,y=65.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;intruderPosition._location&quot;,x=-285.0,y=40.0}, tail={id=&quot;control.in&quot;,x=50.0,y=50.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;intruderPosition._location&quot;,x=-285.0,y=40.0}, tail={id=&quot;control.in&quot;,x=50.0,y=50.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -539,11 +539,11 @@
             </property>
             <vertex name="vertex1" value="{-195.0, 170.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, tail={id=&quot;control.currentPosition&quot;,x=50.0,y=50.0}, points={-195.0,60.0} },{ head={id=&quot;Merge.output&quot;,x=500.0,y=65.0}, tail={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, points={535.0,65.0,535.0,170.0} },{ head={id=&quot;AddSubtract.plus&quot;,x=310.0,y=65.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, points={265.0,55.0,265.0,170.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, tail={id=&quot;control.currentPosition&quot;,x=50.0,y=50.0}, points={-195.0,60.0} },{ head={id=&quot;Merge.output&quot;,x=500.0,y=65.0}, tail={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, points={535.0,65.0,535.0,170.0} },{ head={id=&quot;AddSubtract.plus&quot;,x=310.0,y=65.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=-195.0,y=170.0}, points={265.0,55.0,265.0,170.0} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;AddSubtract.plus&quot;,x=310.0,y=65.0,index=2}, tail={id=&quot;control.output&quot;,x=50.0,y=50.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AddSubtract.plus&quot;,x=310.0,y=65.0,index=2}, tail={id=&quot;control.output&quot;,x=50.0,y=50.0}, points={} } }">
             </property>
         </relation>
         <link port="robotPosition" relation="relation2"/>
@@ -646,11 +646,11 @@
         </property>
         <vertex name="vertex1" value="{555.0, -235.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Robot.robotPosition&quot;,x=305.0,y=-235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=-235.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=635.0,y=-235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=-235.0}, points={} },{ head={id=&quot;TokenToJSON.input&quot;,x=600.0,y=-85.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=-235.0}, points={555.0,-85.0} },{ head={id=&quot;.PFPlots.port_0&quot;,x=900.0,y=-170.0}, tail={id=&quot;relation3.vertex1&quot;,x=-210.0,y=-30.0}, points={-210.0,-180.0} },{ head={id=&quot;.ParticleFilterRange.observerPosition&quot;,x=735.0,y=-110.0}, tail={id=&quot;relation3.vertex1&quot;,x=-210.0,y=-30.0}, points={610.0,-120.0,610.0,-180.0,-210.0,-180.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Robot.robotPosition&quot;,x=305.0,y=-235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=-235.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=635.0,y=-235.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=-235.0}, points={} },{ head={id=&quot;TokenToJSON.input&quot;,x=600.0,y=-85.0}, tail={id=&quot;relation3.vertex1&quot;,x=555.0,y=-235.0}, points={555.0,-85.0} },{ head={id=&quot;.PFPlots.port_0&quot;,x=900.0,y=-170.0}, tail={id=&quot;relation3.vertex1&quot;,x=-210.0,y=-30.0}, points={-210.0,-180.0} },{ head={id=&quot;.ParticleFilterRange.observerPosition&quot;,x=735.0,y=-110.0}, tail={id=&quot;relation3.vertex1&quot;,x=-210.0,y=-30.0}, points={610.0,-120.0,610.0,-180.0,-210.0,-180.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.key&quot;,x=780.0,y=-225.0}, tail={id=&quot;Const.output&quot;,x=635.0,y=-235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.key&quot;,x=780.0,y=-225.0}, tail={id=&quot;Const.output&quot;,x=635.0,y=-235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -660,39 +660,39 @@
         </property>
         <vertex name="vertex1" value="{1100.0, -310.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.trigger&quot;,x=1175.0,y=-240.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={1100.0,-240.0} },{ head={id=&quot;Team2.trigger&quot;,x=1175.0,y=-175.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={1100.0,-175.0} },{ head={id=&quot;Team0.trigger&quot;,x=1175.0,y=-310.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={} },{ head={id=&quot;Team3.trigger&quot;,x=1175.0,y=-5.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={1100.0,-5.0} },{ head={id=&quot;Intruder.trigger&quot;,x=-145.0,y=-230.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={-220.0,-230.0,-220.0,-310.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team1.trigger&quot;,x=1175.0,y=-240.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={1100.0,-240.0} },{ head={id=&quot;Team2.trigger&quot;,x=1175.0,y=-175.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={1100.0,-175.0} },{ head={id=&quot;Team0.trigger&quot;,x=1175.0,y=-310.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={} },{ head={id=&quot;Team3.trigger&quot;,x=1175.0,y=-5.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={1100.0,-5.0} },{ head={id=&quot;Intruder.trigger&quot;,x=-145.0,y=-230.0}, tail={id=&quot;relation4.vertex1&quot;,x=1100.0,y=-310.0}, points={-220.0,-230.0,-220.0,-310.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.x&quot;,x=1175.0,y=-310.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={1290.0,-320.0,1290.0,-195.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team0.x&quot;,x=1175.0,y=-310.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={1290.0,-320.0,1290.0,-195.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team0.y&quot;,x=1175.0,y=-310.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={1275.0,-300.0,1275.0,-175.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team0.y&quot;,x=1175.0,y=-310.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={1275.0,-300.0,1275.0,-175.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.x&quot;,x=1175.0,y=-240.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={1245.0,-250.0,1245.0,-190.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team1.x&quot;,x=1175.0,y=-240.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={1245.0,-250.0,1245.0,-190.0} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team1.y&quot;,x=1175.0,y=-240.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={1230.0,-230.0,1230.0,-170.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team1.y&quot;,x=1175.0,y=-240.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={1230.0,-230.0,1230.0,-170.0} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.x&quot;,x=1175.0,y=-175.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team2.x&quot;,x=1175.0,y=-175.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={} } }">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team2.y&quot;,x=1175.0,y=-175.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team2.y&quot;,x=1175.0,y=-175.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.x&quot;,x=1175.0,y=-5.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={1260.0,-15.0,1260.0,-180.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team3.x&quot;,x=1175.0,y=-5.0}, tail={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, points={1260.0,-15.0,1260.0,-180.0} } }">
         </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Team3.y&quot;,x=1175.0,y=-5.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={1275.0,5.0,1275.0,-160.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Team3.y&quot;,x=1175.0,y=-5.0}, tail={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, points={1275.0,5.0,1275.0,-160.0} } }">
         </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
@@ -700,7 +700,7 @@
         </property>
         <vertex name="vertex1" value="{-55.0, -240.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation16.vertex1&quot;,x=-55.0,y=-240.0}, tail={id=&quot;ElementsToArray.input&quot;,x=-15.0,y=-235.0,index=2}, points={} },{ head={id=&quot;Intruder.x&quot;,x=-145.0,y=-230.0}, tail={id=&quot;relation16.vertex1&quot;,x=-55.0,y=-240.0}, points={} },{ head={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, tail={id=&quot;relation16.vertex1&quot;,x=-55.0,y=-240.0}, points={1245.0,-175.0,1245.0,-50.0,-55.0,-50.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation16.vertex1&quot;,x=-55.0,y=-240.0}, tail={id=&quot;ElementsToArray.input&quot;,x=-15.0,y=-235.0,index=2}, points={} },{ head={id=&quot;Intruder.x&quot;,x=-145.0,y=-230.0}, tail={id=&quot;relation16.vertex1&quot;,x=-55.0,y=-240.0}, points={} },{ head={id=&quot;XYPlotter.inputX&quot;,x=1350.0,y=-165.0,index=5}, tail={id=&quot;relation16.vertex1&quot;,x=-55.0,y=-240.0}, points={1245.0,-175.0,1245.0,-50.0,-55.0,-50.0} } }">
         </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
@@ -708,15 +708,15 @@
         </property>
         <vertex name="vertex1" value="{-70.0, 40.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation14.vertex1&quot;,x=-70.0,y=40.0}, tail={id=&quot;ElementsToArray.input&quot;,x=-15.0,y=-235.0,index=2}, points={-70.0,-235.0} },{ head={id=&quot;Intruder.y&quot;,x=-145.0,y=-230.0}, tail={id=&quot;relation14.vertex1&quot;,x=-70.0,y=40.0}, points={-90.0,-220.0,-90.0,40.0} },{ head={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, tail={id=&quot;relation14.vertex1&quot;,x=-70.0,y=40.0}, points={1290.0,-155.0,1290.0,40.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation14.vertex1&quot;,x=-70.0,y=40.0}, tail={id=&quot;ElementsToArray.input&quot;,x=-15.0,y=-235.0,index=2}, points={-70.0,-235.0} },{ head={id=&quot;Intruder.y&quot;,x=-145.0,y=-230.0}, tail={id=&quot;relation14.vertex1&quot;,x=-70.0,y=40.0}, points={-90.0,-220.0,-90.0,40.0} },{ head={id=&quot;XYPlotter.inputY&quot;,x=1350.0,y=-165.0,index=5}, tail={id=&quot;relation14.vertex1&quot;,x=-70.0,y=40.0}, points={1290.0,-155.0,1290.0,40.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ElementsToArray.output&quot;,x=-15.0,y=-235.0}, tail={id=&quot;Robot.intruderPosition&quot;,x=305.0,y=-235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ElementsToArray.output&quot;,x=-15.0,y=-235.0}, tail={id=&quot;Robot.intruderPosition&quot;,x=305.0,y=-235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=780.0,y=-225.0}, tail={id=&quot;TokenToJSON.output&quot;,x=600.0,y=-85.0}, points={690.0,-205.0,690.0,-85.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=780.0,y=-225.0}, tail={id=&quot;TokenToJSON.output&quot;,x=600.0,y=-85.0}, points={690.0,-205.0,690.0,-85.0} } }">
         </property>
     </relation>
     <link port="KeyValueStore.key" relation="relation"/>

@@ -90,7 +90,7 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;inc20pt.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20pt.input&quot;,x=205.0,y=310.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;inc20pt.counter&quot;,x=100.0,y=310.0}, tail={id=&quot;scale20pt.input&quot;,x=205.0,y=310.0}, points={} } }">
         </property>
     </relation>
     <link port="inc20pt.counter" relation="relation"/>

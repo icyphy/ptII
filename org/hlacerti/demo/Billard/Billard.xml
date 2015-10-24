@@ -4,13 +4,13 @@
 <entity name="Billard" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1345, 538}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1111, 428]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.133767428763934">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{681.5, 375.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{580.54931640625, 201.52279798904405}">
     </property>
     <property name="Director" class="ptolemy.actor.Director">
         <doc>Simple director that executes actors in the order in which they were created.</doc>
@@ -68,7 +68,7 @@
         </property>
         <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 150.0]">
         </property>
     </entity>
     <entity name="PoolTable" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -90,7 +90,7 @@
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 310.0]">
         </property>
     </entity>
 </entity>

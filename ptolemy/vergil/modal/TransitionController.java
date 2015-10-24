@@ -174,7 +174,8 @@ public class TransitionController extends BasicEdgeController {
         /** Render a visual representation of the given edge. */
         @Override
         public Connector render(Object edge, Site tailSite, Site headSite) {
-            ArcConnector c = new ArcConnector(tailSite, headSite);
+            
+            ArcConnector c = new KielerLayoutArcConnector(tailSite, headSite);
             c.setLineWidth((float) 2.0);
             c.setUserObject(edge);
 

@@ -137,7 +137,7 @@
                 </property>
                 <vertex name="vertex1" value="{255.0, 255.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=60.0,y=180.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=190.0}, points={} },{ head={id=&quot;.TimedPlotter.input&quot;,x=295.0,y=115.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=190.0}, points={255.0,115.0} },{ head={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, tail={id=&quot;Test.input&quot;,x=305.0,y=175.0}, points={255.0,175.0} },{ head={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=315.0,y=110.0}, points={255.0,110.0} },{ head={id=&quot;Ramp.output&quot;,x=195.0,y=255.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, points={} },{ head={id=&quot;Merge.input&quot;,x=310.0,y=260.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=60.0,y=180.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=190.0}, points={} },{ head={id=&quot;.TimedPlotter.input&quot;,x=295.0,y=115.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=190.0}, points={255.0,115.0} },{ head={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, tail={id=&quot;Test.input&quot;,x=305.0,y=175.0}, points={255.0,175.0} },{ head={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=315.0,y=110.0}, points={255.0,110.0} },{ head={id=&quot;Ramp.output&quot;,x=195.0,y=255.0}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, points={} },{ head={id=&quot;Merge.input&quot;,x=310.0,y=260.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=255.0,y=255.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -145,23 +145,23 @@
                 </property>
                 <vertex name="vertex1" value="{255.0, 320.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Sampler.trigger&quot;,x=420.0,y=260.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=320.0}, points={420.0,320.0} },{ head={id=&quot;Merge.input&quot;,x=310.0,y=260.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=320.0}, points={255.0,260.0} },{ head={id=&quot;in._location&quot;,x=220.0,y=320.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=320.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Sampler.trigger&quot;,x=420.0,y=260.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=320.0}, points={420.0,320.0} },{ head={id=&quot;Merge.input&quot;,x=310.0,y=260.0,index=2}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=320.0}, points={255.0,260.0} },{ head={id=&quot;in._location&quot;,x=220.0,y=320.0}, tail={id=&quot;relation2.vertex1&quot;,x=255.0,y=320.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=310.0,y=260.0}, tail={id=&quot;Sampler.input&quot;,x=420.0,y=260.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=310.0,y=260.0}, tail={id=&quot;Sampler.input&quot;,x=420.0,y=260.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=60.0,y=245.0}, tail={id=&quot;Ramp.trigger&quot;,x=195.0,y=255.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=60.0,y=245.0}, tail={id=&quot;Ramp.trigger&quot;,x=195.0,y=255.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=485.0,y=260.0}, tail={id=&quot;Sampler.output&quot;,x=420.0,y=260.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=485.0,y=260.0}, tail={id=&quot;Sampler.output&quot;,x=420.0,y=260.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=315.0,y=110.0}, tail={id=&quot;Test2.input&quot;,x=420.0,y=110.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=315.0,y=110.0}, tail={id=&quot;Test2.input&quot;,x=420.0,y=110.0}, points={} } }">
                 </property>
             </relation>
             <link port="in" relation="relation2"/>
@@ -203,11 +203,11 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=150.0,y=210.0}, tail={id=&quot;CatchUpComposite.in&quot;,x=240.0,y=210.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.output&quot;,x=150.0,y=210.0}, tail={id=&quot;CatchUpComposite.in&quot;,x=240.0,y=210.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=405.0,y=210.0}, tail={id=&quot;Test2.input&quot;,x=510.0,y=210.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=405.0,y=210.0}, tail={id=&quot;Test2.input&quot;,x=510.0,y=210.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -215,7 +215,7 @@
         </property>
         <vertex name="vertex1" value="{340.0, 210.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=340.0,y=210.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=405.0,y=210.0}, points={} },{ head={id=&quot;CatchUpComposite.out&quot;,x=240.0,y=210.0}, tail={id=&quot;relation4.vertex1&quot;,x=340.0,y=210.0}, points={} },{ head={id=&quot;Test.input&quot;,x=390.0,y=140.0}, tail={id=&quot;relation4.vertex1&quot;,x=340.0,y=210.0}, points={340.0,140.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=340.0,y=210.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=405.0,y=210.0}, points={} },{ head={id=&quot;CatchUpComposite.out&quot;,x=240.0,y=210.0}, tail={id=&quot;relation4.vertex1&quot;,x=340.0,y=210.0}, points={} },{ head={id=&quot;Test.input&quot;,x=390.0,y=140.0}, tail={id=&quot;relation4.vertex1&quot;,x=340.0,y=210.0}, points={340.0,140.0} } }">
         </property>
     </relation>
     <link port="Ramp.output" relation="relation2"/>

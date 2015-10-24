@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Ros.xml \
 	RosPublisher.xml \
 	RosSubscriber.xml \
+	ScarabApriltagHueController.xml \
 	ScarabGoalPublisher.xml \
 	ScarabArrowKeyController.xml \
 	ScarabHueController.xml

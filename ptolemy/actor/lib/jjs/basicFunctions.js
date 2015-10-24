@@ -192,9 +192,17 @@ function readURL(url, timeout) {
     return response.getBody();
 }
 
+var __moduleFile = Java.type('ptolemy.util.FileUtilities').nameToFile(
+        '$CLASSPATH/ptolemy/actor/lib/jjs/', null)
+
 /** A string giving the full path to the root directory for installed modules. */
-var _moduleRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
-        '$CLASSPATH/ptolemy/actor/lib/jjs/', null).getAbsolutePath();
+var _moduleRoot = __moduleFile.getAbsolutePath();
+
+// Check to see if _moduleFile is a Jar URL like
+// 
+if ( _moduleRoot.indexOf("!/") != -1) {
+    _moduleRoot = "jar:" + __moduleFile.toString();
+}
 
 /** An array that gives the search path for modules to be required. */
 var _modulePath = [ _moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/', _moduleRoot + '/node_modules/' ];

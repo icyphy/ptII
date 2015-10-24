@@ -70,7 +70,7 @@
             </property>
         </port>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=35.0,y=315.0}, tail={id=&quot;port._location&quot;,x=-5.0,y=315.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;port2._location&quot;,x=35.0,y=315.0}, tail={id=&quot;port._location&quot;,x=-5.0,y=315.0}, points={} } }">
             </property>
         </relation>
         <link port="port" relation="relation"/>
@@ -502,19 +502,19 @@ drops a each with 20% chance.</text></svg></configure>
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;o1.input&quot;,x=250.0,y=160.0}, tail={id=&quot;PacketDrop.out&quot;,x=180.0,y=160.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;o1.input&quot;,x=250.0,y=160.0}, tail={id=&quot;PacketDrop.out&quot;,x=180.0,y=160.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;i1.output&quot;,x=35.0,y=95.0}, tail={id=&quot;Merge.input&quot;,x=105.0,y=160.0,index=2}, points={65.0,90.0,65.0,155.0} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;i1.output&quot;,x=35.0,y=95.0}, tail={id=&quot;Merge.input&quot;,x=105.0,y=160.0,index=2}, points={65.0,90.0,65.0,155.0} } }">
             </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;i2.output&quot;,x=35.0,y=160.0}, tail={id=&quot;Merge.input&quot;,x=105.0,y=160.0,index=2}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;i2.output&quot;,x=35.0,y=160.0}, tail={id=&quot;Merge.input&quot;,x=105.0,y=160.0,index=2}, points={} } }">
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;PacketDrop.in&quot;,x=180.0,y=160.0}, tail={id=&quot;Merge.output&quot;,x=105.0,y=160.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;PacketDrop.in&quot;,x=180.0,y=160.0}, tail={id=&quot;Merge.output&quot;,x=105.0,y=160.0}, points={} } }">
             </property>
         </relation>
         <link port="i1.output" relation="relation3"/>
@@ -688,7 +688,7 @@ drops a each with 20% chance.</text></svg></configure>
                     </property>
                 </port>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=190.0,y=175.0}, tail={id=&quot;in._location&quot;,x=150.0,y=175.0}, points={} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=190.0,y=175.0}, tail={id=&quot;in._location&quot;,x=150.0,y=175.0}, points={} } }">
                     </property>
                 </relation>
                 <link port="in" relation="relation"/>
@@ -844,7 +844,7 @@ drops a each with 20% chance.</text></svg></configure>
                     </property>
                 </port>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                    <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=190.0,y=175.0}, tail={id=&quot;in._location&quot;,x=150.0,y=175.0}, points={} } }">
+                    <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;out._location&quot;,x=190.0,y=175.0}, tail={id=&quot;in._location&quot;,x=150.0,y=175.0}, points={} } }">
                     </property>
                 </relation>
                 <link port="in" relation="relation"/>
@@ -897,7 +897,7 @@ drops a each with 20% chance.</text></svg></configure>
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Ramp.trigger&quot;,x=185.0,y=535.0}, tail={id=&quot;DiscreteClock.output&quot;,x=55.0,y=525.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.trigger&quot;,x=185.0,y=535.0}, tail={id=&quot;DiscreteClock.output&quot;,x=55.0,y=525.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -905,7 +905,7 @@ drops a each with 20% chance.</text></svg></configure>
         </property>
         <vertex name="vertex1" value="[282.5, 568.8692779541016]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Receiver3.port&quot;,x=510.0,y=350.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={245.0,350.0} },{ head={id=&quot;Ramp.output&quot;,x=185.0,y=535.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={} },{ head={id=&quot;Receiver2.port&quot;,x=515.0,y=285.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={245.0,285.0} },{ head={id=&quot;Receiver1.port&quot;,x=475.0,y=535.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Receiver3.port&quot;,x=510.0,y=350.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={245.0,350.0} },{ head={id=&quot;Ramp.output&quot;,x=185.0,y=535.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={} },{ head={id=&quot;Receiver2.port&quot;,x=515.0,y=285.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={245.0,285.0} },{ head={id=&quot;Receiver1.port&quot;,x=475.0,y=535.0}, tail={id=&quot;relation2.vertex1&quot;,x=245.0,y=535.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

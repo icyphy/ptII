@@ -144,7 +144,7 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="{410.0, 110.0}">
             </vertex>
-            <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=410.0,y=110.0}, tail={id=&quot;.HlaSubscriber.output&quot;,x=260.0,y=110.0}, points={} } }">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=410.0,y=110.0}, tail={id=&quot;.HlaSubscriber.output&quot;,x=260.0,y=110.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">

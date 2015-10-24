@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="DerivedI" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that sends to in1, which has type JSON.&#10;exports.setup = function() {&#10;   extend('BaseD');&#10;   input('in1', {'type':'JSON', 'value':'{&quot;foo&quot;:42}'});&#10;   input('trigger');&#10;}&#10;&#10;exports.fire = function() {&#10;    var value = get('trigger');&#10;    if (value !== null) {&#10;        send('in1', value);&#10;    }&#10;    this.ssuper.fire();&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that sends to in1, which has type JSON.&#10;exports.setup = function() {&#10;   extend('BaseD');&#10;   input('in1', {'type':'JSON', 'value':'{&quot;foo&quot;:42}'});&#10;   input('trigger');&#10;   parameter('test', {'type':'int', 'value':42});&#10;}&#10;&#10;exports.fire = function() {&#10;    var value = get('trigger');&#10;    if (value !== null) {&#10;        send('in1', value);&#10;    }&#10;    this.ssuper.fire();&#10;}&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -102,15 +102,15 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=85.0,y=345.0}, tail={id=&quot;DerivedI.trigger&quot;,x=185.0,y=335.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SingleEvent.output&quot;,x=85.0,y=345.0}, tail={id=&quot;DerivedI.trigger&quot;,x=185.0,y=335.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=340.0,y=275.0}, tail={id=&quot;Test2.input&quot;,x=455.0,y=275.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentTime.output&quot;,x=340.0,y=275.0}, tail={id=&quot;Test2.input&quot;,x=455.0,y=275.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;CurrentMicrostep.output&quot;,x=325.0,y=205.0}, tail={id=&quot;Test3.input&quot;,x=455.0,y=205.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;CurrentMicrostep.output&quot;,x=325.0,y=205.0}, tail={id=&quot;Test3.input&quot;,x=455.0,y=205.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -118,7 +118,7 @@
         </property>
         <vertex name="vertex1" value="[260.0, 335.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=340.0,y=275.0}, points={260.0,275.0} },{ head={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, tail={id=&quot;CurrentMicrostep.trigger&quot;,x=325.0,y=205.0}, points={260.0,205.0} },{ head={id=&quot;Test.input&quot;,x=310.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, points={} },{ head={id=&quot;DerivedI.output&quot;,x=185.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, tail={id=&quot;CurrentTime.trigger&quot;,x=340.0,y=275.0}, points={260.0,275.0} },{ head={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, tail={id=&quot;CurrentMicrostep.trigger&quot;,x=325.0,y=205.0}, points={260.0,205.0} },{ head={id=&quot;Test.input&quot;,x=310.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, points={} },{ head={id=&quot;DerivedI.output&quot;,x=185.0,y=335.0}, tail={id=&quot;relation5.vertex1&quot;,x=260.0,y=335.0}, points={} } }">
         </property>
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>

@@ -296,7 +296,7 @@
         </property>
         <vertex name="vertex1" value="{125.0, 205.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=125.0,y=205.0}, tail={id=&quot;Ramp.trigger&quot;,x=200.0,y=130.0}, points={125.0,120.0} },{ head={id=&quot;Clock.output&quot;,x=75.0,y=205.0}, tail={id=&quot;relation2.vertex1&quot;,x=125.0,y=205.0}, points={} },{ head={id=&quot;original.trigger&quot;,x=300.0,y=195.0}, tail={id=&quot;relation2.vertex1&quot;,x=125.0,y=205.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=125.0,y=205.0}, tail={id=&quot;Ramp.trigger&quot;,x=200.0,y=130.0}, points={125.0,120.0} },{ head={id=&quot;Clock.output&quot;,x=75.0,y=205.0}, tail={id=&quot;relation2.vertex1&quot;,x=125.0,y=205.0}, points={} },{ head={id=&quot;original.trigger&quot;,x=300.0,y=195.0}, tail={id=&quot;relation2.vertex1&quot;,x=125.0,y=205.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

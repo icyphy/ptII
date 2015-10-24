@@ -33,18 +33,30 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * This class represents a wireless response from one BluetoothDevice actor to another. It is essentially reimagining of the ObjectToken type, with a few more members critical to making the
- * Bluetooth to Bluetooth communication possible. These include a device identifier, a source identifier, and data.
- * <p>
- * The device identifier field represents the target device for this response token.
- * The source identifier field represents the current device this response token is bieng sent from. This will be set to the return value of this.getName() in all cases except when scanning, where it will be set to "scan".
- * The data field represents an arbitrary peice of data to communicate to another BluetoothDevice actor.
- * <p>
- * Construction of an object of this class requires a BluetoothResponse enum element, a device identifier, a source identifier, and an arbitrary peice of data. The fields of this class are immutable.
- * <p>
- * The toString() method will return the string equivalent of the BluetoothResponse enum element contained within this object.
- * @author Phillip Azar
+ * A wireless response from one BluetoothDevice actor to another. It
+ * is essentially reimagining of the ObjectToken type, with a few more
+ * members critical to making the Bluetooth to Bluetooth communication
+ * possible. These include a device identifier, a source identifier,
+ * and data.
  *
+ * <p> The device identifier field represents the target device for
+ * this response token.  The source identifier field represents the
+ * current device this response token is bieng sent from. This will be
+ * set to the return value of this.getName() in all cases except when
+ * scanning, where it will be set to "scan".  The data field
+ * represents an arbitrary peice of data to communicate to another
+ * BluetoothDevice actor.</p>
+ *
+ * <p> Construction of an object of this class requires a
+ * BluetoothResponse enum element, a device identifier, a source
+ * identifier, and an arbitrary piece of data. The fields of this
+ * class are immutable.</p>
+ *
+ * <p> The toString() method will return the string equivalent of the
+ * BluetoothResponse enum element contained within this object.</p>
+ *
+ * @author Phillip Azar
+ * @version $Id$
  * @param <T> - the type for the data contained within this token.
  * @see BluetoothResponse
  * @see BluetoothDevice
@@ -52,11 +64,15 @@ import ptolemy.kernel.util.IllegalActionException;
 public class BluetoothResponseToken<T> extends BluetoothToken {
 
     /**
-     * Construct a token with the following parameters:
-     * @param response : The response, request, or command desired. Acceptable entries are contained within the BluetoothResponse enumeration.
-     * @param deviceIdentifier : A String representing the name of target device.
-     * @param sourceIdentifier : A String representing the name of the device constructing this token.
-     * @param data : The arbitrary data to send.
+     * Construct a BluetoothResposeToken.
+     * @param response The response, request, or command
+     * desired. Acceptable entries are contained within the
+     * BluetoothResponse enumeration.
+     * @param deviceIdentifier A String representing the name of
+     * target device.
+     * @param sourceIdentifier A String representing the name of the
+     * device constructing this token.
+     * @param data The arbitrary data to send.
      */
     public BluetoothResponseToken(BluetoothResponse response, String deviceIdentifier, String sourceIdentifier, T data) {
         this._response = response;
@@ -66,7 +82,8 @@ public class BluetoothResponseToken<T> extends BluetoothToken {
     }
 
     /**
-     * Get the BluetoothResponse enum element associated with this token.
+     * Get the BluetoothResponse enum element associated with this
+     * token.
      * @return _response
      */
     public BluetoothResponse getResponse() {

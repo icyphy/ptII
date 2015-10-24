@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.vergil.basic.layout.kieler;
 
-import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,12 +43,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.basic.RelativeLocation;
+import ptolemy.vergil.actor.KielerLayoutUtil;
 import ptolemy.vergil.basic.RelativeLocatable;
+import ptolemy.vergil.basic.RelativeLocation;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyModelUtil
@@ -60,7 +58,8 @@ import ptolemy.vergil.basic.RelativeLocatable;
  *
  * @author Hauke Fuhrmann (<a href="mailto:haf@informatik.uni-kiel.de">haf</a>),
  *         Christian Motika (<a href="mailto:cmot@informatik.uni-kiel.de">cmot</a>),
- *         Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>)
+ *         Miro Spoenemann (<a href="mailto:msp@informatik.uni-kiel.de">msp</a>),
+ *         Ulf Rueegg
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
@@ -70,90 +69,6 @@ public final class PtolemyModelUtil {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /**
-     * Find a location for the given object.
-     *
-     * @param namedObj a model object
-     * @return the object's location, or {@code null} if there is no location
-     */
-    protected static Locatable _getLocation(NamedObj namedObj) {
-        if (namedObj instanceof Locatable) {
-            return (Location) namedObj;
-        } else {
-            NamedObj object = namedObj;
-
-            // Search for the next entity in the hierarchy that has
-            // a location attribute.
-            while (object != null) {
-                Attribute attribute = object.getAttribute("_location");
-                if (attribute instanceof Locatable) {
-                    return (Locatable) attribute;
-                }
-                List<Locatable> locatables = object
-                        .attributeList(Locatable.class);
-                if (!locatables.isEmpty()) {
-                    return locatables.get(0);
-                }
-                // Relations are directly contained in a composite entity, so
-                // don't take any parent location.
-                if (object instanceof Relation) {
-                    object = null;
-                } else {
-                    object = object.getContainer();
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get the location given by the location attribute of the given input
-     * object. If the Ptolemy object has no location attribute, return double
-     * zero.
-     *
-     * @param namedObj The Ptolemy object for which the location should be
-     *            retrieved.
-     * @return A vector corresponding to the location (x and y) of the object.
-     *          Will return a zero vector if no location attribute is set for the object.
-     */
-    protected static Point2D _getLocationPoint(NamedObj namedObj) {
-        Point2D point = _getLocationPoint(_getLocation(namedObj));
-        if (point == null) {
-            point = new Point2D.Double();
-        }
-        return point;
-    }
-
-    /**
-     * Retrieve the actual position from a locatable instance.
-     *
-     * @param locatable a locatable
-     * @return the actual position, or null if none is found
-     */
-    protected static Point2D _getLocationPoint(Locatable locatable) {
-        if (locatable != null) {
-            double[] coords = locatable.getLocation();
-            try {
-                /* Workaround for a strange behavior: If loading a model
-                 * from MoML, a Location might have set a valid expression with
-                 * non trivial values, but it hasn't been validated and therefore
-                 * the value is still {0,0}
-                 */
-                if (coords[0] == 0 && coords[1] == 0) {
-                    locatable.validate();
-                    coords = locatable.getLocation();
-                }
-                Point2D.Double location = new Point2D.Double();
-                location.x = coords[0];
-                location.y = coords[1];
-                return location;
-            } catch (IllegalActionException e) {
-                // nothing, use default value
-            }
-        }
-        return null;
-    }
 
     /**
      * For a set of relations get a set of relation groups, i.e. for each
@@ -197,7 +112,7 @@ public final class PtolemyModelUtil {
     protected static boolean _isConnected(NamedObj namedObj) {
         if (namedObj instanceof RelativeLocatable) {
             // Relative locatables may be connected to a reference object.
-            Locatable locatable = _getLocation(namedObj);
+            Locatable locatable = KielerLayoutUtil.getLocation(namedObj);
             if (locatable instanceof RelativeLocation) {
                 NamedObj referenceObj = _getReferencedObj((RelativeLocation) locatable);
                 return referenceObj != null && _isConnected(referenceObj);
@@ -320,4 +235,23 @@ public final class PtolemyModelUtil {
         return SwingConstants.SOUTH;
     }
 
+    /**
+     * Return true if the state is an initial state.
+     * @param state a {@link State} to test
+     * @return whether the passed state has the isInitialState parameter set to true.
+     */
+    protected static boolean _isInitialState(State state) {
+        return state.isInitialState.getValueAsString()
+                .equals(Boolean.TRUE.toString());
+    }
+    
+    /** 
+     * Return true if the state is a final state.
+     * @param state a {@link State} to test
+     * @return whether the passed state has the isFinalState parameter set to true.
+     */
+    protected static boolean _isFinalState(State state) {
+        return state.isFinalState.getValueAsString()
+                .equals(Boolean.TRUE.toString());
+    }
 }

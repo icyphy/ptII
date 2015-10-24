@@ -54,7 +54,9 @@ JSRCS = \
 	AbstractParticleFilter.java \
 	AbstractPredictor.java \
 	AbstractStateSpaceSimulator.java \
+        AbstractUnscentedKalmanFilter.java \
 	ConstraintsCalculator.java \
+        ConvertParticlesToCovarianceMatrix.java \
 	MutualInformationCalculator.java \
 	Optimizer.java \
 	ParticleFilter.java \
@@ -89,7 +91,11 @@ OPTIONAL_FILES = demo doc test \
 	'Optimizer$$1.class' \
 	'ParticleFilter$$1.class' \
 	'ParticleFilter$$Particle.class' \
-	'ParticleFilter$$VariableScope.class'
+	'ParticleFilter$$VariableScope.class' \
+	'AbstractUnscentedKalmanFilter$$1.class' \
+	'AbstractUnscentedKalmanFilter$$InputType.class' \
+	'AbstractUnscentedKalmanFilter$$SigmaPoint.class' \
+	'AbstractUnscentedKalmanFilter$$VariableScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

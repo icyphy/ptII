@@ -199,21 +199,21 @@
         </port>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=95.0,y=235.0}, tail={id=&quot;Camera.trigger&quot;,x=215.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=95.0,y=235.0}, tail={id=&quot;Camera.trigger&quot;,x=215.0,y=235.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=505.0,y=95.0}, tail={id=&quot;MotionDetector.output&quot;,x=335.0,y=225.0}, points={445.0,95.0,445.0,215.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=505.0,y=95.0}, tail={id=&quot;MotionDetector.output&quot;,x=335.0,y=225.0}, points={445.0,95.0,445.0,215.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=335.0,y=225.0}, tail={id=&quot;CenterOfGravity.input&quot;,x=500.0,y=160.0}, points={460.0,225.0,460.0,160.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.cog&quot;,x=335.0,y=225.0}, tail={id=&quot;CenterOfGravity.input&quot;,x=500.0,y=160.0}, points={460.0,225.0,460.0,160.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=335.0,y=225.0}, tail={id=&quot;AreaPercentage.input&quot;,x=500.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MotionDetector.area&quot;,x=335.0,y=225.0}, tail={id=&quot;AreaPercentage.input&quot;,x=500.0,y=235.0}, points={} } }">
         </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation6"/>

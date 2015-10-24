@@ -52,7 +52,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Track.java
+	Airport.java \
+	DestinationAirport.java \
+	StormHandling.java \
+	Track.java \
+	TrackWriter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

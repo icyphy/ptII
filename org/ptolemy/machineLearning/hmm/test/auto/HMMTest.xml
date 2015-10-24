@@ -215,11 +215,11 @@
                 </property>
                 <vertex name="vertex1" value="{155.0, 145.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=155.0,y=145.0}, tail={id=&quot;Const.trigger&quot;,x=215.0,y=145.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=95.0,y=145.0}, tail={id=&quot;relation2.vertex1&quot;,x=155.0,y=145.0}, points={} },{ head={id=&quot;out._location&quot;,x=175.0,y=80.0}, tail={id=&quot;relation2.vertex1&quot;,x=155.0,y=145.0}, points={155.0,80.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=155.0,y=145.0}, tail={id=&quot;Const.trigger&quot;,x=215.0,y=145.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=95.0,y=145.0}, tail={id=&quot;relation2.vertex1&quot;,x=155.0,y=145.0}, points={} },{ head={id=&quot;out._location&quot;,x=175.0,y=80.0}, tail={id=&quot;relation2.vertex1&quot;,x=155.0,y=145.0}, points={155.0,80.0} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out2._location&quot;,x=265.0,y=145.0}, tail={id=&quot;Const.output&quot;,x=215.0,y=145.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;out2._location&quot;,x=265.0,y=145.0}, tail={id=&quot;Const.output&quot;,x=215.0,y=145.0}, points={} } }">
                 </property>
             </relation>
             <link port="out" relation="relation2"/>
@@ -284,11 +284,11 @@
                 </property>
                 <vertex name="vertex1" value="{115.0, 125.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=115.0,y=125.0}, tail={id=&quot;Const.trigger&quot;,x=175.0,y=125.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=55.0,y=125.0}, tail={id=&quot;relation2.vertex1&quot;,x=115.0,y=125.0}, points={} },{ head={id=&quot;out._location&quot;,x=135.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=115.0,y=125.0}, points={115.0,60.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=115.0,y=125.0}, tail={id=&quot;Const.trigger&quot;,x=175.0,y=125.0}, points={} },{ head={id=&quot;Gaussian.output&quot;,x=55.0,y=125.0}, tail={id=&quot;relation2.vertex1&quot;,x=115.0,y=125.0}, points={} },{ head={id=&quot;out._location&quot;,x=135.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=115.0,y=125.0}, points={115.0,60.0} } }">
                 </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;out2._location&quot;,x=225.0,y=125.0}, tail={id=&quot;Const.output&quot;,x=175.0,y=125.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;out2._location&quot;,x=225.0,y=125.0}, tail={id=&quot;Const.output&quot;,x=175.0,y=125.0}, points={} } }">
                 </property>
             </relation>
             <link port="out" relation="relation2"/>
@@ -392,7 +392,7 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HMM.out&quot;,x=60.0,y=155.0}, tail={id=&quot;SequenceToArray.input&quot;,x=160.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HMM.out&quot;,x=60.0,y=155.0}, tail={id=&quot;SequenceToArray.input&quot;,x=160.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -400,11 +400,11 @@
         </property>
         <vertex name="vertex1" value="{255.0, 155.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HMMGaussianEstimator.input&quot;,x=305.0,y=275.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=155.0}, points={255.0,275.0} },{ head={id=&quot;SequenceToArray.output&quot;,x=160.0,y=155.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=155.0}, points={} },{ head={id=&quot;HMMGaussianClassifier.input&quot;,x=495.0,y=155.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HMMGaussianEstimator.input&quot;,x=305.0,y=275.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=155.0}, points={255.0,275.0} },{ head={id=&quot;SequenceToArray.output&quot;,x=160.0,y=155.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=155.0}, points={} },{ head={id=&quot;HMMGaussianClassifier.input&quot;,x=495.0,y=155.0}, tail={id=&quot;relation7.vertex1&quot;,x=255.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;HMMGaussianEstimator.priorEstimates&quot;,x=305.0,y=275.0}, tail={id=&quot;HMMGaussianClassifier.priorDistribution&quot;,x=495.0,y=155.0}, points={305.0,315.0,420.0,315.0,420.0,205.0,475.0,205.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HMMGaussianEstimator.priorEstimates&quot;,x=305.0,y=275.0}, tail={id=&quot;HMMGaussianClassifier.priorDistribution&quot;,x=495.0,y=155.0}, points={305.0,315.0,420.0,315.0,420.0,205.0,475.0,205.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -412,7 +412,7 @@
         </property>
         <vertex name="vertex1" value="{435.0, 220.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.MonitorValue3.input&quot;,x=825.0,y=135.0}, tail={id=&quot;relation8.vertex1&quot;,x=470.0,y=135.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.transitionMatrix&quot;,x=305.0,y=275.0}, tail={id=&quot;relation8.vertex1&quot;,x=435.0,y=220.0}, points={435.0,255.0,435.0,220.0} },{ head={id=&quot;HMMGaussianClassifier.transitionMatrix&quot;,x=495.0,y=155.0}, tail={id=&quot;relation8.vertex1&quot;,x=435.0,y=220.0}, points={485.0,220.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.MonitorValue3.input&quot;,x=825.0,y=135.0}, tail={id=&quot;relation8.vertex1&quot;,x=470.0,y=135.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.transitionMatrix&quot;,x=305.0,y=275.0}, tail={id=&quot;relation8.vertex1&quot;,x=435.0,y=220.0}, points={435.0,255.0,435.0,220.0} },{ head={id=&quot;HMMGaussianClassifier.transitionMatrix&quot;,x=495.0,y=155.0}, tail={id=&quot;relation8.vertex1&quot;,x=435.0,y=220.0}, points={485.0,220.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -420,7 +420,7 @@
         </property>
         <vertex name="vertex1" value="{435.0, 285.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.MonitorValue.input&quot;,x=825.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=455.0,y=210.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.mean&quot;,x=305.0,y=275.0}, tail={id=&quot;relation6.vertex1&quot;,x=435.0,y=285.0}, points={} },{ head={id=&quot;relation6.vertex1&quot;,x=470.0,y=285.0}, tail={id=&quot;.MeanConvergence.a&quot;,x=765.0,y=285.0}, points={} },{ head={id=&quot;HMMGaussianClassifier.mean&quot;,x=495.0,y=155.0}, tail={id=&quot;relation6.vertex1&quot;,x=435.0,y=285.0}, points={505.0,285.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.MonitorValue.input&quot;,x=825.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=455.0,y=210.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.mean&quot;,x=305.0,y=275.0}, tail={id=&quot;relation6.vertex1&quot;,x=435.0,y=285.0}, points={} },{ head={id=&quot;relation6.vertex1&quot;,x=470.0,y=285.0}, tail={id=&quot;.MeanConvergence.a&quot;,x=765.0,y=285.0}, points={} },{ head={id=&quot;HMMGaussianClassifier.mean&quot;,x=495.0,y=155.0}, tail={id=&quot;relation6.vertex1&quot;,x=435.0,y=285.0}, points={505.0,285.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -428,7 +428,7 @@
         </property>
         <vertex name="vertex1" value="{435.0, 325.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;.MonitorValue2.input&quot;,x=825.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=265.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.standardDeviation&quot;,x=305.0,y=275.0}, tail={id=&quot;relation3.vertex1&quot;,x=435.0,y=325.0}, points={435.0,295.0,435.0,325.0} },{ head={id=&quot;HMMGaussianClassifier.covariance&quot;,x=495.0,y=155.0}, tail={id=&quot;relation3.vertex1&quot;,x=435.0,y=325.0}, points={515.0,325.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.MonitorValue2.input&quot;,x=825.0,y=265.0}, tail={id=&quot;relation3.vertex1&quot;,x=440.0,y=265.0}, points={} },{ head={id=&quot;HMMGaussianEstimator.standardDeviation&quot;,x=305.0,y=275.0}, tail={id=&quot;relation3.vertex1&quot;,x=435.0,y=325.0}, points={435.0,295.0,435.0,325.0} },{ head={id=&quot;HMMGaussianClassifier.covariance&quot;,x=495.0,y=155.0}, tail={id=&quot;relation3.vertex1&quot;,x=435.0,y=325.0}, points={515.0,325.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -436,11 +436,11 @@
         </property>
         <vertex name="vertex1" value="{235.0, 365.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SequenceToArray2.input&quot;,x=315.0,y=375.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=365.0}, points={} },{ head={id=&quot;.SequencePlotter.input&quot;,x=1565.0,y=495.0,index=2}, tail={id=&quot;relation4.vertex1&quot;,x=1170.0,y=490.0}, points={} },{ head={id=&quot;HMM.out2&quot;,x=60.0,y=155.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=365.0}, points={110.0,165.0,110.0,365.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SequenceToArray2.input&quot;,x=315.0,y=375.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=365.0}, points={} },{ head={id=&quot;.SequencePlotter.input&quot;,x=1565.0,y=495.0,index=2}, tail={id=&quot;relation4.vertex1&quot;,x=1170.0,y=490.0}, points={} },{ head={id=&quot;HMM.out2&quot;,x=60.0,y=155.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=365.0}, points={110.0,165.0,110.0,365.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SuccessRate.b&quot;,x=725.0,y=155.0}, tail={id=&quot;SequenceToArray2.output&quot;,x=315.0,y=375.0}, points={620.0,165.0,620.0,375.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SuccessRate.b&quot;,x=725.0,y=155.0}, tail={id=&quot;SequenceToArray2.output&quot;,x=315.0,y=375.0}, points={620.0,165.0,620.0,375.0} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -448,11 +448,11 @@
         </property>
         <vertex name="vertex1" value="{600.0, 145.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SuccessRate.a&quot;,x=725.0,y=155.0}, tail={id=&quot;relation12.vertex1&quot;,x=600.0,y=145.0}, points={} },{ head={id=&quot;HMMGaussianClassifier.output&quot;,x=495.0,y=155.0}, tail={id=&quot;relation12.vertex1&quot;,x=600.0,y=145.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SuccessRate.a&quot;,x=725.0,y=155.0}, tail={id=&quot;relation12.vertex1&quot;,x=600.0,y=145.0}, points={} },{ head={id=&quot;HMMGaussianClassifier.output&quot;,x=495.0,y=155.0}, tail={id=&quot;relation12.vertex1&quot;,x=600.0,y=145.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SuccessRateAbove90Percent.a&quot;,x=865.0,y=155.0}, tail={id=&quot;SuccessRate.output&quot;,x=725.0,y=155.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SuccessRateAbove90Percent.a&quot;,x=865.0,y=155.0}, tail={id=&quot;SuccessRate.output&quot;,x=725.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">

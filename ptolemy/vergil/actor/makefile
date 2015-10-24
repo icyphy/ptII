@@ -77,6 +77,8 @@ JSRCS = \
 	FindPackages.java \
 	IOPortController.java \
 	KielerLayoutConnector.java \
+	KielerLayoutUtil.java \
+	LayoutHint.java \
 	LinkController.java \
 	LinkManhattanConnector.java \
 	PortConnectSite.java \
@@ -160,6 +162,8 @@ OPTIONAL_FILES = \
 	'IOPortController$$EntityPortRenderer$$1.class' \
 	'IOPortController$$EntityPortRenderer$$2.class' \
 	'IOPortController$$EntityPortRenderer.class' \
+	'LayoutHint$$1.class' \
+	'LayoutHint$$LayoutHintItem.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
 	'LinkController$$LinkTarget.class'

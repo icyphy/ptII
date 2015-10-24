@@ -288,7 +288,10 @@ public class ExportModelJUnitTest {
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
                 "data/ontologies/demo/ConstPropagation/ConstPropagation.xml", // Has links to other models
+                "jjs/modules/discovery/demo/ContextAware/ContextAware.xml", // Need to have the user selecte which service to use before running.
+
                 "jjs/modules/discovery/demo/Discovery/Discovery.xml", // Has links to other models
+                "jjs/modules/gdp/demo/", // Exclude the GDP demos for now.
                 // HLA Models that have links to other demos.
                 "2Billes2Fed.xml", // Has links to other models
                 "org/hlacerti/demo/legacy/CoSimulation/CoSimulation.xml", // Has links to other demos and does not work

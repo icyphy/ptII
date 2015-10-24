@@ -318,7 +318,7 @@ is 1.</text></svg></configure>
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=20.0,y=80.0}, tail={id=&quot;InstanceOfSeeminglyNonmonotonic.in&quot;,x=95.0,y=80.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=20.0,y=80.0}, tail={id=&quot;InstanceOfSeeminglyNonmonotonic.in&quot;,x=95.0,y=80.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -326,7 +326,7 @@ is 1.</text></svg></configure>
         </property>
         <vertex name="vertex1" value="{205.0, 175.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;InstanceOfSeeminglyNonmontonic.in&quot;,x=30.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=205.0,y=175.0}, points={-25.0,175.0,-25.0,125.0,205.0,125.0,205.0,175.0} },{ head={id=&quot;InstanceOfSeeminglyNonmontonic.out&quot;,x=30.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=205.0,y=175.0}, points={} },{ head={id=&quot;Display.input&quot;,x=255.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=205.0,y=175.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InstanceOfSeeminglyNonmontonic.in&quot;,x=30.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=205.0,y=175.0}, points={-25.0,175.0,-25.0,125.0,205.0,125.0,205.0,175.0} },{ head={id=&quot;InstanceOfSeeminglyNonmontonic.out&quot;,x=30.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=205.0,y=175.0}, points={} },{ head={id=&quot;Display.input&quot;,x=255.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=205.0,y=175.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

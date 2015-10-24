@@ -130,7 +130,7 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;SetPoint.output&quot;,x=450.0,y=220.0}, tail={id=&quot;Expression.d&quot;,x=550.0,y=210.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SetPoint.output&quot;,x=450.0,y=220.0}, tail={id=&quot;Expression.d&quot;,x=550.0,y=210.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -138,7 +138,7 @@
         </property>
         <vertex name="vertex1" value="{600.0, 255.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Limiter.input&quot;,x=0.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=600.0,y=255.0}, points={-50.0,210.0,-50.0,255.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=520.0,y=110.0}, tail={id=&quot;relation6.vertex1&quot;,x=585.0,y=255.0}, points={300.0,225.0} },{ head={id=&quot;Expression.output&quot;,x=550.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=600.0,y=255.0}, points={600.0,210.0,600.0,255.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Limiter.input&quot;,x=0.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=600.0,y=255.0}, points={-50.0,210.0,-50.0,255.0} },{ head={id=&quot;TimedPlotter.input&quot;,x=520.0,y=110.0}, tail={id=&quot;relation6.vertex1&quot;,x=585.0,y=255.0}, points={300.0,225.0} },{ head={id=&quot;Expression.output&quot;,x=550.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=600.0,y=255.0}, points={600.0,210.0,600.0,255.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -146,7 +146,7 @@
         </property>
         <vertex name="vertex1" value="{495.0, 110.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=535.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=495.0,y=110.0}, points={} },{ head={id=&quot;DCMotor.angularVelocity&quot;,x=270.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=495.0,y=110.0}, points={} },{ head={id=&quot;Expression.w&quot;,x=550.0,y=210.0}, tail={id=&quot;relation5.vertex1&quot;,x=495.0,y=110.0}, points={495.0,200.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TimedPlotter.input&quot;,x=535.0,y=110.0}, tail={id=&quot;relation5.vertex1&quot;,x=495.0,y=110.0}, points={} },{ head={id=&quot;DCMotor.angularVelocity&quot;,x=270.0,y=120.0}, tail={id=&quot;relation5.vertex1&quot;,x=495.0,y=110.0}, points={} },{ head={id=&quot;Expression.w&quot;,x=550.0,y=210.0}, tail={id=&quot;relation5.vertex1&quot;,x=495.0,y=110.0}, points={495.0,200.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -154,7 +154,7 @@
         </property>
         <vertex name="vertex1" value="{60.0, 210.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=60.0,y=210.0}, tail={id=&quot;TimedPlotter2.input&quot;,x=100.0,y=210.0}, points={} },{ head={id=&quot;Limiter.output&quot;,x=0.0,y=210.0}, tail={id=&quot;relation.vertex1&quot;,x=60.0,y=210.0}, points={} },{ head={id=&quot;PWM2.dutyCycle&quot;,x=120.0,y=110.0}, tail={id=&quot;relation.vertex1&quot;,x=60.0,y=210.0}, points={60.0,110.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=60.0,y=210.0}, tail={id=&quot;TimedPlotter2.input&quot;,x=100.0,y=210.0}, points={} },{ head={id=&quot;Limiter.output&quot;,x=0.0,y=210.0}, tail={id=&quot;relation.vertex1&quot;,x=60.0,y=210.0}, points={} },{ head={id=&quot;PWM2.dutyCycle&quot;,x=120.0,y=110.0}, tail={id=&quot;relation.vertex1&quot;,x=60.0,y=210.0}, points={60.0,110.0} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

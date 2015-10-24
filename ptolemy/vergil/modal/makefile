@@ -67,6 +67,7 @@ JSRCS = \
 	FSMGraphModel.java \
 	FSMGraphTableau.java \
 	FSMViewerGraphController.java \
+	KielerLayoutArcConnector.java \
 	StateController.java \
 	StateIcon.java \
 	TransitionController.java

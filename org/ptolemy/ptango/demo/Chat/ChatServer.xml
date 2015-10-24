@@ -360,27 +360,27 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ResettableTimer.input&quot;,x=290.0,y=195.0}, tail={id=&quot;Const.output&quot;,x=155.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ResettableTimer.input&quot;,x=290.0,y=195.0}, tail={id=&quot;Const.output&quot;,x=155.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ResettableTimer.output&quot;,x=290.0,y=195.0}, tail={id=&quot;StringConst.trigger&quot;,x=460.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ResettableTimer.output&quot;,x=290.0,y=195.0}, tail={id=&quot;StringConst.trigger&quot;,x=460.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=575.0,y=195.0}, tail={id=&quot;response._location&quot;,x=625.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=575.0,y=195.0}, tail={id=&quot;response._location&quot;,x=625.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=10.0,y=195.0}, tail={id=&quot;Const.trigger&quot;,x=155.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=10.0,y=195.0}, tail={id=&quot;Const.trigger&quot;,x=155.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;post._location&quot;,x=515.0,y=125.0}, tail={id=&quot;Merge.input&quot;,x=575.0,y=195.0,index=2}, points={540.0,125.0,540.0,190.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;post._location&quot;,x=515.0,y=125.0}, tail={id=&quot;Merge.input&quot;,x=575.0,y=195.0,index=2}, points={540.0,125.0,540.0,190.0} } }">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=575.0,y=195.0,index=2}, tail={id=&quot;StringConst.output&quot;,x=460.0,y=195.0}, points={} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=575.0,y=195.0,index=2}, tail={id=&quot;StringConst.output&quot;,x=460.0,y=195.0}, points={} } }">
                 </property>
             </relation>
             <link port="trigger" relation="relation3"/>

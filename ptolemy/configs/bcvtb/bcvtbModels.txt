@@ -1,4 +1,5 @@
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml
+$CLASSPATH/ptolemy/actor/lib/comm/demo/HuffmanDecoder/HuffmanDecoder.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml
@@ -53,6 +54,7 @@ $CLASSPATH/ptolemy/domains/modal/demo/Case/Case.xml
 $CLASSPATH/ptolemy/domains/modal/demo/ChainedTransitions/ChainedTransitions.xml
 $CLASSPATH/ptolemy/domains/modal/demo/ModalBSC/ModalBSC.xml
 $CLASSPATH/ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.xml
+$CLASSPATH/ptolemy/domains/modal/demo/PersistentIO/PersistentIO.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Array/Array.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/Expression/Expression.xml
@@ -62,6 +64,7 @@ $CLASSPATH/ptolemy/domains/sdf/demo/FixPoint/FixPoint.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.xml
+$CLASSPATH/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.xml

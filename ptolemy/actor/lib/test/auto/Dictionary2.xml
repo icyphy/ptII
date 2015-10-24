@@ -53,19 +53,19 @@
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.value&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent.output&quot;,x=55.0,y=185.0}, points={105.0,275.0,105.0,185.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary2.value&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent.output&quot;,x=55.0,y=185.0}, points={105.0,275.0,105.0,185.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.writeKey&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent2.output&quot;,x=50.0,y=285.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary2.writeKey&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent2.output&quot;,x=50.0,y=285.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.readKey&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent3.output&quot;,x=50.0,y=120.0}, points={120.0,245.0,120.0,120.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary2.readKey&quot;,x=260.0,y=265.0}, tail={id=&quot;SingleEvent3.output&quot;,x=50.0,y=120.0}, points={120.0,245.0,120.0,120.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Dictionary2.result&quot;,x=260.0,y=265.0}, tail={id=&quot;Test.input&quot;,x=455.0,y=255.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary2.result&quot;,x=260.0,y=265.0}, tail={id=&quot;Test.input&quot;,x=455.0,y=255.0}, points={} } }">
         </property>
     </relation>
     <link port="Dictionary2.readKey" relation="relation3"/>

@@ -228,7 +228,7 @@
                 </property>
                 <vertex name="vertex1" value="{432.0, 322.0}">
                 </vertex>
-                <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, tail={id=&quot;OuterSignal._location&quot;,x=-175.0,y=-45.0}, points={-200.0,-45.0} },{ head={id=&quot;Const.output&quot;,x=-245.0,y=-20.0}, tail={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, points={} },{ head={id=&quot;InnerSignal._location&quot;,x=-175.0,y=10.0}, tail={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, points={-200.0,10.0} } }">
+                <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, tail={id=&quot;OuterSignal._location&quot;,x=-175.0,y=-45.0}, points={-200.0,-45.0} },{ head={id=&quot;Const.output&quot;,x=-245.0,y=-20.0}, tail={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, points={} },{ head={id=&quot;InnerSignal._location&quot;,x=-175.0,y=10.0}, tail={id=&quot;relation2.vertex1&quot;,x=-200.0,y=-20.0}, points={-200.0,10.0} } }">
                 </property>
             </relation>
             <link port="InnerSignal" relation="relation"/>
@@ -259,7 +259,7 @@
         <link port="B.OuterSignal" relation="OuterSignalRelation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.InnerSignal&quot;,x=-150.0,y=150.0}, tail={id=&quot;NonStrictTest.input&quot;,x=-40.0,y=140.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ModalModel.InnerSignal&quot;,x=-150.0,y=150.0}, tail={id=&quot;NonStrictTest.input&quot;,x=-40.0,y=140.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -267,7 +267,7 @@
         </property>
         <vertex name="vertex1" value="{-205.0, 190.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.OuterSignal&quot;,x=-150.0,y=150.0}, tail={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, points={-90.0,160.0,-90.0,190.0} },{ head={id=&quot;ModalModel.Input&quot;,x=-150.0,y=150.0}, tail={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, points={-205.0,150.0} },{ head={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=-155.0,y=70.0}, points={-205.0,70.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ModalModel.OuterSignal&quot;,x=-150.0,y=150.0}, tail={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, points={-90.0,160.0,-90.0,190.0} },{ head={id=&quot;ModalModel.Input&quot;,x=-150.0,y=150.0}, tail={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, points={-205.0,150.0} },{ head={id=&quot;relation.vertex1&quot;,x=-205.0,y=190.0}, tail={id=&quot;NonStrictTest2.input&quot;,x=-155.0,y=70.0}, points={-205.0,70.0} } }">
         </property>
     </relation>
     <link port="NonStrictTest.input" relation="relation2"/>

@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	ImageFilters.xml \
+	Annotate.xml \
 	Average.xml \
 	BicubicScale.xml \
 	Block.xml \

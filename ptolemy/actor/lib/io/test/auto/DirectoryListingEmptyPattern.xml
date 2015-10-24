@@ -90,15 +90,15 @@
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;DirectoryListing.directoryOrURL&quot;,x=240.0,y=155.0}, tail={id=&quot;Expression.output&quot;,x=85.0,y=165.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DirectoryListing.directoryOrURL&quot;,x=240.0,y=155.0}, tail={id=&quot;Expression.output&quot;,x=85.0,y=165.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=550.0,y=165.0}, tail={id=&quot;Comparator.output&quot;,x=460.0,y=165.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=550.0,y=165.0}, tail={id=&quot;Comparator.output&quot;,x=460.0,y=165.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;Comparator.right&quot;,x=460.0,y=165.0}, tail={id=&quot;Const.output&quot;,x=370.0,y=220.0}, points={410.0,175.0,410.0,220.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Comparator.right&quot;,x=460.0,y=165.0}, tail={id=&quot;Const.output&quot;,x=370.0,y=220.0}, points={410.0,175.0,410.0,220.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

@@ -88,6 +88,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Weather/Weather.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
@@ -170,6 +171,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryXML.x
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriter/GDPLogWriter.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/ReadFromVertxBus.xml
@@ -371,6 +373,8 @@ $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankRefactored.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/RLC/RLC.xml
+$CLASSPATH/ptolemy/domains/atc/demo/FirstPolicy/FirstPolicy.xml
+$CLASSPATH/ptolemy/domains/atc/demo/SecondPolicy/SecondPolicy.xml
 $CLASSPATH/ptolemy/domains/ca/demo/Conway/Conway.xml
 $CLASSPATH/ptolemy/domains/ca/demo/ConwayRandom/ConwayRandom.xml
 $CLASSPATH/ptolemy/domains/ci/demo/Router/Router.xml

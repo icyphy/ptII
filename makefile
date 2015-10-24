@@ -112,8 +112,9 @@ EXTRA_SRCS = \
 	pom.xml \
 	pt-modules \
 	vergil.jnlp.in \
-	vergilCyPhySim.jnlp.in \
 	vergilBCVTB.jnlp.in \
+	vergilCapeCode.jnlp.in \
+	vergilCyPhySim.jnlp.in \
 	vergilDSP.jnlp.in \
 	vergilHyVisual.jnlp.in \
 	vergilPtiny.jnlp.in \

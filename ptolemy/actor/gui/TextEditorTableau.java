@@ -334,10 +334,12 @@ public class TextEditorTableau extends Tableau {
                     textEffigy = (TextEffigy) _newTextEffigyText.invoke(null,
                             new Object[] { effigy, moml, "text/xml" });
 
-                    // FIXME: Eventually, it would be nice that this be
-                    // editable if the PtolemyEffigy is modifiable.
-                    // But this requires having an "apply" button.
-                    textEffigy.setModifiable(false);
+                    // NOTE: Used to set this not modifiable, but actually, this
+                    // didn't do what we wanted. It marks the _model_ not modifiable,
+                    // not the textEffigy!  Anyway, we may want to edit and save
+                    // somewhere else. And anyway, the next text editor doesn't
+                    // seem to prevent editing.
+                    // textEffigy.setModifiable(false);
                     textEffigy.setName("textEffigy");
                 } else {
                     // The View Source choice of the HTMLViewer runs this code.

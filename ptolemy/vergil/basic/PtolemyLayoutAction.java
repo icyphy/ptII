@@ -56,6 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.modal.FSMGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyLayoutAction
@@ -91,7 +92,8 @@ public class PtolemyLayoutAction extends Object implements IGuiAction {
                     .entityList(Tableau.class).iterator();
             while (tableaux.hasNext()) {
                 Tableau tableau = (Tableau) tableaux.next();
-                if (tableau.getFrame() instanceof ActorGraphFrame) {
+                if (tableau.getFrame() instanceof ActorGraphFrame
+                        || tableau.getFrame() instanceof FSMGraphFrame) {
                     frame = tableau.getFrame();
                 }
             }

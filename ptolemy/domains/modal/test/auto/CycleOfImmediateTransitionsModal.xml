@@ -136,7 +136,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.basic.layout.kieler.LayoutHint" value="{ { head={id=&quot;ModalModel.click&quot;,x=300.0,y=125.0}, tail={id=&quot;TrueGate.output&quot;,x=200.0,y=125.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ModalModel.click&quot;,x=300.0,y=125.0}, tail={id=&quot;TrueGate.output&quot;,x=200.0,y=125.0}, points={} } }">
         </property>
     </relation>
     <link port="Sequence.output" relation="relation"/>

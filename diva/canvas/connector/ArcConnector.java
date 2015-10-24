@@ -225,14 +225,23 @@ public class ArcConnector extends AbstractConnector {
         // Figure out the centers of the attached figures
         Point2D headCenter;
 
-        if (tailFigure != null) {
+        // uru: checking that the parent of the tailFigure is not 
+        // null is necessary when using KIELER layout. 
+        // The auto layout generates a spline path which is displayed
+        // using the KielerLayoutArcConnector. However, as soon as 
+        // the user starts dragging a node, the edge turns back to 
+        // being a regular arc. During this transformation the 
+        // parent of the tailFigure _sometimes_ becomes null.
+        // The null check here does not seem to result in any
+        // visual quirks.
+        if (tailFigure != null && tailFigure.getParent() != null) {
             tailCenter = CanvasUtilities.getCenterPoint(tailFigure,
                     currentContext);
         } else {
             tailCenter = tailPt;
         }
 
-        if (headFigure != null) {
+        if (headFigure != null && headFigure.getParent() != null) {
             headCenter = CanvasUtilities.getCenterPoint(headFigure,
                     currentContext);
         } else {

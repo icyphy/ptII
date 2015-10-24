@@ -123,13 +123,13 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * <p>This attribute implements a HLA Manager which allows a Ptolemy model to
- * cooperate with a HLA/CERTI Federation. The main is to allow a Ptolemy
+ * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
  * simulation as Federate of a Federation.
  * <p></p>
  * The High Level Architecture (HLA) [1][2] is a standard for distributed
- * discrete-event simulations. A complex simulation in HLA is called a HLA
- * Federation. A Federation is a collection of Federates (e.g. simpler simula-
- * -tors), each performing a sequence of computations, interconnected by a Run
+ * discrete-event simulation. A complex simulation in HLA is called a HLA
+ * Federation. A Federation is a collection of Federates (e.g. simpler simulators),
+ * each performing a sequence of computations, interconnected by a Run
  * Time Infrastructure (RTI).
  * </p><p>
  * CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
@@ -344,6 +344,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  must contain an StringToken. */
     public FileParameter fedFile;
 
+    /**
+     * Double value for representing how much is a unit of time in the simulation.
+     * Has an impact on TAR/NER/RAV/UAV. 
+     */
+    public Parameter hlaTimeUnit;
+
+    /** Boolean value, 'true' if the Federate is the creator of the
+     *  synchronization point 'false' if not. This parameter must contain
+     *  an BooleanToken. */
+    public Parameter isCreator;
+
     /** Boolean value, 'true' if the Federate is declared time constrained
      *  'false' if not. This parameter must contain an BooleanToken. */
     public Parameter isTimeConstrained;
@@ -368,17 +379,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** Name of the synchronization point (if required). This parameter must
      *  contain an StringToken. */
     public Parameter synchronizationPointName;
-
-    /** Boolean value, 'true' if the Federate is the creator of the
-     *  synchronization point 'false' if not. This parameter must contain
-     *  an BooleanToken. */
-    public Parameter isCreator;
-
-    /**
-     * Double value for representing how much is a unit of time in the simulation.
-     * Has an impact on TAR/NER/RAV/UAV. 
-     */
-    public Parameter hlaTimeUnit;
 
     /**
      * Choice of time advancement service (NER or-exclusive TAR)
@@ -428,7 +428,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         "Cannot have empty name !");
             }
             _federateName = value;
-            setDisplayName(value);
         } else if (attribute == federationName) {
             String value = ((StringToken) federationName.getToken())
                     .stringValue();
@@ -797,7 +796,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  @exception IllegalActionException If a CERTI exception is raised then
      *  displayed it to the user.
      */
-    void updateHlaAttribute(HlaPublisher hp, Token in, String senderName)
+    public void updateHlaAttribute(HlaPublisher hp, Token in, String senderName)
             throws IllegalActionException {
         Time currentTime = _director.getModelTime();
 
@@ -1103,12 +1102,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _rtia.tick2();
             cntTick++;
         }
-        
+
         // If we get any rav-event
-        if (cntTick != 1){
+        if (cntTick != 1) {
             // Store reflected attributes RAV as events on HLASubscriber actors.
             _putReflectedAttributesOnHlaSubscribers();
-            
+
             // At this step we are sure that the HLA logical time of the
             // Federate has been updated (by the reception of the TAG callback
             // (timeAdvanceGrant()) and its value is the proposedTime or
@@ -1127,7 +1126,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         "The breakpoint time is not a valid Ptolemy time");
             }
         }
-        
+
         return proposedTime;
     }
 
@@ -1249,7 +1248,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             + certiNextPointInTime.getTime()
                             + ") by calling tick2()");
                 }
-
+                _rtia.timeAdvanceRequest(certiNextPointInTime);
+                
                 try {
                     _rtia.tick2();
                 } catch (SpecifiedSaveLabelDoesNotExist e) {
@@ -1262,16 +1262,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     throw new IllegalActionException(this, e,
                             "RTIinternalError ");
                 }
-            }
 
-            // End the loop with one TAR call.
-            if (_debugging) {
-                _debug(this.getDisplayName()
-                        + " proposeTime() -  call CERTI TAR -"
-                        + " timeAdvanceRequest("
-                        + certiNextPointInTime.getTime() + ")");
+                // End the loop with one TAR call.
+                if (_debugging) {
+                    _debug(this.getDisplayName()
+                            + " proposeTime() -  call CERTI TAR -"
+                            + " timeAdvanceRequest("
+                            + certiNextPointInTime.getTime() + ")");
+                }
+                _rtia.timeAdvanceRequest(certiNextPointInTime);
             }
-            _rtia.timeAdvanceRequest(certiNextPointInTime);
         }
         return null;
     }
@@ -2206,7 +2206,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 int classHandle = rtia
                         .getObjectClassHandle(_getClassNameFromTab(tObj));
                 TypedIOPort port = _getPortFromTab(tObj);
-                HlaPublisher pub = (HlaPublisher) port.getContainer();
 
                 List<IOPort> senders = port.sourcePortList();
                 for (IOPort sender : senders) {

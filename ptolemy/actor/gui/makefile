@@ -230,6 +230,7 @@ OPTIONAL_FILES = \
 	'HTMLEffigy$$Factory.class' \
 	'HTMLViewer$$1.class' \
 	'HTMLViewerTableau$$Factory.class' \
+	'ImageTokenEffigy$$Factory.class' \
 	'JTextAreaExec$$2$1.class' \
 	'JTextAreaExec$$4$1.class' \
 	'JTextAreaExec$$6$1.class' \
@@ -324,10 +325,19 @@ OPTIONAL_FILES = \
 	'TableauFrame$$ExtensionFileFilter.class' \
 	'TableauFrame$$ViewMenuListener.class' \
 	'TextEditorTableau$$Factory.class' \
+	'TextEditor$$1.class' \
+	'TextEditor$$CopyAction.class' \
+	'TextEditor$$CutAction.class' \
+	'TextEditor$$FindAction.class' \
+	'TextEditor$$PasteAction.class' \
+	'TextEditor$$RedoAction.class' \
+	'TextEditor$$UndoAction.class' \
 	'TextEditor$$ExportImageAction.class' \
 	'TextEffigy$$Factory.class' \
 	'TokenEffigy$$Factory.class' \
 	'TokenTableau$$Factory.class' \
+	'Top$$1$$1.class' \
+	'Top$$1.class' \
 	'UserActorLibrary$$1.class' \
 	'WelcomeWindow$$1.class'
 
