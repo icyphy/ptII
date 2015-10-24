@@ -65,14 +65,13 @@ public class KielerLayoutArcConnector extends ArcConnector {
     ////                         public methods                    ////
 
     /** 
-     * Construct a new connector with the given tail and head for the specified
-     * link. The connector is either drawn as a spline (in case 
-     * KIELER layout information is available) or in the classic 
+     * Construct a new connector with the given tail and head for the
+     * specified link. The connector is either drawn as a spline (in
+     * case KIELER layout information is available) or in the classic
      * arc-style fashion as implemented by the super-class.
      *
      * @param tail The tail site.
      * @param head The head site.
-     * @param link The link.
      */
     public KielerLayoutArcConnector(Site tail, Site head) {
         super(tail, head);

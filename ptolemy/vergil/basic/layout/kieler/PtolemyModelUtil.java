@@ -236,8 +236,8 @@ public final class PtolemyModelUtil {
     }
 
     /**
-     * @param state
-     *          a {@link State} to test
+     * Return true if the state is an initial state.
+     * @param state a {@link State} to test
      * @return whether the passed state has the isInitialState parameter set to true.
      */
     protected static boolean _isInitialState(State state) {
@@ -245,9 +245,9 @@ public final class PtolemyModelUtil {
                 .equals(Boolean.TRUE.toString());
     }
     
-    /**
-     * @param state
-     *          a {@link State} to test
+    /** 
+     * Return true if the state is a final state.
+     * @param state a {@link State} to test
      * @return whether the passed state has the isFinalState parameter set to true.
      */
     protected static boolean _isFinalState(State state) {

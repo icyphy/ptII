@@ -154,6 +154,7 @@ public class ImageTokenEffigy extends Effigy {
     /** Specify the image represented by this effigy.
      *  @param token The image represented by this effigy.
      *  @exception IllegalActionException If the token is not acceptable.
+     *  @see #getImage()
      */
     public void setImage(ImageToken token) throws IllegalActionException {
         _token = token;

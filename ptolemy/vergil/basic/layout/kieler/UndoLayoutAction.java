@@ -66,13 +66,12 @@ public class UndoLayoutAction implements UndoAction {
     ////                         public methods                    ////
 
     /**
-     * Add a location to the undo action. The action will set the location to the
-     * coordinates stored in the given location entry.
-     *
-     * @param entry A location entry with all required data
-     */
-    public void addLocation(LocationEntry entry) {
-        _locationEntries.add(entry);
+     * Add a connection.  
+     * @param container The container in which to add the connection
+     * @param layoutHint to be added.
+     */ 
+    public void addConnection(NamedObj container, LayoutHint layoutHint) {
+        _connAddEntries.add(new ConnectionHintEntry(container, layoutHint));
     }
 
     /**
@@ -86,17 +85,13 @@ public class UndoLayoutAction implements UndoAction {
     }
 
     /**
-     * Mark the given connection routing hint for removal. The action will remove
-     * the layout hint from its containing relation.
+     * Add a location to the undo action. The action will set the location to the
+     * coordinates stored in the given location entry.
      *
-     * @param layoutHint A connection routing hint contained in a relation
+     * @param entry A location entry with all required data
      */
-    public void removeConnection(LayoutHint layoutHint) {
-        _connRemoveEntries.add(layoutHint);
-    }
-    
-    public void addConnection(NamedObj container, LayoutHint layoutHint) {
-        _connAddEntries.add(new ConnectionHintEntry(container, layoutHint));
+    public void addLocation(LocationEntry entry) {
+        _locationEntries.add(entry);
     }
 
     /**
@@ -145,6 +140,16 @@ public class UndoLayoutAction implements UndoAction {
         undoInfo.push(undoLayoutAction);
     }
 
+    /**
+     * Mark the given connection routing hint for removal. The action will remove
+     * the layout hint from its containing relation.
+     *
+     * @param layoutHint A connection routing hint contained in a relation
+     */
+    public void removeConnection(LayoutHint layoutHint) {
+        _connRemoveEntries.add(layoutHint);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

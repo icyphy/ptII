@@ -908,6 +908,7 @@ public class JavaScript extends TypedAtomicActor {
      *  classpath of the current Java process.
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
+     *  @return The resource
      *  @throws IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
@@ -945,15 +946,22 @@ public class JavaScript extends TypedAtomicActor {
         
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
-            BufferedReader in = new BufferedReader(new InputStreamReader(
+            BufferedReader in = null;
+            try {
+                in = new BufferedReader(new InputStreamReader(
                     url.openStream()));
-            StringBuffer contents = new StringBuffer();
-            String input;
-            while ((input = in.readLine()) != null) {
-                contents.append(input);
-                contents.append("\n");
+                StringBuffer contents = new StringBuffer();
+                String input;
+                while ((input = in.readLine()) != null) {
+                    contents.append(input);
+                    contents.append("\n");
+                }
+                return contents.toString();
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
             }
-            return contents.toString();
 
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "Failed to read URI: " + uri);
