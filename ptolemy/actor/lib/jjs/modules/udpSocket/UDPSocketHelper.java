@@ -61,27 +61,28 @@ public class UDPSocketHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Close the UDP socket with a given port number.
+    /** Connect the UDP socket with a given port number.
      *  @param port The port number.
      */
     public void bind(int port) {
         _socket.listen("0.0.0.0", port,
                 new AsyncResultHandler<DatagramSocket>() {
-                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
-                        if (asyncResult.succeeded()) {
-                            _socket.dataHandler(new Handler<DatagramPacket>() {
-                                public void handle(DatagramPacket packet) {
-                                    // Do something with the packet
-                                    _currentObj.callMember("notifyIncoming",
-                                            packet.data().toString());
-                                }
-                            });
-                        } else {
-                            System.out.println("Listen failed"
-                                    + asyncResult.cause());
+            public void handle(AsyncResult<DatagramSocket> asyncResult) {
+                if (asyncResult.succeeded()) {
+                    _socket.dataHandler(new Handler<DatagramPacket>() {
+                        public void handle(DatagramPacket packet) {
+                            // Do something with the packet
+                            _currentObj.callMember("notifyIncoming",
+                                    packet.data().toString());
                         }
-                    }
-                });
+                    });
+                } else {
+                    System.out.println("Listen failed"
+                            + asyncResult.cause());
+                }
+            }
+        });
+        _port = port;
     }
 
     /** Close the UDP socket.
@@ -119,6 +120,19 @@ public class UDPSocketHelper extends VertxHelperBase {
                 });
     }
 
+    /** Send a UDP message as text.
+     *  @param message A string to be sent.
+     */
+    public void sendText(String message) {
+        _socket.send(message, "10.0.0.1", _port,
+                new AsyncResultHandler<DatagramSocket>() {
+                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
+                        System.out.println("Send succeeded? "
+                                + asyncResult.succeeded());
+                    }
+                });
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                  ////
     private UDPSocketHelper(ScriptObjectMirror currentObj) {
@@ -132,6 +146,9 @@ public class UDPSocketHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
+    /** The port that this socket is bound to. */
+    private int _port;
+    
     /** The current instance of the Vert.x UDP socket. */
     private DatagramSocket _socket;
 
