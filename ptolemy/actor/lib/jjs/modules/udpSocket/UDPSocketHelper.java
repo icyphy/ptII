@@ -37,7 +37,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramPacket;
 import io.vertx.core.datagram.DatagramSocket;
-import io.vertx.core.datagram.impl.InternetProtocolFamily;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 
@@ -64,11 +63,11 @@ public class UDPSocketHelper extends VertxHelperBase {
      *  @param port The port number.
      */
     public void bind(int port) {
-        _socket.listen("0.0.0.0", port,
+        _socket.listen(port, "0.0.0.0",
                 new AsyncResultHandler<DatagramSocket>() {
                     public void handle(AsyncResult<DatagramSocket> asyncResult) {
                         if (asyncResult.succeeded()) {
-                            _socket.dataHandler(new Handler<DatagramPacket>() {
+                            _socket.handler(new Handler<DatagramPacket>() {
                                 public void handle(DatagramPacket packet) {
                                     // Do something with the packet
                                     _currentObj.callMember("notifyIncoming",
@@ -107,10 +106,10 @@ public class UDPSocketHelper extends VertxHelperBase {
     public void send(byte[] data, int offset, int length, int port,
             String hostname) {
         // FIXME: Why are we not using data here?
-        Buffer buffer = new Buffer("content");
+        Buffer buffer = Buffer.buffer("content");
         // Send a Buffer
-        _socket.send(buffer, "10.0.0.1", 1234,
-                new AsyncResultHandler<DatagramSocket>() {
+        _socket.send(buffer, 1234, "10.0.0.1",
+                new Handler<AsyncResult<DatagramSocket>>() {
                     public void handle(AsyncResult<DatagramSocket> asyncResult) {
                         System.out.println("Send succeeded? "
                                 + asyncResult.succeeded());
@@ -125,7 +124,7 @@ public class UDPSocketHelper extends VertxHelperBase {
         // "UDPSocketHelper.java:110: error: constructor VertxHelperBase in class VertxHelperBase cannot be applied to given types;"
         super(currentObj);
         _currentObj = currentObj;
-        _socket = _vertx.createDatagramSocket(InternetProtocolFamily.IPv4);
+        _socket = _vertx.createDatagramSocket();
     }
 
     ///////////////////////////////////////////////////////////////////
