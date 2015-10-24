@@ -1561,7 +1561,7 @@ Decorator {
         }
 
         // Append dialect
-        if (dialect != "") {
+        if (dialect.length() > 0) {
             capitalizedLanguage += dialect;
         }
 
