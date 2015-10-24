@@ -36,13 +36,13 @@ import io.vertx.core.spi.VertxFactory;
 import io.vertx.core.VoidHandler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.WebSocket;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -115,7 +115,7 @@ public class VertxHelper {
     public void connect() {
         if (!_wsIsOpen) {
             try {
-                _httpClient.connectWebsocket("/eventbus/websocket",
+                _httpClient.websocket("/eventbus/websocket",
                         new Handler<WebSocket>() {
                             @Override
                             public void handle(WebSocket websocket) {
@@ -132,7 +132,7 @@ public class VertxHelper {
                                 _webSocket = websocket;
                                 _currentObj.callMember("emit", "open");
 
-                                _webSocket.dataHandler(new DataHandler());
+                                _webSocket.handler(new DataHandler());
                                 _webSocket.endHandler(new EndHandler());
                                 _webSocket
                                         .exceptionHandler(new ExceptionHandler());
@@ -210,7 +210,9 @@ public class VertxHelper {
     public void registerHandler(String address) {
         JsonObject message = new JsonObject().put("type", "register")
                 .put("address", address);
-        _webSocket.writeTextFrame(message.encode());
+        // FIXME: Vertx 3 added the word "Final" to this method name,
+        // but offers no explanation of what that means...
+        _webSocket.writeFinalTextFrame(message.encode());
     }
 
     /** Send http response string.
@@ -239,15 +241,20 @@ public class VertxHelper {
             boolean withEventBus) {
         _currentObj = currentObj;
 
-        _httpClient = _vertx.createHttpClient().setHost(host).setPort(port);
+        _httpClient = _vertx.createHttpClient(new HttpClientOptions()
+        	.setDefaultHost(host)
+        	.setDefaultPort(port));
+        // FIXME: Vertx 3 has no exception handler??
+        /*
         _httpClient.exceptionHandler(new Handler() {
 
-            /** Intercept a java.net.ConnectException if connecting fails. */
+            // Intercept a java.net.ConnectException if connecting fails.
             public void handle(Object arg0) {
                 _currentObj.callMember("emit", "error", "connect");
             }
 
         });
+        */
 
         // For convenience, connect to bus straight away
         if (withEventBus) {

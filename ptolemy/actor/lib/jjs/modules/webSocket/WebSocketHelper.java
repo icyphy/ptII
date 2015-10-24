@@ -30,6 +30,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
+import io.vertx.core.Handler;
+import io.vertx.core.VoidHandler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.WebSocket;
+import io.vertx.core.http.WebSocketBase;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -41,12 +49,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import io.vertx.core.Handler;
-import io.vertx.core.VoidHandler;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.WebSocket;
-import io.vertx.core.http.WebSocketBase;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
@@ -197,7 +199,7 @@ public class WebSocketHelper extends VertxHelperBase {
                     } catch (IOException e) {
                         throw new IllegalActionException(_actor, e, "Failed to convert image to byte array for sending.");
                     }
-                    msg = new Buffer(stream.toByteArray());
+                    msg = Buffer.buffer(stream.toByteArray());
                 }
             }
             if (isOpen()) {
@@ -254,7 +256,7 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     protected void _sendMessageOverSocket(Object message) {
         if (message instanceof String) {
-            message = new Buffer((String)message);
+            message = Buffer.buffer((String)message);
         }
         /* Sadly, the following check doesn't make sense.
          * Only the sender of the message can check whether
@@ -327,13 +329,14 @@ public class WebSocketHelper extends VertxHelperBase {
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
         _throttleFactor = throttleFactor;
         // FIXME: This seems to become a zombie thread.
-        _client = _vertx.createHttpClient();
-        _client.setHost(host)
-            .setPort(port)
-            .exceptionHandler(new HttpClientExceptionHandler())
+        _client = _vertx.createHttpClient(new HttpClientOptions()
+        	.setDefaultHost(host)
+            .setDefaultPort(port)
             .setKeepAlive(true)
             .setConnectTimeout(_connectTimeout)
-            .setMaxWebSocketFrameSize(_maxFrameSize);
+            .setMaxWebsocketFrameSize(_maxFrameSize));
+        // FIXME: What to do about exceptions? Vertx 3 doesn't have this.
+        // _client.exceptionHandler(new HttpClientExceptionHandler())
         _wsFailed = null;
 
         // Make the connection. This might eventually be a wrapped in a public method.
@@ -361,7 +364,7 @@ public class WebSocketHelper extends VertxHelperBase {
         // However, the headers don't seem to available.
         // MultiMap headers = serverWebSocket.headers();
                 
-        _webSocket.dataHandler(new DataHandler());
+        _webSocket.handler(new DataHandler());
         _webSocket.endHandler(new EndHandler());
         _webSocket.exceptionHandler(new WebSocketExceptionHandler());
         _webSocket.closeHandler(new WebSocketCloseHandler());
@@ -380,9 +383,7 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     private void _connectWebsocket(String host, int port, HttpClient client) {
         // FIXME: Provide a timeout. Use setTimeout() of the client.
-        // FIXME: Why does Vertx require the URI here in addition to setHost() and setPort() above? Seems lame.
-        String address = "ws://" + host + ":" + port;
-        client.connectWebsocket(address, new Handler<WebSocket>() {
+        client.websocket(port, host, "", new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
                 // Synchronize to ensure mutex w/ the disconnect in wrapup.
@@ -401,7 +402,7 @@ public class WebSocketHelper extends VertxHelperBase {
                     _wsIsOpen = true;
                     _webSocket = websocket;
 
-                    _webSocket.dataHandler(new DataHandler());
+                    _webSocket.handler(new DataHandler());
                     _webSocket.endHandler(new EndHandler());
                     _webSocket.exceptionHandler(new WebSocketExceptionHandler());
                     _webSocket.closeHandler(new WebSocketCloseHandler());
