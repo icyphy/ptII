@@ -207,7 +207,7 @@ public class WebSocketHelper extends VertxHelperBase {
             } else if (!_discardMessagesBeforeOpen) {
                 // FIXME: Bound the queue?
                 if (_pendingOutputs == null) {
-                    _pendingOutputs = new LinkedList();
+                    _pendingOutputs = new LinkedList<Object>();
                 }
                 _pendingOutputs.add(msg);
                 if (_throttleFactor > 0) {
@@ -328,20 +328,25 @@ public class WebSocketHelper extends VertxHelperBase {
         _timeBetweenRetries = timeBetweenRetries;
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
         _throttleFactor = throttleFactor;
-        // FIXME: This seems to become a zombie thread.
-        _client = _vertx.createHttpClient(new HttpClientOptions()
-        	.setDefaultHost(host)
-            .setDefaultPort(port)
-            .setKeepAlive(true)
-            .setConnectTimeout(_connectTimeout)
-            .setMaxWebsocketFrameSize(_maxFrameSize));
-        // FIXME: What to do about exceptions? Vertx 3 doesn't have this.
-        // _client.exceptionHandler(new HttpClientExceptionHandler())
-        _wsFailed = null;
+        // Ask the verticle to set up the web socket.
+        // This will execute in a vert.x event loop thread, and
+        // all callbacks that are set up as a side effect will also
+        // execute in that thread.
+        submit(new Runnable() {
+        	public void run() {
+                _client = _vertx.createHttpClient(new HttpClientOptions()
+            			.setDefaultHost(host)
+            			.setDefaultPort(port)
+            			.setKeepAlive(true)
+            			.setConnectTimeout(_connectTimeout)
+            			.setMaxWebsocketFrameSize(_maxFrameSize));
+                _wsFailed = null;
 
-        // Make the connection. This might eventually be a wrapped in a public method.
-        _numberOfTries = 1;
-        _connectWebsocket(host, port, _client);
+                // Make the connection. This might eventually be a wrapped in a public method.
+                _numberOfTries = 1;
+                _connectWebsocket(host, port, _client);
+        	}
+        });
     }
 
     /** Private constructor for WebSocketHelper for a server-side web socket.
@@ -359,18 +364,25 @@ public class WebSocketHelper extends VertxHelperBase {
         _wsIsOpen = true;
         
         _maxFrameSize = maxFrameSize;
-        
+        _receiveType = receiveType;
+        _sendType = sendType;
+
         // FIXME: Grab the headers and get the Content-Type from that.
         // However, the headers don't seem to available.
         // MultiMap headers = serverWebSocket.headers();
-                
-        _webSocket.handler(new DataHandler());
-        _webSocket.endHandler(new EndHandler());
-        _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-        _webSocket.closeHandler(new WebSocketCloseHandler());
 
-        _receiveType = receiveType;
-        _sendType = sendType;
+        // Ask the verticle to set up the web socket.
+        // This will execute in a vert.x event loop thread, and
+        // all callbacks that are set up as a side effect will also
+        // execute in that thread.
+        submit(new Runnable() {
+        	public void run() {
+        		_webSocket.handler(new DataHandler());
+        		_webSocket.endHandler(new EndHandler());
+        		_webSocket.exceptionHandler(new WebSocketExceptionHandler());
+        		_webSocket.closeHandler(new WebSocketCloseHandler());
+        	}
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -382,11 +394,14 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param client The HttpClient object.
      */
     private void _connectWebsocket(String host, int port, HttpClient client) {
-        // FIXME: Provide a timeout. Use setTimeout() of the client.
+    	// FIXME: Header with content type should be provided?
+    	// FIXME: Provide new HttpClientExceptionHandler() as a final argument
+    	// when upgraded to Vertx 3.1. Otherwise, retries won't work.
         client.websocket(port, host, "", new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
                 // Synchronize to ensure mutex w/ the disconnect in wrapup.
+            	// FIXME: Not needed.
                 synchronized (_actor) {
                     if (_numberOfTries < 0) {
                         // close() has been called. Abort the connection.
@@ -431,7 +446,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private HttpClient _client;
     
     /** The time to wait before giving up on a connection. */
-    private int _connectTimeout = 60000;
+    private int _connectTimeout = 5000;
 
     /** True to discard messages before the socket is open. False to discard them. */
     private boolean _discardMessagesBeforeOpen;
@@ -449,7 +464,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private int _numberOfTries = 1;
 
     /** Pending outputs received before the socket is opened. */
-    private List _pendingOutputs;
+    private List<Object> _pendingOutputs;
 
     /** The host port. */
     private int _port;
@@ -541,9 +556,9 @@ public class WebSocketHelper extends VertxHelperBase {
     
     /** The event handler that is triggered when a socket is closed.
      */
-    private class WebSocketCloseHandler implements Handler {
+    private class WebSocketCloseHandler implements Handler<Void> {
         @Override
-        public void handle(Object ignored) {
+        public void handle(Void ignored) {
             synchronized (_actor) {
                 _currentObj.callMember("emit", "close");
                 _wsIsOpen = false;
@@ -586,25 +601,29 @@ public class WebSocketHelper extends VertxHelperBase {
                                 }
                                 return;
                             }
-                            synchronized (_actor) {
-                                // Prevent any attempt to interrupt this thread, since it is
-                                // no longer sleeping.
-                                _thread = null;
-                                // Check again the status of the number of tries.
-                                // This may have been changed if close() was called,
-                                // which occurs, for example, when the model stops executing.
-                                // NOTE: This may actually try connecting even if there will be
-                                // no more firings of the JavaScript actor. But it will only try
-                                // if wrapup has not yet been called, so if it succeeds in connecting,
-                                // presumably either wrapup() or the handler in _connectWebsocket will
-                                // disconnect if the model is no longer executing.
-                                if (_numberOfTries >= 0
-                                        && _numberOfTries <= _numberOfRetries
-                                        && _actor.isExecuting()) {
-                                    _numberOfTries++;
-                                    _connectWebsocket(_host, _port, _client);
-                                }
-                            }
+                            // Prevent any attempt to interrupt this thread, since it is
+                            // no longer sleeping.
+                            _thread = null;
+
+                            // Submit a job to be run by the verticle to retry connecting.
+                            submit(new Runnable() {
+                            	public void run() {
+                                    // Check again the status of the number of tries.
+                                    // This may have been changed if close() was called,
+                                    // which occurs, for example, when the model stops executing.
+                                    // NOTE: This may actually try connecting even if there will be
+                                    // no more firings of the JavaScript actor. But it will only try
+                                    // if wrapup has not yet been called, so if it succeeds in connecting,
+                                    // presumably either wrapup() or the handler in _connectWebsocket will
+                                    // disconnect if the model is no longer executing.
+                                    if (_numberOfTries >= 0
+                                            && _numberOfTries <= _numberOfRetries
+                                            && _actor.isExecuting()) {
+                                        _numberOfTries++;
+                                        _connectWebsocket(_host, _port, _client);
+                                    }
+                            	}
+                            });
                         }
                     };
                     _thread = new Thread(retry);

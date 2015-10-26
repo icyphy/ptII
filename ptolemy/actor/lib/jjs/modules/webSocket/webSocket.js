@@ -89,9 +89,9 @@ exports.supportedSendTypes = function() {
  *  * port: The port on which the host is listening. Defaults to 80.
  *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
- *  * connectTimeout: The time to wait before giving up on a connection.
+ *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds (defaults to 5000).
  *  * maxFrameSize: The maximum frame size for a received message.
- *  * numberOfRetries: The number of times to retry connecting. Defaults to 0.
+ *  * numberOfRetries: The number of times to retry connecting. Defaults to 1.
  *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
  *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
  *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
@@ -104,7 +104,7 @@ exports.Client = function(options) {
     this.host = options['host'] || 'localhost';
     this.receiveType = options['receiveType'] || 'application/json';
     this.sendType = options['sendType'] || 'application/json';
-    this.connectTimeout = options['connectTimeout'] || 60000;
+    this.connectTimeout = options['connectTimeout'] || 5000;
     this.maxFrameSize = options['maxFrameSize'] || 65536;
     this.numberOfRetries = options['numberOfRetries'] || 1;
     this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
