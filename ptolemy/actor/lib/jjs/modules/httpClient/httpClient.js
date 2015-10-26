@@ -25,6 +25,17 @@ var EventEmitter = require('events').EventEmitter;
 /** Issue an HTTP request and provide a callback function for responses.
  *  The callback is a function that is passed an instance of IncomingMessage,
  *  defined here. This function returns an instance of ClientRequest, also defined here.
+ *  The HTTP request will not actually be issued until you call the end() function on
+ *  the returned ClientRequest.
+ *
+ *  This implementation ensures that for any accessor that calls this function,
+ *  the callback functions are called in the same order as
+ *  invocations of this request() function that triggered the request.
+ *  If you call this function from the same accessor before the previous
+ *  request has been completed (the callback function has been called or it has
+ *  timed out), then the request will be queued to be issued only after the previous
+ *  request has been satisfied.
+ *
  *  The options argument can be a string URL
  *  or a map with the following fields (this helper class assumes
  *  all fields are present, so please be sure they are):
@@ -96,6 +107,15 @@ exports.request = function(options, responseCallback) {
  *  calls end() on the object returned by request(). It returns the object returned
  *  by request() (an instance of ClientRequest). See request() for documentation of
  *  the arguments.
+ *
+ *  This implementation ensures that for any accessor that calls this function,
+ *  the callback functions are called in the same order as
+ *  invocations of this request() function that triggered the request.
+ *  If you call this function from the same accessor before the previous
+ *  request has been completed (the callback function has been called or it has
+ *  timed out), then the request will be queued to be issued only after the previous
+ *  request has been satisfied.
+ *
  *  @param options The options.
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.

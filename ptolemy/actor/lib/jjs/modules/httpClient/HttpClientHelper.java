@@ -46,6 +46,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,15 @@ import ptolemy.data.Token;
 
 /**
    A helper class for the HttpClient module in JavaScript.
+   You should use {@link #getOrCreateHelper(Object)} to create
+   exactly one instance of this helper per actor. This class
+   will then ensure that response and error callbacks will occur
+   in the same order as the queries that trigger them.
+   To initiate a query, create an instance of the JavaScript
+   ClientRequest object and call {@link #request(ScriptObjectMirror, Map)},
+   passing it the ClientRequest object and a Map of options
+   (see the associated httpRequest.js JavaScript module, which defines
+   this class and utility functions for creating it).
 
    @author Marten Lohstroh, Edward A. Lee
    @version $Id$
@@ -113,7 +123,8 @@ public class HttpClientHelper extends VertxHelperBase {
      */
     public void request(
             ScriptObjectMirror currentObj, Map<String, Object> options) {
-    	StartHttpRequest request = new StartHttpRequest(currentObj, options);
+    	// System.err.println("****** Initiating request " + _sequenceNumber);
+    	StartHttpRequest request = new StartHttpRequest(currentObj, options, _sequenceNumber++);
     	submit(request);
     }
     
@@ -130,10 +141,10 @@ public class HttpClientHelper extends VertxHelperBase {
     	return new HttpClientHelper(actor);
     }
 
-    /** Stop a response. 
+    /** Stop a request. This ensures that future callbacks are discarded.
      */
     public void stop() {
-    	// FIXME: What to do here?
+    	// If there is a pending response, discard it.
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,33 +158,122 @@ public class HttpClientHelper extends VertxHelperBase {
     }            
     
     ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+    
+    /** If the requestNumber matches the _nextRequest number, then
+     *  execute the specified response.
+     *  If the requestNumber is less than _nextRequest, then queue the
+     *  response for later execution.
+     *  If the requestNumber is greater than _nextRequest, then discard
+     *  the response.
+     *  If the done argument is true,
+     *  then after this response is executed, increment the _nextRequest
+     *  number and check for any deferred requests that match that new
+     *  number, and execute that one.
+     *  @param requestNumber The number of the request.
+     *  @param done True to indicate that this request is complete.
+     *  @param response The response to execute.
+     */
+    private void _issueOrDeferResponse(
+    		long requestNumber, boolean done, Runnable response) {
+    	if (requestNumber > _nextResponse) {
+    		// Defer the request.
+        	// System.err.println("****** Deferring response to " + requestNumber);
+    		HandlerInvocation handler = new HandlerInvocation();
+    		handler.response = response;
+    		handler.done = done;
+    		LinkedList<HandlerInvocation> deferred = _deferredHandlers.get(requestNumber);
+    		if (deferred == null) {
+    			deferred = new LinkedList<HandlerInvocation>();
+        		_deferredHandlers.put(requestNumber, deferred);
+    		}
+    		deferred.add(handler);
+    	} else if (requestNumber == _nextResponse) {
+        	// System.err.println("****** Issuing response to " + requestNumber);
+    		response.run();
+    		if (done) {
+    			// Look for deferred responses that are next in the sequence.
+            	// System.err.println("****** Done with request request " + requestNumber);
+    			_nextResponse++;
+    			LinkedList<HandlerInvocation> nextResponses = _deferredHandlers.get(_nextResponse);
+    			boolean deferredResponseDone = nextResponses != null;
+				while (nextResponses != null && deferredResponseDone) {
+					// There are matching deferred responses.
+					for (HandlerInvocation nextResponse : nextResponses) {
+			        	// System.err.println("****** Issuing response to " + _nextResponse);
+    					nextResponse.response.run();
+    					if (nextResponse.done) {
+    						// The response is done.
+    		            	// System.err.println("****** Done with request request " + _nextResponse);
+    						_deferredHandlers.remove(_nextResponse);
+    						_nextResponse++;
+    						nextResponses = _deferredHandlers.get(_nextResponse);
+    						deferredResponseDone = true;
+    						// Skip any remaining parts of this response.
+    						break;
+    					} else {
+    						// The next response is not done yet.
+    						// Continue with any responses in the list, but unless one of those
+    						// marks this response done, do not proceed to the next response.
+    						deferredResponseDone = false;
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private fields                        ////
+    
+    /** Sequence number of the next expected response. */
+    private long _nextResponse = 0L;
+    
+    /** Queue of deferred responses. */
+    private HashMap<Long,LinkedList<HandlerInvocation>> _deferredHandlers
+    		= new HashMap<Long,LinkedList<HandlerInvocation>>();
+    
+    /** The sequence number of this request. */
+    private long _sequenceNumber = 0L;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    /** A structure for storing a deferred handler invocation. */
+    private class HandlerInvocation {
+    	public Runnable response;
+    	public boolean done;
+    }
 
     /** The event handler that is triggered when an error occurs in the HTTP connection.
      */
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         /** The HTTP client for this request. */
         private HttpClient _client;
+        /** The number of the request that triggered this response. */
+        private long _requestNumber;
         /** The JavaScript object that this is a helper for. */
         protected ScriptObjectMirror _requestObj;
 
-        public HttpClientExceptionHandler(ScriptObjectMirror requestObj, HttpClient client) {
+        public HttpClientExceptionHandler(
+        		ScriptObjectMirror requestObj, HttpClient client, long requestNumber) {
     		_client = client;
     		_requestObj = requestObj;
+    		_requestNumber = requestNumber;
     	}
         @Override
         public void handle(Throwable throwable) {
-        	// FIXME: Probably don't need to synchronize. Check others.
-            synchronized (_actor) {
-                _requestObj.callMember("_response", null, throwable.getMessage());
-                if (_client != null) {
-                    _client.close();
-                    _client = null;
-                    // Indicate that the request is complete so any pending
-                    // requests can be processed.
-                    _setBusy(false);
-                }
-            }
+        	// System.err.println("****** Received an error for request " + _requestNumber);
+    		// True argument indicates that this request is done.
+    		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
+    			public void run() {
+    				_requestObj.callMember("_response", null, throwable.getMessage());
+    				if (_client != null) {
+    					_client.close();
+    					_client = null;
+    				}
+    			}
+    		});
         }
     }
 
@@ -190,241 +290,268 @@ public class HttpClientHelper extends VertxHelperBase {
         private HttpClient _client;
         /** Boolean indicating whether outputting partial responses is permitted. */
         private boolean _outputCompleteResponseOnly = true;
+        /** The number of the request that triggered this response. */
+        private long _requestNumber;
         /** The JavaScript object that this is a helper for. */
         protected ScriptObjectMirror _requestObj;
 
         public HttpClientResponseHandler(
         		ScriptObjectMirror requestObj,
         		HttpClient client,
-        		boolean outputCompleteResponseOnly) {
+        		boolean outputCompleteResponseOnly,
+        		long requestNumber) {
         	_client = client;
         	_outputCompleteResponseOnly = outputCompleteResponseOnly;
         	_requestObj = requestObj;
+        	_requestNumber = requestNumber;
         }
         @Override
         public void handle(final HttpClientResponse response) {
-        	// FIXME: Probably doesn't need to be synchronized.
-            synchronized (_actor) {
-                // The response is not yet complete, but we have some information.
-                int status = response.statusCode();
-                if (status >= 400) {
-                    // An error occurred. Null argument indicates error.
-                    _requestObj.callMember("_response", null,
-                            "Request failed with code " + status + ": "
-                            + response.statusMessage());
-                    _client.close();
-                    _client = null;
-                    return;
-                }
-                MultiMap headers = response.headers();
+        	// The response is not yet complete, but we have some information.
+        	int status = response.statusCode();
+        	if (status >= 400) {
+        		// An error occurred.
+        		// True argument indicates that this request is done.
+            	// System.err.println("****** Received an error code for request " + _requestNumber + ", " + status);
+        		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
+        			public void run() {
+                		// Null argument indicates error.
+                		_requestObj.callMember("_response", null,
+                				"Request failed with code " + status + ": "
+                						+ response.statusMessage());
+                		_client.close();
+                		_client = null;
+        			}
+        		});
+        		return;
+        	}
+        	MultiMap headers = response.headers();
 
-                // If the response is a redirect, handle that here.
-                if (status >= 300 && status <= 308 && status != 306) {
-                    String newLocation = headers.get("Location");
-                    if (newLocation != null) {
-                        // FIXME: How to handle the redirect?
-                        _requestObj.callMember("_response", null,
-                                "Redirect to "
-                                + newLocation
-                                + " not yet handled by HttpClientHelper. "
-                                + status + ": " + response.statusMessage());
-                        _client.close();
-                        _client = null;
-                        _setBusy(false);
-                        return;
-                    }
-                }
+        	// If the response is a redirect, handle that here.
+        	if (status >= 300 && status <= 308 && status != 306) {
+        		String newLocation = headers.get("Location");
+        		if (newLocation != null) {
+            		// True argument indicates that this request is done.
+            		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
+            			public void run() {
+            				// FIXME: How to handle the redirect?
+            				_requestObj.callMember("_response", null,
+            						"Redirect to "
+            								+ newLocation
+            								+ " not yet handled by HttpClientHelper. "
+            								+ status + ": " + response.statusMessage());
+            				_client.close();
+            				_client = null;
+            			}
+            		});
+        			return;
+        		}
+        	}
 
-                String contentType = headers.get("Content-Type");
-                boolean isText = (contentType == null)
-                        || (contentType.startsWith("text"))
-                        || (contentType.startsWith("application/json"));
-                boolean isMultipart = (contentType != null)
-                        && (contentType.startsWith("multipart"));
-                if (isMultipart) {
-                    int index = contentType.indexOf("=");
-                    if (index > 0) {
-                        _boundary = "--"
-                                + contentType.substring(index + 1).trim();
-                    }
-                }
+        	String contentType = headers.get("Content-Type");
+        	final boolean isText = (contentType == null)
+        			|| (contentType.startsWith("text"))
+        			|| (contentType.startsWith("application/json"));
+        	final boolean isMultipart = (contentType != null)
+        			&& (contentType.startsWith("multipart"));
+        	if (isMultipart) {
+        		int index = contentType.indexOf("=");
+        		if (index > 0) {
+        			_boundary = "--"
+        					+ contentType.substring(index + 1).trim();
+        		}
+        	}
 
-                // FIXME: The Content-Type might be something like
-                // multipart/x-mixed-replace;boundary=ipcamera, in which case,
-                // we really need to be chunking the data rather than using a
-                // bodyHandler.
+        	// FIXME: The Content-Type might be something like
+        	// multipart/x-mixed-replace;boundary=ipcamera, in which case,
+        	// we really need to be chunking the data rather than using a
+        	// bodyHandler.
 
-                if (_outputCompleteResponseOnly) {
-                    // A bodyHandler is invoked after the response is complete.
-                    // Note that large responses could create a memory problem here.
-                    // Could look at the Content-Length header.
-                    response.bodyHandler(new Handler<Buffer>() {
-                        public void handle(Buffer body) {
-                        	// FIXME: Probably doesn't need to be synchronized.
-                            synchronized (_actor) {
-                                if (isText) {
-                                    _requestObj.callMember("_response",
-                                            response, body.toString());
-                                } else if (contentType.startsWith("image")) {
-                                    InputStream stream = new ByteArrayInputStream(
-                                            body.getBytes());
-                                    try {
-                                        Image image = ImageIO.read(stream);
-                                        Token token = new AWTImageToken(image);
-                                        _requestObj.callMember("_response",
-                                                response, token);
-                                    } catch (IOException e) {
-                                        // FIXME: What to do here?
-                                        _requestObj.callMember("_response",
-                                                response, body.getBytes());
-                                    }
-                                } else {
-                                    // FIXME: Need to handle other MIME types.Z
-                                    _requestObj.callMember("_response",
-                                            response, body.getBytes());
-                                }
-                                _client.close();
-                                _client = null;
-                                _setBusy(false);
-                            }
-                        }
-                    });
-                } else {
-                    response.endHandler(new Handler<Void>() {
-                        public void handle(Void v) {
-                            synchronized (_actor) {
-                                _client.close();
-                                _client = null;
-                                _setBusy(false);
-                            }
-                        }
-                    });
-                    _imageParts = new LinkedList<byte[]>();
-                    _inSegment = false;
-                    response.handler(new Handler<Buffer>() {
-                        public void handle(Buffer body) {
-                            // FIXME: There seems to be no way to stop this stream!!!
-                            // This function gets invoked even after the model stops!
-                        	// FIXME: Probably doesn't need to be synchronized.
-                            synchronized (_actor) {
-                                if (isText) {
-                                    _requestObj.callMember("_response",
-                                            response, body.toString());
-                                } else if (isMultipart) {
-                                    byte[] data = body.getBytes();
-                                    String dataAsString = body.toString();
-                                    int boundaryIndex = dataAsString
-                                            .indexOf(_boundary);
-                                    if (boundaryIndex >= 0) {
-                                        // The data contains a boundary.  If we are in
-                                        // a segment, finish it.
-                                        if (_inSegment) {
-                                            if (boundaryIndex > 1) {
-                                                // There is additional data in this segment.
-                                                byte[] prefix = new byte[boundaryIndex];
-                                                System.arraycopy(data, 0,
-                                                        prefix, 0,
-                                                        boundaryIndex - 1);
-                                                _imageParts.add(prefix);
-
-                                                // Construct one big byte array.
-                                                int length = 0;
-                                                for (byte[] piece : _imageParts) {
-                                                    length += piece.length;
-                                                }
-                                                byte[] imageBytes = new byte[length];
-                                                int position = 0;
-                                                for (byte[] piece : _imageParts) {
-                                                    System.arraycopy(piece, 0,
-                                                            imageBytes,
-                                                            position,
-                                                            piece.length);
-                                                    position += piece.length;
-                                                }
-
-                                                // Have a complete image.
-                                                InputStream stream = new ByteArrayInputStream(
-                                                        imageBytes);
-                                                try {
-                                                    Image image = ImageIO
-                                                            .read(stream);
-                                                    if (image != null) {
-                                                        Token token = new AWTImageToken(
-                                                                image);
-                                                        _requestObj
-                                                                .callMember(
-                                                                        "_response",
-                                                                        response,
-                                                                        token);
-                                                        System.out
-                                                                .println("Sent an image.");
-                                                    } else {
-                                                        System.err
-                                                                .println("Input data is apparently not an image.");
-                                                    }
-                                                } catch (IOException e) {
-                                                    _requestObj.callMember(
-                                                            "_response",
-                                                            null,
-                                                            e.toString());
-                                                }
-                                            }
-                                        }
-                                        // Since there is a boundary string, we are definitely in the segment.
-                                        _inSegment = true;
-                                        _imageParts.clear();
-                                        // Skip to character 255, the start of a jpeg image.
-                                        // (in signed notation, -1).
-                                        int start = boundaryIndex
-                                                + _boundary.length() + 2;
-                                        while (start < data.length
-                                                && data[start] != -1) {
-                                            start++;
-                                        }
-                                        if (start < data.length) {
-                                            byte[] segment = new byte[data.length
-                                                    - start];
-                                            System.arraycopy(data, start,
-                                                    segment, 0, segment.length);
-                                            _imageParts.add(segment);
-                                        }
-                                    } else {
-                                        // data does not contain a boundary.
-                                        if (_inSegment) {
-                                            _imageParts.add(data);
-                                        }
-                                    }
-                                } else {
-                                    // FIXME: Need to handle other MIME types.
-                                    _requestObj.callMember("_response",
-                                            response, body.getBytes());
-                                    _client.close();
-                                    _client = null;
-                                    _setBusy(false);
-                                }
-                            }
-                        }
-                    });
-                }
-            }
+        	if (_outputCompleteResponseOnly) {
+        		// A bodyHandler is invoked after the response is complete.
+        		// Note that large responses could create a memory problem here.
+        		// Could look at the Content-Length header.
+        		response.bodyHandler(new Handler<Buffer>() {
+        			public void handle(final Buffer body) {
+        	        	// System.err.println("****** Received complete response for request " + _requestNumber);
+                		// True argument indicates that this request is done.
+                		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
+                			public void run() {
+                				if (isText) {
+                					_requestObj.callMember("_response",
+                							response, body.toString());
+                				} else if (contentType.startsWith("image")) {
+                					InputStream stream = new ByteArrayInputStream(
+                							body.getBytes());
+                					try {
+                						Image image = ImageIO.read(stream);
+                						Token token = new AWTImageToken(image);
+                						_requestObj.callMember("_response",
+                								response, token);
+                					} catch (IOException e) {
+                						// FIXME: What to do here?
+                						_requestObj.callMember("_response",
+                								response, body.getBytes());
+                					}
+                				} else {
+                					// FIXME: Need to handle other MIME types.
+                					_requestObj.callMember("_response",
+                							response, body.getBytes());
+                				}
+                				_client.close();
+                				_client = null;
+                			}
+                		});
+        			}
+        		});
+        	} else {
+        		response.endHandler(new Handler<Void>() {
+        			public void handle(Void v) {
+        	        	// System.err.println("****** Received end of response for request " + _requestNumber);
+                		// True argument indicates that this request is done.
+                		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
+                			public void run() {
+                				_client.close();
+                				_client = null;
+                			}
+                		});
+        			}
+        		});
+        		_imageParts = new LinkedList<byte[]>();
+        		_inSegment = false;
+        		response.handler(new Handler<Buffer>() {
+        			public void handle(Buffer body) {
+        	        	// System.err.println("****** Received body response for request " + _requestNumber);
+                		// False argument indicates that this request is NOT done.
+                		_issueOrDeferResponse(_requestNumber, false, new Runnable() {
+                			public void run() {
+                				if (isText) {
+                					_requestObj.callMember("_response",
+                							response, body.toString());
+                				} else if (isMultipart) {
+                					_handleMultipartResponse(response, body);
+                				} else {
+                					// FIXME: Need to handle other MIME types.
+                					_requestObj.callMember("_response",
+                							response, body.getBytes());
+                					_client.close();
+                					_client = null;
+                				}
+                			}
+        				});
+        			}
+        		});
+        	}
         }
+		private void _handleMultipartResponse(
+				final HttpClientResponse response, Buffer body) {
+			byte[] data = body.getBytes();
+			String dataAsString = body.toString();
+			int boundaryIndex = dataAsString
+					.indexOf(_boundary);
+			if (boundaryIndex >= 0) {
+				// The data contains a boundary.  If we are in
+				// a segment, finish it.
+				if (_inSegment) {
+					if (boundaryIndex > 1) {
+						// There is additional data in this segment.
+						byte[] prefix = new byte[boundaryIndex];
+						System.arraycopy(data, 0,
+								prefix, 0,
+								boundaryIndex - 1);
+						_imageParts.add(prefix);
+
+						// Construct one big byte array.
+						int length = 0;
+						for (byte[] piece : _imageParts) {
+							length += piece.length;
+						}
+						byte[] imageBytes = new byte[length];
+						int position = 0;
+						for (byte[] piece : _imageParts) {
+							System.arraycopy(piece, 0,
+									imageBytes,
+									position,
+									piece.length);
+							position += piece.length;
+						}
+
+						// Have a complete image.
+						InputStream stream = new ByteArrayInputStream(
+								imageBytes);
+						try {
+							Image image = ImageIO
+									.read(stream);
+							if (image != null) {
+								Token token = new AWTImageToken(
+										image);
+								_requestObj
+								.callMember(
+										"_response",
+										response,
+										token);
+								System.out
+								.println("Sent an image.");
+							} else {
+								System.err
+								.println("Input data is apparently not an image.");
+							}
+						} catch (IOException e) {
+							_requestObj.callMember(
+									"_response",
+									null,
+									e.toString());
+						}
+					}
+				}
+				// Since there is a boundary string, we are definitely in the segment.
+				_inSegment = true;
+				_imageParts.clear();
+				// Skip to character 255, the start of a jpeg image.
+				// (in signed notation, -1).
+				int start = boundaryIndex
+						+ _boundary.length() + 2;
+				while (start < data.length
+						&& data[start] != -1) {
+					start++;
+				}
+				if (start < data.length) {
+					byte[] segment = new byte[data.length
+					                          - start];
+					System.arraycopy(data, start,
+							segment, 0, segment.length);
+					_imageParts.add(segment);
+				}
+			} else {
+				// data does not contain a boundary.
+				if (_inSegment) {
+					_imageParts.add(data);
+				}
+			}
+		}
     }
     
     /** Job to start an HTTP request.
-     *  This will mark the verticle busy until either the job is complete or it times out.
      */
     private class StartHttpRequest implements Runnable {
         /** The options specified when creating this object. */
         private Map<String, Object> _options;
+        /** The number of this request. */
+        private long _requestNumber;
         /** The JavaScript object that this is a helper for. */
         protected ScriptObjectMirror _requestObj;
 
-        public StartHttpRequest(ScriptObjectMirror requestObj, Map<String, Object> options) {
+        public StartHttpRequest(
+        		ScriptObjectMirror requestObj, 
+        		Map<String, Object> options,
+        		long sequenceNumber) {
         	_options = options;
         	_requestObj = requestObj;
+        	_requestNumber = sequenceNumber;
         }
 
-    	@Override
+    	@SuppressWarnings("unchecked")
+		@Override
     	public void run() {
             Map<String, Object> urlSpec = (Map<String, Object>) _options.get("url");
 
@@ -437,9 +564,6 @@ public class HttpClientHelper extends VertxHelperBase {
                     .setConnectTimeout((Integer)_options.get("timeout"))
                     .setSsl(urlSpec.get("protocol").toString().equalsIgnoreCase("https"))
             		);
-
-            // FIXME: How are exceptions handled?
-            //_client.exceptionHandler(new HttpClientExceptionHandler());
 
             String query = "";
             Object queryObject = urlSpec.get("query");
@@ -463,21 +587,23 @@ public class HttpClientHelper extends VertxHelperBase {
             HttpMethod httpMethod = HttpMethod.valueOf(((String) _options.get("method")).trim().toUpperCase());
             
             HttpClientRequest request = client.request(httpMethod, uri,
-            		new HttpClientResponseHandler(_requestObj, client, outputCompleteResponseOnly));
+            		new HttpClientResponseHandler(
+            				_requestObj, client, outputCompleteResponseOnly, _requestNumber));
             
             // NOTE: We use the timeout parameter both for connect and response.
             // Should these be different numbers?
             request.setTimeout((Integer)_options.get("timeout"));
-            request.exceptionHandler(new HttpClientExceptionHandler(_requestObj, client));
+            request.exceptionHandler(new HttpClientExceptionHandler(
+            		_requestObj, client, _requestNumber));
 
             // Handle the headers.
-            Map headers = (Map) _options.get("headers");
+            Map<String,Object> headers = (Map<String,Object>) _options.get("headers");
             boolean isImage = false;
             String imageType = "";
             if (!headers.isEmpty()) {
-                for (Object key : headers.keySet()) {
+                for (String key : headers.keySet()) {
                     Object value = headers.get(key);
-                    if ( ( (String) key).equalsIgnoreCase("Content-Type") &&
+                    if (key.equalsIgnoreCase("Content-Type") &&
                             ( (String)value).startsWith("image")) {
                         isImage = true;
                         imageType = ((String) value).substring(6);
@@ -526,11 +652,13 @@ public class HttpClientHelper extends VertxHelperBase {
                     request.putHeader("Content-Length", 
                             Integer.toString(os.toByteArray().length));
                     request.write(Buffer.buffer(os.toByteArray()));
-
                 } catch (IOException e) {
                     String message = "Can't write image body to HTTP request: " + e.toString();
                     try {
                         _requestObj.callMember("emit", "error", message);
+                        // NOTE: If the error does not stop execution, then the
+                        // request will continue without a body.
+                        // Hence, there will be a response later.
                     } catch (Throwable ex) {
                         // There may be no error event handler registered.
                         // Use the actor to report the error.
@@ -545,7 +673,11 @@ public class HttpClientHelper extends VertxHelperBase {
                     request.write(body);
                 }
             }
-            _setBusy(true);
+            // Allow overlapped requests. Sequence numbers take care of ensuring outputs
+            // come out in order.
+            // _setBusy(true);
+            
+            // FIXME: The following doesn't allow further writes to the request.
             request.end();
     	}
     }
