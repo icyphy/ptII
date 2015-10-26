@@ -230,7 +230,7 @@ function ClientRequest(options, responseCallback) {
 	  options.headers = headers;
   }
   
-  console.log("Making an HTTP request: " + JSON.stringify(options));
+  // console.log("Making an HTTP request: " + JSON.stringify(options));
   
   this.helper = HttpClientHelper.getOrCreateHelper(actor);
   this.options = options;
@@ -324,3 +324,8 @@ IncomingMessage = function(response, body) {
     this.statusCode = response.statusCode();
     this.statusMessage = response.statusMessage();
 }
+
+// Each time this file is reloaded, reset the helper for this actor.
+// This will start the sequence numbers at zero and discard any corrupted state
+// that may have resulted from exceptions.
+HttpClientHelper.getOrCreateHelper(actor).reset();

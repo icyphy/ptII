@@ -141,10 +141,24 @@ public class HttpClientHelper extends VertxHelperBase {
     	return new HttpClientHelper(actor);
     }
 
+    /** Reset this handler. This method discards any pending submitted jobs,
+     *  marks the handler not busy, and resets the sequence number to zero.
+     */
+    public void reset() {
+    	super.reset();
+    	// Execute this in the vert.x event thread.
+    	submit(new Runnable() {
+    		public void run() {
+    			// Ensure that the next execution starts with sequence number 0.
+    			_sequenceNumber = 0L;
+    		}
+    	});
+    }
+
     /** Stop a request. This ensures that future callbacks are discarded.
      */
     public void stop() {
-    	// If there is a pending response, discard it.
+    	reset();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,82 +170,9 @@ public class HttpClientHelper extends VertxHelperBase {
     protected HttpClientHelper(Object actor) {
         super(actor);
     }            
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
-    
-    /** If the requestNumber matches the _nextRequest number, then
-     *  execute the specified response.
-     *  If the requestNumber is less than _nextRequest, then queue the
-     *  response for later execution.
-     *  If the requestNumber is greater than _nextRequest, then discard
-     *  the response.
-     *  If the done argument is true,
-     *  then after this response is executed, increment the _nextRequest
-     *  number and check for any deferred requests that match that new
-     *  number, and execute that one.
-     *  @param requestNumber The number of the request.
-     *  @param done True to indicate that this request is complete.
-     *  @param response The response to execute.
-     */
-    private void _issueOrDeferResponse(
-    		long requestNumber, boolean done, Runnable response) {
-    	if (requestNumber > _nextResponse) {
-    		// Defer the request.
-        	// System.err.println("****** Deferring response to " + requestNumber);
-    		HandlerInvocation handler = new HandlerInvocation();
-    		handler.response = response;
-    		handler.done = done;
-    		LinkedList<HandlerInvocation> deferred = _deferredHandlers.get(requestNumber);
-    		if (deferred == null) {
-    			deferred = new LinkedList<HandlerInvocation>();
-        		_deferredHandlers.put(requestNumber, deferred);
-    		}
-    		deferred.add(handler);
-    	} else if (requestNumber == _nextResponse) {
-        	// System.err.println("****** Issuing response to " + requestNumber);
-    		response.run();
-    		if (done) {
-    			// Look for deferred responses that are next in the sequence.
-            	// System.err.println("****** Done with request request " + requestNumber);
-    			_nextResponse++;
-    			LinkedList<HandlerInvocation> nextResponses = _deferredHandlers.get(_nextResponse);
-    			boolean deferredResponseDone = nextResponses != null;
-				while (nextResponses != null && deferredResponseDone) {
-					// There are matching deferred responses.
-					for (HandlerInvocation nextResponse : nextResponses) {
-			        	// System.err.println("****** Issuing response to " + _nextResponse);
-    					nextResponse.response.run();
-    					if (nextResponse.done) {
-    						// The response is done.
-    		            	// System.err.println("****** Done with request request " + _nextResponse);
-    						_deferredHandlers.remove(_nextResponse);
-    						_nextResponse++;
-    						nextResponses = _deferredHandlers.get(_nextResponse);
-    						deferredResponseDone = true;
-    						// Skip any remaining parts of this response.
-    						break;
-    					} else {
-    						// The next response is not done yet.
-    						// Continue with any responses in the list, but unless one of those
-    						// marks this response done, do not proceed to the next response.
-    						deferredResponseDone = false;
-    					}
-    				}
-    			}
-    		}
-    	}
-    }
-
+        
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
-    
-    /** Sequence number of the next expected response. */
-    private long _nextResponse = 0L;
-    
-    /** Queue of deferred responses. */
-    private HashMap<Long,LinkedList<HandlerInvocation>> _deferredHandlers
-    		= new HashMap<Long,LinkedList<HandlerInvocation>>();
     
     /** The sequence number of this request. */
     private long _sequenceNumber = 0L;
@@ -239,12 +180,6 @@ public class HttpClientHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
-    /** A structure for storing a deferred handler invocation. */
-    private class HandlerInvocation {
-    	public Runnable response;
-    	public boolean done;
-    }
-
     /** The event handler that is triggered when an error occurs in the HTTP connection.
      */
     private class HttpClientExceptionHandler implements Handler<Throwable> {

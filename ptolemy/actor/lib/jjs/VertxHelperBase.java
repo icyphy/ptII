@@ -32,6 +32,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -92,6 +94,22 @@ public class VertxHelperBase extends HelperBase {
 		return null;
 	}
 	
+    /** Reset this handler. This method discards any pending submitted jobs
+     *  and marks the handler not busy.
+     */
+    public void reset() {
+    	// Execute this in the vert.x event thread.
+    	submit(new Runnable() {
+    		public void run() {
+    	    	_busy = false;
+    	    	// Ensure that any future callbacks are ignored.
+    	    	_nextResponse = 0L;
+    	    	// If there are pending responses, discard them.
+    	    	_deferredHandlers.clear();
+    		}
+    	});
+    }
+	
 	/** Submit a job to be executed by the associated verticle.
 	 *  @param job The job to execute.
 	 */
@@ -120,9 +138,6 @@ public class VertxHelperBase extends HelperBase {
     	_verticle = new AccessorVerticle();
     	_vertx.deployVerticle(_verticle, result -> {
     		_deploymentID = result.result();
-    		
-    		// Now that the verticle is deployed, process any pending jobs.
-    		_processPendingJob();
     	});
     	
     	_address = _actor.getFullName();
@@ -130,6 +145,80 @@ public class VertxHelperBase extends HelperBase {
     
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
+
+    /** Execute the specified response in the same order as the request
+     *  that triggered the response. Specifically,
+     *  if specified request number matches the next expected response,
+     *  the execute the specified response. Otherwise, if there is an
+     *  earlier expected response, then defer this one, and if a response
+     *  has already been issued for this request, then discard this response.
+     *  This must be called in a vert.x event loop; i.e., it should be called
+     *  only within handlers for vert.x objects.
+     *  
+     *  Specifically:
+     *  If the requestNumber matches the _nextResponse number, then
+     *  execute the specified response.
+     *  If the requestNumber is less than _nextResponse, then queue the
+     *  response for later execution.
+     *  If the requestNumber is greater than _nextResponse, then discard
+     *  the response.
+     *  If the done argument is true,
+     *  then after this response is executed, increment the _nextResponse
+     *  number and check for any deferred requests that match that new
+     *  number, and execute that one.
+     *  @param requestNumber The number of the request.
+     *  @param done True to indicate that this request is complete.
+     *  @param response The response to execute.
+     */
+    protected void _issueOrDeferResponse(
+    		long requestNumber, boolean done, Runnable response) {
+    	// System.err.println("===========" + Thread.currentThread().getName());
+    	if (requestNumber > _nextResponse) {
+    		// Defer the request.
+        	// System.err.println("****** Deferring response to " + requestNumber);
+    		HandlerInvocation handler = new HandlerInvocation();
+    		handler.response = response;
+    		handler.done = done;
+    		LinkedList<HandlerInvocation> deferred = _deferredHandlers.get(requestNumber);
+    		if (deferred == null) {
+    			deferred = new LinkedList<HandlerInvocation>();
+        		_deferredHandlers.put(requestNumber, deferred);
+    		}
+    		deferred.add(handler);
+    	} else if (requestNumber == _nextResponse) {
+        	// System.err.println("****** Issuing response to " + requestNumber);
+    		response.run();
+    		if (done) {
+    			// Look for deferred responses that are next in the sequence.
+            	// System.err.println("****** Done with request request " + requestNumber);
+    			_nextResponse++;
+    			LinkedList<HandlerInvocation> nextResponses = _deferredHandlers.get(_nextResponse);
+    			boolean deferredResponseDone = nextResponses != null;
+				while (nextResponses != null && deferredResponseDone) {
+					// There are matching deferred responses.
+					for (HandlerInvocation nextResponse : nextResponses) {
+			        	// System.err.println("****** Issuing response to " + _nextResponse);
+    					nextResponse.response.run();
+    					if (nextResponse.done) {
+    						// The response is done.
+    		            	// System.err.println("****** Done with request request " + _nextResponse);
+    						_deferredHandlers.remove(_nextResponse);
+    						_nextResponse++;
+    						nextResponses = _deferredHandlers.get(_nextResponse);
+    						deferredResponseDone = true;
+    						// Skip any remaining parts of this response.
+    						break;
+    					} else {
+    						// The next response is not done yet.
+    						// Continue with any responses in the list, but unless one of those
+    						// marks this response done, do not proceed to the next response.
+    						deferredResponseDone = false;
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
 
 	/** If the verticle is not busy, process the next pending job.
 	 *  This method should be called only by the verticle.
@@ -199,6 +288,13 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
+    /** Sequence number of the next expected response. */
+    private long _nextResponse = 0L;
+    
+    /** Queue of deferred responses. */
+    private HashMap<Long,LinkedList<HandlerInvocation>> _deferredHandlers
+    		= new HashMap<Long,LinkedList<HandlerInvocation>>();
+    
     /** Index of Vertx helpers by actor. */
     private static WeakHashMap<JavaScript,WeakReference<VertxHelperBase>> _vertxHelpers
     		= new WeakHashMap<JavaScript,WeakReference<VertxHelperBase>>();
@@ -213,10 +309,13 @@ public class VertxHelperBase extends HelperBase {
     	/** Register a handler to the event bus to process pending jobs. */
     	@Override
     	public void start() {
+    		// Listen on the event bus for notifications to process jobs.
     		EventBus eventBus = _vertx.eventBus();
     		eventBus.consumer(_address, message -> {
     			_processPendingJob();
     		});
+    		// Process any jobs that have been submitted.
+    		_processPendingJob();
     	}
     	
     	/** Clear all pending jobs. */
@@ -224,5 +323,11 @@ public class VertxHelperBase extends HelperBase {
     	public void stop() {
     		_pendingJobs.clear();
     	}
+    }
+    
+    /** A structure for storing a deferred handler invocation. */
+    private class HandlerInvocation {
+    	public Runnable response;
+    	public boolean done;
     }
 }
