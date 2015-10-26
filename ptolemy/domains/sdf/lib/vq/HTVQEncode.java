@@ -105,13 +105,16 @@ import ptolemy.util.FileUtilities;
  <p>The supplied codebook was trained using images from the
  USC image archive and is suitable for most general applications.</p>
 
- <p>For more information here are some interesting references: <br/>
- A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
- Kluwer Academic Publishers, Boston, 1992.  <br/>
- P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with
+ <p>For more information here are some interesting references: </p>
+
+ <p>A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
+ Kluwer Academic Publishers, Boston, 1992.</p>
+
+ <p>P. C. Chang, J. May, R. M. Gray, "Hierarchical Vector Quantizers with
  Table Lookup Encoders," <i> International Conference on Acoustics Speech
- and Signal Processing</i>, pp. 1452-1455, 1985. <br/>
- M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
+ and Signal Processing</i>, pp. 1452-1455, 1985. </p>
+
+ <p>M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
  Compression of Video," <i>International Conference on Image Processing</i>,
  vol. 3, pp. 275-279, Nov. 1994</p>
 

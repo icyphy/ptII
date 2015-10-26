@@ -129,7 +129,6 @@ public class FBMFilter extends PointFilter implements Cloneable {
     /**
     * Specifies the angle of the texture.
     * @param angle the angle of the texture.
-    * @angle
     * @see #getAngle
     */
     public void setAngle(float angle) {

@@ -1170,48 +1170,7 @@ public class JavaScript extends TypedAtomicActor {
                             "Unsupported value: " + value);
                 }
             }
-            Object visibility = ((Map) options).get("visibility");
-            if (visibility instanceof String) {
-                String generic = ((String) visibility).trim().toLowerCase();
-                boolean hide = false;
-
-                switch (generic) {
-                case "none":
-                    if (parameter != null) {
-                        parameter.setVisibility(Settable.NONE);
-                    }
-                    hide = true;
-                    break;
-                case "expert":
-                    if (parameter != null) {
-                        parameter.setVisibility(Settable.EXPERT);
-                    }
-                    hide = true;
-                    break;
-                case "noteditable":
-                    if (parameter != null) {
-                        parameter.setVisibility(Settable.NOT_EDITABLE);
-                    }
-                    hide = true;
-                    break;
-                default:
-                    // Assume "full".
-                    if (parameter != null) {
-                        parameter.setVisibility(Settable.FULL);
-                    }
-                    if (port != null) {
-                        Attribute hideParam = port.getAttribute("_hide");
-                        if (hideParam != null) {
-                            hideParam.setContainer(null);
-                        }
-                    }
-                }
-                if (hide && port != null) {
-                    SingletonParameter hideParam = new SingletonParameter(port, "_hide", BooleanToken.TRUE);
-                    // Prevent export.
-                    hideParam.setPersistent(false);
-                }
-            }
+            _setPortVisibility(options, port, parameter);
         }
         // Make sure to do this after setting the type to catch
         // string mode and type checks.
@@ -1381,6 +1340,7 @@ public class JavaScript extends TypedAtomicActor {
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
+            _setPortVisibility(options, port, null);
         } else {
             port.setTypeEquals(BaseType.GENERAL);
         }
@@ -1850,9 +1810,6 @@ public class JavaScript extends TypedAtomicActor {
         requestChange(request);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected fields                  ////
-
     /** Empty argument list for JavaScript function invocation. */
     protected final static Object[] _EMPTY_ARGS = new Object[] {};
 
@@ -2207,6 +2164,63 @@ public class JavaScript extends TypedAtomicActor {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected fields                  ////
+    
+    /**
+     * @param options
+     * @param port
+     * @param parameter
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    private void _setPortVisibility(Map options, TypedIOPort port,
+            PortParameter parameter) throws IllegalActionException,
+            NameDuplicationException {
+        Object visibility = ((Map) options).get("visibility");
+        if (visibility instanceof String) {
+            String generic = ((String) visibility).trim().toLowerCase();
+            boolean hide = false;
+    
+            switch (generic) {
+            case "none":
+                if (parameter != null) {
+                    parameter.setVisibility(Settable.NONE);
+                }
+                hide = true;
+                break;
+            case "expert":
+                if (parameter != null) {
+                    parameter.setVisibility(Settable.EXPERT);
+                }
+                hide = true;
+                break;
+            case "noteditable":
+                if (parameter != null) {
+                    parameter.setVisibility(Settable.NOT_EDITABLE);
+                }
+                hide = true;
+                break;
+            default:
+                // Assume "full".
+                if (parameter != null) {
+                    parameter.setVisibility(Settable.FULL);
+                }
+                if (port != null) {
+                    Attribute hideParam = port.getAttribute("_hide");
+                    if (hideParam != null) {
+                        hideParam.setContainer(null);
+                    }
+                }
+            }
+            if (hide && port != null) {
+                SingletonParameter hideParam = new SingletonParameter(port, "_hide", BooleanToken.TRUE);
+                // Prevent export.
+                hideParam.setPersistent(false);
             }
         }
     }

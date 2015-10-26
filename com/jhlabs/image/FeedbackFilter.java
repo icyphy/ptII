@@ -58,7 +58,6 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
     /**
     * Specifies the angle of each iteration.
     * @param angle the angle of each iteration.
-    * @angle
     * @see #getAngle
     */
     public void setAngle(float angle) {
@@ -95,7 +94,6 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
     /**
     * Specifies the amount of rotation on each iteration.
     * @param rotation the angle of rotation
-    * @angle
     * @see #getRotation
     */
     public void setRotation(float rotation) {
@@ -105,7 +103,6 @@ public class FeedbackFilter extends AbstractBufferedImageOp {
     /**
     * Returns the amount of rotation on each iteration.
     * @return the angle of rotation
-    * @angle
     * @see #setRotation
     */
     public float getRotation() {

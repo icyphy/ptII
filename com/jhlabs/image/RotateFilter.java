@@ -56,8 +56,7 @@ public class RotateFilter extends TransformFilter {
     /**
     * Specifies the angle of rotation.
     * @param angle the angle of rotation.
-    * @angle
-    * @see #getAngle
+    * @see #getAngle()
     */
     public void setAngle(float angle) {
         this.angle = angle;
@@ -68,7 +67,7 @@ public class RotateFilter extends TransformFilter {
     /**
     * Returns the angle of rotation.
     * @return the angle of rotation.
-    * @see #setAngle
+    * @see #setAngle(float)
     */
     public float getAngle() {
         return angle;
