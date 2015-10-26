@@ -61,12 +61,15 @@ public class WebSocketServerHelper extends VertxHelperBase {
     /** Close the web socket server.
      */
     public void closeServer() {
-        synchronized (_actor) {
-            if (_server != null) {
-                _server.close();
-                _server = null;
-            }
-        }
+    	// Ask the verticle to perform the close.
+    	submit(new Runnable() {
+    		public void run() {
+                if (_server != null) {
+                    _server.close();
+                    _server = null;
+                }
+    		}
+    	});
     }
 
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
@@ -93,39 +96,31 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  socket as an argument.
      */
     public void startServer() {
-        synchronized (_actor) {
-            // Note that the following call apparently starts the new server
-            // in separate thread. It should not be done in the constructor
-            // because the script that starts the server needs to register
-            // callbacks before the server starts. Otherwise, there will be
-            // a race condition where the callback could be called before
-            // the server has started.
-            _server = _vertx.createHttpServer();
-            // Note that this sets the maximum frame size for _received_
-            // messages, not for transmitted ones.
-            _server.setMaxWebSocketFrameSize(_maxFrameSize);
-
-            _server.websocketHandler(new Handler<ServerWebSocket>() {
-                @Override
-                public void handle(ServerWebSocket serverWebSocket) {
-                    synchronized (_actor) {
-                        // Notify of a new connection.
-                        // This will have the side effect of creating a new JS Socket
-                        // object, which is an event emitter.
-                        _currentObj.callMember("socketCreated", serverWebSocket);
-                    }
-                }
-            });
-            _server.listen(_port, _hostInterface,
-                    new Handler<AsyncResult<HttpServer>>() {
-                        @Override
-                        public void handle(AsyncResult<HttpServer> arg0) {
-                            synchronized (_actor) {
-                                _currentObj.callMember("emit", "listening");
-                            }
-                        }
-                    });
-        }
+    	// Ask the verticle to start the server.
+    	submit(new Runnable() {
+    		public void run() {
+    			_server = _vertx.createHttpServer();
+    			_server.websocketHandler(new Handler<ServerWebSocket>() {
+    				@Override
+    				public void handle(ServerWebSocket serverWebSocket) {
+    					serverWebSocket.setWriteQueueMaxSize(_maxFrameSize);
+    					// Notify of a new connection.
+    					// This will have the side effect of creating a new JS Socket
+    					// object, which is an event emitter.
+    					_currentObj.callMember("socketCreated", serverWebSocket);
+    				}
+    			});
+    			_server.listen(_port, _hostInterface,
+    					new Handler<AsyncResult<HttpServer>>() {
+    				@Override
+    				public void handle(AsyncResult<HttpServer> arg0) {
+    					synchronized (_actor) {
+    						_currentObj.callMember("emit", "listening");
+    					}
+    				}
+    			});
+    		}
+        });
     }
 
     ///////////////////////////////////////////////////////////////////

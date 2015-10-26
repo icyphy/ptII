@@ -51,9 +51,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
    <p>
    This class also provides utilities for submitting jobs to be executed
    in an associated verticle.  This is useful for jobs that trigger future
-   callbacks, because the verticle will ensure that the callbacks are called
-   in the same thread, in a Vert.x event loop, that job itself is executed
-   in.
+   callbacks, because the verticle will ensure that all callbacks are called
+   in the same thread.
    <p>
    Moreover, this class provides utilities for ensuring that a requested job
    has been completed, including all expected callbacks, before the next job
@@ -95,6 +94,9 @@ public class VertxHelperBase extends HelperBase {
 
 	/** Return an instance of this helper for the specified actor, if one
 	 *  has been created and not garbage collected. Return null otherwise.
+	 *  If this returns null, the client should create an instance of the appropriate
+	 *  subclass. That instance will deploy a verticle that will execute jobs
+	 *  submitted through the {@link #submit(Runnable)} method.
 	 *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
 	 */
 	public static VertxHelperBase getHelper(Object actor) {
@@ -133,6 +135,9 @@ public class VertxHelperBase extends HelperBase {
     }
 	
 	/** Submit a job to be executed by the associated verticle.
+	 *  The job can invoke Vert.x functionality, specifying callbacks,
+	 *  and those callbacks will be ensured of running in the same thread
+	 *  as the job itself.
 	 *  @param job The job to execute.
 	 */
 	public void submit(Runnable job) {
@@ -143,17 +148,23 @@ public class VertxHelperBase extends HelperBase {
 		eventBus.publish(_address, "submit");
 	}
 	
-	/** Undeploy the associated verticle. */
+	/** Undeploy the associated verticle.
+	 *  Note that jobs that are submitted after this is called will
+	 *  never be executed.
+	 */
 	public void undeploy() {
 		if (_deploymentID != null) {
 			_vertx.undeploy(_deploymentID);
+			_deploymentID = null;
+			reset();
 		}
 	}
 	
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
 
-    /** Construct a helper for the specified JavaScript actor.
+    /** Construct a helper for the specified JavaScript actor and
+     *  create a verticle that can execute submitted jobs atomically.
      *  This is protected to help prevent applications from creating
      *  more than one instance per actor.
      *  @param actor The JavaScript actor that this is helping, or

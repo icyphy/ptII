@@ -30,36 +30,31 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.eventbus;
 
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.spi.VertxFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import io.vertx.core.Handler;
-import io.vertx.core.Vertx;
-import io.vertx.core.spi.VertxFactory;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// EventBusHelper
 
 /** A helper class for the Vert.x event bus API. An instance of this
- *  class is associated with a JavaScript object that can publish or subscribe
- *  to events on the event bus event.  The associated JavaScript object is
+ *  class is associated with a VertxBus JavaScript object, defined
+ *  in the eventbus module, that can publish or subscribe
+ *  to events on the event bus event.  The VertxBus object is
  *  passed in as a constructor argument and is expected to implement the
  *  event emitter pattern, for example by inheriting from EventEmitter
  *  class of the events module using util.inherits().
- *
- *  <p>For information about the Vert.x event bus, see
+ *  <p>
+ *  For information about the Vert.x event bus, see
  *  <a href="http://vertx.io/core_manual_java.html#the-event-bus">http://vertx.io/core_manual_java.html#the-event-bus</a>.</p>
- *
- *  <p>This class follows the instructions for "Embedding Vert.x core"
- *  at <a href="http://vertx.io/embedding_manual.html">http://vertx.io/embedding_manual.html</a>.
- *  It states there that "Please note this feature is intended for power users only,"
- *  but we will not be using Vert.x to run verticles or modules, so this seems
- *  appropriate. We are using it only for the event bus and networking
- *  infrastructure.</p>
  *
  *  @author Patricia Derler and Edward A. Lee
  *  @version $Id$
@@ -67,28 +62,28 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  *  @Pt.ProposedRating Yellow (pd)
  *  @Pt.AcceptedRating Red (pd)
  */
-public class EventBusHelper {
+public class EventBusHelper extends VertxHelperBase {
 
-    /** Create a EventBusHelper for the specified publish or subscribe
-     *  client for the event bus using the specified port and hostname
-     *  for cluster connections.
-     *
-     *  <p>If the clusterHostname is null, then this will use an
+    /** Create an EventBusHelper for the specified VertxBus JavaScript
+     *  object for the event bus at the specified network interface
+     *  (port and hostname).
+     *  <p>
+     *  If the clusterHostname is null, then this will use an
      *  unclustered instance of Vertx whose event bus will not
      *  communicate with any other instances of Vertx.  The
      *  clusterHostname is something like "localhost" or "10.0.0.4",
      *  and it specifies a local network device over which to listen
      *  for cluster connections (e.g. WiFi or Ethernet).</p>
-     *
-     *  <p>The clusterPort is the tcp/ip port to which to listem for
+     *  <p>
+     *  The clusterPort is the tcp/ip port to which to listen for
      *  cluster connections.  The default for clusterPort for Vertx is
      *  25500.  If clusterHostname is null, then the default
-     *  clusterPort value is used.</p>
+     *  clusterPort value is used.
      *
-     *  @param jsObject The JavaScript object that will subscribe to
-     *  the event bus.
+     *  @param jsObject The VertxBus JavaScript object that will
+     *   publish and subscribe to the event bus.
      *  @param clusterPort The port over which to listen for cluster
-     *  connections.
+     *   connections.
      *  @param clusterHostname The host interface over which to listen
      *   for cluster connections, or null to create an unclustered
      *   EventBusHelper.
