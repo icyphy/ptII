@@ -137,6 +137,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  if the destination state is enabled, but this director already handles
      *  transient states.
      *  @param actor The actor scheduled to be fired.
+     *  @param time The time at which to fire the actor.
      *  @return If the argument is the controller, then return Time.NEGATIVE_INFINITY,
      *   to indicate that the request is being ignored. Otherwise, return what the
      *   superclass returns.

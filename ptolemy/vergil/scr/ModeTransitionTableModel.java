@@ -75,7 +75,9 @@ public class ModeTransitionTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
-    /** Delete a row. */
+    /** Delete a row.
+     *  @param selectedRow The row to be deleted.
+     */
     public void deleteRow(int selectedRow) {
         System.out.println(selectedRow);
         _tableContent.remove(selectedRow * 3);
@@ -125,6 +127,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
      *  @param arg0 The row.
      *  @param arg1 The column.
      *  @return the value at that cell.
+     *  @see #setValueAt(Object, int, int)
      */
     @Override
     public Object getValueAt(int arg0, int arg1) {
@@ -208,6 +211,7 @@ public class ModeTransitionTableModel extends AbstractTableModel {
      *  @param value The value to be set.
      *  @param row The index of the row.
      *  @param column The index of the column.
+     *  @see #getValueAt(int, int)
      */
     @Override
     public void setValueAt(Object value, int row, int column) {

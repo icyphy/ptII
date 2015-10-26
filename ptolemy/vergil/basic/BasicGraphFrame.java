@@ -2399,7 +2399,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Return the center location of the visible part of the pane
      *  for a JGraph.
-     *  @param The JGraph.
+     *  @param graph The JGraph.
      *  @return The center of the visible part.
      *  @see #setCenter(Point2D)
      */
@@ -2431,6 +2431,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Return the rectangle representing the visible part of the
      *  pane for a JGraph, in pixel coordinates on the screen.
+     *  @param graph The JGraph.
      *  @return A rectangle whose upper left corner is at (0, 0) and whose
      *  size is the size of the canvas component.
      */
@@ -3117,6 +3118,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Set the center location of the visible part of a specific pane.
      *  This will cause the panner to center on the specified location
      *  with the current zoom factor.
+     *  @param graph The JGraph.
      *  @param center The center of the visible part.
      *  @see #getCenter()
      */
@@ -3160,7 +3162,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * writing the moml file out.
      * @param parent The parent frame.
      * @param model The model.
-     * @param graphThe JGraph.
+     * @param graph The JGraph.
      * @exception IllegalActionException If there is a problem getting a
      * parameter.
      * @exception NameDuplicationException If there is a problem creating a
@@ -3429,6 +3431,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Zoom in or out to magnify by the specified factor, from the current
      *  magnification for a specific JGraph.
+     *  @param graph The JGraph.
      *  @param factor The magnification factor (relative to 1.0).
      */
     protected void _zoom(JGraph jgraph, double factor) {

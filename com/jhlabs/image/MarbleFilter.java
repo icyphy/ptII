@@ -73,10 +73,8 @@ public class MarbleFilter extends TransformFilter {
 
     /**
      * Set the amount of effect.
-     * @param amount the amount
-    * @min-value 0
-    * @max-value 1
-    * @see #getAmount
+     * @param amount the amount.  The minimum value is 0.0, the maximum is 1.0
+     * @see #getAmount()
      */
     public void setAmount(float amount) {
         this.amount = amount;
@@ -85,7 +83,7 @@ public class MarbleFilter extends TransformFilter {
     /**
      * Get the amount of effect.
      * @return the amount
-    * @see #setAmount
+     * @see #setAmount(float)
      */
     public float getAmount() {
         return amount;
@@ -93,10 +91,8 @@ public class MarbleFilter extends TransformFilter {
 
     /**
     * Specifies the turbulence of the effect.
-    * @param turbulence the turbulence of the effect.
-    * @min-value 0
-    * @max-value 1
-    * @see #getTurbulence
+    * @param turbulence the turbulence of the effect.  The minimum value is 0.0, the maximum is 1.0
+    * @see #getTurbulence()
     */
     public void setTurbulence(float turbulence) {
         this.turbulence = turbulence;
@@ -105,9 +101,10 @@ public class MarbleFilter extends TransformFilter {
     /**
     * Returns the turbulence of the effect.
     * @return the turbulence of the effect.
-    * @see #setTurbulence
+    * @see #setTurbulence(float)
     */
-    public float getTurbulence() {
+    public float getTurbulence()
+ {
         return turbulence;
     }
 

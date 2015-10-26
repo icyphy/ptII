@@ -70,6 +70,8 @@ public class EventTableModel extends AbstractTableModel {
      * Check that all values are unique.
      * Check that pairwise OR of events in a row is always false.
      * --- check coverage: AND of all events in a row is true
+     * @exception IllegalActionException If thrown while checking
+     * the disjointness.
      */
     public void checkDisjointness() throws IllegalActionException {
         SCRTableHelper.checkDisjointness(_tableContent, getRowCount(),

@@ -741,6 +741,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          *            for multiports, 1, if no multiport
          * @param multiportWidthTail the width of the tail, which is relevant
          *            for multiports, 1, if no multiport
+         * @param labelPosition The position of the label.
          */
         public LayoutHintItem(NamedObj head, NamedObj tail,
                 Point2D.Double locationHead, Point2D.Double locationTail,
@@ -789,6 +790,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * edge should be positioned.
          * 
          * @return the label location.
+         * @see #setLabelLocation(Point2D.Double)
          */
         public Point2D.Double getLabelLocation() {
             return _labelLocation;
@@ -922,6 +924,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
          * Sets the position a label should be placed at. 
          * 
          * @param labelLocation a {@link Point2D} with the position, may be null. 
+         * @see #getLabelLocation()
          */
         public void setLabelLocation(Point2D.Double labelLocation) {
             _labelLocation = labelLocation;

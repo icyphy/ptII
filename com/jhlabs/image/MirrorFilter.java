@@ -35,11 +35,10 @@ public class MirrorFilter extends AbstractBufferedImageOp {
     }
 
     /**
-    * Specifies the angle of the mirror.
-    * @param angle the angle of the mirror.
-    * @angle
-    * @see #getAngle
-    */
+     * Specifies the angle of the mirror.
+     * @param angle the angle of the mirror.
+     * @see #getAngle()
+     */
     public void setAngle(float angle) {
         this.angle = angle;
     }
@@ -47,7 +46,7 @@ public class MirrorFilter extends AbstractBufferedImageOp {
     /**
     * Returns the angle of the mirror.
     * @return the angle of the mirror.
-    * @see #setAngle
+    * @see #setAngle(float)
     */
     public float getAngle() {
         return angle;

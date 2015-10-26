@@ -108,7 +108,7 @@ public class UndoListener implements UndoableEditListener {
     }
 
     /** Perform a redo.
-     *  @exception CannotUndoException.  Thrown if the redo
+     *  @exception CannotUndoException  Thrown if the redo
      *  cannot be done.
      */
     public synchronized void redo() throws CannotUndoException {
@@ -121,7 +121,7 @@ public class UndoListener implements UndoableEditListener {
     }
 
     /** Perform an undo.
-     *  @exception CannotUndoException.  Thrown if the redo
+     *  @exception CannotUndoException  Thrown if the redo
      *  cannot be done.
      */
     public synchronized void undo() throws CannotUndoException {

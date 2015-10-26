@@ -180,7 +180,7 @@ public class VertxHelperBase extends HelperBase {
     /** Event bus address for notifications. */
     private String _address;
     
-    /** Flag indicating whether job requests shoudl be deferred. */
+    /** Flag indicating whether job requests should be deferred. */
     private boolean _busy;
     
     /** The deplotmentID, if deploying the verticle is successful. */

@@ -128,6 +128,8 @@ public class SCRTableHelper {
      * @param rowCount the number of rows.
      * @param columnCount the number of columns.
      * @param model the model to be checked.
+     * @exception IllegalActionException If thrown while checking
+     * the disjointness.
      */
     public static void checkDisjointness(List<String> _tableContent,
             int rowCount, int columnCount, FSMActor model)

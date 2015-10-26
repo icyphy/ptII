@@ -48,9 +48,8 @@ public class QuiltFilter extends WholeImageFilter {
 
     /**
      * Set the number of iterations the effect is performed.
-     * @param iterations the number of iterations
-    * @min-value 0
-    * @see #getIterations
+     * @param iterations the number of iterations.  The minimum value is 0.0.
+     * @see #getIterations()
      */
     public void setIterations(int iterations) {
         this.iterations = iterations;
@@ -59,7 +58,7 @@ public class QuiltFilter extends WholeImageFilter {
     /**
      * Get the number of iterations the effect is performed.
      * @return the number of iterations
-    * @see #setIterations
+     * @see #setIterations(int)
      */
     public int getIterations() {
         return iterations;

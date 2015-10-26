@@ -47,7 +47,7 @@ import ptolemy.util.MessageHandler;
  *  that contains it and reports connectivity information.
  *  <p>
  *  To place this attribute in model, in Vergil, select
- *  Graph->Instantiate Attribute and specify for the class
+ *  Graph-&gt;Instantiate Attribute and specify for the class
  *  name: doc.tutorial.graph.ConnectivityReporter. Alternatively,
  *  you can paste the following MoML code into the model:
  *  <pre>
