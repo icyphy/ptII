@@ -6147,12 +6147,11 @@ PTWEBSOCKET_DIR=
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
 PTVERTX_PACKAGES=
 
-# We only need to look for the Vertx jar files if PTVERTX_USER_DIR or PTWEBSOCKET_USER_DIR are present.
-PTVERTX_USER_DIR="$PTII/ptolemy/actor/lib/vertx"
+# We only need to look for the Vertx jar files if PTWEBSOCKET_USER_DIR are present.
 PTWEBSOCKET_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/webSocket"
 
-if test ! -d "$PTVERTX_USER_DIR" -a ! -d "$PTWEBSOCKET_USER_DIR"; then
-    PT_MSG_STATUS([$PTVERTX_USER_DIR and $PTWEBSOCKET_USER_DIR are not present,
+if test ! -d -d "$PTWEBSOCKET_USER_DIR"; then
+    PT_MSG_STATUS([$PTWEBSOCKET_USER_DIR is not present,
     so we need not find the Vertx application platform interface.])
 else
     # PRE_JDK18 is set above.
@@ -6174,7 +6173,6 @@ else
             PTHTTPCLIENT_DIR=httpClient
             PTUDPSOCKET_DIR=udpSocket
     	    PTVERTX_DIR=vertx
-	    PTVERTXEVENTBUS_DIR=vertxEventBus
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
             jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
@@ -6193,7 +6191,6 @@ else
                     PTHTTPCLIENT_DIR=
                     PTUDPSOCKET_DIR=
     	            PTVERTX_DIR=
-	            PTVERTXEVENTBUS_DIR=
 	            PTWEBSOCKET_DIR=
 	            break;
                  fi
@@ -6204,18 +6201,16 @@ else
 	    PT_MSG_RESULT([$PTVERTX_JARS])
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.vertxEventBus ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
 
 if test -z "$PTVERTX_DIR"; then
-    updateExcludes "ptolemy/actor/lib/vertx/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/eventbus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/httpClient/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/udpSocket/"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/vertxEventBus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
         AC_MSG_WARN([Failed to find the the Vertx application platform interface jar files,
@@ -7475,9 +7470,6 @@ AC_SUBST(PTVERTX_JARS)
 
 # Set to vertx if the Vertx jars are found
 AC_SUBST(PTVERTX_DIR)
-
-# Set to vertxEventBus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-AC_SUBST(PTVERTXEVENTBUS_DIR)
 
 # Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
 AC_SUBST(PTVERTX_PACKAGES)
