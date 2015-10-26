@@ -58,7 +58,29 @@ import java.util.concurrent.ConcurrentLinkedQueue;
    Moreover, this class provides utilities for ensuring that a requested job
    has been completed, including all expected callbacks, before the next job
    is initiated. This is useful for ensuring that responses to requests
-   occur in the same order as the requests themselves.
+   occur in the same order as the requests themselves. To use this, when you
+   make a request (e.g. using {@link #submit(Runnable)}, the subclass can
+   call the protected method {@link #_setBusy(boolean)} with argument true,
+   and subsequent requests will simply be queued until the subclass calls
+   {@link #_setBusy(boolean)} with argument false.
+   <p>
+   This class also provides utilities for a subclass to issue asynchronous
+   requests in order, and when callbacks occur, to execute those callbacks
+   in the same order as the submitted requests. To use this, the subclass
+   should assign consecutive increasing integers, starting with zero, to
+   each request, and then wrap responses to that request in a Runnable
+   and pass that Runnable to the protected method
+   {@link #_issueOrDeferResponse(long, boolean, Runnable)}.
+   That method will execute the Runnable only when all previous
+   requests (ones with earlier sequence numbers) have had a response
+   executed that indicated (with the second argument) that the request
+   has been fully handled.
+   This facility must be used with care: the subclass must ensure that
+   every request results in at least one call to
+   {@link #_issueOrDeferResponse(long, boolean, Runnable)}
+   with the second argument being true; failing to do so will result in
+   all future responses being queued and never executing.
+   Using a timeout, for example, can ensure this.
 
    @author Hokeun Kim and Edward A. Lee
    @version $Id$
@@ -119,6 +141,13 @@ public class VertxHelperBase extends HelperBase {
 		// Notify the verticle to process the next job.
 		EventBus eventBus = _vertx.eventBus();
 		eventBus.publish(_address, "submit");
+	}
+	
+	/** Undeploy the associated verticle. */
+	public void undeploy() {
+		if (_deploymentID != null) {
+			_vertx.undeploy(_deploymentID);
+		}
 	}
 	
     ///////////////////////////////////////////////////////////////////
