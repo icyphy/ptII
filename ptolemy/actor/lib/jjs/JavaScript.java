@@ -41,6 +41,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import javax.script.Invocable;
@@ -551,7 +552,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         newObject._exports = null;
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
-        newObject._outputTokens = null;
+//        newObject._outputTokens = null;
         newObject._pendingTimeoutFunctions = null;
         newObject._pendingTimeoutIDs = null;
         newObject._proxies = null;
@@ -694,7 +695,7 @@ public class JavaScript extends TypedAtomicActor {
         // Send out buffered outputs, if there are any.
         // This has to be synchronized in case a callback calls send() at the
         // same time.
-        synchronized (this) {
+/*        synchronized (this) {
             if (_outputTokens != null) {
                 for (IOPort port : _outputTokens.keySet()) {
                     HashMap<Integer, List<Token>> tokens = _outputTokens
@@ -717,7 +718,7 @@ public class JavaScript extends TypedAtomicActor {
                 _outputTokens.clear();
             }
         }
-
+*/
         // Update port parameters.
         boolean foundNewInput = false;
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
@@ -813,7 +814,7 @@ public class JavaScript extends TypedAtomicActor {
                 if (_pendingTimeoutIDs != null) {
                     // If current time matches pending timeout requests, invoke them.
                     Time currentTime = getDirector().getModelTime();
-                    List<Integer> ids = _pendingTimeoutIDs.get(currentTime);
+                    Queue<Integer> ids = _pendingTimeoutIDs.get(currentTime);
                     if (ids != null) {
                         // Copy the list, because setInterval reschedules a firing
                         // and will cause a concurrent modification exception otherwise.
@@ -1020,9 +1021,10 @@ public class JavaScript extends TypedAtomicActor {
         // execution.
         synchronized (this) {
             // Clear any queued output tokens.
-            if (_outputTokens != null) {
+ /*           if (_outputTokens != null) {
                 _outputTokens.clear();
             }
+*/            
             _invokeMethodInContext("initialize");
         }
         _running = true;
@@ -1530,9 +1532,10 @@ public class JavaScript extends TypedAtomicActor {
             _createEngineAndEvaluateSetup();
 
             // Clear any queued output tokens.
-            if (_outputTokens != null) {
+ /*           if (_outputTokens != null) {
                 _outputTokens.clear();
             }
+*/
         }
         _executing = true;
         _running = false;
@@ -1603,7 +1606,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public int setInterval(final Runnable function, final int milliseconds)
             throws IllegalActionException {
-        final Integer id = Integer.valueOf(_timeoutCount++);
+        final Integer id = Integer.valueOf(_timeoutCount++); // FIXME: shouldn't this be synchronized?
         // Create a new function that invokes the specified function and then reschedules
         // itself.
         final Runnable reschedulingFunction = new Runnable() {
@@ -1629,7 +1632,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public int setTimeout(final Runnable function, int milliseconds)
             throws IllegalActionException {
-        final Integer id = Integer.valueOf(_timeoutCount++);
+        final Integer id = Integer.valueOf(_timeoutCount++); // Shouldn't this be synchronized?
         _setTimeout(function, milliseconds, id);
         return id;
     }
@@ -1663,6 +1666,7 @@ public class JavaScript extends TypedAtomicActor {
             // If there are unsent output tokens, the issue warning messages.
             // These would result from a call to send() that occurred in an asynchronous
             // callback after the last firing of this actor but before wrapup().
+            /*
             if (_outputTokens != null) {
                 for (IOPort port : _outputTokens.keySet()) {
                     HashMap<Integer, List<Token>> tokens = _outputTokens
@@ -1697,6 +1701,7 @@ public class JavaScript extends TypedAtomicActor {
                     }
                 }
             }
+            */
         }
         super.wrapup();
     }
@@ -2046,13 +2051,14 @@ public class JavaScript extends TypedAtomicActor {
      *  method is not affected by the current real time.
      *  @exception IllegalActionException If the director throws it.
      */
-    private void _fireAtCurrentTime() throws IllegalActionException {
+    private Time _fireAtCurrentTime() throws IllegalActionException {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
         // Note that it is not correct to call director.fireAtCurrentTime().
         // At least in DE, that method uses current _real_ time, not
         // model time.
         director.fireAt(this, currentTime);
+        return currentTime;
     }
 
     /** If the second argument is true, mark the first argument
@@ -2299,9 +2305,9 @@ public class JavaScript extends TypedAtomicActor {
 
         // Record the ID of the timeout indexed by time.
         if (_pendingTimeoutIDs == null) {
-            _pendingTimeoutIDs = new HashMap<Time, List<Integer>>();
+            _pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
         }
-        List<Integer> ids = _pendingTimeoutIDs.get(callbackTime);
+        Queue<Integer> ids = _pendingTimeoutIDs.get(callbackTime);
         if (ids == null) {
             ids = new LinkedList<Integer>();
             _pendingTimeoutIDs.put(callbackTime, ids);
@@ -2368,13 +2374,13 @@ public class JavaScript extends TypedAtomicActor {
      *  while the actor is not firing. This makes sure that actors can
      *  spontaneously produce outputs.
      */
-    private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
+    //private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
 
     /** Map from timeout ID to pending timeout functions. */
     private Map<Integer, Runnable> _pendingTimeoutFunctions;
 
     /** Map from timeout time to pending timeout IDs. */
-    private Map<Time, List<Integer>> _pendingTimeoutIDs;
+    private Map<Time, Queue<Integer>> _pendingTimeoutIDs;
 
     /** Map of proxies for ports and parameters. */
     private HashMap<NamedObj, PortOrParameterProxy> _proxies;
@@ -2391,7 +2397,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Proxy for a port or parameter.
      *
      *  This is used to wrap ports and parameters for security
-     *  reasons.  If we expose the port or paramter to the JavaScript
+     *  reasons.  If we expose the port or parameter to the JavaScript
      *  environment, then the script can access all aspects of the
      *  model containing this actor. E.g., it can call getContainer()
      *  on the object.
@@ -2611,11 +2617,40 @@ public class JavaScript extends TypedAtomicActor {
                     }
                     _port.send(channelIndex, data);
                 } else {
-                    // Not currently firing. Queue the tokens and request a firing.
-                    // This should be being called in a callback that holds a
-                    // synchronization lock, so synchronizing this isn't really
-                    // necessary, but just in case...
-                    if (_outputTokens == null) {
+                    // Not currently firing. 
+                	// Enqueue runnable object to be invoked upon the next firing.
+                    
+                	// Request a firing at the current time.
+                    // In this case, we _do_ want to use the director's
+                    // fireAtCurrentTime(), and not our _fireAtCurrentTime()
+                    // method, because we are not in firing, so if we are
+                    // synchronized to real time, we want the firing to
+                    // occur later than the current model time, at a time
+                    // matching current real time.
+                    final Time now = getDirector().fireAtCurrentTime(JavaScript.this);
+                    final Integer id = Integer.valueOf(_timeoutCount++);
+                    final Runnable function = new deferredSend(this, channelIndex, data);
+                    
+                    // Record the callback function indexed by ID.
+                    if (_pendingTimeoutFunctions == null) { // FIXME: why don't we set this up in the constructor?
+                        _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
+                    }
+                    _pendingTimeoutFunctions.put(id, function);
+
+                    // Record the ID of the timeout indexed by time.
+                    if (_pendingTimeoutIDs == null) {
+                        _pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
+                    }
+                    Queue<Integer> ids = _pendingTimeoutIDs.get(now);
+                    if (ids == null) { // FIXME: again, why not initialize in constructor instead?
+                        ids = new LinkedList<Integer>();
+                        _pendingTimeoutIDs.put(now, ids);
+                    }
+                    ids.add(id);
+                    
+                    // Old approach: caching output tokens
+                	/*               	
+                	if (_outputTokens == null) {
                         _outputTokens = new HashMap<IOPort, HashMap<Integer, List<Token>>>();
                     }
                     HashMap<Integer, List<Token>> tokens = _outputTokens
@@ -2634,14 +2669,8 @@ public class JavaScript extends TypedAtomicActor {
                         _debug("Queueing " + data + " to be sent on "
                                 + _port.getName() + " and requesting a firing.");
                     }
-                    // Request a firing at the current time.
-                    // In this case, we _do_ want to use the director's
-                    // fireAtCurrentTime(), and not our _fireAtCurrentTime()
-                    // method, because we are not in firing, so if we are
-                    // synchronized to real time, we want the firing to
-                    // occur later than the current model time, at a time
-                    // matching current real time.
-                    getDirector().fireAtCurrentTime(JavaScript.this);
+                    */
+                    
                 }
             }
         }
@@ -2710,4 +2739,48 @@ public class JavaScript extends TypedAtomicActor {
         /** The port that is proxied, or null if it's a parameter. */
         protected TypedIOPort _port;
     }
+    
+    /** Runnable object intended to be run inside of the fire method to
+     *  send out a token that was attempted to be send out at an earlier
+     *  time, asynchronous with fire.
+     *  @author Marten Lohstroh
+     */
+    public class deferredSend implements Runnable {
+
+    	/** Construct an object that defers a send operation.
+    	 * @param proxy A proxy corresponding to the port or parameter. 
+    	 * @param channelIndex The channel to send data on.
+    	 * @param data The data to send through the port or update the parameter with.
+    	 */
+        public deferredSend(PortOrParameterProxy proxy, int channelIndex, Token data) {
+           this.proxy = proxy;
+           this.channelIndex = channelIndex;
+           this.data = data;
+        }
+
+        /** Invoke send on the port or parameter proxy.
+         */ 
+		public void run() {
+			try {
+				proxy.send(channelIndex, data);
+				// FIXME: Where should possible exceptions go?
+				// Could possibly do something like this, but what we really want
+				// is send it to the JavaScript environment....
+				// Thread t = Thread.currentThread();
+			    // t.getUncaughtExceptionHandler().uncaughtException(t, e);
+			} catch (NoRoomException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalActionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		/** The output channel on the port to send data on. */
+        private int channelIndex;
+        /** The data to send. */
+        private Token data;
+        /** The proxy for the port to send data through. */
+        private PortOrParameterProxy proxy;
+	}
 }
