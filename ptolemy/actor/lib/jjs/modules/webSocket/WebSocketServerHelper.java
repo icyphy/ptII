@@ -33,6 +33,7 @@ package ptolemy.actor.lib.jjs.modules.webSocket;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.ServerWebSocket;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
@@ -99,10 +100,12 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	// Ask the verticle to start the server.
     	submit(new Runnable() {
     		public void run() {
-    			_server = _vertx.createHttpServer();
+    			_server = _vertx.createHttpServer(new HttpServerOptions()
+    					.setMaxWebsocketFrameSize(_maxFrameSize));
     			_server.websocketHandler(new Handler<ServerWebSocket>() {
     				@Override
     				public void handle(ServerWebSocket serverWebSocket) {
+    					// NOTE: The following doesn't actually do anything, apparently.
     					serverWebSocket.setWriteQueueMaxSize(_maxFrameSize);
     					// Notify of a new connection.
     					// This will have the side effect of creating a new JS Socket
