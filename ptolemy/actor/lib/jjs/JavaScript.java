@@ -2629,7 +2629,7 @@ public class JavaScript extends TypedAtomicActor {
                     // matching current real time.
                     final Time now = getDirector().fireAtCurrentTime(JavaScript.this);
                     final Integer id = Integer.valueOf(_timeoutCount++);
-                    final Runnable function = new deferredSend(this, channelIndex, data);
+                    final Runnable function = new DeferredSend(this, channelIndex, data);
                     
                     // Record the callback function indexed by ID.
                     if (_pendingTimeoutFunctions == null) { // FIXME: why don't we set this up in the constructor?
@@ -2745,14 +2745,14 @@ public class JavaScript extends TypedAtomicActor {
      *  time, asynchronous with fire.
      *  @author Marten Lohstroh
      */
-    public class deferredSend implements Runnable {
+    public class DeferredSend implements Runnable {
 
     	/** Construct an object that defers a send operation.
     	 * @param proxy A proxy corresponding to the port or parameter. 
     	 * @param channelIndex The channel to send data on.
     	 * @param data The data to send through the port or update the parameter with.
     	 */
-        public deferredSend(PortOrParameterProxy proxy, int channelIndex, Token data) {
+        public DeferredSend(PortOrParameterProxy proxy, int channelIndex, Token data) {
            this.proxy = proxy;
            this.channelIndex = channelIndex;
            this.data = data;
