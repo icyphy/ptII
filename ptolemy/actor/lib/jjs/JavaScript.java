@@ -2747,7 +2747,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     public class DeferredSend implements Runnable {
 
-    	/** Construct an object that defers a send operation.d
+    	/** Construct an object that defers a send operation.
     	 * @param proxy A proxy corresponding to the port or parameter. 
     	 * @param channelIndex The channel to send data on.
     	 * @param data The data to send through the port or update the parameter with.
