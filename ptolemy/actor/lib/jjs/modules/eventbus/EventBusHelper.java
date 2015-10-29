@@ -64,9 +64,9 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
  */
 public class EventBusHelper extends VertxHelperBase {
 
-    /** Create an EventBusHelper for the specified VertxBus JavaScript
-     *  object for the event bus at the specified network interface
-     *  (port and hostname).
+    /** Create an EventBusHelper for the specified actor and
+     *  VertxBus JavaScript object for the event bus at the
+     *  specified network interface (port and hostname).
      *  <p>
      *  If the clusterHostname is null, then this will use an
      *  unclustered instance of Vertx whose event bus will not
@@ -80,7 +80,9 @@ public class EventBusHelper extends VertxHelperBase {
      *  25500.  If clusterHostname is null, then the default
      *  clusterPort value is used.
      *
-     *  @param jsObject The VertxBus JavaScript object that will
+     *  @param actor The actor that will publish or subscribe to the
+     *   event bus.
+     *  @param vertxBusJS The VertxBus JavaScript object that will
      *   publish and subscribe to the event bus.
      *  @param clusterPort The port over which to listen for cluster
      *   connections.
@@ -88,9 +90,13 @@ public class EventBusHelper extends VertxHelperBase {
      *   for cluster connections, or null to create an unclustered
      *   EventBusHelper.
      */
-    public EventBusHelper(ScriptObjectMirror jsObject, int clusterPort,
+    public EventBusHelper(
+    		Object actor,
+    		ScriptObjectMirror vertxBusJS,
+    		int clusterPort,
             String clusterHostname) {
-        _currentObj = jsObject;
+    	super(actor);
+        _vertxBusJS = vertxBusJS;
         if (clusterHostname == null) {
             if (_unclusteredVertxInstance == null) {
                 _unclusteredVertxInstance = VertxFactory.newVertx();
@@ -161,7 +167,7 @@ public class EventBusHelper extends VertxHelperBase {
         EventBus bus = _vertx.eventBus();
         Handler<Message> newHandler = new Handler<Message>() {
             public void handle(Message message) {
-                _currentObj.callMember("notifyReply", replyHandler,
+                _vertxBusJS.callMember("notifyReply", replyHandler,
                         message.body());
             }
         };
@@ -197,7 +203,7 @@ public class EventBusHelper extends VertxHelperBase {
         }
         Handler<Message> newHandler = new Handler<Message>() {
             public void handle(Message message) {
-                _currentObj.callMember("notify", address, message.body());
+                _vertxBusJS.callMember("notify", address, message.body());
                 if (_reply != null) {
                     message.reply(_reply);
                 }
@@ -262,7 +268,7 @@ public class EventBusHelper extends VertxHelperBase {
     ////                     private fields                        ////
 
     /** The current instance of the JavaScript module. */
-    private ScriptObjectMirror _currentObj;
+    private ScriptObjectMirror _vertxBusJS;
 
     /** The reply to send in response to received messages, or null to send no reply. */
     private String _reply = null;

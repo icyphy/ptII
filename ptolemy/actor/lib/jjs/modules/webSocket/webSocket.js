@@ -156,10 +156,9 @@ exports.Client.prototype.close = function() {
  *  use JSON.parse() to parse the message and emit the result of the parse.
  *  This function is called by the Java helper used by this particular
  *  implementation and should not be normally called by the user.
- *  FIXME: Any way to hide it?
  *  @param message The incoming message.
  */
-exports.Client.prototype.notifyIncoming = function(message) {
+exports.Client.prototype._notifyIncoming = function(message) {
     if (this.receiveType == 'application/json') {
         try {
             message = JSON.parse(message);
@@ -299,9 +298,11 @@ exports.Socket.prototype.isOpen = function() {
 /** Notify this object of a received message from the socket.
  *  This function attempts to parse the message as JSON and then
  *  emits a "message" event with the message as an argument.
+ *  This function is called by the helper and should not be called
+ *  by the user of this module.
  *  @param message The incoming message.
  */
-exports.Socket.prototype.notifyIncoming = function(message) {
+exports.Socket.prototype._notifyIncoming = function(message) {
     if (this.receiveType == 'application/json') {
         try {
             message = JSON.parse(message);

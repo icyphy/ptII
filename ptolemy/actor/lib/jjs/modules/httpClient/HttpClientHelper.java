@@ -202,12 +202,12 @@ public class HttpClientHelper extends VertxHelperBase {
     		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
     			public void run() {
     				_requestObj.callMember("_response", null, throwable.getMessage());
-    				if (_client != null) {
-    					_client.close();
-    					_client = null;
-    				}
     			}
     		});
+			if (_client != null) {
+				_client.close();
+				_client = null;
+			}
         }
     }
 
@@ -253,10 +253,10 @@ public class HttpClientHelper extends VertxHelperBase {
                 		_requestObj.callMember("_response", null,
                 				"Request failed with code " + status + ": "
                 						+ response.statusMessage());
-                		_client.close();
-                		_client = null;
         			}
         		});
+        		_client.close();
+        		_client = null;
         		return;
         	}
         	MultiMap headers = response.headers();
@@ -274,10 +274,10 @@ public class HttpClientHelper extends VertxHelperBase {
             								+ newLocation
             								+ " not yet handled by HttpClientHelper. "
             								+ status + ": " + response.statusMessage());
-            				_client.close();
-            				_client = null;
             			}
             		});
+    				_client.close();
+    				_client = null;
         			return;
         		}
         	}
@@ -332,10 +332,10 @@ public class HttpClientHelper extends VertxHelperBase {
                 					_requestObj.callMember("_response",
                 							response, body.getBytes());
                 				}
-                				_client.close();
-                				_client = null;
                 			}
                 		});
+        				_client.close();
+        				_client = null;
         			}
         		});
         	} else {
@@ -345,10 +345,10 @@ public class HttpClientHelper extends VertxHelperBase {
                 		// True argument indicates that this request is done.
                 		_issueOrDeferResponse(_requestNumber, true, new Runnable() {
                 			public void run() {
-                				_client.close();
-                				_client = null;
                 			}
                 		});
+        				_client.close();
+        				_client = null;
         			}
         		});
         		_imageParts = new LinkedList<byte[]>();
@@ -368,11 +368,11 @@ public class HttpClientHelper extends VertxHelperBase {
                 					// FIXME: Need to handle other MIME types.
                 					_requestObj.callMember("_response",
                 							response, body.getBytes());
-                					_client.close();
-                					_client = null;
                 				}
                 			}
         				});
+    					_client.close();
+    					_client = null;
         			}
         		});
         	}
