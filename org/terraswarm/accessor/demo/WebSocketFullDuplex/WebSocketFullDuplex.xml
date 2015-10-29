@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -40,12 +40,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 25.0]">
         </property>
     </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Server is broadcasting to all open sockets,&#10;so first few messages will not be received&#10;by the client because the socket is not open.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 85.0]">
-        </property>
-    </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each sent message should result in one reply.">
         </property>
@@ -56,6 +50,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Client throttles the swarmlet as&#10;the queue of unsent messages builds&#10;up (100 ms for each unsent item).">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 365.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that the last few messages are lost&#10;(both from the client to the server, and the&#10;server replies), because the model stops&#10;executing.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 65.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -132,23 +136,15 @@
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="connected" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="connection" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -176,18 +172,12 @@
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="connection" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">

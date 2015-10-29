@@ -37,6 +37,8 @@ import java.util.LinkedList;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 ///////////////////////////////////////////////////////////////////
 //// VertxHelperBase
 
@@ -80,6 +82,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
    with the second argument being true; failing to do so will result in
    all future responses being queued and never executing.
    Using a timeout, for example, can ensure this.
+   Note also that the specified Runnable will execute in the director
+   thread (via a timeout mechanism with timeout equal to zero), not
+   in the Verticle. Thus, subclasses that use should not directly invoke
+   Vert.x functions that need to be run in the verticle in the Runnable
+   that they pass. They should instead use {@link #submit(Runnable)}.
 
    @author Hokeun Kim and Edward A. Lee
    @version $Id$
@@ -187,7 +194,16 @@ public class VertxHelperBase extends HelperBase {
     ////                     protected methods                     ////
 
     /** Execute the specified response in the same order as the request
-     *  that triggered the response. Specifically,
+     *  that triggered the response. The execution will be done in the
+     *  director thread, not in the verticle,
+     *  so that it is executed atomically with respect to the swarmlet
+     *  execution. This ensures, for example, that if the response
+     *  produces multiple output events or errors, that all those
+     *  output events and errors are simultaneous. It also prevents
+     *  threading issues from having the response execute concurrently
+     *  with the swarmlet execution.
+     *  
+     *  Specifically,
      *  if specified request number matches the next expected response,
      *  the execute the specified response. Otherwise, if there is an
      *  earlier expected response, then defer this one, and if a response
@@ -227,7 +243,10 @@ public class VertxHelperBase extends HelperBase {
     		deferred.add(handler);
     	} else if (requestNumber == _nextResponse) {
         	// System.err.println("****** Issuing response to " + requestNumber);
-    		response.run();
+    		
+    		// Execute the response in the director thread using a timeout.
+    		_invokeInDirectorThread(response);
+    		
     		if (done) {
     			// Look for deferred responses that are next in the sequence.
             	// System.err.println("****** Done with request request " + requestNumber);
@@ -238,7 +257,7 @@ public class VertxHelperBase extends HelperBase {
 					// There are matching deferred responses.
 					for (HandlerInvocation nextResponse : nextResponses) {
 			        	// System.err.println("****** Issuing response to " + _nextResponse);
-    					nextResponse.response.run();
+    					_invokeInDirectorThread(nextResponse.response);
     					if (nextResponse.done) {
     						// The response is done.
     		            	// System.err.println("****** Done with request request " + _nextResponse);
@@ -259,6 +278,19 @@ public class VertxHelperBase extends HelperBase {
     		}
     	}
     }
+
+	/**
+	 * @param response
+	 */
+	protected void _invokeInDirectorThread(Runnable response) {
+		try {
+			_actor.setTimeout(response, 0);
+		} catch (IllegalActionException e) {
+			_actor.error(_actor.getName()
+					+ ": Failed to schedule response handler: "
+					+ e.getMessage());
+		}
+	}
 
 	/** If the verticle is not busy, process the next pending job.
 	 *  This method should be called only by the verticle.
@@ -322,7 +354,7 @@ public class VertxHelperBase extends HelperBase {
     /** Verticle supporting this helper. */
     protected AccessorVerticle _verticle;
 
-    /** Global instance of Vert.x core. */
+    /** Global (unclustered) instance of Vert.x core. */
     protected static Vertx _vertx = Vertx.vertx();
 
     ///////////////////////////////////////////////////////////////////

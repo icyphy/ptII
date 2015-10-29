@@ -110,7 +110,7 @@ function VertxBus(options) {
         this.port = options['port'] || 0;
         this.host = options['host'] || 'localhost';
     }
-    this.helper = new EventBusHelper(this, this.port, this.host);
+    this.helper = new EventBusHelper(actor, this, this.port, this.host);
 };
 util.inherits(VertxBus, events.EventEmitter);
 

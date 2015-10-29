@@ -114,9 +114,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     					new Handler<AsyncResult<HttpServer>>() {
     				@Override
     				public void handle(AsyncResult<HttpServer> arg0) {
-    					synchronized (_actor) {
-    						_currentObj.callMember("emit", "listening");
-    					}
+    					_currentObj.callMember("emit", "listening");
     				}
     			});
     		}
@@ -139,14 +137,14 @@ public class WebSocketServerHelper extends VertxHelperBase {
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
             String hostInterface, int port, String receiveType, String sendType,
             int maxFrameSize) {
+    	// FIXME: Really should have only one of these per actor,
+    	// and the argument below should be the actor.
         super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
             _hostInterface = "localhost";
         }
         _port = port;
-        _receiveType = receiveType;
-        _sendType = sendType;
         _maxFrameSize = maxFrameSize;
     }
 
@@ -161,12 +159,6 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** The port on which the server listens. */
     private int _port;
-
-    /** The MIME type to assume for received messages. */
-    private String _receiveType;
-    
-    /** The MIME type to assume for sent messages. */
-    private String _sendType;
 
     /** The internal http server created by Vert.x */
     private HttpServer _server = null;
