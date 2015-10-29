@@ -14,6 +14,7 @@
         <classpathentry kind="lib" path="lib/chic.jar"/>
         <classpathentry kind="lib" path="lib/diva.jar"/>
         <classpathentry kind="lib" path="lib/g4ltl.jar"/>
+        <classpathentry kind="lib" path="lib/gdp-0.3-1.jar"/>
         <classpathentry kind="lib" path="lib/hazelcast-3.2.3.jar"/>
         <classpathentry kind="lib" path="lib/jackson-annotations-2.2.2.jar"/>
         <classpathentry kind="lib" path="lib/jackson-core-2.2.2.jar"/>
@@ -31,6 +32,7 @@
         <classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
         <classpathentry kind="lib" path="lib/jython.jar"/>
         <classpathentry kind="lib" path="lib/kieler.jar"/>
+        <classpathentry kind="lib" path="lib/rsyntaxtextarea-2.5.7.jar"/>
         <classpathentry kind="lib" path="lib/mapss.jar"/>
         <classpathentry kind="lib" path="lib/matlab.jar"/>
         <classpathentry kind="lib" path="lib/matlabLinux.jar"/>
@@ -58,9 +60,11 @@
         <classpathentry kind="lib" path="lib/smackx.jar"/>
         <classpathentry kind="lib" path="lib/socketio.jar"/>
         <classpathentry kind="lib" path="lib/sootclasses.jar"/>
+	<classpathentry kind="lib" path="lib/svgSalamander.jar"/>
         <classpathentry kind="lib" path="lib/vertx-core-2.1.5.jar"/>
         <classpathentry kind="lib" path="lib/vertx-hazelcast-2.1.5.jar"/>
         <classpathentry kind="lib" path="lib/vertx-platform-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/webcam-capture-0.3.10.jar"/>
 
 
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
