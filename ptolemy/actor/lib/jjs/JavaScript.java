@@ -73,6 +73,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -552,9 +553,8 @@ public class JavaScript extends TypedAtomicActor {
         }
         newObject._exports = null;
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
-//        newObject._outputTokens = null;
-        newObject._pendingTimeoutFunctions = null;
-        newObject._pendingTimeoutIDs = null;
+        newObject._pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
+        newObject._pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
         newObject._proxies = null;
         newObject._proxiesByName = null;
         newObject._genericInputHandlers = null;
@@ -811,7 +811,7 @@ public class JavaScript extends TypedAtomicActor {
             _inFire = true;
             try {
                 // Handle timeout requests that match the current time.
-                if (_pendingTimeoutIDs != null) {
+                if (_pendingTimeoutIDs.size() > 0) {
                     // If current time matches pending timeout requests, invoke them.
                     Time currentTime = getDirector().getModelTime();
                     Queue<Integer> ids = _pendingTimeoutIDs.get(currentTime);
@@ -821,18 +821,25 @@ public class JavaScript extends TypedAtomicActor {
                         List<Integer> copy = new LinkedList<Integer>(ids);
                         if (ids != null) {
                             for (Integer id : copy) {
-                                Runnable function = _pendingTimeoutFunctions
-                                        .get(id);
+                                Runnable function = _pendingTimeoutFunctions.get(id);
                                 if (function != null) {
-                                    // Remove the id before firing the function because it may
-                                    // reschedule itself using the same id.
-                                    // FIXME: No, that's not right. Function may or may not
+                                    // Previously, we removed the id _before_ firing the function
+                                	// because it may reschedule itself using the same id.
+                                    // But that's not right, because the function may or may not
                                     // cancel a setInterval, and if we remove the id here, we
-                                    // have no way to tell whether it cancelled it.
+                                    // have no way to tell in _runThenReschedule
+                                	// whether it cancelled it. So don't do this now:
                                     // _pendingTimeoutFunctions.remove(id);
+                                	// Instead, to prevent a memory leak, _runThenReschedule
+                                	// will set the following flag to true to prevent removal
+                                	// of the function.
+                                	_removePendingTimeoutFunction = true;
                                     function.run();
                                     if (_debugging) {
                                         _debug("Invoked timeout function.");
+                                    }
+                                    if (_removePendingTimeoutFunction) {
+                                    	_pendingTimeoutFunctions.remove(id);
                                     }
                                 }
                             }
@@ -1020,11 +1027,6 @@ public class JavaScript extends TypedAtomicActor {
         // Note that the callbacks might be invoked after a model has terminated
         // execution.
         synchronized (this) {
-            // Clear any queued output tokens.
- /*           if (_outputTokens != null) {
-                _outputTokens.clear();
-            }
-*/            
             _invokeMethodInContext("initialize");
         }
         _running = true;
@@ -1059,7 +1061,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name, Map options)
+    public void input(String name, Map<String,Object> options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running and use a change
         // request if so.
@@ -1098,7 +1100,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             } else {
                 // No pre-existing port, and options are given.
-                Object value = ((Map) options).get("value");
+                Object value = ((Map<String,Object>) options).get("value");
                 if (value == null && previousValue == null) {
                     // No value. Use an ordinary port.
                     port = (TypedIOPort) newPort(name);
@@ -1120,7 +1122,7 @@ public class JavaScript extends TypedAtomicActor {
                 // This might be a derived class that is adding a default
                 // value to a port that did not have one.
                 if (options != null) {
-                    Object value = ((Map) options).get("value");
+                    Object value = ((Map<String,Object>) options).get("value");
                     if (value != null) {
                         // Sure enough, we need to replace the port
                         // with a PortParameter.
@@ -1138,7 +1140,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         if (options instanceof Map) {
-            Object type = ((Map) options).get("type");
+            Object type = ((Map<String,Object>) options).get("type");
             if (type instanceof String) {
                 // The following will put the parameter in string mode,
                 // if appropriate.
@@ -1152,11 +1154,11 @@ public class JavaScript extends TypedAtomicActor {
                 throw new IllegalActionException(this, "Unsupported type: "
                         + type);
             }
-            Object description = ((Map) options).get("description");
+            Object description = ((Map<String,Object>) options).get("description");
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
-            Object value = ((Map) options).get("value");
+            Object value = ((Map<String,Object>) options).get("value");
             if (value != null) {
                 // Convert value to a Ptolemy Token.
                 try {
@@ -1308,7 +1310,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name, Map options)
+    public void output(String name, Map<String,Object> options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running a use a change
         // request if so.
@@ -1326,7 +1328,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         if (options != null) {
-            Object type = ((Map) options).get("type");
+            Object type = ((Map<String,Object>) options).get("type");
             if (type instanceof String) {
                 port.setTypeEquals(_typeAccessorToPtolemy((String) type, port));
                 _setOptionsForSelect(port, options);
@@ -1338,7 +1340,7 @@ public class JavaScript extends TypedAtomicActor {
                             + type);
                 }
             }
-            Object description = ((Map) options).get("description");
+            Object description = ((Map<String,Object>) options).get("description");
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
@@ -1378,7 +1380,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public void parameter(String name, Map options)
+    public void parameter(String name, Map<String,Object> options)
             throws IllegalActionException, NameDuplicationException {
         /* Don't constrain when this executes.
          * FIXME: Instead, we should use a ChangeRequest if we are executing.
@@ -1450,7 +1452,7 @@ public class JavaScript extends TypedAtomicActor {
                 // when you save the model unless it is overridden.
             }
 
-            Object visibility = ((Map) options).get("visibility");
+            Object visibility = ((Map<String,Object>) options).get("visibility");
             if (visibility instanceof String) {
                 String generic = ((String) visibility).trim().toLowerCase();
                 switch (generic) {
@@ -1525,17 +1527,11 @@ public class JavaScript extends TypedAtomicActor {
         super.preinitialize();
 
         synchronized (this) {
-            _pendingTimeoutFunctions = null;
-            _pendingTimeoutIDs = null;
+            _pendingTimeoutFunctions.clear();
+            _pendingTimeoutIDs.clear();
             _timeoutCount = 0;
 
             _createEngineAndEvaluateSetup();
-
-            // Clear any queued output tokens.
- /*           if (_outputTokens != null) {
-                _outputTokens.clear();
-            }
-*/
         }
         _executing = true;
         _running = false;
@@ -1604,9 +1600,9 @@ public class JavaScript extends TypedAtomicActor {
      *  @return A unique ID for this callback.
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public int setInterval(final Runnable function, final int milliseconds)
+    public synchronized int setInterval(final Runnable function, final int milliseconds)
             throws IllegalActionException {
-        final Integer id = Integer.valueOf(_timeoutCount++); // FIXME: shouldn't this be synchronized?
+        final Integer id = Integer.valueOf(_timeoutCount++);
         // Create a new function that invokes the specified function and then reschedules
         // itself.
         final Runnable reschedulingFunction = new Runnable() {
@@ -1630,7 +1626,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @return A unique ID for this callback.
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public int setTimeout(final Runnable function, int milliseconds)
+    public synchronized int setTimeout(final Runnable function, int milliseconds)
             throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++); // Shouldn't this be synchronized?
         _setTimeout(function, milliseconds, id);
@@ -1663,45 +1659,28 @@ public class JavaScript extends TypedAtomicActor {
         synchronized (this) {
             // Invoke the wrapup function.
             _invokeMethodInContext("wrapup");
-            // If there are unsent output tokens, the issue warning messages.
-            // These would result from a call to send() that occurred in an asynchronous
-            // callback after the last firing of this actor but before wrapup().
-            /*
-            if (_outputTokens != null) {
-                for (IOPort port : _outputTokens.keySet()) {
-                    HashMap<Integer, List<Token>> tokens = _outputTokens
-                            .get(port);
-                    for (Map.Entry<Integer, List<Token>> entry : tokens
-                            .entrySet()) {
-                        List<Token> queue = entry.getValue();
-                        if (queue != null) {
-                            for (Token token : queue) {
-                                String message = "WARNING: "
-                                        + getName()
-                                        + ": Unfulfilled send to output port \""
-                                        + port.getName() + "\" with the value "
-                                        + token;
-                                if (_debugging) {
-                                    _debug(message);
-                                } else {
-                                    System.err.println(message);
-                                }
-                            }
-                        }
-                    }
-                }
-                _outputTokens.clear();
-                
-                // If there are any remaining input handlers, remove them.
-                if (_handleToIndex != null) {
-                    // Copy the handle list to prevent a concurrent modification exception.
-                    Set<Integer> copy = new HashSet<Integer>(_handleToIndex.keySet());
-                    for (Integer handle : copy) {
-                        removeInputHandler(handle);
-                    }
+            
+            if (_pendingTimeoutIDs.size() > 0) {
+                String message = "WARNING: "
+                        + getName()
+                        + ": Model stopped before executing actions (e.g. producing outputs)"
+                        + " scheduled for execution at times "
+                        + _pendingTimeoutIDs.keySet().toString();
+                if (_debugging) {
+                    _debug(message);
+                } else {
+                    System.err.println(message);
                 }
             }
-            */
+                
+            // If there are any remaining input handlers, remove them.
+            if (_handleToIndex != null) {
+            	// Copy the handle list to prevent a concurrent modification exception.
+            	Set<Integer> copy = new HashSet<Integer>(_handleToIndex.keySet());
+            	for (Integer handle : copy) {
+            		removeInputHandler(handle);
+            	}
+            }
         }
         super.wrapup();
     }
@@ -1953,7 +1932,7 @@ public class JavaScript extends TypedAtomicActor {
                     + ClassLoader.getSystemClassLoader()
                     + " Thread.currentThread().getContextClassLoader(): "
                     + Thread.currentThread().getContextClassLoader();
-                Class clazz = null;
+                Class<?> clazz = null;
                 try {
                     clazz = Class.forName("ptolemy.data.ArrayToken");
                 } catch (ClassNotFoundException ex) {
@@ -2095,7 +2074,10 @@ public class JavaScript extends TypedAtomicActor {
      */
     private synchronized void _runThenReschedule(final Runnable function,
             final int milliseconds, final Integer id) {
+    	// Invoke the function.
         function.run();
+        
+        // If the above function does not cancel the interval, reschedule it.
         if (_pendingTimeoutFunctions.get(id) == null) {
             // The callback function itself may cancel the interval.
             return;
@@ -2114,6 +2096,8 @@ public class JavaScript extends TypedAtomicActor {
             throw new InternalErrorException(this, e,
                     "Failed to reschedule function scheduled with setInterval().");
         }
+        // Prevent removal of the id from _pendingTimeoutFunctions
+        _removePendingTimeoutFunction = false;
     }
 
     /** If the options argument inlucdes an "options" field, then use that field
@@ -2122,9 +2106,9 @@ public class JavaScript extends TypedAtomicActor {
      *  @param typeable A Parameter or a ParameterPort. Other types are ignored.
      *  @param options The options argument for an input or parameter specification.
      */
-    private void _setOptionsForSelect(NamedObj typeable, Map options) {
+    private void _setOptionsForSelect(NamedObj typeable, Map<String,Object> options) {
         if (options != null) {
-            Object possibilities = ((Map) options).get("options");
+            Object possibilities = ((Map<String,Object>) options).get("options");
             if (possibilities != null) {
                 // Possibilities are specified.
                 Parameter parameter = null;
@@ -2136,26 +2120,26 @@ public class JavaScript extends TypedAtomicActor {
                     // Can't set possibilities. Ignore this option.
                     return;
                 }
-                Iterable choices = null;
+                Iterable<Object> choices = null;
                 if (possibilities instanceof ScriptObjectMirror) {
                     choices = ((ScriptObjectMirror) possibilities).values();
                 } else if (possibilities instanceof Object[]) {
                     // Pathetically, Arrays.asList() doesn't work.
                     // It returns a list with one element, the array!
                     // choices = Arrays.asList(possibilities);
-                    choices = new LinkedList();
+                    choices = new LinkedList<Object>();
                     for (int i = 0; i < ((Object[])possibilities).length; i++) {
-                        ((LinkedList)choices).add(((Object[])possibilities)[i].toString());
+                        ((LinkedList<Object>)choices).add(((Object[])possibilities)[i].toString());
                     }
                 } else if (possibilities instanceof int[]) {
-                    choices = new LinkedList();
+                    choices = new LinkedList<Object>();
                     for (int i = 0; i < ((int[])possibilities).length; i++) {
-                        ((LinkedList)choices).add(new Integer(((int[])possibilities)[i]));
+                        ((LinkedList<Object>)choices).add(new Integer(((int[])possibilities)[i]));
                     }
                 } else if (possibilities instanceof double[]) {
-                    choices = new LinkedList();
+                    choices = new LinkedList<Object>();
                     for (int i = 0; i < ((double[])possibilities).length; i++) {
-                        ((LinkedList)choices).add(new Double(((double[])possibilities)[i]));
+                        ((LinkedList<Object>)choices).add(new Double(((double[])possibilities)[i]));
                     }
                 }
                 if (choices != null) {
@@ -2184,10 +2168,10 @@ public class JavaScript extends TypedAtomicActor {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    private void _setPortVisibility(Map options, TypedIOPort port,
+    private void _setPortVisibility(Map<String,Object> options, TypedIOPort port,
             PortParameter parameter) throws IllegalActionException,
             NameDuplicationException {
-        Object visibility = ((Map) options).get("visibility");
+        Object visibility = ((Map<String,Object>) options).get("visibility");
         if (visibility instanceof String) {
             String generic = ((String) visibility).trim().toLowerCase();
             boolean hide = false;
@@ -2298,15 +2282,9 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         // Record the callback function indexed by ID.
-        if (_pendingTimeoutFunctions == null) {
-            _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
-        }
         _pendingTimeoutFunctions.put(id, function);
 
         // Record the ID of the timeout indexed by time.
-        if (_pendingTimeoutIDs == null) {
-            _pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
-        }
         Queue<Integer> ids = _pendingTimeoutIDs.get(callbackTime);
         if (ids == null) {
             ids = new LinkedList<Integer>();
@@ -2377,16 +2355,19 @@ public class JavaScript extends TypedAtomicActor {
     //private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
 
     /** Map from timeout ID to pending timeout functions. */
-    private Map<Integer, Runnable> _pendingTimeoutFunctions;
+    private Map<Integer, Runnable> _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
 
     /** Map from timeout time to pending timeout IDs. */
-    private Map<Time, Queue<Integer>> _pendingTimeoutIDs;
+    private Map<Time, Queue<Integer>> _pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
 
     /** Map of proxies for ports and parameters. */
     private HashMap<NamedObj, PortOrParameterProxy> _proxies;
 
     /** Map of proxies for ports and parameters by name */
     private HashMap<String, PortOrParameterProxy> _proxiesByName;
+    
+    /** Flag indicating that timeoutID should be removed. */
+    private boolean _removePendingTimeoutFunction = true;
 
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
@@ -2609,7 +2590,16 @@ public class JavaScript extends TypedAtomicActor {
                         _localInputTokens = new LinkedList<Token>();
                     }
                     _localInputTokens.add(data);
-                    _fireAtCurrentTime();
+                    if (_inFire) {
+                    	// The following uses the current model time of the director,
+                    	// unlike the director's fireAtCurrentTime() method, which could use the current
+                    	// real time if the director is synchronized to real time.
+                    	_fireAtCurrentTime();
+                    } else {
+                    	// The following will use real time if the director is synchronized to
+                    	// real time. This seems reasonable if we are not currently in the fire method.
+                    	getDirector().fireAtCurrentTime(JavaScript.this);
+                    }
                 } else if (_inFire) {
                     // Currently firing. Can go ahead and send data.
                     if (_debugging) {
@@ -2621,6 +2611,9 @@ public class JavaScript extends TypedAtomicActor {
                 	// Enqueue runnable object to be invoked upon the next firing.
                     
                 	// Request a firing at the current time.
+                	// If the director is synchronized to real time, that will be real
+                	// time, not the current model time. This allows the director to advance
+                	// time before processing this output.
                     // In this case, we _do_ want to use the director's
                     // fireAtCurrentTime(), and not our _fireAtCurrentTime()
                     // method, because we are not in firing, so if we are
@@ -2632,45 +2625,15 @@ public class JavaScript extends TypedAtomicActor {
                     final Runnable function = new DeferredSend(this, channelIndex, data);
                     
                     // Record the callback function indexed by ID.
-                    if (_pendingTimeoutFunctions == null) { // FIXME: why don't we set this up in the constructor?
-                        _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
-                    }
                     _pendingTimeoutFunctions.put(id, function);
 
                     // Record the ID of the timeout indexed by time.
-                    if (_pendingTimeoutIDs == null) {
-                        _pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
-                    }
                     Queue<Integer> ids = _pendingTimeoutIDs.get(now);
                     if (ids == null) { // FIXME: again, why not initialize in constructor instead?
                         ids = new LinkedList<Integer>();
                         _pendingTimeoutIDs.put(now, ids);
                     }
                     ids.add(id);
-                    
-                    // Old approach: caching output tokens
-                	/*               	
-                	if (_outputTokens == null) {
-                        _outputTokens = new HashMap<IOPort, HashMap<Integer, List<Token>>>();
-                    }
-                    HashMap<Integer, List<Token>> tokens = _outputTokens
-                            .get(_port);
-                    if (tokens == null) {
-                        tokens = new HashMap<Integer, List<Token>>();
-                        _outputTokens.put(_port, tokens);
-                    }
-                    List<Token> queue = tokens.get(channelIndex);
-                    if (queue == null) {
-                        queue = new LinkedList<Token>();
-                        tokens.put(channelIndex, queue);
-                    }
-                    queue.add(data);
-                    if (_debugging) {
-                        _debug("Queueing " + data + " to be sent on "
-                                + _port.getName() + " and requesting a firing.");
-                    }
-                    */
-                    
                 }
             }
         }
@@ -2763,17 +2726,11 @@ public class JavaScript extends TypedAtomicActor {
 		public void run() {
 			try {
 				proxy.send(channelIndex, data);
-				// FIXME: Where should possible exceptions go?
-				// Could possibly do something like this, but what we really want
-				// is send it to the JavaScript environment....
-				// Thread t = Thread.currentThread();
-			    // t.getUncaughtExceptionHandler().uncaughtException(t, e);
-			} catch (NoRoomException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalActionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (KernelException e) {
+				error("Send to "
+						+ proxy._port.getName()
+						+ " failed: "
+						+ e.getMessage());
 			}
 		}
 		/** The output channel on the port to send data on. */
