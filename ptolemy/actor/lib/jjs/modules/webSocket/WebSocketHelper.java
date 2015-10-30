@@ -431,22 +431,6 @@ public class WebSocketHelper extends VertxHelperBase {
         }, new HttpClientExceptionHandler());
     }
     
-    /** Handle an error by emitting an error event, or if there is no
-     *  error event handler registered, by invoking the error() method
-     *  of the associated actor. Note that this may not stop execution.
-     *  @param message The error message.
-     */
-    private void _error(String message) {
-        try {
-            _currentObj.callMember("emit", "error", message);
-            // NOTE: The error handler may not stop execution.
-        } catch (Throwable ex) {
-            // There may be no error event handler registered.
-            // Use the actor to report the error.
-            _actor.error(message);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
