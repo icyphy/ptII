@@ -588,16 +588,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     request.write(Buffer.buffer(os.toByteArray()));
                 } catch (IOException e) {
                     String message = "Can't write image body to HTTP request: " + e.toString();
-                    try {
-                        _requestObj.callMember("emit", "error", message);
-                        // NOTE: If the error does not stop execution, then the
-                        // request will continue without a body.
-                        // Hence, there will be a response later.
-                    } catch (Throwable ex) {
-                        // There may be no error event handler registered.
-                        // Use the actor to report the error.
-                        _actor.error(message);
-                    }
+                    _error(_requestObj, message);
                 }
             } else {
                 
