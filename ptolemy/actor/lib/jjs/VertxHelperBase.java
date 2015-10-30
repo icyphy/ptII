@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -193,6 +194,27 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
+    /** Override the base class to emit the error message in the
+     *  director thread.
+     *  @param emitter The JavaScript object that should emit an
+     *   "error" event.
+     *  @param message The error message.
+     */
+    protected void _error(ScriptObjectMirror emitter, final String message) {
+		_issueResponse(new Runnable() {
+			public void run() {
+				try {
+		            emitter.callMember("emit", "error", message);
+		            // NOTE: The error handler may not stop execution.
+		        } catch (Throwable ex) {
+		            // There may be no error event handler registered.
+		            // Use the actor to report the error.
+		            _actor.error(message);
+		        }
+			}
+		});
+    }
+
     /** Execute the specified response in the same order as the request
      *  that triggered the response. The execution will be done in the
      *  director thread, not in the verticle,
@@ -245,7 +267,7 @@ public class VertxHelperBase extends HelperBase {
         	// System.err.println("****** Issuing response to " + requestNumber);
     		
     		// Execute the response in the director thread using a timeout.
-    		_invokeInDirectorThread(response);
+    		_issueResponse(response);
     		
     		if (done) {
     			// Look for deferred responses that are next in the sequence.
@@ -257,7 +279,7 @@ public class VertxHelperBase extends HelperBase {
 					// There are matching deferred responses.
 					for (HandlerInvocation nextResponse : nextResponses) {
 			        	// System.err.println("****** Issuing response to " + _nextResponse);
-    					_invokeInDirectorThread(nextResponse.response);
+    					_issueResponse(nextResponse.response);
     					if (nextResponse.done) {
     						// The response is done.
     		            	// System.err.println("****** Done with request request " + _nextResponse);
@@ -279,10 +301,16 @@ public class VertxHelperBase extends HelperBase {
     	}
     }
 
-	/**
-	 * @param response
+    /** Execute the specified response in the director thread, not in the verticle,
+     *  so that it is executed atomically with respect to the swarmlet
+     *  execution. This ensures, for example, that if the response
+     *  produces multiple output events or errors, that all those
+     *  output events and errors are simultaneous. It also prevents
+     *  threading issues from having the response execute concurrently
+     *  with the swarmlet execution.
+	 *  @param response The response to execute.
 	 */
-	protected void _invokeInDirectorThread(Runnable response) {
+	protected void _issueResponse(Runnable response) {
 		try {
 			_actor.setTimeout(response, 0);
 		} catch (IllegalActionException e) {
