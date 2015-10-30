@@ -30,10 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.eventbus;
 
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
+import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.spi.VertxFactory;
 
 import java.util.HashMap;
@@ -99,7 +102,7 @@ public class EventBusHelper extends VertxHelperBase {
         _vertxBusJS = vertxBusJS;
         if (clusterHostname == null) {
             if (_unclusteredVertxInstance == null) {
-                _unclusteredVertxInstance = VertxFactory.newVertx();
+                _unclusteredVertxInstance = Vertx.vertx();
             }
             _vertx = _unclusteredVertxInstance;
         } else {
@@ -165,10 +168,10 @@ public class EventBusHelper extends VertxHelperBase {
      */
     public void send(String address, String message, final Object replyHandler) {
         EventBus bus = _vertx.eventBus();
-        Handler<Message> newHandler = new Handler<Message>() {
-            public void handle(Message message) {
+        Handler<AsyncResult<Message<String>>> newHandler = new Handler<AsyncResult<Message<String>>>() {
+            public void handle(AsyncResult<Message<String>> event) {
                 _vertxBusJS.callMember("notifyReply", replyHandler,
-                        message.body());
+                        event.result().body());
             }
         };
         bus.send(address, message, newHandler);
@@ -196,22 +199,22 @@ public class EventBusHelper extends VertxHelperBase {
      */
     public void subscribe(final String address) {
         if (_subscriptions == null) {
-            _subscriptions = new HashMap<String, Handler>();
+            _subscriptions = new HashMap<String, MessageConsumer<String>>();
         }
         if (_subscriptions.get(address) != null) {
             return;
         }
-        Handler<Message> newHandler = new Handler<Message>() {
-            public void handle(Message message) {
+        Handler<Message<String>> newHandler = new Handler<Message<String>>() {
+            public void handle(Message<String> message) {
                 _vertxBusJS.callMember("notify", address, message.body());
                 if (_reply != null) {
                     message.reply(_reply);
                 }
             }
         };
-        _subscriptions.put(address, newHandler);
         EventBus bus = _vertx.eventBus();
-        bus.registerHandler(address, newHandler);
+        MessageConsumer<String> messageConsumer = bus.consumer(address, newHandler);
+        _subscriptions.put(address, messageConsumer);
     }
 
     /** Unsubscribe the associated JavaScript object as a subscriber to the
@@ -222,18 +225,17 @@ public class EventBusHelper extends VertxHelperBase {
      */
     public void unsubscribe(final String address) {
         if (_subscriptions != null) {
-            EventBus bus = _vertx.eventBus();
             if (address == null) {
                 for (String toUnsubscribe : _subscriptions.keySet()) {
-                    Handler<Message> previousHandler = _subscriptions
+                    MessageConsumer<String> messageConsumer = _subscriptions
                             .get(toUnsubscribe);
-                    bus.unregisterHandler(toUnsubscribe, previousHandler);
+                    messageConsumer.unregister();
                 }
                 _subscriptions.clear();
             } else {
-                Handler<Message> previousHandler = _subscriptions.get(address);
-                if (previousHandler != null) {
-                    bus.unregisterHandler(address, previousHandler);
+                MessageConsumer<String> messageConsumer = _subscriptions.get(address);
+                if (messageConsumer != null) {
+                    messageConsumer.unregister();
                     _subscriptions.remove(address);
                 }
             }
@@ -248,7 +250,10 @@ public class EventBusHelper extends VertxHelperBase {
      *  @param clusterHostname The network interface to use for the cluster.
      */
     private void _createVertx(int clusterPort, String clusterHostname) {
-        _vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
+        VertxOptions vertxOptions = new VertxOptions();
+        vertxOptions.setClusterPort(clusterPort);
+        vertxOptions.setClusterHost(clusterHostname);
+        _vertx = Vertx.vertx(vertxOptions);
 
         /** FIXME: Some example code includes the following, but I can't find VertxOptions:
         VertxOptions options = new VertxOptions();
@@ -274,9 +279,9 @@ public class EventBusHelper extends VertxHelperBase {
     private String _reply = null;
 
     /** Map from addresses to which the associated JavaScript object is
-     *  subscribed to the handler function.
+     *  subscribed to the MessageConsumer associated with the handler.
      */
-    private Map<String, Handler> _subscriptions;
+    private Map<String, MessageConsumer<String>> _subscriptions;
 
     /** An unclustered Vertx instance, if it has been created. */
     private static Vertx _unclusteredVertxInstance;
