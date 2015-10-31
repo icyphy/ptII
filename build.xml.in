@@ -198,6 +198,11 @@
     <exclude name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTest.*" />
   </patternset>
 
+  <!-- JavaScript files. -->
+  <patternset id="ptII.js"
+	      includes="ptolemy/actor/lib/jjs/*.js,ptolemy/actor/lib/jjs/*/*.js,ptolemy/actor/lib/jjs/modules/*/*.js,org/terraswarm/accessor/accessors/web/*/*.js,org/terraswarm/accessor/accessors/web/*/*/*.js"
+	      excludes="**/vendors/**/*.js,**/node_modules/**/*.js,**/node/**/*.js,**/node/*.js"
+	      />
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
@@ -626,6 +631,34 @@ For example:
           >
     <exec executable="doc/jsdoc/makeptjsdocREADME"
       timeout="10000">
+    </exec>
+  </target>
+
+  <target name="jshint"
+          description="Run jshint on the .js files.  Install with 'npm install jshint'">
+    <apply executable="${env.HOME}/node_modules/jshint/bin/jshint">
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
+	<patternset refid="ptII.js" />
+      </fileset>
+    </apply>
+  </target>
+
+  <target name="jshint-checkstyle"
+          description="Run jshint on the .js files and generate checkstyle output.">
+    <delete file="reports/jshint.xml"/>
+    <apply executable="${env.HOME}/node_modules/jshint/bin/jshint"
+	   append="true"
+	   output="reports/jshint.xml">
+      <arg value="--reporter=checkstyle"/>
+      <fileset defaultexcludes="yes"
+	       dir="${basedir}">
+	<patternset refid="ptII.js" />
+      </fileset>
+    </apply>
+    <exec executable="adm/bin/fixjshint"
+      output="reports/jshintFixed.xml">
+      <arg value="reports/jshint.xml"/>
     </exec>
   </target>
 

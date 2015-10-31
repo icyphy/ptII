@@ -1,0 +1,11 @@
+#!/bin/sh
+awk '{ if (NR <= 2) {
+          print $0
+       } else {
+         if ($1 !~ /<checkstyle/ && $1 !~ /<\/checkstyle/ && $1 !~ /<?xml/) {
+	     print $0
+         }
+       }
+     }
+END { print "</checkstyle>"
+}' < $1
