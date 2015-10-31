@@ -57,6 +57,11 @@ awk 'BEGIN {print "/*"}
 	END {print "*/"}
 	' $NOTICE | grep -v ' $Id' > $CNOTICE
 
+
+# Produce a JS style comment block containing the copyright
+JSNOTICE=/tmp/jsnotice.$$
+awk '{printf("// %s\n",$0)}' $NOTICE | grep -v '\$Id' | sed -e 's/[ 	]*$//g' > $JSNOTICE
+
 # Temporary file
 TMPF=/tmp/insertcopyright.$$
 
@@ -269,7 +274,8 @@ while [ $1x != x ] ; do
     case $F in
 	*Makefile|*makefile|*make.template|*.mk|*.tcl|*.itcl) \
 			shcomments=yes;;
-	*.c|*.cc|*.cpp|*.giotto|*.H|*.h|*.html|*.java|*.js|*.mmm )   shcomments=no;;
+	*.c|*.cc|*.cpp|*.giotto|*.H|*.h|*.html|*.java|*.mmm )   shcomments=no; jscomments=no;;
+	*.js)   shcomments=no; jscomments=yes;;
 	*) echo "Panic, cannot handle $F, skipping"; continue;;
     esac
 
@@ -293,8 +299,13 @@ while [ $1x != x ] ; do
 	    cat $SHNOTICE | sed "s/(c) 1995-2015/(c) $newdate/" > $TMPF > $TMPF
 	    cat $FP		>> $TMPF
 	else
-	    cat $CNOTICE | sed "s/(c) 1995-2015/(c) $newdate/" > $TMPF > $TMPF
-	    cat $FP		>> $TMPF
+            if [ $jscomments = yes ]; then
+	        cat $JSNOTICE | sed "s/(c) 1995-2015/(c) $newdate/" > $TMPF > $TMPF
+	        cat $FP		>> $TMPF
+            else 
+	        cat $CNOTICE | sed "s/(c) 1995-2015/(c) $newdate/" > $TMPF > $TMPF
+	        cat $FP		>> $TMPF
+            fi
 	fi
 
     else 
