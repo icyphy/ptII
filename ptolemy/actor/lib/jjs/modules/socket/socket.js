@@ -39,26 +39,17 @@ exports.supportedSendTypes = function() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//// defaultOptions
+//// defaultClientOptions
 
-/** The default options for socket connections.
- *  The meaning of the options is defined here:
- *     http://vertx.io/docs/vertx-core/java/
- *  The send and receive types can be one of 'string', 'number',
- *  or 'byte'. For connecting to sockets that are not JavaScript,
- *  they can alternatively be
- *  'double', 'float', 'int', 'long', 'short', 'unsignedByte',
- *  'unsignedInt', or 'unsignedShort', all of which will be converted
- *  to 'number' when emitted as data.
+/** The default options for socket connections from the client side.
  */
-var defaultOptions = {
+var defaultClientOptions = {
     'connectTimeout': 6000, // in milliseconds.
     'idleTimeout': 0, // In second. 0 means don't timeout.
     'discardMessagesBeforeOpen': false,
     'keepAlive': true,
-    'numberOfRetries': 1,
-    'receiveType': 'string',
     'receiveBufferSize': 65536,
+    'receiveType': 'string',
     'reconnectAttempts': 10,
     'reconnectInterval': 100,
     'sendBufferSize': 65536,
@@ -66,6 +57,11 @@ var defaultOptions = {
     'sslTls': false,
     'trustAll': true,
 }
+
+// FIXME: 'trustAll' is not well explained. What does it mean?
+// There are additional options in Vert.x NetClientOptions that
+// are not documented in the Vert.x documentation, so I don't know what
+// they mean.
 
 ///////////////////////////////////////////////////////////////////////////////
 //// SocketClient
@@ -85,51 +81,59 @@ var defaultOptions = {
  *  depending on the value of the discardMessagesBeforeOpen option (which defaults
  *  to false).
  *
- *  FIXME: check this
- *  The type of data sent and received can be specified with the 'sendType'
- *  and 'receiveType' options.
- *  In principle, any MIME type can be specified, but the host may support only
- *  a subset of MIME types.  The client and the server have to agree on the type,
- *  or the data will not get through correctly.
- *
- *  The default type for both sending and receiving
- *  is 'application/json'. The types supported by this implementation
- *  include at least:
- *  * __application/json__: The send() function uses JSON.stringify() and sends the
- *    result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,
- *    and if the parsing fails, will be provided as a string interpretation of the byte
- *    stream.
- *  * __text/\*__: Any text type is sent as a string encoded in UTF-8.
- *  * __image/x__: Where __x__ is one of __json__, __png__, __gif__,
- *    and more (FIXME: which, exactly?).
- *    In this case, the data passed to send() is assumed to be an image, as encoded
- *    on the host, and the image will be encoded as a byte stream in the specified
- *    format before sending.  A received byte stream will be decoded as an image,
- *    if possible. FIXME: What happens if decoding fails?
+ *  The send and receive types can be one of 'string', 'number',
+ *  or 'byte', defaulting to 'string'. For connecting to sockets
+ *  that are not JavaScript applications, they can alternatively be
+ *  'double', 'float', 'int', 'long', 'short', 'unsignedByte',
+ *  'unsignedInt', or 'unsignedShort'. In these cases, received
+ *  data will be converted to JavaScript 'number' when emitted.
+ *  For sent data, this will try to convert a JavaScript number
+ *  to the specified type. The type 'number' is equivalent
+ *  to 'double'.
  *  
  *  The event 'close' will be emitted when the socket is closed, and 'error' if an
  *  an error occurs (with an error message as an argument).
- *  For example,
+ *
+ *  A simple example:
  *  
  *      var socket = require('socket');
- *      var client = new socket.SocketClient({'host': 'localhost', 'port': 8080});
- *      client.send({'foo': 'bar'});
- *      client.on('data', onData);
- *      function onData(data) {
+ *      var client = new socket.SocketClient();
+ *      client.on('open', function(openSocket) {
+ *          var clientSocket = openSocket;
+ *          clientSocket.send('hello world');
+ *      });
+ *      client.on('data', function onData(data) {
  *          print('Received from socket: ' + data);
- *      }
+ *      });
  *  
- *  The options argument is a JSON object that can contain the following fields:
- *  * host: The IP address or host name for the host. Defaults to 'localhost'.
- *  * port: The port on which the host is listening. Defaults to 4000.
- *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
- *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
- *  * connectTimeout: The time to wait before giving up on a connection.
- *  * maxFrameSize: The maximum frame size for a received message.  FIXME?
- *  * numberOfRetries: The number of times to retry connecting. Defaults to 0.
- *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
- *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
- *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
+ *  The options argument is a JSON object that can include:
+ *  * connectTimeout: The time to wait (in milliseconds) before declaring
+ *    a connection attempt to have failed.
+ *  * idleTimeout: The amount of idle time in seconds that will cause
+ *    a disconnection of a socket. This defaults to 0, which means no
+ *    timeout.
+ *  * discardMessagesBeforeOpen: If true, then discard any messages
+ *    passed to SocketClient.send() before the socket is opened. If false,
+ *    then queue the messages to be sent when the socket opens. This
+ *    defaults to false.
+ *  * keepAlive: Whether to keep a connection alive and reuse it. This
+ *    defaults to true.
+ *  * receiveBufferSize: The size of the receive buffer. Defaults to
+ *    65536.
+ *  * receiveType: See above.
+ *  * reconnectAttempts: The number of times to try to reconnect.
+ *    If this is greater than 0, then a failure to attempt will trigger
+ *    additional attempts. This defaults to 10.
+ *  * reconnectInterval: The time between reconnect attempts, in
+ *    milliseconds. This defaults to 100.
+ *  * sendBufferSize: The size of the receive buffer. Defaults to
+ *    65536.
+ *  * sendType: See above.
+ *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
+ *  * trustAll: Whether to trust servers. This defaults to true.
+ *
+ *  The meaning of the options is (partially) defined here:
+ *     http://vertx.io/docs/vertx-core/java/
  *
  *  @param options The options.
  */
@@ -143,7 +147,7 @@ exports.SocketClient = function(port, host, options) {
 
     // Fill in default values.
     this.options = options || {};
-    this.options = util._extend(defaultOptions, this.options);
+    this.options = util._extend(defaultClientOptions, this.options);
     
     this.helper = SocketHelper.getOrCreateHelper(actor);
     this.socket = this.helper.openClientSocket(this, port, host, this.options);
@@ -173,27 +177,55 @@ exports.SocketClient.prototype.close = function() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-//// Server
+//// defaultServerOptions
 
-/** Construct an instance of WebSocket Server.
- *  After invoking this constructor (using new), the user script should set up listeners
- *  and then invoke the start() function on this Server.
- *  This will create an HTTP server on the local host.
- *  The options argument is a JSON object containing the following optional fields:
- *  * hostInterface: The IP address or name of the local interface for the server
- *    to listen on.  This defaults to "localhost", but if the host machine has more
- *    than one network interface, e.g. an Ethernet and WiFi interface, then you may
- *    need to specifically specify the IP address of that interface here.
- *  * port: The port on which to listen for connections (the default is 80,
- *    which is the default HTTP port).
- *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
- *    See the Client documentation for supported types.
- *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
- *    See the Client documentation for supported types.
- *  * maxFrameSize: The maximum frame size for a received message.
- * 
- *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
- *  A typical usage pattern looks like this:
+/** The default options for socket servers.
+ */
+var defaultServerOptions = {
+    'clientAuth': 'none', // No SSL/TSL will be used.
+    'hostInterface': '0.0.0.0', // Means listen on all available interfaces.
+    'idleTimeout': 0, // In second. 0 means don't timeout.
+    'keepAlive': true,
+    'port': 4000,
+    'receiveBufferSize': 65536,
+    'receiveType': 'string',
+    'sendBufferSize': 65536,
+    'sendType': 'string',
+    'sslTls': false,
+}
+
+// FIXME: one of the server options in NetServerOptions is 'acceptBacklog'.
+// This is undocumented in Vert.x, so I have no idea what it is. Left it out.
+// Also, 'reuseAddress', 'SoLinger', 'TcpNoDelay', 'trafficClass',
+// 'usePooledBuffers'.  Maybe the TCP wikipedia page will help.
+
+///////////////////////////////////////////////////////////////////////////////
+//// SocketServer
+
+/** Construct an instance of WebSocket Server. 
+ *  After invoking this constructor (using new), the user script can set up
+ *  listeners for the following events:
+ *  * listening: Emitted when the server is listening.
+ *    This will be passed the NetServer instance that is created.
+ *    This can be used, for example, to get the port number that
+ *    the server is listening on by calling the NetServer's
+ *    actualPort() method (this is useful if the port is specified to be 0).
+ *  * connection: Emitted when a new connection is established
+ *    after a request from (possibly remote) client.
+ *    This will be passed an instance of a SocketWrapper class
+ *    that is unique to this socket and has a send() and close()
+ *    function that can be used to send data or to close the socket.
+ *  * data: Emitted when data is received on any socket handled by this server.
+ *    This will be passed two arguments, the wrapper for the
+ *    socket that received the data and the data.
+ *  * close: Emitted when a socket is closed.
+ *    This will be passed the instance of SocketWrapper for
+ *    the socket that was closed.
+ *
+ *  FIXME: Don't seem to have any mechanism to listen for data on a
+ *  specific socket.  The wrapper needs to also be an event emitter.
+ *
+ *  FIXME: Out of date: A typical usage pattern looks like this:
  * 
  *     var server = new WebSocket.Server({'port':8082});
  *     server.on('listening', onListening);
@@ -218,31 +250,56 @@ exports.SocketClient.prototype.close = function() {
  *  The Socket object also has a close() function that allows the server to close
  *  the connection.
  * 
- *  FIXME: Should provide a mechanism to validate the "Origin" header during the
- *    connection establishment process on the serverside (against the expected origins)
- *    to avoid Cross-Site WebSocket Hijacking attacks.
+ *  The options argument is a JSON object containing the following optional fields:
+ *  * clientAuth: One of 'none', 'request', or 'required', meaning whether it
+ *    requires that a certificate be presented.
+ *  * hostInterface: The name of the network interface to use for listening,
+ *    e.g. 'localhost'. The default is '0.0.0.0', which means to
+ *    listen on all available interfaces.
+ *  * idleTimeout: The amount of idle time in seconds that will cause
+ *    a disconnection of a socket. This defaults to 0, which means no
+ *    timeout.
+ *  * keepAlive: Whether to keep a connection alive and reuse it. This
+ *    defaults to true.
+ *  * port: The default port to listen on. This defaults to 4000.
+ *    a value of 0 means to choose a random ephemeral free port.
+ *  * receiveBufferSize: The size of the receive buffer. Defaults to
+ *    65536.
+ *  * receiveType: See below.
+ *  * sendBufferSize: The size of the receive buffer. Defaults to
+ *    65536.
+ *  * sendType: See below.
+ *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
+ *
+ *  The send and receive types can be one of 'string', 'number',
+ *  or 'byte', defaulting to 'string'. All sockets handled by this
+ *  server must use the same send and receive types.
+ *  For connecting to sockets
+ *  that are not JavaScript applications, they can alternatively be
+ *  'double', 'float', 'int', 'long', 'short', 'unsignedByte',
+ *  'unsignedInt', or 'unsignedShort'. In these cases, received
+ *  data will be converted to JavaScript 'number' when emitted.
+ *  For sent data, this will try to convert a JavaScript number
+ *  to the specified type. The type 'number' is equivalent
+ *  to 'double'.
+ *
+ *  The meaning of the options is (partially)defined here:
+ *     http://vertx.io/docs/vertx-core/java/
  *
  *  @param options The options.
  */
-exports.Server = function(options) {
-    this.port = options['port'] || 80;
-    this.hostInterface = options['hostInterface'] || 'localhost';
-    this.receiveType = options['receiveType'] || 'application/json';
-    this.sendType = options['sendType'] || 'application/json';
-    this.maxFrameSize = options['maxFrameSize'] || 65536;
-    this.helper = WebSocketServerHelper.createServer(
-            this, this.hostInterface, this.port, this.receiveType, this.sendType,
-            this.maxFrameSize);
-}
-util.inherits(exports.Server, EventEmitter);
+exports.SocketServer = function(options) {
+    // Fill in default values.
+    this.options = options || {};
+    this.options = util._extend(defaultServerOptions, this.options);
 
-/** Start the server. */
-exports.Server.prototype.start = function() {
-    this.helper.startServer();
+    this.helper = SocketHelper.getOrCreateHelper(actor);
+    this.server = this.helper.openServer(this, this.options);
 }
+util.inherits(exports.SocketServer, EventEmitter);
 
 /** Stop the server. */
-exports.Server.prototype.close = function() {
+exports.SocketServer.prototype.close = function() {
     this.helper.closeServer();
 }
 
@@ -255,58 +312,8 @@ exports.Server.prototype.close = function() {
  *  Socket.
  *  @param serverWebSocket The Java ServerWebSocket object.
  */
-exports.Server.prototype.socketCreated = function(serverWebSocket) {
+exports.SocketServer.prototype.socketCreated = function(serverWebSocket) {
     var socket = new exports.Socket(
             serverWebSocket, this.receiveType, this.sendType, this.maxFrameSize);
     this.emit('connection', socket);
-}
-
-/////////////////////////////////////////////////////////////////
-//// Socket
-
-/** Construct (using new) a Socket object for the server side of a new connection.
- *  This is called by the socketCreated function above whenever a new connection is
- *  established at the request of a client. It should not normally be called by
- *  the JavaScript programmer. The returned Socket is an event emitter that emits
- *  'message' events.
- *  @param serverWebSocket The Java ServerWebSocket object.
- *  @param receiveType The MIME type for incoming messages, which defaults to 'application/json'.
- *  @param sendType The MIME type for outgoing messages, which defaults to 'application/json'.
- *  @param maxFrameSize The maximum frame size for a received message.
- */
-exports.Socket = function(serverWebSocket, receiveType, sendType, maxFrameSize) {
-    this.helper = WebSocketHelper.createServerSocket(
-            this, serverWebSocket, receiveType, sendType, maxFrameSize);
-    this.receiveType = receiveType;
-    this.sendType = sendType;
-    this.maxFrameSize = maxFrameSize;
-}
-util.inherits(exports.Socket, EventEmitter);
-
-/** Close the socket. Normally, this would be called on the client side,
- *  not on the server side. But the server can also close the connection.
- */
-exports.Socket.prototype.close = function() {
-    this.helper.close();
-}
-
-/** Return true if the socket is open.
- */
-exports.Socket.prototype.isOpen = function() {
-    return this.helper.isOpen();
-}
-
-
-/** Send data over the web socket.
- *  The data can be anything that has a JSON representation.
- *  @param data The data to send.
- */
-exports.Socket.prototype.send = function(data) {
-    if (this.sendType == 'application/json') {
-        this.helper.send(JSON.stringify(data));
-    } else if (this.sendType.search(/text\//) == 0) {
-        this.helper.send(data.toString());
-    } else {
-        this.helper.send(data);
-    }        
 }

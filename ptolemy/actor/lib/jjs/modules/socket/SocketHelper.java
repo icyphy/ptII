@@ -32,9 +32,11 @@ package ptolemy.actor.lib.jjs.modules.socket;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
-import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.ClientAuth;
 import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
+import io.vertx.core.net.NetServer;
+import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
 
 import java.util.Map;
@@ -74,11 +76,18 @@ public class SocketHelper extends VertxHelperBase {
 
     /** Create a client-side socket on behalf of the specified
      *  JavaScript SocketClient object. After this is called,
-     *  the specified socketClient will emit events 'open',
-     *  'data', 'close', or 'error'. When the 'open' event
-     *  is emitted, the handler will be passed a SocketWrapper
-     *  object with a send() and close() function that can be
-     *  used to send data or to close the socket.
+     *  the specified socketClient will emit the following events:
+     *  * open: Emitted when the connection has been established
+     *    with the server. This will be passed an instance of SocketWrapper
+     *    that is unique to this socket and has a send() and close()
+     *    function that can be used to send data or to close the socket.
+     *  * data: Emitted when data is received on the socket.
+     *    The received data will be an argument to the event.
+     *  * close: Emitted when a socket is closed.
+     *    This will be passed the instance of SocketWrapper for
+     *    the socket that was closed.
+     *  * error: Emitted when an error occurs. This will be passed
+     *    an error message.
      * 
      *  @param socketClient The JavaScript SocketClient instance.
      *  @param port The remote port to connect to.
@@ -110,14 +119,12 @@ public class SocketHelper extends VertxHelperBase {
 		*/
 
     	// Create the socket in the associated verticle.
-    	submit(new Runnable() {
-    		public void run() {
-    	    	NetClient client = _vertx.createNetClient(clientOptions);
-    	    	ConnectResponseHandler handler = new ConnectResponseHandler(socketClient, client);
-    	    	// NOTE: In principle, this client can handle multiple connections.
-    	    	// But here we use exactly one client per connection. Is this OK?
-    	    	client.connect(port, host, handler);
-    		}
+    	submit(() -> {
+	    	NetClient client = _vertx.createNetClient(clientOptions);
+	    	ConnectResponseHandler handler = new ConnectResponseHandler(socketClient, client);
+	    	// NOTE: In principle, this client can handle multiple connections.
+	    	// But here we use exactly one client per connection. Is this OK?
+	    	client.connect(port, host, handler);
     	});
     }
     
@@ -132,6 +139,120 @@ public class SocketHelper extends VertxHelperBase {
     		return (SocketHelper) helper;
     	}
     	return new SocketHelper(actor);
+    }
+
+    /** Create a server that can accept socket connection requests
+     *  on behalf of the specified JavaScript SocketServer object.
+     *  After this is called, the specified socketServer will emit
+     *  the following events:
+     *  <ul>
+     *  <li> listening: Emitted when the server is listening.
+     *    This will be passed the NetServer instance that is created.
+     *    This can be used, for example, to get the port number that
+     *    the server is listening on by calling the NetServer's
+     *    actualPort() method (this is useful if the port is specified to be 0).
+     *  <li> connection: Emitted when a new connection is established
+     *    after a request from (possibly remote) client.
+     *    This will be passed an instance of SocketWrapper
+     *    that is unique to this socket and has a send() and close()
+     *    function that can be used to send data or to close the socket.
+     *  <li> data: Emitted when data is received on a socket.
+     *    This will be passed two arguments, the wrapper for the
+     *    socket that received the data and the data.
+     *  <li> close: Emitted when a socket is closed.
+     *    This will be passed the instance of SocketWrapper for
+     *    the socket that was closed.
+     *  </ul>
+     *  @param socketServer The JavaScript SocketServer instance.
+     *  @param options The options (see the socket.js JavaScript module).
+     */
+    public void openServer(
+    		final ScriptObjectMirror socketServer,
+    		final Map<String,Object> options) {
+    	
+    	// Translate clientAuth option to an enum.
+    	ClientAuth auth = ClientAuth.NONE;
+    	String authSpec = (String)options.get("clientAuth");
+    	if (authSpec.toLowerCase().trim().equals("request")) {
+    		auth = ClientAuth.REQUEST;
+    	} else if (authSpec.toLowerCase().trim().equals("required")) {
+    		auth = ClientAuth.REQUIRED;
+    	}
+    	
+    	// NOTE: The following assumes all the options are defined.
+    	// This is handled in the associated JavaScript socket.js module.
+    	final NetServerOptions serverOptions = new NetServerOptions()
+    			.setClientAuth(auth)
+    			.setHost((String)options.get("hostInterface"))
+    			.setIdleTimeout((Integer)options.get("idleTimeout"))
+    			.setTcpKeepAlive((Boolean)options.get("keepAlive"))
+    			.setPort((Integer)options.get("port"))
+    			.setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
+    			.setSendBufferSize((Integer)options.get("sendBufferSize"))
+    			.setSsl((Boolean)options.get("sslTls"));
+    	
+    	/* FIXME: Not used:
+        'receiveType': 'string',
+        'sendType': 'string',
+        */
+
+    	// Create the server in the associated verticle.
+    	submit(() -> {
+	    	NetServer server = _vertx.createNetServer(serverOptions);
+	    	
+	    	server.connectHandler(socket -> {
+	    		// Connection is established with a client.
+	    		// Create a wrapper for the socket.
+	    		// Second argument being null indicates that this is a server-side socket.
+    			final SocketWrapper wrapper = new SocketWrapper(socketServer, null, socket);
+    			
+        	    // Set up handlers for data, errors, etc.
+        	    socket.closeHandler((Void) -> {
+        			_issueResponse(() -> {
+        				socketServer.callMember("emit", "close", wrapper);
+        			});
+        	    });
+        	    socket.drainHandler((Void) -> {
+        			// FIXME: This should unblock send(),
+        			// which should block itself when the buffer gets full.
+        	    });
+        	    socket.endHandler((Void) -> {
+        	    	// End event on the socket triggers a close of the socket.
+        	    	// This gets called when the remote side sends a FIN packet.
+        	    	// FIXME: This isn't right. Need FIN from both ends to close the socket!
+        	    	// socket.close();
+        	    });
+        	    socket.exceptionHandler(throwable -> {
+        			_error(socketServer, throwable.toString());
+        	    });
+        	    socket.handler(buffer -> {
+        			_issueResponse(() -> {
+        				// FIXME: handle the buffer data more intelligently here.
+        				// If the received type is 'double', 'byte', etc., then do multiple emits.
+        				// See defaultOptions in the JS module.
+        				// Share code with the Client.
+        				socketServer.callMember("emit", "data", wrapper, buffer.toString());
+        			});
+        	    });
+
+        	    // Emit the 'connection' event to indicate that a socket connection
+        	    // is open.
+    			_issueResponse(() -> {
+    				socketServer.callMember("emit", "connection", wrapper);
+    			});
+
+	    	});
+	    	
+	    	server.listen(result -> {
+				_issueResponse(() -> {
+					if (result.succeeded()) {
+						socketServer.callMember("emit", "listening", server);
+					} else {
+						_error("Failed to start server listening.");
+					}
+				});
+	    	});
+    	});
     }
 
     /** Return an array of the types supported by the current host for
@@ -179,6 +300,7 @@ public class SocketHelper extends VertxHelperBase {
     	/** Construct a handler for connections established.
     	 *  @param socketClient The JavaScript SocketClient object.
     	 *  @param client The NetClient object establishing the connection.
+    	 *  @param socket The Vertx socket object.
     	 */
     	public SocketWrapper(ScriptObjectMirror socketClient, NetClient client, NetSocket socket) {
     		_socketClient = socketClient;
@@ -188,10 +310,10 @@ public class SocketHelper extends VertxHelperBase {
     	/** Close the socket.
     	 */
 		public void close() {
-			submit(new Runnable() {
-				public void run() {
-					// FIXME: Maybe the first isn't needed?
-					_socket.close();
+			submit(() -> {
+				_socket.close();
+				// For a server socket, the _client field is null.
+				if (_client != null) {
 					_client.close();
 				}
 			});
@@ -202,17 +324,15 @@ public class SocketHelper extends VertxHelperBase {
 		public void send(final Object data) {
 			// FIXME: Should block if the send buffer is full.
 			
-			submit(new Runnable() {
-				public void run() {
-					// FIXME: Need to handle data types here.
-					if (data instanceof String) {
-						// FIXME: A second argument could take an encoding.
-						// Defaults to UTF-8. Option?
-						_socket.write((String)data);
-					} else {
-						_error(_socketClient, "Unsupported type for socket: "
-								+ data.getClass().getName());
-					}
+			submit(() -> {
+				// FIXME: Need to handle data types here.
+				if (data instanceof String) {
+					// FIXME: A second argument could take an encoding.
+					// Defaults to UTF-8. Option?
+					_socket.write((String)data);
+				} else {
+					_error(_socketClient, "Unsupported type for socket: "
+							+ data.getClass().getName());
 				}
 			});
 		}
@@ -224,22 +344,6 @@ public class SocketHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private classes                        ////
     
-    /** Handler for closing of a socket.  */
-    private class CloseHandler implements Handler<Void> {
-    	public CloseHandler(ScriptObjectMirror socketClient) {
-    		_socketClient = socketClient;
-    	}
-		@Override
-		public void handle(Void ignored) {
-			_issueResponse(new Runnable() {
-				public void run() {
-					_socketClient.callMember("emit", "close", "closed");
-				}
-			});
-		}
-		private ScriptObjectMirror _socketClient;
-    }
-
     /** Handler for socket connection established.  */
     private class ConnectResponseHandler implements Handler<AsyncResult<NetSocket>> {
     	
@@ -254,85 +358,46 @@ public class SocketHelper extends VertxHelperBase {
 		@Override
 		public void handle(AsyncResult<NetSocket> response) {
     		if (response.succeeded()) {
-    			final SocketWrapper wrapper = new SocketWrapper(_socketClient, _client, response.result());
+    			// Socket has been opened.
         	    NetSocket socket = response.result();
+        	    // Create a wrapper for the socket.
+    			final SocketWrapper wrapper = new SocketWrapper(_socketClient, _client, socket);
         	    // Set up handlers for data, errors, etc.
-        	    socket.closeHandler(new CloseHandler(_socketClient));
-        	    socket.closeHandler(new DrainHandler(_client));
-        	    socket.endHandler(new EndHandler(_client));
-        	    socket.exceptionHandler(new ExceptionHandler(_socketClient));
-        	    socket.handler(new DataHandler(_socketClient));
-    			_issueResponse(new Runnable() {
-    				public void run() {
-    					_socketClient.callMember("emit", "open", wrapper);
-    				}
+        	    socket.closeHandler((Void) -> {
+        			_issueResponse(() -> {
+        				_socketClient.callMember("emit", "close", wrapper);
+        			});
+        	    });
+        	    socket.drainHandler((Void) -> {
+        			// FIXME: This should unblock send(),
+        			// which should block itself when the buffer gets full.
+        	    });
+        	    socket.endHandler((Void) -> {
+        	    	// End event on the socket triggers a close of the socket.
+        	    	// This gets called when the remote side sends a FIN packet.
+        	    	// FIXME: This isn't right. Need FIN from both ends to close the socket!
+        	    	// _client.close();
+        	    });
+        	    socket.exceptionHandler(throwable -> {
+        			_error(_socketClient, throwable.toString());
+        	    });
+        	    socket.handler(buffer -> {
+        			_issueResponse(() -> {
+        				// FIXME: handle the buffer data more intelligently here.
+        				// If the received type is 'double', 'byte', etc., then do multiple emits.
+        				// See defaultOptions in the JS module.
+        				_socketClient.callMember("emit", "data", buffer.toString());
+        			});
+        	    });
+        	    
+    			_issueResponse(() -> {
+    				_socketClient.callMember("emit", "open", wrapper);
     			});
     		} else {
         	    _error(_socketClient, "Failed to connect: " + response.cause().getMessage());
     		}
 		}
 		private NetClient _client;
-		private ScriptObjectMirror _socketClient;
-    }
-    
-    /** Handler for data coming in on a socket.  */
-    private class DataHandler implements Handler<Buffer> {
-    	public DataHandler(ScriptObjectMirror socketClient) {
-    		_socketClient = socketClient;
-    	}
-		@Override
-		public void handle(final Buffer buffer) {
-			_issueResponse(new Runnable() {
-				public void run() {
-					// FIXME: handle the buffer data more intelligently here.
-					// If the received type is 'double', 'byte', etc., then do multiple emits.
-					// See defaultOptions in the JS module.
-					_socketClient.callMember("emit", "data", buffer.toString());
-				}
-			});
-		}
-		private ScriptObjectMirror _socketClient;
-    }
-
-    /** Handler for draining a socket.
-     *  If the write queue becomes full, then this handler will
-     *  be called when the write queue has been reduced to maxSize / 2. 
-     */
-    private class DrainHandler implements Handler<Void> {
-    	public DrainHandler(NetClient client) {
-    		_client = client;
-    	}
-		@Override
-		public void handle(Void ignored) {
-			// FIXME: This should unblock send(),
-			// which should block itself when the buffer gets full.
-		}
-		private NetClient _client;
-    }
-
-    /** Handler for the end of a stream on a socket.
-     *  This will close the socket.
-     */
-    private class EndHandler implements Handler<Void> {
-    	public EndHandler(NetClient client) {
-    		_client = client;
-    	}
-		@Override
-		public void handle(Void ignored) {
-			_client.close();
-		}
-		private NetClient _client;
-    }
-
-    /** Handler for an exception on a socket.  */
-    private class ExceptionHandler implements Handler<Throwable> {
-    	public ExceptionHandler(ScriptObjectMirror socketClient) {
-    		_socketClient = socketClient;
-    	}
-		@Override
-		public void handle(Throwable throwable) {
-			_error(_socketClient, throwable.toString());
-		}
 		private ScriptObjectMirror _socketClient;
     }
 }
