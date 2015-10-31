@@ -3,6 +3,8 @@
  * @module shell
  * @authors: Armin Wasicek
  */
+/*globals Java, exports, require, util */
+"use strict";
 
 var EventEmitter = require('events').EventEmitter;
 var ShellHelper = Java.type('ptolemy.actor.lib.jjs.modules.shell.ShellHelper');
@@ -15,8 +17,8 @@ var helper = null;
  *  @param options A javascript object specifying the options for the invocation.
  */
 exports.Shell = function(options) {
-	helper = ShellHelper.createShell(this, options['cmd']);
-}
+	helper = ShellHelper.createShell(this, options.cmd);
+};
 util.inherits(exports.Shell, EventEmitter);
 
 
@@ -27,22 +29,20 @@ exports.Shell.prototype.write = function(data) {
 	if(helper)  {
 		helper.write(data);
 	}
-}
-
+};
 
 /** Starts up the process to execute the command. Call after all callbacks have 
  *  been registered.
  */
 exports.Shell.prototype.start = function () {
 	helper.start();
-}
-
+};
 
 /** Wrap up the execution. Terminate the process and the reader thread and clean 
  *  up.
  */
 exports.Shell.prototype.wrapup = function()  {
 	helper.wrapup();
-}
+};
 
 

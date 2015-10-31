@@ -15,7 +15,7 @@
  * @copyright: http://terraswarm.org/accessors/copyright.txt
  */
 
-/*globals exports, util */
+/*globals Java, exports, require, util */
 "use strict";
 
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
@@ -103,16 +103,16 @@ exports.supportedSendTypes = function() {
  */
 exports.Client = function(options) {
     options = options || {};
-    this.port = options['port'] || 80;
-    this.host = options['host'] || 'localhost';
-    this.receiveType = options['receiveType'] || 'application/json';
-    this.sendType = options['sendType'] || 'application/json';
-    this.connectTimeout = options['connectTimeout'] || 60000;
-    this.maxFrameSize = options['maxFrameSize'] || 65536;
-    this.numberOfRetries = options['numberOfRetries'] || 1;
-    this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
-    this.discardMessagesBeforeOpen = options['discardMessagesBeforeOpen'] || false;
-    this.throttleFactor = options['throttleFactor'] || 0;
+    this.port = options.port || 80;
+    this.host = options.host || 'localhost';
+    this.receiveType = options.receiveType || 'application/json';
+    this.sendType = options.sendType || 'application/json';
+    this.connectTimeout = options.connectTimeout || 60000;
+    this.maxFrameSize = options.maxFrameSize || 65536;
+    this.numberOfRetries = options.numberOfRetries || 1;
+    this.timeBetweenRetries = options.timeBetweenRetries || 100;
+    this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
+    this.throttleFactor = options.throttleFactor || 0;
     this.helper = WebSocketHelper.createClientSocket(
         this,
         this.host,
@@ -125,7 +125,7 @@ exports.Client = function(options) {
         this.timeBetweenRetries,
         this.discardMessagesBeforeOpen,
         this.throttleFactor);
-}
+};
 util.inherits(exports.Client, EventEmitter);
 
 /** Send data over the web socket.
@@ -136,12 +136,12 @@ util.inherits(exports.Client, EventEmitter);
 exports.Client.prototype.send = function(data) {
     if (this.sendType == 'application/json') {
         this.helper.send(JSON.stringify(data));
-    } else if (this.sendType.search(/text\//) == 0) {
+    } else if (this.sendType.search(/text\//) === 0) {
         this.helper.send(data.toString());
     } else {
         this.helper.send(data);
     }        
-}
+};
 
 /** Close the current connection with the server.
  *  If there is data that was passed to send() but has not yet
@@ -150,7 +150,7 @@ exports.Client.prototype.send = function(data) {
  */
 exports.Client.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to interpret the message according to the
@@ -228,26 +228,26 @@ exports.Client.prototype.notifyIncoming = function(message) {
  *  @param options The options.
  */
 exports.Server = function(options) {
-    this.port = options['port'] || 80;
-    this.hostInterface = options['hostInterface'] || 'localhost';
-    this.receiveType = options['receiveType'] || 'application/json';
-    this.sendType = options['sendType'] || 'application/json';
-    this.maxFrameSize = options['maxFrameSize'] || 65536;
+    this.port = options.port || 80;
+    this.hostInterface = options.hostInterface || 'localhost';
+    this.receiveType = options.receiveType || 'application/json';
+    this.sendType = options.sendType || 'application/json';
+    this.maxFrameSize = options.maxFrameSize || 65536;
     this.helper = WebSocketServerHelper.createServer(
             this, this.hostInterface, this.port, this.receiveType, this.sendType,
             this.maxFrameSize);
-}
+};
 util.inherits(exports.Server, EventEmitter);
 
 /** Start the server. */
 exports.Server.prototype.start = function() {
     this.helper.startServer();
-}
+};
 
 /** Stop the server. */
 exports.Server.prototype.close = function() {
     this.helper.closeServer();
-}
+};
 
 /** Notify that a handshake was successful and a websocket has been created.
  *  This is called by the helper class is not meant to be called by the JavaScript
@@ -262,7 +262,7 @@ exports.Server.prototype.socketCreated = function(serverWebSocket) {
     var socket = new exports.Socket(
             serverWebSocket, this.receiveType, this.sendType, this.maxFrameSize);
     this.emit('connection', socket);
-}
+};
 
 /////////////////////////////////////////////////////////////////
 //// Socket
@@ -283,7 +283,7 @@ exports.Socket = function(serverWebSocket, receiveType, sendType, maxFrameSize) 
     this.receiveType = receiveType;
     this.sendType = sendType;
     this.maxFrameSize = maxFrameSize;
-}
+};
 util.inherits(exports.Socket, EventEmitter);
 
 /** Close the socket. Normally, this would be called on the client side,
@@ -291,13 +291,13 @@ util.inherits(exports.Socket, EventEmitter);
  */
 exports.Socket.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Return true if the socket is open.
  */
 exports.Socket.prototype.isOpen = function() {
     return this.helper.isOpen();
-}
+};
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to parse the message as JSON and then
@@ -324,9 +324,9 @@ exports.Socket.prototype.notifyIncoming = function(message) {
 exports.Socket.prototype.send = function(data) {
     if (this.sendType == 'application/json') {
         this.helper.send(JSON.stringify(data));
-    } else if (this.sendType.search(/text\//) == 0) {
+    } else if (this.sendType.search(/text\//) === 0) {
         this.helper.send(data.toString());
     } else {
         this.helper.send(data);
     }        
-}
+};
