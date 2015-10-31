@@ -2,8 +2,9 @@
  * Module supporting UDP sockets.
  * @module udpSocket
  * @authors: Hokeun Kim
- * @copyright: http://terraswarm.org/accessors/copyright.txt
  */
+/*globals Java, exports, require, util */
+"use strict";
 
 var UDPSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.udpSocket.UDPSocketHelper');
 var EventEmitter = require('events').EventEmitter;
@@ -30,9 +31,6 @@ var EventEmitter = require('events').EventEmitter;
  *   IP address or host name for the host and the port on which the host is listening.
  *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
  */
-
-"use strict";
- 
 exports.Socket = function() {
     this.helper = UDPSocketHelper.createSocket(this);
 };
