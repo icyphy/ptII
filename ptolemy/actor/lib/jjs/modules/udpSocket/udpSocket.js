@@ -31,15 +31,17 @@ var EventEmitter = require('events').EventEmitter;
  *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
  */
 
+"use strict";
  
 exports.Socket = function() {
     this.helper = UDPSocketHelper.createSocket(this);
-}
+};
+
 util.inherits(exports.Socket, EventEmitter);
 
 exports.createSocket = function() {
     return new exports.Socket();
-}
+};
 
 /** Send data over the web socket.
  *  The data can be anything that has a JSON representation.
@@ -52,11 +54,11 @@ exports.Socket.prototype.send = function(data) {
         data = JSON.stringify(data);
     }
     this.helper.sendText(data);
-}
+};
 
 exports.Socket.prototype.bind = function(port) {
     this.helper.bind(port);
-}
+};
 
 /** Close the current connection with the server.
  *  If there is data that was passed to send() but has not yet
@@ -65,7 +67,7 @@ exports.Socket.prototype.bind = function(port) {
  */
 exports.Socket.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to parse the message as JSON and then
