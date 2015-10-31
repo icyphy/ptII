@@ -15,6 +15,9 @@
  * @copyright: http://terraswarm.org/accessors/copyright.txt
  */
 
+/*globals exports, util */
+"use strict";
+
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
 var EventEmitter = require('events').EventEmitter;
@@ -27,7 +30,7 @@ var EventEmitter = require('events').EventEmitter;
  */
 exports.supportedReceiveTypes = function() {
     return WebSocketHelper.supportedReceiveTypes();
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// supportedSendTypes
@@ -37,7 +40,7 @@ exports.supportedReceiveTypes = function() {
  */
 exports.supportedSendTypes = function() {
     return WebSocketHelper.supportedSendTypes();
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// Client
