@@ -32,6 +32,11 @@
  *  @version $Id$
  */
  
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals actor, exports, require */
+"use strict";
+
 // Requires the util module.
 var util = require('util');
 

@@ -42,7 +42,8 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor */
+/*globals Java, actor, load */
+/*jshint: devel: true*/
 "use strict";
 
 // Flag that will cause debug output to the console if set to true.
@@ -113,19 +114,19 @@ function getResource(uri, timeout) {
  */
 function httpRequest(url, method, properties, body, timeout) {
     if (_debug) {
-        console.log("httpRequest(" + (function(obj) {
-            result = [];
+        console.log("httpRequest(" + (function (obj) {
+            var result = [], p;
             for (p in obj) {
                 result.push(JSON.stringify(obj[p]));
             }
-            ;
             return result;
         })(arguments) + ")");
     }
     var theURL = new (Java.type('java.net.URL'))(url);
     var protocol = theURL.getProtocol().toLowerCase();
-    if (actor.isRestricted
-            && !(protocol.equals("http") || protocol.equals("https"))) {
+    if (actor.isRestricted &&
+        !(protocol.equals("http") ||
+          protocol.equals("https"))) {
         throw "Actor is restricted. Only HTTP(S) requests will be honored by httpRequest().";
     }
     var connection = theURL.openConnection();
@@ -175,9 +176,9 @@ function readURL(url, timeout) {
         console.log("readURL('" + url + "')");
     }
     var theURL = new (Java.type('java.net.URL'))(url);
-    if (actor.isRestricted
-            && !theURL.getProtocol().toLowerCase().equals("http")
-            && !theURL.getProtocol().toLowerCase().equals("https")) {
+    if (actor.isRestricted &&
+        !theURL.getProtocol().toLowerCase().equals("http") &&
+        !theURL.getProtocol().toLowerCase().equals("https")) {
         throw "Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL().";
     }
     var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
@@ -185,15 +186,15 @@ function readURL(url, timeout) {
     request.setTimeout(timeout); // In milliseconds.
     var response = request.execute();
     if (!response.isSuccessful()) {
-        throw "Failed to read URL: " + url + "\nResponse code: "
-                + response.getResponseCode() + "\nResponse message: "
-                + response.getResponseMessage();
+        throw "Failed to read URL: " + url + "\nResponse code: " +
+            response.getResponseCode() + "\nResponse message: " +
+            response.getResponseMessage();
     }
     return response.getBody();
 }
 
 var __moduleFile = Java.type('ptolemy.util.FileUtilities').nameToFile(
-        '$CLASSPATH/ptolemy/actor/lib/jjs/', null)
+    '$CLASSPATH/ptolemy/actor/lib/jjs/', null);
 
 /** A string giving the full path to the root directory for installed modules. */
 var _moduleRoot = __moduleFile.getAbsolutePath();
