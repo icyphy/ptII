@@ -200,7 +200,7 @@
 
   <!-- JavaScript files. -->
   <patternset id="ptII.js"
-	      includes="ptolemy/actor/lib/jjs/*.js,ptolemy/actor/lib/jjs/*/*.js,ptolemy/actor/lib/jjs/modules/*/*.js,org/terraswarm/accessor/accessors/web/*/*.js,org/terraswarm/accessor/accessors/web/*/*/*.js"
+	      includes="ptolemy/actor/lib/jjs/*.js,ptolemy/actor/lib/jjs/*/*.js,ptolemy/actor/lib/jjs/modules/*/*.js,org/terraswarm/accessor/accessors/web/*.js,org/terraswarm/accessor/accessors/web/*/*.js,org/terraswarm/accessor/accessors/web/*/*/*.js"
 	      excludes="**/vendors/**/*.js,**/node_modules/**/*.js,**/node/**/*.js,**/node/*.js"
 	      />
 
