@@ -1,9 +1,36 @@
+// Below is the copyright agreement for the Ptolemy II system.
+//
+// Copyright (c) 2015 The Regents of the University of California.
+// All rights reserved.
+//
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+//
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+//
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+//
+// Ptolemy II includes the work of others, to see those copyrights, follow
+// the copyright link on the splash page or see copyright.htm.
 /**
  * Module supporting UDP sockets.
  * @module udpSocket
  * @authors: Hokeun Kim
- * @copyright: http://terraswarm.org/accessors/copyright.txt
  */
+/*globals Java, exports, require, util */
+"use strict";
 
 var UDPSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.udpSocket.UDPSocketHelper');
 var EventEmitter = require('events').EventEmitter;
@@ -30,16 +57,15 @@ var EventEmitter = require('events').EventEmitter;
  *   IP address or host name for the host and the port on which the host is listening.
  *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
  */
-
- 
 exports.Socket = function() {
     this.helper = UDPSocketHelper.createSocket(this);
-}
+};
+
 util.inherits(exports.Socket, EventEmitter);
 
 exports.createSocket = function() {
     return new exports.Socket();
-}
+};
 
 /** Send data over the web socket.
  *  The data can be anything that has a JSON representation.
@@ -52,11 +78,11 @@ exports.Socket.prototype.send = function(data) {
         data = JSON.stringify(data);
     }
     this.helper.sendText(data);
-}
+};
 
 exports.Socket.prototype.bind = function(port) {
     this.helper.bind(port);
-}
+};
 
 /** Close the current connection with the server.
  *  If there is data that was passed to send() but has not yet
@@ -65,7 +91,7 @@ exports.Socket.prototype.bind = function(port) {
  */
 exports.Socket.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to parse the message as JSON and then

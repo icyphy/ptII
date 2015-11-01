@@ -58,7 +58,8 @@ OTHER_FILES_TO_BE_JARED = \
 	INSTALL_JCERTI.txt \
 	INSTALL_VergilCERTI.txt \
 	README_HLAPtides.txt \
-	manual-ptii-hla.pdf
+	manual-ptii-hla.pdf \
+	manual-ptii-hla-r72244.pdf
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
