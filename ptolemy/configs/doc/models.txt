@@ -174,11 +174,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriter/GDPLogWriter.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/ReadFromVertxBus.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/WriteToVertxBus.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxDateServer/VertxDateServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
@@ -196,12 +191,6 @@ $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
-$CLASSPATH/ptolemy/actor/lib/vertx/demo/PubSub/Publisher.xml
-$CLASSPATH/ptolemy/actor/lib/vertx/demo/PubSub/PubSub.xml
-$CLASSPATH/ptolemy/actor/lib/vertx/demo/PubSub/Subscriber.xml
-$CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/Receiver.xml
-$CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/Sender.xml
-$CLASSPATH/ptolemy/actor/lib/vertx/demo/TokenTransmissionTime/TokenTransmissionTime.xml
 $CLASSPATH/ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc.xml
 $CLASSPATH/ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc.xml
 $CLASSPATH/ptolemy/actor/lib/video/demo/DCT8x8/DCT8x8.xml
@@ -554,10 +543,6 @@ $CLASSPATH/ptolemy/domains/ptides/demo/PtidesSynchrophasor/PtidesSynchrophasor.x
 $CLASSPATH/ptolemy/domains/ptides/demo/SRinPtides/SRinPtides.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/TREX/TREX.xml
 $CLASSPATH/ptolemy/domains/ptides/demo/TTE/TTE.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/Publisher.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/Publisher2.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/Subscriber.xml
-$CLASSPATH/ptolemy/domains/ptides/demo/VertxDemo/VertxDemo.xml
 $CLASSPATH/ptolemy/domains/ptinyos/demo/CntToLeds/CntToLeds.xml
 $CLASSPATH/ptolemy/domains/ptinyos/demo/CntToLedsAndRfm/CntToLedsAndRfm.xml
 $CLASSPATH/ptolemy/domains/ptinyos/demo/HelloWorld/HelloWorld.xml

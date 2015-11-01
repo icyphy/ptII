@@ -48,17 +48,24 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor */
+/*globals Java, actor, channel, error, java, requireAccessor */
+"use strict";
+
 
 ////////////////////
 // Set a prototype for the exports object with default functions.
 var exports = {};
 Object.setPrototypeOf(exports, {
-    fire: function() {},
-    initialize: function() {},
-    setup: function() {},
-    wrapup: function() {}
+    fire: function () {return undefined; },
+    initialize: function () {return undefined; },
+    setup: function () {return undefined; },
+    wrapup: function () {return undefined; }
 });
+
+/** Default empty function to use if the function argument to
+ *  addInputHandler is null.
+ */
+function nullHandlerFunction() {}
 
 /** Add a handler function to call when the specified input receives new data.
  *  If the name argument is null, or if there is no name argument and the first
@@ -77,33 +84,33 @@ Object.setPrototypeOf(exports, {
  *  @param arguments Additional arguments, if any, to pass to the callback function.
  */
 function addInputHandler(name, func) {
-    var argCount = 2;
+    var argCount = 2, callback, id, proxy = null, tail;
     if (name && typeof name !== 'string') {
         // Tolerate a single argument, a function.
-        if (typeof name === 'function' && arguments.length == 1) {
+        if (typeof name === 'function' && arguments.length === 1) {
             func = name;
             name = null;
             argCount = 1;
         } else {
-            throw('name argument is required to be a string. Got: ' + (typeof name));
+            throw ('name argument is required to be a string. Got: ' + (typeof name));
         }
     }
     if (!func) {
         func = nullHandlerFunction;
     } else if (typeof func !== 'function') {
-        throw('First argument of addInputHandler is required to be a function. Provided: ' + func);
+        throw ('First argument of addInputHandler is required to be a function. Provided: ' + func);
     }
-    var proxy = null;
+
     if (name) {
         proxy = actor.getPortOrParameterProxy(name);
     }
     if (!proxy && name) {
-        throw('No such input: ' + name);
+        throw ('No such input: ' + name);
     }
-    var callback;
+
     // If there are arguments to the callback, create a new function.
     // Get an array of arguments excluding the first two.
-    var tail = Array.prototype.slice.call(arguments, argCount);
+    tail = Array.prototype.slice.call(arguments, argCount);
     if (tail.length !== 0) {
         callback = function() {
             func.apply(exports, tail);
@@ -114,19 +121,14 @@ function addInputHandler(name, func) {
         };
     }
     if (proxy) {
-        var id = proxy.addInputHandler(callback);
+        id = proxy.addInputHandler(callback);
         return id;
     } else {
         // Add generic input handler.
-        var id = actor.addInputHandler(callback);
+        id = actor.addInputHandler(callback);
         return id;
     }
 }
-
-/** Default empty function to use if the function argument to
- *  addInputHandler is null.
- */
-function nullHandlerFunction() {}
 
 /** Specify that a derived accessor extends a specified base accessor.
  *  Call this in the setup() function of the derived accessor as:
@@ -165,15 +167,14 @@ function nullHandlerFunction() {}
  *  @param accessorName The name of the accessor to extend.
  *  @see #implement()
  */
-extend = function(exportsExtending) {
+var extend = function(exportsExtending) {
     return function(accessorName) {
         var exportsPrototype = requireAccessor(accessorName);
         // Make sure the prototype has default methods defined.
-        if (!exportsPrototype.fire
-                || !exportsPrototype.initialize
-                || !exportsPrototype.setup
-                || !exportsPrototype.wrapup
-        ) {
+        if (!exportsPrototype.fire ||
+                !exportsPrototype.initialize ||
+                !exportsPrototype.setup ||
+                !exportsPrototype.wrapup) {
             Object.setPrototypeOf(exportsPrototype, {
                 fire: function() {},
                 initialize: function() {},
@@ -206,11 +207,11 @@ extend = function(exportsExtending) {
  */
 function get(name, channel) {
     if (typeof name !== 'string') {
-        throw('name argument is required to be a string. Got: ' + (typeof name));
+        throw ('name argument is required to be a string. Got: ' + (typeof name));
     }
     var proxy = actor.getPortOrParameterProxy(name);
     if (!proxy) {
-        throw('No such input: ' + name);
+        throw ('No such input: ' + name);
     }
     // Give channel a default value of 0.
     channel = (typeof channel !== 'undefined') ? channel : 0;
@@ -224,15 +225,17 @@ function get(name, channel) {
  */
 function getParameter(name) {
     if (typeof name !== 'string') {
-        throw('name argument is required to be a string. Got: ' + (typeof name));
+        throw ('name argument is required to be a string. Got: ' + (typeof name));
     }
     var proxy = actor.getPortOrParameterProxy(name);
     if (!proxy) {
-        throw('No such parameter: ' + name);
+        throw ('No such parameter: ' + name);
     }
     // Give channel a default value of 0.
-    channel = (typeof channel !== 'undefined') ? channel : 0;
-    var result = proxy.get(channel);
+    //if (typeof channel === 'undefined') {
+    //    channel = 0;
+    //}
+    var result = proxy.get(0 /*channel*/);
     return convertFromToken(result, proxy.isJSON());
 }
 
@@ -258,7 +261,7 @@ function getParameter(name) {
 function implement(interfaceName) {
     var interfaceExports = requireAccessor(interfaceName);
     interfaceExports.setup();
-};
+}
 
 /** Specify an input for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
@@ -334,15 +337,14 @@ function removeInputHandler(handle) {
  */
 function send(name, value, channel) {
     if (typeof name !== 'string') {
-        throw('name argument is required to be a string. Got: ' + (typeof name));
+        throw ('name argument is required to be a string. Got: ' + (typeof name));
     }
-    var proxy = actor.getPortOrParameterProxy(name);
+    var proxy = actor.getPortOrParameterProxy(name), token;
     if (!proxy) {
         error('No such port: ' + name);
     } else {
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') ? channel : 0;
-        var token;
         if (proxy.isJSON()) {
             token = new StringToken(JSON.stringify(value));
         } else {
@@ -372,7 +374,7 @@ function set(parameter, value) {
  */
 function setDefault(input, value) {
     if (typeof input !== 'string') {
-        throw('input argument is required to be a string. Got: ' + (typeof input));
+        throw ('input argument is required to be a string. Got: ' + (typeof input));
     }
     var proxy = actor.getPortOrParameterProxy(input);
     if (!proxy) {
@@ -394,13 +396,12 @@ function setDefault(input, value) {
  */
 function setParameter(parameter, value) {
     if (typeof parameter !== 'string') {
-        throw('parameter argument is required to be a string. Got: ' + (typeof parameter));
+        throw ('parameter argument is required to be a string. Got: ' + (typeof parameter));
     }
-    var proxy = actor.getPortOrParameterProxy(parameter);
+    var proxy = actor.getPortOrParameterProxy(parameter), token;
     if (!proxy) {
         error('No such parameter: ' + parameter);
     } else {
-        var token;
         if (proxy.isJSON()) {
             token = new StringToken(JSON.stringify(value));
         } else {
@@ -417,26 +418,26 @@ function setParameter(parameter, value) {
 // Note that if the script simply defines a top-level fire() function instead
 // of exports.fire(), that function will overwrite this one and will still work
 // as expected.
-function fire() {exports.fire();}
+function fire() {exports.fire(); }
 
 /** Initialize function used by the Ptolemy II/Nashorn host to provide the host
  *  context as an argument to the initialize() function of the accessor.
  *  This should not be called directly or overridden by the accessor.
  *  FIXME: Above comment not yet implemented.
  */
-function initialize() {exports.initialize();}
+function initialize() {exports.initialize(); }
 
 // Default setup function, which invokes exports.setup().
 // Note that if the script simply defines a top-level setup() function instead
 // of exports.setup(), that function will overwrite this one and will still work
 // as expected.
-function setup() {exports.setup();}
+function setup() {exports.setup(); }
 
 // Default wrapup function, which invokes exports.wrapup().
 // Note that if the script simply defines a top-level wrapup() function instead
 // of exports.wrapup(), that function will overwrite this one and will still work
 // as expected.
-function wrapup() {exports.wrapup();}
+function wrapup() {exports.wrapup(); }
 
 //--------------------------- Exposed Java Types -----------------------------
 // FIXME: Attempting to debug ClassNotFoundException after loading 350 models.
@@ -449,7 +450,7 @@ try {
     }
     var javaClassPath = java.lang.System.getProperty("java.class.path");
     var userDir = java.lang.System.getProperty("user.dir");
-    throw new Error( "Error loading ptolemy.data.ArrayToken class" + message + " java.class.path property: " + javaClassPath + " user.dir property (current working directory): " + userDir);
+    throw new Error("Error loading ptolemy.data.ArrayToken class" + message + " java.class.path property: " + javaClassPath + " user.dir property (current working directory): " + userDir);
 }
 
 var ArrayToken = Java.type('ptolemy.data.ArrayToken');
@@ -467,6 +468,7 @@ var ObjectToken = Java.type('ptolemy.data.ObjectToken');
 var RecordToken = Java.type('ptolemy.data.RecordToken');
 var StringToken = Java.type('ptolemy.data.StringToken');
 var Token = Java.type('ptolemy.data.Token');
+var TokenArray = Java.type('ptolemy.data.Token[]');
 // Converter class for JSON.  Converts to a RecordToken or ArrayToken.
 var JSONToToken = Java.type('ptolemy.actor.lib.conversions.json.JSONToToken');
 
@@ -482,30 +484,36 @@ function convertFromToken(value, isJSON) {
     // If the value is not a Token, just return it.
     if (!(value instanceof Token)) {
         return value;
-    } else if (value instanceof DoubleToken) {
+    }
+    if (value instanceof DoubleToken) {
         return value.doubleValue();
-    } else if (value instanceof StringToken) {
+    }
+    if (value instanceof StringToken) {
         if (isJSON) {
             var json = value.stringValue();
-            if (json.trim() == '') {
+            if (json.trim() === '') {
                 // Empty string.
                 return null;
             }
             return JSON.parse(value.stringValue());
         }
         return value.stringValue();
-    } else if (value instanceof IntToken) {
+    }
+    if (value instanceof IntToken) {
         return value.intValue();
-    } else if (value instanceof BooleanToken) {
+    }
+    if (value instanceof BooleanToken) {
         return value.booleanValue();
-    } else if (value instanceof ArrayToken) {
-        var result = [];
-        for (var i = 0; i < value.length(); i++) {
+    }
+    if (value instanceof ArrayToken) {
+        var result = [], i;
+        for (i = 0; i < value.length(); i++) {
             result[i] = convertFromToken(value.getElement(i), false);
         }
         return result;
-    } else if (value instanceof RecordToken) {
-        var result = {};
+    }
+    if (value instanceof RecordToken) {
+        var resultRecord = {};
         //var labelSet = value.labelSet();
         // "for each" is a Nashorn extension for iterating over Java collections.
         // This is tested by ptolemy/actor/lib/jjs/test/auto/JavaScriptRecordToken.xml
@@ -513,15 +521,17 @@ function convertFromToken(value, isJSON) {
         //for each (label in value.labelSet()) {
         //    result[label] = convertFromToken(value.get(label), false);
         // So, we use an iterator instead:
-        var iterator = value.labelSet().iterator()
+        var iterator = value.labelSet().iterator();
         while (iterator.hasNext()) {
             var label = iterator.next();
-            result[label] = convertFromToken(value.get(label), false);
+            resultRecord[label] = convertFromToken(value.get(label), false);
         }
-        return result;
-    } else if (value instanceof DateToken) {
+        return resultRecord;
+    }
+    if (value instanceof DateToken) {
         return new Date(value.getValue());
-    } else if (value instanceof ActorToken) {
+    }
+    if (value instanceof ActorToken) {
         return value.getEntity();
     }
     // If all else fails, just return the token object.
@@ -547,68 +557,75 @@ function convertToToken(value) {
     }
     var type = typeof value;
     if (type === 'number') {
-        if ((value%1) === 0) {
-        	if (value >= -2147483648 && value <= 2147483647) {
-        		// Integer.
-        		return new IntToken(value);
-        	}
-        	return new LongToken(value);
+        if ((value % 1) === 0) {
+            if (value >= -2147483648 && value <= 2147483647) {
+                // Integer.
+                return new IntToken(value);
+            }
+            return new LongToken(value);
         }
         return new DoubleToken(value);
-    } else if (type === 'string') {
+    }
+    if (type === 'string') {
         return new StringToken(value);
-    } else if (type === 'boolean') {
+    }
+    if (type === 'boolean') {
         return new BooleanToken(value);
-    } else if (type === 'object') {
+    }
+    if (type === 'object') {
         if (Array.isArray(value)) {
             // Using Nashorn-specific extension here to create Java array.
-        	if (value.length < 1) {
-        		// FIXME:  Ptolemy requires a type to be specified for empty 
-        		// arrays.  Javascript does not, so there's no information as
-        		// to what the type should be.  Currently, use a string.
-        		return new ArrayToken(BaseType.STRING);
-        	}
-            var TokenArray = Java.type('ptolemy.data.Token[]');
+            if (value.length < 1) {
+                // FIXME:  Ptolemy requires a type to be specified for empty 
+                // arrays.  Javascript does not, so there's no information as
+                // to what the type should be.  Currently, use a string.
+                return new ArrayToken(BaseType.STRING);
+            }
             var result = new TokenArray(value.length);
-            for(var i = 0; i < value.length; i++) {
+            for (var i = 0; i < value.length; i++) {
                 result[i] = convertToToken(value[i]);
             }
             return new ArrayToken(result);
-        } else if (value === null) {
+        }
+        if (value === null) {
             // Is this the right thing to do?
             return Token.NIL;
-        } else if (value instanceof Date) {
+        }
+        if (value instanceof Date) {
             // NOTE: DateToken constructor takes a long, which JavaScript doesn't support.
             // But the following seems to work. Consequences?
             return new DateToken(value.getTime());
-        } else if (value instanceof Entity) {
-            return new ActorToken(value);
-        } else if (value instanceof Image) {
-            return new AWTImageToken(value);
-        } else {
-            // Create a RecordToken with the fields of the object.
-            // Using Nashorn-specific extension here to create Java array.
-            var TokenArray = Java.type('ptolemy.data.Token[]');
-            var StringArray = Java.type('java.lang.String[]');
-            var length = value.length;
-            // Sadly, I can't find any way to find out how many enumerable
-            // properties a JS object has. So we count them.
-            var count = 0;
-            for (field in value) {
-                count += 1;
-            }
-            // NOTE: If there are no properties, we will send an empty record.
-            var valueArray = new TokenArray(count);
-            var fieldNames = new StringArray(count);
-            var i = 0;
-            for (field in value) {
-                fieldNames[i] = field;
-                valueArray[i] = convertToToken(value[field]);
-                i++;
-            }
-            return new RecordToken(fieldNames, valueArray);
         }
-    } else if (type === 'undefined') {
+        if (value instanceof Entity) {
+            return new ActorToken(value);
+        }
+        if (value instanceof Image) {
+            return new AWTImageToken(value);
+        } 
+        // Create a RecordToken with the fields of the object.
+        // Using Nashorn-specific extension here to create Java array.
+        var StringArray = Java.type('java.lang.String[]');
+        var length = value.length;
+        // Sadly, I can't find any way to find out how many enumerable
+        // properties a JS object has. So we count them.
+        var count = 0;
+        var field2;
+        for (field2 in value) {
+            count += 1;
+        }
+        // NOTE: If there are no properties, we will send an empty record.
+        var valueArray = new TokenArray(count);
+        var fieldNames = new StringArray(count);
+        var j = 0;
+        var field;
+        for (field in value) {
+            fieldNames[j] = field;
+            valueArray[j] = convertToToken(value[field]);
+            j++;
+        }
+        return new RecordToken(fieldNames, valueArray);
+    }
+    if (type === 'undefined') {
         // Is this the right thing to do?
         return Token.NIL;
     }

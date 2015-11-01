@@ -17,6 +17,8 @@ grant {
   // MoMLApplication.specToURL()
   permission java.util.PropertyPermission "user.dir", "read";
 
+  permission java.lang.RuntimePermission "setDefaultUncaughtExceptionHandler"
+  
   // Uncomment the permissions below to get access to the serial port
   // Note that you will need to substitute in the location of your jvm.
 	

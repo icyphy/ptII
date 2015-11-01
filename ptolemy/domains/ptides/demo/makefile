@@ -45,8 +45,7 @@ DIRS =	ActuatorPattern \
 		PtidesSynchrophasor \
 		SRinPtides \
 		TREX \
-		TTE \
-		VertxDemo
+		TTE
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -76,8 +75,7 @@ PTCLASSALLJARS = \
 		PtidesSynchrophasor/PtidesSynchrophasor.jar \
 		SRinPtides/SRinPtides.jar \
 		TREX/TREX.jar \
-		TTE/TTE.jar \
-		VertxDemo/VertxDemo.jar
+		TTE/TTE.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
