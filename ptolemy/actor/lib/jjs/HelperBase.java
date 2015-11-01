@@ -51,16 +51,23 @@ import ptolemy.kernel.util.InternalErrorException;
 public class HelperBase {
 
     /** Construct a helper for the specified JavaScript object.
-     *  @param currentObj The JavaScript object that this is helping.
+     *  The argument can be a JavaScript actor or an instance of a
+     *  JavaScript class.
+     *  @param helping The object that this is helping.
      */
-    public HelperBase(ScriptObjectMirror currentObj) {
-        _currentObj = currentObj;
-
-        Object actorOrWrapper = _currentObj.eval("actor");
-        if (actorOrWrapper instanceof ScriptObjectMirror) {
-            actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper,
-                    ScriptContext.ENGINE_SCOPE);
-        }
+    public HelperBase(Object helping) {
+    	Object actorOrWrapper = helping;
+    	if (helping instanceof ScriptObjectMirror) {
+    		// Helping a JavaScript object.
+            _currentObj = (ScriptObjectMirror) helping;
+            
+            // Find the actor associated with the object.
+            actorOrWrapper = _currentObj.eval("actor");
+            if (actorOrWrapper instanceof ScriptObjectMirror) {
+                actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper,
+                        ScriptContext.ENGINE_SCOPE);
+            }
+    	}
         if (actorOrWrapper instanceof RestrictedJavaScriptInterface) {
             _actor = ((RestrictedJavaScriptInterface) actorOrWrapper)
                     ._getActor();
@@ -69,6 +76,25 @@ public class HelperBase {
         } else {
             throw new InternalErrorException("Invalid actor object: "
                     + actorOrWrapper.toString());
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Handle an error by emitting an error event, or if there is no
+     *  error event handler registered, by invoking the error() method
+     *  of the associated actor. Note that this may not stop execution.
+     *  @param message The error message.
+     */
+    protected void _error(String message) {
+        try {
+            _currentObj.callMember("emit", "error", message);
+            // NOTE: The error handler may not stop execution.
+        } catch (Throwable ex) {
+            // There may be no error event handler registered.
+            // Use the actor to report the error.
+            _actor.error(message);
         }
     }
 

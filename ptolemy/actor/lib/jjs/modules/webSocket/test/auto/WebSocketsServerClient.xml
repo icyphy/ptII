@@ -51,20 +51,14 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="started" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
@@ -93,37 +87,46 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Server started listening...&quot;, &quot;A client is connected to the server.&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 1&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 2&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 3&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 4&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 5&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 6&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 7&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 8&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 9&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 10&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Server started listening...&quot;, &quot;A client is connected to the server.&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 1&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 2&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 3&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 4&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 5&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 6&quot;, &quot;Server received a message: Hi, I'm a web socket client! Count: 7&quot;}">
         </property>
-        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{237.68073219476742, -71.18353924418608}">
         </property>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={768, 128, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{175, -115}">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{90.0, -40.0}">
+        </vertex>
     </relation>
-    <link port="WSServer.output" relation="relation4"/>
+    <link port="WSServer.output" relation="relation"/>
     <link port="WSServer.started" relation="relation3"/>
     <link port="DiscreteClock.output" relation="relation2"/>
     <link port="DiscreteClock.start" relation="relation3"/>
     <link port="WSClient.trigger" relation="relation2"/>
-    <link port="Test.input" relation="relation4"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Display.input" relation="relation"/>
 </entity>

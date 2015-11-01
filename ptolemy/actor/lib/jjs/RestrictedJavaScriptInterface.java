@@ -219,7 +219,7 @@ public class RestrictedJavaScriptInterface {
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void output(String name, Map<String, String> options)
+    public void output(String name, Map<String, Object> options)
             throws IllegalActionException, NameDuplicationException {
         _actor.output(name, options);
     }

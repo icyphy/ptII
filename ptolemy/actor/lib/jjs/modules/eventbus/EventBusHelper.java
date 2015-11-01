@@ -30,36 +30,34 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.eventbus;
 
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.spi.VertxFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.VertxFactory;
-import org.vertx.java.core.eventbus.EventBus;
-import org.vertx.java.core.eventbus.Message;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// EventBusHelper
 
 /** A helper class for the Vert.x event bus API. An instance of this
- *  class is associated with a JavaScript object that can publish or subscribe
- *  to events on the event bus event.  The associated JavaScript object is
+ *  class is associated with a VertxBus JavaScript object, defined
+ *  in the eventbus module, that can publish or subscribe
+ *  to events on the event bus event.  The VertxBus object is
  *  passed in as a constructor argument and is expected to implement the
  *  event emitter pattern, for example by inheriting from EventEmitter
  *  class of the events module using util.inherits().
- *
- *  <p>For information about the Vert.x event bus, see
+ *  <p>
+ *  For information about the Vert.x event bus, see
  *  <a href="http://vertx.io/core_manual_java.html#the-event-bus">http://vertx.io/core_manual_java.html#the-event-bus</a>.</p>
- *
- *  <p>This class follows the instructions for "Embedding Vert.x core"
- *  at <a href="http://vertx.io/embedding_manual.html">http://vertx.io/embedding_manual.html</a>.
- *  It states there that "Please note this feature is intended for power users only,"
- *  but we will not be using Vert.x to run verticles or modules, so this seems
- *  appropriate. We are using it only for the event bus and networking
- *  infrastructure.</p>
  *
  *  @author Patricia Derler and Edward A. Lee
  *  @version $Id$
@@ -67,38 +65,44 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  *  @Pt.ProposedRating Yellow (pd)
  *  @Pt.AcceptedRating Red (pd)
  */
-public class EventBusHelper {
+public class EventBusHelper extends VertxHelperBase {
 
-    /** Create a EventBusHelper for the specified publish or subscribe
-     *  client for the event bus using the specified port and hostname
-     *  for cluster connections.
-     *
-     *  <p>If the clusterHostname is null, then this will use an
+    /** Create an EventBusHelper for the specified actor and
+     *  VertxBus JavaScript object for the event bus at the
+     *  specified network interface (port and hostname).
+     *  <p>
+     *  If the clusterHostname is null, then this will use an
      *  unclustered instance of Vertx whose event bus will not
      *  communicate with any other instances of Vertx.  The
      *  clusterHostname is something like "localhost" or "10.0.0.4",
      *  and it specifies a local network device over which to listen
      *  for cluster connections (e.g. WiFi or Ethernet).</p>
-     *
-     *  <p>The clusterPort is the tcp/ip port to which to listem for
+     *  <p>
+     *  The clusterPort is the tcp/ip port to which to listen for
      *  cluster connections.  The default for clusterPort for Vertx is
      *  25500.  If clusterHostname is null, then the default
-     *  clusterPort value is used.</p>
+     *  clusterPort value is used.
      *
-     *  @param jsObject The JavaScript object that will subscribe to
-     *  the event bus.
+     *  @param actor The actor that will publish or subscribe to the
+     *   event bus.
+     *  @param vertxBusJS The VertxBus JavaScript object that will
+     *   publish and subscribe to the event bus.
      *  @param clusterPort The port over which to listen for cluster
-     *  connections.
+     *   connections.
      *  @param clusterHostname The host interface over which to listen
      *   for cluster connections, or null to create an unclustered
      *   EventBusHelper.
      */
-    public EventBusHelper(ScriptObjectMirror jsObject, int clusterPort,
+    public EventBusHelper(
+    		Object actor,
+    		ScriptObjectMirror vertxBusJS,
+    		int clusterPort,
             String clusterHostname) {
-        _currentObj = jsObject;
+    	super(actor);
+        _vertxBusJS = vertxBusJS;
         if (clusterHostname == null) {
             if (_unclusteredVertxInstance == null) {
-                _unclusteredVertxInstance = VertxFactory.newVertx();
+                _unclusteredVertxInstance = Vertx.vertx();
             }
             _vertx = _unclusteredVertxInstance;
         } else {
@@ -164,10 +168,10 @@ public class EventBusHelper {
      */
     public void send(String address, String message, final Object replyHandler) {
         EventBus bus = _vertx.eventBus();
-        Handler<Message> newHandler = new Handler<Message>() {
-            public void handle(Message message) {
-                _currentObj.callMember("notifyReply", replyHandler,
-                        message.body());
+        Handler<AsyncResult<Message<String>>> newHandler = new Handler<AsyncResult<Message<String>>>() {
+            public void handle(AsyncResult<Message<String>> event) {
+                _vertxBusJS.callMember("notifyReply", replyHandler,
+                        event.result().body());
             }
         };
         bus.send(address, message, newHandler);
@@ -195,22 +199,22 @@ public class EventBusHelper {
      */
     public void subscribe(final String address) {
         if (_subscriptions == null) {
-            _subscriptions = new HashMap<String, Handler>();
+            _subscriptions = new HashMap<String, MessageConsumer<String>>();
         }
         if (_subscriptions.get(address) != null) {
             return;
         }
-        Handler<Message> newHandler = new Handler<Message>() {
-            public void handle(Message message) {
-                _currentObj.callMember("notify", address, message.body());
+        Handler<Message<String>> newHandler = new Handler<Message<String>>() {
+            public void handle(Message<String> message) {
+                _vertxBusJS.callMember("notify", address, message.body());
                 if (_reply != null) {
                     message.reply(_reply);
                 }
             }
         };
-        _subscriptions.put(address, newHandler);
         EventBus bus = _vertx.eventBus();
-        bus.registerHandler(address, newHandler);
+        MessageConsumer<String> messageConsumer = bus.consumer(address, newHandler);
+        _subscriptions.put(address, messageConsumer);
     }
 
     /** Unsubscribe the associated JavaScript object as a subscriber to the
@@ -221,18 +225,17 @@ public class EventBusHelper {
      */
     public void unsubscribe(final String address) {
         if (_subscriptions != null) {
-            EventBus bus = _vertx.eventBus();
             if (address == null) {
                 for (String toUnsubscribe : _subscriptions.keySet()) {
-                    Handler<Message> previousHandler = _subscriptions
+                    MessageConsumer<String> messageConsumer = _subscriptions
                             .get(toUnsubscribe);
-                    bus.unregisterHandler(toUnsubscribe, previousHandler);
+                    messageConsumer.unregister();
                 }
                 _subscriptions.clear();
             } else {
-                Handler<Message> previousHandler = _subscriptions.get(address);
-                if (previousHandler != null) {
-                    bus.unregisterHandler(address, previousHandler);
+                MessageConsumer<String> messageConsumer = _subscriptions.get(address);
+                if (messageConsumer != null) {
+                    messageConsumer.unregister();
                     _subscriptions.remove(address);
                 }
             }
@@ -247,7 +250,10 @@ public class EventBusHelper {
      *  @param clusterHostname The network interface to use for the cluster.
      */
     private void _createVertx(int clusterPort, String clusterHostname) {
-        _vertx = VertxFactory.newVertx(clusterPort, clusterHostname);
+        VertxOptions vertxOptions = new VertxOptions();
+        vertxOptions.setClusterPort(clusterPort);
+        vertxOptions.setClusterHost(clusterHostname);
+        _vertx = Vertx.vertx(vertxOptions);
 
         /** FIXME: Some example code includes the following, but I can't find VertxOptions:
         VertxOptions options = new VertxOptions();
@@ -267,15 +273,15 @@ public class EventBusHelper {
     ////                     private fields                        ////
 
     /** The current instance of the JavaScript module. */
-    private ScriptObjectMirror _currentObj;
+    private ScriptObjectMirror _vertxBusJS;
 
     /** The reply to send in response to received messages, or null to send no reply. */
     private String _reply = null;
 
     /** Map from addresses to which the associated JavaScript object is
-     *  subscribed to the handler function.
+     *  subscribed to the MessageConsumer associated with the handler.
      */
-    private Map<String, Handler> _subscriptions;
+    private Map<String, MessageConsumer<String>> _subscriptions;
 
     /** An unclustered Vertx instance, if it has been created. */
     private static Vertx _unclusteredVertxInstance;

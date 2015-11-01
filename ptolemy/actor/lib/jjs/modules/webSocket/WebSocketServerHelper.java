@@ -30,13 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
-import org.vertx.java.core.AsyncResult;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.http.HttpServer;
-import org.vertx.java.core.http.ServerWebSocket;
-
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.ServerWebSocket;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketServerHelper
@@ -62,12 +62,15 @@ public class WebSocketServerHelper extends VertxHelperBase {
     /** Close the web socket server.
      */
     public void closeServer() {
-        synchronized (_actor) {
-            if (_server != null) {
-                _server.close();
-                _server = null;
-            }
-        }
+    	// Ask the verticle to perform the close.
+    	submit(new Runnable() {
+    		public void run() {
+                if (_server != null) {
+                    _server.close();
+                    _server = null;
+                }
+    		}
+    	});
     }
 
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
@@ -94,39 +97,31 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  socket as an argument.
      */
     public void startServer() {
-        synchronized (_actor) {
-            // Note that the following call apparently starts the new server
-            // in separate thread. It should not be done in the constructor
-            // because the script that starts the server needs to register
-            // callbacks before the server starts. Otherwise, there will be
-            // a race condition where the callback could be called before
-            // the server has started.
-            _server = _vertx.createHttpServer();
-            // Note that this sets the maximum frame size for _received_
-            // messages, not for transmitted ones.
-            _server.setMaxWebSocketFrameSize(_maxFrameSize);
-
-            _server.websocketHandler(new Handler<ServerWebSocket>() {
-                @Override
-                public void handle(ServerWebSocket serverWebSocket) {
-                    synchronized (_actor) {
-                        // Notify of a new connection.
-                        // This will have the side effect of creating a new JS Socket
-                        // object, which is an event emitter.
-                        _currentObj.callMember("socketCreated", serverWebSocket);
-                    }
-                }
-            });
-            _server.listen(_port, _hostInterface,
-                    new Handler<AsyncResult<HttpServer>>() {
-                        @Override
-                        public void handle(AsyncResult<HttpServer> arg0) {
-                            synchronized (_actor) {
-                                _currentObj.callMember("emit", "listening");
-                            }
-                        }
-                    });
-        }
+    	// Ask the verticle to start the server.
+    	submit(new Runnable() {
+    		public void run() {
+    			_server = _vertx.createHttpServer(new HttpServerOptions()
+    					.setMaxWebsocketFrameSize(_maxFrameSize));
+    			_server.websocketHandler(new Handler<ServerWebSocket>() {
+    				@Override
+    				public void handle(ServerWebSocket serverWebSocket) {
+    					// NOTE: The following doesn't actually do anything, apparently.
+    					serverWebSocket.setWriteQueueMaxSize(_maxFrameSize);
+    					// Notify of a new connection.
+    					// This will have the side effect of creating a new JS Socket
+    					// object, which is an event emitter.
+    					_currentObj.callMember("socketCreated", serverWebSocket);
+    				}
+    			});
+    			_server.listen(_port, _hostInterface,
+    					new Handler<AsyncResult<HttpServer>>() {
+    				@Override
+    				public void handle(AsyncResult<HttpServer> arg0) {
+    					_currentObj.callMember("emit", "listening");
+    				}
+    			});
+    		}
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,14 +140,14 @@ public class WebSocketServerHelper extends VertxHelperBase {
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
             String hostInterface, int port, String receiveType, String sendType,
             int maxFrameSize) {
+    	// FIXME: Really should have only one of these per actor,
+    	// and the argument below should be the actor.
         super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
             _hostInterface = "localhost";
         }
         _port = port;
-        _receiveType = receiveType;
-        _sendType = sendType;
         _maxFrameSize = maxFrameSize;
     }
 
@@ -167,12 +162,6 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** The port on which the server listens. */
     private int _port;
-
-    /** The MIME type to assume for received messages. */
-    private String _receiveType;
-    
-    /** The MIME type to assume for sent messages. */
-    private String _sendType;
 
     /** The internal http server created by Vert.x */
     private HttpServer _server = null;

@@ -31,16 +31,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jjs.modules.udpSocket;
 
-import org.vertx.java.core.AsyncResult;
-import org.vertx.java.core.AsyncResultHandler;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.datagram.DatagramPacket;
-import org.vertx.java.core.datagram.DatagramSocket;
-import org.vertx.java.core.datagram.InternetProtocolFamily;
-
+import io.vertx.core.AsyncResult;
+import io.vertx.core.AsyncResultHandler;
+import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.datagram.DatagramPacket;
+import io.vertx.core.datagram.DatagramSocket;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 ////UDPSocketHelper
@@ -61,28 +59,27 @@ public class UDPSocketHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Connect the UDP socket with a given port number.
+    /** Close the UDP socket with a given port number.
      *  @param port The port number.
      */
     public void bind(int port) {
-        _socket.listen("0.0.0.0", port,
+        _socket.listen(port, "0.0.0.0",
                 new AsyncResultHandler<DatagramSocket>() {
-            public void handle(AsyncResult<DatagramSocket> asyncResult) {
-                if (asyncResult.succeeded()) {
-                    _socket.dataHandler(new Handler<DatagramPacket>() {
-                        public void handle(DatagramPacket packet) {
-                            // Do something with the packet
-                            _currentObj.callMember("notifyIncoming",
-                                    packet.data().toString());
+                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
+                        if (asyncResult.succeeded()) {
+                            _socket.handler(new Handler<DatagramPacket>() {
+                                public void handle(DatagramPacket packet) {
+                                    // Do something with the packet
+                                    _currentObj.callMember("notifyIncoming",
+                                            packet.data().toString());
+                                }
+                            });
+                        } else {
+                            System.out.println("Listen failed"
+                                    + asyncResult.cause());
                         }
-                    });
-                } else {
-                    System.out.println("Listen failed"
-                            + asyncResult.cause());
-                }
-            }
-        });
-        _port = port;
+                    }
+                });
     }
 
     /** Close the UDP socket.
@@ -109,23 +106,10 @@ public class UDPSocketHelper extends VertxHelperBase {
     public void send(byte[] data, int offset, int length, int port,
             String hostname) {
         // FIXME: Why are we not using data here?
-        Buffer buffer = new Buffer("content");
+        Buffer buffer = Buffer.buffer("content");
         // Send a Buffer
-        _socket.send(buffer, "10.0.0.1", 1234,
-                new AsyncResultHandler<DatagramSocket>() {
-                    public void handle(AsyncResult<DatagramSocket> asyncResult) {
-                        System.out.println("Send succeeded? "
-                                + asyncResult.succeeded());
-                    }
-                });
-    }
-
-    /** Send a UDP message as text.
-     *  @param message A string to be sent.
-     */
-    public void sendText(String message) {
-        _socket.send(message, "10.0.0.1", _port,
-                new AsyncResultHandler<DatagramSocket>() {
+        _socket.send(buffer, 1234, "10.0.0.1",
+                new Handler<AsyncResult<DatagramSocket>>() {
                     public void handle(AsyncResult<DatagramSocket> asyncResult) {
                         System.out.println("Send succeeded? "
                                 + asyncResult.succeeded());
@@ -140,15 +124,12 @@ public class UDPSocketHelper extends VertxHelperBase {
         // "UDPSocketHelper.java:110: error: constructor VertxHelperBase in class VertxHelperBase cannot be applied to given types;"
         super(currentObj);
         _currentObj = currentObj;
-        _socket = _vertx.createDatagramSocket(InternetProtocolFamily.IPv4);
+        _socket = _vertx.createDatagramSocket();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
-    /** The port that this socket is bound to. */
-    private int _port;
-    
     /** The current instance of the Vert.x UDP socket. */
     private DatagramSocket _socket;
 
