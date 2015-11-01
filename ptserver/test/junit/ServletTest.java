@@ -39,8 +39,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.caucho.hessian.client.HessianProxyFactory;
-
 import ptolemy.actor.Manager;
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PtolemyInjector;
@@ -53,6 +51,8 @@ import ptserver.control.SimulationTask;
 import ptserver.control.Ticket;
 import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
+
+import com.caucho.hessian.client.HessianProxyFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// ServletTest

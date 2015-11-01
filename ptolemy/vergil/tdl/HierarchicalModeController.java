@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
-import diva.graph.GraphController;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.modal.kernel.State;
@@ -51,6 +50,7 @@ import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.modal.modal.HierarchicalStateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// HierarchicalModeController

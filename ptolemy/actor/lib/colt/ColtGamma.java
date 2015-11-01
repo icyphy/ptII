@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.colt;
 
-import cern.jet.random.Gamma;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -36,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import cern.jet.random.Gamma;
 
 ///////////////////////////////////////////////////////////////////
 //// Gamma

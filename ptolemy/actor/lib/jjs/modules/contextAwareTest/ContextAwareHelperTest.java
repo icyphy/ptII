@@ -28,35 +28,19 @@
 
 package ptolemy.actor.lib.jjs.modules.contextAwareTest;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.EditorPaneFactory;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-
-import javax.script.Invocable;
-import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.xml.transform.TransformerConfigurationException;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
-import org.terraswarm.accessor.JSAccessor;
 
 import ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareGUI;
 

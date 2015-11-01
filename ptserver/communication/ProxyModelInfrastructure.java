@@ -41,10 +41,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttClient;
-import com.ibm.mqtt.MqttException;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
@@ -69,6 +65,10 @@ import ptserver.util.ProxyModelBuilder;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
 import ptserver.util.TypeParser;
+
+import com.ibm.mqtt.IMqttClient;
+import com.ibm.mqtt.MqttClient;
+import com.ibm.mqtt.MqttException;
 
 ///////////////////////////////////////////////////////////////////
 //// ProxyModel

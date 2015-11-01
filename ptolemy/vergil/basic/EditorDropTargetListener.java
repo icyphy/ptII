@@ -40,12 +40,6 @@ import java.util.Iterator;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
-import diva.canvas.Figure;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.util.UserObjectContainer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.DropTargetHandler;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,6 +53,12 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.Figure;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.util.UserObjectContainer;
 
 /**
  * A drop target listener that provides drag and drop for the Ptolemy editor.

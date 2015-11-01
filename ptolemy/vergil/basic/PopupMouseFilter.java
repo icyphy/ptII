@@ -29,8 +29,8 @@ package ptolemy.vergil.basic;
 
 import java.awt.event.MouseEvent;
 
-import diva.canvas.event.ExtendedMouseFilter;
 import ptolemy.gui.PtGUIUtilities;
+import diva.canvas.event.ExtendedMouseFilter;
 
 //////////////////////////////////////////////////////////////////////////
 //// PopupMouseFilter

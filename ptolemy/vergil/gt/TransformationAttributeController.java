@@ -34,7 +34,6 @@ import java.awt.event.WindowListener;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import diva.graph.GraphController;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gt.GTTools;
@@ -57,6 +56,7 @@ import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.ptera.PteraGraphFrame;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.graph.GraphController;
 
 /**
 

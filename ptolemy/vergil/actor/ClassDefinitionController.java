@@ -38,12 +38,6 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.graph.GraphController;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NamedObj;
@@ -52,6 +46,12 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.OffsetMoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ClassDefinitionController

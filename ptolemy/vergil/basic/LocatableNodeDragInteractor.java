@@ -32,12 +32,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import diva.canvas.Figure;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphPane;
-import diva.graph.NodeDragInteractor;
-import diva.util.UserObjectContainer;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,6 +42,12 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.Figure;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphPane;
+import diva.graph.NodeDragInteractor;
+import diva.util.UserObjectContainer;
 
 ///////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor

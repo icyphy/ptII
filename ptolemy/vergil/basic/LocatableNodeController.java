@@ -32,6 +32,13 @@ import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -41,13 +48,6 @@ import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeInteractor;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// LocatableNodeController

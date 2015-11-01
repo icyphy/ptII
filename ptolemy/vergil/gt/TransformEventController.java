@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.gt;
 
-import diva.graph.GraphController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -35,6 +34,7 @@ import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransformEventController

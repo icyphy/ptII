@@ -30,7 +30,6 @@ import java.util.Hashtable;
 
 import javax.swing.SwingUtilities;
 
-import diva.canvas.Figure;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Executable;
 import ptolemy.actor.FiringEvent;
@@ -43,6 +42,7 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
+import diva.canvas.Figure;
 
 ///////////////////////////////////////////////////////////////////
 //// DebugController

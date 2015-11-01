@@ -39,7 +39,6 @@ import javax.swing.JComboBox;
 import org.json.JSONArray;
 import org.terraswarm.accessor.JSAccessor;
 
-import diva.graph.GraphController;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
@@ -50,6 +49,7 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// ImportAccessorAction

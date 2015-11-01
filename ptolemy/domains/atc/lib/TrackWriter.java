@@ -32,6 +32,7 @@ import java.io.PrintWriter;
 import java.util.Set;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.lib.io.ExpressionWriter;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;

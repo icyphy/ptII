@@ -29,8 +29,8 @@ package ptolemy.domains.atc.kernel.policy1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import ptolemy.actor.Receiver;

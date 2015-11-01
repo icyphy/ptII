@@ -31,8 +31,8 @@ package ptolemy.caltrop.util;
 
 import java.util.AbstractList;
 
-import caltrop.interpreter.Context;
 import ptolemy.data.IntToken;
+import caltrop.interpreter.Context;
 
 ///////////////////////////////////////////////////////////////////
 //// IntegerList

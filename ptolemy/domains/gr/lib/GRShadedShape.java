@@ -39,8 +39,6 @@ import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TransparencyAttributes;
 import javax.vecmath.Color3f;
 
-import com.sun.j3d.utils.image.TextureLoader;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
@@ -57,6 +55,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 ///////////////////////////////////////////////////////////////////
 //// GRShadedShape

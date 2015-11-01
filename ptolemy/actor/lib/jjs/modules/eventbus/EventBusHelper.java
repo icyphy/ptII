@@ -37,7 +37,6 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.spi.VertxFactory;
 
 import java.util.HashMap;
 import java.util.Map;
