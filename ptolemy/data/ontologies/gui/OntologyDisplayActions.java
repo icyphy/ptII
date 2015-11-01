@@ -29,7 +29,6 @@ package ptolemy.data.ontologies.gui;
 
 import java.awt.event.ActionEvent;
 
-import diva.graph.GraphController;
 import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -40,6 +39,7 @@ import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologyDisplayActions

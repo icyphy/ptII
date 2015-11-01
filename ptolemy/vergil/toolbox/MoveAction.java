@@ -37,7 +37,6 @@ import java.util.ListIterator;
 
 import javax.swing.KeyStroke;
 
-import diva.gui.GUIUtilities;
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -45,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// MoveAction

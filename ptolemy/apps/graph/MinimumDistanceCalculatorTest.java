@@ -2,10 +2,11 @@ package ptolemy.apps.graph;
 
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.Assert;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;

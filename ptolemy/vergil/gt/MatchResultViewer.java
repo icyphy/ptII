@@ -49,18 +49,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.Site;
-import diva.canvas.connector.AbstractConnector;
-import diva.canvas.connector.Connector;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.RoundedRectangle;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.gui.GUIUtilities;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.GraphTransformer;
@@ -96,6 +84,18 @@ import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.modal.TransitionController;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AbstractConnector;
+import diva.canvas.connector.Connector;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.RoundedRectangle;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.gui.GUIUtilities;
 
 @SuppressWarnings("serial")
 public class MatchResultViewer extends GTFrame {

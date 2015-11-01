@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import diva.canvas.connector.ManhattanConnector;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.data.ArrayToken;
@@ -66,6 +65,7 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Vertex;
 import ptolemy.util.StringUtilities;
+import diva.canvas.connector.ManhattanConnector;
 
 ///////////////////////////////////////////////////////////////////
 ////                      LayoutHint

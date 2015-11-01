@@ -55,8 +55,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
-import com.microstar.xml.XmlException;
-
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.actor.parameters.FilePortParameter;
@@ -91,6 +89,8 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
+import com.microstar.xml.XmlException;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyQuery

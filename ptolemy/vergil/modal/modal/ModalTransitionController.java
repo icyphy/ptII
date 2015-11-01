@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import diva.graph.GraphController;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
@@ -58,6 +57,7 @@ import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.TransitionController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// ModalTransitionController

@@ -53,7 +53,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 
-import diva.gui.GUIUtilities;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -77,6 +76,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// SimpleSearchFrame

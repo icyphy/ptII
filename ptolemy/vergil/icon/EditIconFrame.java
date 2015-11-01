@@ -32,10 +32,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.net.URL;
 
-import diva.canvas.FigureLayer;
-import diva.canvas.JCanvas;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.graph.GraphPane;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
@@ -46,6 +42,10 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.canvas.FigureLayer;
+import diva.canvas.JCanvas;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.graph.GraphPane;
 
 ///////////////////////////////////////////////////////////////////
 //// EditIconFrame

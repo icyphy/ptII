@@ -34,10 +34,10 @@ import java.util.concurrent.TimeUnit;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token; 
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;

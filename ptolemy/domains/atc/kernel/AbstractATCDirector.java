@@ -27,19 +27,11 @@
  */
 package ptolemy.domains.atc.kernel;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.TreeMap;
 
-import ptolemy.actor.Receiver;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.atc.kernel.ATCReceiver;
 import ptolemy.domains.atc.lib.Airport;
 import ptolemy.domains.atc.lib.DestinationAirport;
 import ptolemy.domains.atc.lib.Track;

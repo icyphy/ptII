@@ -29,7 +29,6 @@ package ptolemy.domains.gr.lib;
 
 import java.awt.geom.AffineTransform;
 
-import diva.canvas.Figure;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -37,6 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import diva.canvas.Figure;
 
 ///////////////////////////////////////////////////////////////////
 //// Scale2D

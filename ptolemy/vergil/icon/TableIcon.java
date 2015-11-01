@@ -35,10 +35,6 @@ import java.util.Random;
 
 import javax.swing.SwingConstants;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.LabelFigure;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
@@ -54,6 +50,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// TableIcon

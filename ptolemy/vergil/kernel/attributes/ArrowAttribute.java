@@ -30,7 +30,6 @@ package ptolemy.vergil.kernel.attributes;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
-import diva.util.java2d.Polygon2D;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -39,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import diva.util.java2d.Polygon2D;
 
 ///////////////////////////////////////////////////////////////////
 //// ArrowAttribute

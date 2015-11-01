@@ -33,10 +33,6 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicEllipse;
-import diva.canvas.toolbox.LabelFigure;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -47,6 +43,10 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicEllipse;
+import diva.canvas.toolbox.LabelFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// ValueIcon

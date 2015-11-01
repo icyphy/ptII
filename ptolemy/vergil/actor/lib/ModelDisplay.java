@@ -32,8 +32,6 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.util.List;
 
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.AbstractPlaceableActor;
 import ptolemy.actor.gui.Configuration;
@@ -59,6 +57,8 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
 
 ///////////////////////////////////////////////////////////////////
 //// ModelDisplay

@@ -42,8 +42,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
-import diva.graph.GraphPane;
-import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.modal.kernel.fmv.FmvAutomaton;
 import ptolemy.gui.ComponentDialog;
@@ -58,6 +56,8 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
 import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
+import diva.graph.GraphPane;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// FmvAutomatonGraphFrame

@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.icon;
 
-import diva.canvas.Figure;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.ConstraintMonitor;
@@ -36,6 +35,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import diva.canvas.Figure;
 
 ///////////////////////////////////////////////////////////////////
 //// ConstraintMonitorIcon

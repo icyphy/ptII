@@ -42,13 +42,6 @@ import java.util.LinkedList;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import diva.gui.GUIUtilities;
 import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.PtFileChooser;
@@ -56,6 +49,14 @@ import ptolemy.gui.PtGUIUtilities;
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportPDFAction

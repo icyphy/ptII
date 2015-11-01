@@ -27,6 +27,10 @@
 
 package ptolemy.vergil.basic.imprt.g4ltl;
 
+import g4ltl.SolverUtility;
+import g4ltl.Version;
+import g4ltl.utility.ResultLTLSynthesis;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -37,16 +41,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import diva.gui.GUIUtilities;
-import g4ltl.SolverUtility;
-import g4ltl.Version;
-import g4ltl.utility.ResultLTLSynthesis;
 import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.PtFileChooser;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ImportG4LTLAction

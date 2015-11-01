@@ -30,9 +30,6 @@ package org.ptolemy.machineLearning.particleFilter;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.cureos.numerics.Calcfc;
-import com.cureos.numerics.Cobyla;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
@@ -54,6 +51,9 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
+
+import com.cureos.numerics.Calcfc;
+import com.cureos.numerics.Cobyla;
 
 /**
 Black-box optimizer that uses JCobyla as the solver

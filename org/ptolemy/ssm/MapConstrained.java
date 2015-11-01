@@ -27,7 +27,6 @@
 package org.ptolemy.ssm;
 
 import ptolemy.actor.Actor;
-import ptolemy.kernel.util.IllegalActionException;
 
 public interface MapConstrained extends Actor {
     public boolean satisfiesMapConstraints(double[] coordinates);

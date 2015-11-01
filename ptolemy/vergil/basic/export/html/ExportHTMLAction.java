@@ -53,9 +53,6 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
-import diva.canvas.Figure;
-import diva.canvas.JCanvas;
-import diva.graph.GraphController;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedActor;
@@ -94,6 +91,9 @@ import ptolemy.vergil.basic.export.web.WebElement;
 import ptolemy.vergil.basic.export.web.WebExportParameters;
 import ptolemy.vergil.basic.export.web.WebExportable;
 import ptolemy.vergil.basic.export.web.WebExporter;
+import diva.canvas.Figure;
+import diva.canvas.JCanvas;
+import diva.graph.GraphController;
 
 /** An Action that works with BasicGraphFrame to export HTML.
  *  Given a directory, this action creates an image of the

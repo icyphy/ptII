@@ -27,12 +27,13 @@
 
 package ptolemy.vergil.basic.imprt.g4ltl;
 
-import java.io.File;
-import java.util.Iterator;
-
 import g4ltl.SolverUtility;
 import g4ltl.utility.ResultLTLSynthesis;
 import g4ltl.utility.SynthesisEngine;
+
+import java.io.File;
+import java.util.Iterator;
+
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;

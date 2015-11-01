@@ -55,8 +55,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
+import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
 /** A model of a track in air traffic control systems.
  *  This track can have no more than one aircraft in transit.

@@ -30,11 +30,12 @@ package ptolemy.util.test.junit;
 
 import java.lang.reflect.Method;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////

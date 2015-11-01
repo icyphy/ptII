@@ -39,8 +39,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import com.microstar.xml.XmlParser;
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
@@ -54,6 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
+
+import com.microstar.xml.XmlParser;
 
 ///////////////////////////////////////////////////////////////////
 ////PtalonActor

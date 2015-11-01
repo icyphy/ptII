@@ -29,8 +29,8 @@ package ptolemy.actor.gui;
 import java.awt.Frame;
 import java.net.URL;
 
-import ptolemy.util.ClassUtilities;
 import ptolemy.util.CancelException;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////

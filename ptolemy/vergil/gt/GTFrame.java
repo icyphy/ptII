@@ -37,9 +37,6 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.gui.toolbox.JCanvasPanner;
 import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gt.TransformationRule;
@@ -60,6 +57,9 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.gui.toolbox.JCanvasPanner;
 
 @SuppressWarnings("serial")
 public class GTFrame extends ExtendedGraphFrame {

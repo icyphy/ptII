@@ -37,11 +37,6 @@ import java.util.Map;
 
 import javax.swing.KeyStroke;
 
-import diva.canvas.Figure;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
 import ptolemy.actor.ExecutionAttributes;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.ColorAttribute;
@@ -63,6 +58,11 @@ import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.AttributeWithIconController;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.canvas.Figure;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// StateController
