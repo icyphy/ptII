@@ -36,7 +36,7 @@ DIRS = 		demo #test
 # Root of the Java directory
 ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTWEBCAMCAPTURE_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTWEBCAMCAPTURE_JARS)$(CLASSPATHSEPARATOR)$(PTHOMER_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -41,7 +41,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Server is broadcasting to all open sockets,&#10;so first few messages will not be received&#10;by the client because the socket is not open.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last few messages are not received.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 85.0]">
         </property>
@@ -111,18 +111,12 @@
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="connected" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -150,22 +144,16 @@
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="connection" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={716, 142, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={713, 22, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -175,7 +163,7 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={719, 364, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={714, 439, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -185,13 +173,23 @@
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={719, 583, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={712, 655, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Received from Server">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 405.0]">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={713, 231, 499, 207}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Server Received">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 225.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -206,13 +204,17 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[485.0, 170.0]">
+        </vertex>
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="Ramp.output" relation="relation6"/>
@@ -220,14 +222,15 @@
     <link port="DiscreteClock2.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation8"/>
     <link port="Ramp2.trigger" relation="relation4"/>
-    <link port="Test.input" relation="relation2"/>
+    <link port="Test.input" relation="relation9"/>
     <link port="WebSocketClient3.toSend" relation="relation8"/>
     <link port="WebSocketClient3.connected" relation="relation7"/>
     <link port="WebSocketClient3.received" relation="relation3"/>
     <link port="WebSocketServer.toSend" relation="relation6"/>
-    <link port="WebSocketServer.received" relation="relation2"/>
+    <link port="WebSocketServer.received" relation="relation9"/>
     <link port="WebSocketServer.connection" relation="relation5"/>
     <link port="Display.input" relation="relation5"/>
     <link port="Display2.input" relation="relation7"/>
     <link port="Display3.input" relation="relation3"/>
+    <link port="Display4.input" relation="relation9"/>
 </entity>

@@ -30,6 +30,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
+import io.vertx.core.Handler;
+import io.vertx.core.VoidHandler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.WebSocket;
+import io.vertx.core.http.WebSocketBase;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -41,19 +49,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.VoidHandler;
-import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.http.HttpClient;
-import org.vertx.java.core.http.WebSocket;
-import org.vertx.java.core.http.WebSocketBase;
-
-import ptolemy.actor.lib.jjs.modules.VertxHelperBase;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
@@ -90,30 +89,23 @@ public class WebSocketHelper extends VertxHelperBase {
             // abort any connection that is established after this close()
             // method has been called.
             _numberOfTries = -1;
-            if (_thread != null) {
-                _thread.interrupt();
-            }
-
-            if (_webSocket != null) {
-                if (_wsIsOpen) {
-                    _webSocket.close();
-                }
-                _webSocket = null;
-            }
-
-            if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-                try {
-                    _currentObj.callMember("emit", "error",
-                            "Unsent messages remain that were queued before the socket opened: "
-                                    + _pendingOutputs.toString());
-                } catch (Throwable ex) {
-                    // Emitting an error event doesn't work for some reason.
-                    // Report the error anyway.
-                    _actor.error("Unsent messages remain that were queued before the socket opened: "
-                            + _pendingOutputs.toString());
-                }
-            }
         }
+        // Defer the rest of the close to the associated verticle.
+        submit(new Runnable() {
+        	public void run() {
+        		if (_webSocket != null) {
+        			if (_wsIsOpen) {
+        				_webSocket.close();
+        			}
+        			_webSocket = null;
+        		}
+
+        		if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+        			_error("Unsent messages remain that were queued before the socket opened: "
+        					+ _pendingOutputs.toString());
+        		}
+        	}
+        });
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -162,66 +154,73 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return True if the socket is open.
      */
     public boolean isOpen() {
-        synchronized (_actor) {
-            if (_webSocket == null) {
-                return false;
-            }
-            return _wsIsOpen;
-        }
+    	if (_webSocket == null) {
+    		return false;
+    	}
+    	return _wsIsOpen;
     }
 
     /** Send data through the web socket.
+     *  Note that if throttleFactor is not zero, then this method could
+     *  block for some time. Thus, it must not be called in a verticle.
+     *  It is called by the input handler of the actor.
      *  @param msg A message to be sent.
      *  @exception IllegalActionException If establishing the connection to the web socket has
      *   permanently failed.
      */
-    public void send(Object msg) throws IllegalActionException {
-        synchronized (_actor) {
-            if (_wsFailed != null) {
-                throw new IllegalActionException(_actor, _wsFailed,
-                        "Failed to establish connection after "
-                                + _numberOfTries + " tries.");
-            }
-            // If the message is not a string, attempt to create a Buffer object.
-            if (!(msg instanceof String)) {
-                if (msg instanceof ImageToken) {
-                    Image image = ((ImageToken)msg).asAWTImage();
-                    if (!(image instanceof BufferedImage)) {
-                        throw new IllegalActionException(_actor, "Unsupported image token type: " + image.getClass());
-                    }
-                    if (!_sendType.startsWith("image/")) {
-                        throw new IllegalActionException(_actor, "Trying to send an image, but sendType is " + _sendType);
-                    }
-                    String imageType = _sendType.substring(6);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    try {
-                        ImageIO.write((BufferedImage)image, imageType, stream);
-                    } catch (IOException e) {
-                        throw new IllegalActionException(_actor, e, "Failed to convert image to byte array for sending.");
-                    }
-                    msg = new Buffer(stream.toByteArray());
-                }
-            }
-            if (isOpen()) {
-                _sendMessageOverSocket(msg);
-            } else if (!_discardMessagesBeforeOpen) {
-                // FIXME: Bound the queue?
-                if (_pendingOutputs == null) {
-                    _pendingOutputs = new LinkedList();
-                }
-                _pendingOutputs.add(msg);
-                if (_throttleFactor > 0) {
-                    try {
-                        Thread.sleep(_throttleFactor * _pendingOutputs.size());
-                    } catch (InterruptedException e) {
-                        // Ignore.
+    public void send(final Object msg) throws IllegalActionException {
+    	// Defer this action to be executed in the associated verticle.
+    	final Runnable action = new Runnable() {
+    		public void run() {
+    	        if (_wsFailed != null) {
+    	            _error("Failed to establish connection: "
+    	            		+ _wsFailed.toString());
+    	        }
+                // If the message is not a string, attempt to create a Buffer object.
+    	        Object message = msg;
+                if (!(msg instanceof String)) {
+                    if (msg instanceof ImageToken) {
+                        Image image = ((ImageToken)msg).asAWTImage();
+                        if (!(image instanceof BufferedImage)) {
+                            _error("Unsupported image token type: " + image.getClass());
+                        }
+                        if (!_sendType.startsWith("image/")) {
+                            _error("Trying to send an image, but sendType is " + _sendType);
+                        }
+                        String imageType = _sendType.substring(6);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        try {
+                            ImageIO.write((BufferedImage)image, imageType, stream);
+                        } catch (IOException e) {
+                            _error("Failed to convert image to byte array for sending: " + e.toString());
+                        }
+                        message = Buffer.buffer(stream.toByteArray());
                     }
                 }
-            } else {
-                _actor.log("WARNING: Data discarded because socket is not open: "
-                        + msg);
-            }
-        }
+                if (isOpen()) {
+                    _sendMessageOverSocket(message);
+                } else if (!_discardMessagesBeforeOpen) {
+                    // FIXME: Bound the queue?
+                    if (_pendingOutputs == null) {
+                        _pendingOutputs = new LinkedList<Object>();
+                    }
+                    _pendingOutputs.add(message);
+                } else {
+                    _actor.log("WARNING: Data discarded because socket is not open: "
+                            + message);
+                }
+    		}
+    	};
+    	// If there are already pending outputs, we may want to stall
+    	// before submitting.
+    	if (_pendingOutputs != null && _pendingOutputs.size() > 0 && _throttleFactor > 0) {
+    		try {
+				Thread.sleep(_throttleFactor * _pendingOutputs.size());
+			} catch (InterruptedException e) {
+				// Ignore.
+			}
+    	}
+    	submit(action);
     }
 
     /** Return an array of the types supported by the current host for
@@ -256,7 +255,7 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     protected void _sendMessageOverSocket(Object message) {
         if (message instanceof String) {
-            message = new Buffer((String)message);
+            message = Buffer.buffer((String)message);
         }
         /* Sadly, the following check doesn't make sense.
          * Only the sender of the message can check whether
@@ -276,8 +275,8 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         */
         if (!(message instanceof Buffer)) {
-            _currentObj.callMember("emit", "error", 
-                    "Message type not recognized: " + message.getClass()
+            _error("Message type not recognized: "
+            		+ message.getClass()
                     + ". Perhaps the sendType doesn't match the data type.");
             return;
         }
@@ -328,19 +327,25 @@ public class WebSocketHelper extends VertxHelperBase {
         _timeBetweenRetries = timeBetweenRetries;
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
         _throttleFactor = throttleFactor;
-        // FIXME: This seems to become a zombie thread.
-        _client = _vertx.createHttpClient();
-        _client.setHost(host)
-            .setPort(port)
-            .exceptionHandler(new HttpClientExceptionHandler())
-            .setKeepAlive(true)
-            .setConnectTimeout(_connectTimeout)
-            .setMaxWebSocketFrameSize(_maxFrameSize);
-        _wsFailed = null;
+        // Ask the verticle to set up the web socket.
+        // This will execute in a vert.x event loop thread, and
+        // all callbacks that are set up as a side effect will also
+        // execute in that thread.
+        submit(new Runnable() {
+        	public void run() {
+                _client = _vertx.createHttpClient(new HttpClientOptions()
+            			.setDefaultHost(host)
+            			.setDefaultPort(port)
+            			.setKeepAlive(true)
+            			.setConnectTimeout(_connectTimeout)
+            			.setMaxWebsocketFrameSize(_maxFrameSize));
+                _wsFailed = null;
 
-        // Make the connection. This might eventually be a wrapped in a public method.
-        _numberOfTries = 1;
-        _connectWebsocket(host, port, _client);
+                // Make the connection. This might eventually be a wrapped in a public method.
+                _numberOfTries = 1;
+                _connectWebsocket(host, port, _client);
+        	}
+        });
     }
 
     /** Private constructor for WebSocketHelper for a server-side web socket.
@@ -358,18 +363,25 @@ public class WebSocketHelper extends VertxHelperBase {
         _wsIsOpen = true;
         
         _maxFrameSize = maxFrameSize;
-        
+        _receiveType = receiveType;
+        _sendType = sendType;
+
         // FIXME: Grab the headers and get the Content-Type from that.
         // However, the headers don't seem to available.
         // MultiMap headers = serverWebSocket.headers();
-                
-        _webSocket.dataHandler(new DataHandler());
-        _webSocket.endHandler(new EndHandler());
-        _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-        _webSocket.closeHandler(new WebSocketCloseHandler());
 
-        _receiveType = receiveType;
-        _sendType = sendType;
+        // Ask the verticle to set up the web socket.
+        // This will execute in a vert.x event loop thread, and
+        // all callbacks that are set up as a side effect will also
+        // execute in that thread.
+        submit(new Runnable() {
+        	public void run() {
+        		_webSocket.handler(new DataHandler());
+        		_webSocket.endHandler(new EndHandler());
+        		_webSocket.exceptionHandler(new WebSocketExceptionHandler());
+        		_webSocket.closeHandler(new WebSocketCloseHandler());
+        	}
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -381,50 +393,44 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param client The HttpClient object.
      */
     private void _connectWebsocket(String host, int port, HttpClient client) {
-        // FIXME: Provide a timeout. Use setTimeout() of the client.
-        // FIXME: Why does Vertx require the URI here in addition to setHost() and setPort() above? Seems lame.
-        String address = "ws://" + host + ":" + port;
-        client.connectWebsocket(address, new Handler<WebSocket>() {
+    	// FIXME: Header with content type should be provided?
+        client.websocket(port, host, "", new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
-                // Synchronize to ensure mutex w/ the disconnect in wrapup.
-                synchronized (_actor) {
-                    if (_numberOfTries < 0) {
-                        // close() has been called. Abort the connection.
-                        websocket.close();
-                        return;
-                    }
-                    if (!_actor.isExecuting()) {
-                        // Either wrapup() has been called, or wrapup() is blocked waiting
-                        // for the _actor lock we now hold.
-                        websocket.close();
-                        return;
-                    }
-                    _wsIsOpen = true;
-                    _webSocket = websocket;
+            	if (_numberOfTries < 0) {
+            		// close() has been called. Abort the connection.
+            		websocket.close();
+            		return;
+            	}
+            	if (!_actor.isExecuting()) {
+            		// Either wrapup() has been called, or wrapup() is blocked waiting
+            		// for the _actor lock we now hold.
+            		websocket.close();
+            		return;
+            	}
+            	_wsIsOpen = true;
+            	_webSocket = websocket;
 
-                    _webSocket.dataHandler(new DataHandler());
-                    _webSocket.endHandler(new EndHandler());
-                    _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-                    _webSocket.closeHandler(new WebSocketCloseHandler());
+            	_webSocket.handler(new DataHandler());
+            	_webSocket.endHandler(new EndHandler());
+            	_webSocket.exceptionHandler(new WebSocketExceptionHandler());
+            	_webSocket.closeHandler(new WebSocketCloseHandler());
 
-                    // Socket.io uses the name "connect" for this event, but WS uses "open",
-                    // so we just emit both events.
-                    _currentObj.callMember("emit", "connect");
-                    _currentObj.callMember("emit", "open");
+            	// Socket.io uses the name "connect" for this event, but WS uses "open".
+            	// We choose "open".
+            	_currentObj.callMember("emit", "open");
 
-                    // Send any pending messages.
-                    if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-                        for (Object message : _pendingOutputs) {
-                            _sendMessageOverSocket(message);
-                        }
-                        _pendingOutputs.clear();
-                    }
-                }
+            	// Send any pending messages.
+            	if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+            		for (Object message : _pendingOutputs) {
+            			_sendMessageOverSocket(message);
+            		}
+            		_pendingOutputs.clear();
+            	}
             }
-        });
+        }, new HttpClientExceptionHandler());
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
@@ -432,7 +438,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private HttpClient _client;
     
     /** The time to wait before giving up on a connection. */
-    private int _connectTimeout = 60000;
+    private int _connectTimeout = 5000;
 
     /** True to discard messages before the socket is open. False to discard them. */
     private boolean _discardMessagesBeforeOpen;
@@ -450,7 +456,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private int _numberOfTries = 1;
 
     /** Pending outputs received before the socket is opened. */
-    private List _pendingOutputs;
+    private List<Object> _pendingOutputs;
 
     /** The host port. */
     private int _port;
@@ -466,9 +472,6 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The time between retries, in milliseconds. */
     private int _timeBetweenRetries;
-
-    /** The thread that reconnects the web socket connection after the timeBetweenRetries interval. */
-    private Thread _thread = null;
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
@@ -487,26 +490,21 @@ public class WebSocketHelper extends VertxHelperBase {
     private class DataHandler implements Handler<Buffer> {
         @Override
         public void handle(Buffer buffer) {
-            // FIXME: Why is this synchronized?
-            synchronized (_actor) {
-                if (_receiveType.equals("application/json")
-                        || _receiveType.startsWith("text/")) {
-                    // This assumes the input is a string encoded in UTF-8.
-                    _currentObj.callMember("notifyIncoming", buffer.toString());
-                } else if (_receiveType.startsWith("image/")) {
-                    try {
-                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.getBytes()));
-                        ImageToken token = new AWTImageToken(image);
-                        _currentObj.callMember("notifyIncoming", token);
-                    } catch (IOException e) {
-                        // FIXME: How to report this error?
-                        e.printStackTrace();
-                    }
-                } else {
-                    // FIXME: Need to catch this error earlier!!!
-                    throw new InternalErrorException("Unsupported receiveType: " + _receiveType);
-                }
-            }
+        	if (_receiveType.equals("application/json")
+        			|| _receiveType.startsWith("text/")) {
+        		// This assumes the input is a string encoded in UTF-8.
+        		_currentObj.callMember("_notifyIncoming", buffer.toString());
+        	} else if (_receiveType.startsWith("image/")) {
+        		try {
+        			BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.getBytes()));
+        			ImageToken token = new AWTImageToken(image);
+        			_currentObj.callMember("_notifyIncoming", token);
+        		} catch (IOException e) {
+        			_error("Failed to read incoming image: " + e.toString());
+        		}
+        	} else {
+        		_error("Unsupported receiveType: " + _receiveType);
+        	}
         }
     }
 
@@ -515,15 +513,11 @@ public class WebSocketHelper extends VertxHelperBase {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-            // FIXME: Why is this synchronized?
-            synchronized (_actor) {
-                _currentObj.callMember("emit", "close", "Stream has ended.");
-                _wsIsOpen = false;
-                if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-                    _currentObj.callMember("emit", "error",
-                            "Unsent data remains in the queue.");
-                }
-            }
+        	_currentObj.callMember("emit", "close", "Stream has ended.");
+        	_wsIsOpen = false;
+        	if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+        		_error("Unsent data remains in the queue.");
+        	}
         }
     }
 
@@ -533,22 +527,18 @@ public class WebSocketHelper extends VertxHelperBase {
     private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
-            synchronized (_actor) {
-                _currentObj.callMember("emit", "error", throwable.getMessage());
-                _wsIsOpen = false;
-            }
+        	_error(throwable.getMessage());
+        	_wsIsOpen = false;
         }
     }
     
     /** The event handler that is triggered when a socket is closed.
      */
-    private class WebSocketCloseHandler implements Handler {
+    private class WebSocketCloseHandler implements Handler<Void> {
         @Override
-        public void handle(Object ignored) {
-            synchronized (_actor) {
-                _currentObj.callMember("emit", "close");
-                _wsIsOpen = false;
-            }
+        public void handle(Void ignored) {
+        	_currentObj.callMember("emit", "close");
+        	_wsIsOpen = false;
         }
     }
 
@@ -558,60 +548,43 @@ public class WebSocketHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-            synchronized (_actor) {
-                if (_numberOfTries >= _numberOfRetries + 1) {
-                    _currentObj.callMember("emit", "error",
-                            "Connection failed after " + _numberOfTries
-                                    + " tries: " + arg0.getMessage());
-                    _wsIsOpen = false;
-                    _wsFailed = arg0;
-                } else if (_numberOfTries < 0) {
-                    _currentObj.callMember("emit", "error",
-                            "Connection closed while trying to connect: "
-                                    + arg0.getMessage());
-                    _wsIsOpen = false;
-                } else {
-                    _actor.log("Connection failed. Will try again: "
-                            + arg0.getMessage());
-                    // Retry. Create a new thread to do this.
-                    Runnable retry = new Runnable() {
-                        public void run() {
-                            try {
-                                Thread.sleep(_timeBetweenRetries);
-                            } catch (InterruptedException e) {
-                                synchronized(_actor) {
-                                    _currentObj.callMember("emit", "error",
-                                            "Reconnection thread has been interrupted.");
-                                    _wsIsOpen = false;
-                                    _wsFailed = e;
-                                }
-                                return;
-                            }
-                            synchronized (_actor) {
-                                // Prevent any attempt to interrupt this thread, since it is
-                                // no longer sleeping.
-                                _thread = null;
-                                // Check again the status of the number of tries.
-                                // This may have been changed if close() was called,
-                                // which occurs, for example, when the model stops executing.
-                                // NOTE: This may actually try connecting even if there will be
-                                // no more firings of the JavaScript actor. But it will only try
-                                // if wrapup has not yet been called, so if it succeeds in connecting,
-                                // presumably either wrapup() or the handler in _connectWebsocket will
-                                // disconnect if the model is no longer executing.
-                                if (_numberOfTries >= 0
-                                        && _numberOfTries <= _numberOfRetries
-                                        && _actor.isExecuting()) {
-                                    _numberOfTries++;
-                                    _connectWebsocket(_host, _port, _client);
-                                }
-                            }
-                        }
-                    };
-                    _thread = new Thread(retry);
-                    _thread.start();
-                }
-            }
+        	if (_numberOfTries >= _numberOfRetries + 1) {
+        		_error("Connection failed after "
+        				+ _numberOfTries
+        				+ " tries: "
+        				+ arg0.getMessage());
+        		_wsIsOpen = false;
+        		_wsFailed = arg0;
+        	} else if (_numberOfTries < 0) {
+        		_error("Connection closed while trying to connect: "
+        				+ arg0.getMessage());
+        		_wsIsOpen = false;
+        	} else {
+        		_actor.log("Connection failed. Will try again: "
+        				+ arg0.getMessage());
+        		// Retry after some time.
+        		final Runnable retry = new Runnable() {
+        			public void run() {
+						// Check again the status of the number of tries.
+						// This may have been changed if close() was called,
+						// which occurs, for example, when the model stops executing.
+						// NOTE: This may actually try connecting even if there will be
+						// no more firings of the JavaScript actor. But it will only try
+						// if wrapup has not yet been called, so if it succeeds in connecting,
+						// presumably either wrapup() or the handler in _connectWebsocket will
+						// disconnect if the model is no longer executing.
+						if (_numberOfTries >= 0
+								&& _numberOfTries <= _numberOfRetries
+								&& _actor.isExecuting()) {
+							_numberOfTries++;
+							_connectWebsocket(_host, _port, _client);
+						}
+					}
+        		};
+        		_vertx.setTimer(_timeBetweenRetries, id -> {
+        			submit(retry);
+        		});
+        	}
         }
     }
 }

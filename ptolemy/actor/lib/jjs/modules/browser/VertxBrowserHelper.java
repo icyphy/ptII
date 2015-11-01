@@ -30,13 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.browser;
 
-import org.vertx.java.core.AsyncResult;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.VertxFactory;
-import org.vertx.java.core.http.HttpServer;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.http.HttpServerResponse;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.spi.VertxFactory;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
 
 ///////////////////////////////////////////////////////////////////
 //// VertxHelper
@@ -130,5 +130,5 @@ public class VertxBrowserHelper {
     ////                     private fields                        ////
 
     /** Instance of Vertx. Apparently we need only one. */
-    private static Vertx _vertx = VertxFactory.newVertx();
+    private static Vertx _vertx = Vertx.vertx();
 }

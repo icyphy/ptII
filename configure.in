@@ -1040,9 +1040,13 @@ ANT_EXCLUDE_TESTS=''
 # A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
 # and to ANT_CLASSPATH
 updateClasspath () {
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        if test ! -z $1; then
+            ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$1\"/> "
-        ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$1\"/> "
+            ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$1\"/> "
+        else
+            echo "INTERNAL WARNING: updateClasspath called with an empty string as the jar file?"
+        fi
 }
 
 # A shell function that adds its argument to ECLIPSE_EXCLUDING_SRC
@@ -6150,7 +6154,7 @@ PTVERTX_PACKAGES=
 # We only need to look for the Vertx jar files if PTWEBSOCKET_USER_DIR are present.
 PTWEBSOCKET_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/webSocket"
 
-if test ! -d -d "$PTWEBSOCKET_USER_DIR"; then
+if test ! -d "$PTWEBSOCKET_USER_DIR"; then
     PT_MSG_STATUS([$PTWEBSOCKET_USER_DIR is not present,
     so we need not find the Vertx application platform interface.])
 else
@@ -6175,10 +6179,24 @@ else
     	    PTVERTX_DIR=vertx
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
-            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
+            # Vert.x 2.x jars:
+            #jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
+
+# Use changequote here to preserve square brackets
+changequote(<<, >>)dnl
+            # Vert.x 3.x jars:
+            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar netty-buffer-*.jar netty-codec-[^h]*.jar netty-codec-http-*.jar netty-common-*.jar netty-handler-*.jar netty-transport-*.jar vertx-codegen-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-lang-js-*jar vertx-service-proxy-*.jar vertx-web-*jar"
+changequote([, ])dnl
+
             for jar in $jars
     	    do
+# Use changequote here to preserve square brackets
+changequote(<<, >>)dnl
 	        file=`find "$PTVERTX_JAR_DIR" -name "$jar"`
+changequote([, ])dnl
+                if test -z $file; then
+                    AC_MSG_WARN([Hmm, while searching for Vert.x jar files, could not find $jar?]);
+                fi
 	        if test -e $file -a -f $file; then
 	            PTVERTX_JARS="$PTVERTX_JARS\${CLASSPATHSEPARATOR}$file"
 		    # If we don't find all the jars, then the classpath will have some of them.

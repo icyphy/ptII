@@ -41,7 +41,7 @@
  * @version $Id$
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
-
+ 
 // Java types used.
 var HttpClientHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper');
 var URL = Java.type('java.net.URL'); // FIXME: eventually, have a url module for this
@@ -51,6 +51,17 @@ var EventEmitter = require('events').EventEmitter;
 /** Issue an HTTP request and provide a callback function for responses.
  *  The callback is a function that is passed an instance of IncomingMessage,
  *  defined here. This function returns an instance of ClientRequest, also defined here.
+ *  The HTTP request will not actually be issued until you call the end() function on
+ *  the returned ClientRequest.
+ *
+ *  This implementation ensures that for any accessor that calls this function,
+ *  the callback functions are called in the same order as
+ *  invocations of this request() function that triggered the request.
+ *  If you call this function from the same accessor before the previous
+ *  request has been completed (the callback function has been called or it has
+ *  timed out), then the request will be queued to be issued only after the previous
+ *  request has been satisfied.
+ *
  *  The options argument can be a string URL
  *  or a map with the following fields (this helper class assumes
  *  all fields are present, so please be sure they are):
@@ -122,6 +133,15 @@ exports.request = function(options, responseCallback) {
  *  calls end() on the object returned by request(). It returns the object returned
  *  by request() (an instance of ClientRequest). See request() for documentation of
  *  the arguments.
+ *
+ *  This implementation ensures that for any accessor that calls this function,
+ *  the callback functions are called in the same order as
+ *  invocations of this request() function that triggered the request.
+ *  If you call this function from the same accessor before the previous
+ *  request has been completed (the callback function has been called or it has
+ *  timed out), then the request will be queued to be issued only after the previous
+ *  request has been satisfied.
+ *
  *  @param options The options.
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.
@@ -145,12 +165,13 @@ exports.get = function(options, responseCallback) {
 // Event: 'unpipe'
 // Event: 'error'
 
-/** The object type returned by the request function.
+/** Constructor for the object type returned by the request() function.
  *  This object type provides the following functions:
  *  <ul>
  *  <li> end(): Call this to end the request. </li>
  *  <li> write(''data'', ''encoding''): Write data (e.g. for a POST request). </li>
  *  </ul>
+ *  The request will not be issued until you call end().
  *  See the documentation of the request function for an explanation of the arguments.
  *  This is an event emitter that emits the following events:
  *  <ul>
@@ -235,16 +256,17 @@ function ClientRequest(options, responseCallback) {
 	  options.headers = headers;
   }
   
-  console.log("Making an HTTP request: " + JSON.stringify(options));
-
-  this.helper = HttpClientHelper.createHttpClient(this, options);
+  // console.log("Making an HTTP request: " + JSON.stringify(options));
+  
+  this.helper = HttpClientHelper.getOrCreateHelper(actor);
+  this.options = options;
 }
 util.inherits(ClientRequest, EventEmitter);
 exports.ClientRequest = ClientRequest;
 
-/** End a request. */
+/** Issue the request. */
 ClientRequest.prototype.end = function() {
-  this.helper.end();
+  this.helper.request(this, this.options);
 };
 
 /** Stop a response, if there is one active. This is useful if a streaming response
@@ -319,7 +341,6 @@ ClientRequest.prototype._response = function(response, body) {
  *  <li> statusCode: an integer indicating the status of the response. </li>
  *  <li> statusMessage: a string with the status message of the response. </li>
  *  </ul>
- *  FIXME: At this time, only UTF-8-encoded string bodies are supported.
  *  @constructor
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */
@@ -329,3 +350,8 @@ IncomingMessage = function(response, body) {
     this.statusCode = response.statusCode();
     this.statusMessage = response.statusMessage();
 }
+
+// Each time this file is reloaded, reset the helper for this actor.
+// This will start the sequence numbers at zero and discard any corrupted state
+// that may have resulted from exceptions.
+HttpClientHelper.getOrCreateHelper(actor).reset();

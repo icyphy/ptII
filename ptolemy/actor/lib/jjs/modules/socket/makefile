@@ -1,4 +1,4 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript actors
+# Makefile for Nashorn-based Ptolemy II JavaScript modules
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -29,59 +29,44 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs
+ME =		ptolemy/actor/lib/jjs/modules/socket
 
-# node_modules has no makefiles, so don't add it to DIRS.
-DIRS = 		demo external modules node test #node_modules
+DIRS = 		test demo
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jjs
+PTPACKAGE = 	webSocket
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	HelperBase.java \
-	JavaScript.java \
-	JSUtils.java \
-	RestrictedJavaScriptInterface.java \
-	VertxHelperBase.java
+	SocketHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
-	basicFunctions.js \
-	console.js \
-	JavaScriptIcon.xml \
-	jjs-license.htm \
-	js.xml \
-	localFunctions.js
+	package.json \
+	socket.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	external modules node test
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	node_modules \
-	node_files \
-	'JavaScript$$1.class' \
-	'JavaScript$$2.class' \
-	'JavaScript$$ParameterProxy.class' \
-	'JavaScript$$PortOrParameterProxy.class' \
-	'JavaScript$$PortProxy.class' \
-	'JavaScript$$PtolemyJavaScript.class' \
-	$(PTCLASSJAR) 
+	doc \
+	$(PTCLASSJAR) \
+	'SocketHelper$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
