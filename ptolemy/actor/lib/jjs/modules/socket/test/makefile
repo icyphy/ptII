@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: : mkpttest 72465 2015-06-01 15:58:40Z cxh $
+# @Version: : mkpttest 72874 2015-07-26 21:01:52Z cxh $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/actor/lib/jjs/modules/udpSocket/test
+ME =		ptolemy/actor/lib/jjs/modules/socket/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
