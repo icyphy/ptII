@@ -209,6 +209,57 @@ exports.SpaceTypeEnum = {
 
 
 //******************************************************************************************
+//Public toJSONString functions for MapManager hashes
+//******************************************************************************************
+
+/**
+* Returns the current state of the global in-memory maps storage as a JSON string.
+* The object has properties: maps, coordinateTransformations, and entities.
+* @function
+* @returns {string}
+*/
+exports.localRepoToJSONString = function(){
+	var data = {
+		"maps": maps,
+		"coordinateTransformations": coordinateTransformations,
+		"entities": entities
+	};
+
+
+	//console.log(JSON.stringify(data));
+	return JSON.stringify(data);
+}
+
+
+/**
+* Returns the current state of the global maps storage as a JSON string.
+* @function
+* @returns {string}
+*/
+exports.mapsToJSONString = function(){
+	return JSON.stringify(maps);
+}
+
+/**
+* Returns the current state of the global coordinate transformations storage as a JSON string.
+* @function
+* @returns {string}
+*/
+exports.coordinateTransformationsToJSONString = function(){
+	return JSON.stringify(coordinateTransformations);
+}
+
+
+/**
+* Returns the current state of the global entities storage as a JSON string.
+* @function
+* @returns {string}
+*/
+exports.entitiesToJSONString = function(){
+	return JSON.stringify(entities);
+}
+
+//******************************************************************************************
 //Public toString functions for MapManager hashes
 //******************************************************************************************
 
@@ -239,6 +290,7 @@ exports.coordinateTransformationsToString = function(){
 exports.entitiesToString = function(){
 	return _simpleHashToString(entities);
 }
+
 
 
 //******************************************************************************************
