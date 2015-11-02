@@ -654,6 +654,7 @@ FULL_ONLY_JNLP_JARS = \
 	doc/papers/papers.jar \
 	$(EXPORT_JARS) \
 	$(PTANGO_JAR_FILES) \
+	lib/jcerti.jar \
 	org/hlacerti/hlacerti.jar \
 	org/terraswarm/accessor/accessor.jar \
 	org/terraswarm/accessor/demo/demo.jar \
@@ -1835,7 +1836,7 @@ visualsensedoc.exe: visualsensedoc_l4j.xml
 # Certain jar files from the doc/ directory are not echoed.
 # For example:  make echo_jars JARS=PTINY_JNLP_JARS
 echo_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../../jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  sed 's/:/ /g' | awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../dists/ptII11.0.devel/jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
 
 
 # The echo_plist_jars rule is used by $PTII/bin/makeapp to create Contents/Info.plist.
