@@ -209,18 +209,18 @@ public class GenerateCopyrights {
         // Vertx
         _addIfClassPresent(copyrightsMap,
                 "com.fasterxml.jackson.core.base.GeneratorBase",
-                "lib/jackson-2.2.2-license.htm");
+                "lib/jackson-2.6.1-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "io.netty.handler.traffic.ChannelTrafficShapingHandler",
-                "lib/netty-all-4.0.21.Final-license.htm");
+                "lib/netty-all-4.0.31.Final-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
-                "lib/hazelcast-3.2.3-license.htm");
+                "lib/hazelcast-3.5.2-license.htm");
 
         _addIfClassPresent(copyrightsMap, "org.vertx.java.core.Vertx",
-                "lib/vertx-license.htm");
+                "lib/vertx-3.1.0-license.htm");
 
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
@@ -1044,7 +1044,7 @@ public class GenerateCopyrights {
             { "mlc", " ", " ", "Y", "Y", "GNU Lesser General Public + Oracle" },
             { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
             { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
-            { "netty", " ", " ", " ", "Y ", "Apache" },
+            { "netty", " ", " ", " ", "Y ", "Apache + MIT + BSD + PD" },
             { "opencv", " ", " ", "Y", " ", "" },
             { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
             { "org.eclipse.paho.client.mqttv3", " ", " ", " ", "Y", "Eclipse" },
