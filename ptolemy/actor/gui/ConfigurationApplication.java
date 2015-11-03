@@ -486,8 +486,8 @@ public class ConfigurationApplication implements ExecutionListener {
      *  the command-line arguments.
      *  @return A list of instances of NamedObj.
      */
-    public List models() {
-        LinkedList result = new LinkedList();
+    public List<NamedObj> models() {
+        LinkedList<NamedObj> result = new LinkedList<NamedObj>();
 
         if (_configuration == null) {
             return result;
@@ -1222,17 +1222,17 @@ public class ConfigurationApplication implements ExecutionListener {
                 _expectingClass = false;
 
                 // Create the class.
-                Class newClass = Class.forName(arg);
+                Class<?> newClass = Class.forName(arg);
 
                 // Instantiate the specified class in a new workspace.
                 Workspace workspace = new Workspace();
 
                 //Workspace workspace = _configuration.workspace();
                 // Get the constructor that takes a Workspace argument.
-                Class[] argTypes = new Class[1];
+                Class<?>[] argTypes = new Class[1];
                 argTypes[0] = workspace.getClass();
 
-                Constructor constructor = newClass.getConstructor(argTypes);
+                Constructor<?> constructor = newClass.getConstructor(argTypes);
 
                 Object[] args = new Object[1];
                 args[0] = workspace;
@@ -1777,10 +1777,10 @@ public class ConfigurationApplication implements ExecutionListener {
     private boolean _expectingClass = false;
 
     // List of parameter names seen on the command line.
-    private List _parameterNames = new LinkedList();
+    private List<String> _parameterNames = new LinkedList<String>();
 
     // List of parameter values seen on the command line.
-    private List _parameterValues = new LinkedList();
+    private List<String> _parameterValues = new LinkedList<String>();
 
     /** URI from which the configuration was read.  We use a URI to
      * avoid URL.equals(),which is very expensive?  See FindBugs and
