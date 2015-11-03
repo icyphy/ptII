@@ -1642,7 +1642,7 @@ cat >>$MACAPP_PLIST <<EOF2
        <string>\$APP_PACKAGE/../..</string>
 EOF2
 
-	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
+	(cd $PTII; make --no-print-directory echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
 	  awk '{ for(i=1;i<=NF;i++) { print "       <string>$APP_PACKAGE/../../" $i "</string>"}}' >> $MACAPP_PLIST
 
 	cat >>$MACAPP_PLIST <<EOF3
@@ -1684,7 +1684,7 @@ EOF4
 
       # Generate the list of jar files.
         echo "foo" | awk '{printf("        <string>$USER_HOME/.ptolemyII/*</string>\n        <string>$JAVAROOT/../../../../../contrib/contrib.jar</string>\n        <string>$JAVAROOT/../../../../..</string>\n")}' >> $MACAPP_PLIST
-	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
+	(cd $PTII; make --no-print-directory echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
 	  awk '{ for(i=1;i<=NF;i++) { printf("        <string>$JAVAROOT/../../../../../%s</string>\n", $i)}}' >> $MACAPP_PLIST
 
       # Here's the last part of the file:
