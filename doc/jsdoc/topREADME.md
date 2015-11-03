@@ -44,22 +44,23 @@ Some modules designed for Node.js are pure JavaScript with no particular depende
 *   [GMTK][16]: GMTK accessor that requires some setup through the [webSocket][5] or shell accessors 
 *   [IMUSensor][17]: Provides bluetooth connection and packet output from Roozbeh's IMU Sensors. 
 *   [localStorage][18]: Provide persistent key-value storage based on local files. 
-*   [mdnsClient][19]: mDNS and DNS-SD support. 
-*   [mqtt][20]: Provide support for MQTT protocol clients. 
+*   [mapManager][19]: Provides resources for creating maps and combining information across them. 
+*   [mdnsClient][20]: mDNS and DNS-SD support. 
+*   [mqtt][21]: Provide support for MQTT protocol clients. 
 *   obd 
 *   rabbitmq 
 *   serial 
-*   [ssdpClient][21]: UPnP device discovery. 
-*   [textToSpeech][22]: Provide spoken word output. 
-*   [UDPSocket][23]: Provide interfaces and functions for UDP sockets. 
+*   [ssdpClient][22]: UPnP device discovery. 
+*   [textToSpeech][23]: Provide spoken word output. 
+*   [UDPSocket][24]: Provide interfaces and functions for UDP sockets. 
 
-To implement a module, see the [Module Specification][24]. 
+To implement a module, see the [Module Specification][25]. 
 
 
 
 * * *
 
-[Back to accessor specification][25]
+[Back to accessor specification][26]
 
  [1]: https://www.terraswarm.org/accessors/wiki/Version0/Require
  [2]: https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html
@@ -79,13 +80,14 @@ To implement a module, see the [Module Specification][24].
  [16]: https://www.terraswarm.org/accessors/wiki/Version0/GMTK
  [17]: https://www.terraswarm.org/accessors/wiki/Version0/IMUSensor
  [18]: https://www.terraswarm.org/accessors/wiki/Version0/LocalStorage
- [19]: https://www.terraswarm.org/accessors/wiki/Version0/MdnsClient?action=edit
- [20]: https://www.terraswarm.org/accessors/wiki/Version0/Mqtt
- [21]: https://www.terraswarm.org/accessors/wiki/Version0/SsdpClient
- [22]: https://www.terraswarm.org/accessors/wiki/Version0/TextToSpeech
- [23]: https://www.terraswarm.org/accessors/wiki/Version0/UDPSocket
- [24]: https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification
- [25]: https://www.terraswarm.org/accessors/wiki/Version0/1aAccessorsSpecification
+ [19]: https://www.terraswarm.org/accessors/wiki/Version0/MapManager?action=edit
+ [20]: https://www.terraswarm.org/accessors/wiki/Version0/MdnsClient?action=edit
+ [21]: https://www.terraswarm.org/accessors/wiki/Version0/Mqtt
+ [22]: https://www.terraswarm.org/accessors/wiki/Version0/SsdpClient
+ [23]: https://www.terraswarm.org/accessors/wiki/Version0/TextToSpeech
+ [24]: https://www.terraswarm.org/accessors/wiki/Version0/UDPSocket
+ [25]: https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification
+ [26]: https://www.terraswarm.org/accessors/wiki/Version0/1aAccessorsSpecification
 
 * * *
 
