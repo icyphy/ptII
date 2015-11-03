@@ -122,6 +122,9 @@ TOOLS_JAR =	@TOOLS_JAR@
 # Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTUDPSOCKET_DIR = @PTUDPSOCKET_DIR@
 
+# Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTVERTX_SOCKET_DIR=	@PTVERTX_SOCKET_DIR@
+
 # Vertx jars used by actor.lib.vertx
 PTVERTX_JARS = 	@PTVERTX_JARS@
 
