@@ -219,7 +219,7 @@ public class GenerateCopyrights {
                 "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
                 "lib/hazelcast-3.5.2-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "org.vertx.java.core.Vertx",
+        _addIfClassPresent(copyrightsMap, "io.vertx.core.Vertx",
                 "lib/vertx-3.1.0-license.htm");
 
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
@@ -1013,7 +1013,7 @@ public class GenerateCopyrights {
             { "hazelcast", " ", " ", "Y", " ", "Apache License" },
             { "itextpdf", " ", " ", "Y", " ",
                     "Affero General Public License <font color=\"red\">like GPL</font>" },
-            { "jackson", " ", " ", "Y", " ", "Apache License or LGPL" },
+            { "jackson", " ", " ", "Y", " ", "Apache License" },
             { "jai", " ", "Y", " ", " ", "Oracle" },
             { "java3d", " ", "Y", "", " ", "Oracle" },
             { "javascript", " ", " ", "Y", "Y", "JQuery and Fancybox: MIT" },
