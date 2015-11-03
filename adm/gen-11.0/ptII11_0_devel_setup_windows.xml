@@ -729,6 +729,11 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/org/hlacerti/hlacerti.jar"
                   targetdir="$INSTALL_PATH/org/hlacerti"/>
 
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/atc/atc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/atc/"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/atc/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/atc/demo"/>
+
         </pack>
 
         <pack name="Docs" required="no">
