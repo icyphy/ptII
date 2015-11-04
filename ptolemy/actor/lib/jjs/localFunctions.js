@@ -266,8 +266,15 @@ function implement(interfaceName) {
 /** Specify an input for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
  *  lower-case character). The options argument can have the following fields:
- *  * type: The data type of the input (a string). If this is not specified, then any valid JavaScript value may be provided as an input. If it is specified, it must be one of the valid data types.
+ *  * options: An array of possible values for this input.
+ *  * type: The data type of the input (a string). If this is not specified,
+ *    then any valid JavaScript value may be provided as an input.
+ *    If it is specified, it must be one of the valid data types.
  *  * value: A default value for the input.
+ *  * visibility: A hint to restrict the visibility that a user has of the input
+ *    This can have one of the values "none" (no visibility), "expert" (expert
+ *    visibility), "noteditable" (full visibility, but not modifiable), or
+ *    "full" (full visibility, the default).
  *  @param name The name of the input.
  *  @param options The options, or null or omitted to accept the defaults.
  */
@@ -301,8 +308,15 @@ function output(name, options) {
 /** Specify a parameter for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
  *  lower-case character). The options argument can have the following fields:
- *  * type: The data type of the parameter (a string). If this is not specified, then any valid JavaScript value may be provided for the value. If it is specified, it must be one of the valid data types.
+ *  * options: An array of possible values for this input.
+ *  * type: The data type of the parameter (a string). If this is not specified,
+ *    then any valid JavaScript value may be provided for the value.
+ *    If it is specified, it must be one of the valid data types.
  *  * value: A default value for the parameter.
+ *  * visibility: A hint to limit the visibility that a user has of this parameter.
+ *    This can be one of "full" (the default), "expert", "noteditable", or "none",
+ *    meaning full visibility, expert visibility, full visibility but without being
+ *    able to change the value, and no visibility.
  *  @param name The name of the parameter.
  *  @param options The options, or null or omitted to accept the defaults.
  */
