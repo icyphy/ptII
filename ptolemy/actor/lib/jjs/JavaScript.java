@@ -1055,6 +1055,12 @@ public class JavaScript extends TypedAtomicActor {
      *  an ordinary port and set its default value.
      *  If a Parameter already exists with the same name, then convert
      *  it to a PortParameter and preserve its value.
+     *  
+     *  The options can also include a field
+     *  "visibility" with one of the values "none", "expert",
+     *  "noteditable" or "full" (the default). This is a hint
+     *  to restrict visibility that a user has of the port.
+     *  
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
@@ -1366,7 +1372,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Create a new parameter if it does not already exist.
      *  The options argument can specify a "type", a "description",
-     *  and/or a "value".
+     *  "visibility", and/or a "value".
      *  If a type is given, set the type as specified. Otherwise,
      *  leave the type unspecified so that it will be inferred from the value.
      *  If a description is given, then create, append to, or modify the
@@ -2161,12 +2167,14 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
     
-    /**
-     * @param options
-     * @param port
-     * @param parameter
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Set the port visibility if the options argument includes a
+     *  "visibility" field with one of the values "none", "expert",
+     *  "noteditable" or "full" (the default).
+     *  @param options The options map.
+     *  @param port The port set restrict visibility of.
+     *  @param parameter The parameter, if this is a port-parameter.
+     *  @throws IllegalActionException If setting fails.
+     *  @throws NameDuplicationException Should not be thrown.
      */
     private void _setPortVisibility(Map<String,Object> options, TypedIOPort port,
             PortParameter parameter) throws IllegalActionException,
