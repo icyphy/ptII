@@ -414,7 +414,7 @@ function Entity(name){
 	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity an alias.";
 	 	} 
 
-	 	//Check to see if alias has been registered. If not, throw exception.
+	 	//Check to see if alias for this entity has been registered. If not, throw exception.
 	 	if( ! entities.hasOwnProperty(alias._key()) ){
 	 		throw "Attempt to add an unregistered entity as an alias to " + this.toString();
 	 	} 
@@ -602,7 +602,7 @@ function Map(mapName, spaceType, coordinateSystem){
 	this.spaceType = spaceType;
 	this.coordinateSystem = coordinateSystem;
 	this.mapName = mapName;
-	this.mapEntities = {}; //set of entities this map contains
+	this.mapEntities = {}; //set of keys for entities this map contains
 
 	this._key = function(){
 		return mapName;
@@ -644,8 +644,8 @@ function Map(mapName, spaceType, coordinateSystem){
 		if( this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMaps.hasOwnProperty(this._key()) ){
 			return false;
 		} else {
-			this.mapEntities[entity._key()] = entity;
-			entity.containingMaps[this._key()] = this;
+			this.mapEntities[entity._key()] = true;
+			entity.containingMaps[this._key()] = true;
 			return true;
 		}
 	}
