@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.socket;
 
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ClientAuth;
 import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
@@ -38,8 +39,6 @@ import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
 
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
@@ -52,7 +51,7 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
    You should use {@link #getOrCreateHelper(Object)} to create
    exactly one instance of this helper per actor. Pass the actor
    as an argument.
-   
+
    A confusing aspect of this design is the socket client will
    have exactly one socket associated with it, whereas a socket
    server can have any number of sockets associated with it.
@@ -74,12 +73,12 @@ public class SocketHelper extends VertxHelperBase {
      *  @param actor The actor that this will help.
      */
     public SocketHelper(Object actor) {
-    	super(actor);
+        super(actor);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Create a client-side socket on behalf of the specified
      *  JavaScript SocketClient object. After this is called,
      *  the specified socketClient will emit the following events:
@@ -98,62 +97,62 @@ public class SocketHelper extends VertxHelperBase {
      *  @param options The options (see the socket.js JavaScript module).
      */
     public void openClientSocket(
-    		final ScriptObjectMirror socketClient,
-    		final int port,
-    		final String host,
-    	    Map<String,Object> options) {
-    	
-    	// NOTE: The following assumes all the options are defined.
-    	// This is handled in the associated JavaScript socket.js module.
-    	final NetClientOptions clientOptions = new NetClientOptions()
-    			.setConnectTimeout((Integer)options.get("connectTimeout"))
-    			.setIdleTimeout((Integer)options.get("idleTimeout"))
-    			.setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
-    			.setReconnectAttempts((Integer)options.get("reconnectAttempts"))
-    			.setReconnectInterval((Integer)options.get("reconnectInterval"))
-    			.setSendBufferSize((Integer)options.get("sendBufferSize"))
-    			.setSsl((Boolean)options.get("sslTls"))
-    			.setTcpKeepAlive((Boolean)options.get("keepAlive"));
+            final ScriptObjectMirror socketClient,
+            final int port,
+            final String host,
+            Map<String,Object> options) {
 
-    	/* FIXME: Not used options:
+        // NOTE: The following assumes all the options are defined.
+        // This is handled in the associated JavaScript socket.js module.
+        final NetClientOptions clientOptions = new NetClientOptions()
+                .setConnectTimeout((Integer)options.get("connectTimeout"))
+                .setIdleTimeout((Integer)options.get("idleTimeout"))
+                .setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
+                .setReconnectAttempts((Integer)options.get("reconnectAttempts"))
+                .setReconnectInterval((Integer)options.get("reconnectInterval"))
+                .setSendBufferSize((Integer)options.get("sendBufferSize"))
+                .setSsl((Boolean)options.get("sslTls"))
+                .setTcpKeepAlive((Boolean)options.get("keepAlive"));
+
+        /* FIXME: Not used options:
         'receiveType': 'application/json',
         'sendType': 'application/json',
         'discardMessagesBeforeOpen': false,
-		*/
+         */
 
-    	// Create the socket in the associated verticle.
-    	submit(() -> {
-	    	NetClient client = _vertx.createNetClient(clientOptions);
-	    	// NOTE: In principle, this client can handle multiple connections.
-	    	// But here we use exactly one client per connection. Is this OK?
-	    	client.connect(port, host, response -> {
-	    		if (response.succeeded()) {
-	    			// Socket has been opened.
-	        	    NetSocket socket = response.result();
-	        	    
-	    			_issueResponse(() -> {
-	    				// This should be called in the director thread because it
-	    				// emits an event that may be handled by the user.
-	    				socketClient.callMember("_opened", socket, client);
-	    			});
-	    		} else {
-	        	    _error(socketClient, "Failed to connect: " + response.cause().getMessage());
-	    		}
-	    	});
-    	});
+        // Create the socket in the associated verticle.
+        submit(() -> {
+            NetClient client = _vertx.createNetClient(clientOptions);
+            // NOTE: In principle, this client can handle multiple connections.
+            // But here we use exactly one client per connection. Is this OK?
+            client.connect(port, host, response -> {
+                if (response.succeeded()) {
+                    // Socket has been opened.
+                    NetSocket socket = response.result();
+
+                    _issueResponse(() -> {
+                        // This should be called in the director thread because it
+                        // emits an event that may be handled by the user.
+                        socketClient.callMember("_opened", socket, client);
+                    });
+                } else {
+                    _error(socketClient, "Failed to connect: " + response.cause().getMessage());
+                }
+            });
+        });
     }
-    
+
     /** Get or create a helper for the specified actor.
      *  If one has been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
-	 *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
      */
     public static SocketHelper getOrCreateHelper(Object actor) {
-    	VertxHelperBase helper = VertxHelperBase.getHelper(actor);
-    	if (helper instanceof SocketHelper) {
-    		return (SocketHelper) helper;
-    	}
-    	return new SocketHelper(actor);
+        VertxHelperBase helper = VertxHelperBase.getHelper(actor);
+        if (helper instanceof SocketHelper) {
+            return (SocketHelper) helper;
+        }
+        return new SocketHelper(actor);
     }
 
     /** Create a server that can accept socket connection requests
@@ -179,70 +178,71 @@ public class SocketHelper extends VertxHelperBase {
      *  @param options The options (see the socket.js JavaScript module).
      */
     public void openServer(
-    		final ScriptObjectMirror socketServer,
-    		final Map<String,Object> options) {
-    	
-    	// Translate clientAuth option to an enum.
-    	ClientAuth auth = ClientAuth.NONE;
-    	String authSpec = (String)options.get("clientAuth");
-    	if (authSpec.toLowerCase().trim().equals("request")) {
-    		auth = ClientAuth.REQUEST;
-    	} else if (authSpec.toLowerCase().trim().equals("required")) {
-    		auth = ClientAuth.REQUIRED;
-    	}
-    	
-    	// NOTE: The following assumes all the options are defined.
-    	// This is handled in the associated JavaScript socket.js module.
-    	final NetServerOptions serverOptions = new NetServerOptions()
-    			.setClientAuth(auth)
-    			.setHost((String)options.get("hostInterface"))
-    			.setIdleTimeout((Integer)options.get("idleTimeout"))
-    			.setTcpKeepAlive((Boolean)options.get("keepAlive"))
-    			.setPort((Integer)options.get("port"))
-    			.setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
-    			.setSendBufferSize((Integer)options.get("sendBufferSize"))
-    			.setSsl((Boolean)options.get("sslTls"));
-    	
-    	/* FIXME: Not used:
+            final ScriptObjectMirror socketServer,
+            final Map<String,Object> options) {
+
+        // Translate clientAuth option to an enum.
+        ClientAuth auth = ClientAuth.NONE;
+        String authSpec = (String)options.get("clientAuth");
+        if (authSpec.toLowerCase().trim().equals("request")) {
+            auth = ClientAuth.REQUEST;
+        } else if (authSpec.toLowerCase().trim().equals("required")) {
+            auth = ClientAuth.REQUIRED;
+        }
+
+        // NOTE: The following assumes all the options are defined.
+        // This is handled in the associated JavaScript socket.js module.
+        final NetServerOptions serverOptions = new NetServerOptions()
+        .setClientAuth(auth)
+        .setHost((String)options.get("hostInterface"))
+        .setIdleTimeout((Integer)options.get("idleTimeout"))
+        .setTcpKeepAlive((Boolean)options.get("keepAlive"))
+        .setPort((Integer)options.get("port"))
+        .setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
+        .setSendBufferSize((Integer)options.get("sendBufferSize"))
+        .setSsl((Boolean)options.get("sslTls"));
+
+        /* FIXME: Not used:
         'receiveType': 'string',
         'sendType': 'string',
-        */
+         */
 
-    	// Create the server in the associated verticle.
-    	submit(() -> {
-	    	final NetServer server = _vertx.createNetServer(serverOptions);
-	    	
-	    	// Notify the JavaScript SocketServer object of the server.
-	    	socketServer.callMember("_serverCreated", server);
-	    	
-	    	server.connectHandler(socket -> {
-	    		// Connection is established with a client.
-    			_issueResponse(() -> {
-    				socketServer.callMember("_socketCreated", socket);
-    			});
-	    	});
-	    	
-	    	server.listen(result -> {
-				_issueResponse(() -> {
-					if (result.succeeded()) {
-						socketServer.callMember("emit", "listening", server.actualPort());
-					} else {
-						_error("Failed to start server listening.");
-					}
-				});
-	    	});
-    	});
+        // Create the server in the associated verticle.
+        submit(() -> {
+            final NetServer server = _vertx.createNetServer(serverOptions);
+
+            // Notify the JavaScript SocketServer object of the server.
+            socketServer.callMember("_serverCreated", server);
+
+            server.connectHandler(socket -> {
+                // Connection is established with a client.
+                _issueResponse(() -> {
+                    socketServer.callMember("_socketCreated", socket);
+                });
+            });
+
+            server.listen(result -> {
+                _issueResponse(() -> {
+                    if (result.succeeded()) {
+                        socketServer.callMember("emit", "listening", server.actualPort());
+                    } else {
+                        _error("Failed to start server listening.");
+                    }
+                });
+            });
+        });
     }
 
     /** Return an array of the types supported by the current host for
      *  receiveType arguments.
      */
     public static String[] supportedReceiveTypes() {
-        String[] imageTypes = ImageIO.getReaderFormatNames();
-        String[] result = new String[imageTypes.length + 2];
-        result[0] = "application/json";
-        result[1] = "text/plain";
-        System.arraycopy(imageTypes, 0, result, 2, imageTypes.length);
+        int length = DATA_TYPE.values().length;
+        String[] result = new String[length];
+        int i = 0;
+        for (DATA_TYPE type : DATA_TYPE.values()) {
+            result[i++] = type.toString().toLowerCase();
+        }
         return result;
     }
 
@@ -250,25 +250,23 @@ public class SocketHelper extends VertxHelperBase {
      *  sendType arguments.
      */
     public static String[] supportedSendTypes() {
-        String[] imageTypes = ImageIO.getWriterFormatNames();
-        String[] result = new String[imageTypes.length + 2];
-        result[0] = "application/json";
-        result[1] = "text/plain";
-        System.arraycopy(imageTypes, 0, result, 2, imageTypes.length);
-        return result;
+        return supportedReceiveTypes();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     private fields                        ////
-
-    /** True to discard messages before the socket is open. False to discard them. */
-    private boolean _discardMessagesBeforeOpen;
     
-    /** The MIME type to assume for received messages. */
-    private String _receiveType;
-    
-    /** The MIME type to assume for sent messages. */
-    private String _sendType;
+    /** Support data types for send and receive. */
+    public static enum DATA_TYPE {
+        BYTE,
+        DOUBLE,
+        FLOAT,
+        INT,
+        LONG,
+        NUMBER,
+        SHORT,
+        STRING,
+        UNSIGNEDBYTE,
+        UNSIGNEDINT,
+        UNSIGNEDSHORT
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
@@ -285,70 +283,121 @@ public class SocketHelper extends VertxHelperBase {
      *  </ul>
      */
     public class SocketWrapper {
-    	
-    	/** Construct a handler for connections established.
-    	 *  @param eventEmitter The JavaScript object that will emit socket
-    	 *   events.
-    	 *  @param socket The Vertx socket object.
-    	 */
-    	public SocketWrapper(ScriptObjectMirror eventEmitter, Object socket) {
-    		_eventEmitter = eventEmitter;
-    		_socket = (NetSocket)socket;
-    		
-    	    // Set up handlers for data, errors, etc.
-    	    _socket.closeHandler((Void) -> {
-    			_issueResponse(() -> {
-    				_eventEmitter.callMember("emit", "close");
-    			});
-    	    });
-    	    _socket.drainHandler((Void) -> {
-    			// FIXME: This should unblock send(),
-    			// which should block itself when the buffer gets full.
-    	    });
-    	    _socket.endHandler((Void) -> {
-    	    	// End event on the socket triggers a close of the socket.
-    	    	// This gets called when the remote side sends a FIN packet.
-    	    	// FIXME: This isn't right. Need FIN from both ends to close the socket!
-    	    	// _client.close();
-    	    });
-    	    _socket.exceptionHandler(throwable -> {
-    			_error(_eventEmitter, throwable.toString());
-    	    });
-    	    _socket.handler(buffer -> {
-    			_issueResponse(() -> {
-    				// FIXME: handle the buffer data more intelligently here.
-    				// If the received type is 'double', 'byte', etc., then do multiple emits.
-    				// See defaultOptions in the JS module.
-    				_eventEmitter.callMember("emit", "data", buffer.toString());
-    			});
-    	    });
-    	}
-    	/** Close the socket.
-    	 */
-		public void close() {
-			submit(() -> {
-				_socket.close();
-			});
-		}
-		/** Send data over the socket.
-		 *  @param data The data to send.
-		 */
-		public void send(final Object data) {
-			// FIXME: Should block if the send buffer is full.
-			
-			submit(() -> {
-				// FIXME: Need to handle data types here.
-				if (data instanceof String) {
-					// FIXME: A second argument could take an encoding.
-					// Defaults to UTF-8. Option?
-					_socket.write((String)data);
-				} else {
-					_error(_eventEmitter, "Unsupported type for socket: "
-							+ data.getClass().getName());
-				}
-			});
-		}
-		private NetSocket _socket;
-		private ScriptObjectMirror _eventEmitter;
+
+        /** Construct a handler for connections established.
+         *  @param eventEmitter The JavaScript object that will emit socket
+         *   events.
+         *  @param socket The Vertx socket object.
+         *  @param sendType The send type.
+         *  @param receiveType The receive type.
+         */
+        public SocketWrapper(
+                ScriptObjectMirror eventEmitter,
+                Object socket,
+                String sendType,
+                String receiveType) {
+            _eventEmitter = eventEmitter;
+            _socket = (NetSocket)socket;
+            
+            try {
+                _sendType = Enum.valueOf(DATA_TYPE.class, sendType.trim().toUpperCase());
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("Invalid data type: " + sendType);
+            }
+
+            try {
+                _receiveType = Enum.valueOf(DATA_TYPE.class, receiveType.trim().toUpperCase());
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("Invalid data type: " + receiveType);
+            }
+
+            // Set up handlers for data, errors, etc.
+            _socket.closeHandler((Void) -> {
+                _issueResponse(() -> {
+                    _eventEmitter.callMember("emit", "close");
+                });
+            });
+            _socket.drainHandler((Void) -> {
+                // FIXME: This should unblock send(),
+                // which should block itself when the buffer gets full.
+            });
+            _socket.endHandler((Void) -> {
+                // End event on the socket triggers a close of the socket.
+                // This gets called when the remote side sends a FIN packet.
+                // FIXME: This isn't right. Need FIN from both ends to close the socket!
+                // _client.close();
+            });
+            _socket.exceptionHandler(throwable -> {
+                _error(_eventEmitter, throwable.toString());
+            });
+            _socket.handler(buffer -> {
+                _issueResponse(() -> {
+                    switch(_receiveType) {
+                    case NUMBER:
+                        for (int i = 0; i < buffer.length(); i++) {
+                            try {
+                                _eventEmitter.callMember("emit", "data", buffer.getDouble(i));
+                            } catch (Throwable ex) {
+                                _error(_eventEmitter, "Received data that is not of type number: "
+                                        + buffer.toString()
+                                        + "\nException converting to number: "
+                                        + ex);
+                            }
+                        }
+                        break;
+                    case STRING:
+                        _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
+                        break;
+                    default:
+                        _error(_eventEmitter, "Unsupported type for socket: "
+                                + _sendType.toString());                    
+                    }
+
+                    // FIXME: handle the buffer data more intelligently here.
+                    // If the received type is 'double', 'byte', etc., then do multiple emits.
+                    // See defaultOptions in the JS module.
+                });
+            });
+        }
+        /** Close the socket.
+         */
+        public void close() {
+            submit(() -> {
+                _socket.close();
+            });
+        }
+        /** Send data over the socket.
+         *  @param data The data to send.
+         */
+        public void send(final Object data) {
+            // FIXME: Should block if the send buffer is full.
+
+            submit(() -> {
+                switch(_sendType) {
+                case NUMBER:
+                    if (data instanceof Number) {
+                        _socket.write(Buffer.buffer().appendDouble(((Number)data).doubleValue()));
+                    } else {
+                        _error(_eventEmitter, "data to send is not a number. It is: "
+                                + data.getClass().getName());
+                    }
+                    break;
+                case STRING:
+                    // NOTE: Use of toString() method makes this very tolerant, but
+                    // it won't properly stringify JSON. Is this OK?
+                    // NOTE: A second argument could take an encoding.
+                    // Defaults to UTF-8. Is this OK?
+                    _socket.write(data.toString());
+                    break;
+                default:
+                    _error(_eventEmitter, "Unsupported type for socket: "
+                            + _sendType.toString());                    
+                }
+            });
+        }
+        private NetSocket _socket;
+        private ScriptObjectMirror _eventEmitter;
+        private DATA_TYPE _sendType;
+        private DATA_TYPE _receiveType;
     }
 }

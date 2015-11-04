@@ -1,0 +1,184 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Socket3" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 943, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[709, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3676819856666962">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{127.54186109253394, 145.0908203125}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -15.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test discardMessagesBeforeOpen.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, -45.0}">
+        </property>
+    </property>
+    <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(4000, 'localhost',&#10;		{'discardMessagesBeforeOpen':true}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		client.send(data);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 60.0}">
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	output('listening');&#10;	output('connected');&#10;	output('received');&#10;	input('start');&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	addInputHandler('start', function() {&#10;		server = new socket.SocketServer();&#10;		server.on('listening', function(port) {&#10;			send('listening', port);&#10;		});&#10;		server.on('connection', function(serverSocket) {&#10;			connectionCount++;&#10;			send('connected', connectionCount);&#10;			serverSocket.on('data', function(data) {&#10;				send('received', data);&#10;			});&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 225.0}">
+        </property>
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="connected" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="start" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ServerErrors" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={530, 510, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 305.0}">
+        </property>
+    </entity>
+    <entity name="ServerReceived" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={907, 445, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 260.0}">
+        </property>
+    </entity>
+    <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 233, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 22, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 165.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 50.0}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;aa&quot;, &quot;aaa&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 200.0}">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.error&quot;,x=30.0,y=225.0}, tail={id=&quot;ServerErrors.input&quot;,x=165.0,y=305.0}, points={20.0,305.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=30.0,y=225.0}, tail={id=&quot;ServerConnected.input&quot;,x=165.0,y=225.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.start&quot;,x=30.0,y=225.0}, tail={id=&quot;SingleEvent.output&quot;,x=-95.0,y=225.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=-60.0,y=50.0}, tail={id=&quot;Ramp.trigger&quot;,x=100.0,y=60.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.toSend&quot;,x=235.0,y=60.0}, tail={id=&quot;Ramp.output&quot;,x=100.0,y=60.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.listening&quot;,x=30.0,y=225.0}, tail={id=&quot;ListeningPort.input&quot;,x=165.0,y=165.0}, points={115.0,215.0,115.0,165.0} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{250.0, 260.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=250.0,y=260.0}, tail={id=&quot;Test.input&quot;,x=315.0,y=200.0}, points={250.0,200.0} },{ head={id=&quot;Server.received&quot;,x=30.0,y=225.0}, tail={id=&quot;relation8.vertex1&quot;,x=250.0,y=260.0}, points={115.0,235.0,115.0,260.0} },{ head={id=&quot;ServerReceived.input&quot;,x=305.0,y=260.0}, tail={id=&quot;relation8.vertex1&quot;,x=250.0,y=260.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="Client.toSend" relation="relation2"/>
+    <link port="Server.error" relation="relation4"/>
+    <link port="Server.listening" relation="relation7"/>
+    <link port="Server.connected" relation="relation6"/>
+    <link port="Server.received" relation="relation8"/>
+    <link port="Server.start" relation="relation"/>
+    <link port="ServerErrors.input" relation="relation4"/>
+    <link port="ServerReceived.input" relation="relation8"/>
+    <link port="ServerConnected.input" relation="relation6"/>
+    <link port="ListeningPort.input" relation="relation7"/>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation3"/>
+    <link port="Test.input" relation="relation8"/>
+</entity>
