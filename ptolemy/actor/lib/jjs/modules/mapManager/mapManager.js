@@ -365,7 +365,7 @@ function Entity(name){
 	}
 
 	this.name = name;
-	this.containingMaps = {};
+	this.containingMap = null;
 	this.aliases = {};
 
 	this._key = function(){
@@ -380,13 +380,6 @@ function Entity(name){
 		return "{ " + "name: " + this.name + " }";
 	}
 
-	/**
-	* @function
-	* @returns {string} string representation of the maps this entity has been added to.
-	*/
-	this.containingMapsToString = function() {
-		return _simpleHashToString(this.containingMaps);
-	}
 
 	/**
 	* @function
@@ -423,7 +416,7 @@ function Entity(name){
 	 	if( (alias === this) || this.aliases.hasOwnProperty(alias._key())){
 	 		return false;
 	 	} else {
-	 		this.aliases[alias._key()] = alias;
+	 		this.aliases[alias._key()] = true;
 	 		return true;
 	 	}
 	}
@@ -507,6 +500,9 @@ exports.registerEntity = function(entity){
 //CoordinateTransformation Specific functions
 //******************************************************************************************
 
+
+//Todo: Remove this class and just treat coordinate systems as names. Or find
+//a reason to make this a full-blown object.
 /**
 * @constructor
 * @param {name} name - The name of the coordinate system.
@@ -641,17 +637,21 @@ function Map(mapName, spaceType, coordinateSystem){
 			throw "Cannot add an entity to an unregistred map" + this.toString();
 		}
 
-		if( this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMaps.hasOwnProperty(this._key()) ){
+		if( this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMap !== null ){
+			//The entity is already on this map or has already been assigned to a different map.
 			return false;
+
 		} else {
 			this.mapEntities[entity._key()] = true;
-			entity.containingMaps[this._key()] = true;
+			entity.containingMap = this._key();
 			return true;
 		}
 	}
 
 
 	//Todo: should it be allowed to remove an entity?
+	//Todo: what happens if an entity is in an invalid state of not thinking it's on a map it is on?
+	//right now this function will just return false.
 	/**
 	* Unattach an entity from this map.
 	* @function
@@ -672,11 +672,13 @@ function Map(mapName, spaceType, coordinateSystem){
 			throw "Cannot remove an entity from an unregistred map" + this.toString();
 		}
 
-		if( ! (this.mapEntities.hasOwnProperty(entity._key()) && entity.containingMaps.hasOwnProperty(this._key())) ){
+		if( (! this.mapEntities.hasOwnProperty(entity._key())) || (entity.containingMap !== this._key()) ) {
+			//Entity had not been previously assigned to this map.
 			return false;
+
 		} else {
 			delete this.mapEntities[entity._key()];
-			delete entity.containingMaps[this._key()];
+			entity.containingMap = null;
 			return true;
 		}
 	}

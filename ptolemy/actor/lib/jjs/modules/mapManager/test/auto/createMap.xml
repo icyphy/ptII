@@ -4,7 +4,7 @@
 <entity name="createMap" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 158, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={362, 125, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -40,7 +40,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Registering myMap, should print true&quot;, &quot;true&quot;, &quot;Registering myMap again, should print false&quot;, &quot;false&quot;, &quot;Registering yourMap, should print true&quot;, &quot;true&quot;, &quot;Printing maps. badMap is not registered, should not be printed.&quot;, &quot;{ myMapName: { mapName: myMapName, spaceType: Euclidean, coordinateSystem: Joey }, yourMapName: { mapName: yourMapName, spaceType: Topological, coordinateSystem: Sally } }&quot;, &quot;Creating and registering sampleEntity&quot;, &quot;Attempting to add sampleEntity to myMap (should print true)&quot;, &quot;true&quot;, &quot;Attempting to add sampleEntity to badMap (should print exception)&quot;, &quot;Cannot add an entity to an unregistred map{ mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey }&quot;, &quot;Attempting to remove sampleEntity from myMap (should print true)&quot;, &quot;true&quot;, &quot;Attempting to remove sampleEntity from badMap (should print exception)&quot;, &quot;Cannot remove an entity from an unregistred map{ mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey }&quot;, &quot;Printing contents of local repo as JSON&quot;, &quot;{\&quot;maps\&quot;:{\&quot;myMapName\&quot;:{\&quot;spaceType\&quot;:\&quot;Euclidean\&quot;,\&quot;coordinateSystem\&quot;:{\&quot;name\&quot;:\&quot;Joey\&quot;},\&quot;mapName\&quot;:\&quot;myMapName\&quot;,\&quot;mapEntities\&quot;:{}},\&quot;yourMapName\&quot;:{\&quot;spaceType\&quot;:\&quot;Topological\&quot;,\&quot;coordinateSystem\&quot;:{\&quot;name\&quot;:\&quot;Sally\&quot;},\&quot;mapName\&quot;:\&quot;yourMapName\&quot;,\&quot;mapEntities\&quot;:{}}},\&quot;coordinateTransformations\&quot;:{},\&quot;entities\&quot;:{\&quot;sampleEntity\&quot;:{\&quot;name\&quot;:\&quot;sampleEntity\&quot;,\&quot;containingMaps\&quot;:{},\&quot;aliases\&quot;:{}}}}&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Registering myMap, should print true&quot;, &quot;true&quot;, &quot;Registering myMap again, should print false&quot;, &quot;false&quot;, &quot;Registering yourMap, should print true&quot;, &quot;true&quot;, &quot;Printing maps. badMap is not registered, should not be printed.&quot;, &quot;{ myMapName: { mapName: myMapName, spaceType: Euclidean, coordinateSystem: Joey }, yourMapName: { mapName: yourMapName, spaceType: Topological, coordinateSystem: Sally } }&quot;, &quot;Creating and registering sampleEntity&quot;, &quot;Attempting to add sampleEntity to myMap (should print true)&quot;, &quot;true&quot;, &quot;Attempting to add sampleEntity to badMap (should print exception)&quot;, &quot;Cannot add an entity to an unregistred map{ mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey }&quot;, &quot;Attempting to remove sampleEntity from myMap (should print true)&quot;, &quot;true&quot;, &quot;Attempting to remove sampleEntity from badMap (should print exception)&quot;, &quot;Cannot remove an entity from an unregistred map{ mapName: badMapName, spaceType: Euclidean, coordinateSystem: Joey }&quot;, &quot;Printing contents of local repo as JSON&quot;, &quot;{\&quot;maps\&quot;:{\&quot;myMapName\&quot;:{\&quot;spaceType\&quot;:\&quot;Euclidean\&quot;,\&quot;coordinateSystem\&quot;:{\&quot;name\&quot;:\&quot;Joey\&quot;},\&quot;mapName\&quot;:\&quot;myMapName\&quot;,\&quot;mapEntities\&quot;:{}},\&quot;yourMapName\&quot;:{\&quot;spaceType\&quot;:\&quot;Topological\&quot;,\&quot;coordinateSystem\&quot;:{\&quot;name\&quot;:\&quot;Sally\&quot;},\&quot;mapName\&quot;:\&quot;yourMapName\&quot;,\&quot;mapEntities\&quot;:{}}},\&quot;coordinateTransformations\&quot;:{},\&quot;entities\&quot;:{\&quot;sampleEntity\&quot;:{\&quot;name\&quot;:\&quot;sampleEntity\&quot;,\&quot;containingMap\&quot;:null,\&quot;aliases\&quot;:{}}}}&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -48,9 +48,9 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 192, 867, 349}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 192, 852, 349}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[867, 305]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[852, 305]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 280}">
         </property>
