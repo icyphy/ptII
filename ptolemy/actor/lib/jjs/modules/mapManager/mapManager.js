@@ -291,7 +291,63 @@ exports.entitiesToString = function(){
 	return _simpleHashToString(entities);
 }
 
+//******************************************************************************************
+//Data Control Functions
+//******************************************************************************************
 
+
+/**
+* Deletes all maps, entities, and coordinate transformations in the repo.
+* @function
+* @returns {void} - Clearing the repo always works.
+*/
+exports.clearRepo = function(){
+	maps = {};
+	coordinateTransformations= {};
+	entities = {};
+	return;
+}
+
+
+//Todo - Validate the input map before replacing the repo.
+/**
+* Replaces the current values of maps, coordinateTransformations,
+* and entities with the input. Currently does NOT check the input besides
+* making sure it has "maps", "coordinateTransformations", and "entities"
+* properties
+* @function
+* @param {String} repo - A JSON string of the format you would get calling
+* localRepoToJSONString()
+* @returns {boolean} if the input was an acceptably formatted repo.
+*/
+exports.replaceRepo = function(repo){
+	if(! (typeof name === "string") ) {
+		throw "Incorrect arguments to replaceRepo.";
+	}
+
+	var receivedRepo;
+	try{
+		receivedRepo = JSON.parse(repo);
+	} catch (e){
+		if (e instanceof SyntaxError){
+			return false;			
+		} else {
+			throw "JSON.parse threw a non-SyntaxError exception";
+		}
+
+	}
+
+	if(! (receivedRepo.hasOwnProperty("maps") && receivedRepo.hasOwnProperty("coordinateTransformations") && receivedRepo.hasOwnProperty("entities") ) ){
+		return false;
+	} else {
+		maps = receivedRepo.maps;
+		coordinateTransformations= receivedRepo.coordinateTransformations;
+		entities = receivedRepo.entities;
+		return true
+	}
+
+;
+}
 
 //******************************************************************************************
 //Entity Specific functions
