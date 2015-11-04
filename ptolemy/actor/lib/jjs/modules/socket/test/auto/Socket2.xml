@@ -28,6 +28,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, -45.0}">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(4002);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		client.send(data);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -116,7 +118,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.25, 100.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -134,7 +136,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.25, 100.0]">
         </property>
     </entity>
     <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -165,6 +167,12 @@
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 495.0}">
+        </property>
+    </entity>
+    <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="0.5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 100.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -199,6 +207,8 @@
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=50.0,y=495.0}, tail={id=&quot;Test3.input&quot;,x=110.0,y=495.0}, points={} },{ head={id=&quot;Server.received&quot;,x=-85.0,y=110.0}, tail={id=&quot;relation4.vertex1&quot;,x=50.0,y=495.0}, points={5.0,120.0,5.0,495.0} },{ head={id=&quot;ServerReceived.input&quot;,x=100.0,y=560.0}, tail={id=&quot;relation4.vertex1&quot;,x=50.0,y=495.0}, points={50.0,560.0} } }">
         </property>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Client.toSend" relation="relation3"/>
     <link port="StringConst.output" relation="relation3"/>
     <link port="StringConst.trigger" relation="relation7"/>
@@ -209,9 +219,11 @@
     <link port="ServerConnected.input" relation="relation"/>
     <link port="Client2.toSend" relation="relation2"/>
     <link port="StringConst2.output" relation="relation2"/>
-    <link port="StringConst2.trigger" relation="relation7"/>
+    <link port="StringConst2.trigger" relation="relation5"/>
     <link port="ListeningPort.input" relation="relation7"/>
     <link port="Test.input" relation="relation7"/>
     <link port="Test2.input" relation="relation"/>
     <link port="Test3.input" relation="relation4"/>
+    <link port="TimeDelay.input" relation="relation7"/>
+    <link port="TimeDelay.output" relation="relation5"/>
 </entity>

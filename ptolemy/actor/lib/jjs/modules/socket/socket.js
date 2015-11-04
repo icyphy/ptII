@@ -45,7 +45,7 @@ exports.supportedSendTypes = function() {
  */
 var defaultClientOptions = {
     'connectTimeout': 6000, // in milliseconds.
-    'idleTimeout': 0, // In second. 0 means don't timeout.
+    'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'discardMessagesBeforeOpen': false,
     'keepAlive': true,
     'receiveBufferSize': 65536,
@@ -168,7 +168,9 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
-    this.wrapper = new SocketHelper.SocketWrapper(this.helper, this, netSocket);
+    this.wrapper = new SocketHelper.SocketWrapper(
+            this.helper, this, netSocket,
+            this.options['sendType'], this.options['receiveType']);
     this.emit('open');
     
     // Send any pending data.
@@ -188,8 +190,11 @@ exports.SocketClient.prototype.send = function(data) {
     if (this.wrapper) {
         this.wrapper.send(data);
     } else {
-        // FIXME: Check whether to discard.
-        this.pendingSends.push(data);
+        if (!this.options['discardMessagesBeforeOpen']) {
+            this.pendingSends.push(data);
+        } else {
+            console.log('Discarding because socket is not open: ' + data);
+        }
     }      
 }
 
@@ -249,32 +254,39 @@ var defaultServerOptions = {
  *  * error: Emitted if the server fails to start listening.
  *    This will be passed an error message.
  *
- *  FIXME: Out of date: A typical usage pattern looks like this:
+ *  A typical usage pattern looks like this:
  * 
- *     var server = new WebSocket.Server({'port':8082});
- *     server.on('listening', onListening);
- *     server.on('connection', onConnection);
- *     server.start();
+ *     var server = new socket.SocketServer();
+ *     server.on('listening', function(port) {
+ *         console.log('Server listening on port: ' + port);
+ *     });
+ *     var connectionCount = 0;
+ *     server.on('connection', function(serverSocket) {
+ *         var connectionNumber = connectionCount++;
+ *         console.log('Server connected on a new socket number: ' + connectionNumber);
+ *         serverSocket.on('data', function(data) {
+ *             console.log('Server received data on connection '
+ *                     + connectionNumber
+ *                     + ": "
+ *                     + data);
+ *         });
+ *     });
  * 
- *  where onListening is a handler for an event that this Server emits
- *  when it is listening for connections, and onConnection is a handler
- *  for an event that this Server emits when a client requests a websocket
- *  connection and the socket has been successfully established.
  *  When the 'connection' event is emitted, it will be passed a Socket object,
- *  and the onConnection handler can register a listener for 'message' events
- *  on that Socket object, as follows:
+ *  which has a send() function. For example, to send a reply to each incoming
+ *  message, replace the above 'data' handler as follows:
  * 
- *     server.on('connection', function(socket) {
- *        socket.on('message', function(message) {
- *            console.log(message);
- *            socket.send('Reply message');
- *        });
+ *     serverSocket.on('data', function(data) {
+ *        socket.send('Reply message');
  *     });
  * 
  *  The Socket object also has a close() function that allows the server to close
- *  the connection.
+ *  the connection.  The ServerSocket object has a close() function that will close
+ *  all connections and shut down the server.
  * 
- *  The options argument is a JSON object containing the following optional fields:
+ *  An options argument can be passed to the SocketServer constructor above.
+ *  This is a JSON object containing the following optional fields:
+ *
  *  * clientAuth: One of 'none', 'request', or 'required', meaning whether it
  *    requires that a certificate be presented.
  *  * hostInterface: The name of the network interface to use for listening,
@@ -349,7 +361,9 @@ exports.SocketServer.prototype._serverCreated = function(netServer) {
  *  @param server The Vert.x NetServer object.
  */
 exports.SocketServer.prototype._socketCreated = function(netSocket) {
-    var socket = new exports.Socket(this.helper, netSocket);
+    var socket = new exports.Socket(
+            this.helper, netSocket,
+            this.options['sendType'], this.options['receiveType']);
     this.emit('connection', socket);
 }
 
@@ -365,20 +379,20 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
  *  * data: Emitted when data is received on any socket handled by this server.
  *    This will be passed the data.
  *  * close: Emitted when a socket is closed.
- *    This will be passed the instance of SocketWrapper for
- *    the socket that was closed.
+ *    This is not passed any arguments.
  *  * error: Emitted when an error occurs.
  *    This will be passed an error message.
  *
  *  @param helper The instance of SocketHelper that is helping.
  *  @param netSocket The Vert.x NetSocket object.
  */
-exports.Socket = function(helper, netSocket) {
+exports.Socket = function(helper, netSocket, sendType, receiveType) {
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
-    this.wrapper = new SocketHelper.SocketWrapper(helper, this, netSocket);
+    this.wrapper = new SocketHelper.SocketWrapper(
+            helper, this, netSocket, sendType, receiveType);
 }
 util.inherits(exports.Socket, EventEmitter);
 
