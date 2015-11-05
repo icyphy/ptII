@@ -30,9 +30,9 @@ package ptolemy.actor.lib.fmi;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
 import java.util.List;
 
-import org.ptolemy.fmi.FMIEventInfo;
 import org.ptolemy.fmi.FMILibrary;
 import org.ptolemy.fmi.FMIModelDescription;
 import org.ptolemy.fmi.FMIScalarVariable;
@@ -42,8 +42,12 @@ import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 
+import com.sun.jna.Function;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.Initializable;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.TypedIOPort;
@@ -67,7 +71,7 @@ import ptolemy.util.StringUtilities;
  * Import a Hybrid Co-Simulation FMU.
  *
  * @author Fabio Cremona
- * @version $Id: FMUImport.java 73691 2015-10-22 15:12:47Z tsnouidui@lbl.gov $
+ * @version $Id: FMUImportHybrid.java$
  * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -87,17 +91,46 @@ public class FMUImportHybrid extends FMUImport implements
      * has an actor with this name.
      */
     public FMUImportHybrid(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {        
         super(container, name);
-        // TODO Auto-generated constructor stub
+        _stepSize = 0;
     }
+
+    /**
+     * 
+     * @param originator
+     * @param fmuFileParameter
+     * @param context
+     * @param x
+     * @param y
+     * @param modelExchange
+     * @throws IllegalActionException
+     * @throws IOException
+     */
     
-    @Override
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid.preinitialize()");
+    public static void importFMU(Object originator,
+            FileParameter fmuFileParameter, NamedObj context, double x,
+            double y, boolean modelExchange) throws IllegalActionException,
+            IOException {
+
+        System.out.println("FMUImportHybrid importFMU()");
+        Method acceptFMUMethod = null;
+        try {
+            Class clazz = Class.forName("ptolemy.actor.lib.fmi.FMUImport");
+            acceptFMUMethod = clazz.getDeclaredMethod("_acceptFMU",
+                    new Class[] { FMIModelDescription.class });
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(
+                    context,
+                    throwable,
+                    "Failed to get the static _acceptFMU(FMIModelDescription) method for FMUImportHybrid.");
         }
+        // We use a protected method so that we can change
+        // the name of the entity that is instantiated.
+        FMUImportHybrid._importFMU(originator, fmuFileParameter, context, x, y,
+                modelExchange, true /* addMaximumStepSize */,
+                true /* stateVariablesAsInputPorts */,
+                "ptolemy.actor.lib.fmi.FMUImportHybrid", acceptFMUMethod);
     }
     
     /**
@@ -214,14 +247,19 @@ public class FMUImportHybrid extends FMUImport implements
         if (_debugging) {
             _debugToStdOut("FMUImportHybrid.initialize() call completed.");
         }
+        
+        boolean allInputsKnown = _allInputsKnown();
+        if (allInputsKnown) {
+            Time currentTime = director.getModelTime();
+            Time proposedTime = proposeTime(currentTime);
+            director.fireAt(this, proposedTime);
+        }
+        
         return;
     }
     
     @Override
     public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called fire()");
-        }
         Director director = getDirector();
         Time currentTime = director.getModelTime();
         int currentMicrostep = 1;
@@ -236,138 +274,18 @@ public class FMUImportHybrid extends FMUImport implements
                     + currentMicrostep);
         }
         
-        ////////////////
-        // Set the inputs.
-        // Iterate through the scalarVariables and set all the inputs
-        // that are known.
-        for (Input input : _getInputs()) {
-            if (input.port.getWidth() > 0) {
-                if (input.port.hasToken(0)) {
-                    Token token = input.port.get(0);
-
-                    _setFMUScalarVariable(input.scalarVariable, token);
-                    
-                    if (_debugging) {
-                        _debugToStdOut("FMUImportHybrid.fire(): set input variable " 
-                                        + input.scalarVariable.name 
-                                        + " to "
-                                        + token);
-                    }
-                }
-            }
+        // Set Inputs value to the FMU
+        _setFmuInputs();
+        
+        // Get Outputs value from the FMU and produce them.
+        _getFmuOutputs();
+        
+        boolean allInputsKnown = _allInputsKnown();
+        if (allInputsKnown) {
+            Time proposedTime = proposeTime(currentTime.add(1.0));
+            director.fireAt(this, proposedTime);
         }
         
-        //////////////
-        // Get the outputs from the FMU and produce them..
-        for (Output output : _getOutputs()) {
-
-            TypedIOPort port = output.port;
-
-            if (_debugging) {
-                _debugToStdOut("FMUImportHybrid.fire(): port " + port.getName());
-            }
-
-            // If the output port has already been set, then
-            // skip it.
-            // FIXME: This will not work with SDF because the port
-            // will likely be known but not have a token in it.
-            // We have to also check to make sure that the destination
-            // ports have a token.
-            // Even better, we should keep track locally of whether
-            // we've produced an output in this iteration.
-            if (_skipIfKnown() && port.isKnown(0)) {
-                continue;
-            }
-
-            // Next, we need to check whether the input ports that
-            // the output depends on are known. By default, an
-            // output depends on _all_ inputs, but if there is
-            // a DirectDependency element in the XML file, then
-            // the output may depend on only _some_ inputs.
-            boolean foundUnknownInputOnWhichOutputDepends = false;
-            if (output.dependencies != null) {
-                // The output port has some declared dependencies.
-                // Check only those ports.
-                for (TypedIOPort inputPort : output.dependencies) {
-                    if (_debugging) {
-                        _debugToStdOut("FMUImportHybrid.fire(): port "
-                                + port.getName() + " depends on " 
-                                + inputPort.getName());
-                    }
-
-//                    if (!inputPort.isKnown(0)) {
-//                        // Skip this output port. It depends on
-//                        // unknown inputs.
-//                        if (_debugging) {
-//                            _debugToStdOut("FMUImportHybrid.fire(): "
-//                                    + "FMU declares that output port "
-//                                    + port.getName()
-//                                    + " depends directly on input port "
-//                                    + inputPort.getName()
-//                                    + ", but the input is not yet known.");
-//                        }
-//                        foundUnknownInputOnWhichOutputDepends = true;
-//                        break;
-//                    }
-                }
-            } else {
-                // No directDependency is given.
-                // This means that the output depends on all
-                // inputs, so all inputs must be known.
-                List<TypedIOPort> inputPorts = inputPortList();
-                for (TypedIOPort inputPort : inputPorts) {
-                    if (_debugging) {
-                        _debugToStdOut("FMUImportHybrid.fire(): port "
-                                + port.getName() + " looking for unknown input"
-                                + inputPort.getName());
-                    }
-                    if (inputPort.getWidth() < 0 || !inputPort.isKnown(0)) {
-                        // Input port value is not known.
-                        foundUnknownInputOnWhichOutputDepends = true;
-                        if (_debugging) {
-                            _debugToStdOut("FMUImportHybrid.fire(): "
-                                    + "FMU does not declare input dependencies, which means that output port "
-                                    + port.getName() + " depends directly on all input ports, including "
-                                    + inputPort.getName() + ", but this input is not yet known.");
-                        }
-                        break;
-                    }
-                }
-            }
-            if (_debugging) {
-                _debugToStdOut("FMUImportHybrid.fire(): port " + port.getName() + " foundUnknownInputOnWhichOutputDepends: "
-                        + foundUnknownInputOnWhichOutputDepends);
-            }
-            if (!foundUnknownInputOnWhichOutputDepends) {
-                // Ok to get the output. All the inputs on which
-                // it depends are known.
-                Token token = null;
-                Token result = null;
-                FMIScalarVariable scalarVariable = output.scalarVariable;
-
-                if (scalarVariable.type instanceof FMIBooleanType) {
-                    result = scalarVariable.getBooleanHybrid(_fmiComponent);
-                } else if (scalarVariable.type instanceof FMIIntegerType) {
-                    // FIXME: handle Enumerations?
-                    result = scalarVariable.getIntHybrid(_fmiComponent);
-                } else if (scalarVariable.type instanceof FMIRealType) {
-                    result = scalarVariable.getDoubleHybrid(_fmiComponent);
-                } else if (scalarVariable.type instanceof FMIStringType) {
-                    result = scalarVariable.getStringHybrid(_fmiComponent);
-                } else {
-                    throw new IllegalActionException("Type "
-                            + scalarVariable.type + " not supported.");
-                }
-                if (!result.getClass().isInstance(AbsentToken.class)) {
-                    token = result;
-                }
-                if (_debugging) {
-                    _debugToStdOut("FMUImportHybrid.fire(): Output " + scalarVariable.name + " sends value " + token
-                            + " at time " + currentTime + " and microstep " + currentMicrostep);
-                }
-                port.send(0, token);
-            }
-        }
         _firstFireInIteration = false;
     }
     
@@ -384,7 +302,7 @@ public class FMUImportHybrid extends FMUImport implements
     @Override
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called postfire()");
+            _debug("FMUImportHybrid.postfire()");
         }
         if (_stepSizeRejected) {
             // The director is unaware that this FMU
@@ -402,16 +320,15 @@ public class FMUImportHybrid extends FMUImport implements
         
         Director director = getDirector();
         Time currentTime = director.getModelTime();
+        Time futureTime = director.getModelNextIterationTime();
         int currentMicrostep = 1;
-//        System.out.println("Current time: " + currentTime);
-        if (_debugging) {
-            _debugToStdOut("Committing to time " + currentTime);
-        }
+        
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
-        Time refinedStepSize = _fmiDoStepHybrid(currentTime, currentMicrostep);
-        if (refinedStepSize.isPositive()) {
+        Time refinedStepSize = _fmiDoStepHybrid(futureTime, currentMicrostep);
+//        System.out.println("->FMU " + getFullName() + ", current time: " + currentTime.getLongValue() + ", refinedStepSize: " + refinedStepSize.getLongValue() + ", futureTime: " + futureTime);
+        if (refinedStepSize.getLongValue() > _stepSize/*refinedStepSize.isPositive()*/) {
             throw new IllegalActionException(
                     this,
                     getDirector(),
@@ -421,34 +338,40 @@ public class FMUImportHybrid extends FMUImport implements
         _lastCommitTime = currentTime;
         _refinedStepSize = -1.0;
         _firstFireInIteration = true;
+        
+        // Advance Time
+//        if (refinedStepSize.getLongValue() > 0) {
+//            System.out.println("->FMU " + getFullName() + ", calling fireAt(): " + refinedStepSize.getLongValue() + ", at time: " + currentTime.getLongValue());
+//            director.fireAt(this, refinedStepSize, currentMicrostep);
+//        }
+        
         return !_stopRequested;
     }
 
-    public static void importFMU(Object originator,
-            FileParameter fmuFileParameter, NamedObj context, double x,
-            double y, boolean modelExchange) throws IllegalActionException,
-            IOException {
-
-        System.out.println("FMUImportHybrid importFMU()");
-        Method acceptFMUMethod = null;
+    /**
+     * 
+     */
+    @Override
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid.preinitialize()");
+        }
         try {
-            Class clazz = Class.forName("ptolemy.actor.lib.fmi.FMUImport");
-            acceptFMUMethod = clazz.getDeclaredMethod("_acceptFMU",
-                    new Class[] { FMIModelDescription.class });
+            _fmiGetMaxStepSize = _fmiModelDescription
+                    .getFmiFunction("fmiHybridGetMaxStepSize");
         } catch (Throwable throwable) {
             throw new IllegalActionException(
-                    context,
+                    this,
                     throwable,
-                    "Failed to get the static _acceptFMU(FMIModelDescription) method for FMUImportHybrid.");
+                    "The Co-Simulation fmiGetMaxStepSize() function was not found? ");
         }
-        // We use a protected method so that we can change
-        // the name of the entity that is instantiated.
-        FMUImportHybrid._importFMU(originator, fmuFileParameter, context, x, y,
-                modelExchange, true /* addMaximumStepSize */,
-                true /* stateVariablesAsInputPorts */,
-                "ptolemy.actor.lib.fmi.FMUImportHybrid", acceptFMUMethod);
+        _stepSize = 0;
     }
-
+   
+    /**
+     * 
+     */    
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
         int currentMicrostep = 1;
@@ -456,11 +379,28 @@ public class FMUImportHybrid extends FMUImport implements
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
-        Time refinedStepSize = _fmiDoStepHybrid(proposedTime, currentMicrostep);
-        
-        return refinedStepSize;
+        LongBuffer stepSize = LongBuffer.allocate(1);
+        if (_fmiGetMaxStepSize != null) {
+            int fmiFlag = ((Integer) _fmiGetMaxStepSize.invokeInt(new Object[] {
+                    _fmiComponent, stepSize})).intValue();
+            if (fmiFlag >= FMILibrary.FMIStatus.fmiDiscard) {
+                if (_debugging) {
+                    _debugToStdOut("Error while getMaxStepSize()"
+                            + " at time " + director.getModelTime());
+                }
+            }
+            _stepSize = stepSize.get(0) + director.getModelTime().getLongValue();
+            return new Time(getDirector(), _stepSize);
+        } else {
+            Time refinedStepSize = _fmiDoStepHybrid(proposedTime, currentMicrostep);
+            _stepSize = refinedStepSize.getLongValue();
+            return refinedStepSize;
+        }        
     }
-
+    
+    /**
+     * 
+     */
     @Override
     public boolean noNewActors() {
         // TODO Auto-generated method stub
@@ -469,6 +409,121 @@ public class FMUImportHybrid extends FMUImport implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /**
+     * Returns true if all inputs are known. Return false if at least
+     * one of the inputs is unknown. If an FMU has no inputs it also
+     * returns true.
+     * @return
+     * @throws IllegalActionException
+     */
+    protected boolean _allInputsKnown() throws IllegalActionException {
+        boolean allInputsKnown = true;
+        List<TypedIOPort> inputPorts = inputPortList();
+        for (TypedIOPort inputPort : inputPorts) {
+            if (inputPort.getWidth() < 0 || !inputPort.isKnown(0)) {
+                // Input port value is not known.
+                allInputsKnown = false;
+                break;
+            }
+        }
+        return allInputsKnown;
+    }
+    
+    /**
+     * 
+     */
+    protected void _defaultStepSize() {
+        
+    }
+    /**
+     * Initialize the FMU.
+     */
+    protected void _fmiInitialize() throws IllegalActionException {
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid._fmiInitialize()");
+        }
+        
+        // This _fmiInitialize() is specific for FMI 2.1 Hybrid Co-Simulation
+        String modelIdentifier = _fmiModelDescription.modelIdentifier;
+
+        Director director = getDirector();
+        Time startTime = director.getModelStartTime();
+        Time stopTime = director.getModelStopTime();
+//        System.out.println("-> Time Initilized: " + startTime.getLongValue());
+        int fmiFlag;
+
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi setup experiment function");
+        }
+        fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
+                Integer.class,
+                new Object[] { _fmiComponent, _toleranceControlled,
+                        (long)_relativeTolerance, startTime.getLongValue(),
+                        1, stopTime.getLongValue() })).intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this,
+                    "Failed to setup the experiment of the FMU: "
+                            + _fmiStatusDescription(fmiFlag));
+        }
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi enter initialization function");
+        }
+        fmiFlag = ((Integer) _fmiEnterInitializationModeFunction
+                .invoke(Integer.class, new Object[] { _fmiComponent }))
+                .intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this,
+                    "Failed to enter the initialization mode of the FMU: "
+                            + _fmiStatusDescription(fmiFlag));
+        }
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi exit initialization function");
+        }
+        fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
+                Integer.class, new Object[] { _fmiComponent }))
+                .intValue();
+
+        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+            throw new IllegalActionException(this,
+                    "Failed to exit the initialization mode of the FMU: "
+                            + _fmiStatusDescription(fmiFlag));
+        }
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to request refiring if necessary.");
+        }
+
+        // If the FMU can provide a maximum step size, query for the
+        // initial maximum
+        // step size and call fireAt() and ensure that the FMU is
+        // invoked
+        // at the specified time.
+        _requestRefiringIfNecessary();
+
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to record FMU state.");
+        }
+        // In case we have to backtrack, if the FMU supports
+        // backtracking,
+        // record its state.
+        _recordFMUState();
+
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new IllegalActionException(this, "Could not simulate, "
+                    + modelIdentifier
+                    + "_fmiInitializeSlave(Component, /* startTime */ "
+                    + startTime.getLongValue() + ", 1, /* stopTime */"
+                    + stopTime.getLongValue() + ") returned "
+                    + _fmiStatusDescription(fmiFlag));
+        }
+
+        if (_debugging) {
+            _debugToStdOut("Initialized FMU.");
+        }
+        _modelInitialized = true;
+    }
     
     /**
      * Advance from the last firing time or last commit time to the specified
@@ -550,7 +605,7 @@ public class FMUImportHybrid extends FMUImport implements
                         + time + ", /* stepSize */" + stepSize
                         + lastArgDescription + lastArg + ")");
             }
-
+            
             int fmiFlag = ((Integer) _fmiDoStepFunction.invokeInt(new Object[] {
                     _fmiComponent, time, stepSize, lastArg })).intValue();
 
@@ -631,7 +686,9 @@ public class FMUImportHybrid extends FMUImport implements
 
     /**
      * Set a scalar variable of the FMU to the value of a Ptolemy token.
-     *
+     * This method works with the new proposal of FMI for Hybrid Co-Simulation.
+     * We suppose FMUs able to handle an explicit notion of "absent" signal.
+     * 
      * @param scalar the FMI scalar to be set.
      * @param token the Ptolemy token that contains the value to be set.
      * @exception IllegalActionException If the scalar is of a type
@@ -700,102 +757,189 @@ public class FMUImportHybrid extends FMUImport implements
                             + scalar.type);
         }
     }
-
-    @SuppressWarnings("deprecation")
-    protected void _fmiInitialize() throws IllegalActionException {
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize()");
+    
+    /**
+     * @throws IllegalActionException 
+     * @throws NoRoomException 
+     * 
+     */
+    protected void _getFmuOutputs() throws NoRoomException, IllegalActionException {
+        
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int currentMicrostep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
         
-        // This _fmiInitialize() is specific for FMI 2.1 Hybrid Co-Simulation
-        String modelIdentifier = _fmiModelDescription.modelIdentifier;
+        for (Output output : _getOutputs()) {
+            TypedIOPort port = output.port;
+            if (_debugging) {
+                _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                        + port.getName());
+            }
 
-        Director director = getDirector();
-        Time startTime = director.getModelStartTime();
-        Time stopTime = director.getModelStopTime();
-        System.out.println("-> Time Initilized: " + startTime.getLongValue());
-        int fmiFlag;
+            // If the output port has already been set, then
+            // skip it.
+            // FIXME: This will not work with SDF because the port
+            // will likely be known but not have a token in it.
+            // We have to also check to make sure that the destination
+            // ports have a token.
+            // Even better, we should keep track locally of whether
+            // we've produced an output in this iteration.
+            if (_skipIfKnown() && port.isKnown(0)) {
+                continue;
+            }
 
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi setup experiment function");
-        }
-        fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
-                Integer.class,
-                new Object[] { _fmiComponent, _toleranceControlled,
-                        (long)_relativeTolerance, startTime.getLongValue(),
-                        1, stopTime.getLongValue() })).intValue();
+            // Next, we need to check whether the input ports that
+            // the output depends on are known. By default, an
+            // output depends on _all_ inputs, but if there is
+            // a DirectDependency element in the XML file, then
+            // the output may depend on only _some_ inputs.
+            boolean foundUnknownInputOnWhichOutputDepends = false;
+            if (output.dependencies != null) {
+                // The output port has some declared dependencies.
+                // Check only those ports.
+                for (TypedIOPort inputPort : output.dependencies) {
+                    if (_debugging) {
+                        _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                                + port.getName()
+                                + " depends on " 
+                                + inputPort.getName());
+                    }
+                    // The snipped below is important! I commented it out to use IntegratorWithReset without reset                    
+                    if (!inputPort.isKnown(0)) {
+                        // Skip this output port. It depends on
+                        // unknown inputs.
+                        if (_debugging) {
+                            _debugToStdOut("FMUImportHybrid._getFmuOutputs(): "
+                                    + "FMU declares that output port "
+                                    + port.getName()
+                                    + " depends directly on input port "
+                                    + inputPort.getName()
+                                    + ", but the input is not yet known.");
+                        }
+                        foundUnknownInputOnWhichOutputDepends = true;
+                        break;
+                    }
+                }
+            } else {
+                // No directDependency is given.
+                // This means that the output depends on all
+                // inputs, so all inputs must be known.
+                List<TypedIOPort> inputPorts = inputPortList();
+                for (TypedIOPort inputPort : inputPorts) {
+                    if (_debugging) {
+                        _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                                + port.getName()
+                                + " looking for unknown input"
+                                + inputPort.getName());
+                    }
+                    if (inputPort.getWidth() < 0 || !inputPort.isKnown(0)) {
+                        // Input port value is not known.
+                        foundUnknownInputOnWhichOutputDepends = true;
+                        if (_debugging) {
+                            _debugToStdOut("FMUImportHybrid._getFmuOutputs(): "
+                                    + "FMU does not declare input dependencies, "
+                                    + "which means that output port "
+                                    + port.getName() + " depends directly on all "
+                                    + "input ports, including "
+                                    + inputPort.getName()
+                                    + ", but this input is not yet known.");
+                        }
+                        break;
+                    }
+                }
+            }
+            if (_debugging) {
+                _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                        + port.getName()
+                        + " foundUnknownInputOnWhichOutputDepends: "
+                        + foundUnknownInputOnWhichOutputDepends);
+            }
+            if (!foundUnknownInputOnWhichOutputDepends) {
+                // Ok to get the output. All the inputs on which
+                // it depends are known.
+                Token token = null;
+                Token result = null;
+                FMIScalarVariable scalarVariable = output.scalarVariable;
 
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Failed to setup the experiment of the FMU: "
-                            + _fmiStatusDescription(fmiFlag));
+                if (scalarVariable.type instanceof FMIBooleanType) {
+                    result = scalarVariable.getBooleanHybrid(_fmiComponent);
+                } else if (scalarVariable.type instanceof FMIIntegerType) {
+                    // FIXME: handle Enumerations?
+                    result = scalarVariable.getIntHybrid(_fmiComponent);
+                } else if (scalarVariable.type instanceof FMIRealType) {
+                    result = scalarVariable.getDoubleHybrid(_fmiComponent);
+                } else if (scalarVariable.type instanceof FMIStringType) {
+                    result = scalarVariable.getStringHybrid(_fmiComponent);
+                } else {
+                    throw new IllegalActionException("Type "
+                            + scalarVariable.type + " not supported.");
+                }
+                if (!(result instanceof AbsentToken)) {
+                    token = result;
+                    port.send(0, token);
+                } else {
+                    port.sendClear(0);
+                }
+                if (_debugging) {
+                    _debugToStdOut("FMUImportHybrid._getFmuOutputs(): Output "
+                            + scalarVariable.name + " sends value " + token
+                            + " at time " + currentTime + " and microstep "
+                            + currentMicrostep);
+                }
+                
+            }
         }
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi enter initialization function");
-        }
-        fmiFlag = ((Integer) _fmiEnterInitializationModeFunction
-                .invoke(Integer.class, new Object[] { _fmiComponent }))
-                .intValue();
-
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Failed to enter the initialization mode of the FMU: "
-                            + _fmiStatusDescription(fmiFlag));
-        }
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi exit initialization function");
-        }
-        fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
-                Integer.class, new Object[] { _fmiComponent }))
-                .intValue();
-
-        if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-            throw new IllegalActionException(this,
-                    "Failed to exit the initialization mode of the FMU: "
-                            + _fmiStatusDescription(fmiFlag));
-        }
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to request refiring if necessary.");
-        }
-
-        // If the FMU can provide a maximum step size, query for the
-        // initial maximum
-        // step size and call fireAt() and ensure that the FMU is
-        // invoked
-        // at the specified time.
-        _requestRefiringIfNecessary();
-
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to record FMU state.");
-        }
-        // In case we have to backtrack, if the FMU supports
-        // backtracking,
-        // record its state.
-        _recordFMUState();
-
-        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
-            throw new IllegalActionException(this, "Could not simulate, "
-                    + modelIdentifier
-                    + "_fmiInitializeSlave(Component, /* startTime */ "
-                    + startTime.getLongValue() + ", 1, /* stopTime */"
-                    + stopTime.getLongValue() + ") returned "
-                    + _fmiStatusDescription(fmiFlag));
-        }
-
-        if (_debugging) {
-            _debugToStdOut("Initialized FMU.");
-        }
-        _modelInitialized = true;
     }
     
+    /**
+     * Iterate through the scalarVariables and set all the inputs
+     * that are known.
+     * 
+     * @throws IllegalActionException 
+     * @throws NoTokenException 
+     * 
+     */
+    protected void _setFmuInputs() throws NoTokenException, IllegalActionException {
+        for (Input input : _getInputs()) {
+            if (input.port.getWidth() > 0) {
+                if (input.port.hasToken(0)) {
+                    Token token = input.port.get(0);
+                    _setFMUScalarVariable(input.scalarVariable, token);                    
+                    if (_debugging) {
+                        _debugToStdOut("FMUImportHybrid._setFmuInputs(): set input variable " 
+                                        + input.scalarVariable.name 
+                                        + " to "
+                                        + token);
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param time
+     * @return
+     */
+    protected long _toGlobalTime(long time) {
+        return 0;
+    }
+    /**
+     * 
+     * @param time
+     * @return
+     */
     protected long _toLocalTime(long time) {
         return 0;
     }
     
-    protected long _toGlobalTime(long time) {
-        return 0;
-    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private long _timeResolution;
+    
+    private Function _fmiGetMaxStepSize;
+    
+    private long _stepSize;
 }
