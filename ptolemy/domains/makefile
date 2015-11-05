@@ -86,7 +86,7 @@ PTAUXALLJARS = \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 	        dt/dt.jar \
-	    fmima/fmima.jar
+		fmima/fmima.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		openmodelica/openmodelica.jar \
