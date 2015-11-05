@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridAdder"
   guid="{e0916457-fa70-457a-a7e6-b2724eeb9ca8}"
   numberOfEventIndicators="0">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridGain"
   guid="{52edd868-5ff0-48ca-bb75-a8d925061e1b}"
   numberOfEventIndicators="0">

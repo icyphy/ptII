@@ -46,6 +46,7 @@ void setStartValues(ModelInstance *comp) {
 // if setStartValues or environment set new values through fmi2SetXXX.
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
+    // printf("HybridConstantSignalGenerator-calculateValues, time: %ld\n", comp->time);
     if (comp->state == modelInitializationMode) {
         hr(output_) = present_;
         r(output_) = r(value_);
@@ -67,11 +68,11 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent) {
-
+    // printf("HybridConstantSignalGenerator-eventUpdate, time: %ld\n", comp->time);
 }
 
 /***************************************************
-Functions for FMI2 for Hybrid Co-Simulation
+Functions for FMI2 for yeah it didn't additional he doesn't meet BB doesn't doesn't he's not a panda although how good it is available for a weekAnd then did Dave did you take the people that completes the is not unable four how would you feel in On the call send David David that they attracted it would going on around Bring me one and down they moved sit tight of business review for progress rooster nearest restaurant from from white dress whine a lot I'm easy-going for a lot of things for wolf for what did ask if you have a minute Thomas that's my ex-wife's family restaurant step mother's family restaurant in north beach oh she was clean and was like the best I have anything to do some with you is it time visibility can 19 nine out of there but my roommate to the dining room wine Co-Simulation
 ****************************************************/
 
 fmi2Status fmi2RequiredTimeResolution (fmi2Component c, fmi2Integer *value) {
@@ -89,7 +90,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 }
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
-    *value = LONG_MAX;
+    *value = 2;
     return fmi2OK;
 }
 
@@ -98,4 +99,3 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-

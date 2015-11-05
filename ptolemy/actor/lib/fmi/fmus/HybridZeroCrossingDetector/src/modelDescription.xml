@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridZeroCrossingDetector"
   guid="{dc8ac9fb-977b-4f97-a890-4d88eb618d66}"
   numberOfEventIndicators="0">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridCheckEquality"
   guid="{e0db71f6-374f-4fa3-92e0-898252146901}"
   numberOfEventIndicators="0">

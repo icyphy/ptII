@@ -101,7 +101,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer max_step_size;
-    max_step_size = LONG_MAX;
+    max_step_size = 2;
     *value = max_step_size;
     return fmi2OK;
 }

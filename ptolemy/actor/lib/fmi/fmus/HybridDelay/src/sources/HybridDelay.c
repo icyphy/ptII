@@ -18,6 +18,7 @@
 // Include fmu header files, typedefs and macros.
 #include "fmuTemplate.h"
 #include <limits.h>
+#include <stdbool.h>
 
 // Define all model variables and their value references
 // conventions used here:
@@ -29,7 +30,7 @@
 #define status_ 2
 #define delay_ 0
 #define resolution_ 1
-#define bs_ 2
+#define microstep_ 2
 #define STATES { output_ }
 
 #define present_ 0
@@ -37,45 +38,52 @@
 #define unknown_ 2
 
 typedef struct node {
-    fmi2Real val;
-    fmi2Integer t;
-    struct node * next;
-} node_t;
+    fmi2Real value;
+    fmi2Integer time;
+    struct node *next;
+} Event;
 
-node_t *eventQueue;
+Event *eventQueue;
 
-void addEvent(fmi2Real event, fmi2Integer t) {
-    node_t * current = eventQueue;
+void _addEvent(fmi2Real event, fmi2Integer t) {
+    Event * current = eventQueue;
     while (current->next != NULL) {
         current = current->next;
     }
-    current->next = malloc(sizeof(node_t));
-    current->val = event;
-    current->t = t;
+    current->next = malloc(sizeof(Event));
+    current->value = event;
+    current->time = t;
     current->next->next = NULL;
 }
 
-fmi2Real getEvent() {
-    fmi2Real event = eventQueue->val;
-    node_t *tmp = eventQueue->next;
+Event _getLast() {
+    // Event event;
+    // event.value = eventQueue->value;
+    // event.time = eventQueue->time;
+    // event.next = NULL;
+    return *eventQueue;
+}
+
+void _removeLast() {
+    Event *tmp = eventQueue->next;
     free(eventQueue);
     eventQueue = tmp;
-    return event;
+    return;
 }
 
-fmi2Integer getTime() {
-    return eventQueue->t;
+fmi2Integer _getTime() {
+    return eventQueue->time;
 }
 
-fmi2Boolean isEmpty() {
+fmi2Boolean _isEmpty() {
     if (eventQueue->next == NULL) return fmi2True;
     else return fmi2False;
 }
 
 void deleteQueue() {
-    node_t * current = eventQueue;
+    Event * current = eventQueue;
     while (current->next != NULL) {
-        node_t *tmp = current;
+        Event *tmp = current;
         current = current->next;
         free(tmp);
     }
@@ -88,15 +96,25 @@ void deleteQueue() {
 void setStartValues(ModelInstance *comp) {
     r(output_) = 0;
     r(status_) = 0;
-    i(bs_) = 0;
+    i(microstep_) = 1;
     hr(output_) = absent_;
     hr(input_) = absent_;
     hr(delay_) = present_;
     hr(status_) = absent_;
-    eventQueue = malloc(sizeof(node_t));
+    eventQueue = malloc(sizeof(Event));
     eventQueue->next = NULL;
 }
 
+bool _isTime(ModelInstance *comp) {
+    if (_isEmpty()) {
+        return false;
+    }
+    if (comp->time == _getLast().time){
+        return true;
+    } else {
+        return false;
+    }
+}
 // called by fmi2GetReal, fmi2GetInteger, fmi2GetBoolean, fmi2GetString, fmi2ExitInitialization
 // if setStartValues or environment set new values through fmi2SetXXX.
 // Lazy set values for all variable that are computed from other variables.
@@ -104,33 +122,13 @@ void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode) {
         r(output_) = 0;
         hr(output_) = absent_;
-        r(status_) = r(input_);
-        hr(status_) = hr(input_);
-
         comp->eventInfo.nextEventTime = comp->time;
-    }
-    else {
-        if (hr(input_) == present_) {
-            addEvent(r(input_), comp->time);
-            pos(0) = fmi2True;
-            i(bs_) = i(bs_) + 1;
-        }
-        if (hr(status_) == present_) {
-            r(output_) = r(status_);
-            hr(output_) = present_;
-        }
-        if (hr(status_) == absent_) {
-            hr(output_) = absent_;
-        }
-
-        if (hr(status_) == present_) {
-            comp->eventInfo.nextEventTimeDefined   = fmi2True;
-            comp->eventInfo.nextEventTime          = comp->time;
-        }
-        else if (!isEmpty()) {
-            comp->eventInfo.nextEventTimeDefined   = fmi2True;
-            comp->eventInfo.nextEventTime          = getTime() + i(delay_);
-        }
+    } else if (_isTime(comp)){
+        Event tmp = _getLast();
+        r(output_) = tmp.value;
+        hr(output_) = present_;
+    } else {
+        hr(output_) = absent_;
     }
 }
 
@@ -150,23 +148,26 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 }
 
 fmi2Real getEventIndicator(ModelInstance* comp, int z) {
-    return 0;
+    return (hr(input_) == present_) ? -1 : 1;
 }
 
 // Used to set the next time event, if any.
-void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
-    if (!isEmpty() && pos(0) == fmi2True) {
-        r(status_) = getEvent();
-        hr(status_) = present_;
-        hr(input_) = absent_;
-        pos(0) = fmi2False;
-        i(bs_) = i(bs_) - 1;
+void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int isTimeEvent) {
+    long currentTime = comp->time;
+    if (_isTime(comp)) {
+        _removeLast();
+        i(microstep_) = 1;
+        eventInfo->nextEventTimeDefined  = fmi2False;
     }
-    else {
-        hr(status_) = absent_;
+    if (hr(input_) != absent_) {
+        _addEvent(r(input_), currentTime + i(delay_));
+        eventInfo->nextEventTimeDefined  = fmi2True;
     }
-
-    comp->eventInfo.nextEventTimeDefined = fmi2False;
+    if (!_isEmpty()) {
+        Event nextEvent = _getLast();
+        comp->eventInfo.nextEventTime = nextEvent.time;
+        eventInfo->nextEventTimeDefined  = fmi2True;
+    }
 }
 
 /***************************************************
@@ -195,7 +196,7 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
         max_step_size = comp->eventInfo.nextEventTime - comp->time;
     }
     else {
-        max_step_size = LONG_MAX;
+        max_step_size = 2;
     }
 
     *value = max_step_size;
@@ -207,4 +208,3 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-

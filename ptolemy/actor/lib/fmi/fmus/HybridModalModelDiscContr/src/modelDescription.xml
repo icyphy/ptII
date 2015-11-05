@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridModalModelDiscContr"
   guid="{4bbc5dc1-a42d-4b7e-89fa-73b2c31f5858}"
   numberOfEventIndicators="0">

@@ -570,6 +570,7 @@ fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
 
 fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {
     int i;
+    // printf("HybridAdder - fmi2SetHybridReal\n");
     ModelInstance *comp = (ModelInstance *)c;
     if (invalidState(comp, "fmi2SetHybridReal", MASK_fmi2SetReal))
         return fmi2Error;
@@ -584,7 +585,7 @@ fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], si
             return fmi2Error;
         FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: #r%d# = %.16g", vr[i], value[i])
         comp->r[vr[i]] = value[i];
-        comp->hr[vr[i]] = hybridValue[i];
+        comp->hr[vr[i]] = (fmi2Integer) hybridValue[i];
     }
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;

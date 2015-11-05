@@ -935,6 +935,7 @@ fmi2Status fmi2CancelStep(fmi2Component c) {
 
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
+    printf("Instead I am here!\n");
     return fmi2OK;
 }
 
@@ -943,6 +944,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
     ModelInstance *comp = (ModelInstance *)c;
     double h = communicationStepSize;
+    // printf("HybridConstantSignalGenerator-fmi2HybridDoStep, time: %ld, stepSize: %ld\n", comp->time, communicationStepSize);
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
     int i;
@@ -1065,17 +1067,18 @@ fmi2Status fmi2GetStatus(fmi2Component c, const fmi2StatusKind s, fmi2Status *va
 }
 
 fmi2Status fmi2GetRealStatus(fmi2Component c, const fmi2StatusKind s, fmi2Real *value) {
-    if (s == fmi2LastSuccessfulTime) {
-        ModelInstance *comp = (ModelInstance *)c;
-        if (invalidState(comp, "fmi2GetRealStatus", MASK_fmi2GetRealStatus))
-            return fmi2Error;
-        *value = comp->time;
-        return fmi2OK;
-    }
     return getStatus("fmi2GetRealStatus", c, s);
 }
 
 fmi2Status fmi2GetIntegerStatus(fmi2Component c, const fmi2StatusKind s, fmi2Integer *value) {
+    printf("HybridConstantSignalGenerator-fmi2GetIntegerStatus\n");
+    if (s == fmi2LastSuccessfulTime) {
+        ModelInstance *comp = (ModelInstance *)c;
+        if (invalidState(comp, "fmi2GetIntegerStatus", MASK_fmi2GetIntegerStatus))
+            return fmi2Error;
+        *value = comp->time;
+        return fmi2OK;
+    }
     return getStatus("fmi2GetIntegerStatus", c, s);
 }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridSampler"
   guid="{55af5e3e-eb24-4b17-bbc9-cc4c37455d93}"
   numberOfEventIndicators="0">
