@@ -50,6 +50,7 @@ void setStartValues(ModelInstance *comp) {
 // if setStartValues or environment set new values through fmi2SetXXX.
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
+    printf("HybridPerDiscSigGen-calculateValues, time: %d\n", comp->time);
     if (comp->state == modelInitializationMode) {
         i(n_) = 0;
         comp->eventInfo.nextEventTimeDefined   = fmi2True;
@@ -85,6 +86,7 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent, long h) {
+    printf("HybridPerDiscSigGen-eventUpdate, time: %d, stepsize: %ld\n", comp->time, h);
     if ( h == 0 ) {
         if ( i(n_) == 0 ) {
             i (n_) = i(n_) + 1;
@@ -126,6 +128,7 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer max_step_size;
     max_step_size = comp->eventInfo.nextEventTime - comp->time;
+    printf("HybridPerDiscSigGen-fmi2GetMaxStepSize: %ld\n", max_step_size);
     *value = max_step_size;
     return fmi2OK;
 }
@@ -135,4 +138,3 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-

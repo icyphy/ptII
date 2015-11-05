@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridDelay"
   guid="{de1523d6-794e-4a03-be6c-3f95c5f4fef1}"
   numberOfEventIndicators="0">

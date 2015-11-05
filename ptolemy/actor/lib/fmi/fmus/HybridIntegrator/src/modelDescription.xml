@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridIntegrator"
   guid="{f3be8b0a-1979-4b29-a7a6-12914577dc0a}"
   numberOfEventIndicators="0">

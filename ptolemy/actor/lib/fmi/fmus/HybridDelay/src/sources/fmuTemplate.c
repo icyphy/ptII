@@ -961,8 +961,6 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
     comp->communicationStepSize = communicationStepSize;
     comp->time = currentCommunicationPoint;
-    comp->time += h;
-
 
     if (invalidState(comp, "fmi2HybridDoStep", MASK_fmi2DoStep)) {
         return fmi2Error;
@@ -995,31 +993,21 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 #endif
 
 #if NUMBER_OF_EVENT_INDICATORS>0
-    // check for state event
     for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
         double ei = getEventIndicator(comp, i);
-        if (ei < 0) {
+        if (ei * prevEventIndicators[i] < 0) {
             FILTERED_LOG(comp, fmi2OK, LOG_EVENT,
                 "fmi2HybridDoStep: state event at %u, z%d crosses zero -%c-", comp->time, i, ei < 0 ? '\\' : '/')
             stateEvent++;
         }
+        prevEventIndicators[i] = ei;
     }
-    // for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
-    //     double ei = getEventIndicator(comp, i);
-    //     if (ei * prevEventIndicators[i] < 0) {
-    //         FILTERED_LOG(comp, fmi2OK, LOG_EVENT,
-    //             "fmi2HybridDoStep: state event at %u, z%d crosses zero -%c-", comp->time, i, ei < 0 ? '\\' : '/')
-    //         stateEvent++;
-    //     }
-    //     prevEventIndicators[i] = ei;
-    // }
 #endif
 
     // check for missed time event
-    if (comp->eventInfo.nextEventTimeDefined && ((comp->time - comp->eventInfo.nextEventTime) > 0)) {
-        printf("----> missed event\n");
-        printf("      comp->time: %ld, eventInfo.nextEventTime %ld\n", comp->time, comp->eventInfo.nextEventTime);
-        FILTERED_LOG(comp, fmi2Discard, LOG_EVENT, "fmi2HybridDoStep: time event missed at %d, it was at %d", comp->time, comp->eventInfo.nextEventTime)
+    if (comp->eventInfo.nextEventTimeDefined && ((comp->time + h - comp->eventInfo.nextEventTime) > 0)) {
+        FILTERED_LOG(comp, fmi2Discard, LOG_EVENT, "fmi2HybridDoStep: time event missed at %d, it was at %d",
+            comp->time, comp->eventInfo.nextEventTime)
         comp->time = comp->eventInfo.nextEventTime; // an overrun occurred! set the time to the time event time
         return fmi2Discard;
     }
@@ -1029,18 +1017,19 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
         timeEvent = 1;
     }
     if (stateEvent || timeEvent) {
-        eventUpdate(comp, &comp->eventInfo, timeEvent, h);
+        eventUpdate(comp, &comp->eventInfo, timeEvent);
         timeEvent = 0;
         stateEvent = 0;
     }
 
     // terminate simulation, if requested by the model in the previous step
     if (comp->eventInfo.terminateSimulation) {
-        printf("-----> terminateSimulation\n");
         FILTERED_LOG(comp, fmi2Discard, LOG_ALL, "fmi2HybridDoStep: model requested termination at t=%g", comp->time)
         comp->state = modelStepFailed;
         return fmi2Discard; // enforce termination of the simulation loop
     }
+
+    comp->time += h;
     return fmi2OK;
 }
 

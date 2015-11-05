@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridPerPiecCosSigGen"
   guid="{b44d7772-66a4-4ec2-b9f6-fad3625d51a2}"
   numberOfEventIndicators="0">

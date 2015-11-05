@@ -50,6 +50,8 @@ void setStartValues(ModelInstance *comp) {
 // if setStartValues or environment set new values through fmi2SetXXX.
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
+    // printf("HybridAdder - calculateValues\n");
+    // printf("-hr[a]: %ld, hr[b]: %ld\n", hr(input_a_), hr(input_b_));
     if (hr(input_a_) == present_ && hr(input_b_) == present_) {
         hr(output_) = present_;
         r(output_) = r(input_a_) + r(input_b_);
@@ -106,7 +108,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 }
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
-    *value = LONG_MAX;
+    *value = 2;
     return fmi2OK;
 }
 

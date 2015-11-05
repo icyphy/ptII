@@ -148,7 +148,6 @@ typedef struct {
     fmi2Integer *hs;
 
     fmi2Integer time;
-    fmi2Integer communicationStepSize;
     fmi2String instanceName;
     fmi2Type type;
     fmi2String GUID;

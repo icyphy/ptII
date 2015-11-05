@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridConstantSignalGenerator"
   guid="{2aad68a9-f56f-4945-b473-8489d2f49518}"
   numberOfEventIndicators="0">

@@ -109,7 +109,7 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     if (comp->eventInfo.nextEventTimeDefined)
         max_step_size = 0;
     else
-        max_step_size = LONG_MAX;
+        max_step_size = 2;
     *value = max_step_size;
     return fmi2OK;
 }

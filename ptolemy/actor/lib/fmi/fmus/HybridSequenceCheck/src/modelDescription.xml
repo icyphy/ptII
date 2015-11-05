@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridSequenceCheck"
   guid="{187457f1-90b3-4a50-af06-d4d7c7897050}"
   numberOfEventIndicators="0">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridTriggeredConst"
   guid="{1ff5bcbd-a863-48d6-a07b-ce4eddfcf4ae}"
   numberOfEventIndicators="0">

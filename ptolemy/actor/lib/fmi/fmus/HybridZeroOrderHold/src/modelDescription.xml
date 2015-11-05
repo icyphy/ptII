@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription
-  fmiVersion="2.0"
+  fmiVersion="2.1"
   modelName="HybridZeroOrderHold"
   guid="{98d7fb7c-5d91-49aa-b405-1a6fd4ba27af}"
   numberOfEventIndicators="0">
