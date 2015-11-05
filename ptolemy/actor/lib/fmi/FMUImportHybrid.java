@@ -66,6 +66,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 
 /**
  * Import a Hybrid Co-Simulation FMU.
@@ -97,17 +98,65 @@ public class FMUImportHybrid extends FMUImport implements
     }
 
     /**
-     * 
-     * @param originator
-     * @param fmuFileParameter
-     * @param context
-     * @param x
-     * @param y
-     * @param modelExchange
-     * @throws IllegalActionException
-     * @throws IOException
+     * Invoke set() and get() on the FMU for the currently known inputs.
+     * The inputs of this actor are by default unknown. Every time we
+     * fire() this actor, we supply new known inputs that can be set
+     * on the FMU. This allows to compute new outputs on the FMU that
+     * are captured and sent to the output port of this actor.
+     * When all the inputs are known, the FMU compute the default step
+     * size by invoking fireAt().
+     *
+     * @exception IllegalActionException If the FMU indicates a failure.
      */
+    @Override
+    public void fire() throws IllegalActionException {
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
+        int currentMicrostep = 1;
+        if (director instanceof SuperdenseTimeDirector) {
+            currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
+        }
+
+        if (_debugging) {
+            _debugToStdOut("FMUImportHybrid.fire() at time "
+                    + currentTime 
+                    + " and microstep "
+                    + currentMicrostep);
+        }
+        
+        // Set Inputs value to the FMU
+        _setFmuInputs();
+        
+        // Get Outputs value from the FMU and produce them.
+        _getFmuOutputs();
+        
+        // If all inputs are known, the FMU can request a time advancement
+        // The argument to proposeTime() is used as default step size for
+        // FMUs that does not implement getMaxStepSize().
+//        boolean allInputsKnown = _allInputsKnown();
+//        if (allInputsKnown) {
+//            System.out.println("- calling fireAt()");
+//            Time proposedTime = proposeTime(currentTime.add(1.0));
+//            director.fireAt(this, proposedTime);
+//        }
+        
+        _firstFireInIteration = false;
+    }
     
+    /**
+     * Import a FMUFile.
+     *
+     * @param originator The originator of the change request.
+     * @param fmuFileParameter The .fmuFile
+     * @param context The context in which the FMU actor is created.
+     * @param x The x-axis value of the actor to be created.
+     * @param y The y-axis value of the actor to be created.
+     * @param modelExchange True if the FMU should be imported as
+     * a model exchange FMU.
+     * @exception IllegalActionException If there is a problem
+     * instantiating the actor.
+     * @exception IOException If there is a problem parsing the fmu file.
+     */
     public static void importFMU(Object originator,
             FileParameter fmuFileParameter, NamedObj context, double x,
             double y, boolean modelExchange) throws IllegalActionException,
@@ -175,7 +224,8 @@ public class FMUImportHybrid extends FMUImport implements
         // with checks that _fmiComponent is non-null, so that FMU parameters
         // can be changed during run time.
         for (FMIScalarVariable scalar : _fmiModelDescription.modelVariables) {
-            if ((scalar.variability == FMIScalarVariable.Variability.parameter || scalar.variability == FMIScalarVariable.Variability.fixed) // FMI-2.0rc1
+            if ((scalar.variability == FMIScalarVariable.Variability.parameter
+                        || scalar.variability == FMIScalarVariable.Variability.fixed) // FMI-2.0rc1
                     && scalar.causality != Causality.local // FMI-2.0rc1
                     && scalar.causality != Causality.input
                     && scalar.causality != Causality.output) {
@@ -248,45 +298,20 @@ public class FMUImportHybrid extends FMUImport implements
             _debugToStdOut("FMUImportHybrid.initialize() call completed.");
         }
         
-        boolean allInputsKnown = _allInputsKnown();
-        if (allInputsKnown) {
-            Time currentTime = director.getModelTime();
-            Time proposedTime = proposeTime(currentTime);
-            director.fireAt(this, proposedTime);
-        }
+//        boolean allInputsKnown = _allInputsKnown();
+//        if (allInputsKnown) {
+//            Time currentTime = director.getModelTime();
+//            Time proposedTime = proposeTime(currentTime);
+//            director.fireAt(this, proposedTime);
+//        }
         
         return;
     }
     
     @Override
-    public void fire() throws IllegalActionException {
-        Director director = getDirector();
-        Time currentTime = director.getModelTime();
-        int currentMicrostep = 1;
-        if (director instanceof SuperdenseTimeDirector) {
-            currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
-        }
-
-        if (_debugging) {
-            _debugToStdOut("FMUImportHybrid.fire() at time "
-                    + currentTime 
-                    + " and microstep "
-                    + currentMicrostep);
-        }
-        
-        // Set Inputs value to the FMU
-        _setFmuInputs();
-        
-        // Get Outputs value from the FMU and produce them.
-        _getFmuOutputs();
-        
-        boolean allInputsKnown = _allInputsKnown();
-        if (allInputsKnown) {
-            Time proposedTime = proposeTime(currentTime.add(1.0));
-            director.fireAt(this, proposedTime);
-        }
-        
-        _firstFireInIteration = false;
+    public boolean noNewActors() {
+        // TODO Auto-generated method stub
+        return false;
     }
     
     /**
@@ -318,17 +343,21 @@ public class FMUImportHybrid extends FMUImport implements
                             + " Hence, this director is incompatible with this FMU.");
         }
         
+        
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        Time futureTime = director.getModelNextIterationTime();
         int currentMicrostep = 1;
+        
+        Time proposedTime = proposeTime(currentTime.add(1.0));
+        director.fireAt(this, proposedTime);
+        Time futureTime = new Time(director, ((ContinuousDirector) director).suggestedStepSize());
         
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
+        System.out.println("postfire(): " + futureTime);
         Time refinedStepSize = _fmiDoStepHybrid(futureTime, currentMicrostep);
-//        System.out.println("->FMU " + getFullName() + ", current time: " + currentTime.getLongValue() + ", refinedStepSize: " + refinedStepSize.getLongValue() + ", futureTime: " + futureTime);
-        if (refinedStepSize.getLongValue() > _stepSize/*refinedStepSize.isPositive()*/) {
+        if (refinedStepSize.getLongValue() < futureTime.getLongValue()) {
             throw new IllegalActionException(
                     this,
                     getDirector(),
@@ -338,18 +367,14 @@ public class FMUImportHybrid extends FMUImport implements
         _lastCommitTime = currentTime;
         _refinedStepSize = -1.0;
         _firstFireInIteration = true;
-        
-        // Advance Time
-//        if (refinedStepSize.getLongValue() > 0) {
-//            System.out.println("->FMU " + getFullName() + ", calling fireAt(): " + refinedStepSize.getLongValue() + ", at time: " + currentTime.getLongValue());
-//            director.fireAt(this, refinedStepSize, currentMicrostep);
-//        }
-        
+
         return !_stopRequested;
     }
 
     /**
-     * 
+     * Instantiate the slave FMU component.
+     *
+     * @exception IllegalActionException If it cannot be instantiated.
      */
     @Override
     public void preinitialize() throws IllegalActionException {
@@ -370,7 +395,12 @@ public class FMUImportHybrid extends FMUImport implements
     }
    
     /**
-     * 
+     * Compute the step size for the FMU. This can happen in two ways.
+     * If the FMU implements getMaxStepSize(), we simply use it.
+     * Otherwise, we propose a default step size to the FMU. 
+     * The FMU in this case can partially accept the step size.
+     * We can check this looking at the internal state of the FMU.
+     * _fmiDoStepHybrid() returns the step size actually accepted from the FMU.
      */    
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
@@ -390,23 +420,16 @@ public class FMUImportHybrid extends FMUImport implements
                 }
             }
             _stepSize = stepSize.get(0) + director.getModelTime().getLongValue();
+            System.out.println("- getMaxStepSize(): " + _stepSize);
             return new Time(getDirector(), _stepSize);
         } else {
             Time refinedStepSize = _fmiDoStepHybrid(proposedTime, currentMicrostep);
             _stepSize = refinedStepSize.getLongValue();
+            System.out.println("- _fmiDoStepHybrid(): " + refinedStepSize);
             return refinedStepSize;
         }        
     }
     
-    /**
-     * 
-     */
-    @Override
-    public boolean noNewActors() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
@@ -429,32 +452,26 @@ public class FMUImportHybrid extends FMUImport implements
         }
         return allInputsKnown;
     }
-    
-    /**
-     * 
-     */
-    protected void _defaultStepSize() {
-        
-    }
+
     /**
      * Initialize the FMU.
+     * This _fmiInitialize() is specific for FMI 2.1 Hybrid Co-Simulation
      */
     protected void _fmiInitialize() throws IllegalActionException {
         if (_debugging) {
             _debugToStdOut("FMUImportHybrid._fmiInitialize()");
         }
         
-        // This _fmiInitialize() is specific for FMI 2.1 Hybrid Co-Simulation
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
 
         Director director = getDirector();
         Time startTime = director.getModelStartTime();
         Time stopTime = director.getModelStopTime();
-//        System.out.println("-> Time Initilized: " + startTime.getLongValue());
         int fmiFlag;
 
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi setup experiment function");
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to "
+                    + "invoke the fmi setup experiment function");
         }
         fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
                 Integer.class,
@@ -468,7 +485,8 @@ public class FMUImportHybrid extends FMUImport implements
                             + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi enter initialization function");
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke "
+                    + "the fmi enter initialization function");
         }
         fmiFlag = ((Integer) _fmiEnterInitializationModeFunction
                 .invoke(Integer.class, new Object[] { _fmiComponent }))
@@ -480,7 +498,8 @@ public class FMUImportHybrid extends FMUImport implements
                             + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke the fmi exit initialization function");
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke "
+                    + "the fmi exit initialization function");
         }
         fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
                 Integer.class, new Object[] { _fmiComponent }))
@@ -492,7 +511,8 @@ public class FMUImportHybrid extends FMUImport implements
                             + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to request refiring if necessary.");
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to request "
+                    + "refiring if necessary.");
         }
 
         // If the FMU can provide a maximum step size, query for the
@@ -503,7 +523,8 @@ public class FMUImportHybrid extends FMUImport implements
         _requestRefiringIfNecessary();
 
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to record FMU state.");
+            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to record "
+                    + "FMU state.");
         }
         // In case we have to backtrack, if the FMU supports
         // backtracking,
@@ -551,7 +572,8 @@ public class FMUImportHybrid extends FMUImport implements
         int timeAdvance = newTime.compareTo(_lastFireTime);
 
 //        System.out.println("timeAdvance: " + timeAdvance);
-//        System.out.println("newTime: " + newTime + ", _lastFireTime: " + _lastFireTime + ", _lastCommitTime: " + _lastCommitTime);
+//        System.out.println("newTime: " + newTime + ", _lastFireTime: "
+//                + _lastFireTime + ", _lastCommitTime: " + _lastCommitTime);
         // FIXME: Should perhaps check to see whether we are at phase 0 of a
         // non-zero-step-size
         // invocation by the ContinuousDirector. This invocation yields a
@@ -572,7 +594,7 @@ public class FMUImportHybrid extends FMUImport implements
             // We are calling fmiDoStep() to advance to current time, which is
             // therefore
             // the _end_ of the integration interval.
-            long time = _lastFireTime.getLongValue();
+            long time = _lastFireTime.getLongValue();            
 
             // Compute the step size.
             long stepSize = newTime.subtract(_lastFireTime).getLongValue();
@@ -611,7 +633,6 @@ public class FMUImportHybrid extends FMUImport implements
 
             // If the FMU discarded the step, handle this.
             if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {
-//                System.out.println("-> Step Discarded!");
                 if (_debugging) {
                     _debugToStdOut("Rejected step size of " + stepSize
                             + " at time " + time);
@@ -621,7 +642,6 @@ public class FMUImportHybrid extends FMUImport implements
                 result = stepSize * 0.5;
 
                 if (_fmiGetRealStatusFunction != null) {
-//                    System.out.println("-> _fmiGetRealStatusFunction!");
                     // The FMU has provided a function to query for
                     // a suggested step size.
                     // This function returns fmiDiscard if not supported.
@@ -670,7 +690,6 @@ public class FMUImportHybrid extends FMUImport implements
                         + ", /* newStep */ 1) returned "
                         + _fmiStatusDescription(fmiFlag));
             } else {
-//                System.out.println("-> Step Accepted!");
                 _lastFireTime = newTime;
                 _lastFireMicrostep = newMicrostep;
                 result = newTime.getLongValue();
@@ -759,6 +778,12 @@ public class FMUImportHybrid extends FMUImport implements
     }
     
     /**
+     * Retrieve the outputs from the FMU. Only outputs with known inputs are
+     * retrieved. In an output cannot be retrieved, an AbsentToken is sent
+     * on the correspondent actor port. In case the output can be retrieved
+     * (all the dependent inputs are known) than we get this value, we
+     * create a Token and we send the token on the correspondent output port.
+     * 
      * @throws IllegalActionException 
      * @throws NoRoomException 
      * 
@@ -807,7 +832,8 @@ public class FMUImportHybrid extends FMUImport implements
                                 + " depends on " 
                                 + inputPort.getName());
                     }
-                    // The snipped below is important! I commented it out to use IntegratorWithReset without reset                    
+                    // The snippet below is important! I commented it out to use
+                    // IntegratorWithReset without reset                    
                     if (!inputPort.isKnown(0)) {
                         // Skip this output port. It depends on
                         // unknown inputs.
@@ -919,27 +945,18 @@ public class FMUImportHybrid extends FMUImport implements
         }
     }
     
-    /**
-     * 
-     * @param time
-     * @return
-     */
-    protected long _toGlobalTime(long time) {
-        return 0;
-    }
-    /**
-     * 
-     * @param time
-     * @return
-     */
-    protected long _toLocalTime(long time) {
-        return 0;
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /**
+     * An experimental function that returns the maximum step size 
+     * that an FMU can compute. 
+     */
     private Function _fmiGetMaxStepSize;
     
+    /**
+     * The step size that an FMU can compute.
+     * TODO: do we really need it?
+     */
     private long _stepSize;
 }
