@@ -48,7 +48,7 @@ EXPERIMENTAL_DOMAINS =
 DOMAINS =	algebraic atc ca ci continuous \
 		coroutine \
 		csp curriculum \
-	        dde ddf de hdf modal pn sdf dt giotto \
+	        dde ddf de hdf modal pn sdf dt giotto fmima\
 		$(PTMETROII_DIR) \
 		ontologies \
 		$(PTOPENMODELICA_DIR) \
@@ -86,6 +86,7 @@ PTAUXALLJARS = \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 	        dt/dt.jar \
+	    fmima/fmima.jar
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		openmodelica/openmodelica.jar \
