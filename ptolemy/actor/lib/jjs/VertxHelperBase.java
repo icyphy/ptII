@@ -29,8 +29,10 @@ package ptolemy.actor.lib.jjs;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,6 +41,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// VertxHelperBase
@@ -181,7 +184,7 @@ public class VertxHelperBase extends HelperBase {
      *   a RestrictedJavaScriptInterface proxy for that actor.
      */
     protected VertxHelperBase(Object actor) {
-        super(actor);
+        super(actor);             
 
         _vertxHelpers.put(_actor, new WeakReference<VertxHelperBase>(this));
 
@@ -388,7 +391,94 @@ public class VertxHelperBase extends HelperBase {
     protected AccessorVerticle _verticle;
 
     /** Global (unclustered) instance of Vert.x core. */
-    protected static Vertx _vertx = Vertx.vertx();
+    protected static Vertx _vertx = null;
+
+    static {
+        try {
+            // If the vertx.cacheDirBase property is not set, then set it to $HOME/.vertxPt
+            // See https://www.terraswarm.org/testbeds/wiki/Vert/VertxDirectories
+            String cacheDirBase = StringUtilities.getProperty("vertx.cacheDirBase");
+            if (cacheDirBase.isEmpty()) {
+                File directory = null;
+                try {
+                    directory = new File(StringUtilities.getProperty("user.dir"),  ".vertxPt");
+                    System.setProperty("vertx.cacheDirBase", directory.getCanonicalPath());
+                } catch (Throwable throwable) {
+                    System.err.println("Could not set the vertx.cacheDirBase property to " + directory 
+                            + ".  This means that a .vertx directory will be created in the current directory.");
+                }
+            }
+            _vertx = Vertx.vertx();
+        } catch (Throwable throwable) {
+            System.err.println("Static initialization of VertxHelperBase failed.");
+            throwable.printStackTrace();
+            throw new RuntimeException(throwable);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
+//    /** Register a shutdown hook that calls close() on the Vertx object.
+//     *  Closing the Vertx object causes the .vertx directories
+//     *  that are created to be removed.  Note that the directories
+//     *  are only removed if the the Vertx was created with the 
+//     *  clustering option.
+//     */
+//    private static void _registerShutdownHook(Vertx vertx) {
+//        
+//        // Create a Weak Reference for the Vertx.  Currently,
+//        // there is only one because _vertx is static.
+//        final WeakReference<Vertx> vertxToShutdownReference = new WeakReference<Vertx>(vertx);
+//
+//        // The downside to shutdown hooks include:
+//        // 1. Shutdown hooks can be called in any order.  Manager
+//        // has a shutdown hook, what if it is called before or
+//        // after this shutdown hook.
+//        // 2. This code almost certainly will hold on to a
+//        // a reference to the Vertx class even after all the
+//        // models are closed.  The reference to the Vertx class
+//        // will only be freed when the JVM exits.
+//        
+//        // Alternatives to registering a shutdown hook include:
+//
+//        // 1. The .vertx directory is used to serve files that are
+//        // included in jar files.  To not use this facility Set the
+//        // vertx.disableFileCPResolving property to true, or change
+//        // the location with vertx.cacheDirBase. See
+//        // https://groups.google.com/forum/?fromgroups#!topic/vertx/7cBbKrjYfeI
+//        // However, we may want to deploy using jar files, so this is
+//        // not an option
+//        
+//        // 2. Create a separate Vertx object for each model.
+//        // Vert.x needs to be kept running as long as the JVM is running.
+//        // Models can come and go and communicate via the event bus.
+//        // We want to avoid the overhead of joining a cluster each time
+//
+//        // 3. We could have code that would get the configuration and
+//        // check to see if the last model was closing and then call
+//        // close().  This would involve having the code in this class
+//        // be more tightly connected with the actor.gui code, which
+//        // could cause deployment issues.
+//        
+//        Thread shutdownThread =  new Thread() {
+//                @Override
+//                public void run() {
+//                    System.out.println("Calling close on " + vertxToShutdownReference.get());
+//                    //System.out.println("size of sharedHttpServers: " + ((io.vertx.core.impl.VertxImpl)vertxToShutdownReference.get()).sharedHttpServers().size());
+//                    //System.out.println("size of sharedNetServers: " + ((io.vertx.core.impl.VertxImpl)vertxToShutdownReference.get()).sharedNetServers().size());
+//                    vertxToShutdownReference.get().close();
+//                }
+//            };
+//        try {
+//            Runtime.getRuntime().addShutdownHook(shutdownThread);
+//        } catch (java.security.AccessControlException ex) {
+//            // This exception gets triggered by
+//            // http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/vergil/Vergil.htm
+//            System.out.println("Warning: failed to add a shutdown hook for VertxHelperBase."
+//                    + "(Running a model in an applet always causes this)");
+//        }
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
