@@ -30,6 +30,7 @@ package org.ptolemy.fmi;
 import java.io.IOException;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +48,13 @@ import org.w3c.dom.NodeList;
 import com.sun.jna.Function;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;
+
+import ptolemy.data.AbsentToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 
 ///////////////////////////////////////////////////////////////////
 //// FMIScalarVariable
@@ -422,6 +430,168 @@ public class FMIScalarVariable {
         _setValue(fmiComponent, pointerByReference, FMIStringType.class);
     }
 
+
+    /** Return the value of this variable as a boolean.
+     *  This is an experimental method. It handles absent values.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @return the value of this variable as Token.
+     *  @see #setBoolean(Pointer, boolean)
+     */
+    public Token getBooleanHybrid(Pointer fmiComponent) {
+        IntBuffer valueBuffer = IntBuffer.allocate(1);
+        LongBuffer isAbsentBuffer = LongBuffer.allocate(1);
+        _getValueHybrid(fmiComponent, valueBuffer, FMIBooleanType.class,
+                isAbsentBuffer);
+        return new BooleanToken(valueBuffer.get(0) != 0);
+    }
+
+    /** Return the value of this variable as a double.
+     *  This is an experimental method. It handles absent values.
+     *  If the variable is of type FMIIntegerType,
+     *  the the integer value is cast to a double.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @return the value of this variable as Token.
+     *  @see #setDouble(Pointer, double)
+     */
+    public Token getDoubleHybrid(Pointer fmiComponent) {
+        double result;
+        LongBuffer isAbsentBuffer = LongBuffer.allocate(1);
+        //IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+        //        (int) valueReference);
+        if (type instanceof FMIIntegerType) {
+            IntBuffer valueBuffer = IntBuffer.allocate(1);
+            _getValueHybrid(fmiComponent, valueBuffer, FMIIntegerType.class,
+                    isAbsentBuffer);
+            result = valueBuffer.get(0);
+        } else if (type instanceof FMIRealType) {
+            DoubleBuffer valueBuffer = DoubleBuffer.allocate(1);
+            _getValueHybrid(fmiComponent, valueBuffer, FMIRealType.class,
+                    isAbsentBuffer);
+            result = valueBuffer.get(0);
+        } else {
+            // FIXME: Why a runtime exception?
+            throw new RuntimeException("Type " + type + " not supported.");
+        }
+        if (isAbsentBuffer.get(0) == 1) {
+            return new AbsentToken();
+        }
+        return new DoubleToken(result);
+    }
+
+    /** Return the value of this variable as an int.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @return the value of this variable as a Token.
+     *  @see #setInt(Pointer, int)
+     */
+    public Token getIntHybrid(Pointer fmiComponent) {
+        IntBuffer valueBuffer = IntBuffer.allocate(1);
+        LongBuffer isAbsentBuffer = LongBuffer.allocate(1);
+        _getValueHybrid(fmiComponent, valueBuffer, FMIIntegerType.class,
+                isAbsentBuffer);
+        return new IntToken(valueBuffer.get(0));
+    }
+
+    /** Return the value of this variable as a String.
+     *  This is an experimental method. It handles absent values.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @return the value of this variable as a Token.
+     *  @see #setString(Pointer, String)
+     */
+    public Token getStringHybrid(Pointer fmiComponent) {
+        LongBuffer isAbsentBuffer = LongBuffer.allocate(1);
+        PointerByReference pointerByReference = new PointerByReference();
+        _getValueHybrid(fmiComponent, pointerByReference, FMIStringType.class,
+                isAbsentBuffer);
+        Pointer reference = pointerByReference.getValue();
+        String result = null;
+        if (reference != null) {
+            // If _fmiGetString is not supported, then we might
+            // have reference == null.
+            result = reference.getString(0);
+        }
+        return new StringToken(result);
+    }
+
+    /** Set the value of this variable as a boolean.
+     *  This is an experimental method that also handle absent tokens
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getBoolean(Pointer fmiComponent)
+     */
+    public void setBooleanHybrid(Pointer fmiComponent, boolean value,
+            boolean isAbsent) {
+        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0,
+                value ? (byte) 1 : (byte) 0);
+        LongBuffer absentBuffer = LongBuffer.allocate(1).put(0,
+                isAbsent ? (byte) 1 : (byte) 0);
+        _setValueHybrid(fmiComponent, valueBuffer, FMIBooleanType.class,
+                absentBuffer);
+    }
+
+    /** Set the value of this variable as a double.
+     *  This is an experimental method that also handle absent tokens
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getDouble(Pointer)
+     */
+    public void setDoubleHybrid(Pointer fmiComponent, Double value,
+            boolean isAbsent) {
+        DoubleBuffer valueBuffer = DoubleBuffer.allocate(1).put(0, value);
+        LongBuffer absentBuffer = LongBuffer.allocate(1).put(0,
+                isAbsent ? (byte) 1 : (byte) 0);
+        _setValueHybrid(fmiComponent, valueBuffer, FMIRealType.class,
+                absentBuffer);
+    }
+
+    /** Set the value of this variable as an integer.
+     *  This is an experimental method that also handle absent tokens
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getInt(Pointer)
+     */
+    public void setIntHybrid(Pointer fmiComponent, Integer value,
+            boolean isAbsent) {
+        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0, value);
+        // FIXME: What about enums?
+        LongBuffer absentBuffer = LongBuffer.allocate(1).put(0,
+                isAbsent ? (byte) 1 : (byte) 0);
+        _setValueHybrid(fmiComponent, valueBuffer, FMIIntegerType.class,
+                absentBuffer);
+    }
+
+    /** Set the value of this variable as a String.
+     *  This is an experimental method that also handle absent tokens
+     *  This method allocates memory, the caller should eventually
+     *  call FMIModelDescription.dispose().
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param value The value of this variable.
+     *  @see #getString(Pointer)
+     */
+    public void setStringHybrid(Pointer fmiComponent, String value,
+            boolean isAbsent) {
+        PointerByReference pointerByReference = new PointerByReference();
+        // We use FMUAllocateMemory so that we can retain a reference
+        // to the allocated memory and the memory does not get gc'd.
+
+        // Include the trailing null character.
+        Pointer reference = fmiModelDescription.getFMUAllocateMemory().apply(
+                new NativeSizeT(value.length() + 1), new NativeSizeT(1));
+        reference.setString(0, value);
+        pointerByReference.setValue(reference);
+        LongBuffer absentBuffer = LongBuffer.allocate(1).put(0,
+                isAbsent ? (byte) 1 : (byte) 0);
+        _setValueHybrid(fmiComponent, pointerByReference, FMIStringType.class,
+                absentBuffer);
+    }
+
     //    public String getTypeName() {
     //            return _typeName;
     //    }
@@ -572,6 +742,40 @@ public class FMIScalarVariable {
     ////                         private methods                   ////
 
     /** Get or set the value of this variable.
+     *  This is an experimental method. It allows to set and get
+     *  absent values.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param valueBuffer The buffer that contains the value to be gotten or set.
+     *  For booleans, doubles and integers, this is a Buffer, for
+     *  String it is a PointerByReference
+     *  @param typeClass The expected class of the type.
+     *  @param getOrSetFunction the fmiGet or fmiSet function.
+     */
+    private void _getOrSetValueHybrid(Pointer fmiComponent,
+            Object valueBuffer, Class typeClass,
+            Function getOrSetFunction, Object isAbsent) {
+        // This is syntactic sugar that helps us avoid duplicated code.
+        if (!typeClass.isInstance(type)) {
+            throw new RuntimeException("Variable " + name + " is not a "
+                    + typeClass.getName() + ", it is a "
+                    + type.getClass().getName());
+        }
+        IntBuffer valueReferenceIntBuffer = IntBuffer.allocate(1).put(0,
+                (int) valueReference);
+        int fmiFlag = ((Integer) getOrSetFunction.invokeInt(new Object[] {
+                fmiComponent, valueReferenceIntBuffer, new NativeSizeT(1),
+                valueBuffer, isAbsent })).intValue();
+        if (fmiFlag > FMILibrary.FMIStatus.fmiWarning) {
+            throw new RuntimeException("Could not get or set \"" + name
+                    + "\" as a " + typeClass.getName() + ", it was of type \""
+                    + _typeName + "\": "
+                    + FMULogUtilities.fmiStatusToString(fmiFlag));
+        }
+    }
+
+    /** Get or set the value of this variable.
+     *  This method is experimental. It allows to set absent values.
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param valueBuffer The buffer that contains the value to be gotten or set.
@@ -673,6 +877,66 @@ public class FMIScalarVariable {
             }
         }
         _getOrSetValue(fmiComponent, valueBuffer, typeClass, _fmiSetFunction);
+    }
+
+    /** Get the value of this variable.
+     *  This is an experimental method that allows to get absent values.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param valueBuffer The buffer that contains the value to be gotten.
+     *  For booleans, doubles and integers, this is a Buffer, for
+     *  String it is a PointerByReference
+     *  @param isAbsent The buffer that contains the absent flags.
+     *  @param typeClass The expected class of the type.
+     */
+    private void _getValueHybrid(Pointer fmiComponent, Object valueBuffer,
+            Class typeClass, Object isAbsent) {
+        if (_fmiGetFunction == null) {
+            if (_typeName.equals("skip")) {
+                System.out
+                        .println("Could not process type, it was marked as skip.");
+                return;
+            }
+            try {
+                _fmiGetFunction = fmiModelDescription.getFmiFunction("fmiGetHybrid"
+                        + _typeName);
+            } catch (IOException ex) {
+                throw new RuntimeException(
+                        "Failed to find the native library.", ex);
+            }
+        }
+        _getOrSetValueHybrid(fmiComponent, valueBuffer, typeClass,
+                _fmiGetFunction, isAbsent);
+    }
+
+    /** Set the value of this variable.
+     *  This is an experimental method that allows to set absent values.
+     *  @param fmiComponent The Functional Mock-up Interface (FMI)
+     *  component that contains a reference to the variable.
+     *  @param valueBuffer The buffer that contains the value to be set.
+     *  For booleans, doubles and integers, this is a Buffer, for
+     *  String it is a PointerByReference
+     *  @param typeClass The expected class of the type.
+     *  @param isAbsent The buffer that contains the absent flags.
+     */
+    private void _setValueHybrid(Pointer fmiComponent, Object valueBuffer,
+            Class typeClass, Object isAbsent) {
+        if (_fmiSetFunction == null) {
+            if (_typeName.equals("skip")) {
+                System.out
+                        .println("Could not process type, it was marked as skip.");
+                return;
+            }
+            try {
+                _fmiSetFunction = fmiModelDescription.getFmiFunction("fmiSetHybrid"
+                        + _typeName);
+            } catch (IOException ex) {
+                throw new RuntimeException(
+                        "Failed to find the native library.", ex);
+            }
+        }
+        _getOrSetValueHybrid(fmiComponent, valueBuffer, typeClass,
+                _fmiSetFunction, isAbsent);
     }
 
     ///////////////////////////////////////////////////////////////////

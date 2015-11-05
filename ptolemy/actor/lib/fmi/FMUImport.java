@@ -1709,20 +1709,40 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             } else {
                 ////////////////////////////////////////////
                 //// co-simulation version
-                try {
-                    _fmiDoStepFunction = _fmiModelDescription
-                            .getFmiFunction("fmiDoStep");
-                } catch (Throwable throwable) {
-                    throw new IllegalActionException(
-                            this,
-                            throwable,
-                            "The Co-Simulation doStep() function was not found? "
-                                    + "This can happen if for some reason the FMU was "
-                                    + "loaded as a Model Exchange FMU, but is being run as a Co-Simulation FMU."
-                                    + "The actor's modelExchange parameter: "
-                                    + modelExchange.getExpression()
-                                    + ", _fmiModelDescription.modelExchange: "
-                                    + _fmiModelDescription.modelExchange);
+                if (_fmiVersion < 2.1) {
+                    try {
+                        _fmiDoStepFunction = _fmiModelDescription
+                                .getFmiFunction("fmiDoStep");
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(
+                                this,
+                                throwable,
+                                "The Co-Simulation doStep() function was not found? "
+                                        + "This can happen if for some reason the FMU was "
+                                        + "loaded as a Model Exchange FMU, but is being run as a Co-Simulation FMU."
+                                        + "The actor's modelExchange parameter: "
+                                        + modelExchange.getExpression()
+                                        + ", _fmiModelDescription.modelExchange: "
+                                        + _fmiModelDescription.modelExchange);
+                    }
+                } else if (_fmiVersion == 2.1) {
+                    /* _fmiVersion >= 2.1 */
+                    /* Hybrid co-simulation version */
+                    try {
+                        _fmiDoStepFunction = _fmiModelDescription
+                                .getFmiFunction("fmiHybridDoStep");
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(
+                                this,
+                                throwable,
+                                "The Hybrid Co-Simulation doStep() function was not found? "
+                                        + "This can happen if for some reason the FMU was "
+                                        + "loaded as a Model Exchange FMU, but is being run as a Co-Simulation FMU."
+                                        + "The actor's modelExchange parameter: "
+                                        + modelExchange.getExpression()
+                                        + ", _fmiModelDescription.modelExchange: "
+                                        + _fmiModelDescription.modelExchange);
+                    }
                 }
 
                 if (_fmiVersion < 2.0) {
@@ -1798,13 +1818,30 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                     _fmiSetFMUstate = null;
                 }
                 // Common with CoSimulation and Model Exchange;
-                if (_fmiVersion >= 2.0) {
+                if (_fmiVersion == 2.0) {
                     try {
                         _fmiSetupExperimentFunction = _fmiModelDescription
                                 .getFmiFunction("fmiSetupExperiment");
                     } catch (UnsatisfiedLinkError ex) {
                         throw new IllegalActionException(
                                 "Could not find the _fmiSetupExperimentFunction function, "
+                                        + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
+                                        + "Try reimporting it and selecting the Model Exchange checkbox.");
+                    }
+                } else if (_fmiVersion > 2.0) {
+                    try {
+                        _fmiGetIntegerStatusFunction = _fmiModelDescription
+                                .getFmiFunction("fmiGetIntegerStatus");
+                    } catch (UnsatisfiedLinkError ex) {
+                        // The FMU has not provided the function.
+                        _fmiGetRealStatusFunction = null;
+                    }
+                    try {
+                        _fmiSetupExperimentFunction = _fmiModelDescription
+                                .getFmiFunction("fmiHybridSetupExperiment");
+                    } catch (UnsatisfiedLinkError ex) {
+                        throw new IllegalActionException(
+                                "Could not find the _fmiHybridSetupExperimentFunction function, "
                                         + "perhaps this FMU is a Model Exchange FMU and not a Co-simulation FMU? "
                                         + "Try reimporting it and selecting the Model Exchange checkbox.");
                     }
@@ -4400,6 +4437,77 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Function to get the event indicators of the FMU for model exchange. */
     protected Function _fmiGetEventIndicatorsFunction;
+    
+    /**
+     * Flag identifying the first invocation of fire() after initialize
+     */
+    protected boolean _firstFire;
+
+    /**
+     * Flag identifying the first invocation of fire() after each invocation of
+     * initialize() or postfire().
+     */
+    protected boolean _firstFireInIteration;
+
+    /** The fmiGetRealStatus() function. */
+    protected Function _fmiGetRealStatusFunction;
+    
+    /** The fmiGetIntegerStatus() function. */
+    protected Function _fmiGetIntegerStatusFunction;
+
+    /** The fmiDoStep() function. */
+    protected Function _fmiDoStepFunction;
+
+    /** The fmiEnterEventModeFunction, present only in FMI-2.0. */
+    private Function _fmiEnterEventModeFunction;
+
+    /** The fmiEnterInitializationModeFunction, present only in FMI-2.0. */
+    protected Function _fmiEnterInitializationModeFunction;
+
+    /** The fmiExitInitializationModeFunction, present only in FMI-2.0. */
+    protected Function _fmiExitInitializationModeFunction;
+
+    /** The _fmiSetupExperiment function. */
+    protected Function _fmiSetupExperimentFunction;
+
+    /** The time at which the last commit occurred (initialize or postfire). */
+    protected Time _lastCommitTime;
+
+    /** The time at which the last fire occurred. */
+    protected Time _lastFireTime;
+
+    /** The microstep at which the last fire occurred. */
+    protected int _lastFireMicrostep;
+
+    /** True if _fmiInitialize() completed. */
+    protected boolean _modelInitialized = false;
+
+    /** The new states computed in fire(), to be committed in postfire. */
+    protected double[] _newStates;
+
+    /** The relative tolerance for errors in double values. */
+    protected double _relativeTolerance;
+
+    /**
+     * Refined step size suggested by the FMU if doStep failed, or -1.0 if there
+     * is no suggestion.
+     */
+    protected double _refinedStepSize = -1.0;
+
+    /**
+     * Indicator that the proposed step size provided to the fire method has
+     * been rejected by the FMU.
+     */
+    protected boolean _stepSizeRejected;
+
+    /**
+     * Indicator that we have had iteration with a rejected step size, so the
+     * next suggested step size should be zero.
+     */
+    protected boolean _suggestZeroStepSize;
+
+    /** Boolean indicating whether the director uses an error tolerance. */
+    protected byte _toleranceControlled;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -4614,29 +4722,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** Buffer for previous event indicators. */
     private double[] _eventIndicatorsPrevious;
 
-    /**
-     * Flag identifying the first invocation of fire() after initialize
-     */
-    private boolean _firstFire;
-
-    /**
-     * Flag identifying the first invocation of fire() after each invocation of
-     * initialize() or postfire().
-     */
-    private boolean _firstFireInIteration;
-
-    /** The fmiDoStep() function. */
-    private Function _fmiDoStepFunction;
-
-    /** The fmiEnterEventModeFunction, present only in FMI-2.0. */
-    private Function _fmiEnterEventModeFunction;
-
-    /** The fmiEnterInitializationModeFunction, present only in FMI-2.0. */
-    private Function _fmiEnterInitializationModeFunction;
-
-    /** The fmiExitInitializationModeFunction, present only in FMI-2.0. */
-    private Function _fmiExitInitializationModeFunction;
-
     /** The _fmiFreeInstance function, present only in FMI-2.0 */
     private Function _fmiFreeInstanceFunction;
 
@@ -4651,9 +4736,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Function to retrieve the current state of the FMU. */
     private Function _fmiGetFMUstateFunction;
-
-    /** The fmiGetRealStatus() function. */
-    private Function _fmiGetRealStatusFunction;
 
     /** The fmiInitializeSlave function, present only in FMI-1.0. */
     private Function _fmiInitializeFunction;
@@ -4690,9 +4772,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The _fmiTerminateSlaveFunction function. */
     private Function _fmiTerminateSlaveFunction;
 
-    /** The _fmiSetupExperiment function. */
-    private Function _fmiSetupExperimentFunction;
-
     /**
      * The name of the fmuFile. The _fmuFileName field is set the first time we
      * read the file named by the <i>fmuFile</i> parameter. The file named by
@@ -4714,29 +4793,14 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** The workspace version at which the _inputs variable was last updated. */
     private long _inputsVersion = -1;
 
-    /** The time at which the last commit occurred (initialize or postfire). */
-    private Time _lastCommitTime;
-
     /**
      * Indicator of whether the actor is strict, meaning that all inputs must be
      * known to fire it.
      */
     private boolean _isStrict = true;
 
-    /** The time at which the last fire occurred. */
-    private Time _lastFireTime;
-
-    /** The microstep at which the last fire occurred. */
-    private int _lastFireMicrostep;
-
-    /** True if _fmiInitialize() completed. */
-    private boolean _modelInitialized = false;
-
     /** The library of native binaries for the FMU C functions. */
     private NativeLibrary _nativeLibrary;
-
-    /** The new states computed in fire(), to be committed in postfire. */
-    private double[] _newStates;
 
     private int _numberOfSteps;
     private int _numberOfStateEvents;
@@ -4754,34 +4818,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
-
-    /** The relative tolerance for errors in double values. */
-    private double _relativeTolerance;
-
-    /**
-     * Refined step size suggested by the FMU if doStep failed, or -1.0 if there
-     * is no suggestion.
-     */
-    private double _refinedStepSize = -1.0;
-
-    /**
-     * Indicator that the proposed step size provided to the fire method has
-     * been rejected by the FMU.
-     */
-    private boolean _stepSizeRejected;
-
-    /**
-     * Indicator that we have had iteration with a rejected step size, so the
-     * next suggested step size should be zero.
-     */
-    private boolean _suggestZeroStepSize;
-
-    /** Boolean indicating whether the director uses an error tolerance. */
-    private byte _toleranceControlled;
     
     /** Boolean indicating that QSS is used */
     private boolean _useQSS = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
