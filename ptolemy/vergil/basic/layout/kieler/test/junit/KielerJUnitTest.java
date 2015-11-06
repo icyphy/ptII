@@ -35,12 +35,16 @@ import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.util.test.Diff;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
@@ -91,16 +95,28 @@ public class KielerJUnitTest {
      */
     public static void main(String args[]) {
         org.junit.runner.JUnitCore
-        .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
+                .main("ptolemy.vergil.basic.layout.kieler.test.junit.KielerJUnitTest");
     }
 
-    
-    // FIXME the following two tests are deactivated because they fail 
-    // due to the WindowPropertiesAttribute being different between the 
+    /** Save the previous value of the ptolemy.ptII.doNotExit property
+     * and set it to true while running this test.
+     *
+     * @throws Exception If there is a problem opening the model
+     */
+    @BeforeClass
+    public static void openSentinelModel() throws Exception {
+        // Avoid calling System.exit().
+        _previousPropertyValue = StringUtilities
+                .getProperty("ptolemy.ptII.doNotExit");
+        System.setProperty("ptolemy.ptII.doNotExit", "true");
+    }
+
+    // FIXME the following two tests are deactivated because they fail
+    // due to the WindowPropertiesAttribute being different between the
     // saved (to disk) and layouted model and the freshly layouted model.
-    
+
     // class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 154, 833, 619},
-    
+
     /**
      * Test the layout facility by reading in a models, stripping
      * out the graphical elements, laying out the models, comparing
@@ -126,7 +142,7 @@ public class KielerJUnitTest {
 //                "$CLASSPATH/ptolemy/vergil/basic/layout/kieler/test/junit/models/ConstConstDisplay.xml",
 //                true);
 //    }
-    
+
     /* ----------------------------
      *          Actor Tests
      * ---------------------------- */
@@ -137,16 +153,7 @@ public class KielerJUnitTest {
      */
     @org.junit.Test
     public void runModulation() throws Exception {
-        System.out.println("KielerJUnitTest.java: runModulation() start");
-        try {
-            _layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
-        } catch (Error error) {
-            error.printStackTrace();
-        }
-
-
-
-        System.out.println("KielerJUnitTest.java: runModulation() end");
+        _layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
     }
 
     /** Test the layout of the CarTracking model.
@@ -155,13 +162,10 @@ public class KielerJUnitTest {
      */
     @org.junit.Test
     public void runCarTracking() throws Exception {
-        try { 
-            _layoutTest(
+
+        _layoutTest(
                 "$CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml",
                 false);
-        } catch (Error error) {
-            error.printStackTrace();
-        }
     }
 
     /** Test the layout of the Router model.
@@ -170,8 +174,7 @@ public class KielerJUnitTest {
      */
     @org.junit.Test
     public void runRouter() throws Exception {
-        _layoutTest("$CLASSPATH/ptolemy/demo/ExecDemos/Demos/Router.xml",
-                false);
+        _layoutTest("$CLASSPATH/ptolemy/demo/ExecDemos/Demos/Router.xml", false);
     }
 
     /* ----------------------------
@@ -208,6 +211,14 @@ public class KielerJUnitTest {
         _layoutTest(
                 "$CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/Monitor.xml",
                 false);
+    }
+
+    /** Reset the ptolemy.ptII.doNotExit property to the previous value.
+     * @exception Throwable If there is a problem setting the property.
+     */
+    @AfterClass
+    public static void closeSentinelModel() throws Throwable {
+        System.setProperty("ptolemy.ptII.doNotExit", _previousPropertyValue);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -275,10 +286,10 @@ public class KielerJUnitTest {
         /////
         // Layout the model using either the Kieler layout mechanism
         // or the krufty Ptolemy Layout mechanism.
-        // Note that this call is quite important to "normalize" old 
+        // Note that this call is quite important to "normalize" old
         // models. In older models the location was stored with an expression
-        // like value="0, 0", while in newer models curly braces are used 
-        // value="{0, 0}". 
+        // like value="0, 0", while in newer models curly braces are used
+        // value="{0, 0}".
         // If this layout call is not performed, one would have to export
         // the model and load it again to get a normalized version
         Runnable layoutModelAction = new Runnable() {
@@ -360,8 +371,8 @@ public class KielerJUnitTest {
             String undoMoML = model[0].exportMoML();
             if (_debug || !baseMoML.equals(undoMoML)) {
                 System.out
-                .println("Difference between original MoML"
-                        + " and the exported MoML after Kieler Layout and then undo:");
+                        .println("Difference between original MoML"
+                                + " and the exported MoML after Kieler Layout and then undo:");
                 System.out.println(Diff.diff(baseMoML, undoMoML));
             }
 
@@ -382,8 +393,8 @@ public class KielerJUnitTest {
             String redoMoML = model[0].exportMoML();
             if (_debug || !laidOutMoML.equals(redoMoML)) {
                 System.out
-                .println("Difference between laid out MoML"
-                        + " and the exported MoML after Kieler Layout and then undo, then redo:");
+                        .println("Difference between laid out MoML"
+                                + " and the exported MoML after Kieler Layout and then undo, then redo:");
                 System.out.println(Diff.diff(laidOutMoML, redoMoML));
             }
 
@@ -403,7 +414,7 @@ public class KielerJUnitTest {
             public void run() {
                 try {
                     ConfigurationApplication
-                    .closeModelWithoutSavingOrExiting(model[0]);
+                            .closeModelWithoutSavingOrExiting(model[0]);
                 } catch (Throwable throwableCause) {
                     throwable[0] = throwableCause;
                     throw new RuntimeException(throwableCause);
@@ -445,7 +456,7 @@ public class KielerJUnitTest {
             byte[] baseMoMLBytes = FileUtilities
                     .binaryReadURLToByteArray(canonicalModelFile.toURI()
                             .toURL());
-            
+
             if (_debug || !new String(baseMoMLBytes).equals(laidOutMoML)) {
                 System.out.println("Difference between "
                         + canonicalModelFileName
@@ -476,7 +487,7 @@ public class KielerJUnitTest {
     /** Sleep the current thread, which is usually not the Swing Event
      *  Dispatch Thread.
      */
-    protected void _sleep() {
+    protected static void _sleep() {
         try {
             Thread.sleep(1000);
         } catch (Throwable ex) {
@@ -529,5 +540,9 @@ public class KielerJUnitTest {
 
     /** Set to true for debugging messages. */
     private final boolean _debug = false;
+
+    /** The value of the ptolemy.ptII.doNotExit property before we started.
+     */
+    private static String _previousPropertyValue = "";
 
 }
