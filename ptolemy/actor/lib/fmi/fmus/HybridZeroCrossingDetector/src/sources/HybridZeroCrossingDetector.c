@@ -106,6 +106,7 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int isTimeEvent)
     // Sanity check:
     // This component only works with continuous time input signals
     if (hr(input_) == absent_) {
+        printf("->the input is absent :)\n");
         comp->eventInfo.terminateSimulation = fmi2True;
     }
     if (i(microstep_) == 0) {
@@ -151,7 +152,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer max_step_size;
-    printf("HybridZeroCrossingDetector-fmi2HybridGetMaxStepSize, pos(0): %d, getEventIndicator: %f, i(microstep_): %ld\n", pos(0), getEventIndicator(comp, 0), i(microstep_));
+    printf("HybridZeroCrossingDetector-fmi2HybridGetMaxStepSize, time: %ld, pos(0): %d, getEventIndicator: %f, i(microstep_): %ld\n", comp->time, pos(0), getEventIndicator(comp, 0), i(microstep_));
     if ((getEventIndicator(comp, 0) * (pos(0) ? 1 : -1) > 0)
                 || (i(microstep_) >= 2)) {
         max_step_size = 2;
@@ -163,7 +164,7 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     } else {
         max_step_size = 2;
     }
-    printf("HybridZeroCrossingDetector-fmi2HybridGetMaxStepSize, time: %ld, h: %ld\n", comp->time, max_step_size);
+    printf("HybridZeroCrossingDetector-fmi2HybridGetMaxStepSize, h: %ld\n", max_step_size);
     *value = max_step_size;
     return fmi2OK;
 }
