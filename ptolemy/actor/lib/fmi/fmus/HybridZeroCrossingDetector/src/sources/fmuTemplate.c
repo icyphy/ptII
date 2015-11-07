@@ -58,11 +58,14 @@ static fmi2Boolean invalidNumber(ModelInstance *comp, const char *f, const char 
     return fmi2False;
 }
 #endif
-
+//invalidState(comp, "fmi2HybridDoStep", MASK_fmi2DoStep))
 static fmi2Boolean invalidState(ModelInstance *comp, const char *f, int statesExpected) {
-    if (!comp)
+    if (!comp) {
+        printf("invalid component\n");
         return fmi2True;
+    }
     if (!(comp->state & statesExpected)) {
+        printf("state: %d, statesExpected: %d\n", comp->state, statesExpected);
         comp->state = modelError;
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "%s: Illegal call sequence.", f)
         return fmi2True;
@@ -950,6 +953,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     } else if (h == 0) {
         i(microstep_) += 1;
     }
+    printf("HybridZeroCrossingDetector-fmi2HybridDoStep, time: %ld, h: %ld\n", currentCommunicationPoint, communicationStepSize);
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
     int i;
@@ -966,6 +970,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     comp->time = currentCommunicationPoint;
 
     if (invalidState(comp, "fmi2HybridDoStep", MASK_fmi2DoStep)) {
+        printf("Error: Invalid state\n");
         return fmi2Error;
     }
 
@@ -978,7 +983,8 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     if (communicationStepSize < 0) {
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR,
             "fmi2HybridDoStep: communication step size must be >= 0. Fount %u.", communicationStepSize)
-        comp->state = modelError;
+        printf("Error: communicationStepSize < 0\n");
+        comp->state = modelError;        
         return fmi2Error;
     }
 
@@ -1029,6 +1035,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     // terminate simulation, if requested by the model in the previous step
     if (comp->eventInfo.terminateSimulation) {
         FILTERED_LOG(comp, fmi2Discard, LOG_ALL, "fmi2HybridDoStep: model requested termination at t=%g", comp->time)
+        printf("fmi2HybridDoStep: model requested termination at t=%ld\n", comp->time);
         comp->state = modelStepFailed;
         return fmi2Discard; // enforce termination of the simulation loop
     }
